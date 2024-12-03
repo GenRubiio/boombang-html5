@@ -1,0 +1,39 @@
+
+const disconnectUserController = require('../../../controllers/connection/disconnectUserController');
+const connectedUsersCollection = require('../../../collections/connectedUsersCollection');
+const publicAreasCollection = require('../../../collections/publicAreasCollection');
+const ConsoleLogger = require('../../../utils/consoleLogger');
+const logger = new ConsoleLogger();
+
+const main = async (socket, io, data) => {
+    try {
+        const user = connectedUsersCollection.getBySocketId(socket.id);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const publicArea = publicAreasCollection.getByUid(user.currentArea.id);
+        if (!publicArea) {
+            throw new Error('Public area not found');
+        }
+
+        let players = [];
+        for (const user of publicArea.users) {
+            players.push({
+                id: user.socket.id,
+                x: user.currentAreaPosition.x,
+                y: user.currentAreaPosition.y
+            });
+        }
+        socket.emit('response:get_public_area_data', {
+            players: players
+        });
+    } catch (err) {
+        logger.log(`Error joining public area: ${err.message}`, 'error');
+        disconnectUserController.main(socket, io);
+        socket.emit('error_critical');
+    }
+};
+
+
+
+module.exports = { main };
