@@ -56,7 +56,7 @@ class MovePlayerController {
             targets: shadow,
             x: centerX,
             y: centerY,
-            duration: 300,
+            duration: 750,
             onUpdate: () => {
                 shadow.setDepth(shadow.y);
             }
@@ -67,7 +67,7 @@ class MovePlayerController {
             targets: player,
             x: centerX,
             y: centerY - (shadow.displayHeight / 2) - (player.displayHeight / 2),
-            duration: 300,
+            duration: 750,
             onUpdate: () => {
                 player.setDepth(shadow.y);
             },

@@ -49,7 +49,7 @@ class UserModel {
                 await this.processNextMovement();
                 this.isProcessingMovement = false; // Liberar para el siguiente ciclo
             }
-            setTimeout(processMovement, 300); // Continuar el ciclo
+            setTimeout(processMovement, 750); // Continuar el ciclo
         };
 
         processMovement(); // Iniciar el bucle de procesamiento
