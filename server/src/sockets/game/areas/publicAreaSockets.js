@@ -1,16 +1,16 @@
 
-const getPublicAreasController = require('../../../controllers/game/areas/getPublicAreasController');
-const joinPublicAreaController = require('../../../controllers/game/areas/joinPublicAreaController');
-const getPublicAreaDataController = require('../../../controllers/game/areas/getPublicAreaDataController');
+const GetPublicAreasController = require('../../../controllers/game/areas/GetPublicAreasController');
+const JoinPublicAreaController = require('../../../controllers/game/areas/JoinPublicAreaController');
+const GetPublicAreaDataController = require('../../../controllers/game/areas/GetPublicAreaDataController');
 
 module.exports = (socket, io) => {
     socket.on('get_public_areas', () => {
-        getPublicAreasController.main(socket, io);
+        GetPublicAreasController.main(socket, io);
     });
     socket.on('request:join_public_area', async (data) => {
-        joinPublicAreaController.main(socket, io, data);
+        JoinPublicAreaController.main(socket, io, data);
     });
     socket.on('request:get_public_area_data', async (data) => {
-        getPublicAreaDataController.main(socket, io, data);
+        GetPublicAreaDataController.main(socket, io, data);
     });
 };

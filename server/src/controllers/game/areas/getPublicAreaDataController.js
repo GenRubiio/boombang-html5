@@ -5,35 +5,35 @@ const publicAreasCollection = require('../../../collections/publicAreasCollectio
 const ConsoleLogger = require('../../../utils/consoleLogger');
 const logger = new ConsoleLogger();
 
-const main = async (socket, io, data) => {
-    try {
-        const user = connectedUsersCollection.getBySocketId(socket.id);
-        if (!user) {
-            throw new Error('User not found');
-        }
-        const publicArea = publicAreasCollection.getByUid(user.currentArea.id);
-        if (!publicArea) {
-            throw new Error('Public area not found');
-        }
+class GetPublicAreaDataController {
+    static async main(socket, io, data) {
+        try {
+            const user = connectedUsersCollection.getBySocketId(socket.id);
+            if (!user) {
+                throw new Error('User not found');
+            }
+            const publicArea = publicAreasCollection.getByUid(user.currentArea.id);
+            if (!publicArea) {
+                throw new Error('Public area not found');
+            }
 
-        let players = [];
-        for (const user of publicArea.users) {
-            players.push({
-                id: user.socket.id,
-                x: user.currentAreaPosition.x,
-                y: user.currentAreaPosition.y
+            let players = [];
+            for (const user of publicArea.users) {
+                players.push({
+                    id: user.socket.id,
+                    x: user.currentAreaPosition.x,
+                    y: user.currentAreaPosition.y
+                });
+            }
+            socket.emit('response:get_public_area_data', {
+                players: players
             });
+        } catch (err) {
+            logger.log(`Error joining public area: ${err.message}`, 'error');
+            DisconnectUserController.main(socket, io);
+            socket.emit('error_critical');
         }
-        socket.emit('response:get_public_area_data', {
-            players: players
-        });
-    } catch (err) {
-        logger.log(`Error joining public area: ${err.message}`, 'error');
-        DisconnectUserController.main(socket, io);
-        socket.emit('error_critical');
     }
-};
+}
 
-
-
-module.exports = { main };
+module.exports = GetPublicAreaDataController;
