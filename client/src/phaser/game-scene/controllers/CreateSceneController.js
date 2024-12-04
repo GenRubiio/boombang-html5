@@ -55,6 +55,9 @@ class CreateSceneController {
         if (gameScene.loadingImage) {
             gameScene.loadingImage.destroy();
         }
+        if (gameScene.vueComponent) {
+            gameScene.vueComponent.loading = false; // Cambiar el estado de 'loading'
+        }
     }
 }
 

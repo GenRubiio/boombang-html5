@@ -16,6 +16,7 @@ export default class GameScene extends Phaser.Scene {
     init(data) {
         this.roomId = data.roomId; // ID de la sala
         this.players = {}; // Objeto para almacenar jugadores en la sala
+        this.vueComponent = data.vueComponent;
     }
 
     preload() {

@@ -74,6 +74,7 @@ export default {
   background-color: #f0f0f0;
   border: 1px solid black;
   box-sizing: border-box;
+  position: relative;
 }
 #app {
   padding: 0 !important;

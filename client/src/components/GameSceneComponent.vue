@@ -1,13 +1,17 @@
 <template>
-  <div class="game-container">
-    <div id="phaser-container"></div>
-    <!-- Aquí se monta Phaser -->
-    <button class="btn-exit" @click="exitToLobby">Salir al Lobby</button>
+  <div>
+    <LoadingComponent v-if="loading" />
+    <div class="game-container">
+      <div id="phaser-container"></div>
+      <!-- Aquí se monta Phaser -->
+      <button class="btn-exit" @click="exitToLobby">Salir al Lobby</button>
+    </div>
   </div>
 </template>
 
 <script>
 import Phaser from "phaser";
+import LoadingComponent from "./LoadingComponent.vue";
 import GameScene from "../phaser/GameScene.js"; // Escena principal del juego
 import socket from "../sockets/socket.js";
 
@@ -21,6 +25,7 @@ export default {
   data() {
     return {
       game: null, // Instancia de Phaser
+      loading: true,
     };
   },
   methods: {
@@ -35,7 +40,10 @@ export default {
         physics: { default: "arcade" },
       });
 
-      this.game.scene.start("GameScene", { roomId: this.roomId });
+      this.game.scene.start("GameScene", {
+        roomId: this.roomId,
+        vueComponent: this,
+      });
     },
     exitToLobby() {
       socket.emit("request:user_leave_area"); // Enviar evento para salir de la sala
@@ -49,6 +57,9 @@ export default {
   },
   mounted() {
     this.initializeGame();
+  },
+  components: {
+    LoadingComponent,
   },
   beforeUnmount() {
     // Limpia Phaser al desmontar el componente

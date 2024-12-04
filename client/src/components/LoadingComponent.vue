@@ -7,12 +7,12 @@
 <script></script>
 
 <style>
-    .loading-screen {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        background-color: black;
-        color: white;
-    }
+.loading-screen {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: white;
+  position: absolute;
+  z-index: 9999;
+}
 </style>
