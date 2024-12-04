@@ -4,7 +4,7 @@ const DisconnectUserController = require('../../connection/DisconnectUserControl
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
-class UserMoveContorller {
+class UserMoveController {
     static async main(socket, io, data) {
         try {
             let user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -37,4 +37,4 @@ class UserMoveContorller {
     }
 }
 
-module.exports = UserMoveContorller;
+module.exports = UserMoveController;
