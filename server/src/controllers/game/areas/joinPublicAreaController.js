@@ -1,19 +1,19 @@
 
 const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
-const connectedUsersCollection = require('../../../collections/connectedUsersCollection');
-const publicAreasCollection = require('../../../collections/publicAreasCollection');
+const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
+const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const ConsoleLogger = require('../../../utils/consoleLogger');
+const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 class JoinPublicAreaController {
     static async main(socket, io, data) {
         try {
-            const user = connectedUsersCollection.getBySocketId(socket.id);
+            const user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user) {
                 throw new Error("User not found");
             }
-            const publicArea = publicAreasCollection.getByUid(data.areaId);
+            const publicArea = PublicAreasCollection.getByUid(data.areaId);
             if (!publicArea) {
                 throw new Error("Public area not found");
             }

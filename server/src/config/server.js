@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const ConsoleLogger = require('../utils/consoleLogger');
+const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 module.exports = (port) => {

@@ -1,7 +1,7 @@
 
-const publicAreasCollection = require('../collections/publicAreasCollection');
+const PublicAreasCollection = require('../collections/PublicAreasCollection');
 const PublicAreaModel = require('../models/PublicAreaModel');
-const ConsoleLogger = require('../utils/consoleLogger');
+const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 class LoadPublicAreasTask {
@@ -23,10 +23,10 @@ class LoadPublicAreasTask {
             }
             gameMap.push(row);
         }
-        publicAreasCollection.add(1, new PublicAreaModel(1, 'Public Area 1', MAP_WIDTH, MAP_HEIGHT, gameMap, start_position));
-        publicAreasCollection.add(2, new PublicAreaModel(2, 'Public Area 2', MAP_WIDTH, MAP_HEIGHT, gameMap, start_position));
+        PublicAreasCollection.add(1, new PublicAreaModel(1, 'Public Area 1', MAP_WIDTH, MAP_HEIGHT, gameMap, start_position));
+        PublicAreasCollection.add(2, new PublicAreaModel(2, 'Public Area 2', MAP_WIDTH, MAP_HEIGHT, gameMap, start_position));
 
-        logger.log('Public areas loaded: ' + publicAreasCollection.getAll().length, 'info');
+        logger.log('Public areas loaded: ' + PublicAreasCollection.getAll().length, 'info');
     }
 }
 

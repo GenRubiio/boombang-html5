@@ -1,5 +1,5 @@
 const LoadPublicAreasTask = require('../tasks/LoadPublicAreasTask');
-const ConsoleLogger = require('../utils/consoleLogger');
+const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 const initializer = () => {

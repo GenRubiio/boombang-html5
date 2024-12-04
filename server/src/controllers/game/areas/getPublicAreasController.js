@@ -1,7 +1,7 @@
 
 const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const ConsoleLogger = require('../../../utils/consoleLogger');
+const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 class GetPublicAreasController {

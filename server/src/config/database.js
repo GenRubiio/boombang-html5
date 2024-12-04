@@ -1,6 +1,6 @@
 const mariadb = require('mariadb');
 require('dotenv').config();
-const ConsoleLogger = require('../utils/consoleLogger');
+const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 const connectDB = async () => {

@@ -1,5 +1,5 @@
 const PublicAreasCollection = require('../collections/PublicAreasCollection');
-const ConsoleLogger = require('../utils/consoleLogger');
+const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 class UserModel {
