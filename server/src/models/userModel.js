@@ -1,4 +1,4 @@
-const publicAreasCollection = require('../collections/publicAreasCollection');
+const PublicAreasCollection = require('../collections/PublicAreasCollection');
 const ConsoleLogger = require('../utils/consoleLogger');
 const logger = new ConsoleLogger();
 
@@ -58,7 +58,7 @@ class UserModel {
     // Lógica para procesar el siguiente movimiento
     async processNextMovement() {
         try {
-            const publicArea = publicAreasCollection.getByUid(this.currentArea.id);
+            const publicArea = PublicAreasCollection.getByUid(this.currentArea.id);
             if (!publicArea) {
                 throw new Error('Public area not found');
             }

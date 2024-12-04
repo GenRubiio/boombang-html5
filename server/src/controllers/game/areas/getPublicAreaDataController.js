@@ -1,7 +1,7 @@
 
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const publicAreasCollection = require('../../../collections/publicAreasCollection');
+const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const ConsoleLogger = require('../../../utils/consoleLogger');
 const logger = new ConsoleLogger();
 
@@ -12,7 +12,7 @@ class GetPublicAreaDataController {
             if (!user) {
                 throw new Error('User not found');
             }
-            const publicArea = publicAreasCollection.getByUid(user.currentArea.id);
+            const publicArea = PublicAreasCollection.getByUid(user.currentArea.id);
             if (!publicArea) {
                 throw new Error('Public area not found');
             }

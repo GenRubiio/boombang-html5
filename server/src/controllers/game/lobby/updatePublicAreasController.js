@@ -1,4 +1,4 @@
-const publicAreasCollection = require('../../../collections/publicAreasCollection');
+const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const PublicAreaMenuResource = require('../../../resources/PublicAreaMenuResource');
 const ConsoleLogger = require('../../../utils/consoleLogger');
 const logger = new ConsoleLogger();
@@ -6,7 +6,7 @@ const logger = new ConsoleLogger();
 class UpdatePublicAreasController {
     static async main(io) {
         try {
-            const areas = await publicAreasCollection.getAll();
+            const areas = await PublicAreasCollection.getAll();
             const publicAreaMenuResource = PublicAreaMenuResource.collection(areas);
             io.emit('update_public_areas', publicAreaMenuResource);
         } catch (err) {
