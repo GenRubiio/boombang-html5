@@ -1,4 +1,4 @@
-const AreaModel = require('./areaModel');
+const AreaModel = require('./AreaModel');
 
 class PublicAreaModel extends AreaModel {
     constructor(id, name, map_width, map_height, game_map, startPosition) {
