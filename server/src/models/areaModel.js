@@ -6,7 +6,7 @@ class AreaModel {
         this.map_width = map_width;
         this.map_height = map_height;
         this.game_map = game_map;
-        this.startPosition = startPosition; // Posición de inicio del área {x, y}
+        this.startPosition = startPosition; // Posición de inicio del área {x, y, z}
     }
 
     // Método para añadir un usuario

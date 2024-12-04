@@ -1,5 +1,6 @@
 const PublicAreasCollection = require('../collections/PublicAreasCollection');
 const ConsoleLogger = require('../utils/ConsoleLogger');
+const DirectionEnum = require('../enums/DirectionEnum');
 const logger = new ConsoleLogger();
 
 class UserModel {
@@ -9,7 +10,7 @@ class UserModel {
         this.email = email;
         this.socket = null; // Socket del usuario
         this.currentArea = null; // Área actual del usuario
-        this.currentAreaPosition = { x: null, y: null }; // Posición actual del usuario en el área
+        this.currentAreaPosition = { x: null, y: null, z: null }; // Posición actual del usuario en el área
 
         this.finalTarget = null; // Destino final del usuario
         this.isProcessingMovement = false; // Bandera para evitar conflictos
@@ -25,7 +26,7 @@ class UserModel {
 
     setArea(area) {
         this.currentArea = area;
-        this.currentAreaPosition = area ? area.startPosition : { x: null, y: null };
+        this.currentAreaPosition = area ? area.startPosition : { x: null, y: null, z: null };
         this.finalTarget = null;
         this.isProcessingMovement = false;
     }
@@ -113,15 +114,15 @@ class UserModel {
     }
 
     getDirection(deltaX, deltaY) {
-        if (deltaX === 0 && deltaY === 1) return 1; // Abajo
-        if (deltaX === 1 && deltaY === 1) return 2;  // Abajo derecha
-        if (deltaX === 1 && deltaY === 0) return 3;  // Derecha
-        if (deltaX === 1 && deltaY === -1) return 4; // Arriba derecha
-        if (deltaX === 0 && deltaY === -1) return 5;  // Arriba
-        if (deltaX === -1 && deltaY === -1) return 6; // Arriba izquierda
-        if (deltaX === -1 && deltaY === 0) return 7;  // Izquierda
-        if (deltaX === -1 && deltaY === 1) return 8;  // Abajo izquierda
-        return 0; // Si no hay movimiento
+        if (deltaX === 0 && deltaY === 1) return DirectionEnum.DOWN; // Abajo
+        if (deltaX === 1 && deltaY === 1) return DirectionEnum.DOWN_RIGHT;  // Abajo derecha
+        if (deltaX === 1 && deltaY === 0) return DirectionEnum.RIGHT;  // Derecha
+        if (deltaX === 1 && deltaY === -1) return DirectionEnum.UP_RIGHT; // Arriba derecha
+        if (deltaX === 0 && deltaY === -1) return DirectionEnum.UP;  // Arriba
+        if (deltaX === -1 && deltaY === -1) return DirectionEnum.UP_LEFT; // Arriba izquierda
+        if (deltaX === -1 && deltaY === 0) return DirectionEnum.LEFT;  // Izquierda
+        if (deltaX === -1 && deltaY === 1) return DirectionEnum.DOWN_LEFT;  // Abajo izquierda
+        return DirectionEnum.NONE; // Si no hay movimiento
     }
 }
 
