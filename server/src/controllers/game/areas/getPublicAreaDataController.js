@@ -1,5 +1,5 @@
 
-const disconnectUserController = require('../../connection/disconnectUserController');
+const DisconnectUserController = require('../../connection/DisconnectUserController');
 const connectedUsersCollection = require('../../../collections/connectedUsersCollection');
 const publicAreasCollection = require('../../../collections/publicAreasCollection');
 const ConsoleLogger = require('../../../utils/consoleLogger');
@@ -29,7 +29,7 @@ const main = async (socket, io, data) => {
         });
     } catch (err) {
         logger.log(`Error joining public area: ${err.message}`, 'error');
-        disconnectUserController.main(socket, io);
+        DisconnectUserController.main(socket, io);
         socket.emit('error_critical');
     }
 };

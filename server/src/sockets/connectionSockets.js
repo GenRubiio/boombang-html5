@@ -1,9 +1,9 @@
 const connectedUsersCollection = require('../collections/connectedUsersCollection');
-const disconnectUserController = require('../controllers/connection/disconnectUserController');
+const DisconnectUserController = require('../controllers/connection/DisconnectUserController');
 
 module.exports = (socket, io) => {
     socket.on('disconnect', () => {
-        disconnectUserController.main(socket, io);
+        DisconnectUserController.main(socket, io);
     });
 
     socket.on('get_connected_users', () => {

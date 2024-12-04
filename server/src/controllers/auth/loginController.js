@@ -1,6 +1,6 @@
 const userService = require('../../services/userService');
 const connectedUsersCollection = require('../../collections/connectedUsersCollection');
-const disconnectUserController = require('../connection/disconnectUserController');
+const DisconnectUserController = require('../connection/DisconnectUserController');
 const UserResource = require('../../resources/userResource');
 
 class LoginController {
@@ -12,7 +12,7 @@ class LoginController {
         if (user) {
             const connectedUser = connectedUsersCollection.getByUserId(user.id);
             if (connectedUser) {
-                disconnectUserController.main(connectedUser.socket, io);
+                DisconnectUserController.main(connectedUser.socket, io);
                 connectedUser.socket.emit('error_critical');
             }
             user.addSocket(socket);

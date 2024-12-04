@@ -2,7 +2,7 @@
 const updatePublicAreasController = require('../lobby/updatePublicAreasController');
 const connectedUsersCollection = require('../../../collections/connectedUsersCollection');
 const publicAreasCollection = require('../../../collections/publicAreasCollection');
-const disconnectUserController = require('../../../controllers/connection/disconnectUserController');
+const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConsoleLogger = require('../../../utils/consoleLogger');
 const logger = new ConsoleLogger();
 
@@ -38,7 +38,7 @@ const main = async (socket, io, data) => {
     } catch (err) {
         console.log(err);
         logger.log(`Error joining public area: ${err.message}`, 'error');
-        disconnectUserController.main(socket, io);
+        DisconnectUserController.main(socket, io);
         socket.emit('error_critical');
     }
 };
