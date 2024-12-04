@@ -1,12 +1,12 @@
 
-const userMoveContorller = require('../../../controllers/game/areas/userMoveContorller');
-const userLeaveAreaController = require('../../../controllers/game/areas/userLeaveAreaController');
+const UserMoveContorller = require('../../../controllers/game/areas/UserMoveContorller');
+const UserLeaveAreaController = require('../../../controllers/game/areas/UserLeaveAreaController');
 
 module.exports = (socket, io) => {
     socket.on('request:user_move', (data) => {
-        userMoveContorller.main(socket, io, data);
+        UserMoveContorller.main(socket, io, data);
     });
     socket.on('request:user_leave_area', () => {
-        userLeaveAreaController.main(socket, io);
+        UserLeaveAreaController.main(socket, io);
     });
 };

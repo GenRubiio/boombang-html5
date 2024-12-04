@@ -1,5 +1,5 @@
 
-const updatePublicAreasController = require('../lobby/updatePublicAreasController');
+const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
 const connectedUsersCollection = require('../../../collections/connectedUsersCollection');
 const publicAreasCollection = require('../../../collections/publicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
@@ -35,7 +35,7 @@ class JoinPublicAreaController {
                 },
             }, user);
 
-            updatePublicAreasController.main(io);
+            UpdatePublicAreasController.main(io);
         } catch (err) {
             console.log(err);
             logger.log(`Error joining public area: ${err.message}`, 'error');
