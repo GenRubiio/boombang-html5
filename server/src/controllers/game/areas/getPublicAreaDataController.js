@@ -1,6 +1,6 @@
 
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const connectedUsersCollection = require('../../../collections/connectedUsersCollection');
+const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const publicAreasCollection = require('../../../collections/publicAreasCollection');
 const ConsoleLogger = require('../../../utils/consoleLogger');
 const logger = new ConsoleLogger();
@@ -8,7 +8,7 @@ const logger = new ConsoleLogger();
 class GetPublicAreaDataController {
     static async main(socket, io, data) {
         try {
-            const user = connectedUsersCollection.getBySocketId(socket.id);
+            const user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user) {
                 throw new Error('User not found');
             }

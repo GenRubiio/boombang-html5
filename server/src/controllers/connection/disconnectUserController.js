@@ -1,9 +1,9 @@
-const connectedUsersCollection = require('../../collections/connectedUsersCollection');
+const ConnectedUsersCollection = require('../../collections/ConnectedUsersCollection');
 const UpdatePublicAreasController = require('../game/lobby/UpdatePublicAreasController');
 
 class DisconnectUserController {
     static async main(socket, io) {
-        const user = connectedUsersCollection.getBySocketId(socket.id);
+        const user = ConnectedUsersCollection.getBySocketId(socket.id);
         if (user) {
             if (user.currentArea) {
                 user.currentArea.removeUser(user);
@@ -15,7 +15,7 @@ class DisconnectUserController {
 
                 UpdatePublicAreasController.main(io);
             }
-            connectedUsersCollection.removeUser(socket.id);
+            ConnectedUsersCollection.removeUser(socket.id);
             console.log(`User ${user.username} disconnected with socket ID ${socket.id}`);
         }
     }
