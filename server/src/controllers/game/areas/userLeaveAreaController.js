@@ -11,13 +11,17 @@ const main = async (socket, io) => {
         if (!user || !user.currentArea) {
             throw new Error('User not found or not in any area');
         }
-        const area = publicAreasCollection.getByUid(user.currentArea.id);
-        if (!area) {
+        const publicArea = publicAreasCollection.getByUid(user.currentArea.id);
+        if (!publicArea) {
             throw new Error('Area not found');
         }
-        area.removeUser(user);
+        publicArea.removeUser(user);
         user.cancelMovement();
         user.setArea(null);
+
+        publicArea.emitToAllExcept('response:user_left_public_area', {
+            socketId: socket.id
+        }, user);
 
         updatePublicAreasController.main(io);
     } catch (err) {

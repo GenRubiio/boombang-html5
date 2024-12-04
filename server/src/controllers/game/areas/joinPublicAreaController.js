@@ -26,6 +26,13 @@ const main = async (socket, io, data) => {
         socket.emit('response:join_public_area', {
             success: true,
         });
+        publicArea.emitToAllExcept('response:new_user_join_public_area', {
+            user: {
+                id: user.socket.id,
+                x: user.currentAreaPosition.x,
+                y: user.currentAreaPosition.y,
+            },
+        }, user);
 
         updatePublicAreasController.main(io);
     } catch (err) {

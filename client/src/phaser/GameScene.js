@@ -42,15 +42,15 @@ export default class GameScene extends Phaser.Scene {
         });
 
         // Escuchar cuando un nuevo jugador entra
-        socket.on("userJoin", (player) => {
-            this.addPlayer(player.id, player.x, player.y);
+        socket.on("response:new_user_join_public_area", (data) => {
+            this.addPlayer(data.user.id, data.user.x, data.user.y);
         });
 
         // Escuchar cuando un jugador se mueve
 
         // Escuchar cuando un jugador sale
-        socket.on("userLeave", (id) => {
-            this.removePlayer(id);
+        socket.on("response:user_left_public_area", (data) => {
+            this.removePlayer(data.socketId);
         });
 
         GameSceneSockets.main(this); // Inicializar controladores de sockets

@@ -6,8 +6,10 @@ const main = async (socket, io) => {
     if (user) {
         if (user.currentArea) {
             user.currentArea.removeUser(user);
-            user.currentArea.emit('user_left', { userId: user.id });
             socket.leave(user.currentArea.id);
+            user.currentArea.emitToAllExcept('response:user_left_public_area', {
+                socketId: socket.id
+            }, user);
             user.setArea(null);
 
             updatePublicAreasController.main(io);

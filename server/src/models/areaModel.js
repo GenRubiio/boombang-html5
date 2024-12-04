@@ -36,6 +36,15 @@ class AreaModel {
         });
     }
 
+    // Método para emitir un evento a todos los usuarios del área excepto uno
+    emitToAllExcept(event, data, excludedUser) {
+        this.users.forEach(user => {
+            if (user !== excludedUser) {
+                user.socket.emit(event, data);
+            }
+        });
+    }
+
     // Implementación del algoritmo A*
     findPath(startPos, endPos, customMap) {
         const EasyStar = require('easystarjs').js;

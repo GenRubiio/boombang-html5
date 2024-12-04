@@ -1,5 +1,5 @@
 
-const disconnectUserController = require('../../../controllers/connection/disconnectUserController');
+const disconnectUserController = require('../../connection/disconnectUserController');
 const connectedUsersCollection = require('../../../collections/connectedUsersCollection');
 const publicAreasCollection = require('../../../collections/publicAreasCollection');
 const ConsoleLogger = require('../../../utils/consoleLogger');
