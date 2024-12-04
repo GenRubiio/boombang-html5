@@ -42,9 +42,9 @@ export default class GameScene extends Phaser.Scene {
     shutdown() {
         console.log("Shutting down scene and removing socket listeners");
         socket.off("response:get_public_area_data");
-        socket.off("userJoin");
+        socket.off("response:new_user_join_public_area");
         socket.off("response:user_move");
-        socket.off("userLeave");
+        socket.off("response:user_left_public_area");
     }
 
     destroy() {

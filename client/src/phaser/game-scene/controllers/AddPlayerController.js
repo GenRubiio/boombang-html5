@@ -7,6 +7,17 @@ class AddPlayerController {
         // Crear sombra
         const shadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
         shadow.setDepth(0);
+        shadow.playerId = id;
+
+        // Configurar evento de clic en la sombra
+        shadow.setInteractive(); // Hacer interactiva la sombra
+        shadow.on('pointerdown', () => {
+            const clickedPlayer = gameScene.players[shadow.playerId];
+            if (clickedPlayer) {
+                console.log(`Jugador clickeado: ID=${shadow.playerId}`);
+                // Aquí puedes hacer algo con el jugador, como mostrar su nombre
+            }
+        });
 
         // Crear personaje
         const player = gameScene.add.image(0, 0, "player").setDisplaySize(83, 120);
