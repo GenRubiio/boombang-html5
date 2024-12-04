@@ -1,5 +1,5 @@
 const publicAreasCollection = require('../../../collections/publicAreasCollection');
-const PublicAreaMenuResource = require('../../../resources/publicAreaMenuResource');
+const PublicAreaMenuResource = require('../../../resources/PublicAreaMenuResource');
 const ConsoleLogger = require('../../../utils/consoleLogger');
 const logger = new ConsoleLogger();
 

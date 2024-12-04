@@ -1,4 +1,4 @@
-const Resource = require('./resource');
+const Resource = require('./Resource');
 
 class PublicAreaMenuResource extends Resource {
     transform(data) {

@@ -1,13 +1,13 @@
-const userService = require('../../services/userService');
+const UserService = require('../../services/UserService');
 const connectedUsersCollection = require('../../collections/connectedUsersCollection');
 const DisconnectUserController = require('../connection/DisconnectUserController');
-const UserResource = require('../../resources/userResource');
+const UserResource = require('../../resources/UserResource');
 
 class LoginController {
     static async main(socket, io, data) {
         const { username, password } = data;
 
-        const user = await userService.getByUsernameAndPassword(username, password);
+        const user = await UserService.getByUsernameAndPassword(username, password);
 
         if (user) {
             const connectedUser = connectedUsersCollection.getByUserId(user.id);
