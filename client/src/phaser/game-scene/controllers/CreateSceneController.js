@@ -28,11 +28,20 @@ class CreateSceneController {
                 tile.setData("gridPos", { x: col, y: row });
                 gameScene.tiles[row][col] = tile;
 
+                // Ajustar el área interactiva al rombo
+                tile.input.hitArea = new Phaser.Geom.Polygon([
+                    { x: 0, y: tileHeight / 2 },                // Vértice superior
+                    { x: tileWidth / 2, y: 0 },                // Vértice derecho
+                    { x: tileWidth, y: tileHeight / 2 },       // Vértice inferior
+                    { x: tileWidth / 2, y: tileHeight },       // Vértice izquierdo
+                ]);
+                tile.input.hitAreaCallback = Phaser.Geom.Polygon.Contains;
+
                 // Evento de clic: enviar posición al servidor
                 tile.on("pointerdown", () => {
                     const { x, y } = tile.getData("gridPos");
                     console.log(`Clicked tile at ${x}, ${y}`);
-                    socket.emit('request:user_move', { x: x, y: y });
+                    socket.emit("request:user_move", { x: x, y: y });
                 });
             }
         }
