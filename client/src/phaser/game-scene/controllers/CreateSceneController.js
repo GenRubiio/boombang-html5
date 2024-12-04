@@ -42,11 +42,6 @@ class CreateSceneController {
             AddPlayerController.main(gameScene, player.id, player.x, player.y);
         });
 
-        // Crear al jugador local
-        gameScene.localPlayer = AddPlayerController.main(gameScene, socket.id, 6, 14);
-
-        players.push({ id: socket.id, x: 6, y: 14 });
-
         // Ocultar la imagen de carga
         if (gameScene.loadingImage) {
             gameScene.loadingImage.destroy();
