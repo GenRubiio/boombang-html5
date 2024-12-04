@@ -1,7 +1,7 @@
-const loginController = require('../controllers/auth/loginController');
+const LoginController = require('../controllers/auth/LoginController');
 
 module.exports = (socket, io) => {
     socket.on('login', (data) => {
-        loginController.main(socket, io, data);
+        LoginController.main(socket, io, data);
     });
 };
