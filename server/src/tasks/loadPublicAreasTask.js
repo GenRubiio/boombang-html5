@@ -11,8 +11,8 @@ class LoadPublicAreasTask {
         const MAP_WIDTH = 30;
         const MAP_HEIGHT = 30;
         const start_position = {
-            x: 14,
-            y: 18,
+            x: 1,
+            y: 3,
             z: 1
         };
         let gameMap = [];

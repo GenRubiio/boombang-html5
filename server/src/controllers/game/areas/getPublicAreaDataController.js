@@ -22,7 +22,8 @@ class GetPublicAreaDataController {
                 players.push({
                     id: user.socket.id,
                     x: user.currentAreaPosition.x,
-                    y: user.currentAreaPosition.y
+                    y: user.currentAreaPosition.y,
+                    z: user.currentAreaPosition.z
                 });
             }
             socket.emit('response:get_public_area_data', {

@@ -1,7 +1,7 @@
 import MovePlayerToTileController from "./MovePlayerToTileController.js";
 
 class AddPlayerController {
-    static main(gameScene, id, x, y) {
+    static main(gameScene, id, x, y, z) {
         if (gameScene.players[id]) return;
 
         // Crear sombra
@@ -20,14 +20,15 @@ class AddPlayerController {
         });
 
         // Crear personaje
-        const player = gameScene.add.image(0, 0, "player").setDisplaySize(83, 120);
+        const player = gameScene.add.sprite(75, 104, "player_spritesheet");
+        player.setFrame(63); // Establecer frame inicial 48
         player.setDepth(1);
 
         // Posicionar sombra y personaje
         MovePlayerToTileController.main(gameScene, { x, y }, player, shadow);
 
         // Almacenar jugador
-        gameScene.players[id] = { player, shadow, position: { x, y } };
+        gameScene.players[id] = { player, shadow, position: { x, y, z } };
     }
 }
 

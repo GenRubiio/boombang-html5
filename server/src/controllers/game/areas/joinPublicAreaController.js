@@ -32,6 +32,7 @@ class JoinPublicAreaController {
                     id: user.socket.id,
                     x: user.currentAreaPosition.x,
                     y: user.currentAreaPosition.y,
+                    z: user.currentAreaPosition.z,
                 },
             }, user);
 

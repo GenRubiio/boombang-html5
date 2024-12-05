@@ -11,9 +11,9 @@ class MovePlayerToTileController {
         shadow.setPosition(centerX, centerY);
         shadow.setDepth(centerY);
 
-        // Posicionar personaje encima de la sombra
+        // Posicionar personaje encima de la sombra, ajustando la distancia
         const playerX = centerX;
-        const playerY = centerY - (shadow.displayHeight / 2) - (player.displayHeight / 2);
+        const playerY = centerY - (shadow.displayHeight / 2) - (player.displayHeight / 2) + 15; // Ajustar distancia
         player.setPosition(playerX, playerY);
         player.setDepth(centerY);
     }

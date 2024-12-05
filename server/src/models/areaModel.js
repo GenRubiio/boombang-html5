@@ -1,3 +1,7 @@
+const EasyStar = require('easystarjs').js;
+const ConsoleLogger = require('../utils/ConsoleLogger');
+const logger = new ConsoleLogger();
+
 class AreaModel {
     constructor(id, name, map_width, map_height, game_map, startPosition) {
         this.id = id;
@@ -7,6 +11,9 @@ class AreaModel {
         this.map_height = map_height;
         this.game_map = game_map;
         this.startPosition = startPosition; // Posición de inicio del área {x, y, z}
+
+        // Iniciar el procesador de movimiento
+        this.startMovementProcessor();
     }
 
     // Método para añadir un usuario
@@ -45,10 +52,81 @@ class AreaModel {
         });
     }
 
+    // Iniciar el procesador de movimiento
+    startMovementProcessor() {
+        const processMovement = async () => {
+            // Procesar movimiento para cada usuario
+            for (let user of this.users) {
+                if (user.finalTarget) {
+                    await this.processNextMovement(user);
+                }
+            }
+            setTimeout(processMovement, 750); // Continuar el ciclo
+        };
+
+        processMovement(); // Iniciar el bucle de procesamiento
+    }
+
+    // Lógica para procesar el siguiente movimiento de un usuario
+    async processNextMovement(user) {
+        try {
+            if (!user.finalTarget) return; // No hay destino final establecido
+
+            const startPos = user.currentAreaPosition;
+            const target = user.finalTarget;
+
+            // Verificar si ya está en el destino
+            if (startPos.x === target.x && startPos.y === target.y) {
+                user.finalTarget = null; // Llegó al destino
+                return;
+            }
+
+            // Calcular el camino al destino
+            const navigationMap = this.getNavigationMapWithPlayers(user.id);
+            const path = await this.findPath(startPos, target, navigationMap);
+
+            if (!path || path.length <= 1) {
+                console.log('No se encontró un camino al destino');
+                user.socket.emit('response:user_move_denied', {
+                    id: user.socket.id,
+                });
+                user.finalTarget = null; // No se puede llegar al destino
+                return;
+            }
+
+            // Mover al siguiente paso en el camino
+            const nextStep = path[1];
+            // Calcular la dirección
+            const deltaX = nextStep.x - user.currentAreaPosition.x;
+            const deltaY = nextStep.y - user.currentAreaPosition.y;
+            const direction = user.getDirection(deltaX, deltaY);
+
+            // Actualizar la posición actual
+            user.currentAreaPosition = { x: nextStep.x, y: nextStep.y, z: direction };
+
+            // Notificar movimiento al cliente
+            const movementData = {
+                id: user.socket.id,
+                path: [{ 
+                    x: nextStep.x, 
+                    y: nextStep.y,
+                    z: direction
+                }],
+                isLastStep: path.length === 2
+            };
+
+            this.emit('response:user_move', movementData);
+
+            // Continuar moviéndose hacia el destino en el siguiente ciclo
+        } catch (err) {
+            console.log(err);
+            logger.log(`Error processing user movement: ${err.message}`, 'error');
+            user.socket.emit('error_critical');
+        }
+    }
+
     // Implementación del algoritmo A*
     findPath(startPos, endPos, customMap) {
-        const EasyStar = require('easystarjs').js;
-
         const easystar = new EasyStar();
 
         // Usar el mapa personalizado si se proporciona
@@ -69,7 +147,7 @@ class AreaModel {
             });
             easystar.calculate();
         });
-    };
+    }
 
     getNavigationMapWithPlayers(excludeUserId) {
         // Clonar el mapa original
@@ -84,7 +162,7 @@ class AreaModel {
         });
 
         return navigationMap;
-    };
+    }
 }
 
 module.exports = AreaModel;
