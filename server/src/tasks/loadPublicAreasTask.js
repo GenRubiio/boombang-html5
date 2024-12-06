@@ -13,7 +13,7 @@ class LoadPublicAreasTask {
         const start_position = {
             x: 1,
             y: 3,
-            z: 1
+            z: 2
         };
         let gameMap = [];
 

@@ -69,10 +69,13 @@ class MovePlayerController {
             y: centerY - (shadow.displayHeight / 2) - (player.displayHeight / 2) + 15,
             duration: 750,
             onUpdate: () => {
+                //if player exists, update its depth
+                if (!player) return;
                 this.playAnimation(player, step.z);
                 player.setDepth(shadow.y);
             },
             onComplete: () => {
+                if (!player) return;
                 // Al completar el movimiento, avanzar al siguiente paso
                 if (isLastStep) {
                     this.stopAnimation(player, step.z);

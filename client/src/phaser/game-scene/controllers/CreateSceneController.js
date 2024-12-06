@@ -38,6 +38,7 @@ class CreateSceneController {
                 tile.input.hitAreaCallback = Phaser.Geom.Polygon.Contains;
 
                 // Evento de clic: enviar posición al servidor
+                tile.removeListener("pointerdown");
                 tile.on("pointerdown", () => {
                     const { x, y } = tile.getData("gridPos");
                     console.log(`Clicked tile at ${x}, ${y}`);

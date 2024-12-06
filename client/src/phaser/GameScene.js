@@ -54,6 +54,7 @@ export default class GameScene extends Phaser.Scene {
         socket.off("response:new_user_join_public_area");
         socket.off("response:user_move");
         socket.off("response:user_left_public_area");
+        socket.off("request:user_move");
     }
 
     destroy() {

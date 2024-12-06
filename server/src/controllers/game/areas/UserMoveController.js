@@ -11,9 +11,9 @@ class UserMoveController {
             if (!user || !user.currentArea) {
                 throw new Error('User not found or not in an area');
             }
-    
+
             const { x: targetX, y: targetY } = data;
-    
+
             // Validar posición objetivo
             const publicArea = PublicAreasCollection.getByUid(user.currentArea.id);
             if (
@@ -22,10 +22,13 @@ class UserMoveController {
                 publicArea.game_map[targetY][targetX] !== 0
             ) {
                 console.log('Posición objetivo no válida');
-                socket.emit('movementDenied', { reason: 'Posición objetivo no válida' });
+                publicArea.emit('response:user_move_denied', {
+                    id: socket.id,
+                })
+                user.finalTarget = null; // No se puede llegar al destino
                 return;
             }
-    
+
             // Establecer el nuevo destino final del usuario
             user.setFinalTarget({ x: targetX, y: targetY });
         } catch (err) {

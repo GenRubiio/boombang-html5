@@ -87,7 +87,7 @@ class AreaModel {
 
             if (!path || path.length <= 1) {
                 console.log('No se encontró un camino al destino');
-                user.socket.emit('response:user_move_denied', {
+                this.emit('response:user_move_denied', {
                     id: user.socket.id,
                 });
                 user.finalTarget = null; // No se puede llegar al destino

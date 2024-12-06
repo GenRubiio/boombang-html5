@@ -25,9 +25,6 @@ class GameSceneSockets {
                 MovePlayerController.main(gameScene, id, path, data.isLastStep);
             }
         });
-        //this.socket.emit('response:user_move_denied', {
-        //    id: this.socket.id,
-        //});
         socket.on("response:user_move_denied", (data) => {
             const { id } = data;
             if (gameScene.players[id]) {
