@@ -21,7 +21,7 @@ class AddPlayerController {
         });
 
         // Crear personaje
-        const player = gameScene.add.sprite(76, 105, "player_spritesheet");
+        const player = gameScene.add.sprite(0, 0, "player_spritesheet");
         MovementUtil.setDefaultFrame(player, z);
         player.setDepth(1);
 
