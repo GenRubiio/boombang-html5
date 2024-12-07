@@ -1,4 +1,5 @@
 import MovePlayerToTileController from "./MovePlayerToTileController.js";
+import MovementUtil from "../utils/MovementUtil.js";
 
 class AddPlayerController {
     static main(gameScene, id, x, y, z) {
@@ -20,8 +21,8 @@ class AddPlayerController {
         });
 
         // Crear personaje
-        const player = gameScene.add.sprite(75, 104, "player_spritesheet");
-        this.setDefaultFrame(player, z);
+        const player = gameScene.add.sprite(76, 105, "player_spritesheet");
+        MovementUtil.setDefaultFrame(player, z);
         player.setDepth(1);
 
         // Posicionar sombra y personaje
@@ -29,35 +30,6 @@ class AddPlayerController {
 
         // Almacenar jugador
         gameScene.players[id] = { player, shadow, position: { x, y, z } };
-    }
-
-    static setDefaultFrame(player, direction) {
-        switch (direction) {
-            case 1:
-                player.setFrame(15);
-                break;
-            case 2:
-                player.setFrame(63);
-                break;
-            case 3:
-                player.setFrame(109);
-                break;
-            case 4:
-                player.setFrame(125);
-                break;
-            case 5:
-                player.setFrame(93);
-                break;
-            case 6:
-                player.setFrame(47);
-                break;
-            case 7:
-                player.setFrame(78);
-                break;
-            case 8:
-                player.setFrame(31);
-                break;
-        }
     }
 }
 

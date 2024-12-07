@@ -4,21 +4,21 @@ class AnimationsController {
     }
 
     static playerAnimations(gameScene) {
-        this.playWalkAnimation(gameScene, "walk_down_left", { start: 0, end: 14 });
-        this.playWalkAnimation(gameScene, "walk_down", { start: 48, end: 62 });
-        this.playWalkAnimation(gameScene, "walk_left", { start: 16, end: 30 });
-        this.playWalkAnimation(gameScene, "walk_up", { start: 32, end: 46 });
-        this.playWalkAnimation(gameScene, "walk_up_left", { start: 64, end: 77 });
-        this.playWalkAnimation(gameScene, "walk_up_right", { start: 79, end: 92 });
-        this.playWalkAnimation(gameScene, "walk_down_right", { start: 94, end: 108 });
-        this.playWalkAnimation(gameScene, "walk_right", { start: 110, end: 124 });
+        this.playWalkAnimation(gameScene, "walk_down_left", { start: 46, end: 60 });// 76
+        this.playWalkAnimation(gameScene, "walk_down", { start: 110, end: 124 }); // 125
+        this.playWalkAnimation(gameScene, "walk_left", { start: 78, end: 92 }); // 108
+        this.playWalkAnimation(gameScene, "walk_up", { start: 0, end: 14 }); // 15
+        this.playWalkAnimation(gameScene, "walk_up_left", { start: 16, end: 29 }); // 44
+        this.playWalkAnimation(gameScene, "walk_up_right", { start: 30, end: 43 }); // 45
+        this.playWalkAnimation(gameScene, "walk_down_right", { start: 61, end: 75 }); // 77
+        this.playWalkAnimation(gameScene, "walk_right", { start: 93, end: 107 }); // 109
     }
 
-    static playWalkAnimation(gameScene, key, rightFrames) {
+    static playWalkAnimation(gameScene, key, frames) {
         gameScene.anims.create({
             key: key,
-            frames: gameScene.anims.generateFrameNumbers("player_spritesheet", rightFrames),
-            frameRate: (Math.round(((rightFrames.end - rightFrames.start) / 0.75))),
+            frames: gameScene.anims.generateFrameNumbers("player_spritesheet", frames),
+            frameRate: (Math.round(((frames.end - frames.start) / 0.75))),
             repeat: -1,
         });
     }

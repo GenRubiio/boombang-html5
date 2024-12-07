@@ -1,3 +1,4 @@
+import MovementUtil from "../utils/MovementUtil.js";
 class MovePlayerController {
     static main(gameScene, id, path, isLastStep) {
         if (!path || path.length === 0 || !gameScene.players[id]) return;
@@ -122,32 +123,7 @@ class MovePlayerController {
     }
 
     static stopAnimation(player, direction) {
-        switch (direction) {
-            case 1:
-                player.setFrame(15);
-                break;
-            case 2:
-                player.setFrame(63);
-                break;
-            case 3:
-                player.setFrame(109);
-                break;
-            case 4:
-                player.setFrame(125);
-                break;
-            case 5:
-                player.setFrame(93);
-                break;
-            case 6:
-                player.setFrame(47);
-                break;
-            case 7:
-                player.setFrame(78);
-                break;
-            case 8:
-                player.setFrame(31);
-                break;
-        }
+        MovementUtil.setDefaultFrame(player, direction);
         player.stop();
     }
 }
