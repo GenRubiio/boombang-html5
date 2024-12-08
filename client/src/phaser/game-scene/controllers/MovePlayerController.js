@@ -1,4 +1,6 @@
 import MovementUtil from "../utils/MovementUtil.js";
+import DirectionEnum from "../enums/DirectionEnum.js";
+
 class MovePlayerController {
     static main(gameScene, id, path, isLastStep) {
         if (!path || path.length === 0 || !gameScene.players[id]) return;
@@ -72,14 +74,15 @@ class MovePlayerController {
             onUpdate: () => {
                 //if player exists, update its depth
                 if (!player) return;
-                this.playAnimation(player, step.z);
+                this.playAnimation(id, player, step.z);
                 player.setDepth(shadow.y);
             },
             onComplete: () => {
                 if (!player) return;
                 // Al completar el movimiento, avanzar al siguiente paso
+                player.stop();
                 if (isLastStep) {
-                    this.stopAnimation(player, step.z);
+                    this.stopAnimation(id, player, step.z);
                 }
                 else {
                     playerData.pathIndex++;
@@ -93,38 +96,48 @@ class MovePlayerController {
         playerData.currentShadowTween = shadowTween;
     }
 
-    static playAnimation(player, direction) {
+    static playAnimation(id, player, direction) {
         switch (direction) {
-            case 1:
-                player.play("walk_down_left", true);
+            case DirectionEnum.DOWN_LEFT:
+                player.play(id + "_" + "leftdown_walk", true);
                 break;
-            case 2:
-                player.play("walk_down", true);
+            case DirectionEnum.DOWN:
+                player.play(id + "_" + "down_walk", true);
                 break;
-            case 3:
-                player.play("walk_down_right", true);
+            case DirectionEnum.DOWN_RIGHT:
+                player.play(id + "_" + "rightdown_walk", true);
                 break;
-            case 4:
-                player.play("walk_right", true);
+            case DirectionEnum.RIGHT:
+                player.play(id + "_" + "right_walk", true);
                 break;
-            case 5:
-                player.play("walk_up_right", true);
+            case DirectionEnum.UP_RIGHT:
+                player.play(id + "_" + "rightup_walk", true);
                 break;
-            case 6:
-                player.play("walk_up", true);
+            case DirectionEnum.UP:
+                player.play(id + "_" + "up_walk", true);
                 break;
-            case 7:
-                player.play("walk_up_left", true);
+            case DirectionEnum.UP_LEFT:
+                player.play(id + "_" + "leftup_walk", true);
                 break;
-            case 8:
-                player.play("walk_left", true);
+            case DirectionEnum.LEFT:
+                player.play(id + "_" + "left_walk", true);
                 break;
         }
     }
 
-    static stopAnimation(player, direction) {
-        MovementUtil.setDefaultFrame(player, direction);
-        player.stop();
+    static stopAnimation(id, player, direction) {
+        if (!player || !player.anims) {
+            console.error("Jugador no válido al detener animación.");
+            return;
+        }
+
+        // Detener cualquier animación activa
+        if (player.anims.isPlaying) {
+            player.stop();
+        }
+
+        // Establecer frame por defecto
+        MovementUtil.setDefaultFrame(id, player, direction);
     }
 }
 

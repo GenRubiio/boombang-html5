@@ -1,31 +1,31 @@
 import DirectionEnum from "../enums/DirectionEnum.js";
 
 class MovementUtil {
-    static setDefaultFrame(player, direction) {
+    static setDefaultFrame(id, player, direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
-                player.setFrame(46);//76
+                player.setTexture(id + "_" + "leftdown_idle");
                 break;
             case DirectionEnum.DOWN:
-                player.setFrame(110); //125
+                player.setTexture(id + "_" + "down_idle");
                 break;
             case DirectionEnum.DOWN_RIGHT:
-                player.setFrame(61); //77
+                player.setTexture(id + "_" + "rightdown_idle");
                 break;
             case DirectionEnum.RIGHT:
-                player.setFrame(93);  //109
+                player.setTexture(id + "_" + "right_idle");
                 break;
             case DirectionEnum.UP_RIGHT:
-                player.setFrame(35); //45
+                player.setTexture(id + "_" + "rightup_idle");
                 break;
             case DirectionEnum.UP:
-                player.setFrame(0); //15
+                player.setTexture(id + "_" + "up_idle");
                 break;
             case DirectionEnum.UP_LEFT:
-                player.setFrame(21); //44
+                player.setTexture(id + "_" + "leftup_idle");
                 break;
             case DirectionEnum.LEFT:
-                player.setFrame(78); //108
+                player.setTexture(id + "_" + "left_idle");
                 break;
         }
     }

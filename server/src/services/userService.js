@@ -9,7 +9,7 @@ class UserService {
         try {
             connection = await connectDB();
             const rows = await connection.query(sql);
-            return rows.map(row => new UserModel(row.id, row.name, row.email));
+            return rows.map(row => new UserModel(row.id, row.name, row.email, 1));
         } catch (err) {
             console.error('Database query error:', err);
             throw err;
@@ -27,7 +27,7 @@ class UserService {
             const rows = await connection.query(sql, [username, password]);
             if (rows.length === 0) return null; // Verifica si está vacío
             const row = rows[0]; // Obtén la primera fila del resultado
-            return new UserModel(row.id, row.name, row.email); // Devuelve la instancia de User
+            return new UserModel(row.id, row.name, row.email, 1); // Devuelve la instancia de User
         } catch (err) {
             console.error('Database query error:', err);
             throw err;

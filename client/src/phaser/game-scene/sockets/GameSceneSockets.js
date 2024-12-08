@@ -14,7 +14,7 @@ class GameSceneSockets {
         });
         // Escuchar cuando un nuevo jugador entra
         socket.on("response:new_user_join_public_area", (data) => {
-            AddPlayerController.main(gameScene, data.user.id, data.user.x, data.user.y, data.user.z);
+            AddPlayerController.main(gameScene, data.user);
         });
         // Escuchar cuando un jugador se mueve
         socket.on("response:user_move", (data) => {
@@ -28,9 +28,25 @@ class GameSceneSockets {
         socket.on("response:user_move_denied", (data) => {
             const { id } = data;
             if (gameScene.players[id]) {
-                const player = gameScene.players[id].player;
-                const direction = gameScene.players[id].position.z;
-                MovePlayerController.stopAnimation(player, direction);
+                const playerData = gameScene.players[id];
+                const player = playerData.player;
+                const shadow = playerData.shadow;
+                const direction = playerData.position.z;
+
+                // Detener Tweens activos
+                if (playerData.currentTween) {
+                    playerData.currentTween.stop();
+                    playerData.currentTween = null;
+                }
+                if (playerData.currentShadowTween) {
+                    playerData.currentShadowTween.stop();
+                    playerData.currentShadowTween = null;
+                }
+                gameScene.tweens.killTweensOf(player);
+                gameScene.tweens.killTweensOf(shadow);
+
+                // Detener animación
+                MovePlayerController.stopAnimation(id, player, direction, gameScene);
             }
         });
         // Escuchar cuando un jugador sale

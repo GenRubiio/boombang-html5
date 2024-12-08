@@ -49,7 +49,7 @@ class CreateSceneController {
 
         // Crear los jugadores iniciales
         players.forEach((player) => {
-            AddPlayerController.main(gameScene, player.id, player.x, player.y, player.z);
+            AddPlayerController.main(gameScene, player);
         });
 
         // Ocultar la imagen de carga

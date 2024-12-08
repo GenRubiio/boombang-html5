@@ -3,6 +3,7 @@ const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasControlle
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
+const AnimationsController = require('../AnimationsController');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
@@ -33,6 +34,7 @@ class JoinPublicAreaController {
                     x: user.currentAreaPosition.x,
                     y: user.currentAreaPosition.y,
                     z: user.currentAreaPosition.z,
+                    animations: await AnimationsController.main(user)
                 },
             }, user);
 

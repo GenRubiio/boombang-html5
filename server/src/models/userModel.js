@@ -1,7 +1,7 @@
 const DirectionEnum = require('../enums/DirectionEnum');
 
 class UserModel {
-    constructor(id, username, email) {
+    constructor(id, username, email, avatarId) {
         this.id = id.toString();
         this.username = username;
         this.email = email;
@@ -10,6 +10,7 @@ class UserModel {
         this.currentAreaPosition = { x: null, y: null, z: null }; // Posición actual del usuario en el área
 
         this.finalTarget = null; // Destino final del usuario
+        this.avatarId = avatarId; // ID del avatar del usuario
     }
 
     // Método para añadir socket al usuario

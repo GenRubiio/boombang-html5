@@ -1,25 +1,49 @@
 class AnimationsController {
-    static main(gameScene) {
-        this.playerAnimations(gameScene);
+    static async main(gameScene, animations) {
+        await this.playerAnimations(gameScene, animations);
     }
 
-    static playerAnimations(gameScene) {
-        this.playWalkAnimation(gameScene, "walk_down_left", { start: 46, end: 60 });// 76
-        this.playWalkAnimation(gameScene, "walk_down", { start: 110, end: 124 }); // 125
-        this.playWalkAnimation(gameScene, "walk_left", { start: 78, end: 92 }); // 108
-        this.playWalkAnimation(gameScene, "walk_up", { start: 0, end: 14 }); // 15
-        this.playWalkAnimation(gameScene, "walk_up_left", { start: 16, end: 29 }); // 44
-        this.playWalkAnimation(gameScene, "walk_up_right", { start: 30, end: 43 }); // 45
-        this.playWalkAnimation(gameScene, "walk_down_right", { start: 61, end: 75 }); // 77
-        this.playWalkAnimation(gameScene, "walk_right", { start: 93, end: 107 }); // 109
+    static async playerAnimations(gameScene,animations) {
+        if (animations.walk) {
+            await this.walkAnimations(gameScene, animations.walk);
+        }
     }
 
-    static playWalkAnimation(gameScene, key, frames) {
-        gameScene.anims.create({
-            key: key,
-            frames: gameScene.anims.generateFrameNumbers("player_spritesheet", frames),
-            frameRate: (Math.round(((frames.end - frames.start) / 0.75))),
-            repeat: -1,
+    static async walkAnimations(gameScene, animations) {
+        for (const animation of animations) {
+            const { key, base64, frames, frameRate, frameWidth, frameHeight, repeat } = animation;
+
+            // Cargar imagen base64 con dimensiones específicas
+            if (!gameScene.textures.exists(key)) {
+                await this.loadBase64Image(gameScene, key, base64, frameWidth, frameHeight);
+            }
+
+            // Crear la animación si no existe
+            if (!gameScene.anims.exists(key)) {
+                console.log(`Creating animation: ${key}`);
+                gameScene.anims.create({
+                    key: key,
+                    frames: gameScene.anims.generateFrameNumbers(key, frames),
+                    frameRate: frameRate,
+                    repeat: repeat
+                });
+            }
+        }
+    }
+
+    // Método para cargar imágenes base64 con tamaño
+    static loadBase64Image(gameScene, key, base64, frameWidth, frameHeight) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.src = base64;
+
+            img.onload = () => {
+                gameScene.textures.addSpriteSheet(key, img, {
+                    frameWidth: frameWidth,
+                    frameHeight: frameHeight,
+                });
+                resolve();
+            };
         });
     }
 }
