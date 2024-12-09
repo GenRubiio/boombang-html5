@@ -48,17 +48,20 @@ class CreateSceneController {
         }
 
         // Crear los jugadores iniciales
-        players.forEach((player) => {
-            AddPlayerController.main(gameScene, player);
-        });
+        (async () => {
+            for (const player of players) {
+                await AddPlayerController.main(gameScene, player);
+            }
 
-        // Ocultar la imagen de carga
-        if (gameScene.loadingImage) {
-            gameScene.loadingImage.destroy();
-        }
-        if (gameScene.vueComponent) {
-            gameScene.vueComponent.loading = false; // Cambiar el estado de 'loading'
-        }
+            // Ocultar la imagen de carga
+            if (gameScene.loadingImage) {
+                gameScene.loadingImage.destroy();
+            }
+            if (gameScene.vueComponent) {
+                console.log("Setting loading to false");
+                gameScene.vueComponent.loading = false; // Cambiar el estado de 'loading'
+            }
+        })();
     }
 }
 
