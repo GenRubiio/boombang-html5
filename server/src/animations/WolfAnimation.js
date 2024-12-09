@@ -17,7 +17,7 @@ class WolfAnimation {
 
     static async getWalkAnimations(user) {
         try {
-            const folder = "walk_animations";
+            const folder = "animations/walk";
 
             return [
                 {
