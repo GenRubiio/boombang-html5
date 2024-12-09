@@ -6,6 +6,7 @@
       <input v-model="password" type="password" placeholder="Password" required />
       <button type="submit">Login</button>
     </form>
+    <button @click="$emit('goToRegister')">¿No tienes cuenta? Regístrate</button>
     <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
   </div>
 </template>
@@ -21,6 +22,7 @@ export default {
   },
   methods: {
     login() {
+      this.$socket.off('login');
       this.$socket.emit('login', { username: this.username, password: this.password });
 
       this.$socket.off('login_success');

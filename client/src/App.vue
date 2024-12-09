@@ -1,7 +1,8 @@
 <template>
   <div id="app" class="game-screen">
-    <LoginComponent v-if="currentScene === 'login'" @loginSuccess="onLoginSuccess" />
-    <LobbyComponent v-else-if="currentScene === 'lobby'" @joinArea="onJoinArea" />
+    <LoginComponent v-if="currentScene === 'login'" @loginSuccess="onLoginSuccess" @goToRegister="onGoToRegister" />
+    <RegisterComponent v-else-if="currentScene === 'register'" @goToLogin="onGoToLogin" />
+    <LobbyComponent v-else-if="currentScene === 'lobby'" @joinArea="onJoinArea"/>
     <GameScene v-else :roomId="currentRoomId" @exitLobby="onExitLobby" />
   </div>
 </template>
@@ -9,6 +10,7 @@
 <script>
 import socket from "./sockets/socket";
 import LoginComponent from "./components/auth/LoginComponent.vue";
+import RegisterComponent from "./components/auth/RegisterComponent.vue";
 import LobbyComponent from "./components/LobbyComponent.vue";
 import GameScene from "./components/GameSceneComponent.vue";
 
@@ -21,10 +23,17 @@ export default {
   },
   components: {
     LoginComponent,
+    RegisterComponent,
     LobbyComponent,
     GameScene,
   },
   methods: {
+    onGoToLogin() {
+      this.currentScene = "login";
+    },
+    onGoToRegister() {
+      this.currentScene = "register";
+    },
     onLoginSuccess() {
       this.currentScene = "lobby";
     },
