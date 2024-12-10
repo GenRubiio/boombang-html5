@@ -5,7 +5,7 @@ import tileImg from "../assets/images/tile.png"; // Imagen del rombo
 import shadowImg from "../assets/images/shadow.png"; // Imagen de la sombra
 import playerImg from "../assets/images/player.png"; // Imagen del personaje
 import loadingImage from "../assets/images/loading_image.png"; // Imagen de carga
-import GameSceneSockets from "./public-area-scene/sockets/GameSceneSockets"; // Controladores de sockets
+import PublicAreaSceneSockets from "./public-area-scene/sockets/PublicAreaSceneSockets"; // Controladores de sockets
 
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
@@ -28,7 +28,7 @@ export default class PublicAreaScene extends Phaser.Scene {
     }
 
     create() {
-        GameSceneSockets.main(this); // Inicializar controladores de sockets
+        PublicAreaSceneSockets.main(this); // Inicializar controladores de sockets
 
         this.events.on('shutdown', this.shutdown, this);
         this.events.on('destroy', this.destroy, this);

@@ -4,7 +4,7 @@ import RemovePlayerController from "../controllers/RemovePlayerController";
 import AddPlayerController from "../controllers/AddPlayerController";
 import CreateSceneController from "../controllers/CreateSceneController";
 
-class GameSceneSockets {
+class PublicAreaSceneSockets {
     static main(gameScene) {
         // Solicitar datos iniciales de la sala
         socket.emit("request:get_public_area_data", {
@@ -58,4 +58,4 @@ class GameSceneSockets {
     }
 }
 
-export default GameSceneSockets;
+export default PublicAreaSceneSockets;

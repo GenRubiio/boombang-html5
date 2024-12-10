@@ -5,6 +5,8 @@ class MovementUtil {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
                 spritePlayer.setTexture(id + "_" + "leftdown_idle");
+                //spritePlayer.x = spritePlayer.x + 5;
+                //spritePlayer.y = spritePlayer.y - 3;
                 break;
             case DirectionEnum.DOWN:
                 spritePlayer.setTexture(id + "_" + "down_idle");
