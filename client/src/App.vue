@@ -1,31 +1,45 @@
 <template>
   <div id="app" class="game-screen">
-    <LoginComponent v-if="currentScene === 'login'" @loginSuccess="onLoginSuccess" @goToRegister="onGoToRegister" />
-    <RegisterComponent v-else-if="currentScene === 'register'" @goToLogin="onGoToLogin" />
-    <LobbyComponent v-else-if="currentScene === 'lobby'" @joinArea="onJoinArea"/>
-    <GameScene v-else :roomId="currentRoomId" @exitLobby="onExitLobby" />
+    <LoginScreen
+      v-if="currentScene === 'login'"
+      @loginSuccess="onLoginSuccess"
+      @goToRegister="onGoToRegister"
+    />
+    <RegisterScreen
+      v-else-if="currentScene === 'register'"
+      @goToLogin="onGoToLogin"
+    />
+    <LobbyScreen
+      v-else-if="currentScene === 'lobby'"
+      @joinPublicArea="onJoinPublicArea"
+    />
+    <PublicAreaScreen
+      v-else-if="currentScene === 'public_area'"
+      :areaId="currentAreaId"
+      @exitLobby="onExitLobby"
+    />
   </div>
 </template>
 
 <script>
 import socket from "./sockets/socket";
-import LoginComponent from "./screens/auth/LoginScreen.vue";
-import RegisterComponent from "./screens/auth/RegisterScreen.vue";
-import LobbyComponent from "./screens/game/LobbyScreen.vue";
-import GameScene from "./screens/game/GameSceneScreen.vue";
+import LoginScreen from "./screens/auth/LoginScreen.vue";
+import RegisterScreen from "./screens/auth/RegisterScreen.vue";
+import LobbyScreen from "./screens/game/LobbyScreen.vue";
+import PublicAreaScreen from "./screens/game/areas/PublicAreaScreen.vue";
 
 export default {
   data() {
     return {
       currentScene: "login", // Controla las escenas: login, lobby, game
-      currentRoomId: null, // ID de la sala actual
+      currentAreaId: null, // ID de la sala actual
     };
   },
   components: {
-    LoginComponent,
-    RegisterComponent,
-    LobbyComponent,
-    GameScene,
+    LoginScreen,
+    RegisterScreen,
+    LobbyScreen,
+    PublicAreaScreen,
   },
   methods: {
     onGoToLogin() {
@@ -37,14 +51,14 @@ export default {
     onLoginSuccess() {
       this.currentScene = "lobby";
     },
-    onJoinArea(areaId) {
+    onJoinPublicArea(areaId) {
       console.log("Unido a la sala:", areaId);
-      this.currentRoomId = areaId;
-      this.currentScene = "game";
+      this.currentAreaId = areaId;
+      this.currentScene = "public_area";
     },
     onExitLobby() {
       this.currentScene = "lobby";
-      this.currentRoomId = null;
+      this.currentAreaId = null;
     },
     handleDisconnect() {
       // Cambiar escena a login al detectar desconexión

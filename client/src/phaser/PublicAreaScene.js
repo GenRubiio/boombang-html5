@@ -5,16 +5,16 @@ import tileImg from "../assets/images/tile.png"; // Imagen del rombo
 import shadowImg from "../assets/images/shadow.png"; // Imagen de la sombra
 import playerImg from "../assets/images/player.png"; // Imagen del personaje
 import loadingImage from "../assets/images/loading_image.png"; // Imagen de carga
-import GameSceneSockets from "./game-scene/sockets/GameSceneSockets"; // Controladores de sockets
+import GameSceneSockets from "./public-area-scene/sockets/GameSceneSockets"; // Controladores de sockets
 
-export default class GameScene extends Phaser.Scene {
+export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
-        super("GameScene");
+        super("PublicAreaScene");
         this.players = {}; // Reiniciar al crear una nueva instancia
     }
 
     init(data) {
-        this.roomId = data.roomId; // ID de la sala
+        this.areaId = data.areaId; // ID de la sala
         this.players = {}; // Objeto para almacenar jugadores en la sala
         this.vueComponent = data.vueComponent;
     }

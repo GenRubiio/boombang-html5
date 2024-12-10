@@ -40,7 +40,7 @@ export default {
       socket.emit("request:join_public_area", { areaId: areaId });
       socket.on("response:join_public_area", (data) => {
         if (data.success) {
-          this.$emit("joinArea", areaId);
+          this.$emit("joinPublicArea", areaId);
         } else {
           console.log("Error al unirse a la sala.");
         }

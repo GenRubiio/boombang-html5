@@ -7,7 +7,9 @@ import CreateSceneController from "../controllers/CreateSceneController";
 class GameSceneSockets {
     static main(gameScene) {
         // Solicitar datos iniciales de la sala
-        socket.emit("request:get_public_area_data", { roomId: gameScene.roomId });
+        socket.emit("request:get_public_area_data", {
+            roomId: gameScene.areaId
+        });
         // Escuchar respuesta con datos de la sala
         socket.on("response:get_public_area_data", (data) => {
             CreateSceneController.main(gameScene, data.players); // Crear escena con jugadores

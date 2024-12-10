@@ -11,13 +11,13 @@
 
 <script>
 import Phaser from "phaser";
-import LoadingScreen from "./LoadingScreen.vue";
-import GameScene from "../../phaser/GameScene.js"; // Escena principal del juego
-import socket from "../../sockets/socket.js";
+import LoadingScreen from "../LoadingScreen.vue";
+import PublicAreaScene from "../../../phaser/PublicAreaScene.js"; // Escena principal del juego
+import socket from "../../../sockets/socket.js";
 
 export default {
   props: {
-    roomId: {
+    areaId: {
       type: Number,
       required: true,
     },
@@ -36,12 +36,12 @@ export default {
         parent: "phaser-container", // Renderiza dentro de este contenedor
         width: 1012,
         height: 657,
-        scene: [GameScene], // Escenas incluidas
+        scene: [PublicAreaScene], // Escenas incluidas
         physics: { default: "arcade" },
       });
 
-      this.game.scene.start("GameScene", {
-        roomId: this.roomId,
+      this.game.scene.start("PublicAreaScene", {
+        areaId: this.areaId,
         vueComponent: this,
       });
     },
