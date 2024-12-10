@@ -4,7 +4,7 @@
     <div class="game-container">
       <div id="phaser-container"></div>
       <!-- Aquí se monta Phaser -->
-      <button class="btn-exit" @click="exitToLobby">Salir al Lobby</button>
+      <CompassComponent @exitLobby="exitToLobby" />
     </div>
   </div>
 </template>
@@ -14,6 +14,7 @@ import Phaser from "phaser";
 import LoadingScreen from "../LoadingScreen.vue";
 import PublicAreaScene from "../../../phaser/PublicAreaScene.js"; // Escena principal del juego
 import socket from "../../../sockets/socket.js";
+import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
 
 export default {
   props: {
@@ -27,6 +28,10 @@ export default {
       game: null, // Instancia de Phaser
       loading: true,
     };
+  },
+  components: {
+    LoadingScreen,
+    CompassComponent,
   },
   methods: {
     initializeGame() {
@@ -57,9 +62,6 @@ export default {
   },
   mounted() {
     this.initializeGame();
-  },
-  components: {
-    LoadingScreen,
   },
   beforeUnmount() {
     // Limpia Phaser al desmontar el componente
