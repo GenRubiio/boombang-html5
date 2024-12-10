@@ -3,7 +3,7 @@ class AnimationsController {
         await this.playerAnimations(gameScene, animations);
     }
 
-    static async playerAnimations(gameScene,animations) {
+    static async playerAnimations(gameScene, animations) {
         if (animations.walk) {
             await this.walkAnimations(gameScene, animations.walk);
         }

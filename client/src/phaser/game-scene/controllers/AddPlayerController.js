@@ -1,44 +1,63 @@
 import MovePlayerToTileController from "./MovePlayerToTileController.js";
 import MovementUtil from "../utils/MovementUtil.js";
 import AnimationsController from "./AnimationsController.js";
+import PlayerModel from "../../models/PlayerModel.js";
 
 class AddPlayerController {
     static async main(gameScene, playerData) {
-        const id = playerData.id;
-        const x = playerData.x;
-        const y = playerData.y;
-        const z = playerData.z;
-        const animations = playerData.animations;
+        if (gameScene.players[playerData.id]) return;
+        await AnimationsController.main(gameScene, playerData.animations); // Inicializar animaciones
 
-        if (gameScene.players[id]) return;
-        await AnimationsController.main(gameScene, animations); // Inicializar animaciones
+        const spriteShadow = this.createSpriteShadow(gameScene, playerData);
+        this.eventShadowClick(spriteShadow, gameScene);
+        const spritePlayer = this.createSpritePlayer(gameScene, playerData);
 
+        const playerModel = new PlayerModel({
+            socketId: playerData.id,
+            position: {
+                x: playerData.x,
+                y: playerData.y,
+                z: playerData.z
+            },
+            animations: playerData.animations,
+            sprite_player: spritePlayer,
+            sprite_shadow: spriteShadow
+        });
+
+        MovePlayerToTileController.main(gameScene, playerModel);
+
+        // Almacenar jugador
+        gameScene.players[playerData.id] = playerModel;
+    }
+
+    static createSpritePlayer(gameScene, playerData) {
+        // Crear personaje
+        //const player = gameScene.add.sprite(0, 0, "player_spritesheet");
+        const spritePlayer = gameScene.add.sprite(0, 0, "player_" + playerData.id);
+        MovementUtil.setDefaultFrame(playerData.id, spritePlayer, playerData.z);
+        spritePlayer.setDepth(1);
+        return spritePlayer;
+    }
+
+    static createSpriteShadow(gameScene, playerData) {
         // Crear sombra
-        const shadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
-        shadow.setDepth(0);
-        shadow.playerId = id;
+        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
+        spriteShadow.setDepth(0);
+        spriteShadow.playerSocketId = playerData.id;
+        return spriteShadow;
+    }
 
+    static eventShadowClick(spriteShadow, gameScene) {
         // Configurar evento de clic en la sombra
-        shadow.setInteractive(); // Hacer interactiva la sombra
-        shadow.on('pointerdown', () => {
-            const clickedPlayer = gameScene.players[shadow.playerId];
+        spriteShadow.setInteractive(); // Hacer interactiva la sombra
+        spriteShadow.removeListener("pointerdown");
+        spriteShadow.on('pointerdown', () => {
+            const clickedPlayer = gameScene.players[spriteShadow.playerSocketId];
             if (clickedPlayer) {
-                console.log(`Jugador clickeado: ID=${shadow.playerId}`);
+                console.log(`Jugador clickeado: ID=${spriteShadow.playerSocketId}`);
                 // Aquí puedes hacer algo con el jugador, como mostrar su nombre
             }
         });
-
-        // Crear personaje
-        //const player = gameScene.add.sprite(0, 0, "player_spritesheet");
-        const player = gameScene.add.sprite(0, 0, "player_" + id);
-        MovementUtil.setDefaultFrame(id, player, z);
-        player.setDepth(1);
-
-        // Posicionar sombra y personaje
-        MovePlayerToTileController.main(gameScene, { x, y }, player, shadow);
-
-        // Almacenar jugador
-        gameScene.players[id] = { player, shadow, position: { x, y, z } };
     }
 }
 

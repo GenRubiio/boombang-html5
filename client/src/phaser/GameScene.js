@@ -20,22 +20,14 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        //75 104
-        // Cargar las imágenes necesarias
         this.load.image("background", backgroundImg);
         this.load.image("tile", tileImg);
         this.load.image("shadow", shadowImg);
         this.load.image("player", playerImg);
-
         this.load.image("loading", loadingImage);
     }
 
     create() {
-        // Mostrar la imagen de carga
-        this.loadingImage = this.add.image(this.scale.width / 2, this.scale.height / 2, "loading");
-        this.loadingImage.setOrigin(0.5);
-        this.loadingImage.setDepth(9999); // Asegúrate de que esté al frente
-
         GameSceneSockets.main(this); // Inicializar controladores de sockets
 
         this.events.on('shutdown', this.shutdown, this);

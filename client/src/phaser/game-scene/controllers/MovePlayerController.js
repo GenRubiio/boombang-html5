@@ -5,45 +5,42 @@ class MovePlayerController {
     static main(gameScene, id, path, isLastStep) {
         if (!path || path.length === 0 || !gameScene.players[id]) return;
 
-        const playerData = gameScene.players[id];
-        const { player, shadow } = playerData;
+        const playerModel = gameScene.players[id];
         const tileWidth = 65;
         const tileHeight = 33;
 
         // Detener y eliminar correctamente los tweens existentes
-        if (playerData.currentTween) {
-            playerData.currentTween.stop();
-            playerData.currentTween = null;
+        if (playerModel.currentTween) {
+            playerModel.currentTween.stop();
+            playerModel.currentTween = null;
         }
-        if (playerData.currentShadowTween) {
-            playerData.currentShadowTween.stop();
-            playerData.currentShadowTween = null;
+        if (playerModel.currentShadowTween) {
+            playerModel.currentShadowTween.stop();
+            playerModel.currentShadowTween = null;
         }
-        gameScene.tweens.killTweensOf(player);
-        gameScene.tweens.killTweensOf(shadow);
+        gameScene.tweens.killTweensOf(playerModel.sprite_player);
+        gameScene.tweens.killTweensOf(playerModel.sprite_shadow);
 
         // Guardar el path y reiniciar el índice
-        playerData.path = path;
-        playerData.pathIndex = 0;
+        playerModel.path = path;
+        playerModel.pathIndex = 0;
 
         // Iniciar movimiento al siguiente paso
         this.moveToNextStep(id, gameScene, isLastStep);
     }
 
     static moveToNextStep(id, gameScene, isLastStep) {
-        const playerData = gameScene.players[id];
-        if (!playerData) return;
+        const playerModel = gameScene.players[id];
+        if (!playerModel) return;
 
-        const { player, shadow, path, pathIndex } = playerData;
-
-        if (pathIndex >= path.length) {
+        if (playerModel.pathIndex >= playerModel.path.length) {
             // Ha llegado al destino
-            playerData.currentTween = null;
-            playerData.currentShadowTween = null;
+            playerModel.currentTween = null;
+            playerModel.currentShadowTween = null;
             return;
         }
 
-        const step = path[pathIndex];
+        const step = playerModel.path[playerModel.pathIndex];
         const tileWidth = 65;
         const tileHeight = 33;
 
@@ -52,92 +49,92 @@ class MovePlayerController {
         const centerY = (step.x + step.y) * (tileHeight / 2);
 
         // Actualizar la posición del jugador
-        playerData.position = { x: step.x, y: step.y, z: step.z };
+        playerModel.position = { x: step.x, y: step.y, z: step.z };
 
         // Tween para la sombra
         const shadowTween = gameScene.tweens.add({
-            targets: shadow,
+            targets: playerModel.sprite_shadow,
             x: centerX,
             y: centerY,
             duration: 750,
             onUpdate: () => {
-                shadow.setDepth(shadow.y);
+                playerModel.sprite_shadow.setDepth(playerModel.sprite_shadow.y);
             }
         });
 
         // Tween para el personaje
         const playerTween = gameScene.tweens.add({
-            targets: player,
+            targets: playerModel.sprite_player,
             x: centerX,
-            y: centerY - (shadow.displayHeight / 2) - (player.displayHeight / 2) + 15,
+            y: centerY - (playerModel.sprite_shadow.displayHeight / 2) - (playerModel.sprite_player.displayHeight / 2) + 15,
             duration: 750,
             onUpdate: () => {
                 //if player exists, update its depth
-                if (!player) return;
-                this.playAnimation(id, player, step.z);
-                player.setDepth(shadow.y);
+                if (!playerModel.sprite_player) return;
+                this.playAnimation(id, playerModel.sprite_player, step.z);
+                playerModel.sprite_player.setDepth(playerModel.sprite_shadow.y);
             },
             onComplete: () => {
-                if (!player) return;
+                if (!playerModel.sprite_player) return;
                 // Al completar el movimiento, avanzar al siguiente paso
-                player.stop();
+                playerModel.sprite_player.stop();
                 if (isLastStep) {
-                    this.stopAnimation(id, player, step.z);
+                    this.stopAnimation(id, playerModel.sprite_player, step.z);
                 }
                 else {
-                    playerData.pathIndex++;
+                    playerModel.pathIndex++;
                     this.moveToNextStep(id, gameScene, isLastStep);
                 }
             }
         });
 
         // Almacenar los tweens actuales
-        playerData.currentTween = playerTween;
-        playerData.currentShadowTween = shadowTween;
+        playerModel.currentTween = playerTween;
+        playerModel.currentShadowTween = shadowTween;
     }
 
-    static playAnimation(id, player, direction) {
+    static playAnimation(id, spritePlayer, direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
-                player.play(id + "_" + "leftdown_walk", true);
+                spritePlayer.play(id + "_" + "leftdown_walk", true);
                 break;
             case DirectionEnum.DOWN:
-                player.play(id + "_" + "down_walk", true);
+                spritePlayer.play(id + "_" + "down_walk", true);
                 break;
             case DirectionEnum.DOWN_RIGHT:
-                player.play(id + "_" + "rightdown_walk", true);
+                spritePlayer.play(id + "_" + "rightdown_walk", true);
                 break;
             case DirectionEnum.RIGHT:
-                player.play(id + "_" + "right_walk", true);
+                spritePlayer.play(id + "_" + "right_walk", true);
                 break;
             case DirectionEnum.UP_RIGHT:
-                player.play(id + "_" + "rightup_walk", true);
+                spritePlayer.play(id + "_" + "rightup_walk", true);
                 break;
             case DirectionEnum.UP:
-                player.play(id + "_" + "up_walk", true);
+                spritePlayer.play(id + "_" + "up_walk", true);
                 break;
             case DirectionEnum.UP_LEFT:
-                player.play(id + "_" + "leftup_walk", true);
+                spritePlayer.play(id + "_" + "leftup_walk", true);
                 break;
             case DirectionEnum.LEFT:
-                player.play(id + "_" + "left_walk", true);
+                spritePlayer.play(id + "_" + "left_walk", true);
                 break;
         }
     }
 
-    static stopAnimation(id, player, direction) {
-        if (!player || !player.anims) {
+    static stopAnimation(id, spritePlayer, direction) {
+        if (!spritePlayer || !spritePlayer.anims) {
             console.error("Jugador no válido al detener animación.");
             return;
         }
 
         // Detener cualquier animación activa
-        if (player.anims.isPlaying) {
-            player.stop();
+        if (spritePlayer.anims.isPlaying) {
+            spritePlayer.stop();
         }
 
         // Establecer frame por defecto
-        MovementUtil.setDefaultFrame(id, player, direction);
+        MovementUtil.setDefaultFrame(id, spritePlayer, direction);
     }
 }
 

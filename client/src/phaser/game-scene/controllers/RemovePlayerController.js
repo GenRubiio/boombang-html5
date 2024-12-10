@@ -1,29 +1,26 @@
 class RemovePlayerController {
     static main(gameScene, id) {
-        const playerData = gameScene.players[id];
-        if (!playerData) return;
-
-        const { player, shadow, currentTween, currentShadowTween } = playerData;
-
+        const playerModel = gameScene.players[id];
+        if (!playerModel) return;
         // Detener y eliminar tweens activos
-        if (currentTween) {
-            currentTween.stop();
-            gameScene.tweens.killTweensOf(player);
+        if (playerModel.currentTween) {
+            playerModel.currentTween.stop();
+            gameScene.tweens.killTweensOf(playerModel.sprite_player);
         }
 
-        if (currentShadowTween) {
-            currentShadowTween.stop();
-            gameScene.tweens.killTweensOf(shadow);
+        if (playerModel.currentShadowTween) {
+            playerModel.currentShadowTween.stop();
+            gameScene.tweens.killTweensOf(playerModel.sprite_shadow);
         }
 
         // Detener cualquier animación activa
-        if (player?.anims) {
-            player.anims.stop();
+        if (playerModel.sprite_player?.anims) {
+            playerModel.sprite_player.anims.stop();
         }
 
         // Eliminar sombra y jugador del juego
-        if (shadow && shadow.active) shadow.destroy();
-        if (player && player.active) player.destroy();
+        if (playerModel.sprite_shadow && playerModel.sprite_shadow.active) playerModel.sprite_shadow.destroy();
+        if (playerModel.sprite_player && playerModel.sprite_player.active) playerModel.sprite_player.destroy();
 
         // Eliminar datos del jugador
         delete gameScene.players[id];

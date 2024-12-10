@@ -3,10 +3,18 @@ import socket from "../../../sockets/socket"; // Conexión Socket.io
 
 class CreateSceneController {
     static main(gameScene, players) {
+        this.createBackground(gameScene);
+        this.createTile(gameScene);
+        this.createPlayers(gameScene, players);
+    }
+
+    static createBackground(gameScene) {
         // Crear el fondo
         const background = gameScene.add.image(0, 0, "background").setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
+    }
 
+    static createTile(gameScene) {
         // Dimensiones de cada rombo
         const tileWidth = 65;
         const tileHeight = 33;
@@ -37,26 +45,28 @@ class CreateSceneController {
                 ]);
                 tile.input.hitAreaCallback = Phaser.Geom.Polygon.Contains;
 
-                // Evento de clic: enviar posición al servidor
-                tile.removeListener("pointerdown");
-                tile.on("pointerdown", () => {
-                    const { x, y } = tile.getData("gridPos");
-                    console.log(`Clicked tile at ${x}, ${y}`);
-                    socket.emit("request:user_move", { x: x, y: y });
-                });
+                this.eventTileClick(tile);
             }
         }
+    }
 
+    static eventTileClick(tile) {
+        // Evento de clic: enviar posición al servidor
+        tile.removeListener("pointerdown");
+        tile.on("pointerdown", () => {
+            const { x, y } = tile.getData("gridPos");
+            console.log(`Clicked tile at ${x}, ${y}`);
+            socket.emit("request:user_move", { x: x, y: y });
+        });
+    }
+
+    static createPlayers(gameScene, players) {
         // Crear los jugadores iniciales
         (async () => {
             for (const player of players) {
                 await AddPlayerController.main(gameScene, player);
             }
 
-            // Ocultar la imagen de carga
-            if (gameScene.loadingImage) {
-                gameScene.loadingImage.destroy();
-            }
             if (gameScene.vueComponent) {
                 console.log("Setting loading to false");
                 gameScene.vueComponent.loading = false; // Cambiar el estado de 'loading'
