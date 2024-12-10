@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LoadingComponent v-if="loading" />
+    <LoadingScreen v-if="loading" />
     <div class="game-container">
       <div id="phaser-container"></div>
       <!-- Aquí se monta Phaser -->
@@ -11,9 +11,9 @@
 
 <script>
 import Phaser from "phaser";
-import LoadingComponent from "./LoadingComponent.vue";
-import GameScene from "../phaser/GameScene.js"; // Escena principal del juego
-import socket from "../sockets/socket.js";
+import LoadingScreen from "./LoadingScreen.vue";
+import GameScene from "../../phaser/GameScene.js"; // Escena principal del juego
+import socket from "../../sockets/socket.js";
 
 export default {
   props: {
@@ -59,7 +59,7 @@ export default {
     this.initializeGame();
   },
   components: {
-    LoadingComponent,
+    LoadingScreen,
   },
   beforeUnmount() {
     // Limpia Phaser al desmontar el componente

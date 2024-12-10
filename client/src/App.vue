@@ -9,10 +9,10 @@
 
 <script>
 import socket from "./sockets/socket";
-import LoginComponent from "./components/auth/LoginComponent.vue";
-import RegisterComponent from "./components/auth/RegisterComponent.vue";
-import LobbyComponent from "./components/LobbyComponent.vue";
-import GameScene from "./components/GameSceneComponent.vue";
+import LoginComponent from "./screens/auth/LoginScreen.vue";
+import RegisterComponent from "./screens/auth/RegisterScreen.vue";
+import LobbyComponent from "./screens/game/LobbyScreen.vue";
+import GameScene from "./screens/game/GameSceneScreen.vue";
 
 export default {
   data() {

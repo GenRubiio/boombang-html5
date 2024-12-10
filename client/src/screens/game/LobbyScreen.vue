@@ -1,5 +1,5 @@
 <template>
-  <LoadingComponent v-if="loading" />
+  <LoadingScreen v-if="loading" />
   <div v-else id="lobby">
     <h1>Lobby</h1>
     <div v-for="area in areas" :key="area.id" class="room">
@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import socket from "../sockets/socket";
-import LoadingComponent from "./LoadingComponent.vue";
+import socket from "../../sockets/socket";
+import LoadingScreen from "./LoadingScreen.vue";
 
 export default {
   data() {
@@ -33,7 +33,7 @@ export default {
     });
   },
   components: {
-    LoadingComponent,
+    LoadingScreen,
   },
   methods: {
     joinRoom(areaId) {
