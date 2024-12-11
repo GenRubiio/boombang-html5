@@ -2,7 +2,7 @@
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
-const AnimationsController = require('../AnimationsController');
+const UserAreaResource = require('../../../resources/UserAreaResource');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
@@ -20,13 +20,7 @@ class GetPublicAreaDataController {
 
             let players = [];
             for (const user of publicArea.users) {
-                players.push({
-                    id: user.socket.id,
-                    x: user.currentAreaPosition.x,
-                    y: user.currentAreaPosition.y,
-                    z: user.currentAreaPosition.z,
-                    animations: await AnimationsController.main(user)
-                });
+                players.push(await new UserAreaResource(user).toObject());
             }
             socket.emit('response:get_public_area_data', {
                 players: players

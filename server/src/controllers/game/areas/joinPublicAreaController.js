@@ -3,7 +3,7 @@ const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasControlle
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const AnimationsController = require('../AnimationsController');
+const UserAreaResource = require('../../../resources/UserAreaResource');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
@@ -29,13 +29,7 @@ class JoinPublicAreaController {
                 success: true,
             });
             publicArea.emitToAllExcept('response:new_user_join_public_area', {
-                user: {
-                    id: user.socket.id,
-                    x: user.currentAreaPosition.x,
-                    y: user.currentAreaPosition.y,
-                    z: user.currentAreaPosition.z,
-                    animations: await AnimationsController.main(user)
-                },
+                user: await new UserAreaResource(user).toObject(),
             }, user);
 
             UpdatePublicAreasController.main(io);
