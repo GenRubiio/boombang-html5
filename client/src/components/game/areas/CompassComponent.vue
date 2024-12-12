@@ -15,8 +15,9 @@ export default {
 <style scoped>
 .btn-exit {
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   right: 10px;
+  top: auto;
   background: #ff5555;
   color: white;
   border: none;

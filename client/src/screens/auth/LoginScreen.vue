@@ -28,6 +28,7 @@ export default {
       this.$socket.off('login_success');
       this.$socket.on('login_success', (data) => {
         //alert(`Bienvenido, ${data.user.username}`);
+        this.$socket.user = data.user;
         this.$emit('loginSuccess');
       });
 

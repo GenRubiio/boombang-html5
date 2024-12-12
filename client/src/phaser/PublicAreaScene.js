@@ -41,6 +41,7 @@ export default class PublicAreaScene extends Phaser.Scene {
         socket.off("response:user_move");
         socket.off("response:user_left_public_area");
         socket.off("request:user_move");
+        socket.off("request:user_select_user");
     }
 
     destroy() {

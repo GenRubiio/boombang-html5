@@ -1,6 +1,7 @@
 const EasyStar = require('easystarjs').js;
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
+const UserMovimentUtil = require('../utils/UserMovimentUtil');
 
 class AreaModel {
     constructor(id, name, map_width, map_height, game_map, startPosition) {
@@ -99,7 +100,7 @@ class AreaModel {
             // Calcular la dirección
             const deltaX = nextStep.x - user.currentAreaPosition.x;
             const deltaY = nextStep.y - user.currentAreaPosition.y;
-            const direction = user.getDirection(deltaX, deltaY);
+            const direction = UserMovimentUtil.getDirection(deltaX, deltaY);
 
             // Actualizar la posición actual
             user.currentAreaPosition = { x: nextStep.x, y: nextStep.y, z: direction };

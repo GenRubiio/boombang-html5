@@ -1,23 +1,25 @@
 <template>
-  <div id="app" class="game-screen">
-    <LoginScreen
-      v-if="currentScene === 'login'"
-      @loginSuccess="onLoginSuccess"
-      @goToRegister="onGoToRegister"
-    />
-    <RegisterScreen
-      v-else-if="currentScene === 'register'"
-      @goToLogin="onGoToLogin"
-    />
-    <LobbyScreen
-      v-else-if="currentScene === 'lobby'"
-      @joinPublicArea="onJoinPublicArea"
-    />
-    <PublicAreaScreen
-      v-else-if="currentScene === 'public_area'"
-      :areaId="currentAreaId"
-      @exitLobby="onExitLobby"
-    />
+  <div id="app">
+    <div class="game-screen">
+      <LoginScreen
+        v-if="currentScene === 'login'"
+        @loginSuccess="onLoginSuccess"
+        @goToRegister="onGoToRegister"
+      />
+      <RegisterScreen
+        v-else-if="currentScene === 'register'"
+        @goToLogin="onGoToLogin"
+      />
+      <LobbyScreen
+        v-else-if="currentScene === 'lobby'"
+        @joinPublicArea="onJoinPublicArea"
+      />
+      <PublicAreaScreen
+        v-else-if="currentScene === 'public_area'"
+        :areaId="currentAreaId"
+        @exitLobby="onExitLobby"
+      />
+    </div>
   </div>
 </template>
 
@@ -87,15 +89,10 @@ export default {
 </script>
 
 <style>
-#game-container {
-  width: 100%;
-  height: 100%;
-}
 .game-screen {
   width: 1012px;
   height: 657px;
   background-color: #f0f0f0;
-  border: 1px solid black;
   box-sizing: border-box;
   position: relative;
 }

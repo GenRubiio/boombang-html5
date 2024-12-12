@@ -2,9 +2,11 @@ import MovePlayerToTileController from "./MovePlayerToTileController.js";
 import MovementUtil from "../utils/MovementUtil.js";
 import AnimationsController from "./AnimationsController.js";
 import PlayerModel from "../../models/PlayerModel.js";
+import socket from "../../../sockets/socket"; // Conexión Socket.io
 
 class AddPlayerController {
     static async main(gameScene, playerData) {
+        console.log("Añadiendo jugador: ", playerData);
         if (gameScene.players[playerData.id]) return;
         await AnimationsController.main(gameScene, playerData.animations); // Inicializar animaciones
 
@@ -54,8 +56,13 @@ class AddPlayerController {
         spriteShadow.on('pointerdown', () => {
             const clickedPlayer = gameScene.players[spriteShadow.playerSocketId];
             if (clickedPlayer) {
+                console.log("Jugador clickeado: ", clickedPlayer);
                 console.log(`Jugador clickeado: ID=${spriteShadow.playerSocketId}`);
                 // Aquí puedes hacer algo con el jugador, como mostrar su nombre
+
+                socket.emit('request:user_select_user', {
+                    socketId: spriteShadow.playerSocketId
+                });
             }
         });
     }

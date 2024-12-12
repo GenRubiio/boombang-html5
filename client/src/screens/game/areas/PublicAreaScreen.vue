@@ -5,6 +5,7 @@
       <div id="phaser-container"></div>
       <!-- Aquí se monta Phaser -->
       <CompassComponent @exitLobby="exitToLobby" />
+      <UserCardComponent ref="userCard"/>
     </div>
   </div>
 </template>
@@ -15,6 +16,7 @@ import LoadingScreen from "../LoadingScreen.vue";
 import PublicAreaScene from "../../../phaser/PublicAreaScene.js"; // Escena principal del juego
 import socket from "../../../sockets/socket.js";
 import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
+import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
 
 export default {
   props: {
@@ -32,6 +34,7 @@ export default {
   components: {
     LoadingScreen,
     CompassComponent,
+    UserCardComponent,
   },
   methods: {
     initializeGame() {
@@ -59,6 +62,10 @@ export default {
       }
       this.$emit("exitLobby"); // Emite un evento para cambiar la escena
     },
+    updateUserCard(userData) {
+      console.log("Usuario seleccionado:", userData);
+      this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
+    },
   },
   mounted() {
     this.initializeGame();
@@ -75,11 +82,8 @@ export default {
 
 <style>
 .game-container {
-  position: relative;
   width: 100%;
   height: 100%;
-  margin: 0;
-  border: 1px solid #ccc;
 }
 
 #phaser-container {

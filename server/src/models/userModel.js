@@ -11,6 +11,7 @@ class UserModel {
         this.socket = null; // Socket del usuario
         this.currentArea = null; // Área actual del usuario
         this.currentAreaPosition = { x: null, y: null, z: null }; // Posición actual del usuario en el área
+        this.selectedUser = null; // Usuario seleccionado por el usuario
 
         this.finalTarget = null; // Destino final del usuario
     }
@@ -24,6 +25,17 @@ class UserModel {
         this.currentArea = area;
         this.currentAreaPosition = area ? area.startPosition : { x: null, y: null, z: null };
         this.finalTarget = null;
+        if (!area) {
+            this.setSelectedUser(null);
+        }
+    }
+
+    setSelectedUser(user) {
+        this.selectedUser = user;
+    }
+
+    inMoviment() {
+        return this.finalTarget !== null;
     }
 
     // Cancelar cualquier movimiento anterior
@@ -36,16 +48,8 @@ class UserModel {
         this.finalTarget = target;
     }
 
-    getDirection(deltaX, deltaY) {
-        if (deltaX === 0 && deltaY === 1) return DirectionEnum.DOWN_LEFT;  // Abajo izquierda
-        if (deltaX === 1 && deltaY === 1) return DirectionEnum.DOWN; // Abajo
-        if (deltaX === 1 && deltaY === 0) return DirectionEnum.DOWN_RIGHT;  // Abajo derecha
-        if (deltaX === 1 && deltaY === -1) return DirectionEnum.RIGHT;  // Derecha
-        if (deltaX === 0 && deltaY === -1) return DirectionEnum.UP_RIGHT; // Arriba derecha
-        if (deltaX === -1 && deltaY === -1) return DirectionEnum.UP;  // Arriba
-        if (deltaX === -1 && deltaY === 0) return DirectionEnum.UP_LEFT; // Arriba izquierda
-        if (deltaX === -1 && deltaY === 1) return DirectionEnum.LEFT;  // Izquierda
-        return DirectionEnum.NONE; // Si no hay movimiento
+    emit(event, data) {
+        this.socket.emit(event, data);
     }
 }
 

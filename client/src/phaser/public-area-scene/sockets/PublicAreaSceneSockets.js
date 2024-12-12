@@ -3,6 +3,7 @@ import MovePlayerController from "../controllers/MovePlayerController";
 import RemovePlayerController from "../controllers/RemovePlayerController";
 import AddPlayerController from "../controllers/AddPlayerController";
 import CreateSceneController from "../controllers/CreateSceneController";
+import UserSelectUserController from "../controllers/UserSelectUserController";
 
 class PublicAreaSceneSockets {
     static main(gameScene) {
@@ -54,6 +55,10 @@ class PublicAreaSceneSockets {
         // Escuchar cuando un jugador sale
         socket.on("response:user_left_public_area", (data) => {
             RemovePlayerController.main(gameScene, data.socketId);
+        });
+
+        socket.on("response:user_select_user", (data) => {
+            UserSelectUserController.main(gameScene, data);
         });
     }
 }

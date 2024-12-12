@@ -1,6 +1,7 @@
 import AddPlayerController from "../controllers/AddPlayerController.js";
 import socket from "../../../sockets/socket"; // Conexión Socket.io
 import FloorPulseAnimation from "../animations/FloorPulseAnimation.js";
+import SetUserCardController from "../controllers/SetUserCardController.js";
 
 class CreateSceneController {
     static main(gameScene, players) {
@@ -70,6 +71,14 @@ class CreateSceneController {
             for (const player of players) {
                 await AddPlayerController.main(gameScene, player);
             }
+
+            SetUserCardController.main(gameScene, {
+                username: socket.user.username,
+                is_admin: socket.user.is_admin,
+                is_vip: socket.user.is_vip,
+                is_selected: false,
+                gender: socket.user.gender,
+            });
 
             if (gameScene.vueComponent) {
                 console.log("Setting loading to false");

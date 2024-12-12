@@ -8,7 +8,7 @@ class UserAreaResource extends Resource {
             x: data.currentAreaPosition.x,
             y: data.currentAreaPosition.y,
             z: data.currentAreaPosition.z,
-            animations: await AnimationsController.main(data)
+            animations: await AnimationsController.main(data),
         };
     }
 }
