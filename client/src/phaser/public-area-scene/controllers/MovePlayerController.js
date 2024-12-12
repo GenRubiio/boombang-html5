@@ -125,6 +125,7 @@ class MovePlayerController {
     static stopAnimation(id, spritePlayer, direction) {
         if (!spritePlayer || !spritePlayer.anims) {
             console.error("Jugador no válido al detener animación.");
+            MovementUtil.setDefaultFrame(id, spritePlayer, direction);
             return;
         }
 

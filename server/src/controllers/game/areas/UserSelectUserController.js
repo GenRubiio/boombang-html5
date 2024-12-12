@@ -3,6 +3,7 @@ const DisconnectUserController = require('../../connection/DisconnectUserControl
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const UserMovimentUtil = require('../../../utils/UserMovimentUtil');
+const UserResource = require('../../../resources/UserResource');
 
 class UserSelectUserController {
     static main(socket, io, data) {
@@ -45,13 +46,7 @@ class UserSelectUserController {
         }
         if (updateCard) {
             user.emit('response:user_select_user', {
-                selected_user: {
-                    username: selectedUser.username,
-                    is_admin: false,
-                    is_vip: false,
-                    is_selected: user.selectedUser ? true : false,
-                    gender: "man",
-                }
+                selected_user: new UserResource(selectedUser).toObject()
             });
         }
     }

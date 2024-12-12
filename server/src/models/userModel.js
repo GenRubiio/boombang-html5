@@ -1,5 +1,3 @@
-const DirectionEnum = require('../enums/DirectionEnum');
-
 class UserModel {
     constructor(row) {
         this.id = row.id.toString();

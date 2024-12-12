@@ -1,4 +1,4 @@
-const connectedUsersCollection = require('../collections/connectedUsersCollection');
+const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
 const DisconnectUserController = require('../controllers/connection/DisconnectUserController');
 
 module.exports = (socket, io) => {
@@ -7,14 +7,14 @@ module.exports = (socket, io) => {
     });
 
     socket.on('get_connected_users', () => {
-        const connectedUsers = connectedUsersCollection.getAll();
+        const connectedUsers = ConnectedUsersCollection.getAll();
         socket.emit('connected_users', connectedUsers);
     });
 
     // Enviar un mensaje a un usuario específico
     socket.on('send_message', (data) => {
         const { recipientId, message } = data;
-        const recipientSocketId = connectedUsersCollection.getSocketIdByUserId(recipientId);
+        const recipientSocketId = ConnectedUsersCollection.getSocketIdByUserId(recipientId);
 
         if (recipientSocketId) {
             io.to(recipientSocketId).emit('receive_message', { message });

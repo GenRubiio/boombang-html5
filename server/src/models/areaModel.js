@@ -2,6 +2,7 @@ const EasyStar = require('easystarjs').js;
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const UserMovimentUtil = require('../utils/UserMovimentUtil');
+const RemoveSelectedUserTask = require('../tasks/RemoveSelectedUserTask');
 
 class AreaModel {
     constructor(id, name, map_width, map_height, game_map, startPosition) {
@@ -34,6 +35,7 @@ class AreaModel {
 
     // Método para eliminar un usuario
     removeUser(user) {
+        RemoveSelectedUserTask.main(user);
         this.users = this.users.filter(u => u !== user);
     }
 

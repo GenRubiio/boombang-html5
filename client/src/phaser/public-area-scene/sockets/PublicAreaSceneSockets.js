@@ -31,25 +31,25 @@ class PublicAreaSceneSockets {
         socket.on("response:user_move_denied", (data) => {
             const { id } = data;
             if (gameScene.players[id]) {
-                const playerData = gameScene.players[id];
-                const player = playerData.player;
-                const shadow = playerData.shadow;
-                const direction = playerData.position.z;
+                const playerModel = gameScene.players[id];
+                const spritePlayer = playerModel.sprite_player;
+                const spriteShadow = playerModel.sprite_shadow;
+                const direction = playerModel.position.z;
 
                 // Detener Tweens activos
-                if (playerData.currentTween) {
-                    playerData.currentTween.stop();
-                    playerData.currentTween = null;
+                if (playerModel.currentTween) {
+                    playerModel.currentTween.stop();
+                    playerModel.currentTween = null;
                 }
-                if (playerData.currentShadowTween) {
-                    playerData.currentShadowTween.stop();
-                    playerData.currentShadowTween = null;
+                if (playerModel.currentShadowTween) {
+                    playerModel.currentShadowTween.stop();
+                    playerModel.currentShadowTween = null;
                 }
-                gameScene.tweens.killTweensOf(player);
-                gameScene.tweens.killTweensOf(shadow);
+                gameScene.tweens.killTweensOf(spritePlayer);
+                gameScene.tweens.killTweensOf(spriteShadow);
 
                 // Detener animación
-                MovePlayerController.stopAnimation(id, player, direction, gameScene);
+                MovePlayerController.stopAnimation(id, spritePlayer, direction);
             }
         });
         // Escuchar cuando un jugador sale
