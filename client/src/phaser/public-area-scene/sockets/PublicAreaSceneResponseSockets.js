@@ -4,23 +4,21 @@ import RemovePlayerController from "../controllers/RemovePlayerController";
 import AddPlayerController from "../controllers/AddPlayerController";
 import CreateSceneController from "../controllers/CreateSceneController";
 import UserSelectUserController from "../controllers/UserSelectUserController";
+import UserUpdatePositionController from "../controllers/UserUpdatePositionController";
+import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 
-class PublicAreaSceneSockets {
+class PublicAreaSceneResponseSockets {
     static main(gameScene) {
-        // Solicitar datos iniciales de la sala
-        socket.emit("request:get_public_area_data", {
-            roomId: gameScene.areaId
-        });
         // Escuchar respuesta con datos de la sala
-        socket.on("response:get_public_area_data", (data) => {
+        socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, (data) => {
             CreateSceneController.main(gameScene, data.players); // Crear escena con jugadores
         });
         // Escuchar cuando un nuevo jugador entra
-        socket.on("response:new_user_join_public_area", (data) => {
+        socket.on(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_AREA, (data) => {
             AddPlayerController.main(gameScene, data.user);
         });
         // Escuchar cuando un jugador se mueve
-        socket.on("response:user_move", (data) => {
+        socket.on(ResponseSocketsEnum.USER_MOVE, (data) => {
             const { id, path } = data;
             if (gameScene.players[id]) {
                 console.log(`Moving player ${id} to path:`, path);
@@ -28,7 +26,7 @@ class PublicAreaSceneSockets {
                 MovePlayerController.main(gameScene, id, path, data.isLastStep);
             }
         });
-        socket.on("response:user_move_denied", (data) => {
+        socket.on(ResponseSocketsEnum.USER_MOVE_DENIED, (data) => {
             const { id } = data;
             if (gameScene.players[id]) {
                 const playerModel = gameScene.players[id];
@@ -53,14 +51,18 @@ class PublicAreaSceneSockets {
             }
         });
         // Escuchar cuando un jugador sale
-        socket.on("response:user_left_public_area", (data) => {
+        socket.on(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, (data) => {
             RemovePlayerController.main(gameScene, data.socketId);
         });
 
-        socket.on("response:user_select_user", (data) => {
+        socket.on(ResponseSocketsEnum.USER_SELECT_USER, (data) => {
             UserSelectUserController.main(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.USER_UPDATE_POSITION, (data) => {
+            UserUpdatePositionController.main(gameScene, data);
         });
     }
 }
 
-export default PublicAreaSceneSockets;
+export default PublicAreaSceneResponseSockets;

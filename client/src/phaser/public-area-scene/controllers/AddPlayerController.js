@@ -3,6 +3,7 @@ import MovementUtil from "../utils/MovementUtil.js";
 import AnimationsController from "./AnimationsController.js";
 import PlayerModel from "../../models/PlayerModel.js";
 import socket from "../../../sockets/socket"; // Conexión Socket.io
+import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
 
 class AddPlayerController {
     static async main(gameScene, playerData) {
@@ -60,7 +61,7 @@ class AddPlayerController {
                 console.log(`Jugador clickeado: ID=${spriteShadow.playerSocketId}`);
                 // Aquí puedes hacer algo con el jugador, como mostrar su nombre
 
-                socket.emit('request:user_select_user', {
+                socket.emit(RequestSocketsEnum.USER_SELECT_USER, {
                     socketId: spriteShadow.playerSocketId
                 });
             }

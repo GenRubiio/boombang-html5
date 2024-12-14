@@ -53,16 +53,17 @@ class UserSelectUserController {
 
     static updateUserZPositionInArea(user, selectedUser) {
         if (!user.inMoviment()) {
-            const deltaX = selectedUser.currentAreaPosition.x - user.currentAreaPosition.x;
-            const deltaY = selectedUser.currentAreaPosition.y - user.currentAreaPosition.y;
-            const direction = UserMovimentUtil.getDirection(deltaX, deltaY);
-
+            const { x: x1, y: y1 } = user.currentAreaPosition;
+            const { x: x2, y: y2 } = selectedUser.currentAreaPosition;
+    
+            // Calcula la dirección usando el ángulo
+            const direction = UserMovimentUtil.getLongDirection(x1, y1, x2, y2);
+    
             user.currentAreaPosition.z = direction;
             user.currentArea.emit('response:user_update_position', {
-                id: user.socket.id,
+                socket_id: user.socket.id,
                 position: user.currentAreaPosition
             });
-
         }
     }
 }

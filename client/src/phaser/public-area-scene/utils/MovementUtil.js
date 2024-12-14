@@ -31,6 +31,35 @@ class MovementUtil {
                 break;
         }
     }
+
+    static playDefaultFrame(id, spritePlayer, direction) {
+        switch (direction) {
+            case DirectionEnum.DOWN_LEFT:
+                spritePlayer.play(id + "_" + "leftdown_idle");
+                break;
+            case DirectionEnum.DOWN:
+                spritePlayer.play(id + "_" + "down_idle");
+                break;
+            case DirectionEnum.DOWN_RIGHT:
+                spritePlayer.play(id + "_" + "rightdown_idle");
+                break;
+            case DirectionEnum.RIGHT:
+                spritePlayer.play(id + "_" + "right_idle");
+                break;
+            case DirectionEnum.UP_RIGHT:
+                spritePlayer.play(id + "_" + "rightup_idle");
+                break;
+            case DirectionEnum.UP:
+                spritePlayer.play(id + "_" + "up_idle");
+                break;
+            case DirectionEnum.UP_LEFT:
+                spritePlayer.play(id + "_" + "leftup_idle");
+                break;
+            case DirectionEnum.LEFT:
+                spritePlayer.play(id + "_" + "left_idle");
+                break;
+        }
+    }
 }
 
 export default MovementUtil;

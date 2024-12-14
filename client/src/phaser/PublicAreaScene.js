@@ -5,7 +5,10 @@ import tileImg from "../assets/images/tile.png"; // Imagen del rombo
 import shadowImg from "../assets/images/shadow.png"; // Imagen de la sombra
 import playerImg from "../assets/images/player.png"; // Imagen del personaje
 import loadingImage from "../assets/images/loading_image.png"; // Imagen de carga
-import PublicAreaSceneSockets from "./public-area-scene/sockets/PublicAreaSceneSockets"; // Controladores de sockets
+import PublicAreaSceneResponseSockets from "./public-area-scene/sockets/PublicAreaSceneResponseSockets"; // Controladores de sockets
+import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAreaSceneRequestSockets"; // Controladores de sockets
+import ResponseSocketsEnum from "./enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
+import RequestSocketsEnum from "./enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
@@ -28,7 +31,8 @@ export default class PublicAreaScene extends Phaser.Scene {
     }
 
     create() {
-        PublicAreaSceneSockets.main(this); // Inicializar controladores de sockets
+        PublicAreaSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
+        PublicAreaSceneResponseSockets.main(this); // Inicializar controladores de sockets
 
         this.events.on('shutdown', this.shutdown, this);
         this.events.on('destroy', this.destroy, this);
@@ -36,12 +40,12 @@ export default class PublicAreaScene extends Phaser.Scene {
 
     shutdown() {
         console.log("Shutting down scene and removing socket listeners");
-        socket.off("response:get_public_area_data");
-        socket.off("response:new_user_join_public_area");
-        socket.off("response:user_move");
-        socket.off("response:user_left_public_area");
-        socket.off("request:user_move");
-        socket.off("request:user_select_user");
+        Object.values(ResponseSocketsEnum).forEach(event => {
+            socket.off(event);
+        });
+        Object.values(RequestSocketsEnum).forEach(event => {
+            socket.off(event);
+        });
     }
 
     destroy() {
