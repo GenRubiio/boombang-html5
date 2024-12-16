@@ -20,6 +20,10 @@ class AreaModel {
 
     // Método para añadir un usuario
     addUser(user) {
+        if (this.users.includes(user)) {
+            logger.log('User already in area', 'error');
+            return;
+        }
         this.users.push(user);
     }
 
@@ -110,8 +114,8 @@ class AreaModel {
             // Notificar movimiento al cliente
             const movementData = {
                 id: user.socket.id,
-                path: [{ 
-                    x: nextStep.x, 
+                path: [{
+                    x: nextStep.x,
                     y: nextStep.y,
                     z: direction
                 }],

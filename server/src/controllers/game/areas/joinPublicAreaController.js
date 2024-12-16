@@ -22,9 +22,8 @@ class JoinPublicAreaController {
                 throw new Error("User already in area");
             }
 
-            publicArea.addUser(user);
             user.setArea(publicArea);
-            socket.join(publicArea.id);
+            publicArea.addUser(user);
             socket.emit('response:join_public_area', {
                 success: true,
             });

@@ -21,7 +21,7 @@ class UserModel {
 
     setArea(area) {
         this.currentArea = area;
-        this.currentAreaPosition = area ? area.startPosition : { x: null, y: null, z: null };
+        this.currentAreaPosition = area ? { ...area.startPosition } : { x: null, y: null, z: null };
         this.finalTarget = null;
         if (!area) {
             this.setSelectedUser(null);
