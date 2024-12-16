@@ -4,6 +4,7 @@ const DisconnectUserController = require('../../connection/DisconnectUserControl
 const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
+const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
 class UserLeaveAreaController {
     static async main(socket, io) {
@@ -20,7 +21,7 @@ class UserLeaveAreaController {
             user.cancelMovement();
             user.setArea(null);
     
-            publicArea.emitToAllExcept('response:user_left_public_area', {
+            publicArea.emitToAllExcept(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, {
                 socketId: socket.id
             }, user);
     

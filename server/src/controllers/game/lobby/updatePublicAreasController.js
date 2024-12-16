@@ -2,13 +2,14 @@ const PublicAreasCollection = require('../../../collections/PublicAreasCollectio
 const PublicAreaMenuResource = require('../../../resources/PublicAreaMenuResource');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
+const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
 class UpdatePublicAreasController {
     static async main(io) {
         try {
             const areas = await PublicAreasCollection.getAll();
             const publicAreaMenuResource = PublicAreaMenuResource.collection(areas);
-            io.emit('update_public_areas', publicAreaMenuResource);
+            io.emit(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, publicAreaMenuResource);
         } catch (err) {
             console.log(err);
             logger.log(`Error updating public areas: ${err.message}`, 'error');

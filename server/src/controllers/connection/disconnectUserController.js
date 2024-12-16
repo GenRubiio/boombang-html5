@@ -1,5 +1,6 @@
 const ConnectedUsersCollection = require('../../collections/ConnectedUsersCollection');
 const UpdatePublicAreasController = require('../game/lobby/UpdatePublicAreasController');
+const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
 
 class DisconnectUserController {
     static async main(socket, io) {
@@ -8,7 +9,7 @@ class DisconnectUserController {
             if (user.currentArea) {
                 user.currentArea.removeUser(user);
                 socket.leave(user.currentArea.id);
-                user.currentArea.emitToAllExcept('response:user_left_public_area', {
+                user.currentArea.emitToAllExcept(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, {
                     socketId: socket.id
                 }, user);
                 user.setArea(null);

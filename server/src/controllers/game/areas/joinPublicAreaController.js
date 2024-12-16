@@ -6,6 +6,7 @@ const DisconnectUserController = require('../../connection/DisconnectUserControl
 const UserAreaResource = require('../../../resources/UserAreaResource');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
+const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
 class JoinPublicAreaController {
     static async main(socket, io, data) {
@@ -24,10 +25,10 @@ class JoinPublicAreaController {
 
             user.setArea(publicArea);
             publicArea.addUser(user);
-            socket.emit('response:join_public_area', {
+            socket.emit(ResponseSocketsEnum.JOIN_PUBLIC_AREA, {
                 success: true,
             });
-            publicArea.emitToAllExcept('response:new_user_join_public_area', {
+            publicArea.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_AREA, {
                 user: await new UserAreaResource(user).toObject(),
             }, user);
 

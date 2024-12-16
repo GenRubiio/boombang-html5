@@ -5,6 +5,7 @@ const PublicAreasCollection = require('../../../collections/PublicAreasCollectio
 const UserAreaResource = require('../../../resources/UserAreaResource');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
+const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
 class GetPublicAreaDataController {
     static async main(socket, io, data) {
@@ -22,7 +23,7 @@ class GetPublicAreaDataController {
             for (const user of publicArea.users) {
                 players.push(await new UserAreaResource(user).toObject());
             }
-            socket.emit('response:get_public_area_data', {
+            socket.emit(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, {
                 players: players
             });
         } catch (err) {

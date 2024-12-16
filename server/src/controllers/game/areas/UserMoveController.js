@@ -3,6 +3,7 @@ const PublicAreasCollection = require('../../../collections/PublicAreasCollectio
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
+const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
 class UserMoveController {
     static async main(socket, io, data) {
@@ -22,7 +23,7 @@ class UserMoveController {
                 publicArea.game_map[targetY][targetX] !== 0
             ) {
                 console.log('Posición objetivo no válida');
-                publicArea.emit('response:user_move_denied', {
+                publicArea.emit(ResponseSocketsEnum.USER_MOVE_DENIED, {
                     id: socket.id,
                 })
                 user.finalTarget = null; // No se puede llegar al destino

@@ -1,5 +1,6 @@
 const UserService = require('../../services/UserService');
 const CreateUserAnimationsTask = require('../../tasks/CreateUserAnimationsTask');
+const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
 
 class RegisterController {
     static async main(socket, io, data) {
@@ -14,7 +15,7 @@ class RegisterController {
         const user = await UserService.getByUsername(username);
 
         if (user) {
-            socket.emit('register_error', { message: 'Username already exists' });
+            socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { message: 'Username already exists' });
         } else {
             const newUserId = await UserService.create(username, email, password, avatar_id, avatar_colors);
             await CreateUserAnimationsTask.main(newUserId, avatar_id, [
@@ -27,7 +28,7 @@ class RegisterController {
                     new_color: 'ff0000'
                 }
             ]);
-            socket.emit('register_success', { message: 'User created successfully' });
+            socket.emit(ResponseSocketsEnum.REGISTER_SUCCESS, { message: 'User created successfully' });
         }
     }
 }

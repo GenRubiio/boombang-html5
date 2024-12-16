@@ -4,6 +4,7 @@ const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const UserMovimentUtil = require('../../../utils/UserMovimentUtil');
 const UserResource = require('../../../resources/UserResource');
+const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
 class UserSelectUserController {
     static main(socket, io, data) {
@@ -45,7 +46,7 @@ class UserSelectUserController {
             updateCard = true;
         }
         if (updateCard) {
-            user.emit('response:user_select_user', {
+            user.emit(ResponseSocketsEnum.USER_SELECT_USER, {
                 selected_user: new UserResource(selectedUser).toObject()
             });
         }
@@ -60,7 +61,7 @@ class UserSelectUserController {
             const direction = UserMovimentUtil.getLongDirection(x1, y1, x2, y2);
     
             user.currentAreaPosition.z = direction;
-            user.currentArea.emit('response:user_update_position', {
+            user.currentArea.emit(ResponseSocketsEnum.USER_UPDATE_POSITION, {
                 socket_id: user.socket.id,
                 position: user.currentAreaPosition
             });
