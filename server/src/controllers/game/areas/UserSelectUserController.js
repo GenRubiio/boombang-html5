@@ -5,6 +5,7 @@ const logger = new ConsoleLogger();
 const UserMovimentUtil = require('../../../utils/UserMovimentUtil');
 const UserResource = require('../../../resources/UserResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const AnimationEnum = require('../../../enums/AnimationEnum');
 
 class UserSelectUserController {
     static main(socket, io, data) {
@@ -53,13 +54,16 @@ class UserSelectUserController {
     }
 
     static updateUserZPositionInArea(user, selectedUser) {
+        if (user.isActionBlocked(AnimationEnum.LOOK)) {
+            return;
+        }
         if (!user.inMoviment()) {
             const { x: x1, y: y1 } = user.currentAreaPosition;
             const { x: x2, y: y2 } = selectedUser.currentAreaPosition;
-    
+
             // Calcula la dirección usando el ángulo
             const direction = UserMovimentUtil.getLongDirection(x1, y1, x2, y2);
-    
+
             user.currentAreaPosition.z = direction;
             user.currentArea.emit(ResponseSocketsEnum.USER_UPDATE_POSITION, {
                 socket_id: user.socket.id,

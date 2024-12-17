@@ -4,6 +4,7 @@ const DisconnectUserController = require('../../connection/DisconnectUserControl
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const AnimationEnum = require('../../../enums/AnimationEnum');
 
 class UserMoveController {
     static async main(socket, io, data) {
@@ -11,6 +12,10 @@ class UserMoveController {
             let user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user || !user.currentArea) {
                 throw new Error('User not found or not in an area');
+            }
+
+            if (user.isActionBlocked(AnimationEnum.WALK)){
+                return;
             }
 
             const { x: targetX, y: targetY } = data;

@@ -3,11 +3,18 @@
     <div class="user-card__header">
       {{ user.username }}
     </div>
-    <div class="user-card__body"></div>
+    <div class="user-card__body">
+      <div v-if="user.is_selected">
+        <button @click="sendUppercut">Send Upper</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import socket from "../../../sockets/socket";
+import RequestSocketsEnum from "../../../phaser/enums/RequestSocketsEnum";
+
 export default {
   data() {
     return {
@@ -24,6 +31,9 @@ export default {
   methods: {
     updateData(userData) {
       this.user = userData;
+    },
+    sendUppercut() {
+      socket.emit(RequestSocketsEnum.SEND_UPPERCUT);
     },
   },
   computed: {

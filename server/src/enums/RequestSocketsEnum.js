@@ -12,6 +12,7 @@ const RequestSocketsEnum = new Enum({
     DISCONNECT: 'disconnect',
     GET_CONNECTED_USERS: 'get_connected_users',
     SEND_MESSAGE: 'send_message',
+    SEND_UPPERCUT: 'request:send_uppercut',
 });
 
 module.exports = RequestSocketsEnum;

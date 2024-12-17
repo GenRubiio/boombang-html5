@@ -12,7 +12,27 @@ class UserModel {
         this.selectedUser = null; // Usuario seleccionado por el usuario
 
         this.finalTarget = null; // Destino final del usuario
+
+        this.blockedActions = {};
     }
+
+    // Bloquea una acción específica durante 'duration' milisegundos
+    blockAction(actionType, duration) {
+        this.blockedActions[actionType] = Date.now() + duration;
+    }
+
+    // Verifica si una acción específica está bloqueada
+    isActionBlocked(actionType) {
+        const blockedUntil = this.blockedActions[actionType];
+        if (!blockedUntil) return false;
+        if (Date.now() > blockedUntil) {
+            // Si ya pasó el tiempo, desbloquear
+            delete this.blockedActions[actionType];
+            return false;
+        }
+        return true;
+    }
+
 
     // Método para añadir socket al usuario
     addSocket(socket) {
