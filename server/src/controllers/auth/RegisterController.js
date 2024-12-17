@@ -1,6 +1,7 @@
 const UserService = require('../../services/UserService');
 const CreateUserAnimationsTask = require('../../tasks/CreateUserAnimationsTask');
 const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
+const GenericUtil = require('../../utils/GenericUtil');
 
 class RegisterController {
     static async main(socket, io, data) {
@@ -21,11 +22,11 @@ class RegisterController {
             await CreateUserAnimationsTask.main(newUserId, avatar_id, [
                 {
                     color_search: '5c1313',
-                    new_color: '0ddefc'
+                    new_color: GenericUtil.generateHexadecimal()
                 },
                 {
                     color_search: 'fff478',
-                    new_color: 'ff0000'
+                    new_color: GenericUtil.generateHexadecimal()
                 }
             ]);
             socket.emit(ResponseSocketsEnum.REGISTER_SUCCESS, { message: 'User created successfully' });
