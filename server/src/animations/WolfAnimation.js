@@ -2,14 +2,65 @@ const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const fs = require('fs');
 const path = require('path');
+const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 
 class WolfAnimation {
     static async main(user) {
         try {
             return {
                 walk: await this.getWalkAnimations(user),
+                interaction: await this.getInteractionAnimations(user),
             }
         } catch (err) {
+            logger.log(`Error getting wolf animation: ${err.message}`, 'error');
+            return null;
+        }
+    }
+
+    static async getInteractionAnimations(user) {
+        try {
+            const folder = "animations/interactions";
+
+            return [
+                {
+                    key: user.socket.id + '_' + 'left_punch_doy',
+                    base64: this.getBase64('left_punch_doy.png', folder, user),
+                    frames: { start: 0, end: 186 },
+                    frameRate: (Math.round((186 / AnimationBlockTimerEnum.UPPERCUT_SEND))),
+                    frameWidth: 140,
+                    frameHeight: 174,
+                    repeat: 0
+                },
+                {
+                    key: user.socket.id + '_' + 'right_punch_doy',
+                    base64: this.getBase64('right_punch_doy.png', folder, user),
+                    frames: { start: 0, end: 186 },
+                    frameRate: (Math.round((186 / AnimationBlockTimerEnum.UPPERCUT_SEND))),
+                    frameWidth: 140,
+                    frameHeight: 174,
+                    repeat: 0
+                },
+                {
+                    key: user.socket.id + '_' + 'left_punch_rec',
+                    base64: this.getBase64('left_punch_rec.png', folder, user),
+                    frames: { start: 0, end: 399 },
+                    frameRate: (Math.round((399 / AnimationBlockTimerEnum.UPPERCUT_RECEIVE))),
+                    frameWidth: 126,
+                    frameHeight: 149,
+                    repeat: 0
+                },
+                {
+                    key: user.socket.id + '_' + 'right_punch_rec',
+                    base64: this.getBase64('right_punch_rec.png', folder, user),
+                    frames: { start: 0, end: 399 },
+                    frameRate: (Math.round((399 / AnimationBlockTimerEnum.UPPERCUT_RECEIVE))),
+                    frameWidth: 126,
+                    frameHeight: 149,
+                    repeat: 0
+                },
+            ];
+        } catch (err) {
+            console.log(err);
             logger.log(`Error getting wolf animation: ${err.message}`, 'error');
             return null;
         }

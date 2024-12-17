@@ -6,16 +6,24 @@ const sizeOf = require('image-size');
 class CreateUserAnimationsTask {
     static async main(userId, avatarId, avatarColors) {
         await this.createWalkAnimations(userId, avatarId, avatarColors);
+        await this.createInteractionAnimations(userId, avatarId, avatarColors);
     }
 
     static async createWalkAnimations(userId, avatarId, avatarColors) {
-        await this.createAnimation(userId, avatarId, avatarColors, 'walk');
-    }
-
-    static async createAnimation(userId, avatarId, avatarColors, animation) {
+        const animation = 'walk';
         // Configuración de carpeta base
         const baseDir = path.join(__dirname, '../../assets/animations/avatars/' + avatarId + '/' + animation);
+        await this.createAnimation(baseDir, userId, avatarColors, animation);
+    }
 
+    static async createInteractionAnimations(userId, avatarId, avatarColors) {
+        const animation = 'interactions';
+        // Configuración de carpeta base
+        const baseDir = path.join(__dirname, '../../assets/animations/avatars/' + avatarId + '/' + animation);
+        await this.createAnimation(baseDir, userId, avatarColors, animation);
+    }
+
+    static async createAnimation(baseDir, userId, avatarColors, animation) {
         // Función de comparación para ordenar nombres correctamente
         const naturalSort = (a, b) => {
             return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });

@@ -28,8 +28,8 @@ class SendUppercutController {
                     user.cancelMovement();
                     targetUser.cancelMovement();
 
-                    UserBlockActionsTask.blockByUppercut(user);
-                    UserBlockActionsTask.blockByUppercut(targetUser);
+                    UserBlockActionsTask.blockByUppercutSend(user);
+                    UserBlockActionsTask.blockByUppercutReceive(targetUser);
 
                     // Emitir el resultado a la sala
                     //user.currentArea.emit('response:uppercut', {
