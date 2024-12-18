@@ -32,11 +32,11 @@ class SendUppercutController {
                     UserBlockActionsTask.blockByUppercutReceive(targetUser, io);
 
                     // Emitir el resultado a la sala
-                    //user.currentArea.emit('response:uppercut', {
-                    //    attacker: user.id,
-                    //    target: targetUser.id,
-                    //    newTargetPosition: targetUser.currentAreaPosition,
-                    //});
+                    user.currentArea.emit(ResponseSocketsEnum.SEND_UPPERCUT, {
+                        attacker: user.socket.id,
+                        receiver: targetUser.socket.id,
+                        direction: deltaX === -1 ? 'left' : 'right',
+                    });
 
                     console.log(`Uppercut realizado entre ${user.id} y ${targetUser.id}`);
                 }

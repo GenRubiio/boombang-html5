@@ -14,6 +14,7 @@ const ResponseSocketsEnum = new Enum({
     REGISTER_ERROR: 'register_error',
     REGISTER_SUCCESS: 'register_success',
     REMOVE_USER_AREA: 'response:remove_user_area',
+    SEND_UPPERCUT: 'response:send_uppercut',
 });
 
 module.exports = ResponseSocketsEnum;

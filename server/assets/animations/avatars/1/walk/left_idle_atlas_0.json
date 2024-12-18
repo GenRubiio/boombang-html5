@@ -1,0 +1,23 @@
+{
+  "frames": {
+    "1": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 98
+      }
+    }
+  },
+  "meta": {
+    "app": "Custom Sprite Generator",
+    "version": "1.0",
+    "image": "left_idle_atlas_0.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 69,
+      "h": 98
+    },
+    "scale": "1"
+  }
+}

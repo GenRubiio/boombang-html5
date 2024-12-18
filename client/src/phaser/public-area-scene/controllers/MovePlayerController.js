@@ -96,28 +96,28 @@ class MovePlayerController {
     static playAnimation(id, spritePlayer, direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
-                spritePlayer.play(id + "_" + "leftdown_walk", true);
+                spritePlayer.play(id + "_" + "leftdown_walk_atlas_0", true);
                 break;
             case DirectionEnum.DOWN:
-                spritePlayer.play(id + "_" + "down_walk", true);
+                spritePlayer.play(id + "_" + "down_walk_atlas_0", true);
                 break;
             case DirectionEnum.DOWN_RIGHT:
-                spritePlayer.play(id + "_" + "rightdown_walk", true);
+                spritePlayer.play(id + "_" + "rightdown_walk_atlas_0", true);
                 break;
             case DirectionEnum.RIGHT:
-                spritePlayer.play(id + "_" + "right_walk", true);
+                spritePlayer.play(id + "_" + "right_walk_atlas_0", true);
                 break;
             case DirectionEnum.UP_RIGHT:
-                spritePlayer.play(id + "_" + "rightup_walk", true);
+                spritePlayer.play(id + "_" + "rightup_walk_atlas_0", true);
                 break;
             case DirectionEnum.UP:
-                spritePlayer.play(id + "_" + "up_walk", true);
+                spritePlayer.play(id + "_" + "up_walk_atlas_0", true);
                 break;
             case DirectionEnum.UP_LEFT:
-                spritePlayer.play(id + "_" + "leftup_walk", true);
+                spritePlayer.play(id + "_" + "leftup_walk_atlas_0", true);
                 break;
             case DirectionEnum.LEFT:
-                spritePlayer.play(id + "_" + "left_walk", true);
+                spritePlayer.play(id + "_" + "left_walk_atlas_0", true);
                 break;
         }
     }

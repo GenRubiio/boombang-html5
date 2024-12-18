@@ -7,6 +7,7 @@ import UserSelectUserController from "../controllers/UserSelectUserController";
 import UserUpdatePositionController from "../controllers/UserUpdatePositionController";
 import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
+import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
 
 class PublicAreaSceneResponseSockets {
     static main(gameScene) {
@@ -66,6 +67,10 @@ class PublicAreaSceneResponseSockets {
 
         socket.on(ResponseSocketsEnum.REMOVE_USER_AREA, () => {
             RemoveUserAreaController.main(gameScene);
+        });
+
+        socket.on(ResponseSocketsEnum.SEND_UPPERCUT, (data) => {
+            SendUppercutAnimationController.main(gameScene, data);
         });
     }
 }
