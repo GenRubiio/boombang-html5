@@ -8,6 +8,7 @@ const ResponseSocketsEnum = new Enum({
     USER_LEFT_PUBLIC_AREA: 'response:user_left_public_area',
     USER_SELECT_USER: 'response:user_select_user',
     USER_UPDATE_POSITION: 'response:user_update_position',
+    REMOVE_USER_AREA: 'response:remove_user_area',
 });
 
 export default ResponseSocketsEnum;

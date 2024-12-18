@@ -5,6 +5,7 @@ const AnimationEnum = new Enum({
     CHAT: 'CHAT',
     WALK: 'WALK',
     LOOK: 'LOOK',
+    LEAVE_AREA: 'LEAVE_AREA',
 });
 
 module.exports = AnimationEnum;

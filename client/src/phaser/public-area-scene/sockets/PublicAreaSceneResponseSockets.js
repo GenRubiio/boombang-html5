@@ -6,6 +6,7 @@ import CreateSceneController from "../controllers/CreateSceneController";
 import UserSelectUserController from "../controllers/UserSelectUserController";
 import UserUpdatePositionController from "../controllers/UserUpdatePositionController";
 import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
+import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
 
 class PublicAreaSceneResponseSockets {
     static main(gameScene) {
@@ -61,6 +62,10 @@ class PublicAreaSceneResponseSockets {
 
         socket.on(ResponseSocketsEnum.USER_UPDATE_POSITION, (data) => {
             UserUpdatePositionController.main(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.REMOVE_USER_AREA, () => {
+            RemoveUserAreaController.main(gameScene);
         });
     }
 }

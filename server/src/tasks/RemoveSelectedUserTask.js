@@ -2,6 +2,7 @@
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const UserResource = require('../resources/UserResource');
+const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 
 class RemoveSelectedUserTask {
     static main(user) {
@@ -12,7 +13,7 @@ class RemoveSelectedUserTask {
                 const u = area.users[i];
                 if (u.selectedUser && u.selectedUser.id === user.id) {
                     u.setSelectedUser(null);
-                    u.emit('response:user_select_user', {
+                    u.emit(ResponseSocketsEnum.USER_SELECT_USER, {
                         selected_user: new UserResource(u).toObject()
                     });
                 }

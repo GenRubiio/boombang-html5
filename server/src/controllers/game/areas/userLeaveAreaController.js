@@ -1,10 +1,10 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
-const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const RemoveUserFromAreaTask = require('../../../tasks/RemoveUserFromAreaTask');
+const AnimationEnum = require('../../../enums/AnimationEnum');
 
 class UserLeaveAreaController {
     static async main(socket, io) {
@@ -17,15 +17,12 @@ class UserLeaveAreaController {
             if (!publicArea) {
                 throw new Error('Area not found');
             }
-            publicArea.removeUser(user);
-            user.cancelMovement();
-            user.setArea(null);
-    
-            publicArea.emitToAllExcept(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, {
-                socketId: socket.id
-            }, user);
-    
-            UpdatePublicAreasController.main(io);
+
+            if (user.isActionBlocked(AnimationEnum.LEAVE_AREA)) {
+                return;
+            }
+
+            RemoveUserFromAreaTask.main(publicArea, user, io);
         } catch (err) {
             console.log(err);
             logger.log(`Error leaving public area: ${err.message}`, 'error');

@@ -13,6 +13,7 @@ const ResponseSocketsEnum = new Enum({
     LOGIN_ERROR: 'login_error',
     REGISTER_ERROR: 'register_error',
     REGISTER_SUCCESS: 'register_success',
+    REMOVE_USER_AREA: 'response:remove_user_area',
 });
 
 module.exports = ResponseSocketsEnum;

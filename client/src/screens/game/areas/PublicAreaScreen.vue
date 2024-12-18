@@ -5,7 +5,7 @@
       <div id="phaser-container"></div>
       <!-- Aquí se monta Phaser -->
       <CompassComponent @exitLobby="exitToLobby" />
-      <UserCardComponent ref="userCard"/>
+      <UserCardComponent ref="userCard" />
     </div>
   </div>
 </template>
@@ -17,6 +17,7 @@ import PublicAreaScene from "../../../phaser/PublicAreaScene.js"; // Escena prin
 import socket from "../../../sockets/socket.js";
 import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
 import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
+import RequestSocketsEnum from "../../../phaser/enums/RequestSocketsEnum.js";
 
 export default {
   props: {
@@ -54,7 +55,10 @@ export default {
       });
     },
     exitToLobby() {
-      socket.emit("request:user_leave_area"); // Enviar evento para salir de la sala
+      socket.off(RequestSocketsEnum.USER_LEAVE_AREA);
+      socket.emit(RequestSocketsEnum.USER_LEAVE_AREA); // Enviar evento para salir de la sala
+    },
+    exitToLobbyResponse() {
       // Limpia el juego Phaser antes de salir
       if (this.game) {
         this.game.destroy(true);

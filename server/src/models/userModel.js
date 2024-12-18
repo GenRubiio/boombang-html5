@@ -16,18 +16,43 @@ class UserModel {
         this.blockedActions = {};
     }
 
-    // Bloquea una acción específica durante 'duration' milisegundos
-    blockAction(actionType, duration) {
-        this.blockedActions[actionType] = Date.now() + duration;
+    // Bloquea una acción específica durante 'duration' ms
+    // Opcionalmente, puedes pasar un callback a ejecutar cuando finalice el bloqueo
+    blockAction(actionType, duration, callback = null) {
+        // Si ya estaba bloqueada, limpiamos el anterior timeout
+        if (this.blockedActions[actionType]?.timeoutId) {
+            clearTimeout(this.blockedActions[actionType].timeoutId);
+        }
+
+        const until = Date.now() + duration;
+        const timeoutId = setTimeout(() => {
+            this.unblockAction(actionType);
+            if (typeof callback === 'function') {
+                callback();
+            }
+        }, duration);
+
+        this.blockedActions[actionType] = { until, timeoutId, callback };
     }
 
-    // Verifica si una acción específica está bloqueada
-    isActionBlocked(actionType) {
-        const blockedUntil = this.blockedActions[actionType];
-        if (!blockedUntil) return false;
-        if (Date.now() > blockedUntil) {
-            // Si ya pasó el tiempo, desbloquear
+    // Quita el bloqueo de una acción
+    unblockAction(actionType) {
+        if (this.blockedActions[actionType]) {
+            // Limpiamos el timeout por si no se ejecutó aún
+            if (this.blockedActions[actionType].timeoutId) {
+                clearTimeout(this.blockedActions[actionType].timeoutId);
+            }
             delete this.blockedActions[actionType];
+        }
+    }
+
+    // Verifica si la acción está bloqueada
+    isActionBlocked(actionType) {
+        const action = this.blockedActions[actionType];
+        if (!action) return false;
+        if (Date.now() > action.until) {
+            // Ya se cumplió el tiempo, desbloquear y return false
+            this.unblockAction(actionType);
             return false;
         }
         return true;
