@@ -3,6 +3,7 @@ export default class PlayerModel {
         this.socketId = data.socketId;
         this.position = data.position;
         this.animations = data.animations;
+        this.avatar_id = data.avatar_id;
         this.sprite_player= data.sprite_player;
         this.sprite_shadow = data.sprite_shadow;
     }

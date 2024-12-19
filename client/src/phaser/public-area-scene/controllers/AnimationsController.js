@@ -1,20 +1,32 @@
 class AnimationsController {
-    static async main(gameScene, animations) {
-        await this.playerAnimations(gameScene, animations);
+    static async main(gameScene, playerData) {
+        const animationsData = gameScene.avatarAnimations[playerData.avatar_id];
+        await this.playerAnimations(gameScene, playerData.animations, animationsData);
     }
 
-    static async playerAnimations(gameScene, animations) {
+    static async playerAnimations(gameScene, animations, animationsData) {
         if (animations.walk) {
-            await this.animations(gameScene, animations.walk);
+            await this.animations(gameScene, animations.walk, animationsData);
         }
         if (animations.interaction) {
-            await this.animations(gameScene, animations.interaction);
+            await this.animations(gameScene, animations.interaction, animationsData);
         }
     }
 
-    static async animations(gameScene, animations) {
+    static async animations(gameScene, animations, animationsData) {
+        console.log("animationsData: ", animationsData);
         for (const animation of animations) {
-            const { key, base64, frames, frameRate, frameWidth, frameHeight, has_atlas, atlas, repeat } = animation;
+            console.log(`Loading animation: `, animation);
+
+            const key = animation.key;
+            const base64 = animation.base64;
+            const frames = animationsData[animation.link].frames;
+            const frameRate = animationsData[animation.link].frameRate;
+            const frameWidth = animationsData[animation.link].frameWidth;
+            const frameHeight = animationsData[animation.link].frameHeight;
+            const has_atlas = animationsData[animation.link].has_atlas;
+            const atlas = animationsData[animation.link].atlas;
+            const repeat = animationsData[animation.link].repeat;
 
             if (!gameScene.textures.exists(key)) {
                 console.log(`Loading image for key: ${key}`);

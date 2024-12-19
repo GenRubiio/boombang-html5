@@ -1,4 +1,5 @@
-import MovementUtil from "../utils/MovementUtil.js";
+import UserIdleAnimation from "../animations/UserIdleAnimation.js";
+import UserUppercutAnimation from "../animations/UserUppercutAnimation.js";
 
 class SendUppercutAnimationController {
     static main(gameScene, data) {
@@ -38,19 +39,19 @@ class SendUppercutAnimationController {
         attacker.sprite_player.setDepth(attacker.sprite_shadow.y);
 
         // Ahora el jugador está en su posición final. Pon el frame idle antes de la animación
-        MovementUtil.setDefaultFrame(data.attacker, attacker.sprite_player, attacker.position.z);
+        UserIdleAnimation.setDefaultFrame(gameScene, data.attacker, attacker.sprite_player, attacker.position.z, attacker.avatar_id);
 
         const attackerSprite = attacker.sprite_player;
         const receiverSprite = receiver.sprite_player;
 
         // Reproducir la animación de golpe del atacante
-        attackerSprite.play(data.attacker + "_" + data.direction + "_punch_doy_atlas_0");
+        UserUppercutAnimation.main(gameScene, data.attacker, attackerSprite, data.direction, true, attacker.avatar_id);
         attackerSprite.on("animationcomplete", () => {
-            MovementUtil.playDefaultFrame(data.attacker, attacker.sprite_player, attacker.position.z);
+            UserIdleAnimation.playDefaultFrame(gameScene, data.attacker, attacker.sprite_player, attacker.position.z, attacker.avatar_id);
         });
 
         // Reproducir la animación de recibir golpe del receptor
-        receiverSprite.play(data.receiver + "_" + data.direction + "_punch_rec_atlas_0");
+        UserUppercutAnimation.main(gameScene, data.receiver, receiverSprite, data.direction, false, receiver.avatar_id);
     }
 }
 

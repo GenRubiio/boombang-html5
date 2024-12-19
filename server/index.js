@@ -2,7 +2,7 @@ const { connectDB } = require('./src/config/database');
 const server = require('./src/config/server');
 const sockets = require('./src/sockets');
 const { initializer } = require('./src/config/initializer');
-const ConsoleLogger = require('./src/utils/consoleLogger');
+const ConsoleLogger = require('./src/utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 logger.log('Starting server...', 'success');

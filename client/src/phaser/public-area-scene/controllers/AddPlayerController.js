@@ -1,5 +1,5 @@
 import MovePlayerToTileController from "./MovePlayerToTileController.js";
-import MovementUtil from "../utils/MovementUtil.js";
+import UserIdleAnimation from "../animations/UserIdleAnimation.js";
 import AnimationsController from "./AnimationsController.js";
 import PlayerModel from "../../models/PlayerModel.js";
 import socket from "../../../sockets/socket"; // Conexión Socket.io
@@ -7,9 +7,8 @@ import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
 
 class AddPlayerController {
     static async main(gameScene, playerData) {
-        console.log("Añadiendo jugador: ", playerData);
         if (gameScene.players[playerData.id]) return;
-        await AnimationsController.main(gameScene, playerData.animations); // Inicializar animaciones
+        await AnimationsController.main(gameScene, playerData); // Inicializar animaciones
 
         const spriteShadow = this.createSpriteShadow(gameScene, playerData);
         this.eventShadowClick(spriteShadow, gameScene);
@@ -22,6 +21,7 @@ class AddPlayerController {
                 y: playerData.y,
                 z: playerData.z
             },
+            avatar_id: playerData.avatar_id,
             animations: playerData.animations,
             sprite_player: spritePlayer,
             sprite_shadow: spriteShadow
@@ -37,7 +37,7 @@ class AddPlayerController {
         // Crear personaje
         //const player = gameScene.add.sprite(0, 0, "player_spritesheet");
         const spritePlayer = gameScene.add.sprite(0, 0, "player_" + playerData.id);
-        MovementUtil.setDefaultFrame(playerData.id, spritePlayer, playerData.z);
+        UserIdleAnimation.setDefaultFrame(gameScene, playerData.id, spritePlayer, playerData.z, playerData.avatar_id);
         spritePlayer.setDepth(1);
         return spritePlayer;
     }

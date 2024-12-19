@@ -1,4 +1,4 @@
-import MovementUtil from "../utils/MovementUtil.js";
+import UserIdleAnimation from "../animations/UserIdleAnimation.js";
 
 class UserUpdatePositionController {
     static main(gameScene, data) {
@@ -12,7 +12,7 @@ class UserUpdatePositionController {
 
         console.log(`Updating player ${socketId} position to:`, position);
         console.log(playerModel)
-        MovementUtil.playDefaultFrame(socketId, playerModel.sprite_player, position.z);
+        UserIdleAnimation.playDefaultFrame(gameScene, socketId, playerModel.sprite_player, position.z, playerModel.avatar_id);
     }
 }
 

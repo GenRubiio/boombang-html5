@@ -6,6 +6,7 @@ const UserAreaResource = require('../../../resources/UserAreaResource');
 const ConsoleLogger = require('../../../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const AvatarAnimationsCollection = require('../../../collections/AvatarAnimationsCollection');
 
 class GetPublicAreaDataController {
     static async main(socket, io, data) {
@@ -23,8 +24,10 @@ class GetPublicAreaDataController {
             for (const user of publicArea.users) {
                 players.push(await new UserAreaResource(user).toObject());
             }
+            const avatarAnimations = Object.fromEntries(AvatarAnimationsCollection.getAllData());
             socket.emit(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, {
-                players: players
+                players: players,
+                avatar_animations: avatarAnimations
             });
         } catch (err) {
             logger.log(`Error joining public area: ${err.message}`, 'error');

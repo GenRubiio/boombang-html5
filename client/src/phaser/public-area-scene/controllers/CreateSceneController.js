@@ -72,6 +72,8 @@ class CreateSceneController {
                 await AddPlayerController.main(gameScene, player);
             }
 
+            console.log("Players loaded", gameScene.players);
+
             SetUserCardController.main(gameScene, {
                 username: socket.user.username,
                 is_admin: socket.user.is_admin,

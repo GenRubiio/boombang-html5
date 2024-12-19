@@ -14,11 +14,13 @@ export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
         super("PublicAreaScene");
         this.players = {}; // Reiniciar al crear una nueva instancia
+        this.avatarAnimations = {}; // Reiniciar al crear una nueva instancia
     }
 
     init(data) {
         this.areaId = data.areaId; // ID de la sala
         this.players = {}; // Objeto para almacenar jugadores en la sala
+        this.avatarAnimations = {}; // Objeto para almacenar animaciones de avatares
         this.vueComponent = data.vueComponent;
     }
 

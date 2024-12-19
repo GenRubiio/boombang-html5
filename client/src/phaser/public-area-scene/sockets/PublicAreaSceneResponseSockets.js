@@ -13,6 +13,7 @@ class PublicAreaSceneResponseSockets {
     static main(gameScene) {
         // Escuchar respuesta con datos de la sala
         socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, (data) => {
+            gameScene.avatarAnimations = data.avatar_animations; // Guardar animaciones de avatares
             CreateSceneController.main(gameScene, data.players); // Crear escena con jugadores
         });
         // Escuchar cuando un nuevo jugador entra

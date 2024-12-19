@@ -1,5 +1,5 @@
-import MovementUtil from "../utils/MovementUtil.js";
-import DirectionEnum from "../enums/DirectionEnum.js";
+import UserIdleAnimation from "../animations/UserIdleAnimation.js";
+import UserWalkAnimation from "../animations/UserWalkAnimation.js";
 
 class MovePlayerController {
     static main(gameScene, id, path, isLastStep) {
@@ -71,7 +71,7 @@ class MovePlayerController {
             onUpdate: () => {
                 //if player exists, update its depth
                 if (!playerModel.sprite_player) return;
-                this.playAnimation(id, playerModel.sprite_player, step.z);
+                UserWalkAnimation.main(gameScene, id, playerModel.sprite_player, step.z, playerModel.avatar_id);
                 playerModel.sprite_player.setDepth(playerModel.sprite_shadow.y);
             },
             onComplete: () => {
@@ -79,7 +79,7 @@ class MovePlayerController {
                 // Al completar el movimiento, avanzar al siguiente paso
                 playerModel.sprite_player.stop();
                 if (isLastStep) {
-                    this.stopAnimation(id, playerModel.sprite_player, step.z);
+                    this.stopAnimation(gameScene, id, playerModel.sprite_player, step.z, playerModel.avatar_id);
                 }
                 else {
                     playerModel.pathIndex++;
@@ -93,39 +93,10 @@ class MovePlayerController {
         playerModel.currentShadowTween = shadowTween;
     }
 
-    static playAnimation(id, spritePlayer, direction) {
-        switch (direction) {
-            case DirectionEnum.DOWN_LEFT:
-                spritePlayer.play(id + "_" + "leftdown_walk_atlas_0", true);
-                break;
-            case DirectionEnum.DOWN:
-                spritePlayer.play(id + "_" + "down_walk_atlas_0", true);
-                break;
-            case DirectionEnum.DOWN_RIGHT:
-                spritePlayer.play(id + "_" + "rightdown_walk_atlas_0", true);
-                break;
-            case DirectionEnum.RIGHT:
-                spritePlayer.play(id + "_" + "right_walk_atlas_0", true);
-                break;
-            case DirectionEnum.UP_RIGHT:
-                spritePlayer.play(id + "_" + "rightup_walk_atlas_0", true);
-                break;
-            case DirectionEnum.UP:
-                spritePlayer.play(id + "_" + "up_walk_atlas_0", true);
-                break;
-            case DirectionEnum.UP_LEFT:
-                spritePlayer.play(id + "_" + "leftup_walk_atlas_0", true);
-                break;
-            case DirectionEnum.LEFT:
-                spritePlayer.play(id + "_" + "left_walk_atlas_0", true);
-                break;
-        }
-    }
-
-    static stopAnimation(id, spritePlayer, direction) {
+    static stopAnimation(gameScene, id, spritePlayer, direction, avatarId) {
         if (!spritePlayer || !spritePlayer.anims) {
             console.error("Jugador no válido al detener animación.");
-            MovementUtil.setDefaultFrame(id, spritePlayer, direction);
+            UserIdleAnimation.setDefaultFrame(gameScene, id, spritePlayer, direction, avatarId);
             return;
         }
 
@@ -135,7 +106,7 @@ class MovePlayerController {
         }
 
         // Establecer frame por defecto
-        MovementUtil.setDefaultFrame(id, spritePlayer, direction);
+        UserIdleAnimation.setDefaultFrame(gameScene, id, spritePlayer, direction, avatarId);
     }
 }
 
