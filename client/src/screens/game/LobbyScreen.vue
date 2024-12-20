@@ -12,6 +12,8 @@
 <script>
 import socket from "../../sockets/socket";
 import LoadingScreen from "./LoadingScreen.vue";
+import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 
 export default {
   data() {
@@ -22,11 +24,11 @@ export default {
   },
   created() {
     // Solicitar las salas al conectarse
-    socket.off("get_public_areas");
-    socket.emit("get_public_areas");
+    socket.off(RequestSocketsEnum.GET_PUBLIC_AREAS);
+    socket.emit(RequestSocketsEnum.GET_PUBLIC_AREAS);
 
-    socket.off("update_public_areas");
-    socket.on("update_public_areas", (areas) => {
+    socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS);
+    socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (areas) => {
       console.log(areas);
       this.areas = areas;
       this.loading = false;
@@ -37,8 +39,11 @@ export default {
   },
   methods: {
     joinRoom(areaId) {
-      socket.emit("request:join_public_area", { areaId: areaId });
-      socket.on("response:join_public_area", (data) => {
+      socket.off(RequestSocketsEnum.JOIN_PUBLIC_AREA);
+      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: areaId });
+
+      socket.off(ResponseSocketsEnum.JOIN_PUBLIC_AREA);
+      socket.on(ResponseSocketsEnum.JOIN_PUBLIC_AREA, (data) => {
         if (data.success) {
           this.$emit("joinPublicArea", areaId);
         } else {

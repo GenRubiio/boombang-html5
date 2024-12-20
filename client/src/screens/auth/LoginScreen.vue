@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
+
 export default {
   data() {
     return {
@@ -22,17 +25,18 @@ export default {
   },
   methods: {
     login() {
-      this.$socket.off('login');
-      this.$socket.emit('login', { username: this.username, password: this.password });
+      this.$socket.off(RequestSocketsEnum.LOGIN);
+      this.$socket.emit(RequestSocketsEnum.LOGIN, { username: this.username, password: this.password });
 
-      this.$socket.off('login_success');
-      this.$socket.on('login_success', (data) => {
+      this.$socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
+      this.$socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
         //alert(`Bienvenido, ${data.user.username}`);
         this.$socket.user = data.user;
         this.$emit('loginSuccess');
       });
 
-      this.$socket.on('login_error', (error) => {
+      this.$socket.off(ResponseSocketsEnum.LOGIN_ERROR);
+      this.$socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
         //this.errorMessage = error;
         console.log(error);
       });

@@ -5,7 +5,7 @@ import AddPlayerController from "../controllers/AddPlayerController";
 import CreateSceneController from "../controllers/CreateSceneController";
 import UserSelectUserController from "../controllers/UserSelectUserController";
 import UserUpdatePositionController from "../controllers/UserUpdatePositionController";
-import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
+import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
 import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
 

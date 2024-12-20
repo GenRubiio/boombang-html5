@@ -7,8 +7,8 @@ import playerImg from "../assets/images/player.png"; // Imagen del personaje
 import loadingImage from "../assets/images/loading_image.png"; // Imagen de carga
 import PublicAreaSceneResponseSockets from "./public-area-scene/sockets/PublicAreaSceneResponseSockets"; // Controladores de sockets
 import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAreaSceneRequestSockets"; // Controladores de sockets
-import ResponseSocketsEnum from "./enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
-import RequestSocketsEnum from "./enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
+import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
+import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {

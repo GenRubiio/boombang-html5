@@ -10,6 +10,12 @@ const ResponseSocketsEnum = new Enum({
     USER_UPDATE_POSITION: 'response:user_update_position',
     REMOVE_USER_AREA: 'response:remove_user_area',
     SEND_UPPERCUT: 'response:send_uppercut',
+    LOGIN_SUCCESS: 'login_success',
+    LOGIN_ERROR: 'login_error',
+    REGISTER_SUCCESS: 'register_success',
+    REGISTER_ERROR: 'register_error',
+    UPDATE_PUBLIC_AREAS: 'update_public_areas',
+    JOIN_PUBLIC_AREA: 'response:join_public_area',
 });
 
 export default ResponseSocketsEnum;

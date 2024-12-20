@@ -17,7 +17,7 @@ import PublicAreaScene from "../../../phaser/PublicAreaScene.js"; // Escena prin
 import socket from "../../../sockets/socket.js";
 import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
 import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
-import RequestSocketsEnum from "../../../phaser/enums/RequestSocketsEnum.js";
+import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 
 export default {
   props: {

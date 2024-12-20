@@ -5,6 +5,10 @@ const RequestSocketsEnum = new Enum({
     USER_SELECT_USER: 'request:user_select_user',
     SEND_UPPERCUT: 'request:send_uppercut',
     USER_LEAVE_AREA: 'request:user_leave_area',
+    LOGIN: 'login',
+    REGISTER: 'register',
+    GET_PUBLIC_AREAS: 'get_public_areas',
+    JOIN_PUBLIC_AREA: 'request:join_public_area',
 });
 
 export default RequestSocketsEnum;

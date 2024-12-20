@@ -13,7 +13,7 @@
 
 <script>
 import socket from "../../../sockets/socket";
-import RequestSocketsEnum from "../../../phaser/enums/RequestSocketsEnum";
+import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 
 export default {
   data() {

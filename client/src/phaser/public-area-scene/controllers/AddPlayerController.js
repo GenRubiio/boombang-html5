@@ -3,7 +3,7 @@ import UserIdleAnimation from "../animations/UserIdleAnimation.js";
 import AnimationsController from "./AnimationsController.js";
 import PlayerModel from "../../models/PlayerModel.js";
 import socket from "../../../sockets/socket"; // Conexión Socket.io
-import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
+import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 
 class AddPlayerController {
     static async main(gameScene, playerData) {

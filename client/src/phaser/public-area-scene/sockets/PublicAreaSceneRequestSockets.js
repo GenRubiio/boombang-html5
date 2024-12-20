@@ -1,5 +1,5 @@
 import socket from "../../../sockets/socket"; // Conexión Socket.io
-import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
+import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 
 class PublicAreaSceneRequestSockets {
     static main(gameScene) {
