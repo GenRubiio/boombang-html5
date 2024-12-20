@@ -1,5 +1,6 @@
 import UserIdleAnimation from "../animations/UserIdleAnimation.js";
 import UserWalkAnimation from "../animations/UserWalkAnimation.js";
+import AnimationsTimerEnum from "../enums/AnimationsTimerEnum.js";
 
 class MovePlayerController {
     static main(gameScene, socketId, path, isLastStep) {
@@ -56,7 +57,7 @@ class MovePlayerController {
             targets: playerModel.sprite_shadow,
             x: centerX,
             y: centerY,
-            duration: 750,
+            duration: AnimationsTimerEnum.WALK,
             onUpdate: () => {
                 playerModel.sprite_shadow.setDepth(playerModel.sprite_shadow.y);
             }
@@ -67,7 +68,7 @@ class MovePlayerController {
             targets: playerModel.sprite_player,
             x: centerX,
             y: centerY - (playerModel.sprite_shadow.displayHeight / 2) - (playerModel.sprite_player.displayHeight / 2) + 15,
-            duration: 750,
+            duration: AnimationsTimerEnum.WALK,
             onUpdate: () => {
                 //if player exists, update its depth
                 if (!playerModel.sprite_player) return;

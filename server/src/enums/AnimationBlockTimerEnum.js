@@ -5,6 +5,7 @@ const AnimationBlockTimerEnum = new Enum({
     UPPERCUT_SEND: 12000,
     UPPERCUT_RECEIVE: 22000,
     CHAT: 200,
+    WALK: 750,
 });
 
 module.exports = AnimationBlockTimerEnum;
