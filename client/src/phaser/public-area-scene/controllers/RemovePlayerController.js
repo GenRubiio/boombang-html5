@@ -1,6 +1,6 @@
 class RemovePlayerController {
-    static main(gameScene, id) {
-        const playerModel = gameScene.players[id];
+    static main(gameScene, socketId) {
+        const playerModel = gameScene.players[socketId];
         if (!playerModel) return;
         // Detener y eliminar tweens activos
         if (playerModel.currentTween) {
@@ -23,7 +23,7 @@ class RemovePlayerController {
         if (playerModel.sprite_player && playerModel.sprite_player.active) playerModel.sprite_player.destroy();
 
         // Eliminar datos del jugador
-        delete gameScene.players[id];
+        delete gameScene.players[socketId];
     }
 }
 

@@ -24,9 +24,14 @@ class AddPlayerController {
 
     static createSpritePlayer(gameScene, playerData) {
         // Crear personaje
-        //const player = gameScene.add.sprite(0, 0, "player_spritesheet");
         const spritePlayer = gameScene.add.sprite(0, 0, "player_" + playerData.id);
-        UserIdleAnimation.setDefaultFrame(gameScene, playerData.id, spritePlayer, playerData.z, playerData.avatar_id);
+        UserIdleAnimation.setDefaultFrame(
+            gameScene,
+            playerData.id,
+            spritePlayer,
+            playerData.z,
+            playerData.avatar_id
+        );
         spritePlayer.setDepth(1);
         return spritePlayer;
     }

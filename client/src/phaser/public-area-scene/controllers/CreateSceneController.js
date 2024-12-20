@@ -4,10 +4,10 @@ import FloorPulseAnimation from "../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../controllers/SetUserCardController.js";
 
 class CreateSceneController {
-    static main(gameScene, players) {
+    static main(gameScene, playersData) {
         this.createBackground(gameScene);
         this.createTile(gameScene);
-        this.createPlayers(gameScene, players);
+        this.createPlayers(gameScene, playersData);
     }
 
     static createBackground(gameScene) {
@@ -65,11 +65,11 @@ class CreateSceneController {
         });
     }
 
-    static createPlayers(gameScene, players) {
+    static createPlayers(gameScene, playersData) {
         // Crear los jugadores iniciales
         (async () => {
-            for (const player of players) {
-                await AddPlayerController.main(gameScene, player);
+            for (const playerData of playersData) {
+                await AddPlayerController.main(gameScene, playerData);
             }
 
             console.log("Players loaded", gameScene.players);

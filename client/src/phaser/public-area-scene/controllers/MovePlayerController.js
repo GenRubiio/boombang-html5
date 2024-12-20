@@ -2,10 +2,10 @@ import UserIdleAnimation from "../animations/UserIdleAnimation.js";
 import UserWalkAnimation from "../animations/UserWalkAnimation.js";
 
 class MovePlayerController {
-    static main(gameScene, id, path, isLastStep) {
-        if (!path || path.length === 0 || !gameScene.players[id]) return;
+    static main(gameScene, socketId, path, isLastStep) {
+        if (!path || path.length === 0 || !gameScene.players[socketId]) return;
 
-        const playerModel = gameScene.players[id];
+        const playerModel = gameScene.players[socketId];
         const tileWidth = 65;
         const tileHeight = 33;
 
@@ -26,11 +26,11 @@ class MovePlayerController {
         playerModel.pathIndex = 0;
 
         // Iniciar movimiento al siguiente paso
-        this.moveToNextStep(id, gameScene, isLastStep);
+        this.moveToNextStep(socketId, gameScene, isLastStep);
     }
 
-    static moveToNextStep(id, gameScene, isLastStep) {
-        const playerModel = gameScene.players[id];
+    static moveToNextStep(socketId, gameScene, isLastStep) {
+        const playerModel = gameScene.players[socketId];
         if (!playerModel) return;
 
         if (playerModel.pathIndex >= playerModel.path.length) {
@@ -71,7 +71,13 @@ class MovePlayerController {
             onUpdate: () => {
                 //if player exists, update its depth
                 if (!playerModel.sprite_player) return;
-                UserWalkAnimation.main(gameScene, id, playerModel.sprite_player, step.z, playerModel.avatar_id);
+                UserWalkAnimation.main(
+                    gameScene,
+                    socketId,
+                    playerModel.sprite_player,
+                    step.z,
+                    playerModel.avatar_id
+                );
                 playerModel.sprite_player.setDepth(playerModel.sprite_shadow.y);
             },
             onComplete: () => {
@@ -79,11 +85,17 @@ class MovePlayerController {
                 // Al completar el movimiento, avanzar al siguiente paso
                 playerModel.sprite_player.stop();
                 if (isLastStep) {
-                    this.stopAnimation(gameScene, id, playerModel.sprite_player, step.z, playerModel.avatar_id);
+                    this.stopAnimation(
+                        gameScene,
+                        socketId,
+                        playerModel.sprite_player,
+                        step.z,
+                        playerModel.avatar_id
+                    );
                 }
                 else {
                     playerModel.pathIndex++;
-                    this.moveToNextStep(id, gameScene, isLastStep);
+                    this.moveToNextStep(socketId, gameScene, isLastStep);
                 }
             }
         });
@@ -93,10 +105,16 @@ class MovePlayerController {
         playerModel.currentShadowTween = shadowTween;
     }
 
-    static stopAnimation(gameScene, id, spritePlayer, direction, avatarId) {
+    static stopAnimation(gameScene, socketId, spritePlayer, direction, avatarId) {
         if (!spritePlayer || !spritePlayer.anims) {
             console.error("Jugador no válido al detener animación.");
-            UserIdleAnimation.setDefaultFrame(gameScene, id, spritePlayer, direction, avatarId);
+            UserIdleAnimation.setDefaultFrame(
+                gameScene,
+                socketId,
+                spritePlayer,
+                direction,
+                avatarId
+            );
             return;
         }
 
@@ -106,7 +124,13 @@ class MovePlayerController {
         }
 
         // Establecer frame por defecto
-        UserIdleAnimation.setDefaultFrame(gameScene, id, spritePlayer, direction, avatarId);
+        UserIdleAnimation.setDefaultFrame(
+            gameScene,
+            socketId,
+            spritePlayer,
+            direction,
+            avatarId
+        );
     }
 }
 
