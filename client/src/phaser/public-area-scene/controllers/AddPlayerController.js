@@ -14,18 +14,7 @@ class AddPlayerController {
         this.eventShadowClick(spriteShadow, gameScene);
         const spritePlayer = this.createSpritePlayer(gameScene, playerData);
 
-        const playerModel = new PlayerModel({
-            socketId: playerData.id,
-            position: {
-                x: playerData.x,
-                y: playerData.y,
-                z: playerData.z
-            },
-            avatar_id: playerData.avatar_id,
-            animations: playerData.animations,
-            sprite_player: spritePlayer,
-            sprite_shadow: spriteShadow
-        });
+        const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow);
 
         MovePlayerToTileController.main(gameScene, playerModel);
 

@@ -1,4 +1,5 @@
 import DirectionEnum from "../enums/DirectionEnum.js";
+import AnimationUtils from "../utils/AnimationUtils.js";
 
 class UserIdleAnimation {
     /**
@@ -6,8 +7,7 @@ class UserIdleAnimation {
     */
     static setDefaultFrame(gameScene, socketId, spritePlayer, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
-        const animationData = gameScene.avatarAnimations[avatarId][textureKey];
-        spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+        AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, textureKey);
         spritePlayer.setTexture(socketId + "_" + textureKey);
     }
 
@@ -16,8 +16,7 @@ class UserIdleAnimation {
      */
     static playDefaultFrame(gameScene, socketId, spritePlayer, direction, avatarId) {
         const animationKey = this.getTextureKey(direction);
-        const animationData = gameScene.avatarAnimations[avatarId][animationKey];
-        spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+        AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, animationKey);
         spritePlayer.play(socketId + "_" + animationKey);
     }
 
