@@ -66,13 +66,11 @@ class CreateUserAnimationsAtlasTask {
             const { maxWidth, maxHeight } = calculateMaxDimensions(folderPath);
             if (maxWidth === 0 || maxHeight === 0) continue;
 
-            // Procesar cada frame (SVG) y crear buffers PNG ya recoloreados
             const frameBuffers = [];
             for (const file of svgFiles) {
                 const inputPath = path.join(folderPath, file);
                 let svgContent = await fs.promises.readFile(inputPath, 'utf8');
 
-                // Reemplazar colores
                 if (Array.isArray(avatarColors)) {
                     for (const colorChange of avatarColors) {
                         const searchColor = colorChange.color_search.startsWith('#') ? colorChange.color_search : '#' + colorChange.color_search;
@@ -103,23 +101,19 @@ class CreateUserAnimationsAtlasTask {
                 frameBuffers.push({ name: file.replace('.svg', ''), buffer });
             }
 
-            // Ahora distribuimos estos frames en uno o varios atlas.
-            // Cada atlas tendrá su propio JSON con las coordenadas.
             let atlasIndex = 0;
             let framesInAtlas = [];
             let currentX = 0;
             let currentY = 0;
             let maxRowHeight = 0;
 
-            const atlasData = []; // Contendrá la info de todos los atlas generados
+            const atlasData = [];
 
             const flushAtlas = async () => {
                 if (framesInAtlas.length === 0) return;
-                // Calcular el ancho y alto del atlas actual
                 const atlasWidth = framesInAtlas.reduce((acc, f) => Math.max(acc, f.x + f.w), 0);
                 const atlasHeight = framesInAtlas.reduce((acc, f) => Math.max(acc, f.y + f.h), 0);
 
-                // Crear el atlas con Sharp
                 const composite = framesInAtlas.map(frame => ({
                     input: frame.buffer,
                     top: frame.y,
@@ -142,7 +136,6 @@ class CreateUserAnimationsAtlasTask {
                 const atlasFilePath = path.join(outputDir, atlasFileName);
                 await fs.promises.writeFile(atlasFilePath, atlasBuffer);
 
-                // Crear el JSON del atlas
                 const json = {
                     frames: {},
                     meta: {
@@ -163,11 +156,10 @@ class CreateUserAnimationsAtlasTask {
 
                 const jsonFileName = `${folder}_atlas_${atlasIndex}.json`;
                 const jsonFilePath = path.join(outputDir, jsonFileName);
-                await fs.promises.writeFile(jsonFilePath, JSON.stringify(json, null, 2));
+                // await fs.promises.writeFile(jsonFilePath, JSON.stringify(json, null, 2));
 
                 atlasData.push({ image: atlasFileName, json: jsonFileName });
 
-                // Limpiar para el siguiente atlas
                 framesInAtlas = [];
                 currentX = 0;
                 currentY = 0;
@@ -175,16 +167,13 @@ class CreateUserAnimationsAtlasTask {
                 atlasIndex++;
             };
 
-            // Colocar cada frame en el atlas, fila por fila
             for (const f of frameBuffers) {
-                // Si el siguiente frame se sale del ancho max, pasar a la siguiente fila
                 if (currentX + maxWidth > this.MAX_ATLAS_WIDTH) {
                     currentX = 0;
                     currentY += maxRowHeight;
                     maxRowHeight = 0;
                 }
 
-                // Si al colocar este frame superamos el alto del atlas, crear uno nuevo
                 if (currentY + maxHeight > this.MAX_ATLAS_HEIGHT) {
                     await flushAtlas();
                 }
@@ -202,14 +191,8 @@ class CreateUserAnimationsAtlasTask {
                 maxRowHeight = Math.max(maxRowHeight, maxHeight);
             }
 
-            // Flush final
             await flushAtlas();
-
-            // Opcional: Podrías guardar un JSON global que liste todos los atlases creados
-            // para esta carpeta, o bien cargar cada atlas individualmente en Phaser.
-            // Por ejemplo, un archivo índice:
-            const indexJsonFile = path.join(outputDir, `${folder}_atlas_index.json`);
-            await fs.promises.writeFile(indexJsonFile, JSON.stringify(atlasData, null, 2));
+            // const indexJsonFile = path.join(outputDir, `${folder}_atlas_index.json`); // await fs.promises.writeFile(indexJsonFile, JSON.stringify(atlasData, null, 2));
         }
     }
 }

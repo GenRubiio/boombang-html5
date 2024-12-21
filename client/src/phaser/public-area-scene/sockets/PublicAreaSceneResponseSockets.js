@@ -36,8 +36,9 @@ class PublicAreaSceneResponseSockets {
                 const spritePlayer = playerModel.sprite_player;
                 const spriteShadow = playerModel.sprite_shadow;
                 const direction = playerModel.position.z;
-
-                // Detener Tweens activos
+                const avatarId = playerModel.avatar_id;
+        
+                // Detener Tweens activos del playerContainer
                 if (playerModel.currentTween) {
                     playerModel.currentTween.stop();
                     playerModel.currentTween = null;
@@ -46,11 +47,35 @@ class PublicAreaSceneResponseSockets {
                     playerModel.currentShadowTween.stop();
                     playerModel.currentShadowTween = null;
                 }
+                // Matar cualquier otro tween de sprites
+                gameScene.tweens.killTweensOf(playerModel.playerContainer);
                 gameScene.tweens.killTweensOf(spritePlayer);
                 gameScene.tweens.killTweensOf(spriteShadow);
-
-                // Detener animación
-                MovePlayerController.stopAnimation(id, spritePlayer, direction);
+        
+                // Forzar la posición del jugador en el mapa según (x, y)
+                const tileWidth = 65;
+                const tileHeight = 33;
+                const finalX = (playerModel.position.x - playerModel.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
+                const finalY = (playerModel.position.x + playerModel.position.y) * (tileHeight / 2);
+        
+                // Establecer posición y profundidad
+                playerModel.playerContainer.setPosition(finalX, finalY);
+                playerModel.playerContainer.setDepth(finalY);
+        
+                // Ajustar posiciones internas del sprite
+                spriteShadow.setPosition(0, 0);
+                spritePlayer.setPosition(
+                    0,
+                    -(spriteShadow.displayHeight / 2) - (spritePlayer.displayHeight / 2) + 15
+                );
+        
+                // Detener animación actual y asegurar el frame idle
+                MovePlayerController.stopAnimation(gameScene, id, spritePlayer, direction, avatarId);
+        
+                // Opcionalmente, si tienes una función específica para poner el frame idle
+                // según la dirección actual, puedes llamarla aquí.
+                // Por ejemplo:
+                // UserIdleAnimation.playDefaultFrame(gameScene, id, spritePlayer, direction, playerModel.avatar_id);
             }
         });
         // Escuchar cuando un jugador sale

@@ -55,11 +55,11 @@ export default {
       });
     },
     exitToLobby() {
-      socket.off(RequestSocketsEnum.USER_LEAVE_AREA);
       socket.emit(RequestSocketsEnum.USER_LEAVE_AREA); // Enviar evento para salir de la sala
     },
     exitToLobbyResponse() {
       // Limpia el juego Phaser antes de salir
+      console.log("Saliendo de la sala...");
       if (this.game) {
         this.game.destroy(true);
         this.game = null;
@@ -85,14 +85,12 @@ export default {
 </script>
 
 <style>
-.game-container {
-  width: 100%;
-  height: 100%;
-}
-
-#phaser-container {
-  width: 100%;
-  height: 100%;
+.game-container, #phaser-container {
+  width: 1012px;
+  height: 657px;
+  margin: auto;
+  position: relative;
+  background-color: #f0f0f0; /* Para verificar visualmente */
 }
 
 .loading-overlay {

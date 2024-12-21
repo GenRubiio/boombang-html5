@@ -89,14 +89,17 @@ export default {
 </script>
 
 <style>
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .game-screen {
   width: 1012px;
   height: 657px;
   background-color: #f0f0f0;
-  box-sizing: border-box;
   position: relative;
-}
-#app {
-  padding: 0 !important;
 }
 </style>

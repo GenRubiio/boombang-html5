@@ -10,11 +10,9 @@ class AddPlayerController {
         if (gameScene.players[playerData.id]) return;
         await AnimationsController.main(gameScene, playerData); // Inicializar animaciones
 
-        const spriteShadow = this.createSpriteShadow(gameScene, playerData);
-        this.eventShadowClick(spriteShadow, gameScene);
-        const spritePlayer = this.createSpritePlayer(gameScene, playerData);
+        const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
 
-        const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow);
+        const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer);
 
         MovePlayerToTileController.main(gameScene, playerModel);
 
@@ -22,7 +20,25 @@ class AddPlayerController {
         gameScene.players[playerData.id] = playerModel;
     }
 
-    static createSpritePlayer(gameScene, playerData) {
+    static createPlayerContainer(gameScene, playerData) {
+        // Crear sombra
+        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
+        spriteShadow.setDepth(0);
+        spriteShadow.setInteractive({ useHandCursor: true });
+        spriteShadow.playerSocketId = playerData.id;
+
+        //remove listener if already exists
+        spriteShadow.removeAllListeners();
+        spriteShadow.on('pointerdown', () => {
+            const clickedPlayer = gameScene.players[spriteShadow.playerSocketId];
+            if (clickedPlayer) {
+                console.log("Jugador clickeado: ", clickedPlayer);
+                socket.emit(RequestSocketsEnum.USER_SELECT_USER, {
+                    socketId: spriteShadow.playerSocketId
+                });
+            }
+        });
+
         // Crear personaje
         const spritePlayer = gameScene.add.sprite(0, 0, "player_" + playerData.id);
         UserIdleAnimation.setDefaultFrame(
@@ -33,33 +49,12 @@ class AddPlayerController {
             playerData.avatar_id
         );
         spritePlayer.setDepth(1);
-        return spritePlayer;
-    }
 
-    static createSpriteShadow(gameScene, playerData) {
-        // Crear sombra
-        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
-        spriteShadow.setDepth(0);
-        spriteShadow.playerSocketId = playerData.id;
-        return spriteShadow;
-    }
+        // Crear contenedor
+        const playerContainer = gameScene.add.container(0, 0, [spriteShadow, spritePlayer]);
+        playerContainer.setSize(spritePlayer.width, spritePlayer.height + spriteShadow.height);
 
-    static eventShadowClick(spriteShadow, gameScene) {
-        // Configurar evento de clic en la sombra
-        spriteShadow.setInteractive(); // Hacer interactiva la sombra
-        spriteShadow.removeListener("pointerdown");
-        spriteShadow.on('pointerdown', () => {
-            const clickedPlayer = gameScene.players[spriteShadow.playerSocketId];
-            if (clickedPlayer) {
-                console.log("Jugador clickeado: ", clickedPlayer);
-                console.log(`Jugador clickeado: ID=${spriteShadow.playerSocketId}`);
-                // Aquí puedes hacer algo con el jugador, como mostrar su nombre
-
-                socket.emit(RequestSocketsEnum.USER_SELECT_USER, {
-                    socketId: spriteShadow.playerSocketId
-                });
-            }
-        });
+        return { playerContainer, spritePlayer, spriteShadow };
     }
 }
 

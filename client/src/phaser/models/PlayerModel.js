@@ -1,5 +1,5 @@
 export default class PlayerModel {
-    constructor(data, spritePlayer, spriteShadow) {
+    constructor(data, spritePlayer, spriteShadow, playerContainer) {
         this.socketId = data.id;
         this.position = {
             x: data.x,
@@ -10,5 +10,6 @@ export default class PlayerModel {
         this.animations = data.animations;
         this.sprite_player = spritePlayer;
         this.sprite_shadow = spriteShadow;
+        this.playerContainer = playerContainer;
     }
 }

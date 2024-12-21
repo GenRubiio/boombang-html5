@@ -5,116 +5,141 @@ class AnimationsController {
     }
 
     static async playerAnimations(gameScene, animations, animationsData) {
+        // Cargamos en paralelo los dos tipos de animaciones (walk, interaction) si existen
+        const tasks = [];
+
         if (animations.walk) {
-            await this.animations(gameScene, animations.walk, animationsData);
+            tasks.push(this.animations(gameScene, animations.walk, animationsData));
         }
         if (animations.interaction) {
-            await this.animations(gameScene, animations.interaction, animationsData);
+            tasks.push(this.animations(gameScene, animations.interaction, animationsData));
         }
+
+        await Promise.all(tasks);
     }
 
     static async animations(gameScene, animations, animationsData) {
-        console.log("animationsData: ", animationsData);
-        for (const animation of animations) {
-            console.log(`Loading animation: `, animation);
+        // Cargar y crear todas las animaciones en paralelo
+        // De esta manera, evitamos bloqueos secuenciales
+        const tasks = animations.map((animation) => this.prepareAnimation(gameScene, animation, animationsData));
+        await Promise.all(tasks);
+    }
 
-            const key = animation.key;
-            const base64 = animation.base64;
-            const frames = animationsData[animation.link].frames;
-            const frameRate = animationsData[animation.link].frameRate;
-            const frameWidth = animationsData[animation.link].frameWidth;
-            const frameHeight = animationsData[animation.link].frameHeight;
-            const has_atlas = animationsData[animation.link].has_atlas;
-            const atlas = animationsData[animation.link].atlas;
-            const repeat = animationsData[animation.link].repeat;
+    /**
+     * Prepara (carga y crea) una animación individual.
+     * Se ejecuta en paralelo para cada animación.
+     */
+    static async prepareAnimation(gameScene, animation, animationsData) {
+        const key = animation.key;
+        const base64 = animation.base64;
+        const config = animationsData[animation.link];
 
-            if (!gameScene.textures.exists(key)) {
-                console.log(`Loading image for key: ${key}`);
+        if (!config) {
+            // Evitar errores si no existe la config en animationsData
+            console.warn(`No existe configuración para la animación: ${animation.link}`);
+            return;
+        }
 
-                if (has_atlas) {
-                    // Usar el atlas
-                    await this.loadAtlasImage(gameScene, key, base64, atlas);
-                } else {
-                    // Usar la antigua forma de spritesheet
-                    await this.loadBase64Image(gameScene, key, base64, frameWidth, frameHeight);
-                }
+        const { frames, frameRate, frameWidth, frameHeight, has_atlas, atlas, repeat } = config;
+
+        // Primero, si la textura no está en Phaser, la cargamos
+        if (!gameScene.textures.exists(key)) {
+            if (has_atlas) {
+                // Cargamos como atlas
+                await this.loadAtlasImage(gameScene, key, base64, atlas);
+            } else {
+                // Cargamos como spritesheet
+                await this.loadBase64Image(gameScene, key, base64, frameWidth, frameHeight);
             }
+        }
 
-            // Crear la animación si no existe
-            if (!gameScene.anims.exists(key)) {
-                console.log(`Creating animation: ${key}`);
+        // Luego, creamos la animación en caso de que no exista
+        if (!gameScene.anims.exists(key)) {
+            let animFrames;
 
-                let animFrames;
-
-                if (has_atlas) {
-                    // Si sabes que tus frames en el atlas se llaman por índice (ej: "frame_0", "frame_1", ...)
-                    // usa generateFrameNames
-                    animFrames = gameScene.anims.generateFrameNames(key, {
-                        start: frames.start,
-                        end: frames.end,
-                        // Ajusta prefix y zeroPad según la convención de nombres en tu atlas.
-                        // Por ejemplo, si tus frames en el atlas se llaman "left_punch_doy_0000", "left_punch_doy_0001", etc.:
-                        prefix: '',
-                        zeroPad: 0
-                    });
-                } else {
-                    // Spritesheet normal
-                    animFrames = gameScene.anims.generateFrameNumbers(key, frames);
-                }
-
-                gameScene.anims.create({
-                    key: key,
-                    frames: animFrames,
-                    frameRate: frameRate,
-                    repeat: repeat
+            if (has_atlas) {
+                // Generamos frames usando los nombres en el atlas
+                animFrames = gameScene.anims.generateFrameNames(key, {
+                    start: frames.start,
+                    end: frames.end,
+                    prefix: '',
+                    zeroPad: 0
                 });
+            } else {
+                // Spritesheet normal
+                animFrames = gameScene.anims.generateFrameNumbers(key, frames);
             }
+
+            gameScene.anims.create({
+                key: key,
+                frames: animFrames,
+                frameRate: frameRate,
+                repeat: repeat
+            });
         }
     }
 
-    // Método para cargar imágenes base64 con tamaño (spritesheet)
+    /**
+     * Carga una imagen base64 como spritesheet, usando frameWidth y frameHeight
+     */
     static loadBase64Image(gameScene, key, base64, frameWidth, frameHeight) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const img = new Image();
             img.src = base64;
+
             img.onload = () => {
-                gameScene.textures.addSpriteSheet(key, img, {
-                    frameWidth: frameWidth,
-                    frameHeight: frameHeight,
-                });
-                resolve();
+                try {
+                    gameScene.textures.addSpriteSheet(key, img, {
+                        frameWidth: frameWidth,
+                        frameHeight: frameHeight
+                    });
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
             };
+
+            img.onerror = (err) => reject(err);
         });
     }
 
-    // Método para cargar atlas en memoria
+    /**
+     * Carga una imagen base64 como atlas, usando la definición (atlasJsonStr)
+     */
     static loadAtlasImage(gameScene, key, base64, atlasJsonStr) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const img = new Image();
             img.src = base64;
+
             img.onload = () => {
-                const atlasData = JSON.parse(atlasJsonStr);
-                // Añade el atlas como textura. Esto creará frames con nombres específicos
-                // según lo que defina atlasData.frames
-                gameScene.textures.addAtlas(key, img, atlasData);
-                resolve();
+                try {
+                    const atlasData = JSON.parse(atlasJsonStr);
+                    gameScene.textures.addAtlas(key, img, atlasData);
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
             };
+
+            img.onerror = (err) => reject(err);
         });
     }
 
-    // Este método extrae el prefijo común de los frames del atlas
-    // Suponiendo que todos los frames se llamen algo como "left_punch_doy_0000"
+    /**
+     * Método auxiliar para extraer el prefijo de frames de un atlas
+     * (solo útil si tus frames siguen un patrón, por ejemplo "left_punch_doy_0000")
+     */
     static getFramePrefixFromAtlas(atlasData) {
         const frameNames = Object.keys(atlasData.frames);
         if (frameNames.length === 0) return '';
-        // Toma el primer frame y elimina los dígitos al final para obtener el prefix
+
+        // Toma el primer frame y elimina dígitos al final para obtener el prefix
         // Ejemplo: "left_punch_doy_0000" => prefix "left_punch_doy_"
         const firstFrame = frameNames[0];
         const match = firstFrame.match(/^(.*?_)0+$/);
         if (match && match[1]) {
             return match[1];
         }
-        // Si no hay un patrón tan claro, deberás ajustarlo según tus nombres reales
         return '';
     }
 }

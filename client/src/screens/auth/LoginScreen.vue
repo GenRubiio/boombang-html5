@@ -18,14 +18,13 @@ import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 export default {
   data() {
     return {
-      username: 'Gen',
-      password: '13021998Gen',
+      username: '',
+      password: '',
       errorMessage: '',
     };
   },
   methods: {
     login() {
-      this.$socket.off(RequestSocketsEnum.LOGIN);
       this.$socket.emit(RequestSocketsEnum.LOGIN, { username: this.username, password: this.password });
 
       this.$socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);

@@ -17,10 +17,12 @@
         />
       </div>
       <div>
-        <button type="submit">Registrarse</button>
+        <button type="submit" :disabled="isRegistering">
+          {{ isRegistering ? "Creando..." : "Registrarse" }}
+        </button>
       </div>
     </form>
-    <button @click="$emit('goToLogin')">
+    <button @click="$emit('goToLogin')" :disabled="isRegistering">
       ¿Ya tienes cuenta? Inicia sesión
     </button>
     <p v-if="errorMessage" style="color: red">{{ errorMessage }}</p>
@@ -37,16 +39,18 @@ export default {
     return {
       username: "",
       email: "",
-      password: "13021998Gen",
+      password: "",
       avatar_id: 1,
       avatar_colors: "00000000000000",
       errorMessage: "",
       successMessage: "",
+      isRegistering: false, // Nueva propiedad para deshabilitar el botón
     };
   },
   methods: {
     register() {
-      this.$socket.off(RequestSocketsEnum.REGISTER);
+      this.isRegistering = true;
+
       this.$socket.emit(RequestSocketsEnum.REGISTER, {
         username: this.username,
         email: this.email,
@@ -59,12 +63,14 @@ export default {
       this.$socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, () => {
         this.successMessage = "Registro exitoso. Ahora puedes iniciar sesión.";
         this.errorMessage = "";
+        this.isRegistering = false;
       });
 
       this.$socket.off(ResponseSocketsEnum.REGISTER_ERROR);
       this.$socket.on(ResponseSocketsEnum.REGISTER_ERROR, (error) => {
         this.errorMessage = error;
         this.successMessage = "";
+        this.isRegistering = false;
       });
     },
   },

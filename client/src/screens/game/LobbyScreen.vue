@@ -24,10 +24,8 @@ export default {
   },
   created() {
     // Solicitar las salas al conectarse
-    socket.off(RequestSocketsEnum.GET_PUBLIC_AREAS);
+    console.log("Solicitando salas...");
     socket.emit(RequestSocketsEnum.GET_PUBLIC_AREAS);
-
-    socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS);
     socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (areas) => {
       console.log(areas);
       this.areas = areas;
@@ -39,7 +37,6 @@ export default {
   },
   methods: {
     joinRoom(areaId) {
-      socket.off(RequestSocketsEnum.JOIN_PUBLIC_AREA);
       socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: areaId });
 
       socket.off(ResponseSocketsEnum.JOIN_PUBLIC_AREA);

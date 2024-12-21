@@ -17,21 +17,23 @@ class SendUppercutController {
             if (!targetUser || targetUser.currentArea.id !== user.currentArea.id) {
                 throw new Error('Target user not found or not in the same area');
             }
-            // Diferencias de coordenadas
+
+            // Aquí NO revisamos si finalTarget es null, ya que queremos permitir el uppercut en movimiento.
             const deltaX = user.currentAreaPosition.x - targetUser.currentAreaPosition.x;
             const deltaY = user.currentAreaPosition.y - targetUser.currentAreaPosition.y;
 
-            // Verificar si está a la derecha o izquierda
+            // Comprobar si la posición es la adecuada para el uppercut (ajusta la lógica a tu juego)
             if ((deltaX === -1 && deltaY === 1) || (deltaX === 1 && deltaY === -1)) {
                 if (!user.isActionBlocked(AnimationEnum.UPPERCUT) && !targetUser.isActionBlocked(AnimationEnum.UPPERCUT)) {
-                    // Bloquear a ambos usuarios
+                    // Cancelar movimiento actual de ambos (opcional, si corresponde a tu lógica)
                     user.cancelMovement();
                     targetUser.cancelMovement();
 
+                    // Bloquear acciones para uppercut
                     UserBlockActionsTask.blockByUppercutSend(user);
                     UserBlockActionsTask.blockByUppercutReceive(targetUser, io);
 
-                    // Emitir el resultado a la sala
+                    // Emitir el uppercut sin esperar que estén quietos
                     user.currentArea.emit(ResponseSocketsEnum.SEND_UPPERCUT, {
                         attacker: user.socket.id,
                         receiver: targetUser.socket.id,

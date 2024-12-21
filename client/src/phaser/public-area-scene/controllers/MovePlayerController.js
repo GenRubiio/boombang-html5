@@ -7,20 +7,10 @@ class MovePlayerController {
         if (!path || path.length === 0 || !gameScene.players[socketId]) return;
 
         const playerModel = gameScene.players[socketId];
-        const tileWidth = 65;
-        const tileHeight = 33;
 
-        // Detener y eliminar correctamente los tweens existentes
-        if (playerModel.currentTween) {
-            playerModel.currentTween.stop();
-            playerModel.currentTween = null;
-        }
-        if (playerModel.currentShadowTween) {
-            playerModel.currentShadowTween.stop();
-            playerModel.currentShadowTween = null;
-        }
-        gameScene.tweens.killTweensOf(playerModel.sprite_player);
-        gameScene.tweens.killTweensOf(playerModel.sprite_shadow);
+        // Detener tweens existentes
+        if (playerModel.currentTween) playerModel.currentTween.stop();
+        gameScene.tweens.killTweensOf(playerModel.playerContainer);
 
         // Guardar el path y reiniciar el índice
         playerModel.path = path;
@@ -32,14 +22,7 @@ class MovePlayerController {
 
     static moveToNextStep(socketId, gameScene, isLastStep) {
         const playerModel = gameScene.players[socketId];
-        if (!playerModel) return;
-
-        if (playerModel.pathIndex >= playerModel.path.length) {
-            // Ha llegado al destino
-            playerModel.currentTween = null;
-            playerModel.currentShadowTween = null;
-            return;
-        }
+        if (!playerModel || playerModel.pathIndex >= playerModel.path.length) return;
 
         const step = playerModel.path[playerModel.pathIndex];
         const tileWidth = 65;
@@ -52,26 +35,19 @@ class MovePlayerController {
         // Actualizar la posición del jugador
         playerModel.position = { x: step.x, y: step.y, z: step.z };
 
-        // Tween para la sombra
-        const shadowTween = gameScene.tweens.add({
-            targets: playerModel.sprite_shadow,
+        // Mover el contenedor
+        const playerTween = gameScene.tweens.add({
+            targets: playerModel.playerContainer,
             x: centerX,
             y: centerY,
             duration: AnimationsTimerEnum.WALK,
             onUpdate: () => {
-                playerModel.sprite_shadow.setDepth(playerModel.sprite_shadow.y);
-            }
-        });
+                if (!playerModel.playerContainer) return;
+                
+                // Actualizar profundidad en base a la posición Y
+                playerModel.playerContainer.setDepth(playerModel.playerContainer.y);
 
-        // Tween para el personaje
-        const playerTween = gameScene.tweens.add({
-            targets: playerModel.sprite_player,
-            x: centerX,
-            y: centerY - (playerModel.sprite_shadow.displayHeight / 2) - (playerModel.sprite_player.displayHeight / 2) + 15,
-            duration: AnimationsTimerEnum.WALK,
-            onUpdate: () => {
-                //if player exists, update its depth
-                if (!playerModel.sprite_player) return;
+                // Animar al personaje durante el movimiento
                 UserWalkAnimation.main(
                     gameScene,
                     socketId,
@@ -79,12 +55,13 @@ class MovePlayerController {
                     step.z,
                     playerModel.avatar_id
                 );
-                playerModel.sprite_player.setDepth(playerModel.sprite_shadow.y);
             },
             onComplete: () => {
-                if (!playerModel.sprite_player) return;
-                // Al completar el movimiento, avanzar al siguiente paso
+                if (!playerModel.playerContainer) return;
+
+                // Detener animación actual
                 playerModel.sprite_player.stop();
+
                 if (isLastStep) {
                     this.stopAnimation(
                         gameScene,
@@ -93,17 +70,15 @@ class MovePlayerController {
                         step.z,
                         playerModel.avatar_id
                     );
-                }
-                else {
+                } else {
                     playerModel.pathIndex++;
                     this.moveToNextStep(socketId, gameScene, isLastStep);
                 }
             }
         });
 
-        // Almacenar los tweens actuales
+        // Almacenar tween actual
         playerModel.currentTween = playerTween;
-        playerModel.currentShadowTween = shadowTween;
     }
 
     static stopAnimation(gameScene, socketId, spritePlayer, direction, avatarId) {
