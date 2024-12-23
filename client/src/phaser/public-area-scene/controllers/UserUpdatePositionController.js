@@ -41,7 +41,7 @@ class UserUpdatePositionController {
         console.log(`Updating player ${socketId} position/direction to:`, position);
 
         // Ahora que el jugador está posicionado correctamente, cambiar el frame idle según la dirección
-        UserIdleAnimation.playDefaultFrame(
+        UserIdleAnimation.main(
             gameScene,
             socketId,
             playerModel.sprite_player,

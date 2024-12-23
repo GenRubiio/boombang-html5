@@ -84,7 +84,7 @@ class MovePlayerController {
     static stopAnimation(gameScene, socketId, spritePlayer, direction, avatarId) {
         if (!spritePlayer || !spritePlayer.anims) {
             console.error("Jugador no válido al detener animación.");
-            UserIdleAnimation.setDefaultFrame(
+            UserIdleAnimation.main(
                 gameScene,
                 socketId,
                 spritePlayer,
@@ -100,7 +100,7 @@ class MovePlayerController {
         }
 
         // Establecer frame por defecto
-        UserIdleAnimation.setDefaultFrame(
+        UserIdleAnimation.main(
             gameScene,
             socketId,
             spritePlayer,

@@ -3,20 +3,11 @@ import AnimationUtils from "../utils/AnimationUtils.js";
 
 class UserIdleAnimation {
     /**
-    * Configura el sprite en el frame inicial según la dirección
-    */
-    static setDefaultFrame(gameScene, socketId, spritePlayer, direction, avatarId) {
-        const textureKey = this.getTextureKey(direction);
-        AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, textureKey);
-        spritePlayer.setTexture(socketId + "_" + textureKey);
-    }
-
-    /**
      * Inicia la animación según la dirección
      */
-    static playDefaultFrame(gameScene, socketId, spritePlayer, direction, avatarId) {
+    static main(gameScene, socketId, spritePlayer, direction, avatarId) {
         const animationKey = this.getTextureKey(direction);
-        AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, animationKey);
+        AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, animationKey, "walk_singleAtlas");
         spritePlayer.play(socketId + "_" + animationKey);
     }
 
@@ -26,21 +17,21 @@ class UserIdleAnimation {
     static getTextureKey(direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
-                return "leftdown_idle_atlas_0";
+                return "leftdown_idle";
             case DirectionEnum.DOWN:
-                return "down_idle_atlas_0";
+                return "down_idle";
             case DirectionEnum.DOWN_RIGHT:
-                return "rightdown_idle_atlas_0";
+                return "rightdown_idle";
             case DirectionEnum.RIGHT:
-                return "right_idle_atlas_0";
+                return "right_idle";
             case DirectionEnum.UP_RIGHT:
-                return "rightup_idle_atlas_0";
+                return "rightup_idle";
             case DirectionEnum.UP:
-                return "up_idle_atlas_0";
+                return "up_idle";
             case DirectionEnum.UP_LEFT:
-                return "leftup_idle_atlas_0";
+                return "leftup_idle";
             case DirectionEnum.LEFT:
-                return "left_idle_atlas_0";
+                return "left_idle";
         }
     }
 }

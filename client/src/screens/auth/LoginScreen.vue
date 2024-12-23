@@ -18,8 +18,8 @@ import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 export default {
   data() {
     return {
-      username: '',
-      password: '',
+      username: 'Gen',
+      password: '13021998Gen',
       errorMessage: '',
     };
   },

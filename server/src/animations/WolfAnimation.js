@@ -2,6 +2,7 @@ const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const fs = require('fs');
 const path = require('path');
+const AvatarEnum = require('../enums/AvatarEnum');
 
 class WolfAnimation {
     static async main(user) {
@@ -18,29 +19,16 @@ class WolfAnimation {
 
     static async getInteractionAnimations(user) {
         try {
-            const folder = "animations/interactions";
-            return [
-                {
-                    key: user.socket.id + '_' + 'left_punch_doy_atlas_0',
-                    base64: this.getBase64('left_punch_doy_atlas_0.png', folder, user),
-                    link: 'left_punch_doy_atlas_0',
+            return {
+                punch_doy_singleAtlas: {
+                    base64: this.getBase64('punch_doy_singleAtlas.png', "animations/punch_doy", user),
+                    atlas: this.getAtlas('punch_doy_singleAtlas.json', "interactions/punch_doy", AvatarEnum.WOLF)
                 },
-                {
-                    key: user.socket.id + '_' + 'right_punch_doy_atlas_0',
-                    base64: this.getBase64('right_punch_doy_atlas_0.png', folder, user),
-                    link: 'right_punch_doy_atlas_0',
+                punch_rec_singleAtlas: {
+                    base64: this.getBase64('punch_rec_singleAtlas.png', "animations/punch_rec", user),
+                    atlas: this.getAtlas('punch_rec_singleAtlas.json', "interactions/punch_rec", AvatarEnum.WOLF)
                 },
-                {
-                    key: user.socket.id + '_' + 'left_punch_rec_atlas_0',
-                    base64: this.getBase64('left_punch_rec_atlas_0.png', folder, user),
-                    link: 'left_punch_rec_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'right_punch_rec_atlas_0',
-                    base64: this.getBase64('right_punch_rec_atlas_0.png', folder, user),
-                    link: 'right_punch_rec_atlas_0',
-                },
-            ];
+            };
         } catch (err) {
             console.log(err);
             logger.log(`Error getting wolf animation: ${err.message}`, 'error');
@@ -50,89 +38,12 @@ class WolfAnimation {
 
     static async getWalkAnimations(user) {
         try {
-            const folder = "animations/walk";
-            return [
-                {
-                    key: user.socket.id + '_' + 'up_walk_atlas_0',
-                    base64: this.getBase64('up_walk_atlas_0.png', folder, user),
-                    link: 'up_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'up_idle_atlas_0',
-                    base64: this.getBase64('up_idle_atlas_0.png', folder, user),
-                    link: 'up_idle_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'leftup_walk_atlas_0',
-                    base64: this.getBase64('leftup_walk_atlas_0.png', folder, user),
-                    link: 'leftup_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'rightup_walk_atlas_0',
-                    base64: this.getBase64('rightup_walk_atlas_0.png', folder, user),
-                    link: 'rightup_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'leftup_idle_atlas_0',
-                    base64: this.getBase64('leftup_idle_atlas_0.png', folder, user),
-                    link: 'leftup_idle_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'rightup_idle_atlas_0',
-                    base64: this.getBase64('rightup_idle_atlas_0.png', folder, user),
-                    link: 'rightup_idle_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'leftdown_walk_atlas_0',
-                    base64: this.getBase64('leftdown_walk_atlas_0.png', folder, user),
-                    link: 'leftdown_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'rightdown_walk_atlas_0',
-                    base64: this.getBase64('rightdown_walk_atlas_0.png', folder, user),
-                    link: 'rightdown_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'leftdown_idle_atlas_0',
-                    base64: this.getBase64('leftdown_idle_atlas_0.png', folder, user),
-                    link: 'leftdown_idle_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'rightdown_idle_atlas_0',
-                    base64: this.getBase64('rightdown_idle_atlas_0.png', folder, user),
-                    link: 'rightdown_idle_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'left_walk_atlas_0',
-                    base64: this.getBase64('left_walk_atlas_0.png', folder, user),
-                    link: 'left_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'right_walk_atlas_0',
-                    base64: this.getBase64('right_walk_atlas_0.png', folder, user),
-                    link: 'right_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'left_idle_atlas_0',
-                    base64: this.getBase64('left_idle_atlas_0.png', folder, user),
-                    link: 'left_idle_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'right_idle_atlas_0',
-                    base64: this.getBase64('right_idle_atlas_0.png', folder, user),
-                    link: 'right_idle_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'down_walk_atlas_0',
-                    base64: this.getBase64('down_walk_atlas_0.png', folder, user),
-                    link: 'down_walk_atlas_0',
-                },
-                {
-                    key: user.socket.id + '_' + 'down_idle_atlas_0',
-                    base64: this.getBase64('down_idle_atlas_0.png', folder, user),
-                    link: 'down_idle_atlas_0',
-                },
-            ];
+            return {
+                walk_singleAtlas: {
+                    base64: this.getBase64('walk_singleAtlas.png', "animations/walk", user),
+                    atlas: this.getAtlas('walk_singleAtlas.json', "walk", AvatarEnum.WOLF)
+                }
+            };
         } catch (err) {
             console.log(err);
             logger.log(`Error getting wolf animation: ${err.message}`, 'error');
@@ -156,6 +67,26 @@ class WolfAnimation {
 
             const imageBuffer = fs.readFileSync(filePath);
             return `data:image/png;base64,${imageBuffer.toString('base64')}`;
+        } catch (err) {
+            logger.log(`Error reading file ${file}: ${err.message}`, 'error');
+            return null;
+        }
+    }
+
+    static getAtlas(file, folder, avatar) {
+        try {
+            const filePath = path.join(
+                __dirname,
+                '../../assets/animations/avatars/' + avatar,
+                folder,
+                file
+            );
+
+            if (!fs.existsSync(filePath)) {
+                throw new Error(`File not found: ${filePath}`);
+            }
+
+            return fs.readFileSync(filePath, 'utf8');
         } catch (err) {
             logger.log(`Error reading file ${file}: ${err.message}`, 'error');
             return null;

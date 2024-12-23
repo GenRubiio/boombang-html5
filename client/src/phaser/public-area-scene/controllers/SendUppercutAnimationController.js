@@ -51,7 +51,7 @@ class SendUppercutAnimationController {
 
         // Ahora ambos están forzados a la posición lógica del servidor
         // Ajustar el frame idle del atacante antes de la animación
-        UserIdleAnimation.setDefaultFrame(
+        UserIdleAnimation.main(
             gameScene,
             data.attacker,
             attacker.sprite_player,
@@ -73,7 +73,7 @@ class SendUppercutAnimationController {
         );
 
         attackerSprite.once("animationcomplete", () => {
-            UserIdleAnimation.playDefaultFrame(
+            UserIdleAnimation.main(
                 gameScene,
                 data.attacker,
                 attacker.sprite_player,
