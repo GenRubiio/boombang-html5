@@ -55,7 +55,7 @@ class AnimationsController {
         if (!gameScene.textures.exists(uidAtlas)) {
             console.log(`Loading image for key: ${uidAtlas}`);
             // Encolar la carga de la textura usando p-queue
-            await AnimationsController.queue.add(() => this.loadAtlasImage(gameScene, uidAtlas, animationBase64, animationAtlas, atlasName));
+            await AnimationsController.queue.add(() => this.loadAtlasImage(gameScene, uidAtlas, animationBase64, animationAtlas));
         }
 
         if (animationsDataContent && typeof animationsDataContent === 'object') {
@@ -67,26 +67,24 @@ class AnimationsController {
 
                 console.log(`UID Animation generado: ${uidAnimation}`);
 
-                gameScene.time.delayedCall(10, () => {
-                    if (!gameScene.anims.exists(uidAnimation)) {
-                        console.log(`Creating animation: ${uidAnimation}`);
+                if (!gameScene.anims.exists(uidAnimation)) {
+                    console.log(`Creating animation: ${uidAnimation}`);
 
-                        console.log("animation atlas: ", uidAtlas);
-                        const animFrames = gameScene.anims.generateFrameNames(uidAtlas, {
-                            start: frames.start,
-                            end: frames.end,
-                            prefix: prefix,
-                            // zeroPad: 0
-                        });
+                    console.log("animation atlas: ", uidAtlas);
+                    const animFrames = gameScene.anims.generateFrameNames(uidAtlas, {
+                        start: frames.start,
+                        end: frames.end,
+                        prefix: prefix,
+                        // zeroPad: 0
+                    });
 
-                        gameScene.anims.create({
-                            key: uidAnimation,
-                            frames: animFrames,
-                            frameRate: frameRate,
-                            repeat: repeat
-                        });
-                    }
-                });
+                    gameScene.anims.create({
+                        key: uidAnimation,
+                        frames: animFrames,
+                        frameRate: frameRate,
+                        repeat: repeat
+                    });
+                }
             });
         } else {
             console.warn(`No se encontró configuración de animaciones para la clave: ${animationKey}`);
@@ -101,35 +99,32 @@ class AnimationsController {
      * @param {string} atlasJsonStr - Datos del atlas en formato JSON.
      * @returns {Promise<void>}
      */
-    static loadAtlasImage(gameScene, key, base64, atlasJsonStr, atlasName) {
-        let imagePath = '';
-        let atlasPath = '';
-        console.log("meta url: ", import.meta.url);
-        switch (atlasName) {
-            //if key contains "walk_singleAtlas"
-            case "walk_singleAtlas":
-                console.log("Loading image for key: ", key);
-                //img esta en ruta public/game/users/1/walk_singleAtlas.png
-                imagePath = new URL('../../../assets/game/users/1/walk_singleAtlas.png', import.meta.url).href;
-                atlasPath = new URL('../../../assets/game/users/1/walk_singleAtlas.json', import.meta.url).href;
-                break;
-         
-        }
+    static loadAtlasImage(gameScene, key, base64, atlasJsonStr) {
         return new Promise((resolve, reject) => {
-            gameScene.load.atlas(key, imagePath, atlasPath);
-
-            // Escucha el evento de carga completa
-            gameScene.load.once('complete', () => {
+            if (!base64 || !atlasJsonStr) {
+                console.warn(`Base64 o atlasJsonStr faltante para el atlas: ${key}`);
                 resolve();
-            });
+                return;
+            }
 
-            gameScene.load.once('error', (error) => {
-                console.error(`Error al cargar el atlas ${key}:`, error);
-                reject(error);
-            });
+            const img = new Image();
+            img.src = base64;
 
-            // Inicia el cargador dinámico
-            gameScene.load.start();
+            img.onload = () => {
+                try {
+                    const atlasData = JSON.parse(atlasJsonStr);
+                    gameScene.textures.addAtlas(key, img, atlasData);
+                    resolve();
+                } catch (err) {
+                    console.error(`Error al parsear atlas JSON para ${key}: ${err.message}`);
+                    reject(err);
+                }
+            };
+
+            img.onerror = (err) => {
+                console.error(`Error al cargar la imagen para el atlas ${key}:`, err);
+                reject(err);
+            };
         });
     }
 }
