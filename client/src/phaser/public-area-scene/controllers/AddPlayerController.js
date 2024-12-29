@@ -8,17 +8,15 @@ import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 class AddPlayerController {
     static async main(gameScene, playerData) {
         if (gameScene.players[playerData.id]) return;
-        await AnimationsController.main(gameScene, playerData).then(() => {
+        await AnimationsController.main(gameScene, playerData);
+        const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
 
-            const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
+        const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer);
 
-            const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer);
+        MovePlayerToTileController.main(gameScene, playerModel);
 
-            MovePlayerToTileController.main(gameScene, playerModel);
-
-            // Almacenar jugador
-            gameScene.players[playerData.id] = playerModel;
-        });
+        // Almacenar jugador
+        gameScene.players[playerData.id] = playerModel;
     }
 
     static createPlayerContainer(gameScene, playerData) {
