@@ -1,5 +1,8 @@
 {
     "up_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/up_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/up_walk.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 15
@@ -12,6 +15,9 @@
         "repeat": -1
     },
     "up_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/up_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/up_idle.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 1
@@ -24,6 +30,9 @@
         "repeat": 0
     },
     "leftup_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/leftup_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/leftup_walk.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 14
@@ -36,6 +45,9 @@
         "repeat": -1
     },
     "rightup_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/leftup_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/leftup_walk.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 14
@@ -48,6 +60,9 @@
         "repeat": -1
     },
     "leftup_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/leftup_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/leftup_idle.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 1
@@ -60,6 +75,9 @@
         "repeat": 0
     },
     "rightup_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/rightup_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/rightup_idle.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 1
@@ -72,6 +90,9 @@
         "repeat": 0
     },
     "leftdown_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/leftdown_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/leftdown_walk.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 15
@@ -84,6 +105,9 @@
         "repeat": -1
     },
     "rightdown_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/rightdown_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/rightdown_walk.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 15
@@ -96,6 +120,9 @@
         "repeat": -1
     },
     "leftdown_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/leftdown_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/leftdown_idle.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 1
@@ -108,6 +135,9 @@
         "repeat": 0
     },
     "rightdown_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/rightdown_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/rightdown_idle.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 1
@@ -120,6 +150,9 @@
         "repeat": 0
     },
     "left_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/left_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/left_walk.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 15
@@ -132,6 +165,9 @@
         "repeat": -1
     },
     "right_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/right_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/right_walk.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 15
@@ -144,6 +180,9 @@
         "repeat": -1
     },
     "left_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/left_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/left_idle.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 1
@@ -156,6 +195,9 @@
         "repeat": 0
     },
     "right_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/right_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/right_idle.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 1
@@ -168,6 +210,9 @@
         "repeat": 0
     },
     "down_walk": {
+        "path_spritesheet": "assets/game/avatars/1/animations/down_walk.png",
+        "path_sprites": "assets/game/avatars/1/animations/down_walk.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 15
@@ -180,6 +225,9 @@
         "repeat": -1
     },
     "down_idle": {
+        "path_spritesheet": "assets/game/avatars/1/animations/down_idle.png",
+        "path_sprites": "assets/game/avatars/1/animations/down_idle.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 1
@@ -192,6 +240,9 @@
         "repeat": 0
     },
     "left_punch_doy": {
+        "path_spritesheet": "assets/game/avatars/1/animations/left_punch_doy.png",
+        "path_sprites": "assets/game/avatars/1/animations/left_punch_doy.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 187
@@ -204,6 +255,9 @@
         "repeat": 0
     },
     "right_punch_doy": {
+        "path_spritesheet": "assets/game/avatars/1/animations/right_punch_doy.png",
+        "path_sprites": "assets/game/avatars/1/animations/right_punch_doy.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 187
@@ -216,6 +270,9 @@
         "repeat": 0
     },
     "left_punch_rec": {
+        "path_spritesheet": "assets/game/avatars/1/animations/left_punch_rec.png",
+        "path_sprites": "assets/game/avatars/1/animations/left_punch_rec.json",
+        "flip_horizontally": false,
         "frames": {
             "start": 1,
             "end": 400
@@ -228,6 +285,9 @@
         "repeat": 0
     },
     "right_punch_rec": {
+        "path_spritesheet": "assets/game/avatars/1/animations/right_punch_rec.png",
+        "path_sprites": "assets/game/avatars/1/animations/right_punch_rec.json",
+        "flip_horizontally": true,
         "frames": {
             "start": 1,
             "end": 400
