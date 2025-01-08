@@ -33,10 +33,13 @@ export default class PublicAreaScene extends Phaser.Scene {
         this.load.image("player", playerImg);
         this.load.image("loading", loadingImage);
 
-        AvatarAnimationsLoad.main(this); // Cargar animaciones de avatares
+        AvatarAnimationsLoad.preload(this);
     }
 
     create() {
+        // Aquí ya están cargados los atlases, así que podemos crear las animaciones
+        AvatarAnimationsLoad.create(this);
+        
         PublicAreaSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         PublicAreaSceneResponseSockets.main(this); // Inicializar controladores de sockets
 

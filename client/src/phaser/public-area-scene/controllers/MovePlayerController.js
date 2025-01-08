@@ -1,6 +1,6 @@
 import UserIdleAnimation from "../animations/UserIdleAnimation.js";
 import UserWalkAnimation from "../animations/UserWalkAnimation.js";
-import AnimationsTimerEnum from "../enums/AnimationsTimerEnum.js";
+import AnimationsTimerEnum from "../../enums/AnimationsTimerEnum.js";
 
 class MovePlayerController {
     static main(gameScene, socketId, path, isLastStep) {
