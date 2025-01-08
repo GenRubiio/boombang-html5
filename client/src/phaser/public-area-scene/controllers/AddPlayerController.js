@@ -1,6 +1,5 @@
 import MovePlayerToTileController from "./MovePlayerToTileController.js";
 import UserIdleAnimation from "../animations/UserIdleAnimation.js";
-import AnimationsController from "./AnimationsController.js";
 import PlayerModel from "../../models/PlayerModel.js";
 import socket from "../../../sockets/socket"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
@@ -8,7 +7,6 @@ import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 class AddPlayerController {
     static async main(gameScene, playerData) {
         if (gameScene.players[playerData.id]) return;
-        await AnimationsController.main(gameScene, playerData);
         const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
 
         const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer);
