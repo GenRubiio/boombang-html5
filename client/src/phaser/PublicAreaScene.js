@@ -10,6 +10,8 @@ import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAre
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
 import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 
+import AvatarAnimationsLoad from "./load/AvatarAnimationsLoad"; // Cargar animaciones de avatares
+
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
         super("PublicAreaScene");
@@ -30,6 +32,8 @@ export default class PublicAreaScene extends Phaser.Scene {
         this.load.image("shadow", shadowImg);
         this.load.image("player", playerImg);
         this.load.image("loading", loadingImage);
+
+        AvatarAnimationsLoad.main(this); // Cargar animaciones de avatares
     }
 
     create() {

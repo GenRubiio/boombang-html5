@@ -9,7 +9,7 @@ class UserIdleAnimation {
     static main(gameScene, socketId, spritePlayer, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
         AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, textureKey, "walk_singleAtlas");
-        spritePlayer.play(socketId + "_" + textureKey);
+        spritePlayer.play(textureKey);
     }
 
     /**
