@@ -1,31 +1,32 @@
 import DirectionEnum from "../../enums/DirectionEnum.js";
 import AnimationUtils from "../utils/AnimationUtils.js";
+import AvatarAnimationsEnum from "../../enums/AvatarAnimationsEnum.js";
 
 class UserWalkAnimation {
     static main(gameScene, socketId, spritePlayer, direction, avatarId) {
-        const animationKey = this.getTextureKey(direction);
-        AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, animationKey, "walk_singleAtlas");
-        spritePlayer.play(socketId + "_" + animationKey, true);
+        const textureKey = this.getTextureKey(direction);
+        AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, textureKey, "walk_singleAtlas");
+        spritePlayer.play(socketId + "_" + textureKey, true);
     }
 
     static getTextureKey(direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
-                return "leftdown_walk";
+                return AvatarAnimationsEnum.LEFTDOWN_WALK;
             case DirectionEnum.DOWN:
-                return "down_walk";
+                return AvatarAnimationsEnum.DOWN_WALK;
             case DirectionEnum.DOWN_RIGHT:
-                return "rightdown_walk";
+                return AvatarAnimationsEnum.RIGHTDOWN_WALK;
             case DirectionEnum.RIGHT:
-                return "right_walk";
+                return AvatarAnimationsEnum.RIGHT_WALK;
             case DirectionEnum.UP_RIGHT:
-                return "rightup_walk";
+                return AvatarAnimationsEnum.RIGHTUP_WALK;
             case DirectionEnum.UP:
-                return "up_walk";
+                return AvatarAnimationsEnum.UP_WALK;
             case DirectionEnum.UP_LEFT:
-                return "leftup_walk";
+                return AvatarAnimationsEnum.LEFTUP_WALK;
             case DirectionEnum.LEFT:
-                return "left_walk";
+                return AvatarAnimationsEnum.LEFT_WALK;
         }
     }
 }
