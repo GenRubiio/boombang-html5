@@ -1,4 +1,4 @@
-import DirectionEnum from "../enums/DirectionEnum.js";
+import DirectionEnum from "../../enums/DirectionEnum.js";
 import AnimationUtils from "../utils/AnimationUtils.js";
 
 class UserIdleAnimation {
