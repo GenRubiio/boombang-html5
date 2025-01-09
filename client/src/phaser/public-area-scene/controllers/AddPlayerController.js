@@ -8,11 +8,8 @@ class AddPlayerController {
     static async main(gameScene, playerData) {
         if (gameScene.players[playerData.id]) return;
         const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
-
         const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer);
-
         MovePlayerToTileController.main(gameScene, playerModel);
-
         // Almacenar jugador
         gameScene.players[playerData.id] = playerModel;
     }

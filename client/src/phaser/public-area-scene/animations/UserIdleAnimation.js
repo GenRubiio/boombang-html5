@@ -1,5 +1,6 @@
 import DirectionEnum from "../../enums/DirectionEnum.js";
 import AvatarAnimationsEnum from "../../enums/AvatarAnimationsEnum.js";
+import AnimationUtils from "../utils/AnimationUtils.js";
 
 class UserIdleAnimation {
     /**
@@ -7,9 +8,7 @@ class UserIdleAnimation {
      */
     static main(gameScene, socketId, spritePlayer, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
-        const animationData = window.avatars_config[avatarId][textureKey];
-        spritePlayer.setFlipX(animationData.flip_horizontally);
-        spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+        AnimationUtils.setSpriteConfig(avatarId, textureKey);
         spritePlayer.play(avatarId + "_" + textureKey);
     }
 
