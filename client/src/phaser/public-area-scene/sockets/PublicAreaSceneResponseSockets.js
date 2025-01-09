@@ -75,7 +75,7 @@ class PublicAreaSceneResponseSockets {
                 // Opcionalmente, si tienes una función específica para poner el frame idle
                 // según la dirección actual, puedes llamarla aquí.
                 // Por ejemplo:
-                // UserIdleAnimation.main(gameScene, id, spritePlayer, direction, playerModel.avatar_id);
+                // UserIdleAnimation.main(spritePlayer, direction, playerModel.avatar_id);
             }
         });
         // Escuchar cuando un jugador sale

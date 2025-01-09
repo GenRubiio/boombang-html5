@@ -3,9 +3,9 @@ import AvatarAnimationsEnum from "../../enums/AvatarAnimationsEnum.js";
 import AnimationUtils from "../utils/AnimationUtils.js";
 
 class UserWalkAnimation {
-    static main(gameScene, socketId, spritePlayer, direction, avatarId) {
+    static main(spritePlayer, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
-        AnimationUtils.setSpriteConfig(avatarId, textureKey);
+        AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
         spritePlayer.play(avatarId + "_" + textureKey, true);
     }
 

@@ -52,8 +52,6 @@ class SendUppercutAnimationController {
         // Ahora ambos están forzados a la posición lógica del servidor
         // Ajustar el frame idle del atacante antes de la animación
         UserIdleAnimation.main(
-            gameScene,
-            data.attacker,
             attacker.sprite_player,
             attacker.position.z,
             attacker.avatar_id
@@ -64,8 +62,6 @@ class SendUppercutAnimationController {
 
         // Animación de uppercut del atacante
         UserUppercutAnimation.main(
-            gameScene,
-            data.attacker,
             attackerSprite,
             data.direction,
             true,
@@ -74,8 +70,6 @@ class SendUppercutAnimationController {
 
         attackerSprite.once("animationcomplete", () => {
             UserIdleAnimation.main(
-                gameScene,
-                data.attacker,
                 attacker.sprite_player,
                 attacker.position.z,
                 attacker.avatar_id
@@ -84,8 +78,6 @@ class SendUppercutAnimationController {
 
         // Animación de recibir golpe del receptor
         UserUppercutAnimation.main(
-            gameScene,
-            data.receiver,
             receiverSprite,
             data.direction,
             false,

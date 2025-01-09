@@ -49,8 +49,6 @@ class MovePlayerController {
 
                 // Animar al personaje durante el movimiento
                 UserWalkAnimation.main(
-                    gameScene,
-                    socketId,
                     playerModel.sprite_player,
                     step.z,
                     playerModel.avatar_id
@@ -64,8 +62,6 @@ class MovePlayerController {
 
                 if (isLastStep) {
                     this.stopAnimation(
-                        gameScene,
-                        socketId,
                         playerModel.sprite_player,
                         step.z,
                         playerModel.avatar_id
@@ -81,12 +77,10 @@ class MovePlayerController {
         playerModel.currentTween = playerTween;
     }
 
-    static stopAnimation(gameScene, socketId, spritePlayer, direction, avatarId) {
+    static stopAnimation(spritePlayer, direction, avatarId) {
         if (!spritePlayer || !spritePlayer.anims) {
             console.error("Jugador no válido al detener animación.");
             UserIdleAnimation.main(
-                gameScene,
-                socketId,
                 spritePlayer,
                 direction,
                 avatarId
@@ -101,8 +95,6 @@ class MovePlayerController {
 
         // Establecer frame por defecto
         UserIdleAnimation.main(
-            gameScene,
-            socketId,
             spritePlayer,
             direction,
             avatarId

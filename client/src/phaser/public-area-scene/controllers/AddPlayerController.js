@@ -34,10 +34,8 @@ class AddPlayerController {
         });
 
         // Crear personaje
-        const spritePlayer = gameScene.add.sprite(0, 0, "player");
+        const spritePlayer = gameScene.add.sprite(0, 0, "player_" + playerData.id);
         UserIdleAnimation.main(
-            gameScene,
-            playerData.id,
             spritePlayer,
             playerData.z,
             playerData.avatar_id

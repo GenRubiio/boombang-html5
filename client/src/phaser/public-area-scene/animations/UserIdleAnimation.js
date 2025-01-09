@@ -6,9 +6,9 @@ class UserIdleAnimation {
     /**
      * Inicia la animación según la dirección
      */
-    static main(gameScene, socketId, spritePlayer, direction, avatarId) {
+    static main(spritePlayer, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
-        AnimationUtils.setSpriteConfig(avatarId, textureKey);
+        AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
         spritePlayer.play(avatarId + "_" + textureKey);
     }
 
