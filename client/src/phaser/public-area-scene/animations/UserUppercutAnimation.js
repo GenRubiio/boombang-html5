@@ -1,14 +1,18 @@
-import AnimationUtils from "../utils/AnimationUtils.js";
-
 class UserUppercutAnimation {
     static main(gameScene, socketId, spritePlayer, direction, attacker, avatarId) {
         if (attacker) {
-            AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, direction + "_punch_doy", "punch_doy_singleAtlas");
-            spritePlayer.play(socketId + "_" + direction + "_punch_doy");
+            const textureKey = direction + "_punch_doy";
+            const animationData = window.avatars_config[avatarId][textureKey];
+            spritePlayer.setFlipX(animationData.flip_horizontally);
+            spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+            spritePlayer.play(avatarId + "_" + textureKey);
         }
         else {
-            AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, direction + "_punch_rec", "punch_rec_singleAtlas");
-            spritePlayer.play(socketId + "_" + direction + "_punch_rec");
+            const textureKey = direction + "_punch_rec";
+            const animationData = window.avatars_config[avatarId][textureKey];
+            spritePlayer.setFlipX(animationData.flip_horizontally);
+            spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+            spritePlayer.play(avatarId + "_" + textureKey);
         }
     }
 }
