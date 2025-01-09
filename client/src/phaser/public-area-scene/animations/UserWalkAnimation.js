@@ -4,29 +4,31 @@ import AvatarAnimationsEnum from "../../enums/AvatarAnimationsEnum.js";
 
 class UserWalkAnimation {
     static main(gameScene, socketId, spritePlayer, direction, avatarId) {
-        const textureKey = this.getTextureKey(direction, avatarId);
-        //AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, textureKey, "walk_singleAtlas");
-        spritePlayer.play(textureKey, true);
+        const textureKey = this.getTextureKey(direction);
+        const animationData = window.avatars_config[avatarId][textureKey];
+        spritePlayer.setFlipX(animationData.flip_horizontally);
+        spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+        spritePlayer.play(avatarId + "_" + textureKey, true);
     }
 
-    static getTextureKey(direction, avatarId) {
+    static getTextureKey(direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
-                return avatarId + "_" + AvatarAnimationsEnum.LEFTDOWN_WALK;
+                return AvatarAnimationsEnum.LEFTDOWN_WALK;
             case DirectionEnum.DOWN:
-                return avatarId + "_" + AvatarAnimationsEnum.DOWN_WALK;
+                return AvatarAnimationsEnum.DOWN_WALK;
             case DirectionEnum.DOWN_RIGHT:
-                return avatarId + "_" + AvatarAnimationsEnum.RIGHTDOWN_WALK;
+                return AvatarAnimationsEnum.RIGHTDOWN_WALK;
             case DirectionEnum.RIGHT:
-                return avatarId + "_" + AvatarAnimationsEnum.RIGHT_WALK;
+                return AvatarAnimationsEnum.RIGHT_WALK;
             case DirectionEnum.UP_RIGHT:
-                return avatarId + "_" + AvatarAnimationsEnum.RIGHTUP_WALK;
+                return AvatarAnimationsEnum.RIGHTUP_WALK;
             case DirectionEnum.UP:
-                return avatarId + "_" + AvatarAnimationsEnum.UP_WALK;
+                return AvatarAnimationsEnum.UP_WALK;
             case DirectionEnum.UP_LEFT:
-                return avatarId + "_" + AvatarAnimationsEnum.LEFTUP_WALK;
+                return AvatarAnimationsEnum.LEFTUP_WALK;
             case DirectionEnum.LEFT:
-                return avatarId + "_" + AvatarAnimationsEnum.LEFT_WALK;
+                return AvatarAnimationsEnum.LEFT_WALK;
         }
     }
 }

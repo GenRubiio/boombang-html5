@@ -29,6 +29,7 @@ import LoginScreen from "./screens/auth/LoginScreen.vue";
 import RegisterScreen from "./screens/auth/RegisterScreen.vue";
 import LobbyScreen from "./screens/game/LobbyScreen.vue";
 import PublicAreaScreen from "./screens/game/areas/PublicAreaScreen.vue";
+import GamePreloaders from "./phaser/preloaders/GamePreloaders";
 
 export default {
   data() {
@@ -51,6 +52,7 @@ export default {
       this.currentScene = "register";
     },
     onLoginSuccess() {
+      GamePreloaders.main();
       this.currentScene = "lobby";
     },
     onJoinPublicArea(areaId) {

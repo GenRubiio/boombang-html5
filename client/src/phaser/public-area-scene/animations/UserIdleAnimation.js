@@ -7,32 +7,34 @@ class UserIdleAnimation {
      * Inicia la animación según la dirección
      */
     static main(gameScene, socketId, spritePlayer, direction, avatarId) {
-        const textureKey = this.getTextureKey(direction, avatarId);
-        //AnimationUtils.setOrigin(gameScene, spritePlayer, avatarId, textureKey, "walk_singleAtlas");
-        spritePlayer.play(textureKey);
+        const textureKey = this.getTextureKey(direction);
+        const animationData = window.avatars_config[avatarId][textureKey];
+        spritePlayer.setFlipX(animationData.flip_horizontally);
+        spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+        spritePlayer.play(avatarId + "_" + textureKey);
     }
 
     /**
      * Devuelve el key correcto de la animación o textura
      */
-    static getTextureKey(direction, avatarId) {
+    static getTextureKey(direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
-                return avatarId + "_" + AvatarAnimationsEnum.LEFTDOWN_IDLE;
+                return AvatarAnimationsEnum.LEFTDOWN_IDLE;
             case DirectionEnum.DOWN:
-                return avatarId + "_" + AvatarAnimationsEnum.DOWN_IDLE;
+                return AvatarAnimationsEnum.DOWN_IDLE;
             case DirectionEnum.DOWN_RIGHT:
-                return avatarId + "_" + AvatarAnimationsEnum.RIGHTDOWN_IDLE;
+                return AvatarAnimationsEnum.RIGHTDOWN_IDLE;
             case DirectionEnum.RIGHT:
-                return avatarId + "_" + AvatarAnimationsEnum.RIGHT_IDLE;
+                return AvatarAnimationsEnum.RIGHT_IDLE;
             case DirectionEnum.UP_RIGHT:
-                return avatarId + "_" + AvatarAnimationsEnum.RIGHTUP_IDLE;
+                return AvatarAnimationsEnum.RIGHTUP_IDLE;
             case DirectionEnum.UP:
-                return avatarId + "_" + AvatarAnimationsEnum.UP_IDLE;
+                return AvatarAnimationsEnum.UP_IDLE;
             case DirectionEnum.UP_LEFT:
-                return avatarId + "_" + AvatarAnimationsEnum.LEFTUP_IDLE;
+                return AvatarAnimationsEnum.LEFTUP_IDLE;
             case DirectionEnum.LEFT:
-                return avatarId + "_" + AvatarAnimationsEnum.LEFT_IDLE;
+                return AvatarAnimationsEnum.LEFT_IDLE;
         }
     }
 }
