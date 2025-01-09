@@ -8,6 +8,7 @@ import UserUpdatePositionController from "../controllers/UserUpdatePositionContr
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
 import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
+import UserMoveDeniedController from "../controllers/UserMoveDeniedController"
 
 class PublicAreaSceneResponseSockets {
     static main(gameScene) {
@@ -31,52 +32,7 @@ class PublicAreaSceneResponseSockets {
         });
         socket.on(ResponseSocketsEnum.USER_MOVE_DENIED, (data) => {
             const { id } = data;
-            if (gameScene.players[id]) {
-                const playerModel = gameScene.players[id];
-                const spritePlayer = playerModel.sprite_player;
-                const spriteShadow = playerModel.sprite_shadow;
-                const direction = playerModel.position.z;
-                const avatarId = playerModel.avatar_id;
-        
-                // Detener Tweens activos del playerContainer
-                if (playerModel.currentTween) {
-                    playerModel.currentTween.stop();
-                    playerModel.currentTween = null;
-                }
-                if (playerModel.currentShadowTween) {
-                    playerModel.currentShadowTween.stop();
-                    playerModel.currentShadowTween = null;
-                }
-                // Matar cualquier otro tween de sprites
-                gameScene.tweens.killTweensOf(playerModel.playerContainer);
-                gameScene.tweens.killTweensOf(spritePlayer);
-                gameScene.tweens.killTweensOf(spriteShadow);
-        
-                // Forzar la posición del jugador en el mapa según (x, y)
-                const tileWidth = 65;
-                const tileHeight = 33;
-                const finalX = (playerModel.position.x - playerModel.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-                const finalY = (playerModel.position.x + playerModel.position.y) * (tileHeight / 2);
-        
-                // Establecer posición y profundidad
-                playerModel.playerContainer.setPosition(finalX, finalY);
-                playerModel.playerContainer.setDepth(finalY);
-        
-                // Ajustar posiciones internas del sprite
-                spriteShadow.setPosition(0, 0);
-                spritePlayer.setPosition(
-                    0,
-                    -(spriteShadow.displayHeight / 2) - (spritePlayer.displayHeight / 2) + 15
-                );
-        
-                // Detener animación actual y asegurar el frame idle
-                MovePlayerController.stopAnimation(gameScene, id, spritePlayer, direction, avatarId);
-        
-                // Opcionalmente, si tienes una función específica para poner el frame idle
-                // según la dirección actual, puedes llamarla aquí.
-                // Por ejemplo:
-                // UserIdleAnimation.main(spritePlayer, direction, playerModel.avatar_id);
-            }
+            UserMoveDeniedController.main(gameScene, id);
         });
         // Escuchar cuando un jugador sale
         socket.on(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, (data) => {

@@ -1,6 +1,6 @@
-import UserIdleAnimation from "../animations/UserIdleAnimation.js";
 import UserWalkAnimation from "../animations/UserWalkAnimation.js";
 import AnimationsTimerEnum from "../../enums/AnimationsTimerEnum.js";
+import UserMoveDeniedController from "./UserMoveDeniedController.js";
 
 class MovePlayerController {
     static main(gameScene, socketId, path, isLastStep) {
@@ -61,11 +61,7 @@ class MovePlayerController {
                 playerModel.sprite_player.stop();
 
                 if (isLastStep) {
-                    this.stopAnimation(
-                        playerModel.sprite_player,
-                        step.z,
-                        playerModel.avatar_id
-                    );
+                    UserMoveDeniedController.main(gameScene, socketId);
                 } else {
                     playerModel.pathIndex++;
                     this.moveToNextStep(socketId, gameScene, isLastStep);
@@ -75,30 +71,6 @@ class MovePlayerController {
 
         // Almacenar tween actual
         playerModel.currentTween = playerTween;
-    }
-
-    static stopAnimation(spritePlayer, direction, avatarId) {
-        if (!spritePlayer || !spritePlayer.anims) {
-            console.error("Jugador no válido al detener animación.");
-            UserIdleAnimation.main(
-                spritePlayer,
-                direction,
-                avatarId
-            );
-            return;
-        }
-
-        // Detener cualquier animación activa
-        if (spritePlayer.anims.isPlaying) {
-            spritePlayer.stop();
-        }
-
-        // Establecer frame por defecto
-        UserIdleAnimation.main(
-            spritePlayer,
-            direction,
-            avatarId
-        );
     }
 }
 
