@@ -16,11 +16,14 @@ class PublicAreaSceneResponseSockets {
         socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, (data) => {
             gameScene.avatarAnimations = data.avatar_animations; // Guardar animaciones de avatares
             CreateSceneController.main(gameScene, data.players); // Crear escena con jugadores
+            gameScene.vueComponent.$emit("updateLoading", false);
         });
+        
         // Escuchar cuando un nuevo jugador entra
         socket.on(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_AREA, (data) => {
             AddPlayerController.main(gameScene, data.user);
         });
+
         // Escuchar cuando un jugador se mueve
         socket.on(ResponseSocketsEnum.USER_MOVE, (data) => {
             const { id, path } = data;
@@ -30,16 +33,18 @@ class PublicAreaSceneResponseSockets {
                 MovePlayerController.main(gameScene, id, path, data.isLastStep);
             }
         });
+
         socket.on(ResponseSocketsEnum.USER_MOVE_DENIED, (data) => {
             const { id } = data;
             UserMoveDeniedController.main(gameScene, id);
         });
-        // Escuchar cuando un jugador sale
+  
         socket.on(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, (data) => {
             RemovePlayerController.main(gameScene, data.socketId);
         });
 
         socket.on(ResponseSocketsEnum.USER_SELECT_USER, (data) => {
+            console.log('User select user', data);
             UserSelectUserController.main(gameScene, data);
         });
 

@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <h1>Login</h1>
+    <div>Login</div>
     <form @submit.prevent="login">
       <input v-model="username" type="text" placeholder="Username" required />
       <input v-model="password" type="password" placeholder="Password" required />
@@ -23,6 +23,7 @@ export default {
       errorMessage: '',
     };
   },
+  
   methods: {
     login() {
       this.$socket.emit(RequestSocketsEnum.LOGIN, { username: this.username, password: this.password });
@@ -45,5 +46,11 @@ export default {
 </script>
 
 <style scoped>
-/* Estiliza tu formulario aquí */
+#login{
+  position: relative;
+  z-index: 1;
+  background-color: #f0f0f0;
+  width: 100%;
+  height: 100%;
+}
 </style>

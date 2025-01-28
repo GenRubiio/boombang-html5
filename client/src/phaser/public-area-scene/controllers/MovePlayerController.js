@@ -5,6 +5,7 @@ import UserMoveDeniedController from "./UserMoveDeniedController.js";
 class MovePlayerController {
     static main(gameScene, socketId, path, isLastStep) {
         if (!path || path.length === 0 || !gameScene.players[socketId]) return;
+        console.log(`Moving player ${socketId} to path:`, path);
 
         const playerModel = gameScene.players[socketId];
 

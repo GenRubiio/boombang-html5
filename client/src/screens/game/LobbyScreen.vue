@@ -1,6 +1,5 @@
 <template>
-  <LoadingScreen v-if="loading" />
-  <div v-else id="lobby">
+  <div id="lobby">
     <h1>Lobby</h1>
     <div v-for="area in areas" :key="area.id" class="room">
       <p>{{ area.name }} ({{ area.total_users_in }})</p>
@@ -11,7 +10,6 @@
 
 <script>
 import socket from "../../sockets/socket";
-import LoadingScreen from "./LoadingScreen.vue";
 import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 
@@ -19,22 +17,22 @@ export default {
   data() {
     return {
       areas: [],
-      loading: true,
     };
   },
   created() {
+    this.$emit("updateLoading", true);
     // Solicitar las salas al conectarse
     console.log("Solicitando salas...");
     socket.emit(RequestSocketsEnum.GET_PUBLIC_AREAS);
+
+    socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS);
     socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (areas) => {
       console.log(areas);
       this.areas = areas;
-      this.loading = false;
+      this.$emit("updateLoading", false);
     });
   },
-  components: {
-    LoadingScreen,
-  },
+  components: {},
   methods: {
     joinRoom(areaId) {
       socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: areaId });
@@ -53,5 +51,10 @@ export default {
 </script>
 
 <style>
-/* Estiliza las salas */
+#lobby {
+  background-color: #f0f0f0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 </style>

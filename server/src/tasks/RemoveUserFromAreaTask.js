@@ -8,6 +8,10 @@ const RemoveSelectedUserTask = require('./RemoveSelectedUserTask');
 class RemoveUserFromAreaTask {
     static main(publicArea, user, io) {
         try {
+            if (!publicArea.containsUser(user)) {
+                logger.log('User not in area', 'error');
+                return;
+            }
             console.log('RemoveUserFromAreaTask');
             user.emit(ResponseSocketsEnum.REMOVE_USER_AREA);
 

@@ -1,6 +1,6 @@
 <template>
   <div id="register">
-    <h1>Registro</h1>
+    <div>Registro</div>
     <form @submit.prevent="register">
       <div>
         <input v-model="username" type="text" placeholder="Username" required />
@@ -78,5 +78,11 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos */
+#register {
+  position: relative;
+  z-index: 1;
+  background-color: #f0f0f0;
+  width: 100%;
+  height: 100%;
+}
 </style>

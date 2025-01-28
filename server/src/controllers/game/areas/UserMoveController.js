@@ -20,6 +20,15 @@ class UserMoveController {
 
             const { x: targetX, y: targetY } = data;
 
+            //validar que en la posicion no se encuentre otro usuario
+            const areaUsers = user.currentArea.getUsers();
+            for (let i = 0; i < areaUsers.length; i++) {
+                const areaUser = areaUsers[i];
+                if (areaUser.currentAreaPosition.x === targetX && areaUser.currentAreaPosition.y === targetY) {
+                    return;
+                }
+            }
+
             // Validar posición objetivo
             const publicArea = PublicAreasCollection.getByUid(user.currentArea.id);
             if (

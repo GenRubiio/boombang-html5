@@ -1,23 +1,27 @@
 <template>
-  <div id="app">
-    <div class="game-screen">
+  <div id="game">
+    <div id="phaser-container"></div>
+    <LoadingScreen v-if="loading" />
+    <div id="game-screens">
       <LoginScreen
-        v-if="currentScene === 'login'"
+        v-if="currentScreen === 'login'"
         @loginSuccess="onLoginSuccess"
         @goToRegister="onGoToRegister"
       />
       <RegisterScreen
-        v-else-if="currentScene === 'register'"
+        v-else-if="currentScreen === 'register'"
         @goToLogin="onGoToLogin"
       />
       <LobbyScreen
-        v-else-if="currentScene === 'lobby'"
+        v-else-if="currentScreen === 'lobby'"
         @joinPublicArea="onJoinPublicArea"
+        @updateLoading="onUpdateLoading"
       />
       <PublicAreaScreen
-        v-else-if="currentScene === 'public_area'"
+        v-else-if="currentScreen === 'public_area'"
         :areaId="currentAreaId"
         @exitLobby="onExitLobby"
+        @updateLoading="onUpdateLoading"
       />
     </div>
   </div>
@@ -30,15 +34,28 @@ import RegisterScreen from "./screens/auth/RegisterScreen.vue";
 import LobbyScreen from "./screens/game/LobbyScreen.vue";
 import PublicAreaScreen from "./screens/game/areas/PublicAreaScreen.vue";
 import GamePreloaders from "./phaser/preloaders/GamePreloaders";
+import LoadingScreen from "./screens/game/LoadingScreen.vue";
+
+import GlobalPreloader from "./phaser/GlobalPreloader";
+import PublicAreaScene from "./phaser/PublicAreaScene";
+import GameScreensEnum from "./enums/GameScreensEnum";
 
 export default {
   data() {
     return {
-      currentScene: "login", // Controla las escenas: login, lobby, game
+      gamePhaser: null,
+      loading: false,
+      currentScreen: GameScreensEnum.LOGIN, // Controla las escenas: login, lobby, game
       currentAreaId: null, // ID de la sala actual
     };
   },
+  created() {
+    //setInterval(() => {
+    //  console.log("Eventos registrados:", socket._callbacks);
+    //}, 5000);
+  },
   components: {
+    LoadingScreen,
     LoginScreen,
     RegisterScreen,
     LobbyScreen,
@@ -46,28 +63,53 @@ export default {
   },
   methods: {
     onGoToLogin() {
-      this.currentScene = "login";
+      this.currentScreen = GameScreensEnum.LOGIN;
     },
     onGoToRegister() {
-      this.currentScene = "register";
+      this.currentScreen = GameScreensEnum.REGISTER;
     },
     onLoginSuccess() {
+      this.onUpdateLoading(true);
       GamePreloaders.main();
-      this.currentScene = "lobby";
+      if (!this.gamePhaser) {
+        // Solo creas la instancia la primera vez.
+        this.gamePhaser = new Phaser.Game({
+          type: Phaser.WEBGL,
+          powerPreference: "high-performance",
+          antialias: false, // Desactiva si no necesitas suavizado
+          roundPixels: true, // Reduce cálculos de subpíxeles
+          width: 1012,
+          height: 657,
+          // Registras todas las escenas globales que vayas a usar
+          scene: [GlobalPreloader, PublicAreaScene],
+          parent: "phaser-container",
+          physics: { default: "arcade" },
+        });
+        // Lanzamos la escena de Preloader para que cargue todo
+        this.gamePhaser.scene.start("GlobalPreloaderScene");
+      }
+      this.currentScreen = GameScreensEnum.LOBBY;
     },
     onJoinPublicArea(areaId) {
       console.log("Unido a la sala:", areaId);
       this.currentAreaId = areaId;
-      this.currentScene = "public_area";
+      this.currentScreen = GameScreensEnum.PUBLIC_AREA;
     },
     onExitLobby() {
-      this.currentScene = "lobby";
+      this.gamePhaser.scene.stop("PublicAreaScene");
+      this.currentScreen = GameScreensEnum.LOBBY;
       this.currentAreaId = null;
     },
     handleDisconnect() {
       // Cambiar escena a login al detectar desconexión
-      this.currentScene = "login";
+      this.onUpdateLoading(true);
+      this.gamePhaser.scene.stop("PublicAreaScene");
+      this.currentScreen = GameScreensEnum.LOGIN;
       console.log("Desconexión detectada. Redirigiendo al login.");
+      this.onUpdateLoading(false);
+    },
+    onUpdateLoading(value) {
+      this.loading = value;
     },
   },
   mounted() {
@@ -91,17 +133,26 @@ export default {
 </script>
 
 <style>
-#app {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.game-screen {
+#game {
   width: 1012px;
   height: 657px;
-  background-color: #f0f0f0;
   position: relative;
+}
+
+#phaser-container {
+  width: 1012px;
+  height: 657px;
+  margin: auto;
+  position: absolute;
+  background-color: transparent; /* Para verificar visualmente */
+  z-index: 0;
+}
+
+#game-screens {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
 }
 </style>

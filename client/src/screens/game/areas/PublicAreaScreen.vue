@@ -1,19 +1,11 @@
 <template>
-  <div>
-    <LoadingScreen v-if="loading" />
-    <div class="game-container">
-      <div id="phaser-container"></div>
-      <!-- Aquí se monta Phaser -->
-      <CompassComponent @exitLobby="exitToLobby" />
-      <UserCardComponent ref="userCard" />
-    </div>
+  <div class="game-container">
+    <CompassComponent @exitLobby="exitToLobby" />
+    <UserCardComponent ref="userCard" />
   </div>
 </template>
 
 <script>
-import Phaser from "phaser";
-import LoadingScreen from "../LoadingScreen.vue";
-import PublicAreaScene from "../../../phaser/PublicAreaScene.js"; // Escena principal del juego
 import socket from "../../../sockets/socket.js";
 import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
 import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
@@ -24,32 +16,23 @@ export default {
     areaId: {
       type: Number,
       required: true,
-    },
+    }
   },
   data() {
-    return {
-      game: null, // Instancia de Phaser
-      loading: true,
-    };
+    return {};
+  },
+  created() {
+    this.$emit("updateLoading", true);
   },
   components: {
-    LoadingScreen,
     CompassComponent,
     UserCardComponent,
   },
   methods: {
     initializeGame() {
-      // Configuración inicial de Phaser
-      this.game = new Phaser.Game({
-        type: Phaser.AUTO,
-        parent: "phaser-container", // Renderiza dentro de este contenedor
-        width: 1012,
-        height: 657,
-        scene: [PublicAreaScene], // Escenas incluidas
-        physics: { default: "arcade" },
-      });
+      const gamePhaser = this.$root.gamePhaser;
 
-      this.game.scene.start("PublicAreaScene", {
+      gamePhaser.scene.start("PublicAreaScene", {
         areaId: this.areaId,
         vueComponent: this,
       });
@@ -60,10 +43,7 @@ export default {
     exitToLobbyResponse() {
       // Limpia el juego Phaser antes de salir
       console.log("Saliendo de la sala...");
-      if (this.game) {
-        this.game.destroy(true);
-        this.game = null;
-      }
+      this.$emit("updateLoading", true);
       this.$emit("exitLobby"); // Emite un evento para cambiar la escena
     },
     updateUserCard(userData) {
@@ -75,22 +55,18 @@ export default {
     this.initializeGame();
   },
   beforeUnmount() {
-    // Limpia Phaser al desmontar el componente
-    if (this.game) {
-      this.game.destroy(true);
-      this.game = null;
-    }
   },
 };
 </script>
 
 <style>
-.game-container, #phaser-container {
+.game-container {
   width: 1012px;
   height: 657px;
   margin: auto;
-  position: relative;
-  background-color: #f0f0f0; /* Para verificar visualmente */
+  position: absolute;
+  background-color: transparent; /* Para verificar visualmente */
+  z-index: 0;
 }
 
 .loading-overlay {

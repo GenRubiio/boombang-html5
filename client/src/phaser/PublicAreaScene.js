@@ -10,8 +10,6 @@ import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAre
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
 import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 
-import AvatarAnimationsLoad from "./load/AvatarAnimationsLoad"; // Cargar animaciones de avatares
-
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
         super("PublicAreaScene");
@@ -32,14 +30,11 @@ export default class PublicAreaScene extends Phaser.Scene {
         this.load.image("shadow", shadowImg);
         this.load.image("player", playerImg);
         this.load.image("loading", loadingImage);
-
-        AvatarAnimationsLoad.preload(this);
+        this.input.enabled = true;
+        this.input.topOnly = false; // Permitir que objetos en capas más bajas reciban eventos
     }
 
     create() {
-        // Aquí ya están cargados los atlases, así que podemos crear las animaciones
-        AvatarAnimationsLoad.create(this);
-        
         PublicAreaSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         PublicAreaSceneResponseSockets.main(this); // Inicializar controladores de sockets
 

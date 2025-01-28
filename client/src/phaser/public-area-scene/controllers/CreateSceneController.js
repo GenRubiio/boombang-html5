@@ -2,6 +2,7 @@ import AddPlayerController from "../controllers/AddPlayerController.js";
 import socket from "../../../sockets/socket"; // Conexión Socket.io
 import FloorPulseAnimation from "../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../controllers/SetUserCardController.js";
+import EventLimiter from "../utils/EventLimiter.js";
 
 class CreateSceneController {
     static main(gameScene, playersData) {
@@ -56,6 +57,8 @@ class CreateSceneController {
         // Evento de clic: enviar posición al servidor
         tile.removeListener("pointerdown");
         tile.on("pointerdown", (pointer) => {
+            if (!EventLimiter.canClick()) return; // Salir si está en cooldown
+
             const { x, y } = tile.getData("gridPos");
             console.log(`Clicked tile at ${x}, ${y}`);
             socket.emit("request:user_move", { x: x, y: y });
@@ -81,11 +84,6 @@ class CreateSceneController {
                 is_selected: false,
                 gender: socket.user.gender,
             });
-
-            if (gameScene.vueComponent) {
-                console.log("Setting loading to false");
-                gameScene.vueComponent.loading = false; // Cambiar el estado de 'loading'
-            }
         })();
     }
 }
