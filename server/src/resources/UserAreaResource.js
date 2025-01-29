@@ -1,6 +1,4 @@
 const Resource = require('./Resource');
-const AnimationsController = require('../controllers/game/AnimationsController');
-
 class UserAreaResource extends Resource {
     async transform(data) {
         return {
@@ -9,7 +7,7 @@ class UserAreaResource extends Resource {
             y: data.currentAreaPosition.y,
             z: data.currentAreaPosition.z,
             avatar_id: data.avatarId,
-            animations: await AnimationsController.main(data),
+            animations: [],
         };
     }
 }

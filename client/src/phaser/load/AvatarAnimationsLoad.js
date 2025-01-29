@@ -1,4 +1,4 @@
-import werewolf_config from "../../assets/game/avatars/1/werewolf-config.json";
+import werewolf_config from "../../assets/game/avatars/1/config.json";
 import AvatarsEnum from "../enums/AvatarsEnum";
 import AvatarWerewolfLoad from "./avatars/AvatarWerewolfLoad";
 
@@ -20,7 +20,6 @@ class AvatarAnimationsLoad {
         this.createAvatarAnimations(gameScene, werewolf_config, AvatarsEnum.WEREWOLF);
     }
 
-
     /**
      * Crea las animaciones en Phaser usando la info de frames, framerate y repeat del config.
      *
@@ -29,20 +28,19 @@ class AvatarAnimationsLoad {
      * @param {String} avatarId        - p.e. AvatarsEnum.WEREWOLF.
      */
     static createAvatarAnimations(gameScene, config, avatarId) {
-        Object.entries(config).forEach(([animationName, animationData]) => {
-            const animationKey = `${avatarId}_${animationName}`;
-            const atlasKey = `${avatarId}_${animationData.spritesheet}`;
+        Object.entries(config).forEach(([animationName, animData]) => {
+            const animKey = `${avatarId}_${animationName}`;
+            const atlasKey = animData.atlasKey;
 
-            // Creación de la animación en Phaser
             gameScene.anims.create({
-                key: animationKey,
+                key: animKey,
                 frames: gameScene.anims.generateFrameNames(atlasKey, {
-                    // Buscamos frames "1", "2", "3", ..., según "start" y "end"
-                    start: animationData.frames.start,
-                    end: animationData.frames.end
+                    start: animData.start,
+                    end: animData.end,
+                    prefix: animData.prefix
                 }),
-                frameRate: animationData.frameRate,
-                repeat: animationData.repeat
+                frameRate: animData.frameRate,
+                repeat: animData.repeat
             });
         });
     }
