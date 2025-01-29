@@ -1,6 +1,6 @@
-import spritesheet_0 from '../../../assets/game/avatars/1/animations/spritesheet-0.webp';
-import spritesheet_1 from '../../../assets/game/avatars/1/animations/spritesheet-1.webp';
-import atlas from '../../../assets/game/avatars/1/animations/atlas.json';
+import spritesheet_0 from '../../../assets/game/avatars/werewolf/animations/spritesheet-0.webp';
+import spritesheet_1 from '../../../assets/game/avatars/werewolf/animations/spritesheet-1.webp';
+import atlas from '../../../assets/game/avatars/werewolf/animations/atlas.json';
 
 class AvatarWerewolfLoad {
     static main(gameScene) {

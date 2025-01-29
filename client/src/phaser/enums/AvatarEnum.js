@@ -1,4 +1,4 @@
-const Enum = require('./Enum');
+import Enum from './Enum';
 
 const AvatarEnum = new Enum({
     BOOMER: 1,
@@ -20,4 +20,4 @@ const AvatarEnum = new Enum({
     ZOMBIE: 17,
 });
 
-module.exports = AvatarEnum;
+export default AvatarEnum;
