@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_punch_rec": {
     "atlasKey": "empollon_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_falling": {
     "atlasKey": "empollon_atlas",
@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_falling": {
     "atlasKey": "empollon_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_redbull": {
     "atlasKey": "empollon_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_redbull": {
     "atlasKey": "empollon_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_fall": {
     "atlasKey": "empollon_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_fall": {
     "atlasKey": "empollon_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_special": {
     "atlasKey": "empollon_atlas",
@@ -132,7 +132,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_pedo": {
     "atlasKey": "empollon_atlas",
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_pedo": {
     "atlasKey": "empollon_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_escupir": {
     "atlasKey": "empollon_atlas",
@@ -177,7 +177,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_ouch": {
     "atlasKey": "empollon_atlas",
@@ -192,7 +192,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_beber": {
     "atlasKey": "empollon_atlas",
@@ -207,7 +207,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_beber": {
     "atlasKey": "empollon_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_risa2": {
     "atlasKey": "empollon_atlas",
@@ -237,7 +237,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_risa2": {
     "atlasKey": "empollon_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_llorar": {
     "atlasKey": "empollon_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_risa1": {
     "atlasKey": "empollon_atlas",
@@ -282,7 +282,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_flor": {
     "atlasKey": "empollon_atlas",
@@ -297,7 +297,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor": {
     "atlasKey": "empollon_atlas",
@@ -312,7 +312,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_walk": {
     "atlasKey": "empollon_atlas",
@@ -357,7 +357,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_talk": {
     "atlasKey": "empollon_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_talk": {
     "atlasKey": "empollon_atlas",
@@ -387,7 +387,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_talk": {
     "atlasKey": "empollon_atlas",
@@ -402,7 +402,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_talk": {
     "atlasKey": "empollon_atlas",
@@ -417,7 +417,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_punch_doy": {
     "atlasKey": "empollon_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_punch_doy": {
     "atlasKey": "empollon_atlas",
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_walk": {
     "atlasKey": "empollon_atlas",
@@ -492,7 +492,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "up_talk": {
     "atlasKey": "empollon_atlas",
@@ -507,7 +507,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_coco": {
     "atlasKey": "empollon_atlas",
@@ -522,7 +522,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_walk": {
     "atlasKey": "empollon_atlas",
@@ -567,7 +567,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_idle": {
     "atlasKey": "empollon_atlas",
@@ -582,7 +582,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_idle": {
     "atlasKey": "empollon_atlas",
@@ -597,7 +597,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_idle": {
     "atlasKey": "empollon_atlas",
@@ -612,7 +612,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_talk": {
     "atlasKey": "empollon_atlas",
@@ -627,7 +627,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_talk": {
     "atlasKey": "empollon_atlas",
@@ -642,7 +642,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_beso": {
     "atlasKey": "empollon_atlas",
@@ -657,7 +657,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_beso": {
     "atlasKey": "empollon_atlas",
@@ -672,7 +672,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "up_walk": {
     "atlasKey": "empollon_atlas",
@@ -702,7 +702,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_walk": {
     "atlasKey": "empollon_atlas",
@@ -732,7 +732,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor_rec": {
     "atlasKey": "empollon_atlas",
@@ -747,7 +747,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_idle": {
     "atlasKey": "empollon_atlas",
@@ -762,7 +762,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_idle": {
     "atlasKey": "empollon_atlas",
@@ -777,6 +777,6 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   }
 }

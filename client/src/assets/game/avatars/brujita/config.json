@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_punch_rec": {
     "atlasKey": "brujita_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_risa2": {
     "atlasKey": "brujita_atlas",
@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_coco": {
     "atlasKey": "brujita_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_beber": {
     "atlasKey": "brujita_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_llorar": {
     "atlasKey": "brujita_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_special": {
     "atlasKey": "brujita_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_special": {
     "atlasKey": "brujita_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_falling": {
     "atlasKey": "brujita_atlas",
@@ -132,7 +132,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_falling": {
     "atlasKey": "brujita_atlas",
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_redbull": {
     "atlasKey": "brujita_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_redbull": {
     "atlasKey": "brujita_atlas",
@@ -177,7 +177,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_risa1": {
     "atlasKey": "brujita_atlas",
@@ -192,7 +192,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_risa1": {
     "atlasKey": "brujita_atlas",
@@ -207,7 +207,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_pedo": {
     "atlasKey": "brujita_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_pedo": {
     "atlasKey": "brujita_atlas",
@@ -237,7 +237,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_punch_doy": {
     "atlasKey": "brujita_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_punch_doy": {
     "atlasKey": "brujita_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_fall": {
     "atlasKey": "brujita_atlas",
@@ -282,7 +282,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_fall": {
     "atlasKey": "brujita_atlas",
@@ -297,7 +297,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_flor": {
     "atlasKey": "brujita_atlas",
@@ -312,7 +312,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor": {
     "atlasKey": "brujita_atlas",
@@ -327,7 +327,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_talk": {
     "atlasKey": "brujita_atlas",
@@ -342,7 +342,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_beso": {
     "atlasKey": "brujita_atlas",
@@ -357,7 +357,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_beso": {
     "atlasKey": "brujita_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_idle": {
     "atlasKey": "brujita_atlas",
@@ -387,7 +387,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_idle": {
     "atlasKey": "brujita_atlas",
@@ -402,7 +402,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_ouch": {
     "atlasKey": "brujita_atlas",
@@ -417,7 +417,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_talk": {
     "atlasKey": "brujita_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_talk": {
     "atlasKey": "brujita_atlas",
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_walk": {
     "atlasKey": "brujita_atlas",
@@ -492,7 +492,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_talk": {
     "atlasKey": "brujita_atlas",
@@ -507,7 +507,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_walk": {
     "atlasKey": "brujita_atlas",
@@ -552,7 +552,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_talk": {
     "atlasKey": "brujita_atlas",
@@ -567,7 +567,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_walk": {
     "atlasKey": "brujita_atlas",
@@ -627,7 +627,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "up_talk": {
     "atlasKey": "brujita_atlas",
@@ -642,7 +642,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_walk": {
     "atlasKey": "brujita_atlas",
@@ -672,7 +672,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_idle": {
     "atlasKey": "brujita_atlas",
@@ -687,7 +687,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_idle": {
     "atlasKey": "brujita_atlas",
@@ -702,7 +702,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_escupir": {
     "atlasKey": "brujita_atlas",
@@ -717,7 +717,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_escupir": {
     "atlasKey": "brujita_atlas",
@@ -732,7 +732,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_flor_rec": {
     "atlasKey": "brujita_atlas",
@@ -747,7 +747,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor_rec": {
     "atlasKey": "brujita_atlas",
@@ -762,7 +762,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_idle": {
     "atlasKey": "brujita_atlas",
@@ -777,7 +777,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_idle": {
     "atlasKey": "brujita_atlas",
@@ -792,6 +792,6 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   }
 }

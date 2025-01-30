@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_special": {
     "atlasKey": "boomer_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_pedo": {
     "atlasKey": "boomer_atlas",
@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_punch_doy": {
     "atlasKey": "boomer_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_punch_doy": {
     "atlasKey": "boomer_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_punch_rec": {
     "atlasKey": "boomer_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_punch_rec": {
     "atlasKey": "boomer_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_coco": {
     "atlasKey": "boomer_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_ouch": {
     "atlasKey": "boomer_atlas",
@@ -132,7 +132,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_beso": {
     "atlasKey": "boomer_atlas",
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_beso": {
     "atlasKey": "boomer_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_walk": {
     "atlasKey": "boomer_atlas",
@@ -207,7 +207,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_beber": {
     "atlasKey": "boomer_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_beber": {
     "atlasKey": "boomer_atlas",
@@ -237,7 +237,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_risa2": {
     "atlasKey": "boomer_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_risa2": {
     "atlasKey": "boomer_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_flor": {
     "atlasKey": "boomer_atlas",
@@ -282,7 +282,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor": {
     "atlasKey": "boomer_atlas",
@@ -297,7 +297,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_walk": {
     "atlasKey": "boomer_atlas",
@@ -327,7 +327,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_falling": {
     "atlasKey": "boomer_atlas",
@@ -342,7 +342,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_fall": {
     "atlasKey": "boomer_atlas",
@@ -357,7 +357,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_fall": {
     "atlasKey": "boomer_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_walk": {
     "atlasKey": "boomer_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor_rec": {
     "atlasKey": "boomer_atlas",
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_idle": {
     "atlasKey": "boomer_atlas",
@@ -462,7 +462,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_idle": {
     "atlasKey": "boomer_atlas",
@@ -477,7 +477,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_talk": {
     "atlasKey": "boomer_atlas",
@@ -492,7 +492,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_talk": {
     "atlasKey": "boomer_atlas",
@@ -507,7 +507,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_redbull": {
     "atlasKey": "boomer_atlas",
@@ -522,7 +522,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_redbull": {
     "atlasKey": "boomer_atlas",
@@ -537,7 +537,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "up_idle": {
     "atlasKey": "boomer_atlas",
@@ -552,7 +552,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "up_talk": {
     "atlasKey": "boomer_atlas",
@@ -567,7 +567,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_walk": {
     "atlasKey": "boomer_atlas",
@@ -612,7 +612,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_talk": {
     "atlasKey": "boomer_atlas",
@@ -627,7 +627,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_talk": {
     "atlasKey": "boomer_atlas",
@@ -642,7 +642,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_talk": {
     "atlasKey": "boomer_atlas",
@@ -657,7 +657,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_risa1": {
     "atlasKey": "boomer_atlas",
@@ -672,7 +672,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_idle": {
     "atlasKey": "boomer_atlas",
@@ -687,7 +687,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_idle": {
     "atlasKey": "boomer_atlas",
@@ -702,7 +702,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_idle": {
     "atlasKey": "boomer_atlas",
@@ -717,7 +717,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_idle": {
     "atlasKey": "boomer_atlas",
@@ -732,7 +732,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_idle": {
     "atlasKey": "boomer_atlas",
@@ -747,7 +747,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_talk": {
     "atlasKey": "boomer_atlas",
@@ -762,7 +762,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "parado": {
     "atlasKey": "boomer_atlas",
@@ -777,6 +777,6 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   }
 }

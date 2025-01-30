@@ -6,7 +6,7 @@ class UserAreaResource extends Resource {
             x: data.currentAreaPosition.x,
             y: data.currentAreaPosition.y,
             z: data.currentAreaPosition.z,
-            avatar_id: Math.floor(Math.random() * 17) + 1,//data.avatarId
+            avatar_id: data.avatarId,
             animations: [],
         };
     }

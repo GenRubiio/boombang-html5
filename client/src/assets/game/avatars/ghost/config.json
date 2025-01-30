@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_punch_rec": {
     "atlasKey": "ghost_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_coco": {
     "atlasKey": "ghost_atlas",
@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_punch_doy": {
     "atlasKey": "ghost_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_punch_doy": {
     "atlasKey": "ghost_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_escupir": {
     "atlasKey": "ghost_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_idle": {
     "atlasKey": "ghost_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_llorar": {
     "atlasKey": "ghost_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_pedo": {
     "atlasKey": "ghost_atlas",
@@ -132,7 +132,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_redbull": {
     "atlasKey": "ghost_atlas",
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_risa1": {
     "atlasKey": "ghost_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_risa2": {
     "atlasKey": "ghost_atlas",
@@ -177,7 +177,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_special": {
     "atlasKey": "ghost_atlas",
@@ -192,7 +192,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_talk": {
     "atlasKey": "ghost_atlas",
@@ -207,7 +207,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_victoria": {
     "atlasKey": "ghost_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "down_walk": {
     "atlasKey": "ghost_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "up_talk": {
     "atlasKey": "ghost_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "up_walk": {
     "atlasKey": "ghost_atlas",
@@ -297,7 +297,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_beber": {
     "atlasKey": "ghost_atlas",
@@ -312,7 +312,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_beber": {
     "atlasKey": "ghost_atlas",
@@ -327,7 +327,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_beso": {
     "atlasKey": "ghost_atlas",
@@ -342,7 +342,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_beso": {
     "atlasKey": "ghost_atlas",
@@ -357,7 +357,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_fall": {
     "atlasKey": "ghost_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_fall": {
     "atlasKey": "ghost_atlas",
@@ -387,7 +387,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_falling": {
     "atlasKey": "ghost_atlas",
@@ -402,7 +402,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_falling": {
     "atlasKey": "ghost_atlas",
@@ -417,7 +417,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_flor": {
     "atlasKey": "ghost_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor": {
     "atlasKey": "ghost_atlas",
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_flor_rec": {
     "atlasKey": "ghost_atlas",
@@ -462,7 +462,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_flor_rec": {
     "atlasKey": "ghost_atlas",
@@ -477,7 +477,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_idle": {
     "atlasKey": "ghost_atlas",
@@ -492,7 +492,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_idle": {
     "atlasKey": "ghost_atlas",
@@ -507,7 +507,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_talk": {
     "atlasKey": "ghost_atlas",
@@ -522,7 +522,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "right_talk": {
     "atlasKey": "ghost_atlas",
@@ -537,7 +537,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "left_walk": {
     "atlasKey": "ghost_atlas",
@@ -582,7 +582,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_idle": {
     "atlasKey": "ghost_atlas",
@@ -597,7 +597,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_talk": {
     "atlasKey": "ghost_atlas",
@@ -612,7 +612,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightdown_talk": {
     "atlasKey": "ghost_atlas",
@@ -627,7 +627,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftdown_walk": {
     "atlasKey": "ghost_atlas",
@@ -672,7 +672,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_idle": {
     "atlasKey": "ghost_atlas",
@@ -687,7 +687,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_talk": {
     "atlasKey": "ghost_atlas",
@@ -702,7 +702,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "rightup_talk": {
     "atlasKey": "ghost_atlas",
@@ -717,7 +717,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": 0
+    "repeat": -1
   },
   "leftup_walk": {
     "atlasKey": "ghost_atlas",

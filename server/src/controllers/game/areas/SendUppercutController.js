@@ -37,7 +37,7 @@ class SendUppercutController {
                     user.currentArea.emit(ResponseSocketsEnum.SEND_UPPERCUT, {
                         attacker: user.socket.id,
                         receiver: targetUser.socket.id,
-                        direction: deltaX === -1 ? 'left' : 'right',
+                        direction: deltaX === -1 ? 'right' : 'left',
                     });
 
                     console.log(`Uppercut realizado entre ${user.id} y ${targetUser.id}`);
