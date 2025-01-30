@@ -1,9 +1,9 @@
 <template>
-  <div class="user-card" :class="computedClass">
-    <div class="user-card__header">
+  <div class="user-card unselectable" :class="computedClass">
+    <div class="user-card__header unselectable">
       {{ user.username }}
     </div>
-    <div class="user-card__body">
+    <div class="user-card__body unselectable">
       <div v-if="user.is_selected">
         <button @click="sendUppercut">Send Upper</button>
       </div>
@@ -94,5 +94,13 @@ export default {
   font-size: 20px;
   font-weight: bold;
   color: white;
+}
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 </style>
