@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_rec": {
     "atlasKey": "zombie_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_special": {
     "atlasKey": "zombie_atlas",
@@ -207,7 +207,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_doy": {
     "atlasKey": "zombie_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_idle": {
     "atlasKey": "zombie_atlas",

@@ -1,5 +1,5 @@
 {
-  "leftdown_punch_rec": {
+  "left_punch_rec": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/leftdown_punch_rec/",
     "flip_horizontally": false,
@@ -12,9 +12,9 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
-  "rightdown_punch_rec": {
+  "right_punch_rec": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/leftdown_punch_rec/",
     "flip_horizontally": true,
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_falling": {
     "atlasKey": "empollon_atlas",
@@ -419,7 +419,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftup_punch_doy": {
+  "left_punch_doy": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/leftup_punch_doy/",
     "flip_horizontally": false,
@@ -432,9 +432,9 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
-  "rightup_punch_doy": {
+  "right_punch_doy": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/leftup_punch_doy/",
     "flip_horizontally": true,
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_walk": {
     "atlasKey": "empollon_atlas",

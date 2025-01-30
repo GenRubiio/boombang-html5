@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_rec": {
     "atlasKey": "ghost_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_coco": {
     "atlasKey": "ghost_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_doy": {
     "atlasKey": "ghost_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_escupir": {
     "atlasKey": "ghost_atlas",

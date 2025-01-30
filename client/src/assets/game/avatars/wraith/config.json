@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_rec": {
     "atlasKey": "wraith_atlas",
@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_coco": {
     "atlasKey": "wraith_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_doy": {
     "atlasKey": "wraith_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_talk": {
     "atlasKey": "wraith_atlas",

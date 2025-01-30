@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_rec": {
     "atlasKey": "marsu_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_special": {
     "atlasKey": "marsu_atlas",
@@ -194,7 +194,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_punch_doy": {
+  "left_punch_doy": {
     "atlasKey": "marsu_atlas",
     "prefix": "sprites/leftdown_punch_doy/",
     "flip_horizontally": false,
@@ -207,9 +207,9 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
-  "rightdown_punch_doy": {
+  "right_punch_doy": {
     "atlasKey": "marsu_atlas",
     "prefix": "sprites/leftdown_punch_doy/",
     "flip_horizontally": true,
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_walk": {
     "atlasKey": "marsu_atlas",

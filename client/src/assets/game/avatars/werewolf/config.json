@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_rec": {
     "atlasKey": "werewolf_atlas",
@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_pedo": {
     "atlasKey": "werewolf_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_doy": {
     "atlasKey": "werewolf_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_ouch": {
     "atlasKey": "werewolf_atlas",

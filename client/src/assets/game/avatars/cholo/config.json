@@ -74,7 +74,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_punch_rec": {
+  "left_punch_rec": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/leftdown_punch_rec/",
     "flip_horizontally": false,
@@ -87,9 +87,9 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
-  "rightdown_punch_rec": {
+  "right_punch_rec": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/leftdown_punch_rec/",
     "flip_horizontally": true,
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_escupir": {
     "atlasKey": "cholo_atlas",
@@ -119,7 +119,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_punch_doy": {
+  "left_punch_doy": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/leftdown_punch_doy/",
     "flip_horizontally": false,
@@ -132,9 +132,9 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
-  "rightdown_punch_doy": {
+  "right_punch_doy": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/leftdown_punch_doy/",
     "flip_horizontally": true,
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_fall": {
     "atlasKey": "cholo_atlas",

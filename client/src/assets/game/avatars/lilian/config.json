@@ -1,5 +1,5 @@
 {
-  "leftdown_punch_rec": {
+  "left_punch_rec": {
     "atlasKey": "lilian_atlas",
     "prefix": "sprites/leftdown_punch_rec/",
     "flip_horizontally": false,
@@ -12,9 +12,9 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
-  "rightdown_punch_rec": {
+  "right_punch_rec": {
     "atlasKey": "lilian_atlas",
     "prefix": "sprites/leftdown_punch_rec/",
     "flip_horizontally": true,
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_ouch": {
     "atlasKey": "lilian_atlas",
@@ -357,7 +357,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_punch_doy": {
     "atlasKey": "lilian_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_walk": {
     "atlasKey": "lilian_atlas",
