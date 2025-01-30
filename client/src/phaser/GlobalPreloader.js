@@ -24,5 +24,7 @@ export default class GlobalPreloader extends Phaser.Scene {
         // Si la tienes como escena, sería:
         // this.scene.start("LobbyPhaserScene");
         // O bien puedes quedarte quieto si no usas Phaser en el Lobby.
+
+        this.game.events.emit("globalPreloaderComplete");
     }
 }

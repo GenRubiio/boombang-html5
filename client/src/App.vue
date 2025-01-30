@@ -33,11 +33,8 @@ import LoginScreen from "./screens/auth/LoginScreen.vue";
 import RegisterScreen from "./screens/auth/RegisterScreen.vue";
 import LobbyScreen from "./screens/game/LobbyScreen.vue";
 import PublicAreaScreen from "./screens/game/areas/PublicAreaScreen.vue";
-import GamePreloaders from "./phaser/preloaders/GamePreloaders";
 import LoadingScreen from "./screens/game/LoadingScreen.vue";
 
-import GlobalPreloader from "./phaser/GlobalPreloader";
-import PublicAreaScene from "./phaser/PublicAreaScene";
 import GameScreensEnum from "./enums/GameScreensEnum";
 
 export default {
@@ -68,10 +65,19 @@ export default {
     onGoToRegister() {
       this.currentScreen = GameScreensEnum.REGISTER;
     },
-    onLoginSuccess() {
+    async onLoginSuccess() {
       this.onUpdateLoading(true);
+      const { default: GamePreloaders } = await import(
+        "./phaser/preloaders/GamePreloaders"
+      );
       GamePreloaders.main();
       if (!this.gamePhaser) {
+        const { default: GlobalPreloader } = await import(
+          "./phaser/GlobalPreloader"
+        );
+        const { default: PublicAreaScene } = await import(
+          "./phaser/PublicAreaScene"
+        );
         // Solo creas la instancia la primera vez.
         this.gamePhaser = new Phaser.Game({
           type: Phaser.WEBGL,
@@ -88,7 +94,10 @@ export default {
         // Lanzamos la escena de Preloader para que cargue todo
         this.gamePhaser.scene.start("GlobalPreloaderScene");
       }
-      this.currentScreen = GameScreensEnum.LOBBY;
+      // Esperar a que termine la precarga antes de cambiar a LOBBY
+      this.gamePhaser.events.on("globalPreloaderComplete", () => {
+        this.currentScreen = GameScreensEnum.LOBBY;
+      });
     },
     onJoinPublicArea(areaId) {
       console.log("Unido a la sala:", areaId);
