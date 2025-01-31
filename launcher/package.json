@@ -1,0 +1,12 @@
+{
+  "name": "electron-app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . my-electron-app --platform=win32 --arch=x64 --out=release --overwrite"
+  },
+  "dependencies": {
+    "electron": "^26.0.0"
+  }
+}
