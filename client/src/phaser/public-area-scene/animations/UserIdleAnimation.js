@@ -9,7 +9,7 @@ class UserIdleAnimation {
     static main(spritePlayer, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
         AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
-        spritePlayer.play(avatarId + "_" + textureKey);
+        spritePlayer.play(avatarId + "_" + textureKey, true);
     }
 
     /**

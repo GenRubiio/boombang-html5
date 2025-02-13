@@ -1,10 +1,7 @@
 import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
-import backgroundImg from "../assets/images/background.png"; // Imagen de fondo
-import tileImg from "../assets/images/tile.png"; // Imagen del rombo
 import shadowImg from "../assets/images/shadow.png"; // Imagen de la sombra
 import playerImg from "../assets/images/player.png"; // Imagen del personaje
-import loadingImage from "../assets/images/loading_image.png"; // Imagen de carga
 import PublicAreaSceneResponseSockets from "./public-area-scene/sockets/PublicAreaSceneResponseSockets"; // Controladores de sockets
 import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAreaSceneRequestSockets"; // Controladores de sockets
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
@@ -25,11 +22,11 @@ export default class PublicAreaScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("background", backgroundImg);
-        this.load.image("tile", tileImg);
+        this.load.image("background", "/assets/game/scenarios/" + this.areaId + "/background.png");
+        this.load.image("tile", "/assets/game/scenarios/tile.png");
+
         this.load.image("shadow", shadowImg);
         this.load.image("player", playerImg);
-        this.load.image("loading", loadingImage);
         this.input.enabled = true;
         this.input.topOnly = false; // Permitir que objetos en capas más bajas reciban eventos
     }
@@ -40,6 +37,8 @@ export default class PublicAreaScene extends Phaser.Scene {
 
         this.events.on('shutdown', this.shutdown, this);
         this.events.on('destroy', this.destroy, this);
+        this.scene.pauseOnBlur = false;
+        this.scene.pauseOnHide = false;
     }
 
     shutdown() {

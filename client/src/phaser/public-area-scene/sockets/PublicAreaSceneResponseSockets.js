@@ -13,9 +13,9 @@ import UserMoveDeniedController from "../controllers/UserMoveDeniedController"
 class PublicAreaSceneResponseSockets {
     static main(gameScene) {
         // Escuchar respuesta con datos de la sala
-        socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, (data) => {
+        socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, async (data) => {
             gameScene.avatarAnimations = data.avatar_animations; // Guardar animaciones de avatares
-            CreateSceneController.main(gameScene, data.players); // Crear escena con jugadores
+            await CreateSceneController.main(gameScene, data); // Crear escena con jugadores
             gameScene.vueComponent.$emit("updateLoading", false);
         });
         

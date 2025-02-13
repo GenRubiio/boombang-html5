@@ -27,6 +27,10 @@ class GetPublicAreaDataController {
             const avatarAnimations = Object.fromEntries(AvatarAnimationsCollection.getAllData());
             socket.emit(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, {
                 players: players,
+                scenery: {
+                    id: publicArea.id,
+                    type: "public_scenery",
+                },
                 avatar_animations: avatarAnimations
             });
         } catch (err) {

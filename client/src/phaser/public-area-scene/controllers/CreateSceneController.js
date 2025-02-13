@@ -5,14 +5,14 @@ import SetUserCardController from "../controllers/SetUserCardController.js";
 import EventLimiter from "../utils/EventLimiter.js";
 
 class CreateSceneController {
-    static main(gameScene, playersData) {
-        this.createBackground(gameScene);
+    static async main(gameScene, data) {
+        const playersData = data.players;
+        await this.loadBackground(gameScene);
         this.createTile(gameScene);
         this.createPlayers(gameScene, playersData);
     }
 
-    static createBackground(gameScene) {
-        // Crear el fondo
+    static async loadBackground(gameScene) {
         const background = gameScene.add.image(0, 0, "background").setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
     }
@@ -21,50 +21,86 @@ class CreateSceneController {
         // Dimensiones de cada rombo
         const tileWidth = 65;
         const tileHeight = 33;
+        const halfTileWidth = tileWidth / 2;
+        const halfTileHeight = tileHeight / 2;
 
-        // Crear una rejilla de rombos isométrica
+        // Centro en X para alinear la rejilla
+        const centerX = gameScene.scale.width / 2;
+
+        // Cantidad de filas/columnas
+        const rows = 30;
+        const cols = 30;
+
+        // 1. Crear un Blitter en lugar de 900 sprites.
+        //    El Blitter pone la imagen "tile" en muchas posiciones de forma muy eficiente.
+        const blitter = gameScene.add.blitter(0, 0, "tile");
+
+        // Guardamos la información de posición de cada celda si fuera necesario
+        // (no es imprescindible, pero te permite acceder a x,y de cada tile).
         gameScene.tiles = [];
-        const rows = 30; // Número de filas
-        const cols = 30; // Número de columnas
 
         for (let row = 0; row < rows; row++) {
             gameScene.tiles[row] = [];
             for (let col = 0; col < cols; col++) {
-                // Calcular posición de cada rombo en una cuadrícula isométrica
-                const x = (col - row) * (tileWidth / 2) + gameScene.scale.width / 2;
-                const y = (col + row) * (tileHeight / 2);
+                const x = (col - row) * halfTileWidth + centerX;
+                const y = (col + row) * halfTileHeight;
 
-                // Crear el rombo
-                const tile = gameScene.add.image(x, y, "tile").setInteractive();
-                tile.setData("gridPos", { x: col, y: row });
-                gameScene.tiles[row][col] = tile;
+                // "bob" es la instancia del Blitter
+                const bob = blitter.create(x, y);
 
-                // Ajustar el área interactiva al rombo
-                tile.input.hitArea = new Phaser.Geom.Polygon([
-                    { x: 0, y: tileHeight / 2 },                // Vértice superior
-                    { x: tileWidth / 2, y: 0 },                // Vértice derecho
-                    { x: tileWidth, y: tileHeight / 2 },       // Vértice inferior
-                    { x: tileWidth / 2, y: tileHeight },       // Vértice izquierdo
-                ]);
-                tile.input.hitAreaCallback = Phaser.Geom.Polygon.Contains;
-
-                this.eventTileClick(tile);
+                // Guarda lo que necesites, por ejemplo, su posición real de dibujo
+                gameScene.tiles[row][col] = { bob, gridPos: { x: col, y: row } };
             }
         }
-    }
 
-    static eventTileClick(tile) {
-        // Evento de clic: enviar posición al servidor
-        tile.removeListener("pointerdown");
-        tile.on("pointerdown", (pointer) => {
-            if (!EventLimiter.canClick()) return; // Salir si está en cooldown
+        // 2. Definir la forma "rombo" en coordenadas locales alrededor de (0,0).
+        //    Centramos la figura en (0,0) para que podamos hacer el test con coords locales:
+        const diamondPolygon = new Phaser.Geom.Polygon([
+            { x: -halfTileWidth, y: 0 },
+            { x: 0, y: -halfTileHeight },
+            { x: halfTileWidth, y: 0 },
+            { x: 0, y: halfTileHeight }
+        ]);
 
-            const { x, y } = tile.getData("gridPos");
-            console.log(`Clicked tile at ${x}, ${y}`);
-            socket.emit("request:user_move", { x: x, y: y });
+        // 3. Crear UNA zona interactiva que cubra toda la escena.
+        //    Así no tenemos 900 sprites interactivos.
+        const zone = gameScene.add.zone(0, 0, gameScene.scale.width, gameScene.scale.height)
+            .setOrigin(0)
+            .setInteractive();
 
-            // Crear la animación de pulsación
-            FloorPulseAnimation.main(tile.scene, pointer.worldX, pointer.worldY);
+        // 4. Al hacer clic, invertimos la fórmula isométrica para averiguar col, row.
+        zone.on("pointerdown", (pointer) => {
+            if (!EventLimiter.canClick()) return;
+
+            const mx = pointer.worldX;
+            const my = pointer.worldY;
+
+            // Fórmula isométrica invertida, pero usando 'round' para evitar que se pierdan bordes.
+            const colFloat = ((mx - centerX) / halfTileWidth + my / halfTileHeight) / 2;
+            const rowFloat = (my / halfTileHeight - (mx - centerX) / halfTileWidth) / 2;
+
+            const col = Math.round(colFloat);
+            const row = Math.round(rowFloat);
+
+            // Chequeo de límites
+            if (col < 0 || col >= cols || row < 0 || row >= rows) {
+                return;
+            }
+
+            // Calculamos la posición exacta del centro de ese tile
+            const tileCenterX = (col - row) * halfTileWidth + centerX;
+            const tileCenterY = (col + row) * halfTileHeight;
+
+            // Coordenadas locales del clic respecto al centro del tile
+            const localX = mx - tileCenterX;
+            const localY = my - tileCenterY;
+
+            // Verificamos si realmente cae dentro del rombo (evita clics en las esquinas adyacentes)
+            if (Phaser.Geom.Polygon.Contains(diamondPolygon, localX, localY)) {
+                console.log(`Clicked tile at ${col}, ${row}`);
+                socket.emit("request:user_move", { x: col, y: row });
+                FloorPulseAnimation.main(gameScene, mx, my);
+            }
         });
     }
 

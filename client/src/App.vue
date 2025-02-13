@@ -80,7 +80,7 @@ export default {
         );
         // Solo creas la instancia la primera vez.
         this.gamePhaser = new Phaser.Game({
-          type: Phaser.WEBGL,
+          type: Phaser.CANVAS,
           powerPreference: "high-performance",
           antialias: false, // Desactiva si no necesitas suavizado
           roundPixels: true, // Reduce cálculos de subpíxeles
@@ -89,7 +89,14 @@ export default {
           // Registras todas las escenas globales que vayas a usar
           scene: [GlobalPreloader, PublicAreaScene],
           parent: "phaser-container",
-          physics: { default: "arcade" },
+          physics: {
+            default: "arcade",
+          },
+          fps: {
+            min: 30,
+            target: 60,
+            forceSetTimeOut: true, // Mantiene el juego corriendo aunque pierda foco
+          },
         });
         // Lanzamos la escena de Preloader para que cargue todo
         this.gamePhaser.scene.start("GlobalPreloaderScene");

@@ -4,12 +4,12 @@ class UserUppercutAnimation {
         if (attacker) {
             const textureKey = direction + "_punch_doy";
             AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
-            spritePlayer.play(avatarId + "_" + textureKey);
+            spritePlayer.play(avatarId + "_" + textureKey, true);
         }
         else {
             const textureKey = direction + "_punch_rec";
             AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
-            spritePlayer.play(avatarId + "_" + textureKey);
+            spritePlayer.play(avatarId + "_" + textureKey, true);
         }
     }
 }
