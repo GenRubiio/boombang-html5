@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       username: 'Gen',
-      password: '13021998Gen',
+      password: 'test',
       errorMessage: '',
     };
   },
