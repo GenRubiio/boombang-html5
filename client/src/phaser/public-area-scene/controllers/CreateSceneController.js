@@ -7,17 +7,18 @@ import EventLimiter from "../utils/EventLimiter.js";
 class CreateSceneController {
     static async main(gameScene, data) {
         const playersData = data.players;
-        await this.loadBackground(gameScene);
-        this.createTile(gameScene);
+        const sceneryData = data.scenery;
+        this.loadBackground(gameScene);
+        this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
         this.createPlayers(gameScene, playersData);
     }
 
-    static async loadBackground(gameScene) {
+    static loadBackground(gameScene) {
         const background = gameScene.add.image(0, 0, "background").setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
     }
 
-    static createTile(gameScene) {
+    static createTile(gameScene, map, rows, cols) {
         // Dimensiones de cada rombo
         const tileWidth = 65;
         const tileHeight = 33;
@@ -27,16 +28,10 @@ class CreateSceneController {
         // Centro en X para alinear la rejilla
         const centerX = gameScene.scale.width / 2;
 
-        // Cantidad de filas/columnas
-        const rows = 30;
-        const cols = 30;
-
-        // 1. Crear un Blitter en lugar de 900 sprites.
-        //    El Blitter pone la imagen "tile" en muchas posiciones de forma muy eficiente.
+        // Crear un Blitter
         const blitter = gameScene.add.blitter(0, 0, "tile");
 
         // Guardamos la información de posición de cada celda si fuera necesario
-        // (no es imprescindible, pero te permite acceder a x,y de cada tile).
         gameScene.tiles = [];
 
         for (let row = 0; row < rows; row++) {
@@ -45,16 +40,25 @@ class CreateSceneController {
                 const x = (col - row) * halfTileWidth + centerX;
                 const y = (col + row) * halfTileHeight;
 
-                // "bob" es la instancia del Blitter
+                // Creamos un "bob" solo si el mapa en esta posición es clickeable (0)
+                const isClickable = map[row][col] === 0;
                 const bob = blitter.create(x, y);
 
-                // Guarda lo que necesites, por ejemplo, su posición real de dibujo
-                gameScene.tiles[row][col] = { bob, gridPos: { x: col, y: row } };
+                // Opcionalmente, si deseas diferenciar los tiles no clickeables visualmente:
+                if (!isClickable) {
+                    bob.tint = 0x808080; // Color gris, por ejemplo
+                }
+
+                // Guarda la información del tile
+                gameScene.tiles[row][col] = {
+                    bob,
+                    gridPos: { x: col, y: row },
+                    isClickable
+                };
             }
         }
 
-        // 2. Definir la forma "rombo" en coordenadas locales alrededor de (0,0).
-        //    Centramos la figura en (0,0) para que podamos hacer el test con coords locales:
+        // Definir la forma "rombo" en coordenadas locales alrededor de (0,0).
         const diamondPolygon = new Phaser.Geom.Polygon([
             { x: -halfTileWidth, y: 0 },
             { x: 0, y: -halfTileHeight },
@@ -62,20 +66,19 @@ class CreateSceneController {
             { x: 0, y: halfTileHeight }
         ]);
 
-        // 3. Crear UNA zona interactiva que cubra toda la escena.
-        //    Así no tenemos 900 sprites interactivos.
+        // Crear UNA zona interactiva que cubra toda la escena.
         const zone = gameScene.add.zone(0, 0, gameScene.scale.width, gameScene.scale.height)
             .setOrigin(0)
             .setInteractive();
 
-        // 4. Al hacer clic, invertimos la fórmula isométrica para averiguar col, row.
+        // Al hacer clic, invertimos la fórmula isométrica
         zone.on("pointerdown", (pointer) => {
             if (!EventLimiter.canClick()) return;
 
             const mx = pointer.worldX;
             const my = pointer.worldY;
 
-            // Fórmula isométrica invertida, pero usando 'round' para evitar que se pierdan bordes.
+            // Fórmula isométrica invertida
             const colFloat = ((mx - centerX) / halfTileWidth + my / halfTileHeight) / 2;
             const rowFloat = (my / halfTileHeight - (mx - centerX) / halfTileWidth) / 2;
 
@@ -95,14 +98,23 @@ class CreateSceneController {
             const localX = mx - tileCenterX;
             const localY = my - tileCenterY;
 
-            // Verificamos si realmente cae dentro del rombo (evita clics en las esquinas adyacentes)
+            // Verificamos si realmente cae dentro del rombo
             if (Phaser.Geom.Polygon.Contains(diamondPolygon, localX, localY)) {
+                const tile = gameScene.tiles[row][col];
+
+                // Si el tile no es clickeable, ignoramos el clic
+                if (!tile.isClickable) {
+                    console.log(`Tile at ${col}, ${row} is not clickable.`);
+                    return;
+                }
+
                 console.log(`Clicked tile at ${col}, ${row}`);
                 socket.emit("request:user_move", { x: col, y: row });
                 FloorPulseAnimation.main(gameScene, mx, my);
             }
         });
     }
+
 
     static createPlayers(gameScene, playersData) {
         // Crear los jugadores iniciales

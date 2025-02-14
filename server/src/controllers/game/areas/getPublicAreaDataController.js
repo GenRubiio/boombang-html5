@@ -30,6 +30,9 @@ class GetPublicAreaDataController {
                 scenery: {
                     id: publicArea.id,
                     type: "public_scenery",
+                    map_rows: publicArea.map_width,
+                    map_cols: publicArea.map_height,
+                    game_map: publicArea.game_map,
                 },
                 avatar_animations: avatarAnimations
             });
