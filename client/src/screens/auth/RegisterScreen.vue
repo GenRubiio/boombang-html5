@@ -17,6 +17,27 @@
         />
       </div>
       <div>
+        <select v-model="avatar_id">
+          <option value="1">Boomer</option>
+          <option value="2">Brujita</option>
+          <option value="3">Cholo</option>
+          <option value="4">Empollon</option>
+          <option value="5">Gata</option>
+          <option value="6">Ghost</option>
+          <option value="7">India</option>
+          <option value="8">Lilian</option>
+          <option value="9">Marsu</option>
+          <option value="10">Modern</option>
+          <option value="11">Ninja</option>
+          <option value="12">Rasta</option>
+          <option value="13">Skeleton</option>
+          <option value="14">Werewolf</option>
+          <option value="15">Wraith</option>
+          <option value="16">Yayo</option>
+          <option value="17">Zombie</option>
+        </select>
+      </div>
+      <div>
         <button type="submit" :disabled="isRegistering">
           {{ isRegistering ? "Creando..." : "Registrarse" }}
         </button>

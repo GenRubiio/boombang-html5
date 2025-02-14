@@ -1,6 +1,5 @@
 const UserService = require('../../services/UserService');
 const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
-const GenericUtil = require('../../utils/GenericUtil');
 
 class RegisterController {
     static async main(socket, io, data) {
