@@ -2,13 +2,29 @@ import DirectionEnum from "../../../enums/DirectionEnum.js";
 import AvatarAnimationsEnum from "../../../enums/AvatarAnimationsEnum.js";
 import AnimationUtils from "../utils/AnimationUtils.js";
 
+/**
+ * Maneja la animación de caminar según la dirección.
+ */
 class UserWalkAnimation {
-    static main(spritePlayer, direction, avatarId) {
+    /**
+     * Ajusta la animación en el sprite y la reproduce.
+     * @param {Phaser.GameObjects.Sprite} spritePlayer
+     * @param {number} direction - Una de las direcciones definidas en DirectionEnum
+     * @param {string} avatarId - Para usar la config apropiada
+     */
+    static playWalk(spritePlayer, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
+        
+        // Configura sprite (flip, origen, etc.)
         AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
+        
+        // Inicia la animación una sola vez
         spritePlayer.play(avatarId + "_" + textureKey, true);
     }
 
+    /**
+     * Retorna la clave de animación según la dirección.
+     */
     static getTextureKey(direction) {
         switch (direction) {
             case DirectionEnum.DOWN_LEFT:
@@ -27,6 +43,9 @@ class UserWalkAnimation {
                 return AvatarAnimationsEnum.LEFTUP_WALK;
             case DirectionEnum.LEFT:
                 return AvatarAnimationsEnum.LEFT_WALK;
+            default:
+                // Fallback por si no coincide nada
+                return AvatarAnimationsEnum.DOWN_WALK;
         }
     }
 }

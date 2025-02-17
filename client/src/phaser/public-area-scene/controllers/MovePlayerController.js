@@ -3,14 +3,25 @@ import AnimationsTimerEnum from "../../../enums/AnimationsTimerEnum.js";
 import UserMoveDeniedController from "./UserMoveDeniedController.js";
 
 class MovePlayerController {
+    /**
+     * Llamada principal para iniciar el movimiento del jugador por un path.
+     * @param {Phaser.Scene} gameScene - Escena de Phaser
+     * @param {string} socketId - Identificador único del usuario
+     * @param {Array} path - Lista de pasos (objetos con {x, y, z})
+     * @param {boolean} isLastStep - Indica si al finalizar se aplica lógica de "moveDenied"
+     */
     static main(gameScene, socketId, path, isLastStep) {
         if (!path || path.length === 0 || !gameScene.players[socketId]) return;
-        console.log(`Moving player ${socketId} to path:`, path);
+
+        // (Opcional) log de depuración, coméntalo en producción
+        // console.log(`Moving player ${socketId} to path:`, path);
 
         const playerModel = gameScene.players[socketId];
 
         // Detener tweens existentes
-        if (playerModel.currentTween) playerModel.currentTween.stop();
+        if (playerModel.currentTween) {
+            playerModel.currentTween.stop();
+        }
         gameScene.tweens.killTweensOf(playerModel.playerContainer);
 
         // Guardar el path y reiniciar el índice
@@ -18,60 +29,68 @@ class MovePlayerController {
         playerModel.pathIndex = 0;
 
         // Iniciar movimiento al siguiente paso
-        this.moveToNextStep(socketId, gameScene, isLastStep);
+        this.moveToNextStep(gameScene, socketId, isLastStep);
     }
 
-    static moveToNextStep(socketId, gameScene, isLastStep) {
+    /**
+     * Mueve al jugador al siguiente paso del path
+     */
+    static moveToNextStep(gameScene, socketId, isLastStep) {
         const playerModel = gameScene.players[socketId];
-        if (!playerModel || playerModel.pathIndex >= playerModel.path.length) return;
+        if (!playerModel) return;
+
+        // Si ya hemos recorrido todo el path
+        if (playerModel.pathIndex >= playerModel.path.length) {
+            // Lógica adicional si es el último paso
+            if (isLastStep) {
+                UserMoveDeniedController.main(gameScene, socketId);
+            }
+            return;
+        }
 
         const step = playerModel.path[playerModel.pathIndex];
+
+        // Ajusta según tu grid isométrico
         const tileWidth = 65;
         const tileHeight = 33;
 
-        // Calcular posición en pantalla
+        // Calcula la posición en pantalla
         const centerX = (step.x - step.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const centerY = (step.x + step.y) * (tileHeight / 2);
 
-        // Actualizar la posición del jugador
+        // Actualiza posición lógica del jugador
         playerModel.position = { x: step.x, y: step.y, z: step.z };
 
-        // Mover el contenedor
-        const playerTween = gameScene.tweens.add({
+        // Inicia la animación SOLO una vez (en lugar de cada frame).
+        UserWalkAnimation.playWalk(
+            playerModel.sprite_player,
+            step.z,
+            playerModel.avatar_id
+        );
+
+        // Crea el tween de movimiento
+        const tween = gameScene.tweens.add({
             targets: playerModel.playerContainer,
             x: centerX,
             y: centerY,
             duration: AnimationsTimerEnum.WALK,
             onUpdate: () => {
                 if (!playerModel.playerContainer) return;
-                
-                // Actualizar profundidad en base a la posición Y
+                // Actualiza la profundidad según la Y (opcional en cada frame).
                 playerModel.playerContainer.setDepth(playerModel.playerContainer.y);
-
-                // Animar al personaje durante el movimiento
-                UserWalkAnimation.main(
-                    playerModel.sprite_player,
-                    step.z,
-                    playerModel.avatar_id
-                );
             },
             onComplete: () => {
-                if (!playerModel.playerContainer) return;
-
-                // Detener animación actual
+                // Al terminar el movimiento, detenemos la animación
                 playerModel.sprite_player.stop();
 
-                if (isLastStep) {
-                    UserMoveDeniedController.main(gameScene, socketId);
-                } else {
-                    playerModel.pathIndex++;
-                    this.moveToNextStep(socketId, gameScene, isLastStep);
-                }
+                // Pasamos al siguiente paso del path
+                playerModel.pathIndex++;
+                this.moveToNextStep(gameScene, socketId, isLastStep);
             }
         });
 
-        // Almacenar tween actual
-        playerModel.currentTween = playerTween;
+        // Almacena el tween actual para futuras referencias
+        playerModel.currentTween = tween;
     }
 }
 

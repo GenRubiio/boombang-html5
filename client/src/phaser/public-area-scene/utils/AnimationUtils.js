@@ -1,9 +1,22 @@
-
+/**
+ * Utilidad para configurar el sprite antes de reproducir la animación
+ * (flip horizontal, origen, offsets, etc.)
+ */
 class AnimationUtils {
     static setSpriteConfig(spritePlayer, avatarId, textureKey) {
+        // Supone que tienes un objeto global con la config de cada avatar y animación
+        // (window.avatars_config[avatarId][textureKey])
         const animationData = window.avatars_config[avatarId][textureKey];
+        if (!animationData) return; // Comprueba que exista
+        
+        // Ajusta flip horizontal
         spritePlayer.setFlipX(animationData.flip_horizontally);
-        spritePlayer.setOrigin(animationData.originX + (animationData.offsetX / animationData.frameWidth), animationData.originY + (animationData.offsetY / animationData.frameHeight));
+
+        // Ajusta el origen en base a offsets
+        spritePlayer.setOrigin(
+            animationData.originX + (animationData.offsetX / animationData.frameWidth),
+            animationData.originY + (animationData.offsetY / animationData.frameHeight)
+        );
     }
 }
 

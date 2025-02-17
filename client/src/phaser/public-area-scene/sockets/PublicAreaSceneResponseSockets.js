@@ -28,8 +28,8 @@ class PublicAreaSceneResponseSockets {
         socket.on(ResponseSocketsEnum.USER_MOVE, (data) => {
             const { id, path } = data;
             if (gameScene.players[id]) {
-                console.log(`Moving player ${id} to path:`, path);
-                console.log(`Is last step: ${data.isLastStep}`);
+                //console.log(`Moving player ${id} to path:`, path);
+                //console.log(`Is last step: ${data.isLastStep}`);
                 MovePlayerController.main(gameScene, id, path, data.isLastStep);
             }
         });
