@@ -14,7 +14,11 @@ class AreaModel {
         this.game_map = game_map;
         this.startPosition = startPosition; // Posición de inicio del área {x, y, z}
 
-        // Iniciar el procesador de movimiento
+        // Guardamos una copia base del mapa para evitar clonaciones repetidas
+        this.navigationMapBase = JSON.parse(JSON.stringify(game_map));
+        // Objeto para reservar tiles: clave "x,y" → id del usuario
+        this.reservedTiles = {};
+
         this.startMovementProcessor();
     }
 
@@ -24,6 +28,12 @@ class AreaModel {
             logger.log('User already in area', 'error');
             return;
         }
+        // Inicializamos la posición actual del usuario si no existe
+        if (!user.currentAreaPosition) {
+            user.currentAreaPosition = { ...this.startPosition };
+        }
+        // Propiedad para recordar la casilla reservada previamente
+        user.lastReservedTile = null;
         this.users.push(user);
     }
 
@@ -58,19 +68,15 @@ class AreaModel {
         });
     }
 
-    // Iniciar el procesador de movimiento
+    // Iniciar el procesador de movimiento (se procesa a todos los usuarios en paralelo)
     startMovementProcessor() {
         const processMovement = async () => {
-            // Procesar movimiento para cada usuario
-            for (let user of this.users) {
-                if (user.finalTarget) {
-                    await this.processNextMovement(user);
-                }
-            }
+            const movers = this.users.filter(user => user.finalTarget);
+            await Promise.all(movers.map(user => this.processNextMovement(user)));
             setTimeout(processMovement, AnimationBlockTimerEnum.WALK); // Continuar el ciclo
         };
 
-        processMovement(); // Iniciar el bucle de procesamiento
+        processMovement();
     }
 
     // Lógica para procesar el siguiente movimiento de un usuario
@@ -81,33 +87,53 @@ class AreaModel {
             const startPos = user.currentAreaPosition;
             const target = user.finalTarget;
 
-            // Verificar si ya está en el destino
+            // Verificar si ya se alcanzó el destino
             if (startPos.x === target.x && startPos.y === target.y) {
-                user.finalTarget = null; // Llegó al destino
+                // Liberar reserva actual si existe
+                if (user.lastReservedTile) {
+                    delete this.reservedTiles[user.lastReservedTile];
+                    user.lastReservedTile = null;
+                }
+                user.finalTarget = null;
                 return;
             }
 
-            // Calcular el camino al destino
+            // Liberar la reserva previa (si el usuario se movió en el ciclo anterior)
+            if (user.lastReservedTile) {
+                delete this.reservedTiles[user.lastReservedTile];
+                user.lastReservedTile = null;
+            }
+
+            // Calcular el mapa de navegación (incluye obstáculos de otros usuarios y reservas)
             const navigationMap = this.getNavigationMapWithPlayers(user.id);
             const path = await this.findPath(startPos, target, navigationMap);
 
             if (!path || path.length <= 1) {
                 console.log('No se encontró un camino al destino');
-                this.emit('response:user_move_denied', {
-                    id: user.socket.id,
-                });
-                user.finalTarget = null; // No se puede llegar al destino
+                this.emit('response:user_move_denied', { id: user.socket.id });
+                user.finalTarget = null;
                 return;
             }
 
-            // Mover al siguiente paso en el camino
+            // Seleccionar el siguiente paso del camino
             const nextStep = path[1];
-            // Calcular la dirección
-            const deltaX = nextStep.x - user.currentAreaPosition.x;
-            const deltaY = nextStep.y - user.currentAreaPosition.y;
+            const key = `${nextStep.x},${nextStep.y}`;
+
+            // Si la casilla ya está reservada por otro usuario, omitir este ciclo
+            if (this.reservedTiles[key] && this.reservedTiles[key] !== user.id) {
+                return; // Se reintentará en el siguiente ciclo
+            }
+
+            // Reservar la casilla para este usuario
+            this.reservedTiles[key] = user.id;
+            user.lastReservedTile = key;
+
+            // Calcular la dirección del movimiento
+            const deltaX = nextStep.x - startPos.x;
+            const deltaY = nextStep.y - startPos.y;
             const direction = UserMovimentUtil.getDirection(deltaX, deltaY);
 
-            // Actualizar la posición actual
+            // Actualizar la posición actual del usuario
             user.currentAreaPosition = { x: nextStep.x, y: nextStep.y, z: direction };
 
             // Notificar movimiento al cliente
@@ -123,7 +149,12 @@ class AreaModel {
 
             this.emit('response:user_move', movementData);
 
-            // Continuar moviéndose hacia el destino en el siguiente ciclo
+            // Si este es el último paso, liberar la reserva y cancelar el destino final
+            if (path.length === 2) {
+                delete this.reservedTiles[key];
+                user.lastReservedTile = null;
+                user.finalTarget = null;
+            }
         } catch (err) {
             console.log(err);
             logger.log(`Error processing user movement: ${err.message}`, 'error');
@@ -131,41 +162,42 @@ class AreaModel {
         }
     }
 
-    // Implementación del algoritmo A*
+    // Implementación del algoritmo A* con EasyStar
     findPath(startPos, endPos, customMap) {
         const easystar = new EasyStar();
-
-        // Usar el mapa personalizado si se proporciona
+        // Usar el mapa personalizado si se proporciona, sino se usa el mapa original
         const mapToUse = customMap || this.game_map;
-
         easystar.setGrid(mapToUse);
         easystar.setAcceptableTiles([0]); // 0 es caminable
         easystar.enableDiagonals();
         easystar.enableCornerCutting();
 
-        return new Promise((resolve, reject) => {
-            easystar.findPath(startPos.x, startPos.y, endPos.x, endPos.y, function (path) {
-                if (path === null) {
-                    resolve(null);
-                } else {
-                    resolve(path);
-                }
+        return new Promise((resolve) => {
+            easystar.findPath(startPos.x, startPos.y, endPos.x, endPos.y, (path) => {
+                resolve(path);
             });
             easystar.calculate();
         });
     }
 
+    // Combina el mapa base con las posiciones actuales de otros usuarios y las reservas
     getNavigationMapWithPlayers(excludeUserId) {
-        // Clonar el mapa original
-        let navigationMap = JSON.parse(JSON.stringify(this.game_map));
+        // Clonar la copia base del mapa
+        let navigationMap = JSON.parse(JSON.stringify(this.navigationMapBase));
 
-        // Marcar las posiciones de los jugadores como obstáculos
+        // Marcar las posiciones actuales de los demás usuarios
         this.users.forEach(user => {
             if (user.id !== excludeUserId) {
                 const pos = user.currentAreaPosition;
-                navigationMap[pos.y][pos.x] = 1; // 1 representa un obstáculo
+                navigationMap[pos.y][pos.x] = 1;
             }
         });
+
+        // Marcar las casillas reservadas
+        for (let key in this.reservedTiles) {
+            const [x, y] = key.split(',').map(Number);
+            navigationMap[y][x] = 1;
+        }
 
         return navigationMap;
     }
