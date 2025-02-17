@@ -1,4 +1,4 @@
-import AvatarEnum from "../enums/AvatarEnum";
+import AvatarEnum from "../../enums/AvatarEnum";
 import AvatarBoomerLoad from "./avatars/AvatarBoomerLoad";
 import AvatarBrujitaLoad from "./avatars/AvatarBrujitaLoad";
 import AvatarCholoLoad from "./avatars/AvatarCholoLoad";

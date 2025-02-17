@@ -1,4 +1,4 @@
-import Enum from '../phaser/enums/Enum';
+import Enum from './Enum';
 
 const GameScreensEnum = new Enum({
     LOGIN: 'login',

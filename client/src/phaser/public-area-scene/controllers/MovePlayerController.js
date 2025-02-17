@@ -1,5 +1,5 @@
 import UserWalkAnimation from "../animations/UserWalkAnimation.js";
-import AnimationsTimerEnum from "../../enums/AnimationsTimerEnum.js";
+import AnimationsTimerEnum from "../../../enums/AnimationsTimerEnum.js";
 import UserMoveDeniedController from "./UserMoveDeniedController.js";
 
 class MovePlayerController {

@@ -1,4 +1,4 @@
-import AvatarEnum from "../enums/AvatarEnum";
+import AvatarEnum from "../../enums/AvatarEnum";
 import boomer_config from "../../assets/game/avatars/boomer/config.json";
 import brujita_config from "../../assets/game/avatars/brujita/config.json";
 import cholo_config from "../../assets/game/avatars/cholo/config.json";
