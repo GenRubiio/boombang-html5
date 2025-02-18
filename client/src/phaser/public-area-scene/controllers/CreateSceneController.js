@@ -104,11 +104,11 @@ class CreateSceneController {
 
                 // Si el tile no es clickeable, ignoramos el clic
                 if (!tile.isClickable) {
-                    console.log(`Tile at ${col}, ${row} is not clickable.`);
+                    //console.log(`Tile at ${col}, ${row} is not clickable.`);
                     return;
                 }
 
-                console.log(`Clicked tile at ${col}, ${row}`);
+                //console.log(`Clicked tile at ${col}, ${row}`);
                 socket.emit("request:user_move", { x: col, y: row });
                 FloorPulseAnimation.main(gameScene, mx, my);
             }
@@ -123,7 +123,7 @@ class CreateSceneController {
                 await AddPlayerController.main(gameScene, playerData);
             }
 
-            console.log("Players loaded", gameScene.players);
+            //console.log("Players loaded", gameScene.players);
 
             SetUserCardController.main(gameScene, {
                 username: socket.user.username,

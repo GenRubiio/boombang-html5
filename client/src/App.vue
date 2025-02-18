@@ -107,7 +107,7 @@ export default {
       });
     },
     onJoinPublicArea(areaId) {
-      console.log("Unido a la sala:", areaId);
+      //console.log("Unido a la sala:", areaId);
       this.currentAreaId = areaId;
       this.currentScreen = GameScreensEnum.PUBLIC_AREA;
     },
@@ -121,7 +121,7 @@ export default {
       this.onUpdateLoading(true);
       this.gamePhaser.scene.stop("PublicAreaScene");
       this.currentScreen = GameScreensEnum.LOGIN;
-      console.log("Desconexión detectada. Redirigiendo al login.");
+      //console.log("Desconexión detectada. Redirigiendo al login.");
       this.onUpdateLoading(false);
     },
     onUpdateLoading(value) {
@@ -134,7 +134,7 @@ export default {
 
     // Detectar reconexión
     socket.on("connect", () => {
-      console.log("Reconectado al servidor");
+      //console.log("Reconectado al servidor");
     });
 
     socket.on("error_critical", this.handleDisconnect);

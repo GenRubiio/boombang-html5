@@ -44,7 +44,7 @@ class PublicAreaSceneResponseSockets {
         });
 
         socket.on(ResponseSocketsEnum.USER_SELECT_USER, (data) => {
-            console.log('User select user', data);
+            //console.log('User select user', data);
             UserSelectUserController.main(gameScene, data);
         });
 

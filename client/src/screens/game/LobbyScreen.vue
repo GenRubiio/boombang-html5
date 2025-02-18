@@ -22,12 +22,12 @@ export default {
   created() {
     this.$emit("updateLoading", true);
     // Solicitar las salas al conectarse
-    console.log("Solicitando salas...");
+    //console.log("Solicitando salas...");
     socket.emit(RequestSocketsEnum.GET_PUBLIC_AREAS);
 
     socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS);
     socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (areas) => {
-      console.log(areas);
+      //console.log(areas);
       this.areas = areas;
       this.$emit("updateLoading", false);
     });

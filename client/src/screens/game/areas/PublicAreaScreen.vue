@@ -47,7 +47,7 @@ export default {
       this.$emit("exitLobby"); // Emite un evento para cambiar la escena
     },
     updateUserCard(userData) {
-      console.log("Usuario seleccionado:", userData);
+      //console.log("Usuario seleccionado:", userData);
       this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
     },
   },

@@ -26,7 +26,7 @@ class AddPlayerController {
         spriteShadow.on('pointerdown', () => {
             const clickedPlayer = gameScene.players[spriteShadow.playerSocketId];
             if (clickedPlayer) {
-                console.log("Jugador clickeado: ", clickedPlayer);
+                //console.log("Jugador clickeado: ", clickedPlayer);
                 socket.emit(RequestSocketsEnum.USER_SELECT_USER, {
                     socketId: spriteShadow.playerSocketId
                 });

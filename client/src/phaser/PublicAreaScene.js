@@ -42,7 +42,7 @@ export default class PublicAreaScene extends Phaser.Scene {
     }
 
     shutdown() {
-        console.log("Shutting down scene with exclusion lists.");
+        //console.log("Shutting down scene with exclusion lists.");
 
         // Listas de exclusión
         const excludedResponseEvents = [
@@ -58,14 +58,14 @@ export default class PublicAreaScene extends Phaser.Scene {
         // Remover solo eventos que no están en las listas de exclusión
         Object.values(ResponseSocketsEnum).forEach((event) => {
             if (!excludedResponseEvents.includes(event)) {
-                console.log(`Eliminando evento de respuesta de socket: ${event}`);
+                //console.log(`Eliminando evento de respuesta de socket: ${event}`);
                 socket.off(event);
             }
         });
 
         Object.values(RequestSocketsEnum).forEach((event) => {
             if (!excludedRequestEvents.includes(event)) {
-                console.log(`Eliminando evento de solicitud de socket: ${event}`);
+                //console.log(`Eliminando evento de solicitud de socket: ${event}`);
                 socket.off(event);
             }
         });

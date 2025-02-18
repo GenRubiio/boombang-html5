@@ -38,7 +38,7 @@ class UserUpdatePositionController {
             -(playerModel.sprite_shadow.displayHeight / 2) - (playerModel.sprite_player.displayHeight / 2) + 15
         );
 
-        console.log(`Updating player ${socketId} position/direction to:`, position);
+        //console.log(`Updating player ${socketId} position/direction to:`, position);
 
         // Ahora que el jugador está posicionado correctamente, cambiar el frame idle según la dirección
         UserIdleAnimation.main(

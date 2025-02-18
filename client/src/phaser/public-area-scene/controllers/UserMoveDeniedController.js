@@ -50,7 +50,7 @@ class UserMoveDeniedController {
 
     static stopAnimation(spritePlayer, direction, avatarId) {
         if (!spritePlayer || !spritePlayer.anims) {
-            console.error("Jugador no válido al detener animación.");
+            //console.error("Jugador no válido al detener animación.");
             UserIdleAnimation.main(
                 spritePlayer,
                 direction,
