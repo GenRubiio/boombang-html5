@@ -13,6 +13,7 @@ const RequestSocketsEnum = new Enum({
     GET_CONNECTED_USERS: 'get_connected_users',
     SEND_MESSAGE: 'send_message',
     SEND_UPPERCUT: 'request:send_uppercut',
+    GET_PUBLIC_AREA_USERS: 'request:get_public_area_users'
 });
 
 module.exports = RequestSocketsEnum;

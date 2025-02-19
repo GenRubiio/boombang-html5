@@ -11,7 +11,8 @@ class UserMoveController {
         try {
             let user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user || !user.currentArea) {
-                throw new Error('User not found or not in an area');
+                //throw new Error('User not found or not in an area');
+                return;
             }
 
             if (user.isActionBlocked(AnimationEnum.WALK)){

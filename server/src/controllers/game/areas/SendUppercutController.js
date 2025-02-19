@@ -10,12 +10,13 @@ class SendUppercutController {
     static async main(socket, io) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
-            if (!user || !user.currentArea) throw new Error('User not found or not in any area');
-            if (!user.selectedUser) throw new Error('No user selected');
+            if (!user || !user.currentArea) return;//throw new Error('User not found or not in any area');
+            if (!user.selectedUser) return; //throw new Error('No user selected');
 
             const targetUser = ConnectedUsersCollection.getBySocketId(user.selectedUser.socket.id);
             if (!targetUser || targetUser.currentArea.id !== user.currentArea.id) {
-                throw new Error('Target user not found or not in the same area');
+                //throw new Error('Target user not found or not in the same area');
+                return;
             }
 
             // Aquí NO revisamos si finalTarget es null, ya que queremos permitir el uppercut en movimiento.

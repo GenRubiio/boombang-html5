@@ -15,6 +15,7 @@ const ResponseSocketsEnum = new Enum({
     REGISTER_SUCCESS: 'register_success',
     REMOVE_USER_AREA: 'response:remove_user_area',
     SEND_UPPERCUT: 'response:send_uppercut',
+    GET_PUBLIC_AREA_USERS: 'response:get_public_area_users'
 });
 
 module.exports = ResponseSocketsEnum;

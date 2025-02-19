@@ -13,14 +13,16 @@ class JoinPublicAreaController {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user) {
-                throw new Error("User not found");
+                //throw new Error("User not found");
+                return;
             }
             const publicArea = PublicAreasCollection.getByUid(data.areaId);
             if (!publicArea) {
                 throw new Error("Public area not found");
             }
             if (publicArea.containsUser(user)) {
-                throw new Error("User already in area");
+                //throw new Error("User already in area");
+                return;
             }
 
             user.setArea(publicArea);
