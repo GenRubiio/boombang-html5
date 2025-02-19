@@ -1,11 +1,11 @@
 const { io } = require("socket.io-client");
-console.log('Bots corriendo...');
 
 class Bot {
     constructor(username, password) {
         this.username = username;
         this.password = password;
         this.socket = io('http://localhost:3000');
+        this.uppercutInterval = null;
 
         this.socket.on("connect", () => {
             console.log(`${this.username} conectado como bot.`);
@@ -13,13 +13,36 @@ class Bot {
         });
 
         this.socket.on("login_success", (data) => {
-            this.joinArea();
+            setInterval(() => {
+                this.joinArea();
+            }, 3000);
+
             this.startActions();
+            this.selectUser();
+        });
+
+        this.socket.on("response:get_public_area_users", (data) => {
+            clearInterval(this.uppercutInterval);
+            const randomUser = data.players[Math.floor(Math.random() * data.players.length)];
+            if (randomUser.id !== this.socket.id) {
+                this.socket.emit('request:user_select_user', {
+                    socketId: randomUser.id
+                });
+                this.uppercutInterval = setInterval(() => {
+                    this.socket.emit('request:send_uppercut');
+                }, 100);
+            }
         });
 
         this.socket.on("disconnect", () => {
             console.log(`${this.username} desconectado.`);
         });
+    }
+
+    selectUser() {
+        setInterval(() => {
+            this.socket.emit("request:get_public_area_users", {});
+        }, 10000);
     }
 
     login() {
@@ -30,7 +53,7 @@ class Bot {
         const x = Math.floor(Math.random() * 30);
         const y = Math.floor(Math.random() * 30);
         this.socket.emit("request:user_move", { x: x, y: y });
-        console.log(`Moviendo a ${this.username} a (${x}, ${y})`);
+        //console.log(`Moviendo a ${this.username} a (${x}, ${y})`);
     }
 
     startActions() {
@@ -44,15 +67,4 @@ class Bot {
     }
 }
 
-new Bot('bot1', 'test');
-new Bot('bot2', 'test');
-new Bot('bot3', 'test');
-new Bot('bot4', 'test');
-new Bot('bot5', 'test');
-new Bot('bot6', 'test');
-new Bot('bot7', 'test');
-new Bot('bot8', 'test');
-new Bot('bot9', 'test');
-new Bot('bot10', 'test');
-new Bot('bot11', 'test');
-console.log('Bots creados.');
+module.exports = Bot;

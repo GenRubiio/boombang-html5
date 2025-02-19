@@ -4,6 +4,7 @@ const sockets = require('./src/sockets');
 const { initializer } = require('./src/config/initializer');
 const ConsoleLogger = require('./src/utils/ConsoleLogger');
 const logger = new ConsoleLogger();
+const BotsPackage = require('./src/packages/bots/BotsPackage');
 
 logger.log('Starting server...', 'success');
 (async () => {
@@ -20,4 +21,6 @@ logger.log('Starting server...', 'success');
     // Configurar sockets
     sockets(io);
     initializer();
+
+    BotsPackage.main();
 })();
