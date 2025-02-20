@@ -1,12 +1,15 @@
 const Bot = require('./models/Bot');
+const BotService = require('./services/BotService');
+const Log = require('../../utils/Log');
 
 class BotsPackage {
-    static main() {
-        console.log('Bots corriendo...');
-        for (let i = 1; i < 12; i++) {
-            new Bot(`bot${i}`, 'test');
+    static async main() {
+        try {
+            const bots = await BotService.getAll();
+            bots.forEach(bot => new Bot(bot.username, bot.password));
+        } catch (error) {
+            Log.error('BotsPackage.main', error);
         }
-        console.log('Bots creados.');
     }
 }
 

@@ -1,10 +1,11 @@
 const { io } = require("socket.io-client");
+require('dotenv').config();
 
 class Bot {
     constructor(username, password) {
         this.username = username;
         this.password = password;
-        this.socket = io('http://localhost:3000');
+        this.socket = io(process.env.EMULATOR_URL);
         this.uppercutInterval = null;
 
         this.socket.on("connect", () => {

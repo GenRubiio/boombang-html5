@@ -30,6 +30,7 @@ class LoginController {
             }
         }
         catch (error) {
+            socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Invalid credentials' });
             Log.error('LoginController.main', error);
         }
     }
