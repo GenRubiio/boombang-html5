@@ -1,8 +1,7 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const ConsoleLogger = require('../../../utils/ConsoleLogger');
-const logger = new ConsoleLogger();
+const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 
@@ -37,7 +36,7 @@ class UserMoveController {
                 targetY < 0 || targetY >= publicArea.map_height ||
                 publicArea.game_map[targetY][targetX] !== 0
             ) {
-                console.log('Posición objetivo no válida');
+                //console.log('Posición objetivo no válida');
                 publicArea.emit(ResponseSocketsEnum.USER_MOVE_DENIED, {
                     id: socket.id,
                 })
@@ -48,8 +47,7 @@ class UserMoveController {
             // Establecer el nuevo destino final del usuario
             user.setFinalTarget({ x: targetX, y: targetY });
         } catch (err) {
-            console.log(err);
-            logger.log(`Error handling user movement: ${err.message}`, 'error');
+            Log.error('Error in UserMoveController:', err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

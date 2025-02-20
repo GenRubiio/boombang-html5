@@ -9,7 +9,7 @@ class DisconnectUserController {
                 RemoveUserFromAreaTask.main(user.currentArea, user, io);
             }
             ConnectedUsersCollection.removeUser(socket.id);
-            console.log(`User ${user.username} disconnected with socket ID ${socket.id}`);
+            //console.log(`User ${user.username} disconnected with socket ID ${socket.id}`);
         }
     }
 }

@@ -4,8 +4,7 @@ const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCol
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const UserAreaResource = require('../../../resources/UserAreaResource');
-const ConsoleLogger = require('../../../utils/ConsoleLogger');
-const logger = new ConsoleLogger();
+const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
 class JoinPublicAreaController {
@@ -36,8 +35,7 @@ class JoinPublicAreaController {
 
             UpdatePublicAreasController.main(io);
         } catch (err) {
-            console.log(err);
-            logger.log(`Error joining public area: ${err.message}`, 'error');
+            Log.error('Error in JoinPublicAreaController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

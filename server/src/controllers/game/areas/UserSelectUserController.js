@@ -1,7 +1,6 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const ConsoleLogger = require('../../../utils/ConsoleLogger');
-const logger = new ConsoleLogger();
+const Log = require('../../../utils/Log');
 const UserMovimentUtil = require('../../../utils/UserMovimentUtil');
 const UserResource = require('../../../resources/UserResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
@@ -26,8 +25,7 @@ class UserSelectUserController {
             this.updateUserZPositionInArea(user, selectedUser);
 
         } catch (err) {
-            console.log(err);
-            logger.log(`Error handling user movement: ${err.message}`, 'error');
+            Log.error('Error in UserSelectUserController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

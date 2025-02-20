@@ -1,7 +1,6 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const ConsoleLogger = require('../../../utils/ConsoleLogger');
-const logger = new ConsoleLogger();
+const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
@@ -41,13 +40,12 @@ class SendUppercutController {
                         direction: deltaX === -1 ? 'right' : 'left',
                     });
 
-                    console.log(`Uppercut realizado entre ${user.id} y ${targetUser.id}`);
+                    //console.log(`Uppercut realizado entre ${user.id} y ${targetUser.id}`);
                 }
             }
 
         } catch (err) {
-            console.log(err);
-            logger.log(`Error leaving public area: ${err.message}`, 'error');
+            Log.error('Error in SendUppercutController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

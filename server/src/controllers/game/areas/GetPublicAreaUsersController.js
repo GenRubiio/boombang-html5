@@ -4,6 +4,7 @@ const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCol
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const UserAreaResource = require('../../../resources/UserAreaResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const Log = require('../../../utils/Log');
 
 class GetPublicAreaUsersController {
     static async main(socket, io, data) {
@@ -25,6 +26,7 @@ class GetPublicAreaUsersController {
                 players: players
             });
         } catch (err) {
+            Log.error('Error in GetPublicAreaUsersController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

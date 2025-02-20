@@ -1,15 +1,14 @@
 
 const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const ConsoleLogger = require('../../../utils/ConsoleLogger');
-const logger = new ConsoleLogger();
+const Log = require('../../../utils/Log');
 
 class GetPublicAreasController {
     static async main(socket, io) {
         try {
             UpdatePublicAreasController.main(io);
         } catch (err) {
-            logger.log(`Error getting public areas: ${err.message}`, 'error');
+            Log.error('Error in GetPublicAreasController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

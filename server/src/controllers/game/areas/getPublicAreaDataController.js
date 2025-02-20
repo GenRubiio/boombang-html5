@@ -1,10 +1,9 @@
 
+const Log = require('../../../utils/Log');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const UserAreaResource = require('../../../resources/UserAreaResource');
-const ConsoleLogger = require('../../../utils/ConsoleLogger');
-const logger = new ConsoleLogger();
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const AvatarAnimationsCollection = require('../../../collections/AvatarAnimationsCollection');
 
@@ -37,7 +36,7 @@ class GetPublicAreaDataController {
                 avatar_animations: avatarAnimations
             });
         } catch (err) {
-            logger.log(`Error joining public area: ${err.message}`, 'error');
+            Log.error('Error in GetPublicAreaDataController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

@@ -1,8 +1,7 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const ConsoleLogger = require('../../../utils/ConsoleLogger');
-const logger = new ConsoleLogger();
+const Log = require('../../../utils/Log');
 const RemoveUserFromAreaTask = require('../../../tasks/RemoveUserFromAreaTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 
@@ -24,8 +23,7 @@ class UserLeaveAreaController {
 
             RemoveUserFromAreaTask.main(publicArea, user, io);
         } catch (err) {
-            console.log(err);
-            logger.log(`Error leaving public area: ${err.message}`, 'error');
+            Log.error('Error in UserLeaveAreaController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

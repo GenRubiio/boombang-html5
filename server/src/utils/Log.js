@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 class Log {
-    static logDir = path.join(__dirname, 'storage', 'logs');
+    static logDir = path.join(__dirname, '..', 'storage', 'logs');
 
     static getLogFilePath() {
         const date = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
