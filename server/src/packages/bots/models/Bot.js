@@ -20,7 +20,7 @@ class Bot {
                 this.joinArea(1);
             }, 1000);
 
-            this.startActions();
+            this.moveRandomly();
             this.selectUser();
         });
 
@@ -84,14 +84,10 @@ class Bot {
     }
 
     moveRandomly() {
-        const x = Math.floor(Math.random() * 30);
-        const y = Math.floor(Math.random() * 30);
-        this.socket.emit(RequestSocketsEnum.USER_MOVE, { x: x, y: y });
-    }
-
-    startActions() {
         setInterval(() => {
-            this.moveRandomly();
+            const x = Math.floor(Math.random() * 30);
+            const y = Math.floor(Math.random() * 30);
+            this.socket.emit(RequestSocketsEnum.USER_MOVE, { x: x, y: y });
         }, 3000); // Se mueve cada 3 segundos
     }
 
