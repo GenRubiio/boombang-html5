@@ -33,6 +33,12 @@ class ConnectedUsersCollection {
         return Array.from(this.collection.values());
     }
 
+    //Obtener todos los usuarios que no esten en un area
+    getAllNotInArea() {
+        let users = Array.from(this.collection.values());
+        return users.filter(user => !user.currentArea);
+    }
+
     // Obtener un usuario por su userId
     getByUserId(userId) {
         for (let [socketId, user] of this.collection) {
