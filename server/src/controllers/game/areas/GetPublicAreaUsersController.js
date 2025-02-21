@@ -13,6 +13,7 @@ class GetPublicAreaUsersController {
             if (!user) {
                 throw new Error('User not found');
             }
+            if (!user.currentArea) return;
             const publicArea = PublicAreasCollection.getByUid(user.currentArea.id);
             if (!publicArea) {
                 throw new Error('Public area not found');

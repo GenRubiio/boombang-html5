@@ -84,11 +84,13 @@ class Bot {
     }
 
     moveRandomly() {
+        // Se mueve aleatoriamente cada 2, 3, 5, 8 segundos
+        let arrayInterval = [2000, 3000, 5000, 8000];
         setInterval(() => {
             const x = Math.floor(Math.random() * 30);
             const y = Math.floor(Math.random() * 30);
             this.socket.emit(RequestSocketsEnum.USER_MOVE, { x: x, y: y });
-        }, 3000); // Se mueve cada 3 segundos
+        }, arrayInterval[Math.floor(Math.random() * arrayInterval.length)]);
     }
 
     joinArea(areaId) {
