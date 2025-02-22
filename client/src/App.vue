@@ -80,7 +80,7 @@ export default {
         );
         // Solo creas la instancia la primera vez.
         this.gamePhaser = new Phaser.Game({
-          type: Phaser.CANVAS,
+          type: Phaser.WEBGL,
           powerPreference: "high-performance",
           antialias: false, // Desactiva si no necesitas suavizado
           roundPixels: true, // Reduce cálculos de subpíxeles
