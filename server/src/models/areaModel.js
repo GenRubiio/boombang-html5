@@ -49,6 +49,10 @@ class AreaModel {
 
     // Método para eliminar un usuario
     removeUser(user) {
+        // Liberar su última reserva si existe
+        if (user.lastReservedTile) {
+            delete this.reservedTiles[user.lastReservedTile];
+        }
         this.users = this.users.filter(u => u !== user);
     }
 

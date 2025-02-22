@@ -84,6 +84,9 @@ class UserModel {
 
     // Cancelar cualquier movimiento anterior
     cancelMovement() {
+        if (this.currentArea && this.lastReservedTile) {
+            delete this.currentArea.reservedTiles[this.lastReservedTile];
+        }
         this.finalTarget = null;
     }
 
