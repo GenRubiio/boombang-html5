@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     updateData(userData) {
-      console.log("User data updated:", userData);
+      //console.log("User data updated:", userData);
       this.user = userData;
     },
     sendUppercut() {
