@@ -3,6 +3,14 @@
     <div class="user-card__header unselectable">
       {{ user.username }}
     </div>
+    <div class="user-card__avatar-container">
+      <div class="user-card__avatar-container__message-container">
+        <div class="user-card__avatar-container__message-container__text"></div>
+      </div>
+      <div class="user-card__avatar-container__avatar">
+
+      </div>
+    </div>
     <div class="user-card__body unselectable">
       <div v-if="user.is_selected">
         <button @click="sendUppercut">Send Upper</button>
@@ -62,8 +70,23 @@ export default {
   border: 1px solid #e1e1e1;
   border-radius: 5px;
   padding: 10px;
-  width: 200px;
+  width: 180px;
   margin: 10px;
+}
+
+.user-card__header {
+  text-align: left;
+  padding: 0 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.user-card__avatar-container{
+  position: relative;
+  padding: 5px;
 }
 
 .user-card.admin {
@@ -84,16 +107,6 @@ export default {
 
 .user-card.selected {
   background-color: #2b8703;
-}
-
-.user-card__header {
-  text-align: left;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
 }
 
 .unselectable {
