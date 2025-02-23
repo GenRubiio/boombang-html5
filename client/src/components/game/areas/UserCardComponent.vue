@@ -8,7 +8,7 @@
         <div class="user-card__avatar-container__message-container__text"></div>
       </div>
       <div class="user-card__avatar-container__avatar">
-
+        <FichaComponent :avatarId="user.avatar_id" />
       </div>
     </div>
     <div class="user-card__body unselectable">
@@ -22,6 +22,7 @@
 <script>
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
+import FichaComponent from "./user-card/FichaComponent.vue";
 
 export default {
   data() {
@@ -32,12 +33,17 @@ export default {
         is_admin: false,
         is_vip: false,
         is_selected: false,
+        avatar_id: 1,
         gender: "man",
       },
     };
   },
+  components: {
+    FichaComponent,
+  },
   methods: {
     updateData(userData) {
+      console.log("User data updated:", userData);
       this.user = userData;
     },
     sendUppercut() {
@@ -84,7 +90,7 @@ export default {
   color: white;
 }
 
-.user-card__avatar-container{
+.user-card__avatar-container {
   position: relative;
   padding: 5px;
 }

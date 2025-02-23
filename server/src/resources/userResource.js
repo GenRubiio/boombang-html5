@@ -7,6 +7,7 @@ class UserResource extends Resource {
             username: data.username,
             is_admin: false,
             is_vip: false,
+            avatar_id: data.avatarId,
             gender: "man",
         };
     }

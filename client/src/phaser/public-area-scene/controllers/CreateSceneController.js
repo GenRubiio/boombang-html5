@@ -130,6 +130,7 @@ class CreateSceneController {
                 is_admin: socket.user.is_admin,
                 is_vip: socket.user.is_vip,
                 is_selected: false,
+                avatar_id: socket.user.avatar_id,
                 gender: socket.user.gender,
             });
         })();
