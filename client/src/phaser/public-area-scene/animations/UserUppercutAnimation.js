@@ -5,6 +5,8 @@ class UserUppercutAnimation {
             const textureKey = direction + "_punch_doy";
             AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
             spritePlayer.play(avatarId + "_" + textureKey, true);
+
+            //this.changeColor(spritePlayer);
         }
         else {
             const textureKey = direction + "_punch_rec";
@@ -18,6 +20,18 @@ class UserUppercutAnimation {
                 }
             });
         }
+    }
+
+    static changeColor(spritePlayer){
+        // Genera un color aleatorio
+        const randomColor = Phaser.Display.Color.RandomRGB().color;
+
+        // Aplica el efecto de reemplazo de color
+        spritePlayer.scene.plugins.get('rexcolorreplacepipelineplugin').add(spritePlayer, {
+            originalColor: 0xFF0000, // Color original a reemplazar (rojo)
+            newColor: randomColor,   // Nuevo color aleatorio
+            epsilon: 0.3             // Tolerancia de comparación de colores
+        });
     }
 
     static launchUpwards(spritePlayer) {

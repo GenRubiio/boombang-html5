@@ -22,6 +22,7 @@ export default class PublicAreaScene extends Phaser.Scene {
     }
 
     preload() {
+        //this.load.plugin('rexcolorreplacepipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcolorreplacepipelineplugin.min.js', true);
         this.load.image("background", "/assets/game/scenarios/" + this.areaId + "/background.png");
         this.load.image("tile", "/assets/game/scenarios/tile.png");
 
