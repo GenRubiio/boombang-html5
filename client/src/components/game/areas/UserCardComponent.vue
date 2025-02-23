@@ -91,6 +91,23 @@ export default {
 }
 
 .user-card__avatar-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-card__avatar-container__avatar {
+  width: 90px;
+  height: 90px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-card__avatar-container__avatar img {
+  margin-top: -12px;
+}
+
+.user-card__avatar-container {
   position: relative;
   padding: 5px;
 }
