@@ -16,6 +16,7 @@ const ResponseSocketsEnum = new Enum({
     REGISTER_ERROR: 'register_error',
     UPDATE_PUBLIC_AREAS: 'update_public_areas',
     JOIN_PUBLIC_AREA: 'response:join_public_area',
+    SEND_EMOJI: 'response:send_emoji',
 });
 
 export default ResponseSocketsEnum;

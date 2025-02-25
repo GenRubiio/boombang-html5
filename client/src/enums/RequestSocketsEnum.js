@@ -9,6 +9,7 @@ const RequestSocketsEnum = new Enum({
     REGISTER: 'register',
     GET_PUBLIC_AREAS: 'get_public_areas',
     JOIN_PUBLIC_AREA: 'request:join_public_area',
+    SEND_EMOJI: 'request:send_emoji',
 });
 
 export default RequestSocketsEnum;

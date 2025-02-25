@@ -1,0 +1,255 @@
+
+const AvatarEnum = require('../enums/AvatarEnum');
+const AnimationEnum = require('../enums/AnimationEnum');
+const AvatarEmojisEnum = require('../enums/AvatarEmojisEnum');
+const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
+
+class EmojisBlockActionsMap {
+    static get(emojiId) {
+        const data = {
+            [AvatarEmojisEnum.LAUGHTER_1]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_2,
+                    AnimationEnum.AVATAR_CRY,
+                    AnimationEnum.AVATAR_LOVE,
+                    AnimationEnum.AVATAR_SPIT,
+                    AnimationEnum.AVATAR_FART,
+                    AnimationEnum.AVATAR_PROVOKE,
+                    AnimationEnum.AVATAR_FLY
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_LAUGHTER_1,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_LAUGHTER_1,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_LAUGHTER_1,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_LAUGHTER_1,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_LAUGHTER_1,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_LAUGHTER_1,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_LAUGHTER_1,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_LAUGHTER_1,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_LAUGHTER_1,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_LAUGHTER_1,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_LAUGHTER_1,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_LAUGHTER_1,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_LAUGHTER_1,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_LAUGHTER_1,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_LAUGHTER_1,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_LAUGHTER_1,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_LAUGHTER_1,
+                }
+            },
+            [AvatarEmojisEnum.LAUGHTER_2]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_CRY,
+                    AnimationEnum.AVATAR_LOVE,
+                    AnimationEnum.AVATAR_SPIT,
+                    AnimationEnum.AVATAR_FART,
+                    AnimationEnum.AVATAR_PROVOKE,
+                    AnimationEnum.AVATAR_FLY
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_LAUGHTER_2,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_LAUGHTER_2,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_LAUGHTER_2,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_LAUGHTER_2,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_LAUGHTER_2,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_LAUGHTER_2,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_LAUGHTER_2,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_LAUGHTER_2,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_LAUGHTER_2,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_LAUGHTER_2,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_LAUGHTER_2,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_LAUGHTER_2,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_LAUGHTER_2,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_LAUGHTER_2,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_LAUGHTER_2,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_LAUGHTER_2,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_LAUGHTER_2,
+                }
+            },
+            [AvatarEmojisEnum.CRY]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_LAUGHTER_2,
+                    AnimationEnum.AVATAR_LOVE,
+                    AnimationEnum.AVATAR_SPIT,
+                    AnimationEnum.AVATAR_FART,
+                    AnimationEnum.AVATAR_PROVOKE,
+                    AnimationEnum.AVATAR_FLY
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_CRY,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_CRY,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_CRY,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_CRY,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_CRY,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_CRY,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_CRY,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_CRY,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_CRY,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_CRY,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_CRY,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_CRY,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_CRY,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_CRY,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_CRY,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_CRY,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_CRY,
+                }
+            },
+            [AvatarEmojisEnum.LOVE]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_LAUGHTER_2,
+                    AnimationEnum.AVATAR_CRY,
+                    AnimationEnum.AVATAR_SPIT,
+                    AnimationEnum.AVATAR_FART,
+                    AnimationEnum.AVATAR_PROVOKE,
+                    AnimationEnum.AVATAR_FLY
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_LOVE,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_LOVE,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_LOVE,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_LOVE,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_LOVE,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_LOVE,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_LOVE,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_LOVE,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_LOVE,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_LOVE,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_LOVE,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_LOVE,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_LOVE,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_LOVE,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_LOVE,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_LOVE,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_LOVE,
+                }
+            },
+            [AvatarEmojisEnum.SPIT]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_LAUGHTER_2,
+                    AnimationEnum.AVATAR_CRY,
+                    AnimationEnum.AVATAR_LOVE,
+                    AnimationEnum.AVATAR_FART,
+                    AnimationEnum.AVATAR_PROVOKE,
+                    AnimationEnum.AVATAR_FLY
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_SPIT,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_SPIT,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_SPIT,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_SPIT,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_SPIT,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_SPIT,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_SPIT,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_SPIT,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_SPIT,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_SPIT,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_SPIT,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_SPIT,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_SPIT,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_SPIT,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_SPIT,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_SPIT,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_SPIT,
+                }
+            },
+            [AvatarEmojisEnum.FART]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_LAUGHTER_2,
+                    AnimationEnum.AVATAR_CRY,
+                    AnimationEnum.AVATAR_LOVE,
+                    AnimationEnum.AVATAR_SPIT,
+                    AnimationEnum.AVATAR_PROVOKE,
+                    AnimationEnum.AVATAR_FLY
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_FART,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_FART,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_FART,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_FART,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_FART,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_FART,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_FART,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_FART,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_FART,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_FART,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_FART,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_FART,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_FART,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_FART,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_FART,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_FART,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_FART,
+                }
+            },
+            [AvatarEmojisEnum.PROVOKE]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_LAUGHTER_2,
+                    AnimationEnum.AVATAR_CRY,
+                    AnimationEnum.AVATAR_LOVE,
+                    AnimationEnum.AVATAR_SPIT,
+                    AnimationEnum.AVATAR_FART,
+                    AnimationEnum.AVATAR_FLY
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_PROVOKE,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_PROVOKE,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_PROVOKE,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_PROVOKE,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_PROVOKE,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_PROVOKE,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_PROVOKE,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_PROVOKE,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_PROVOKE,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_PROVOKE,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_PROVOKE,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_PROVOKE,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_PROVOKE,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_PROVOKE,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_PROVOKE,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_PROVOKE,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_PROVOKE,
+                }
+            },
+            [AvatarEmojisEnum.FLY]: {
+                actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_LAUGHTER_2,
+                    AnimationEnum.AVATAR_CRY,
+                    AnimationEnum.AVATAR_LOVE,
+                    AnimationEnum.AVATAR_SPIT,
+                    AnimationEnum.AVATAR_FART,
+                    AnimationEnum.AVATAR_PROVOKE
+                ],
+                time: {
+                    [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_FLY,
+                    [AvatarEnum.BRUJITA]: AnimationBlockTimerEnum.BRUJITA_FLY,
+                    [AvatarEnum.CHOLO]: AnimationBlockTimerEnum.CHOLO_FLY,
+                    [AvatarEnum.EMPOLLON]: AnimationBlockTimerEnum.EMPOLLON_FLY,
+                    [AvatarEnum.GATA]: AnimationBlockTimerEnum.GATA_FLY,
+                    [AvatarEnum.GHOST]: AnimationBlockTimerEnum.GHOST_FLY,
+                    [AvatarEnum.INDIA]: AnimationBlockTimerEnum.INDIA_FLY,
+                    [AvatarEnum.LILIAN]: AnimationBlockTimerEnum.LILIAN_FLY,
+                    [AvatarEnum.MARSU]: AnimationBlockTimerEnum.MARSU_FLY,
+                    [AvatarEnum.MODERN]: AnimationBlockTimerEnum.MODERN_FLY,
+                    [AvatarEnum.NINJA]: AnimationBlockTimerEnum.NINJA_FLY,
+                    [AvatarEnum.RASTA]: AnimationBlockTimerEnum.RASTA_FLY,
+                    [AvatarEnum.SKELETON]: AnimationBlockTimerEnum.SKELETON_FLY,
+                    [AvatarEnum.WEREWOLF]: AnimationBlockTimerEnum.WEREWOLF_FLY,
+                    [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_FLY,
+                    [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_FLY,
+                    [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_FLY,
+                }
+            },
+        };
+        return data[emojiId] || null;
+    }
+}
+
+module.exports = EmojisBlockActionsMap;

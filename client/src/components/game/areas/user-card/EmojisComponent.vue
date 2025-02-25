@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import socket from "../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import laughter_1 from "../../../../assets/game/emojis/laughter_1.png";
 import laughter_2 from "../../../../assets/game/emojis/laughter_2.png";
 import cry from "../../../../assets/game/emojis/cry.png";
@@ -52,7 +54,9 @@ export default {
   },
   methods: {
     sendEmoji(emoji) {
-      console.log("Emoji sent:", emoji);
+      socket.emit(RequestSocketsEnum.SEND_EMOJI, {
+        emoji_id: emoji,
+      });
     },
   },
   computed: {},
