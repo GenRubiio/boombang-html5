@@ -1,5 +1,11 @@
 <template>
-  <div class="user-card unselectable" :class="computedClass">
+  <div
+    class="user-card unselectable"
+    :class="computedClass"
+    @pointerdown.stop
+    @mousedown.stop
+    @touchstart.stop
+  >
     <div class="user-card__header unselectable">
       {{ user.username }}
     </div>

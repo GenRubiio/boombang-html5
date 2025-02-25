@@ -1,28 +1,28 @@
 <template>
   <div class="container">
     <div>
-      <img :src="laughter_1" alt="Laughter 1" />
+      <img :src="laughter_1" alt="Laughter 1" @click="sendEmoji(1)" />
     </div>
     <div>
-      <img :src="laughter_2" alt="Laughter 2" />
+      <img :src="laughter_2" alt="Laughter 2" @click="sendEmoji(2)" />
     </div>
     <div>
-      <img :src="cry" alt="Cry" />
+      <img :src="cry" alt="Cry" @click="sendEmoji(3)" />
     </div>
     <div>
-      <img :src="love" alt="Love" />
+      <img :src="love" alt="Love" @click="sendEmoji(4)" />
     </div>
     <div>
-      <img :src="spit" alt="Spit" />
+      <img :src="spit" alt="Spit" @click="sendEmoji(5)" />
     </div>
     <div>
-      <img :src="fart" alt="Fart" />
+      <img :src="fart" alt="Fart" @click="sendEmoji(6)" />
     </div>
     <div>
-      <img :src="provoke" alt="Provoke" />
+      <img :src="provoke" alt="Provoke" @click="sendEmoji(7)" />
     </div>
     <div>
-      <img :src="fly" alt="Fly" />
+      <img :src="fly" alt="Fly" @click="sendEmoji(8)" />
     </div>
   </div>
 </template>
@@ -50,7 +50,11 @@ export default {
       fly,
     };
   },
-  methods: {},
+  methods: {
+    sendEmoji(emoji) {
+      console.log("Emoji sent:", emoji);
+    },
+  },
   computed: {},
 };
 </script>
