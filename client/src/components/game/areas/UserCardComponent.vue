@@ -11,6 +11,7 @@
         <FichaComponent :avatarId="user.avatar_id" />
       </div>
     </div>
+    <EmojisComponent v-if="!user.is_selected" />
     <div class="user-card__body unselectable">
       <div v-if="user.is_selected">
         <button @click="sendUppercut">Send Upper</button>
@@ -23,6 +24,7 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import FichaComponent from "./user-card/FichaComponent.vue";
+import EmojisComponent from "./user-card/EmojisComponent.vue";
 
 export default {
   data() {
@@ -40,6 +42,7 @@ export default {
   },
   components: {
     FichaComponent,
+    EmojisComponent,
   },
   methods: {
     updateData(userData) {
@@ -77,7 +80,6 @@ export default {
   border-radius: 5px;
   padding: 10px;
   width: 180px;
-  margin: 10px;
 }
 
 .user-card__header {
@@ -85,7 +87,7 @@ export default {
   padding: 0 5px;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 23px;
   font-weight: bold;
   color: white;
 }
