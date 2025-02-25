@@ -8,7 +8,8 @@ import UserUpdatePositionController from "../controllers/UserUpdatePositionContr
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
 import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
-import UserMoveDeniedController from "../controllers/UserMoveDeniedController"
+import UserMoveDeniedController from "../controllers/UserMoveDeniedController";
+import SendEmojiController from "../controllers/SendEmojiController";
 
 class PublicAreaSceneResponseSockets {
     static main(gameScene) {
@@ -58,6 +59,10 @@ class PublicAreaSceneResponseSockets {
 
         socket.on(ResponseSocketsEnum.SEND_UPPERCUT, (data) => {
             SendUppercutAnimationController.main(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.SEND_EMOJI, (data) => {
+            SendEmojiController.main(gameScene, data);
         });
     }
 }

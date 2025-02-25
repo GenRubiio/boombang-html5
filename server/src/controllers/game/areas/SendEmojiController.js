@@ -17,11 +17,11 @@ class SendEmojiController {
 
                 UserBlockActionsTask.blockByEmojiSend(user, data.emoji_id);
 
-                //user.currentArea.emit(ResponseSocketsEnum.SEND_EMOJI, {
-                //    attacker: user.socket.id,
-                //    receiver: targetUser.socket.id,
-                //    direction: deltaX === -1 ? 'right' : 'left',
-                //});
+                user.currentArea.emit(ResponseSocketsEnum.SEND_EMOJI, {
+                    'user_socket': socket.id,
+                    'emoji_id': data.emoji_id,
+                    'avatar_id': user.avatarId
+                });
             }
 
         } catch (err) {

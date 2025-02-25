@@ -4,6 +4,7 @@ const logger = new ConsoleLogger();
 const UserMovimentUtil = require('../utils/UserMovimentUtil');
 const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
+const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 
 class AreaModel {
     constructor(id, name, map_width, map_height, game_map, startPosition) {
@@ -115,7 +116,7 @@ class AreaModel {
 
             if (!path || path.length <= 1) {
                 console.log('No se encontró un camino al destino');
-                this.emit('response:user_move_denied', { id: user.socket.id });
+                this.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
                 user.finalTarget = null;
                 return;
             }
@@ -152,7 +153,7 @@ class AreaModel {
                 isLastStep: path.length === 2
             };
             UserBlockActionsTask.blockByWalk(user);
-            this.emit('response:user_move', movementData);
+            this.emit(ResponseSocketsEnum.USER_MOVE, movementData);
 
             // Si este es el último paso, liberar la reserva y cancelar el destino final
             if (path.length === 2) {
