@@ -3,6 +3,7 @@ const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const UserMovimentUtil = require('../utils/UserMovimentUtil');
 const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
+const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 
 class AreaModel {
     constructor(id, name, map_width, map_height, game_map, startPosition) {
@@ -150,7 +151,7 @@ class AreaModel {
                 }],
                 isLastStep: path.length === 2
             };
-
+            UserBlockActionsTask.blockByWalk(user);
             this.emit('response:user_move', movementData);
 
             // Si este es el último paso, liberar la reserva y cancelar el destino final

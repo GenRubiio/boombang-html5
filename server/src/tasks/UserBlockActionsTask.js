@@ -23,7 +23,18 @@ class UserBlockActionsTask {
             logger.log(`Error blocking by emoji: ${err.message}`, 'error');
         }
     }
-    
+
+    static blockByWalk(user) {
+        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_1, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_2, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_CRY, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_LOVE, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_SPIT, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_FART, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_PROVOKE, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_FLY, AnimationBlockTimerEnum.UPPERCUT_SEND);
+    }
+
     static blockByUppercutSend(user) {
         try {
             user.blockAction(AnimationEnum.UPPERCUT, AnimationBlockTimerEnum.UPPERCUT_SEND);
