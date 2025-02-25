@@ -25,14 +25,14 @@ class UserBlockActionsTask {
     }
 
     static blockByWalk(user) {
-        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_1, AnimationBlockTimerEnum.UPPERCUT_SEND);
-        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_2, AnimationBlockTimerEnum.UPPERCUT_SEND);
-        user.blockAction(AnimationEnum.AVATAR_CRY, AnimationBlockTimerEnum.UPPERCUT_SEND);
-        user.blockAction(AnimationEnum.AVATAR_LOVE, AnimationBlockTimerEnum.UPPERCUT_SEND);
-        user.blockAction(AnimationEnum.AVATAR_SPIT, AnimationBlockTimerEnum.UPPERCUT_SEND);
-        user.blockAction(AnimationEnum.AVATAR_FART, AnimationBlockTimerEnum.UPPERCUT_SEND);
-        user.blockAction(AnimationEnum.AVATAR_PROVOKE, AnimationBlockTimerEnum.UPPERCUT_SEND);
-        user.blockAction(AnimationEnum.AVATAR_FLY, AnimationBlockTimerEnum.UPPERCUT_SEND);
+        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_1, AnimationBlockTimerEnum.WALK);
+        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_2, AnimationBlockTimerEnum.WALK);
+        user.blockAction(AnimationEnum.AVATAR_CRY, AnimationBlockTimerEnum.WALK);
+        user.blockAction(AnimationEnum.AVATAR_LOVE, AnimationBlockTimerEnum.WALK);
+        user.blockAction(AnimationEnum.AVATAR_SPIT, AnimationBlockTimerEnum.WALK);
+        user.blockAction(AnimationEnum.AVATAR_FART, AnimationBlockTimerEnum.WALK);
+        user.blockAction(AnimationEnum.AVATAR_PROVOKE, AnimationBlockTimerEnum.WALK);
+        user.blockAction(AnimationEnum.AVATAR_FLY, AnimationBlockTimerEnum.WALK);
     }
 
     static blockByUppercutSend(user) {
