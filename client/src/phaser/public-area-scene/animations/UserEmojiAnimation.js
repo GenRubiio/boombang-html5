@@ -11,6 +11,7 @@ class UserEmojiAnimation {
         const spritePlayer = user.sprite_player;
         const avatarId = user.avatar_id;
         const textureKey = this.getTextureKey(emojiId);
+        if (!textureKey) return;
         AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
         spritePlayer.play(avatarId + "_" + textureKey, false);
 
