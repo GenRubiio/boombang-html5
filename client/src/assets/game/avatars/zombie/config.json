@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "redbull": {
     "atlasKey": "zombie_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_falling": {
     "atlasKey": "zombie_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_falling": {
     "atlasKey": "zombie_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_coco": {
     "atlasKey": "zombie_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_ouch": {
     "atlasKey": "zombie_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "risa1": {
     "atlasKey": "zombie_atlas",
@@ -132,7 +132,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "llorar": {
     "atlasKey": "zombie_atlas",
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_beber": {
     "atlasKey": "zombie_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_beber": {
     "atlasKey": "zombie_atlas",
@@ -177,7 +177,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_punch_doy": {
     "atlasKey": "zombie_atlas",
@@ -237,7 +237,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "pedo": {
     "atlasKey": "zombie_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_talk": {
     "atlasKey": "zombie_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_walk": {
     "atlasKey": "zombie_atlas",
@@ -297,7 +297,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_beso": {
     "atlasKey": "zombie_atlas",
@@ -312,7 +312,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_idle": {
     "atlasKey": "zombie_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor_rec": {
     "atlasKey": "zombie_atlas",
@@ -387,7 +387,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_idle": {
     "atlasKey": "zombie_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_talk": {
     "atlasKey": "zombie_atlas",
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_talk": {
     "atlasKey": "zombie_atlas",
@@ -462,7 +462,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_idle": {
     "atlasKey": "zombie_atlas",
@@ -507,7 +507,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightdown_talk": {
     "atlasKey": "zombie_atlas",
@@ -522,7 +522,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_walk": {
     "atlasKey": "zombie_atlas",
@@ -642,7 +642,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor": {
     "atlasKey": "zombie_atlas",
@@ -657,7 +657,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_talk": {
     "atlasKey": "zombie_atlas",
@@ -672,7 +672,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightup_talk": {
     "atlasKey": "zombie_atlas",
@@ -687,7 +687,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "up_talk": {
     "atlasKey": "zombie_atlas",

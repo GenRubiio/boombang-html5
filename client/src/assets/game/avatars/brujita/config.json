@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_coco": {
     "atlasKey": "brujita_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_beber": {
     "atlasKey": "brujita_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "llorar": {
     "atlasKey": "brujita_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "special": {
     "atlasKey": "brujita_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_falling": {
     "atlasKey": "brujita_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_falling": {
     "atlasKey": "brujita_atlas",
@@ -132,7 +132,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "redbull": {
     "atlasKey": "brujita_atlas",
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "risa1": {
     "atlasKey": "brujita_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "pedo": {
     "atlasKey": "brujita_atlas",
@@ -177,7 +177,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_punch_doy": {
     "atlasKey": "brujita_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_fall": {
     "atlasKey": "brujita_atlas",
@@ -237,7 +237,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_flor": {
     "atlasKey": "brujita_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor": {
     "atlasKey": "brujita_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_talk": {
     "atlasKey": "brujita_atlas",
@@ -297,7 +297,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_beso": {
     "atlasKey": "brujita_atlas",
@@ -312,7 +312,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_idle": {
     "atlasKey": "brujita_atlas",
@@ -357,7 +357,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_talk": {
     "atlasKey": "brujita_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_talk": {
     "atlasKey": "brujita_atlas",
@@ -387,7 +387,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_walk": {
     "atlasKey": "brujita_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightdown_talk": {
     "atlasKey": "brujita_atlas",
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_walk": {
     "atlasKey": "brujita_atlas",
@@ -492,7 +492,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightup_talk": {
     "atlasKey": "brujita_atlas",
@@ -507,7 +507,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_walk": {
     "atlasKey": "brujita_atlas",
@@ -582,7 +582,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_walk": {
     "atlasKey": "brujita_atlas",
@@ -657,7 +657,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_flor_rec": {
     "atlasKey": "brujita_atlas",
@@ -672,7 +672,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor_rec": {
     "atlasKey": "brujita_atlas",
@@ -687,7 +687,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_idle": {
     "atlasKey": "brujita_atlas",

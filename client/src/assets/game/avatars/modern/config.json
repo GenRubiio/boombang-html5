@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "risa2": {
     "atlasKey": "modern_atlas",
@@ -57,7 +57,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "redbull": {
     "atlasKey": "modern_atlas",
@@ -72,7 +72,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_falling": {
     "atlasKey": "modern_atlas",
@@ -87,7 +87,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_falling": {
     "atlasKey": "modern_atlas",
@@ -102,7 +102,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "pedo": {
     "atlasKey": "modern_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_punch_doy": {
     "atlasKey": "modern_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_fall": {
     "atlasKey": "modern_atlas",
@@ -177,7 +177,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_fall": {
     "atlasKey": "modern_atlas",
@@ -192,7 +192,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "llorar": {
     "atlasKey": "modern_atlas",
@@ -207,7 +207,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_beber": {
     "atlasKey": "modern_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_beso": {
     "atlasKey": "modern_atlas",
@@ -237,7 +237,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_beso": {
     "atlasKey": "modern_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_talk": {
     "atlasKey": "modern_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_talk": {
     "atlasKey": "modern_atlas",
@@ -282,7 +282,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": -0
   },
   "down_talk": {
     "atlasKey": "modern_atlas",
@@ -297,7 +297,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_walk": {
     "atlasKey": "modern_atlas",
@@ -372,7 +372,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor": {
     "atlasKey": "modern_atlas",
@@ -387,7 +387,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "up_talk": {
     "atlasKey": "modern_atlas",
@@ -402,7 +402,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": -0
   },
   "escupir": {
     "atlasKey": "modern_atlas",
@@ -417,7 +417,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_talk": {
     "atlasKey": "modern_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightdown_talk": {
     "atlasKey": "modern_atlas",
@@ -447,7 +447,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_walk": {
     "atlasKey": "modern_atlas",
@@ -477,7 +477,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_walk": {
     "atlasKey": "modern_atlas",
@@ -552,7 +552,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "up_walk": {
     "atlasKey": "modern_atlas",
@@ -597,7 +597,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor_rec": {
     "atlasKey": "modern_atlas",
@@ -612,7 +612,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_idle": {
     "atlasKey": "modern_atlas",
@@ -687,7 +687,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightup_talk": {
     "atlasKey": "modern_atlas",
@@ -702,7 +702,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "up_idle": {
     "atlasKey": "modern_atlas",

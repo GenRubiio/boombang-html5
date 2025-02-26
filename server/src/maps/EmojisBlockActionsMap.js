@@ -9,6 +9,7 @@ class EmojisBlockActionsMap {
         const data = {
             [AvatarEmojisEnum.LAUGHTER_1]: {
                 actions: [
+                    AnimationEnum.AVATAR_LAUGHTER_1,
                     AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_CRY,
                     AnimationEnum.AVATAR_LOVE,
@@ -40,6 +41,7 @@ class EmojisBlockActionsMap {
             [AvatarEmojisEnum.LAUGHTER_2]: {
                 actions: [
                     AnimationEnum.AVATAR_LAUGHTER_1,
+                    AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_CRY,
                     AnimationEnum.AVATAR_LOVE,
                     AnimationEnum.AVATAR_SPIT,
@@ -69,6 +71,7 @@ class EmojisBlockActionsMap {
             },
             [AvatarEmojisEnum.CRY]: {
                 actions: [
+                    AnimationEnum.AVATAR_CRY,
                     AnimationEnum.AVATAR_LAUGHTER_1,
                     AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_LOVE,
@@ -99,6 +102,7 @@ class EmojisBlockActionsMap {
             },
             [AvatarEmojisEnum.LOVE]: {
                 actions: [
+                    AnimationEnum.AVATAR_LOVE,
                     AnimationEnum.AVATAR_LAUGHTER_1,
                     AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_CRY,
@@ -129,6 +133,7 @@ class EmojisBlockActionsMap {
             },
             [AvatarEmojisEnum.SPIT]: {
                 actions: [
+                    AnimationEnum.AVATAR_SPIT,
                     AnimationEnum.AVATAR_LAUGHTER_1,
                     AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_CRY,
@@ -159,6 +164,7 @@ class EmojisBlockActionsMap {
             },
             [AvatarEmojisEnum.FART]: {
                 actions: [
+                    AnimationEnum.AVATAR_FART,
                     AnimationEnum.AVATAR_LAUGHTER_1,
                     AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_CRY,
@@ -189,6 +195,7 @@ class EmojisBlockActionsMap {
             },
             [AvatarEmojisEnum.PROVOKE]: {
                 actions: [
+                    AnimationEnum.AVATAR_PROVOKE,
                     AnimationEnum.AVATAR_LAUGHTER_1,
                     AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_CRY,
@@ -219,6 +226,7 @@ class EmojisBlockActionsMap {
             },
             [AvatarEmojisEnum.FLY]: {
                 actions: [
+                    AnimationEnum.AVATAR_FLY,
                     AnimationEnum.AVATAR_LAUGHTER_1,
                     AnimationEnum.AVATAR_LAUGHTER_2,
                     AnimationEnum.AVATAR_CRY,
