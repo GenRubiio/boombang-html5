@@ -1,5 +1,5 @@
 {
-  "down_special": {
+  "special": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/down_special/",
     "flip_horizontally": false,
@@ -14,7 +14,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftup_pedo": {
+  "pedo": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/leftup_pedo/",
     "flip_horizontally": false,
@@ -29,22 +29,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "rightup_pedo": {
-    "atlasKey": "cholo_atlas",
-    "prefix": "sprites/leftup_pedo/",
-    "flip_horizontally": true,
-    "start": 1,
-    "end": 43,
-    "frameRate": 19,
-    "frameWidth": 108,
-    "frameHeight": 92,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -104,7 +89,7 @@
     "offsetY": 0,
     "repeat": 0
   },
-  "down_escupir": {
+  "escupir": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/down_escupir/",
     "flip_horizontally": false,
@@ -254,25 +239,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "left_redbull": {
+  "redbull": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/left_redbull/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 117,
-    "frameRate": 19,
-    "frameWidth": 85,
-    "frameHeight": 79,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "right_redbull": {
-    "atlasKey": "cholo_atlas",
-    "prefix": "sprites/left_redbull/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 117,
     "frameRate": 19,
@@ -329,7 +299,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa1": {
+  "risa1": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/down_risa1/",
     "flip_horizontally": false,
@@ -359,7 +329,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "left_risa2": {
+  "risa2": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/left_risa2/",
     "flip_horizontally": false,

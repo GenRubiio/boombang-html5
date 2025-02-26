@@ -29,7 +29,7 @@
     "offsetY": 0,
     "repeat": 0
   },
-  "down_special": {
+  "special": {
     "atlasKey": "zombie_atlas",
     "prefix": "sprites/down_special/",
     "flip_horizontally": false,
@@ -44,25 +44,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_redbull": {
+  "redbull": {
     "atlasKey": "zombie_atlas",
     "prefix": "sprites/leftdown_redbull/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 117,
-    "frameRate": 19,
-    "frameWidth": 79,
-    "frameHeight": 79,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_redbull": {
-    "atlasKey": "zombie_atlas",
-    "prefix": "sprites/leftdown_redbull/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 117,
     "frameRate": 19,
@@ -134,7 +119,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa1": {
+  "risa1": {
     "atlasKey": "zombie_atlas",
     "prefix": "sprites/down_risa1/",
     "flip_horizontally": false,
@@ -149,7 +134,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "zombie_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -239,7 +224,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_escupir": {
+  "escupir": {
     "atlasKey": "zombie_atlas",
     "prefix": "sprites/leftdown_escupir/",
     "flip_horizontally": false,
@@ -254,40 +239,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "rightdown_escupir": {
-    "atlasKey": "zombie_atlas",
-    "prefix": "sprites/leftdown_escupir/",
-    "flip_horizontally": true,
-    "start": 1,
-    "end": 35,
-    "frameRate": 19,
-    "frameWidth": 75,
-    "frameHeight": 97,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "leftdown_pedo": {
+  "pedo": {
     "atlasKey": "zombie_atlas",
     "prefix": "sprites/leftdown_pedo/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 47,
-    "frameRate": 19,
-    "frameWidth": 94,
-    "frameHeight": 99,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_pedo": {
-    "atlasKey": "zombie_atlas",
-    "prefix": "sprites/leftdown_pedo/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 47,
     "frameRate": 19,
@@ -464,25 +419,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "left_risa2": {
+  "risa2": {
     "atlasKey": "zombie_atlas",
     "prefix": "sprites/left_risa2/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 40,
-    "frameRate": 19,
-    "frameWidth": 65,
-    "frameHeight": 98,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "right_risa2": {
-    "atlasKey": "zombie_atlas",
-    "prefix": "sprites/left_risa2/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 40,
     "frameRate": 19,

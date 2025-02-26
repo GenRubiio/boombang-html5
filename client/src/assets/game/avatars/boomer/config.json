@@ -1,5 +1,5 @@
 {
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "boomer_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -14,7 +14,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_special": {
+  "special": {
     "atlasKey": "boomer_atlas",
     "prefix": "sprites/down_special/",
     "flip_horizontally": false,
@@ -29,7 +29,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_pedo": {
+  "pedo": {
     "atlasKey": "boomer_atlas",
     "prefix": "sprites/down_pedo/",
     "flip_horizontally": false,
@@ -194,7 +194,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_escupir": {
+  "escupir": {
     "atlasKey": "boomer_atlas",
     "prefix": "sprites/down_escupir/",
     "flip_horizontally": false,
@@ -239,25 +239,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "left_risa2": {
+  "risa2": {
     "atlasKey": "boomer_atlas",
     "prefix": "sprites/left_risa2/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 38,
-    "frameRate": 19,
-    "frameWidth": 73,
-    "frameHeight": 114,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "right_risa2": {
-    "atlasKey": "boomer_atlas",
-    "prefix": "sprites/left_risa2/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 38,
     "frameRate": 19,
@@ -509,25 +494,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_redbull": {
+  "redbull": {
     "atlasKey": "boomer_atlas",
     "prefix": "sprites/leftdown_redbull/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 120,
-    "frameRate": 19,
-    "frameWidth": 87,
-    "frameHeight": 103,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_redbull": {
-    "atlasKey": "boomer_atlas",
-    "prefix": "sprites/leftdown_redbull/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 120,
     "frameRate": 19,
@@ -659,7 +629,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa1": {
+  "risa1": {
     "atlasKey": "boomer_atlas",
     "prefix": "sprites/down_risa1/",
     "flip_horizontally": false,

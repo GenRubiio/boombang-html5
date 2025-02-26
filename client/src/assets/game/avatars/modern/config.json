@@ -44,7 +44,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa2": {
+  "risa2": {
     "atlasKey": "modern_atlas",
     "prefix": "sprites/down_risa2/",
     "flip_horizontally": false,
@@ -59,25 +59,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_redbull": {
+  "redbull": {
     "atlasKey": "modern_atlas",
     "prefix": "sprites/leftdown_redbull/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 120,
-    "frameRate": 19,
-    "frameWidth": 84,
-    "frameHeight": 91,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_redbull": {
-    "atlasKey": "modern_atlas",
-    "prefix": "sprites/leftdown_redbull/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 120,
     "frameRate": 19,
@@ -119,25 +104,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "left_pedo": {
+  "pedo": {
     "atlasKey": "modern_atlas",
     "prefix": "sprites/left_pedo/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 70,
-    "frameRate": 19,
-    "frameWidth": 111,
-    "frameHeight": 101,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "right_pedo": {
-    "atlasKey": "modern_atlas",
-    "prefix": "sprites/left_pedo/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 70,
     "frameRate": 19,
@@ -179,7 +149,7 @@
     "offsetY": 0,
     "repeat": 0
   },
-  "down_special": {
+  "special": {
     "atlasKey": "modern_atlas",
     "prefix": "sprites/down_special/",
     "flip_horizontally": false,
@@ -224,7 +194,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "modern_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -434,7 +404,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_escupir": {
+  "escupir": {
     "atlasKey": "modern_atlas",
     "prefix": "sprites/down_escupir/",
     "flip_horizontally": false,
@@ -494,25 +464,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_risa1": {
+  "risa1": {
     "atlasKey": "modern_atlas",
     "prefix": "sprites/leftdown_risa1/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 20,
-    "frameRate": 19,
-    "frameWidth": 70,
-    "frameHeight": 103,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_risa1": {
-    "atlasKey": "modern_atlas",
-    "prefix": "sprites/leftdown_risa1/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 20,
     "frameRate": 19,

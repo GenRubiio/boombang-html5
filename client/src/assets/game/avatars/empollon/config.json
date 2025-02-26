@@ -59,25 +59,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "left_redbull": {
+  "redbull": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/left_redbull/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 117,
-    "frameRate": 19,
-    "frameWidth": 87,
-    "frameHeight": 78,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "right_redbull": {
-    "atlasKey": "empollon_atlas",
-    "prefix": "sprites/left_redbull/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 117,
     "frameRate": 19,
@@ -119,7 +104,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_special": {
+  "special": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/down_special/",
     "flip_horizontally": false,
@@ -134,7 +119,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftup_pedo": {
+  "pedo": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/leftup_pedo/",
     "flip_horizontally": false,
@@ -149,22 +134,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "rightup_pedo": {
-    "atlasKey": "empollon_atlas",
-    "prefix": "sprites/leftup_pedo/",
-    "flip_horizontally": true,
-    "start": 1,
-    "end": 50,
-    "frameRate": 19,
-    "frameWidth": 106,
-    "frameHeight": 94,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "down_escupir": {
+  "escupir": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/down_escupir/",
     "flip_horizontally": false,
@@ -224,7 +194,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "left_risa2": {
+  "risa2": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/left_risa2/",
     "flip_horizontally": false,
@@ -239,22 +209,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "right_risa2": {
-    "atlasKey": "empollon_atlas",
-    "prefix": "sprites/left_risa2/",
-    "flip_horizontally": true,
-    "start": 1,
-    "end": 41,
-    "frameRate": 19,
-    "frameWidth": 69,
-    "frameHeight": 95,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -269,7 +224,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa1": {
+  "risa1": {
     "atlasKey": "empollon_atlas",
     "prefix": "sprites/down_risa1/",
     "flip_horizontally": false,

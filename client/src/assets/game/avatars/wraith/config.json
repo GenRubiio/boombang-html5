@@ -179,7 +179,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_escupir": {
+  "escupir": {
     "atlasKey": "wraith_atlas",
     "prefix": "sprites/down_escupir/",
     "flip_horizontally": false,
@@ -194,7 +194,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "wraith_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -209,7 +209,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_pedo": {
+  "pedo": {
     "atlasKey": "wraith_atlas",
     "prefix": "sprites/down_pedo/",
     "flip_horizontally": false,
@@ -224,7 +224,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_redbull": {
+  "redbull": {
     "atlasKey": "wraith_atlas",
     "prefix": "sprites/down_redbull/",
     "flip_horizontally": false,
@@ -239,7 +239,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa1": {
+  "risa1": {
     "atlasKey": "wraith_atlas",
     "prefix": "sprites/down_risa1/",
     "flip_horizontally": false,
@@ -254,7 +254,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa2": {
+  "risa2": {
     "atlasKey": "wraith_atlas",
     "prefix": "sprites/down_risa2/",
     "flip_horizontally": false,
@@ -269,7 +269,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_special": {
+  "special": {
     "atlasKey": "wraith_atlas",
     "prefix": "sprites/down_special/",
     "flip_horizontally": false,

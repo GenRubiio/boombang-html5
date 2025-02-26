@@ -1,5 +1,5 @@
 {
-  "down_pedo": {
+  "pedo": {
     "atlasKey": "ninja_atlas",
     "prefix": "sprites/down_pedo/",
     "flip_horizontally": false,
@@ -44,7 +44,7 @@
     "offsetY": 0,
     "repeat": 0
   },
-  "down_escupir": {
+  "escupir": {
     "atlasKey": "ninja_atlas",
     "prefix": "sprites/down_escupir/",
     "flip_horizontally": false,
@@ -59,7 +59,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_redbull": {
+  "redbull": {
     "atlasKey": "ninja_atlas",
     "prefix": "sprites/down_redbull/",
     "flip_horizontally": false,
@@ -74,7 +74,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_special": {
+  "special": {
     "atlasKey": "ninja_atlas",
     "prefix": "sprites/down_special/",
     "flip_horizontally": false,
@@ -194,7 +194,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "ninja_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -224,7 +224,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa2": {
+  "risa2": {
     "atlasKey": "ninja_atlas",
     "prefix": "sprites/down_risa2/",
     "flip_horizontally": false,
@@ -299,7 +299,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_risa1": {
+  "risa1": {
     "atlasKey": "ninja_atlas",
     "prefix": "sprites/down_risa1/",
     "flip_horizontally": false,

@@ -29,7 +29,7 @@
     "offsetY": 0,
     "repeat": 0
   },
-  "down_risa2": {
+  "risa2": {
     "atlasKey": "brujita_atlas",
     "prefix": "sprites/down_risa2/",
     "flip_horizontally": false,
@@ -74,7 +74,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "down_llorar": {
+  "llorar": {
     "atlasKey": "brujita_atlas",
     "prefix": "sprites/down_llorar/",
     "flip_horizontally": false,
@@ -89,25 +89,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_special": {
+  "special": {
     "atlasKey": "brujita_atlas",
     "prefix": "sprites/leftdown_special/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 313,
-    "frameRate": 19,
-    "frameWidth": 149,
-    "frameHeight": 140,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_special": {
-    "atlasKey": "brujita_atlas",
-    "prefix": "sprites/leftdown_special/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 313,
     "frameRate": 19,
@@ -149,7 +134,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_redbull": {
+  "redbull": {
     "atlasKey": "brujita_atlas",
     "prefix": "sprites/leftdown_redbull/",
     "flip_horizontally": false,
@@ -164,22 +149,7 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "rightdown_redbull": {
-    "atlasKey": "brujita_atlas",
-    "prefix": "sprites/leftdown_redbull/",
-    "flip_horizontally": true,
-    "start": 1,
-    "end": 120,
-    "frameRate": 19,
-    "frameWidth": 91,
-    "frameHeight": 107,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "leftdown_risa1": {
+  "risa1": {
     "atlasKey": "brujita_atlas",
     "prefix": "sprites/leftdown_risa1/",
     "flip_horizontally": false,
@@ -194,40 +164,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "rightdown_risa1": {
-    "atlasKey": "brujita_atlas",
-    "prefix": "sprites/leftdown_risa1/",
-    "flip_horizontally": true,
-    "start": 1,
-    "end": 33,
-    "frameRate": 19,
-    "frameWidth": 92,
-    "frameHeight": 115,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "leftdown_pedo": {
+  "pedo": {
     "atlasKey": "brujita_atlas",
     "prefix": "sprites/leftdown_pedo/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 141,
-    "frameRate": 19,
-    "frameWidth": 113,
-    "frameHeight": 133,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_pedo": {
-    "atlasKey": "brujita_atlas",
-    "prefix": "sprites/leftdown_pedo/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 141,
     "frameRate": 19,
@@ -704,25 +644,10 @@
     "offsetY": 0,
     "repeat": -1
   },
-  "leftdown_escupir": {
+  "escupir": {
     "atlasKey": "brujita_atlas",
     "prefix": "sprites/leftdown_escupir/",
     "flip_horizontally": false,
-    "start": 1,
-    "end": 38,
-    "frameRate": 19,
-    "frameWidth": 90,
-    "frameHeight": 115,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
-  },
-  "rightdown_escupir": {
-    "atlasKey": "brujita_atlas",
-    "prefix": "sprites/leftdown_escupir/",
-    "flip_horizontally": true,
     "start": 1,
     "end": 38,
     "frameRate": 19,
