@@ -45,6 +45,8 @@ class UserEmojiAnimation {
                 return AvatarEmojisNameAnimationsEnum.PROVOKE;
             case AvatarEmojisEnum.FLY:
                 return AvatarEmojisNameAnimationsEnum.FLY;
+            default:
+                return null;
         }
     }
 }
