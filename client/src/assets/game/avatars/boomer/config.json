@@ -12,7 +12,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "special": {
     "atlasKey": "boomer_atlas",
@@ -27,7 +27,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "pedo": {
     "atlasKey": "boomer_atlas",
@@ -42,7 +42,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_punch_doy": {
     "atlasKey": "boomer_atlas",
@@ -117,7 +117,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_ouch": {
     "atlasKey": "boomer_atlas",
@@ -132,7 +132,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_beso": {
     "atlasKey": "boomer_atlas",
@@ -147,7 +147,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_beso": {
     "atlasKey": "boomer_atlas",
@@ -162,7 +162,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_walk": {
     "atlasKey": "boomer_atlas",
@@ -207,7 +207,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_beber": {
     "atlasKey": "boomer_atlas",
@@ -222,7 +222,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_beber": {
     "atlasKey": "boomer_atlas",
@@ -237,7 +237,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "risa2": {
     "atlasKey": "boomer_atlas",
@@ -252,7 +252,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_flor": {
     "atlasKey": "boomer_atlas",
@@ -267,7 +267,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor": {
     "atlasKey": "boomer_atlas",
@@ -282,7 +282,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "down_walk": {
     "atlasKey": "boomer_atlas",
@@ -312,7 +312,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_falling": {
     "atlasKey": "boomer_atlas",
@@ -327,7 +327,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_fall": {
     "atlasKey": "boomer_atlas",
@@ -342,7 +342,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_fall": {
     "atlasKey": "boomer_atlas",
@@ -357,7 +357,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftdown_walk": {
     "atlasKey": "boomer_atlas",
@@ -417,7 +417,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "right_flor_rec": {
     "atlasKey": "boomer_atlas",
@@ -432,7 +432,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "left_idle": {
     "atlasKey": "boomer_atlas",
@@ -507,7 +507,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "up_idle": {
     "atlasKey": "boomer_atlas",
@@ -537,7 +537,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_walk": {
     "atlasKey": "boomer_atlas",
@@ -582,7 +582,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightdown_talk": {
     "atlasKey": "boomer_atlas",
@@ -597,7 +597,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_talk": {
     "atlasKey": "boomer_atlas",
@@ -612,7 +612,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "rightup_talk": {
     "atlasKey": "boomer_atlas",
@@ -627,7 +627,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "risa1": {
     "atlasKey": "boomer_atlas",
@@ -642,7 +642,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "leftup_idle": {
     "atlasKey": "boomer_atlas",
@@ -732,7 +732,7 @@
     "originY": 0.5,
     "offsetX": 0,
     "offsetY": 0,
-    "repeat": -1
+    "repeat": 0
   },
   "parado": {
     "atlasKey": "boomer_atlas",
