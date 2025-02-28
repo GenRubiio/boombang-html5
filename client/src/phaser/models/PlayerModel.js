@@ -1,5 +1,6 @@
+import OverheadChatAnimation from "../public-area-scene/animations/OverheadChatAnimation.js";
 export default class PlayerModel {
-    constructor(data, spritePlayer, spriteShadow, playerContainer) {
+    constructor(data, spritePlayer, spriteShadow, playerContainer, gameScene) {
         this.socketId = data.id;
         this.position = {
             x: data.x,
@@ -11,5 +12,6 @@ export default class PlayerModel {
         this.sprite_player = spritePlayer;
         this.sprite_shadow = spriteShadow;
         this.playerContainer = playerContainer;
+        this.chatManager = new OverheadChatAnimation(gameScene, spritePlayer, data.avatar_id);
     }
 }

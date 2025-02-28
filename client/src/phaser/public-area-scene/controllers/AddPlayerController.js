@@ -8,10 +8,15 @@ class AddPlayerController {
     static async main(gameScene, playerData) {
         if (gameScene.players[playerData.id]) return;
         const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
-        const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer);
+        const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer, gameScene);
         MovePlayerToTileController.main(gameScene, playerModel);
         // Almacenar jugador
         gameScene.players[playerData.id] = playerModel;
+
+        //setInterval(() => {
+        //    const textoTest = 'Mensaje de prueba ' + Phaser.Math.Between(1, 100);
+        //    playerModel.chatManager.addMessage(textoTest, 'Gen');
+        //}, 5000);
     }
 
     static createPlayerContainer(gameScene, playerData) {

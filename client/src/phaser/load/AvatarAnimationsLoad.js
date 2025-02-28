@@ -24,23 +24,23 @@ class AvatarAnimationsLoad {
      * definidos en werewolf_config.
      */
     static preload(gameScene) {
-        AvatarBoomerLoad.main(gameScene);
-        AvatarBrujitaLoad.main(gameScene);
-        AvatarCholoLoad.main(gameScene);
-        AvatarEmpollonLoad.main(gameScene);
-        AvatarGataLoad.main(gameScene);
-        AvatarGhostLoad.main(gameScene);
-        AvatarIndiaLoad.main(gameScene);
-        AvatarLilianLoad.main(gameScene);
-        AvatarMarsuLoad.main(gameScene);
-        AvatarModernLoad.main(gameScene);
-        AvatarNinjaLoad.main(gameScene);
-        AvatarRastaLoad.main(gameScene);
-        AvatarSkeletonLoad.main(gameScene);
-        AvatarWerewolfLoad.main(gameScene);
-        AvatarWraithLoad.main(gameScene);
-        AvatarYayoLoad.main(gameScene);
-        AvatarZombieLoad.main(gameScene);
+        AvatarBoomerLoad.main(gameScene, AvatarEnum.BOOMER);
+        AvatarBrujitaLoad.main(gameScene, AvatarEnum.BRUJITA);
+        AvatarCholoLoad.main(gameScene, AvatarEnum.CHOLO);
+        AvatarEmpollonLoad.main(gameScene, AvatarEnum.EMPOLLON);
+        AvatarGataLoad.main(gameScene, AvatarEnum.GATA);
+        AvatarGhostLoad.main(gameScene, AvatarEnum.GHOST);
+        AvatarIndiaLoad.main(gameScene, AvatarEnum.INDIA);
+        AvatarLilianLoad.main(gameScene, AvatarEnum.LILIAN);
+        AvatarMarsuLoad.main(gameScene, AvatarEnum.MARSU);
+        AvatarModernLoad.main(gameScene, AvatarEnum.MODERN);
+        AvatarNinjaLoad.main(gameScene, AvatarEnum.NINJA);
+        AvatarRastaLoad.main(gameScene, AvatarEnum.RASTA);
+        AvatarSkeletonLoad.main(gameScene, AvatarEnum.SKELETON);
+        AvatarWerewolfLoad.main(gameScene, AvatarEnum.WEREWOLF);
+        AvatarWraithLoad.main(gameScene, AvatarEnum.WRAITH);
+        AvatarYayoLoad.main(gameScene, AvatarEnum.YAYO);
+        AvatarZombieLoad.main(gameScene, AvatarEnum.ZOMBIE);
     }
 
     /**
