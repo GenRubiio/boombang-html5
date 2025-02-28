@@ -15,6 +15,7 @@ const RequestSocketsEnum = new Enum({
     SEND_UPPERCUT: 'request:send_uppercut',
     GET_PUBLIC_AREA_USERS: 'request:get_public_area_users',
     SEND_EMOJI: 'request:send_emoji',
+    SEND_CHAT: 'request:send_chat',
 });
 
 module.exports = RequestSocketsEnum;

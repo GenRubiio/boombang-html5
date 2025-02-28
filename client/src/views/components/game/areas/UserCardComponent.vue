@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import socket from "../../../sockets/socket";
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
+import socket from "../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import FichaComponent from "./user-card/FichaComponent.vue";
 import EmojisComponent from "./user-card/EmojisComponent.vue";
 

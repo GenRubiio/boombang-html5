@@ -1,22 +1,23 @@
 <template>
   <div class="game-container">
     <CompassComponent @exitLobby="exitToLobby" />
+    
     <UserCardComponent ref="userCard" />
   </div>
 </template>
 
 <script>
-import socket from "../../../sockets/socket.js";
+import socket from "../../../../sockets/socket.js";
 import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
 import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
   props: {
     areaId: {
       type: Number,
       required: true,
-    }
+    },
   },
   data() {
     return {};
@@ -40,6 +41,11 @@ export default {
     exitToLobby() {
       socket.emit(RequestSocketsEnum.USER_LEAVE_AREA); // Enviar evento para salir de la sala
     },
+    sendMessage(message) {
+      socket.emit(RequestSocketsEnum.SEND_CHAT, {
+        message: message,
+      });
+    },
     exitToLobbyResponse() {
       // Limpia el juego Phaser antes de salir
       console.log("Saliendo de la sala...");
@@ -54,8 +60,7 @@ export default {
   mounted() {
     this.initializeGame();
   },
-  beforeUnmount() {
-  },
+  beforeUnmount() {},
 };
 </script>
 

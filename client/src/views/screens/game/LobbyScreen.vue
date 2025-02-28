@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import socket from "../../sockets/socket";
-import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
+import socket from "../../../sockets/socket";
+import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 
 export default {
   data() {

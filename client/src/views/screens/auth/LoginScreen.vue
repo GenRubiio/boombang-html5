@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
+import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 
 export default {
   data() {

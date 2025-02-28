@@ -2,6 +2,7 @@ import OverheadChatAnimation from "../public-area-scene/animations/OverheadChatA
 export default class PlayerModel {
     constructor(data, spritePlayer, spriteShadow, playerContainer, gameScene) {
         this.socketId = data.id;
+        this.username = data.username;
         this.position = {
             x: data.x,
             y: data.y,

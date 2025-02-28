@@ -29,11 +29,11 @@
 
 <script>
 import socket from "./sockets/socket";
-import LoginScreen from "./screens/auth/LoginScreen.vue";
-import RegisterScreen from "./screens/auth/RegisterScreen.vue";
-import LobbyScreen from "./screens/game/LobbyScreen.vue";
-import PublicAreaScreen from "./screens/game/areas/PublicAreaScreen.vue";
-import LoadingScreen from "./screens/game/LoadingScreen.vue";
+import LoginScreen from "./views/screens/auth/LoginScreen.vue";
+import RegisterScreen from "./views/screens/auth/RegisterScreen.vue";
+import LobbyScreen from "./views/screens/game/LobbyScreen.vue";
+import PublicAreaScreen from "./views/screens/game/areas/PublicAreaScreen.vue";
+import LoadingScreen from "./views/screens/game/LoadingScreen.vue";
 
 import GameScreensEnum from "./enums/GameScreensEnum";
 

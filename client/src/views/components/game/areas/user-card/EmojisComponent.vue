@@ -28,16 +28,16 @@
 </template>
 
 <script>
-import socket from "../../../../sockets/socket";
-import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
-import laughter_1 from "../../../../assets/game/emojis/laughter_1.png";
-import laughter_2 from "../../../../assets/game/emojis/laughter_2.png";
-import cry from "../../../../assets/game/emojis/cry.png";
-import love from "../../../../assets/game/emojis/love.png";
-import spit from "../../../../assets/game/emojis/spit.png";
-import fart from "../../../../assets/game/emojis/fart.png";
-import provoke from "../../../../assets/game/emojis/provoke.png";
-import fly from "../../../../assets/game/emojis/fly.png";
+import socket from "../../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../../enums/RequestSocketsEnum";
+import laughter_1 from "../../../../../assets/game/emojis/laughter_1.png";
+import laughter_2 from "../../../../../assets/game/emojis/laughter_2.png";
+import cry from "../../../../../assets/game/emojis/cry.png";
+import love from "../../../../../assets/game/emojis/love.png";
+import spit from "../../../../../assets/game/emojis/spit.png";
+import fart from "../../../../../assets/game/emojis/fart.png";
+import provoke from "../../../../../assets/game/emojis/provoke.png";
+import fly from "../../../../../assets/game/emojis/fly.png";
 
 export default {
   data() {

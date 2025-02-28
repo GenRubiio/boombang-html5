@@ -4,6 +4,7 @@ const UserLeaveAreaController = require('../../../controllers/game/areas/UserLea
 const UserSelectUserController = require('../../../controllers/game/areas/UserSelectUserController');
 const SendUppercutController = require('../../../controllers/game/areas/SendUppercutController');
 const SendEmojiController = require('../../../controllers/game/areas/SendEmojiController');
+const UserSendChatController = require('../../../controllers/game/areas/UserSendChatController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
@@ -21,5 +22,8 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.SEND_EMOJI, (data) => {
         SendEmojiController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.SEND_CHAT, (data) => {
+        UserSendChatController.main(socket, io, data);
     });
 };

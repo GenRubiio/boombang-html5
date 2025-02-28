@@ -10,6 +10,7 @@ import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
 import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
 import UserMoveDeniedController from "../controllers/UserMoveDeniedController";
 import SendEmojiController from "../controllers/SendEmojiController";
+import UserSendChatController from "../controllers/UserSendChatController";
 
 class PublicAreaSceneResponseSockets {
     static main(gameScene) {
@@ -63,6 +64,10 @@ class PublicAreaSceneResponseSockets {
 
         socket.on(ResponseSocketsEnum.SEND_EMOJI, (data) => {
             SendEmojiController.main(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.SEND_CHAT, (data) => {
+            UserSendChatController.main(gameScene, data);
         });
     }
 }
