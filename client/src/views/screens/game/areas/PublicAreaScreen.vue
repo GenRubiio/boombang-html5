@@ -1,7 +1,7 @@
 <template>
   <div class="game-container">
     <CompassComponent @exitLobby="exitToLobby" />
-    
+    <ChatComponent @sendMessage="sendMessage" />
     <UserCardComponent ref="userCard" />
   </div>
 </template>
@@ -10,6 +10,7 @@
 import socket from "../../../../sockets/socket.js";
 import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
 import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
+import ChatComponent from "../../../components/game/areas/ChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
@@ -27,6 +28,7 @@ export default {
   },
   components: {
     CompassComponent,
+    ChatComponent,
     UserCardComponent,
   },
   methods: {
