@@ -66,7 +66,7 @@ export default {
 <style scoped>
 .container {
   background-color: white;
-  border-radius: 8px;
+  border-radius: 0 8px 8px 8px;
   margin: 10px auto 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Siempre 4 columnas */
@@ -74,6 +74,7 @@ export default {
   max-width: 400px; /* Evita que el grid se expanda más allá */
   width: 100%;
   box-sizing: border-box;
+  height: 90px;
 }
 
 .container div {
@@ -91,6 +92,6 @@ export default {
 
 .container div:hover img {
   opacity: 0.5; /* Reduce la opacidad al 50% al pasar el cursor */
-  transition: opacity 0.3s ease-in-out; /* Transición suave */
+  transition: opacity 0.1s ease-in-out; /* Transición suave */
 }
 </style>

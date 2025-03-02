@@ -14,5 +14,8 @@ export default class PlayerModel {
         this.sprite_shadow = spriteShadow;
         this.playerContainer = playerContainer;
         this.chatManager = new OverheadChatAnimation(gameScene, spritePlayer, data.avatar_id);
+        this.send_uppercuts = 200;
+        this.received_uppercuts = 200;
+        this.ring_wins = 0;
     }
 }

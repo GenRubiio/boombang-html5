@@ -18,19 +18,14 @@
       </div>
     </div>
     <EmojisComponent v-if="!user.is_selected" />
-    <div class="user-card__body unselectable">
-      <div v-if="user.is_selected">
-        <button @click="sendUppercut">Send Upper</button>
-      </div>
-    </div>
+    <InteractionsComponent v-if="user.is_selected" />
   </div>
 </template>
 
 <script>
-import socket from "../../../../sockets/socket";
-import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import FichaComponent from "./user-card/FichaComponent.vue";
 import EmojisComponent from "./user-card/EmojisComponent.vue";
+import InteractionsComponent from "./user-card/InteractionsComponent.vue";
 
 export default {
   data() {
@@ -49,14 +44,12 @@ export default {
   components: {
     FichaComponent,
     EmojisComponent,
+    InteractionsComponent,
   },
   methods: {
     updateData(userData) {
       //console.log("User data updated:", userData);
       this.user = userData;
-    },
-    sendUppercut() {
-      socket.emit(RequestSocketsEnum.SEND_UPPERCUT);
     },
   },
   computed: {
