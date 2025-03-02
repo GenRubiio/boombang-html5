@@ -2,6 +2,7 @@
   <div
     class="user-card unselectable"
     :class="computedClass"
+    v-if="user"
     @pointerdown.stop
     @mousedown.stop
     @touchstart.stop
@@ -17,34 +18,26 @@
         <FichaComponent :avatarId="user.avatar_id" />
       </div>
     </div>
-    <EmojisComponent v-if="!user.is_selected" />
-    <InteractionsComponent v-if="user.is_selected" />
+    <UserDataTabsComponents v-if="!user.is_selected" :user="user" />
+    <UserSelectedDataTabsComponent v-if="user.is_selected" :user="user" />
   </div>
 </template>
 
 <script>
 import FichaComponent from "./user-card/FichaComponent.vue";
-import EmojisComponent from "./user-card/EmojisComponent.vue";
-import InteractionsComponent from "./user-card/InteractionsComponent.vue";
+import UserDataTabsComponents from "./user-card/UserDataTabsComponents.vue";
+import UserSelectedDataTabsComponent from "./user-card/UserSelectedDataTabsComponent.vue";
 
 export default {
   data() {
     return {
-      user: {
-        username: "Unknown",
-        is_player_data: true,
-        is_admin: false,
-        is_vip: false,
-        is_selected: false,
-        avatar_id: 1,
-        gender: "man",
-      },
+      user: null,
     };
   },
   components: {
     FichaComponent,
-    EmojisComponent,
-    InteractionsComponent,
+    UserDataTabsComponents,
+    UserSelectedDataTabsComponent,
   },
   methods: {
     updateData(userData) {

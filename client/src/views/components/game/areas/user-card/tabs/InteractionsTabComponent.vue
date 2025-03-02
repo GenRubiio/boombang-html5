@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import socket from "../../../../../sockets/socket";
-import RequestSocketsEnum from "../../../../../enums/RequestSocketsEnum";
-import red_upper from "../../../../../assets/game/uppercuts/red.png";
+import socket from "../../../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../../../enums/RequestSocketsEnum";
+import red_upper from "../../../../../../assets/game/ficha/uppercuts/red.png";
 
 export default {
   data() {
@@ -37,7 +37,6 @@ export default {
 .container {
   background-color: white;
   border-radius: 0 8px 8px 8px;
-  margin: 10px auto 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Siempre 4 columnas */
   grid-template-rows: repeat(2, 1fr); /* Siempre 4 filas */
@@ -45,6 +44,8 @@ export default {
   width: 100%;
   box-sizing: border-box;
   height: 90px;
+  position: relative;
+  z-index: 0;
 }
 
 .container div {
