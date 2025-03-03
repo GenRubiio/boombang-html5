@@ -5,14 +5,22 @@
       :class="{ active: activeTab === 'emojis' }"
       @click="activeTab = 'emojis'"
     >
-      <img :src="EmojisTabIcon" class="tab-icon" />
+      <img
+        :src="EmojisTabIcon"
+        class="tab-icon"
+        :class="{ active: activeTab === 'emojis' }"
+      />
     </div>
     <div
       class="tabs-container__statistics"
       :class="{ active: activeTab === 'statistics' }"
       @click="activeTab = 'statistics'"
     >
-      <img :src="StatisticsTabIcon" class="tab-icon" />
+      <img
+        :src="StatisticsTabIcon"
+        class="tab-icon"
+        :class="{ active: activeTab === 'statistics' }"
+      />
     </div>
   </div>
   <component :is="activeTabComponent" :user="user" />
@@ -38,16 +46,12 @@ export default {
       StatisticsTabIcon,
     };
   },
-  methods: {},
   computed: {
     activeTabComponent() {
-      if (this.activeTab === "emojis") {
-        return EmojisTabComponent;
-      } else if (this.activeTab === "statistics") {
-        return StatisticsTabComponent;
-      }
+      return this.activeTab === "emojis"
+        ? EmojisTabComponent
+        : StatisticsTabComponent;
     },
-    computedClass() {},
   },
   components: {
     EmojisTabComponent,
@@ -60,45 +64,48 @@ export default {
 .tabs-container {
   max-width: 177px;
   width: 100%;
-  height: 15px;
+  height: 21px;
   display: flex;
   gap: 3px;
 }
 
 /* --- Estilos pestaña Emojis --- */
-.tabs-container__emojis {
-  height: 17px;
+.tabs-container__emojis,
+.tabs-container__statistics {
+  height: 23px;
   width: 100%;
   border-radius: 8px 8px 0 0;
-  background-color: white;
+  background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+  padding-left: 6px;
 }
 
-/* --- Estilos pestaña Statistics --- */
+/* Ajuste específico para la pestaña Statistics, ya que tiene menos ancho */
 .tabs-container__statistics {
-  height: 17px;
   width: 30px;
-  border-radius: 8px 8px 0 0;
-  background-color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Icono dentro de cada pestaña */
 .tab-icon {
   width: 16px;
   height: 16px;
+  filter: invert(21%) sepia(100%) saturate(318%) hue-rotate(181deg)
+    brightness(98%) contrast(101%);
 }
 
-/* Ejemplo de cómo podrías diferenciar con clases si lo deseas */
+/* Cambiar color cuando la pestaña está activa */
+.tab-icon.active {
+  filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%)
+    contrast(100%);
+  /* Esto lo convierte en negro */
+}
+
+/* Estilo para pestaña activa */
 .tabs-container__emojis.active,
 .tabs-container__statistics.active {
-  /* Puedes poner aquí alguna marca de estilo para la pestaña activa, si quieres */
-  /* p. ej., un borde inferior, un background distinto, etc. */
+  background-color: white;
 }
 </style>
