@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-container">
+  <div class="tabs-container" :class="colorUser">
     <div
       class="tabs-container__emojis"
       :class="{ active: activeTab === 'emojis' }"
@@ -52,6 +52,15 @@ export default {
         ? EmojisTabComponent
         : StatisticsTabComponent;
     },
+    colorUser() {
+      if (this.user.is_admin) {
+        return "admin";
+      }
+      if (this.user.is_vip) {
+        return "vip";
+      }
+      return this.user.is_selected ? "selected" : "user";
+    },
   },
   components: {
     EmojisTabComponent,
@@ -69,18 +78,25 @@ export default {
   gap: 3px;
 }
 
-/* --- Estilos pestaña Emojis --- */
-.tabs-container__emojis,
-.tabs-container__statistics {
+.tabs-container__emojis {
   height: 23px;
   width: 100%;
   border-radius: 8px 8px 0 0;
-  background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: start;
   padding-left: 6px;
+}
+
+.tabs-container__statistics {
+  height: 23px;
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Ajuste específico para la pestaña Statistics, ya que tiene menos ancho */
@@ -92,20 +108,41 @@ export default {
 .tab-icon {
   width: 16px;
   height: 16px;
-  filter: invert(21%) sepia(100%) saturate(318%) hue-rotate(181deg)
-    brightness(98%) contrast(101%);
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%)
+    contrast(100%);
 }
 
-/* Cambiar color cuando la pestaña está activa */
 .tab-icon.active {
   filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%)
     contrast(100%);
-  /* Esto lo convierte en negro */
 }
 
-/* Estilo para pestaña activa */
+.tabs-container.user .tabs-container__emojis,
+.tabs-container.user .tabs-container__statistics {
+  background-color: #005ea3;
+}
+
+.tabs-container.admin .tabs-container__emojis,
+.tabs-container.admin .tabs-container__statistics {
+  background-color: #f59200;
+}
+
+.tabs-container.vip .tabs-container__emojis,
+.tabs-container.vip .tabs-container__statistics {
+  background-color: #420143;
+}
+
+.tabs-container.selected .tabs-container__emojis,
+.tabs-container.selected .tabs-container__statistics {
+  background-color: #045d03;
+}
+
+.tabs-container.admin .tabs-container__emojis,
+.tabs-container.admin .tabs-container__statistics {
+}
+
 .tabs-container__emojis.active,
 .tabs-container__statistics.active {
-  background-color: white;
+  background-color: white !important;
 }
 </style>

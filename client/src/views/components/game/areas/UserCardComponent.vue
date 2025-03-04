@@ -53,11 +53,7 @@ export default {
       if (this.user.is_vip) {
         return "vip";
       }
-      if (this.user.is_selected) {
-        return "selected";
-      } else {
-        return this.user.gender === "man" ? "player-man" : "player-women";
-      }
+      return this.user.is_selected ? "selected" : "user";
     },
   },
 };
@@ -77,11 +73,26 @@ export default {
 .user-card__header {
   text-align: left;
   padding: 0 5px;
-  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   font-size: 23px;
   font-weight: bold;
   color: white;
+}
+
+.user-card.user .user-card__header {
+  background-color: #005ea3;
+}
+
+.user-card.admin .user-card__header {
+  background-color: #f59200;
+}
+
+.user-card.vip .user-card__header {
+  background-color: #420143;
+}
+
+.user-card.selected .user-card__header {
+  background-color: #045d03;
 }
 
 .user-card__avatar-container {
@@ -92,9 +103,24 @@ export default {
 .user-card__avatar-container__avatar {
   width: 90px;
   height: 90px;
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   overflow: hidden;
+}
+
+.user-card.user .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #194261;
+}
+
+.user-card.admin .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #b5a900;
+}
+
+.user-card.vip .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #6a006a;
+}
+
+.user-card.selected .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #0f3d00;
 }
 
 .user-card__avatar-container__avatar img {
@@ -114,12 +140,8 @@ export default {
   background-color: #800080;
 }
 
-.user-card.player-man {
+.user-card.user {
   background-color: #0069b5;
-}
-
-.user-card.player-women {
-  background-color: #ff1b64;
 }
 
 .user-card.selected {
