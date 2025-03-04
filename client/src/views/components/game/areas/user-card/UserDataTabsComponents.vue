@@ -106,8 +106,8 @@ export default {
 
 /* Icono dentro de cada pestaña */
 .tab-icon {
-  width: 16px;
-  height: 16px;
+  width: 13px;
+  height: 13px;
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%)
     contrast(100%);
 }
