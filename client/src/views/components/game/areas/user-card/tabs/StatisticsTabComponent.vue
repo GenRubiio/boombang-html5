@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :class="colorUser">
     <div class="container__uppers-data">
       <div class="container__uppers-data__title">Uppercuts</div>
       <div class="container__uppers-data__data-container">
@@ -25,13 +25,29 @@
 import red_upper from "../../../../../../assets/game/ficha/uppercuts/red.png";
 
 export default {
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       red_upper,
     };
   },
   methods: {},
-  computed: {},
+  computed: {
+    colorUser() {
+      if (this.user.is_admin) {
+        return "admin";
+      }
+      if (this.user.is_vip) {
+        return "vip";
+      }
+      return this.user.is_selected ? "selected" : "user";
+    },
+  },
 };
 </script>
 
@@ -53,7 +69,7 @@ export default {
   width: 120px;
 }
 
-.container__uppers-right{
+.container__uppers-right {
   padding-top: 15px;
 }
 
@@ -61,23 +77,29 @@ export default {
   font-size: 18px;
   font-weight: bold;
   color: white;
-  background-color: #005491;
   padding: 0 3px;
   border-radius: 5px;
   text-align: start;
 }
 
-.container__uppers-data__data-container{
+.container.user .container__uppers-data__title {
+  background-color: #005491;
+}
+
+.container.selected .container__uppers-data__title {
+  background-color: #045d03;
+}
+
+.container__uppers-data__data-container {
   display: flex;
   justify-content: space-between;
   margin-top: 5px;
 }
 
-.container__uppers-data__data-container__count{
+.container__uppers-data__data-container__count {
   font-size: 11px;
   font-weight: bold;
   color: white;
-  background-color: #005491;
   padding: 0 5px;
   border-radius: 5px;
   text-align: center;
@@ -85,15 +107,30 @@ export default {
   width: 33px;
 }
 
-.container__uppers-data__data-container__title{
+.container.user .container__uppers-data__data-container__count {
+  background-color: #005491;
+}
+
+.container.selected .container__uppers-data__data-container__count {
+  background-color: #045d03;
+}
+
+.container__uppers-data__data-container__title {
   font-size: 11px;
   font-weight: bold;
   color: white;
-  background-color: #005491;
   padding: 0 5px;
   border-radius: 5px;
   text-align: start;
   height: 17px;
   width: 63px;
+}
+
+.container.user .container__uppers-data__data-container__title {
+  background-color: #005491;
+}
+
+.container.selected .container__uppers-data__data-container__title {
+  background-color: #045d03;
 }
 </style>

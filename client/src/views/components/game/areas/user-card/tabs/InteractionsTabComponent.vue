@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :class="colorUser">
     <div></div>
     <div></div>
     <div></div>
@@ -19,6 +19,12 @@ import RequestSocketsEnum from "../../../../../../enums/RequestSocketsEnum";
 import red_upper from "../../../../../../assets/game/ficha/uppercuts/red.png";
 
 export default {
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       red_upper,
@@ -29,7 +35,17 @@ export default {
       socket.emit(RequestSocketsEnum.SEND_UPPERCUT);
     },
   },
-  computed: {},
+  computed: {
+    colorUser() {
+      if (this.user.is_admin) {
+        return "admin";
+      }
+      if (this.user.is_vip) {
+        return "vip";
+      }
+      return this.user.is_selected ? "selected" : "user";
+    },
+  },
 };
 </script>
 

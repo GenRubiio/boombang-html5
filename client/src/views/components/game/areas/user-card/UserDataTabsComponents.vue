@@ -59,7 +59,7 @@ export default {
       if (this.user.is_vip) {
         return "vip";
       }
-      return this.user.is_selected ? "selected" : "user";
+      return "user";
     },
   },
   components: {
@@ -130,11 +130,6 @@ export default {
 .tabs-container.vip .tabs-container__emojis,
 .tabs-container.vip .tabs-container__statistics {
   background-color: #420143;
-}
-
-.tabs-container.selected .tabs-container__emojis,
-.tabs-container.selected .tabs-container__statistics {
-  background-color: #045d03;
 }
 
 .tabs-container__emojis.active,

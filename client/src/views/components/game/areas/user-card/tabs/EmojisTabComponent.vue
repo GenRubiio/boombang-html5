@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :class="colorUser">
     <div>
       <img :src="laughter_1" alt="Laughter 1" @click="sendEmoji(1)" />
     </div>
@@ -40,6 +40,12 @@ import provoke from "../../../../../../assets/game/ficha/emojis/provoke.png";
 import fly from "../../../../../../assets/game/ficha/emojis/fly.png";
 
 export default {
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       laughter_1,
@@ -59,7 +65,17 @@ export default {
       });
     },
   },
-  computed: {},
+  computed: {
+    colorUser() {
+      if (this.user.is_admin) {
+        return "admin";
+      }
+      if (this.user.is_vip) {
+        return "vip";
+      }
+      return this.user.is_selected ? "selected" : "user";
+    },
+  },
 };
 </script>
 
