@@ -137,10 +137,6 @@ export default {
   background-color: #045d03;
 }
 
-.tabs-container.admin .tabs-container__emojis,
-.tabs-container.admin .tabs-container__statistics {
-}
-
 .tabs-container__emojis.active,
 .tabs-container__statistics.active {
   background-color: white !important;
