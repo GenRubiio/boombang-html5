@@ -6,6 +6,7 @@ import PublicAreaSceneResponseSockets from "./public-area-scene/sockets/PublicAr
 import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAreaSceneRequestSockets"; // Controladores de sockets
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
 import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
+import OverheadChatAnimation from "./public-area-scene/animations/OverheadChatAnimation"; // Animación de chat
 
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
@@ -35,6 +36,8 @@ export default class PublicAreaScene extends Phaser.Scene {
     create() {
         PublicAreaSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         PublicAreaSceneResponseSockets.main(this); // Inicializar controladores de sockets
+
+        this.chatManager = new OverheadChatAnimation(this);
 
         this.events.on('shutdown', this.shutdown, this);
         this.events.on('destroy', this.destroy, this);
@@ -70,6 +73,11 @@ export default class PublicAreaScene extends Phaser.Scene {
                 socket.off(event);
             }
         });
+
+        if (this.chatManager) {
+            this.chatManager.destroy();
+            this.chatManager = null;
+        }
     }
 
     destroy() {

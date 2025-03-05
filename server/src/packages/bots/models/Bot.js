@@ -21,6 +21,7 @@ class Bot {
             }, 1000);
 
             this.moveRandomly();
+            this.sendRandomMessage();
             this.selectUser();
         });
 
@@ -71,6 +72,31 @@ class Bot {
         this.socket.on("error_critical", () => {
             this.socket.disconnect();
         });
+    }
+
+    sendRandomMessage() {
+        const messages = [
+            "¡Hola a todos!",
+            "¿Cómo están?",
+            "¿Alguien quiere jugar?",
+            "¡Buena partida!",
+            "Vamos a explorar juntos.",
+            "¿Necesitas ayuda?",
+            "¡Esto es divertido!",
+            "¿Quién quiere un reto?"
+        ];
+
+        const sendMessage = () => {
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            this.socket.emit(RequestSocketsEnum.SEND_CHAT, { message: randomMessage });
+
+            // Generar un tiempo aleatorio entre 5 y 20 segundos
+            const randomTime = Math.floor(Math.random() * (20000 - 5000 + 1)) + 5000;
+
+            setTimeout(sendMessage, randomTime);
+        };
+
+        sendMessage();
     }
 
     selectUser() {

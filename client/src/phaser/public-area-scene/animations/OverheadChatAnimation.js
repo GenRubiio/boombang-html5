@@ -5,10 +5,8 @@ export default class OverheadChatAnimation {
      *        Sprite o contenedor que representa al jugador.
      * @param {string} avatarId - ID base para obtener la imagen del avatar.
      */
-    constructor(scene, playerSprite, avatarId) {
+    constructor(scene) {
         this.scene = scene;
-        this.playerSprite = playerSprite;
-
         this.chatAreaPercent = 0.2;
         this.lineSpacing = 20;
         this.pushSpeed = 1;
@@ -16,7 +14,8 @@ export default class OverheadChatAnimation {
         this.rightReserved = 220;
         this.leftBound = 0;
         this.textDepth = 9999;
-        this.avatarKey = avatarId + '_cara_media';
+        this.playerSprite = null;
+        this.avatarKey = null;
 
         // Array para almacenar los contenedores de mensajes
         this.messages = [];
@@ -36,13 +35,11 @@ export default class OverheadChatAnimation {
         this.scene.events.on('update', this.update, this);
     }
 
-    /**
-     * Llamar cuando llegue un nuevo mensaje.
-     * @param {string} text - Mensaje a mostrar.
-     * @param {string} [userName='Undefined'] - Nombre del usuario que envía el mensaje.
-     */
-    addMessage(text, userName = 'Undefined') {
+    addMessage(text, userName, playerSprite, avatarId) {
+        this.playerSprite = playerSprite;
+        this.avatarKey = avatarId + '_cara_media';
         // Empujar mensajes existentes hacia arriba
+
         this.messages.forEach(msg => {
             msg.y -= this.lineSpacing;
         });
@@ -165,5 +162,18 @@ export default class OverheadChatAnimation {
             }
             return true;
         });
+    }
+
+    destroy() {
+        // Desuscribirse del evento update
+        this.scene.events.off('update', this.update, this);
+
+        // Destruir todos los contenedores de mensajes
+        this.messages.forEach(msg => {
+            msg.destroy();
+        });
+
+        // Limpiar el array
+        this.messages = [];
     }
 }
