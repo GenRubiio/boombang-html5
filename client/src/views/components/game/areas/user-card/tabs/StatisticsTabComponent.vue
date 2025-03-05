@@ -74,12 +74,14 @@ export default {
 }
 
 .container__uppers-data__title {
+  width: 100%;
   font-size: 18px;
   font-weight: bold;
   color: white;
   padding: 0 3px;
   border-radius: 5px;
   text-align: start;
+  box-sizing: border-box;
 }
 
 .container.user .container__uppers-data__title {
@@ -91,9 +93,10 @@ export default {
 }
 
 .container__uppers-data__data-container {
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
   margin-top: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .container__uppers-data__data-container__count {
