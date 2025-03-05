@@ -4,6 +4,8 @@ import shadowImg from "../assets/images/shadow.png"; // Imagen de la sombra
 import playerImg from "../assets/images/player.png"; // Imagen del personaje
 import PublicAreaSceneResponseSockets from "./public-area-scene/sockets/PublicAreaSceneResponseSockets"; // Controladores de sockets
 import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAreaSceneRequestSockets"; // Controladores de sockets
+import AreaSceneRequestSockets from "./sockets/AreaSceneRequestSockets"; // Controladores de sockets
+import AreaSceneResponseSockets from "./sockets/AreaSceneResponseSockets"; // Controladores de sockets
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
 import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
@@ -34,6 +36,8 @@ export default class PublicAreaScene extends Phaser.Scene {
     }
 
     create() {
+        AreaSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
+        AreaSceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicAreaSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         PublicAreaSceneResponseSockets.main(this); // Inicializar controladores de sockets
 
