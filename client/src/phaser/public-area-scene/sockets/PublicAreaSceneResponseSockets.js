@@ -3,14 +3,14 @@ import MovePlayerController from "../controllers/MovePlayerController";
 import RemovePlayerController from "../controllers/RemovePlayerController";
 import AddPlayerController from "../controllers/AddPlayerController";
 import CreateSceneController from "../controllers/CreateSceneController";
-import UserSelectUserController from "../controllers/UserSelectUserController";
-import UserUpdatePositionController from "../controllers/UserUpdatePositionController";
+import UserSelectUserController from "../../controllers/UserSelectUserController";
+import UserUpdatePositionController from "../../controllers/UserUpdatePositionController";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
-import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
-import UserMoveDeniedController from "../controllers/UserMoveDeniedController";
-import SendEmojiController from "../controllers/SendEmojiController";
-import UserSendChatController from "../controllers/UserSendChatController";
+import SendUppercutAnimationController from "../../controllers/SendUppercutAnimationController";
+import UserMoveDeniedController from "../../controllers/UserMoveDeniedController";
+import SendEmojiController from "../../controllers/SendEmojiController";
+import UserSendChatController from "../../controllers/UserSendChatController";
 
 class PublicAreaSceneResponseSockets {
     static main(gameScene) {

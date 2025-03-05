@@ -1,6 +1,6 @@
 
 import SetUserCardController from "./SetUserCardController.js";
-import socket from "../../../sockets/socket"; // Conexión Socket.io
+import socket from "../../sockets/socket.js"; // Conexión Socket.io
 
 class UserSelectUserController {
     static main(gameScene, data) {
