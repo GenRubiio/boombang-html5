@@ -1,6 +1,6 @@
-import AvatarEmojisEnum from "../../../enums/AvatarEmojisEnum.js";
-import AvatarEmojisNameAnimationsEnum from "../../../enums/AvatarEmojisNameAnimationsEnum.js";
-import AnimationUtils from "../utils/AnimationUtils.js";
+import AvatarEmojisEnum from "../../enums/AvatarEmojisEnum.js";
+import AvatarEmojisNameAnimationsEnum from "../../enums/AvatarEmojisNameAnimationsEnum.js";
+import AnimationUtils from "../public-area-scene/utils/AnimationUtils.js";
 import UserIdleAnimation from "./UserIdleAnimation.js";
 
 class UserEmojiAnimation {

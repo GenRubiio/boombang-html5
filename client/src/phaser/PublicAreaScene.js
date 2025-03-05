@@ -6,7 +6,7 @@ import PublicAreaSceneResponseSockets from "./public-area-scene/sockets/PublicAr
 import PublicAreaSceneRequestSockets from "./public-area-scene/sockets/PublicAreaSceneRequestSockets"; // Controladores de sockets
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
 import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
-import OverheadChatAnimation from "./public-area-scene/animations/OverheadChatAnimation"; // Animación de chat
+import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
 
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
