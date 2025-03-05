@@ -9,6 +9,8 @@ class UserResource extends Resource {
             is_vip: false,
             avatar_id: data.avatarId,
             gender: "man",
+            uppercuts_send: data.uppercutsSend,
+            uppercuts_received: data.uppercutsReceived,
         };
     }
 }

@@ -115,24 +115,14 @@ class CreateSceneController {
         });
     }
 
-
     static createPlayers(gameScene, playersData) {
         // Crear los jugadores iniciales
         (async () => {
             for (const playerData of playersData) {
                 await AddPlayerController.main(gameScene, playerData);
             }
-
             //console.log("Players loaded", gameScene.players);
-
-            SetUserCardController.main(gameScene, {
-                username: socket.user.username,
-                is_admin: socket.user.is_admin,
-                is_vip: socket.user.is_vip,
-                is_selected: false,
-                avatar_id: socket.user.avatar_id,
-                gender: socket.user.gender,
-            });
+            SetUserCardController.main(gameScene, socket.user);
         })();
     }
 }

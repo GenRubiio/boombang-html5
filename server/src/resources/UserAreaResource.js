@@ -8,6 +8,8 @@ class UserAreaResource extends Resource {
             y: data.currentAreaPosition.y,
             z: data.currentAreaPosition.z,
             avatar_id: data.avatarId,
+            uppercuts_send: data.uppercutsSend,
+            uppercuts_received: data.uppercutsReceived,
             animations: [],
         };
     }

@@ -6,6 +6,8 @@ class UserModel {
         this.email = row.email;
         this.avatarId = row.avatar_id; // ID del avatar del usuario
         this.avatarColors = row.avatar_colors; // Colores del avatar del usuario
+        this.uppercutsSend = 0;
+        this.uppercutsReceived = 0;
 
         this.socket = null; // Socket del usuario
         this.currentArea = null; // Área actual del usuario

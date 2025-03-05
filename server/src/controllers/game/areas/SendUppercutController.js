@@ -4,6 +4,7 @@ const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
+const UserService = require('../../../services/UserService');
 
 class SendUppercutController {
     static async main(socket, io) {
@@ -32,6 +33,9 @@ class SendUppercutController {
                     // Bloquear acciones para uppercut
                     UserBlockActionsTask.blockByUppercutSend(user);
                     UserBlockActionsTask.blockByUppercutReceive(targetUser, io);
+
+                    UserService.increaseUppercutSend(user);
+                    UserService.increaseUppercutReceived(targetUser);
 
                     // Emitir el uppercut sin esperar que estén quietos
                     user.currentArea.emit(ResponseSocketsEnum.SEND_UPPERCUT, {

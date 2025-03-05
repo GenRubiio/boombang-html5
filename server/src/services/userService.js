@@ -86,6 +86,14 @@ class UserService {
             if (connection) connection.release();
         }
     }
+
+    static async increaseUppercutSend(user) {
+        user.uppercutsSend += 1;
+    }
+
+    static async increaseUppercutReceived(user) {
+        user.uppercutsReceived += 1;
+    }
 }
 
 module.exports = UserService;

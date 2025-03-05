@@ -3,13 +3,17 @@
     <div class="container__uppers-data">
       <div class="container__uppers-data__title">Uppercuts</div>
       <div class="container__uppers-data__data-container">
-        <div class="container__uppers-data__data-container__count">1000</div>
+        <div class="container__uppers-data__data-container__count">
+          {{ user.uppercuts_send }}
+        </div>
         <div class="container__uppers-data__data-container__title">
           Enviados
         </div>
       </div>
       <div class="container__uppers-data__data-container">
-        <div class="container__uppers-data__data-container__count">1000</div>
+        <div class="container__uppers-data__data-container__count">
+          {{ user.uppercuts_received }}
+        </div>
         <div class="container__uppers-data__data-container__title">
           Recibidos
         </div>
@@ -47,6 +51,9 @@ export default {
       }
       return this.user.is_selected ? "selected" : "user";
     },
+  },
+  mounted() {
+    console.log("User data received in component:", this.user);
   },
 };
 </script>
