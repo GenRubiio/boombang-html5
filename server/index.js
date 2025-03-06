@@ -19,5 +19,7 @@ logger.log('Starting server...', 'success');
     sockets(io);
     initializer();
 
-    BotsPackage.main();
+    if (process.env.RUN_BOTS ? process.env.RUN_BOTS === 'true' : false) {
+        BotsPackage.main();
+    }
 })();

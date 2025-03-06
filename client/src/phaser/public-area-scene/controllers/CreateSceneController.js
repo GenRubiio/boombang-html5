@@ -3,19 +3,16 @@ import socket from "../../../sockets/socket"; // Conexión Socket.io
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../../controllers/SetUserCardController.js";
 import EventLimiter from "../utils/EventLimiter.js";
+import PublicAreaSceneLoad from "../../load/PublicAreaSceneLoad.js";
 
 class CreateSceneController {
     static async main(gameScene, data) {
         const playersData = data.players;
         const sceneryData = data.scenery;
-        this.loadBackground(gameScene);
+
+        PublicAreaSceneLoad.main(gameScene, sceneryData.id);
         this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
         this.createPlayers(gameScene, playersData);
-    }
-
-    static loadBackground(gameScene) {
-        const background = gameScene.add.image(0, 0, "background").setOrigin(0);
-        background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
     }
 
     static createTile(gameScene, map, rows, cols) {

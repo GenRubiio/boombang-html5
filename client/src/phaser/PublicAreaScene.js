@@ -9,6 +9,7 @@ import AreaSceneResponseSockets from "./sockets/AreaSceneResponseSockets"; // Co
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
 import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
+import PublicAreaScenePreload from "./preloaders/PublicAreaScenePreload"; // Precargador de escena
 
 export default class PublicAreaScene extends Phaser.Scene {
     constructor() {
@@ -26,7 +27,7 @@ export default class PublicAreaScene extends Phaser.Scene {
 
     preload() {
         //this.load.plugin('rexcolorreplacepipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcolorreplacepipelineplugin.min.js', true);
-        this.load.image("background", "/assets/game/scenarios/" + this.areaId + "/background.png");
+        PublicAreaScenePreload.main(this, this.areaId); // Precargar imágenes específicas de la sala
         this.load.image("tile", "/assets/game/scenarios/tile.png");
 
         this.load.image("shadow", shadowImg);
