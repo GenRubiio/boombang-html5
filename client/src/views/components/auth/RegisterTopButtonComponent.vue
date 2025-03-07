@@ -50,10 +50,6 @@ export default {
   width: 310px;
   box-sizing: border-box;
   margin-bottom: 5px;
-
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
 }
 
 .button-top__container:hover {

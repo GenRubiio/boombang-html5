@@ -33,7 +33,11 @@
     </div>
     <div class="login-form__button-container">
       <img :src="button_image" alt="Jugar" />
-      <button class="login-form__button-container-button" type="submit">
+      <button
+        class="login-form__button-container-button"
+        type="submit"
+        :class="{ 'disabled-button': loading || !isSocketConnected }"
+      >
         Jugar
       </button>
     </div>
@@ -41,6 +45,7 @@
 </template>
 
 <script>
+import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import button_image from "../../../assets/game/auth/login-button-image.png";
@@ -52,12 +57,17 @@ export default {
       username: "Gen",
       password: "test",
       errorMessage: "",
+      loading: false,
+      isSocketConnected: socket.connected,
       button_image,
       google_image,
     };
   },
   methods: {
     login() {
+      if (this.loading || !this.isSocketConnected) return;
+      this.loading = true;
+
       this.$socket.emit(RequestSocketsEnum.LOGIN, {
         username: this.username,
         password: this.password,
@@ -74,20 +84,26 @@ export default {
       this.$socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
         //this.errorMessage = error;
         console.log(error);
+        this.loading = false;
       });
     },
   },
   mounted() {
     this.$refs.username.focus();
+
+    socket.on("connect", () => {
+      this.isSocketConnected = true;
+    });
+    socket.on("disconnect", () => {
+      this.isSocketConnected = false;
+    });
   },
 };
 </script>
 
 <style scoped>
 .login-form {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+
 }
 
 .login-form__content {
@@ -177,6 +193,7 @@ export default {
   position: absolute;
   top: -26px;
   right: 87px;
+  z-index: 1;
 }
 
 .login-form__google-button {
@@ -198,7 +215,7 @@ export default {
   background-color: #0d97f1;
 }
 
-.login-form__google-separator{
+.login-form__google-separator {
   display: flex;
   width: 100%;
   align-content: center;
@@ -227,5 +244,10 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 5px;
+}
+
+.disabled-button {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>

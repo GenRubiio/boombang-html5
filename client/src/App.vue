@@ -128,11 +128,13 @@ export default {
       this.currentAreaId = null;
     },
     handleDisconnect() {
-      // Cambiar escena a login al detectar desconexión
       this.onUpdateLoading(true);
-      this.gamePhaser.scene.stop("PublicAreaScene");
+      if (this.gamePhaser && this.gamePhaser.scene) {
+        this.gamePhaser.scene.stop("PublicAreaScene");
+      }
+      this.gamePhaser = null;
+      document.getElementById("phaser-container").innerHTML = "";
       this.currentScreen = GameScreensEnum.LOGIN;
-      //console.log("Desconexión detectada. Redirigiendo al login.");
       this.onUpdateLoading(false);
     },
     onUpdateLoading(value) {

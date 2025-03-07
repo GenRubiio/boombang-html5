@@ -1,5 +1,6 @@
 <template>
   <div id="login">
+    <MaintenanceComponent v-if="!isSocketConnected" />
     <img :src="background" alt="background" class="auth__background" />
     <div class="auth__clouds-wrapper">
       <div
@@ -16,35 +17,53 @@
         <RegisterTopButtonComponent />
       </div>
       <div class="auth__content__form">
-        <LoginFormComponent @loginSuccess="$emit('loginSuccess')"/>
+        <LoginFormComponent @loginSuccess="$emit('loginSuccess')" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import socket from "../../../sockets/socket";
 import background from "../../../assets/game/auth/background.png";
 import cloud_background from "../../../assets/game/auth/clouds-background.png";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
 import RegisterTopButtonComponent from "../../components/auth/RegisterTopButtonComponent.vue";
+import { defineAsyncComponent } from "vue";
 
 export default {
   data() {
     return {
       background,
       cloud_background,
+      isSocketConnected: socket.connected,
     };
   },
   components: {
     LoginFormComponent,
     RegisterTopButtonComponent,
+    MaintenanceComponent: defineAsyncComponent(() =>
+      import("../../components/auth/MaintenanceComponent.vue")
+    ),
   },
   methods: {},
+  mounted() {
+    socket.on("connect", () => {
+      this.isSocketConnected = true;
+    });
+    socket.on("disconnect", () => {
+      this.isSocketConnected = false;
+    });
+  },
 };
 </script>
 
 <style scoped>
 #login {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  
   position: relative;
   z-index: 1;
   background-color: #f0f0f0;
