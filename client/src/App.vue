@@ -29,12 +29,7 @@
 
 <script>
 import socket from "./sockets/socket";
-import LoginScreen from "./views/screens/auth/LoginScreen.vue";
-import RegisterScreen from "./views/screens/auth/RegisterScreen.vue";
-import LobbyScreen from "./views/screens/game/LobbyScreen.vue";
-import PublicAreaScreen from "./views/screens/game/areas/PublicAreaScreen.vue";
-import LoadingScreen from "./views/screens/game/LoadingScreen.vue";
-
+import { defineAsyncComponent } from 'vue';
 import GameScreensEnum from "./enums/GameScreensEnum";
 
 export default {
@@ -52,11 +47,21 @@ export default {
     //}, 5000);
   },
   components: {
-    LoadingScreen,
-    LoginScreen,
-    RegisterScreen,
-    LobbyScreen,
-    PublicAreaScreen,
+    LoadingScreen: defineAsyncComponent(() =>
+      import("./views/screens/game/LoadingScreen.vue")
+    ),
+    LoginScreen: defineAsyncComponent(() =>
+      import("./views/screens/auth/LoginScreen.vue")
+    ),
+    RegisterScreen: defineAsyncComponent(() =>
+      import("./views/screens/auth/RegisterScreen.vue")
+    ),
+    LobbyScreen: defineAsyncComponent(() =>
+      import("./views/screens/game/LobbyScreen.vue")
+    ),
+    PublicAreaScreen: defineAsyncComponent(() =>
+      import("./views/screens/game/areas/PublicAreaScreen.vue")
+    ),
   },
   methods: {
     onGoToLogin() {
@@ -72,39 +77,42 @@ export default {
       );
       GamePreloaders.main();
       if (!this.gamePhaser) {
-        const { default: GlobalPreloader } = await import(
-          "./phaser/GlobalPreloader"
-        );
-        const { default: PublicAreaScene } = await import(
-          "./phaser/PublicAreaScene"
-        );
-        // Solo creas la instancia la primera vez.
-        this.gamePhaser = new Phaser.Game({
-          type: Phaser.WEBGL,
-          powerPreference: "high-performance",
-          antialias: false, // Desactiva si no necesitas suavizado
-          roundPixels: true, // Reduce cálculos de subpíxeles
-          width: 1012,
-          height: 657,
-          // Registras todas las escenas globales que vayas a usar
-          scene: [GlobalPreloader, PublicAreaScene],
-          parent: "phaser-container",
-          physics: {
-            default: "arcade",
-          },
-          fps: {
-            min: 30,
-            target: 60,
-            forceSetTimeOut: true, // Mantiene el juego corriendo aunque pierda foco
-          },
-        });
-        // Lanzamos la escena de Preloader para que cargue todo
-        this.gamePhaser.scene.start("GlobalPreloaderScene");
+        await this.initializePhaser();
       }
       // Esperar a que termine la precarga antes de cambiar a LOBBY
       this.gamePhaser.events.on("globalPreloaderComplete", () => {
         this.currentScreen = GameScreensEnum.LOBBY;
       });
+    },
+    async initializePhaser() {
+      const { default: GlobalPreloader } = await import(
+        "./phaser/GlobalPreloader"
+      );
+      const { default: PublicAreaScene } = await import(
+        "./phaser/PublicAreaScene"
+      );
+      // Solo creas la instancia la primera vez.
+      this.gamePhaser = new Phaser.Game({
+        type: Phaser.WEBGL,
+        powerPreference: "high-performance",
+        antialias: false, // Desactiva si no necesitas suavizado
+        roundPixels: true, // Reduce cálculos de subpíxeles
+        width: 1012,
+        height: 657,
+        // Registras todas las escenas globales que vayas a usar
+        scene: [GlobalPreloader, PublicAreaScene],
+        parent: "phaser-container",
+        physics: {
+          default: "arcade",
+        },
+        fps: {
+          min: 30,
+          target: 60,
+          forceSetTimeOut: true, // Mantiene el juego corriendo aunque pierda foco
+        },
+      });
+      // Lanzamos la escena de Preloader para que cargue todo
+      this.gamePhaser.scene.start("GlobalPreloaderScene");
     },
     onJoinPublicArea(areaId) {
       //console.log("Unido a la sala:", areaId);
