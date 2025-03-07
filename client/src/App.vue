@@ -3,7 +3,7 @@
     <div id="phaser-container"></div>
     <LoadingScreen v-if="loading" />
     <div id="game-screens">
-      <LoginScreen
+      <AuthScreen
         v-if="currentScreen === 'login'"
         @loginSuccess="onLoginSuccess"
         @goToRegister="onGoToRegister"
@@ -29,7 +29,7 @@
 
 <script>
 import socket from "./sockets/socket";
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent } from "vue";
 import GameScreensEnum from "./enums/GameScreensEnum";
 
 export default {
@@ -49,6 +49,9 @@ export default {
   components: {
     LoadingScreen: defineAsyncComponent(() =>
       import("./views/screens/game/LoadingScreen.vue")
+    ),
+    AuthScreen: defineAsyncComponent(() =>
+      import("./views/screens/auth/AuthScreen.vue")
     ),
     LoginScreen: defineAsyncComponent(() =>
       import("./views/screens/auth/LoginScreen.vue")

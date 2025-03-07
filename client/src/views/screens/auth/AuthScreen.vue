@@ -1,15 +1,23 @@
 <template>
   <div id="login">
-    <img :src="background" alt="background" class="login__background" />
-    <div class="login__clouds-wrapper">
+    <img :src="background" alt="background" class="auth__background" />
+    <div class="auth__clouds-wrapper">
       <div
-        class="login__clouds"
+        class="auth__clouds"
         :style="{ backgroundImage: 'url(' + cloud_background + ')' }"
       ></div>
       <div
-        class="login__clouds"
+        class="auth__clouds"
         :style="{ backgroundImage: 'url(' + cloud_background + ')' }"
       ></div>
+    </div>
+    <div class="auth__content">
+      <div>
+        <RegisterTopButtonComponent />
+      </div>
+      <div class="auth__content__form">
+        <LoginFormComponent @loginSuccess="$emit('loginSuccess')"/>
+      </div>
     </div>
   </div>
 </template>
@@ -17,6 +25,8 @@
 <script>
 import background from "../../../assets/game/auth/background.png";
 import cloud_background from "../../../assets/game/auth/clouds-background.png";
+import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
+import RegisterTopButtonComponent from "../../components/auth/RegisterTopButtonComponent.vue";
 
 export default {
   data() {
@@ -25,7 +35,10 @@ export default {
       cloud_background,
     };
   },
-
+  components: {
+    LoginFormComponent,
+    RegisterTopButtonComponent,
+  },
   methods: {},
 };
 </script>
@@ -37,9 +50,12 @@ export default {
   background-color: #f0f0f0;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login__background {
+.auth__background {
   position: absolute;
   z-index: -1;
   width: 100%;
@@ -48,7 +64,7 @@ export default {
   left: 0;
 }
 
-.login__clouds-wrapper {
+.auth__clouds-wrapper {
   position: absolute;
   z-index: -1;
   top: 0;
@@ -58,7 +74,7 @@ export default {
   animation: scrollWrapper 15s linear infinite;
 }
 
-.login__clouds {
+.auth__clouds {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -66,11 +82,11 @@ export default {
   background-repeat: no-repeat;
 }
 
-.login__clouds:first-child {
+.auth__clouds:first-child {
   top: 0;
 }
 
-.login__clouds:last-child {
+.auth__clouds:last-child {
   top: 100%;
 }
 
@@ -81,5 +97,13 @@ export default {
   to {
     transform: translateY(-100%);
   }
+}
+
+.auth__content__form {
+  width: 310px;
+  box-sizing: border-box;
+  background-color: #003d6c;
+  padding: 10px;
+  border-radius: 10px;
 }
 </style>
