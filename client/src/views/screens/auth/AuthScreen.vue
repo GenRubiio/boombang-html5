@@ -60,10 +60,6 @@ export default {
 
 <style scoped>
 #login {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-  
   position: relative;
   z-index: 1;
   background-color: #f0f0f0;

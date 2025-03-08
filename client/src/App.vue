@@ -183,5 +183,8 @@ export default {
   position: absolute;
   z-index: 1;
   overflow: hidden;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 </style>
