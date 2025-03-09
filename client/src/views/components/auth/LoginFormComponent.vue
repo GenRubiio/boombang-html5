@@ -1,5 +1,9 @@
 <template>
   <form class="login-form" @submit.prevent="login">
+    <div class="login-form__error" v-if="errorLogin">
+      <img :src="warning_image" alt="warning" /> Nombre de usuario o contraseña
+      son incorrectos
+    </div>
     <div class="login-form__content">
       <div class="login-form__title">Ya tienes cuenta?</div>
       <div class="login-form__label">Nombre del Personaje</div>
@@ -50,21 +54,25 @@ import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import button_image from "../../../assets/game/auth/login-button-image.png";
 import google_image from "../../../assets/game/auth/google.png";
+import warning_image from "../../../assets/game/auth/warning.png";
 
 export default {
   data() {
     return {
       username: "Gen",
-      password: "test",
+      password: "alibaba",
       errorMessage: "",
       loading: false,
       isSocketConnected: socket.connected,
+      errorLogin: false,
       button_image,
       google_image,
+      warning_image,
     };
   },
   methods: {
     login() {
+      this.errorLogin = false;
       if (this.loading || !this.isSocketConnected) return;
       this.loading = true;
 
@@ -85,6 +93,7 @@ export default {
         //this.errorMessage = error;
         console.log(error);
         this.loading = false;
+        this.errorLogin = true;
       });
     },
   },
@@ -103,7 +112,7 @@ export default {
 
 <style scoped>
 .login-form {
-
+  position: relative;
 }
 
 .login-form__content {
@@ -249,5 +258,34 @@ export default {
 .disabled-button {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.login-form__error {
+  position: absolute;
+  background-color: #000000ab;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 14px;
+  width: 165px;
+  left: -179px;
+  top: 53px;
+}
+
+.login-form__error::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%; /* Posiciona el triángulo a la derecha */
+  transform: translateY(-50%);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid black;
+}
+
+.login-form__error img {
+  width: 10px;
+  height: 10px;
 }
 </style>
