@@ -14,11 +14,32 @@
     </div>
     <div class="auth__content">
       <div>
-        <RegisterTopButtonComponent />
+        <div>
+          <TopButtonComponent
+            v-if="showForm == 'login'"
+            title="Crear tu Cuenta"
+            text="Registrarse y eligir Personaje"
+            @click="changeForm('register')"
+          />
+          <TopButtonComponent
+            v-if="showForm == 'register'"
+            title="Iniciar Sesión"
+            text="Iniciar Sesión con tu Cuenta"
+            @click="changeForm('login')"
+          />
+        </div>
+        <div class="auth__content__form">
+          <LoginFormComponent
+            v-if="showForm == 'login'"
+            @loginSuccess="$emit('loginSuccess')"
+          />
+          <RegisterFormComponent
+            v-if="showForm == 'register'"
+            @registerSuccess="$emit('registerSuccess')"
+          />
+        </div>
       </div>
-      <div class="auth__content__form">
-        <LoginFormComponent @loginSuccess="$emit('loginSuccess')" />
-      </div>
+      <AvatarSelectComponent v-if="showForm == 'register'" />
     </div>
   </div>
 </template>
@@ -28,12 +49,15 @@ import socket from "../../../sockets/socket";
 import background from "../../../assets/game/auth/background.png";
 import cloud_background from "../../../assets/game/auth/clouds-background.png";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
-import RegisterTopButtonComponent from "../../components/auth/RegisterTopButtonComponent.vue";
+import RegisterFormComponent from "../../components/auth/RegisterFormComponent.vue";
+import TopButtonComponent from "../../components/auth/TopButtonComponent.vue";
 import { defineAsyncComponent } from "vue";
+import AvatarSelectComponent from "../../components/auth/AvatarSelectComponent.vue";
 
 export default {
   data() {
     return {
+      showForm: "login",
       background,
       cloud_background,
       isSocketConnected: socket.connected,
@@ -41,12 +65,18 @@ export default {
   },
   components: {
     LoginFormComponent,
-    RegisterTopButtonComponent,
+    RegisterFormComponent,
+    TopButtonComponent,
     MaintenanceComponent: defineAsyncComponent(() =>
       import("../../components/auth/MaintenanceComponent.vue")
     ),
+    AvatarSelectComponent,
   },
-  methods: {},
+  methods: {
+    changeForm(form) {
+      this.showForm = form;
+    },
+  },
   mounted() {
     socket.on("connect", () => {
       this.isSocketConnected = true;
@@ -120,5 +150,10 @@ export default {
   background-color: #003d6c;
   padding: 10px;
   border-radius: 10px;
+}
+
+.auth__content {
+  display: flex;
+  gap: 10px;
 }
 </style>

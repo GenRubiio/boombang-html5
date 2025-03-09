@@ -10,8 +10,8 @@
       :src="lilian_top_button_image"
       alt="Lilian"
     />
-    <div class="button-top__container-title">Crear tu Cuenta</div>
-    <div class="button-top__container-text">Registrarse y eligir Personaje</div>
+    <div class="button-top__container-title">{{ title }}</div>
+    <div class="button-top__container-text">{{ text }}</div>
   </div>
 </template>
 
@@ -20,6 +20,14 @@ import lilian_top_button_image from "../../../assets/game/auth/lilian-top-button
 import rasta_top_button_image from "../../../assets/game/auth/rasta-top-button.png";
 
 export default {
+  props: {
+    title: {
+      type: String,
+    },
+    text: {
+      type: String,
+    },
+  },
   data() {
     return {
       lilian_top_button_image,
