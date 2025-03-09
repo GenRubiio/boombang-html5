@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       username: "Gen",
-      password: "alibaba",
+      password: "test",
       errorMessage: "",
       loading: false,
       isSocketConnected: socket.connected,
