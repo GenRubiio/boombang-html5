@@ -63,27 +63,16 @@ export default {
 }
 
 .loading-screen__container-motto {
-  width: calc(100% + 200px);
+  width: 100%;
   position: absolute;
   bottom: 500px;
-  left: 0;
+  left: -200px;
   z-index: 2;
 }
 
 .loading-screen__container-motto img {
   position: absolute;
   left: 0;
-  width: 200px;
-  animation: motoAnimation 10s linear infinite;
-}
-
-@keyframes motoAnimation {
-  0% {
-    left: -260px;
-  }
-  100% {
-    left: calc(100% - 200px);
-  }
 }
 
 .loading-screen__container-fish {
