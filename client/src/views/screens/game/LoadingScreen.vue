@@ -44,6 +44,9 @@ export default {
   color: white;
   position: absolute;
   z-index: 9999;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .loading-screen__container {
