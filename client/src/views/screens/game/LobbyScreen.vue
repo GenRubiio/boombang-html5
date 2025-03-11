@@ -135,5 +135,18 @@ export default {
   top: 266px;
   left: 455px;
   z-index: 1;
+  animation: floatAnimation 1.5s ease-in-out forwards;
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 </style>
