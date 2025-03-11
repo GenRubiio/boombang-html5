@@ -16,10 +16,17 @@
       <img :src="avatar" alt="avatar" />
     </div>
     <div class="lobby__rooms">
-      <h1>{{ $socket.user.avatar_id }}</h1>
-      <div v-for="area in areas" :key="area.id" class="room">
-        <p>{{ area.name }} ({{ area.total_users_in }})</p>
-        <button @click="joinRoom(area.id)">Join Room</button>
+      <div class="lobby__rooms-tabs">
+        <div class="lobby__rooms-tabs__tab selected">
+          <div class="lobby__rooms-tabs__tab-title">Areas</div>
+        </div>
+      </div>
+      <div class="lobby__rooms-list">
+        <div v-for="area in areas" :key="area.id" class="room">
+          <button @click="joinRoom(area.id)">
+            {{ area.name }} ({{ area.total_users_in }})
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -83,7 +90,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #lobby {
   position: relative;
   background-color: #f0f0f0;
@@ -123,11 +130,39 @@ export default {
 .lobby__rooms {
   position: relative;
   z-index: 1;
-  background-color: black;
   color: white;
-  padding: 10px;
+  padding: 25px 10px;
   border-radius: 10px;
-  width: 200px;
+  width: 240px;
+}
+
+.lobby__rooms-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.lobby__rooms-tabs__tab {
+  background-color: #4f4f4f;
+  border-radius: 10px;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.lobby__rooms-tabs__tab.selected {
+  background-color: #4f4f4f;
+}
+
+.lobby__rooms-tabs__tab-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.lobby__rooms-list {
+  background-color: black;
+  border-radius: 10px;
+  margin-top: 5px;
+  padding: 5px;
 }
 
 .lobby__avatar img {
@@ -135,7 +170,7 @@ export default {
   top: 266px;
   left: 455px;
   z-index: 1;
-  animation: floatAnimation 1.5s ease-in-out forwards;
+  /*animation: floatAnimation 1.5s ease-in-out forwards;*/
 }
 
 @keyframes floatAnimation {
