@@ -1,16 +1,14 @@
 <template>
   <div class="game-container">
-    <CompassComponent @exitLobby="exitToLobby" />
-    <ChatComponent @sendMessage="sendMessage" />
     <UserCardComponent ref="userCard" />
+    <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
   </div>
 </template>
 
 <script>
 import socket from "../../../../sockets/socket.js";
-import CompassComponent from "../../../components/game/areas/CompassComponent.vue";
 import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
-import ChatComponent from "../../../components/game/areas/ChatComponent.vue";
+import BaseChatComponent from "../../../components/game/areas/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
@@ -27,9 +25,8 @@ export default {
     this.$emit("updateLoading", true);
   },
   components: {
-    CompassComponent,
-    ChatComponent,
     UserCardComponent,
+    BaseChatComponent,
   },
   methods: {
     initializeGame() {
@@ -88,22 +85,5 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 10;
-}
-
-.btn-exit {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #ff5555;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-exit:hover {
-  background: #ff2222;
 }
 </style>
