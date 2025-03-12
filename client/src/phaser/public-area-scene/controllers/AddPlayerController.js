@@ -12,11 +12,6 @@ class AddPlayerController {
         MovePlayerToTileController.main(gameScene, playerModel);
         // Almacenar jugador
         gameScene.players[playerData.id] = playerModel;
-
-        //setInterval(() => {
-        //    const textoTest = 'Mensaje de prueba ' + Phaser.Math.Between(1, 100);
-        //    playerModel.chatManager.addMessage(textoTest, 'Gen');
-        //}, 5000);
     }
 
     static createPlayerContainer(gameScene, playerData) {

@@ -45,6 +45,7 @@ class CreateSceneController {
                 if (!isClickable) {
                     bob.tint = 0x808080; // Color gris, por ejemplo
                 }
+                bob.alpha = 0.5; // Transparencia
 
                 // Guarda la información del tile
                 gameScene.tiles[row][col] = {
