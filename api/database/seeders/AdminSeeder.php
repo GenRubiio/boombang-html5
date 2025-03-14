@@ -39,12 +39,12 @@ class AdminSeeder extends Seeder
             return;
         }
 
-        $relationAdminRole = DB::table('model_has_roles')->insert([
+        $relationUserRole = DB::table('model_has_roles')->insert([
             'role_id' => $rolId,
             'model_type' => "App\Models\User", //App\Models\User::class,
             'model_id' => $userId
         ]);
-        if (!$relationAdminRole) {
+        if (!$relationUserRole) {
             $this->command->info("Insert relation user-role failed.");
             return;
         }

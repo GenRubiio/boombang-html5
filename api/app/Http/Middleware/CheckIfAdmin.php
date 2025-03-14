@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class CheckIfAdmin
 {
@@ -27,8 +28,12 @@ class CheckIfAdmin
      */
     private function checkIfUserIsAdmin($user)
     {
-        // return ($user->is_admin == 1);
-        return true;
+        if (isBackpackAdmin($user)) {
+            return true;
+        }
+        Auth::guard('backpack')->logout();
+        Auth::guard('web')->logout();
+        return false;
     }
 
     /**
