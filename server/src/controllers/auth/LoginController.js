@@ -4,13 +4,19 @@ const DisconnectUserController = require('../connection/DisconnectUserController
 const UserResource = require('../../resources/UserResource');
 const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
 const Log = require('../../utils/Log');
+const UserApiService = require('../../services/UserApiService');
 
 class LoginController {
     static async main(socket, io, data) {
         try {
             const { username, password } = data;
-
-            const user = await UserService.getByUsernameAndPassword(username, password);
+            const auth = await UserApiService.login(username, password);
+            console.log(auth);
+            if (!auth.success){
+                socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Invalid credentials' });
+                return;
+            }
+            const user = await UserService.getByUsername(username);
 
             if (user) {
                 const connectedUser = ConnectedUsersCollection.getByUserId(user.id);

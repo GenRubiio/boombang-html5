@@ -14,7 +14,7 @@ class User extends Authenticatable
     use CrudTrait;
     use HasRoles;
     use HasFactory;
-    use HasApiTokens
+    use HasApiTokens;
     use Notifiable;
 
     protected $fillable = [

@@ -16,24 +16,6 @@ class UserService {
         }
     }
 
-    static async getByUsernameAndPassword(username, password) {
-        let connection;
-        try {
-            connection = await pool.getConnection();
-            const rows = await connection.query(
-                'SELECT * FROM users WHERE name = ? AND password = ?',
-                [username, password]
-            );
-            if (rows.length === 0) return null;
-            return new UserModel(rows[0]);
-        } catch (err) {
-            console.error('Database query error:', err);
-            throw err;
-        } finally {
-            if (connection) connection.release();
-        }
-    }
-
     static async getByUsername(username) {
         let connection;
         try {

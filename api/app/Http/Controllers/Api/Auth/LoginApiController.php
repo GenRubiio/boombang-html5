@@ -20,7 +20,7 @@ class LoginApiController extends Controller
             $credentials = $request->only('username', 'password');
             if (Auth::attempt($credentials)) {
                 $tokenResult = auth()->user()->createToken('Personal Access Token');
-
+                
                 return $this->successResponse([
                     'token' => $tokenResult->accessToken,
                 ]);
