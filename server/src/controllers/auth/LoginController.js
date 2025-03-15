@@ -11,7 +11,6 @@ class LoginController {
         try {
             const { username, password } = data;
             const auth = await UserApiService.login(username, password);
-            console.log(auth);
             if (!auth.success){
                 socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Invalid credentials' });
                 return;
