@@ -1,7 +1,7 @@
 const ApiService = require('./ApiService');
 
 class UserApiService {
-    static async login(username, password) {
+    static login(username, password) {
         try {
             const data = {
                 username,
