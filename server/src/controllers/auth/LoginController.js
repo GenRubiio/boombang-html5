@@ -4,7 +4,7 @@ const DisconnectUserController = require('../connection/DisconnectUserController
 const UserResource = require('../../resources/UserResource');
 const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
 const Log = require('../../utils/Log');
-const UserApiService = require('../../services/UserApiService');
+const UserApiService = require('../../services-api/UserApiService');
 
 class LoginController {
     static async main(socket, io, data) {
