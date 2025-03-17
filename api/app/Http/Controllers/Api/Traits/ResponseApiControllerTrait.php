@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 trait ResponseApiControllerTrait
 {
-    private function successResponse(array $data, ?int $code = null): JsonResource
+    private function successResponse(array $data = [], ?int $code = null): JsonResource
     {
         $data = array_merge($data, [
             'success' => true,
