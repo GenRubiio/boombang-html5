@@ -11,8 +11,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
     });
 
     Route::prefix('user')->group(function () {
-        Route::post('update-sent-uppercuts', [UpdateUppercutsApiController::class, 'updateSentUppercuts']);
-        Route::post('update-recived-uppercuts', [UpdateUppercutsApiController::class, 'updateRecivedUppercuts']);
+        Route::prefix('update')->group(function () {
+            Route::post('sent-uppercuts', [UpdateUppercutsApiController::class, 'updateSentUppercuts']);
+            Route::post('recived-uppercuts', [UpdateUppercutsApiController::class, 'updateRecivedUppercuts']);
+        });
     });
 
     Route::prefix('public-scene')->group(function () {});
