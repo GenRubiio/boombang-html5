@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyEmulatorToken;
 use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\User\UpdateUppercutsApiController;
+use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 
 Route::middleware(VerifyEmulatorToken::class)->group(function () {
     Route::prefix('auth')->group(function () {
@@ -17,5 +18,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         });
     });
 
-    Route::prefix('public-scene')->group(function () {});
+    Route::prefix('public-scene')->group(function () {
+        Route::get('get', [PublicSceneApiController::class, 'get']);
+    });
 });
