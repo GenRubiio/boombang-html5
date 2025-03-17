@@ -19,6 +19,6 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
     });
 
     Route::prefix('public-scene')->group(function () {
-        Route::get('get', [PublicSceneApiController::class, 'get']);
+        Route::post('get', [PublicSceneApiController::class, 'get']);
     });
 });
