@@ -7,17 +7,17 @@ const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 
 class AreaModel {
-    constructor(id, name, map_width, map_height, game_map, startPosition) {
-        this.id = id;
-        this.name = name;
-        this.users = []; // Lista vacía de usuarios
-        this.map_width = map_width;
-        this.map_height = map_height;
-        this.game_map = game_map;
-        this.startPosition = startPosition; // Posición de inicio del área {x, y, z}
+    constructor(row) {
+        this.id = row.id;
+        this.name = row.name;
+        this.map_width = row.map_width;
+        this.map_height = row.map_height;
+        this.game_map = JSON.parse(row.map);
+        this.startPosition = row.start_position; // Posición de inicio del área {x, y, z}
 
+        this.users = []; // Lista vacía de usuarios
         // Guardamos una copia base del mapa para evitar clonaciones repetidas
-        this.navigationMapBase = JSON.parse(JSON.stringify(game_map));
+        this.navigationMapBase = JSON.parse(row.map);
         // Objeto para reservar tiles: clave "x,y" → id del usuario
         this.reservedTiles = {};
 
