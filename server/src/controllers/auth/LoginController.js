@@ -5,6 +5,7 @@ const UserResource = require('../../resources/UserResource');
 const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
 const Log = require('../../utils/Log');
 const UserApiService = require('../../services-api/UserApiService');
+const UserModel = require('../../models/UserModel');
 
 class LoginController {
     static async main(socket, io, data) {
@@ -15,7 +16,7 @@ class LoginController {
                 socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Invalid credentials' });
                 return;
             }
-            const user = await UserService.getByUsername(username);
+            const user = new UserModel(auth.user);
 
             if (user) {
                 const connectedUser = ConnectedUsersCollection.getByUserId(user.id);

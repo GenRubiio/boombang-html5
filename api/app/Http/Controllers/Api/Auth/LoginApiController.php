@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginApiLoginRequest;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LoginApiLoginRequest;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 
 class LoginApiController extends Controller
 {
@@ -20,8 +21,8 @@ class LoginApiController extends Controller
             $credentials = $request->only('username', 'password');
             if (Auth::attempt($credentials)) {
                 $tokenResult = auth()->user()->createToken('Personal Access Token');
-                
                 return $this->successResponse([
+                    'user' => (new UserResource(auth()->user()))->toDTO(),
                     'token' => $tokenResult->accessToken,
                 ]);
             } else {

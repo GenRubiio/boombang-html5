@@ -8,4 +8,8 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('login', [LoginApiController::class, 'login']);
     });
+
+    Route::prefix('user')->group(function () {});
+
+    Route::prefix('public-scene')->group(function () {});
 });

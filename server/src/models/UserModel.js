@@ -1,13 +1,11 @@
 class UserModel {
     constructor(row) {
         this.id = row.id.toString();
-        this.username = row.name;
-        this.password = row.password;
+        this.username = row.username;
         this.email = row.email;
-        this.avatarId = row.avatar_id; // ID del avatar del usuario
-        this.avatarColors = row.avatar_colors; // Colores del avatar del usuario
-        this.uppercutsSend = 0;
-        this.uppercutsReceived = 0;
+        this.avatarId = row.avatar_id; // ID del avatar del usuarioio
+        this.uppercutsSend = row.uppercuts_sent;
+        this.uppercutsReceived = row.uppercuts_received;
 
         this.socket = null; // Socket del usuario
         this.currentArea = null; // Área actual del usuario
