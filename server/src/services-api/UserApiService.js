@@ -1,15 +1,36 @@
 const ApiService = require('./ApiService');
 
 class UserApiService {
-    static login(username, password) {
+    static async login(username, password) {
         try {
             const data = {
-                username,
-                password
+                username: username,
+                password: password
             };
-            return ApiService.post('api/auth/login', data);
+            return await ApiService.post('api/auth/login', data);
         } catch (error) {
+            if (error.response && error.response.status === 422) {
+                return error.response.data;
+            }
             console.error('Error en el login:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async register(username, email, password, avatar) {
+        try {
+            const data = {
+                username: username,
+                email: email,
+                password: password,
+                avatar_id: avatar,
+            };
+            return await ApiService.post('api/auth/register', data);
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                return error.response.data;
+            }
+            console.error('Error en el registro:', error.response ? error.response.data : error.message);
             throw error;
         }
     }

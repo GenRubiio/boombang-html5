@@ -31,7 +31,7 @@ class RegisterApiRegisterRequest extends FormRequest
             'avatar_id' => [
                 'required',
                 'integer',
-                'in:' . implode(',', array_values(AvatarEnum::toAssociativeArray())),
+                'in:' . implode(',', array_keys(AvatarEnum::toAssociativeArray())),
             ],
         ];
     }

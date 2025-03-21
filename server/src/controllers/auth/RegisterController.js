@@ -1,29 +1,42 @@
-const UserService = require('../../services/UserService');
-const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
+const UserApiService = require('../../services-api/UserApiService');
 const Log = require('../../utils/Log');
+const UserModel = require('../../models/UserModel');
+const ResponseSocketsEnum = require('../../enums/ResponseSocketsEnum');
+const UserResource = require('../../resources/UserResource');
+const ConnectedUsersCollection = require('../../collections/ConnectedUsersCollection');
+const DisconnectUserController = require('../connection/DisconnectUserController');
 
 class RegisterController {
     static async main(socket, io, data) {
         try {
-            const {
-                username,
-                email,
-                password,
-                avatar_id,
-                avatar_colors
-            } = data;
-
-            const user = await UserService.getByUsername(username);
-
+            const response = await UserApiService.register(data.username, data.email, data.password, data.avatar_id);
+            if (response.errors) {
+                socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { errors: response.errors });
+                return;
+            }
+            if (!response.success) {
+                socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { message: 'Error' });
+                return;
+            }
+            const user = new UserModel(response.user);
             if (user) {
-                socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { message: 'Username already exists' });
+                const connectedUser = ConnectedUsersCollection.getByUserId(user.id);
+                if (connectedUser) {
+                    DisconnectUserController.main(connectedUser.socket, io);
+                    connectedUser.socket.emit('error_critical');
+                }
+                user.addSocket(socket);
+                ConnectedUsersCollection.add(socket.id, user);
+            
+                const userResource = new UserResource(user);
+                socket.emit(ResponseSocketsEnum.REGISTER_SUCCESS, { user: userResource.toObject() });
             } else {
-                const newUserId = await UserService.create(username, email, password, avatar_id, avatar_colors);
-                socket.emit(ResponseSocketsEnum.REGISTER_SUCCESS, { message: 'User created successfully' });
+                socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { message: 'Error' });
             }
         }
         catch (error) {
             Log.error('RegisterController.main', error);
+            socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { message: 'Error' });
         }
     }
 }
