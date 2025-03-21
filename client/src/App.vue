@@ -9,10 +9,6 @@
         @registerSuccess="onRegisterSuccess"
         @goToRegister="onGoToRegister"
       />
-      <RegisterScreen
-        v-else-if="currentScreen === 'register'"
-        @goToLogin="onGoToLogin"
-      />
       <LobbyScreen
         v-else-if="currentScreen === 'lobby'"
         @joinPublicArea="onJoinPublicArea"
@@ -53,12 +49,6 @@ export default {
     ),
     AuthScreen: defineAsyncComponent(() =>
       import("./views/screens/auth/AuthScreen.vue")
-    ),
-    LoginScreen: defineAsyncComponent(() =>
-      import("./views/screens/auth/LoginScreen.vue")
-    ),
-    RegisterScreen: defineAsyncComponent(() =>
-      import("./views/screens/auth/RegisterScreen.vue")
     ),
     LobbyScreen: defineAsyncComponent(() =>
       import("./views/screens/game/LobbyScreen.vue")
