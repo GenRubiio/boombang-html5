@@ -6,6 +6,7 @@
       <AuthScreen
         v-if="currentScreen === 'login'"
         @loginSuccess="onLoginSuccess"
+        @registerSuccess="onRegisterSuccess"
         @goToRegister="onGoToRegister"
       />
       <RegisterScreen
@@ -73,6 +74,9 @@ export default {
     onGoToRegister() {
       this.currentScreen = GameScreensEnum.REGISTER;
     },
+    async onRegisterSuccess() {
+      this.onLoginSuccess();
+    },
     async onLoginSuccess() {
       this.onUpdateLoading(true);
       const { default: GamePreloaders } = await import(
@@ -136,6 +140,8 @@ export default {
       document.getElementById("phaser-container").innerHTML = "";
       this.currentScreen = GameScreensEnum.LOGIN;
       this.onUpdateLoading(false);
+
+      location.reload();
     },
     onUpdateLoading(value) {
       this.loading = value;

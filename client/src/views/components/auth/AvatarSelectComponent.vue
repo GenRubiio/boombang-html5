@@ -6,8 +6,8 @@
         <div class="select-avatar__label">Selecciona tu personaje</div>
         <div class="select-avatar__slider">
           <div class="slider">
-            <div><img :src="rasta_redbull" /></div>
-            <div><img :src="gata_redbull" /></div>
+            <div id="slide-0" data-avatar="1"><img :src="rasta_redbull" /></div>
+            <div id="slide-1" data-avatar="2"><img :src="gata_redbull" /></div>
           </div>
         </div>
       </div>
@@ -35,6 +35,11 @@ export default {
       infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
+    });
+    $(".slider").on("afterChange", (event, slick, currentSlide) => {
+      let slideElement = slick.$slides.get(currentSlide);
+      let avatar = $(slideElement).find("[data-avatar]").data("avatar");
+      this.$emit("changeAvatar", avatar);
     });
   },
 };

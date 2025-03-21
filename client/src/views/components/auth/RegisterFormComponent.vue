@@ -1,5 +1,5 @@
 <template>
-  <form class="register-form">
+  <form class="register-form" @submit.prevent="register">
     <div class="register-form__content">
       <div class="register-form__title">Crea tu cuenta</div>
       <div class="register-form__input-container">
@@ -72,11 +72,14 @@ import button_image from "../../../assets/game/auth/login-button-image.png";
 import warning_image from "../../../assets/game/auth/warning.png";
 
 export default {
+  props: {
+    avatar_id: Number,
+  },
   data() {
     return {
-      username: "",
-      password: "",
-      email: "",
+      username: "sadfsd",
+      password: "sadfsdfsf",
+      email: "gen2@test.com",
       showUsernameError: false,
       showEmailError: false,
       showPasswordError: false,
@@ -89,7 +92,56 @@ export default {
       warning_image,
     };
   },
-  methods: {},
+  methods: {
+    register() {
+      if (this.loading || !this.isSocketConnected) return;
+      this.resetErrors();
+      this.loading = true;
+
+      this.$socket.emit(RequestSocketsEnum.REGISTER, {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        avatar_id: this.avatar_id,
+      });
+
+      this.$socket.off(ResponseSocketsEnum.REGISTER_SUCCESS);
+      this.$socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, (data) => {
+        this.$socket.user = data.user;
+        this.$emit("loginSuccess");
+      });
+
+      this.$socket.off(ResponseSocketsEnum.REGISTER_ERROR);
+      this.$socket.on(ResponseSocketsEnum.REGISTER_ERROR, (error) => {
+        if (error.errors) {
+          this.setErrors(error.errors);
+        }
+        this.loading = false;
+      });
+    },
+    resetErrors() {
+      this.showUsernameError = false;
+      this.showEmailError = false;
+      this.showPasswordError = false;
+      this.usernameError = "";
+      this.emailError = "";
+      this.passwordError = "";
+    },
+    setErrors(errors) {
+      if (errors.username) {
+        this.showUsernameError = true;
+        this.usernameError = errors.username[0];
+      }
+      if (errors.email) {
+        this.showEmailError = true;
+        this.emailError = errors.email[0];
+      }
+      if (errors.password) {
+        this.showPasswordError = true;
+        this.passwordError = errors.password[0];
+      }
+    },
+  },
   mounted() {
     this.$refs.username.focus();
 

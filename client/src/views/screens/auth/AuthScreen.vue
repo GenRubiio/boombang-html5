@@ -35,11 +35,15 @@
           />
           <RegisterFormComponent
             v-if="showForm == 'register'"
-            @registerSuccess="$emit('registerSuccess')"
+            :avatar_id="avatar_id"
+            @loginSuccess="$emit('loginSuccess')"
           />
         </div>
       </div>
-      <AvatarSelectComponent v-if="showForm == 'register'" />
+      <AvatarSelectComponent
+        v-if="showForm == 'register'"
+        @changeAvatar="onChangeAvatar"
+      />
     </div>
   </div>
 </template>
@@ -60,6 +64,7 @@ export default {
       showForm: "login",
       background,
       cloud_background,
+      avatar_id: 1,
       isSocketConnected: socket.connected,
     };
   },
@@ -75,6 +80,9 @@ export default {
   methods: {
     changeForm(form) {
       this.showForm = form;
+    },
+    onChangeAvatar(avatar_id) {
+      this.avatar_id = avatar_id;
     },
   },
   mounted() {

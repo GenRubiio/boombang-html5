@@ -1,4 +1,3 @@
-const UserService = require('../../services/UserService');
 const ConnectedUsersCollection = require('../../collections/ConnectedUsersCollection');
 const DisconnectUserController = require('../connection/DisconnectUserController');
 const UserResource = require('../../resources/UserResource');
