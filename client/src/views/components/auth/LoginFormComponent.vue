@@ -1,7 +1,7 @@
 <template>
   <form class="login-form" @submit.prevent="login">
-    <div class="login-form__error" v-if="showEmailError">
-      <img :src="warning_image" alt="warning" /> {{ emailError }}
+    <div class="login-form__error" v-if="showUsernameError">
+      <img :src="warning_image" alt="warning" /> {{ usernameError }}
     </div>
     <div class="login-form__content">
       <div class="login-form__title">Ya tienes cuenta?</div>
@@ -60,8 +60,8 @@ export default {
     return {
       username: "Gen",
       password: "test",
-      emailError: "",
-      showEmailError: false,
+      usernameError: "",
+      showUsernameError: false,
       loading: false,
       isSocketConnected: socket.connected,
       button_image,
@@ -96,13 +96,13 @@ export default {
       });
     },
     resetErrors() {
-      this.showEmailError = false;
-      this.emailError = "";
+      this.showUsernameError = false;
+      this.usernameError = "";
     },
     setErrors(errors) {
       if (errors.email) {
-        this.showEmailError = true;
-        this.emailError = errors.email[0];
+        this.showUsernameError = true;
+        this.usernameError = errors.email[0];
       }
     },
   },
