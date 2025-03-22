@@ -1,8 +1,7 @@
 <template>
   <form class="login-form" @submit.prevent="login">
-    <div class="login-form__error" v-if="errorLogin">
-      <img :src="warning_image" alt="warning" /> Nombre de usuario o contraseña
-      son incorrectos
+    <div class="login-form__error" v-if="showEmailError">
+      <img :src="warning_image" alt="warning" /> {{ emailError }}
     </div>
     <div class="login-form__content">
       <div class="login-form__title">Ya tienes cuenta?</div>
@@ -61,10 +60,10 @@ export default {
     return {
       username: "Gen",
       password: "test",
-      errorMessage: "",
+      emailError: "",
+      showEmailError: false,
       loading: false,
       isSocketConnected: socket.connected,
-      errorLogin: false,
       button_image,
       google_image,
       warning_image,
@@ -72,8 +71,8 @@ export default {
   },
   methods: {
     login() {
-      this.errorLogin = false;
       if (this.loading || !this.isSocketConnected) return;
+      this.resetErrors();
       this.loading = true;
 
       this.$socket.emit(RequestSocketsEnum.LOGIN, {
@@ -90,11 +89,21 @@ export default {
 
       this.$socket.off(ResponseSocketsEnum.LOGIN_ERROR);
       this.$socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
-        //this.errorMessage = error;
-        console.log(error);
+        if (error.errors) {
+          this.setErrors(error.errors);
+        }
         this.loading = false;
-        this.errorLogin = true;
       });
+    },
+    resetErrors() {
+      this.showEmailError = false;
+      this.emailError = "";
+    },
+    setErrors(errors) {
+      if (errors.email) {
+        this.showEmailError = true;
+        this.emailError = errors.email[0];
+      }
     },
   },
   mounted() {
