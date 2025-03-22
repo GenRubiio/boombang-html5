@@ -6,8 +6,12 @@
         <div class="select-avatar__label">Selecciona tu personaje</div>
         <div class="select-avatar__slider">
           <div class="slider">
-            <div id="slide-0" data-avatar="1"><img :src="rasta_redbull" /></div>
-            <div id="slide-1" data-avatar="2"><img :src="gata_redbull" /></div>
+            <div id="slide-0" data-avatar="5">
+              <img :src="asset_gataRedbullImage" />
+            </div>
+            <div id="slide-1" data-avatar="13">
+              <img :src="asset_rastaRedbullImage" />
+            </div>
           </div>
         </div>
       </div>
@@ -16,8 +20,8 @@
 </template>
 
 <script>
-import gata_redbull from "../../../assets/game/auth/gata-redbull.png";
-import rasta_redbull from "../../../assets/game/auth/rasta-redbull.png";
+import asset_gataRedbullImage from "../../../assets/game/auth/gata-redbull.png";
+import asset_rastaRedbullImage from "../../../assets/game/auth/rasta-redbull.png";
 
 import $ from "jquery";
 import "slick-carousel";
@@ -25,8 +29,8 @@ import "slick-carousel";
 export default {
   data() {
     return {
-      gata_redbull,
-      rasta_redbull,
+      asset_gataRedbullImage,
+      asset_rastaRedbullImage,
     };
   },
   methods: {},

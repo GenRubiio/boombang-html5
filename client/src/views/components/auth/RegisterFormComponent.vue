@@ -4,7 +4,7 @@
       <div class="register-form__title">Crea tu cuenta</div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showUsernameError">
-          <img :src="warning_image" alt="warning" />
+          <img :src="asset_warningImage" alt="warning" />
           {{ usernameError }}
         </div>
         <div class="register-form__label">Nombre del Personaje</div>
@@ -20,7 +20,7 @@
       </div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showPasswordError">
-          <img :src="warning_image" alt="warning" />
+          <img :src="asset_warningImage" alt="warning" />
           {{ passwordError }}
         </div>
         <div class="register-form__label">Contraseña</div>
@@ -35,7 +35,7 @@
       </div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showEmailError">
-          <img :src="warning_image" alt="warning" />
+          <img :src="asset_warningImage" alt="warning" />
           {{ emailError }}
         </div>
         <div class="register-form__label">Email</div>
@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="register-form__button-container">
-      <img :src="button_image" alt="Jugar" />
+      <img :src="asset_buttonImage" alt="Jugar" />
       <button
         class="register-form__button-container-button"
         type="submit"
@@ -68,8 +68,8 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import button_image from "../../../assets/game/auth/login-button-image.png";
-import warning_image from "../../../assets/game/auth/warning.png";
+import asset_buttonImage from "../../../assets/game/auth/login-button-image.png";
+import asset_warningImage from "../../../assets/game/auth/warning.png";
 
 export default {
   props: {
@@ -88,8 +88,8 @@ export default {
       passwordError: "",
       loading: false,
       isSocketConnected: socket.connected,
-      button_image,
-      warning_image,
+      asset_buttonImage,
+      asset_warningImage,
     };
   },
   methods: {

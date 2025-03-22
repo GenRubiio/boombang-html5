@@ -3,20 +3,20 @@
     <div class="maintenance__content">
       <h1 class="maintenance__title">Mantenimiento</h1>
       <p class="maintenance__description">
-        El servidor está en mantenimiento.<br>Por favor, inténtalo más tarde.
+        El servidor está en mantenimiento.<br />Por favor, inténtalo más tarde.
       </p>
-      <img :src="maintenance_avatar" alt="Mantenimiento" />
+      <img :src="asset_maintenanceAvatarImage" alt="Mantenimiento" />
     </div>
   </div>
 </template>
 
 <script>
-import maintenance_avatar from "../../../assets/game/auth/maintenance-avatar.png";
+import asset_maintenanceAvatarImage from "../../../assets/game/auth/maintenance-avatar.png";
 
 export default {
   data() {
     return {
-      maintenance_avatar,
+      asset_maintenanceAvatarImage,
     };
   },
   methods: {},
