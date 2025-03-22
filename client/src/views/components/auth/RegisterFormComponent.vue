@@ -154,44 +154,7 @@ export default {
   },
 };
 </script>
-<style>
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
 
-.register-form__slider {
-  width: 100%;
-  height: 60px;
-  margin-top: 10px;
-  position: relative;
-}
-
-.register-form__slider .slick-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-}
-
-.register-form__slider .slick-prev {
-  left: 0;
-}
-
-.register-form__slider .slick-next {
-  right: 0;
-}
-
-.slick-slide {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-}
-.slider img {
-  max-height: 60px; /* limita la altura */
-  width: auto; /* mantiene la proporción */
-  display: block; /* quita el espacio extra de imágenes inline */
-  object-fit: cover; /* (opcional) recorta la imagen si no cabe */
-}
-</style>
 <style scoped>
 .register-form {
   position: relative;
