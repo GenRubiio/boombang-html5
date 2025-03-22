@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import socket from "./sockets/socket";
 import { defineAsyncComponent } from "vue";
+import socket from "./sockets/socket";
 import GameScreensEnum from "./enums/GameScreensEnum";
 
 export default {

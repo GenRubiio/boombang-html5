@@ -1,7 +1,7 @@
 <template>
   <form class="login-form" @submit.prevent="login">
     <div class="login-form__error" v-if="showUsernameError">
-      <img :src="warning_image" alt="warning" /> {{ usernameError }}
+      <img :src="asset_warningImage" alt="warning" /> {{ usernameError }}
     </div>
     <div class="login-form__content">
       <div class="login-form__title">Ya tienes cuenta?</div>
@@ -30,12 +30,12 @@
       <div class="login-form__google">
         <div class="login-form__google-separator">O</div>
         <div class="login-form__google-button">
-          <img :src="google_image" alt="Google" /> Continuar con Google
+          <img :src="asset_googleImage" alt="Google" /> Continuar con Google
         </div>
       </div>
     </div>
     <div class="login-form__button-container">
-      <img :src="button_image" alt="Jugar" />
+      <img :src="asset_buttonImage" alt="Jugar" />
       <button
         class="login-form__button-container-button"
         type="submit"
@@ -51,9 +51,9 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import button_image from "../../../assets/game/auth/login-button-image.png";
-import google_image from "../../../assets/game/auth/google.png";
-import warning_image from "../../../assets/game/auth/warning.png";
+import asset_buttonImage from "../../../assets/game/auth/login-button-image.png";
+import asset_googleImage from "../../../assets/game/auth/google.png";
+import asset_warningImage from "../../../assets/game/auth/warning.png";
 
 export default {
   data() {
@@ -64,9 +64,9 @@ export default {
       showUsernameError: false,
       loading: false,
       isSocketConnected: socket.connected,
-      button_image,
-      google_image,
-      warning_image,
+      asset_buttonImage,
+      asset_googleImage,
+      asset_warningImage,
     };
   },
   methods: {

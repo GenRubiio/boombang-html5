@@ -1,15 +1,15 @@
 <template>
   <div id="login">
     <MaintenanceComponent v-if="!isSocketConnected" />
-    <img :src="background" alt="background" class="auth__background" />
+    <img :src="asset_backgroundImage" alt="background" class="auth__background" />
     <div class="auth__clouds-wrapper">
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + cloud_background + ')' }"
+        :style="{ backgroundImage: 'url(' + asset_cloudsBackgroundImage + ')' }"
       ></div>
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + cloud_background + ')' }"
+        :style="{ backgroundImage: 'url(' + asset_cloudsBackgroundImage + ')' }"
       ></div>
     </div>
     <div class="auth__content">
@@ -49,22 +49,22 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import socket from "../../../sockets/socket";
-import background from "../../../assets/game/auth/background.png";
-import cloud_background from "../../../assets/game/auth/clouds-background.png";
+import asset_backgroundImage from "../../../assets/game/auth/background.png";
+import asset_cloudsBackgroundImage from "../../../assets/game/auth/clouds-background.png";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
 import RegisterFormComponent from "../../components/auth/RegisterFormComponent.vue";
 import TopButtonComponent from "../../components/auth/TopButtonComponent.vue";
-import { defineAsyncComponent } from "vue";
 import AvatarSelectComponent from "../../components/auth/AvatarSelectComponent.vue";
 
 export default {
   data() {
     return {
       showForm: "login",
-      background,
-      cloud_background,
-      avatar_id: 1,
+      asset_backgroundImage,
+      asset_cloudsBackgroundImage,
+      avatar_id: 13,
       isSocketConnected: socket.connected,
     };
   },

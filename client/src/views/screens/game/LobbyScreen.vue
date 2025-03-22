@@ -1,19 +1,19 @@
 <template>
   <div id="lobby">
     <div class="lobby__background">
-      <img :src="background" alt="background" />
+      <img :src="asset_backgroundImage" alt="background" />
     </div>
     <div class="lobby__flor">
-      <img :src="flor" alt="flor" />
+      <img :src="asset_florImage" alt="flor" />
     </div>
     <div class="lobby__foreground">
-      <img :src="foreground" alt="foreground" />
+      <img :src="asset_foregroundImage" alt="foreground" />
     </div>
     <div class="lobby__marikita">
-      <img :src="marikita" alt="marikita" />
+      <img :src="asset_marikitaImage" alt="marikita" />
     </div>
     <div class="lobby__avatar">
-      <img :src="avatar" alt="avatar" />
+      <img :src="asset_avatarImage" alt="avatar" />
     </div>
     <div class="lobby__rooms">
       <div class="lobby__rooms-tabs">
@@ -22,9 +22,13 @@
         </div>
       </div>
       <div class="lobby__rooms-list">
-        <div v-for="area in areas" :key="area.id" class="room">
-          <button @click="joinRoom(area.id)">
-            {{ area.name }} ({{ area.total_users_in }})
+        <div
+          v-for="publicScene in publicScenes"
+          :key="publicScene.id"
+          class="room"
+        >
+          <button @click="joinRoom(publicScene.id)">
+            {{ publicScene.name }} ({{ publicScene.total_users_in }})
           </button>
         </div>
       </div>
@@ -36,20 +40,20 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import background from "../../../assets/game/lobby/background.png";
-import flor from "../../../assets/game/lobby/flor.webp";
-import foreground from "../../../assets/game/lobby/foreground.png";
-import marikita from "../../../assets/game/lobby/marikita.webp";
+import asset_backgroundImage from "../../../assets/game/lobby/background.png";
+import asset_florImage from "../../../assets/game/lobby/flor.webp";
+import asset_foregroundImage from "../../../assets/game/lobby/foreground.png";
+import asset_marikitaImage from "../../../assets/game/lobby/marikita.webp";
 
 export default {
   data() {
     return {
-      areas: [],
-      background,
-      flor,
-      foreground,
-      marikita,
-      avatar: null,
+      publicScenes: [],
+      asset_backgroundImage,
+      asset_florImage,
+      asset_foregroundImage,
+      asset_marikitaImage,
+      asset_avatarImage: null,
     };
   },
   async created() {
@@ -57,9 +61,9 @@ export default {
     socket.emit(RequestSocketsEnum.GET_PUBLIC_AREAS);
 
     socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS);
-    socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (areas) => {
-      //console.log(areas);
-      this.areas = areas;
+    socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (publicScenes) => {
+      //console.log(publicScenes);
+      this.publicScenes = publicScenes;
       this.$emit("updateLoading", false);
     });
 
@@ -67,7 +71,7 @@ export default {
       const { default: avatarImage } = await import(
         /* @vite-ignore */ `../../../assets/game/lobby/avatars/${this.$socket.user.avatar_id}.svg`
       );
-      this.avatar = avatarImage;
+      this.asset_avatarImage = avatarImage;
     } catch (error) {
       console.error("Error cargando el avatar:", error);
     }

@@ -6,7 +6,7 @@
       @click="activeTab = 'emojis'"
     >
       <img
-        :src="EmojisTabIcon"
+        :src="asset_emojisTabIconImage"
         class="tab-icon"
         :class="{ active: activeTab === 'emojis' }"
       />
@@ -17,7 +17,7 @@
       @click="activeTab = 'statistics'"
     >
       <img
-        :src="StatisticsTabIcon"
+        :src="asset_statisticsTabIconImage"
         class="tab-icon"
         :class="{ active: activeTab === 'statistics' }"
       />
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import EmojisTabIcon from "../../../../../assets/game/ficha/tab-cons/user.svg";
-import StatisticsTabIcon from "../../../../../assets/game/ficha/tab-cons/statistics.svg";
+import asset_emojisTabIconImage from "../../../../../assets/game/ficha/tab-cons/user.svg";
+import asset_statisticsTabIconImage from "../../../../../assets/game/ficha/tab-cons/statistics.svg";
 import EmojisTabComponent from "./tabs/EmojisTabComponent.vue";
 import StatisticsTabComponent from "./tabs/StatisticsTabComponent.vue";
 
@@ -42,8 +42,8 @@ export default {
   data() {
     return {
       activeTab: "emojis",
-      EmojisTabIcon,
-      StatisticsTabIcon,
+      asset_emojisTabIconImage,
+      asset_statisticsTabIconImage,
     };
   },
   computed: {

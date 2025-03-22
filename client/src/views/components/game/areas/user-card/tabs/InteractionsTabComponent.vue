@@ -5,7 +5,7 @@
     <div></div>
     <div></div>
     <div>
-      <img :src="red_upper" alt="upper" @click="sendUppercut" />
+      <img :src="asset_redUpperImage" alt="upper" @click="sendUppercut" />
     </div>
     <div></div>
     <div></div>
@@ -16,7 +16,7 @@
 <script>
 import socket from "../../../../../../sockets/socket";
 import RequestSocketsEnum from "../../../../../../enums/RequestSocketsEnum";
-import red_upper from "../../../../../../assets/game/ficha/uppercuts/red.png";
+import asset_redUpperImage from "../../../../../../assets/game/ficha/uppercuts/red.png";
 
 export default {
   props: {
@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      red_upper,
+      asset_redUpperImage,
     };
   },
   methods: {
