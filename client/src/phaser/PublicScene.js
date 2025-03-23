@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
-import shadowImg from "../assets/images/shadow.png"; // Imagen de la sombra
-import playerImg from "../assets/images/player.png"; // Imagen del personaje
+import asset_shadowImage from "../assets/images/shadow.png"; // Imagen de la sombra
+import asset_tileImage from "../assets/game/scene/tile.png"; // Imagen del suelo
 import PublicSceneResponseSockets from "./public-scene/sockets/PublicSceneResponseSockets"; // Controladores de sockets
 import PublicSceneRequestSockets from "./public-scene/sockets/PublicSceneRequestSockets"; // Controladores de sockets
 import AreaSceneRequestSockets from "./sockets/AreaSceneRequestSockets"; // Controladores de sockets
@@ -28,10 +28,9 @@ export default class PublicScene extends Phaser.Scene {
     preload() {
         //this.load.plugin('rexcolorreplacepipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcolorreplacepipelineplugin.min.js', true);
         PublicScenePreload.main(this, this.areaId); // Precargar imágenes específicas de la sala
-        this.load.image("tile", "/assets/game/scenarios/tile.png");
+        this.load.image("tile", asset_tileImage);
+        this.load.image("shadow", asset_shadowImage);
 
-        this.load.image("shadow", shadowImg);
-        this.load.image("player", playerImg);
         this.input.enabled = true;
         this.input.topOnly = false; // Permitir que objetos en capas más bajas reciban eventos
     }
