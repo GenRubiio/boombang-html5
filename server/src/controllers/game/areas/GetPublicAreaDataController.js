@@ -2,7 +2,7 @@
 const Log = require('../../../utils/Log');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
+const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const UserAreaResource = require('../../../resources/UserAreaResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const AvatarAnimationsCollection = require('../../../collections/AvatarAnimationsCollection');
@@ -15,7 +15,7 @@ class GetPublicAreaDataController {
                 throw new Error('User not found');
             }
             if (!user.currentArea) return;
-            const publicArea = PublicAreasCollection.getByUid(user.currentArea.id);
+            const publicArea = PublicScenesCollection.getByUid(user.currentArea.id);
             if (!publicArea) {
                 throw new Error('Public area not found');
             }

@@ -1,5 +1,5 @@
 
-const PublicAreasCollection = require('../collections/PublicAreasCollection');
+const PublicScenesCollection = require('../collections/PublicScenesCollection');
 const PublicAreaModel = require('../models/PublicAreaModel');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
@@ -9,17 +9,17 @@ class LoadPublicAreasTask {
     static async main() {
         logger.log('Preloading public areas...');
 
-        const publicAreasResponse = await PublicSceneApiService.get();
-        if (!publicAreasResponse || !publicAreasResponse.scenes || !publicAreasResponse.scenes.length) {
+        const response = await PublicSceneApiService.get();
+        if (!response || !response.scenes || !response.scenes.length) {
             logger.log('Error loading public areas', 'error');
             return;
         }
-        const publicAreas = publicAreasResponse.scenes;
-        publicAreas.forEach(publicArea => {
-            PublicAreasCollection.add(publicArea.id, new PublicAreaModel(publicArea));
+        const publicScenes = response.scenes;
+        publicScenes.forEach(scene => {
+            PublicScenesCollection.add(scene.id, new PublicAreaModel(scene));
         });
 
-        logger.log('Public areas loaded: ' + PublicAreasCollection.getAll().length, 'info');
+        logger.log('Public areas loaded: ' + PublicScenesCollection.getAll().length, 'info');
     }
 }
 

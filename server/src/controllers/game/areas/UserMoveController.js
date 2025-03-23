@@ -1,5 +1,5 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
+const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
@@ -30,7 +30,7 @@ class UserMoveController {
             }
 
             // Validar posición objetivo
-            const publicArea = PublicAreasCollection.getByUid(user.currentArea.id);
+            const publicArea = PublicScenesCollection.getByUid(user.currentArea.id);
             if (
                 targetX < 0 || targetX >= publicArea.map_width ||
                 targetY < 0 || targetY >= publicArea.map_height ||
