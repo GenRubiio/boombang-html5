@@ -1,6 +1,6 @@
 const Resource = require('./Resource');
 
-class PublicAreaMenuResource extends Resource {
+class PublicSceneMenuResource extends Resource {
     transform(data) {
         return {
             id: data.id,
@@ -10,4 +10,4 @@ class PublicAreaMenuResource extends Resource {
     }
 }
 
-module.exports = PublicAreaMenuResource;
+module.exports = PublicSceneMenuResource;
