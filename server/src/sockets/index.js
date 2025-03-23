@@ -1,7 +1,7 @@
 const authSockets = require('./authSockets');
 const connectionSockets = require('./connectionSockets');
-const publicAreaSockets = require('./game/areas/publicAreaSockets');
-const areaSockets = require('./game/areas/areaSockets');
+const publicScenesSockets = require('./game/scenes/publicScenesSockets');
+const scenesSockets = require('./game/scenes/scenesSockets');
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
@@ -9,7 +9,7 @@ module.exports = (io) => {
 
         authSockets(socket, io);
         connectionSockets(socket, io);
-        publicAreaSockets(socket, io);
-        areaSockets(socket, io);
+        publicScenesSockets(socket, io);
+        scenesSockets(socket, io);
     });
 };
