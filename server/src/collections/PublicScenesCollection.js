@@ -11,10 +11,6 @@ class PublicScenesCollection {
         return this.collection.get(uid);
     }
 
-    remove(id) {
-        this.collection.delete(socketId);
-    }
-
     getAll() {
         return Array.from(this.collection.values());
     }
