@@ -6,7 +6,7 @@ import CreateSceneController from "../controllers/CreateSceneController";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
 
-class PublicAreaSceneResponseSockets {
+class PublicSceneResponseSockets {
     static main(gameScene) {
         // Escuchar respuesta con datos de la sala
         socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, async (data) => {
@@ -40,4 +40,4 @@ class PublicAreaSceneResponseSockets {
     }
 }
 
-export default PublicAreaSceneResponseSockets;
+export default PublicSceneResponseSockets;

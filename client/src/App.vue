@@ -54,7 +54,7 @@ export default {
       import("./views/screens/game/LobbyScreen.vue")
     ),
     PublicAreaScreen: defineAsyncComponent(() =>
-      import("./views/screens/game/areas/PublicAreaScreen.vue")
+      import("./views/screens/game/areas/PublicSceneScreen.vue")
     ),
   },
   methods: {
@@ -85,8 +85,8 @@ export default {
       const { default: GlobalPreloader } = await import(
         "./phaser/GlobalPreloader"
       );
-      const { default: PublicAreaScene } = await import(
-        "./phaser/PublicAreaScene"
+      const { default: PublicScene } = await import(
+        "./phaser/PublicScene"
       );
       // Solo creas la instancia la primera vez.
       this.gamePhaser = new Phaser.Game({
@@ -97,7 +97,7 @@ export default {
         width: 1012,
         height: 657,
         // Registras todas las escenas globales que vayas a usar
-        scene: [GlobalPreloader, PublicAreaScene],
+        scene: [GlobalPreloader, PublicScene],
         parent: "phaser-container",
         physics: {
           default: "arcade",
@@ -117,14 +117,14 @@ export default {
       this.currentScreen = GameScreensEnum.PUBLIC_AREA;
     },
     onExitLobby() {
-      this.gamePhaser.scene.stop("PublicAreaScene");
+      this.gamePhaser.scene.stop("PublicScene");
       this.currentScreen = GameScreensEnum.LOBBY;
       this.currentAreaId = null;
     },
     handleDisconnect() {
       this.onUpdateLoading(true);
       if (this.gamePhaser && this.gamePhaser.scene) {
-        this.gamePhaser.scene.stop("PublicAreaScene");
+        this.gamePhaser.scene.stop("PublicScene");
       }
       this.gamePhaser = null;
       document.getElementById("phaser-container").innerHTML = "";
