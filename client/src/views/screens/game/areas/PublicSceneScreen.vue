@@ -32,7 +32,7 @@ export default {
     initializeGame() {
       const gamePhaser = this.$root.gamePhaser;
 
-      gamePhaser.scene.start("PublicAreaScene", {
+      gamePhaser.scene.start("PublicScene", {
         areaId: this.areaId,
         vueComponent: this,
       });
