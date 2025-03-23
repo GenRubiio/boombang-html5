@@ -6,7 +6,7 @@ const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 const UserService = require('../../../services/UserService');
 
-class SendUppercutController {
+class UserSendUppercutController {
     static async main(socket, io) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -56,4 +56,4 @@ class SendUppercutController {
     }
 }
 
-module.exports = SendUppercutController;
+module.exports = UserSendUppercutController;

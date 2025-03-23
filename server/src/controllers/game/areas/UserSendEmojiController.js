@@ -6,7 +6,7 @@ const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 const AvatarEmojisEnum = require('../../../enums/AvatarEmojisEnum');
 
-class SendEmojiController {
+class UserSendEmojiController {
     static async main(socket, io, data) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -55,4 +55,4 @@ class SendEmojiController {
     }
 }
 
-module.exports = SendEmojiController;
+module.exports = UserSendEmojiController;
