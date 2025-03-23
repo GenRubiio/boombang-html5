@@ -1,6 +1,6 @@
-const AreaModel = require('./AreaModel');
+const SceneModel = require('./SceneModel');
 
-class PublicAreaModel extends AreaModel {
+class PublicSceneModel extends SceneModel {
     constructor(row) {
         super(row); // Llama al constructor de la clase padre
     }
@@ -8,4 +8,4 @@ class PublicAreaModel extends AreaModel {
     // Puedes agregar métodos adicionales o sobrescribir los existentes si es necesario
 }
 
-module.exports = PublicAreaModel; 
+module.exports = PublicSceneModel; 

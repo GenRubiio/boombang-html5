@@ -6,7 +6,7 @@ const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 
-class AreaModel {
+class SceneModel {
     constructor(row) {
         this.id = row.id;
         this.name = row.name;
@@ -209,4 +209,4 @@ class AreaModel {
     }
 }
 
-module.exports = AreaModel;
+module.exports = SceneModel;

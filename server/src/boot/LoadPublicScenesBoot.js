@@ -1,11 +1,11 @@
 
 const PublicScenesCollection = require('../collections/PublicScenesCollection');
-const PublicAreaModel = require('../models/PublicAreaModel');
+const PublicSceneModel = require('../models/PublicSceneModel');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const PublicSceneApiService = require('../services-api/PublicSceneApiService');
 
-class LoadPublicAreasTask {
+class LoadPublicScenesBoot {
     static async main() {
         logger.log('Preloading public areas...');
 
@@ -16,11 +16,11 @@ class LoadPublicAreasTask {
         }
         const publicScenes = response.scenes;
         publicScenes.forEach(scene => {
-            PublicScenesCollection.add(scene.id, new PublicAreaModel(scene));
+            PublicScenesCollection.add(scene.id, new PublicSceneModel(scene));
         });
 
         logger.log('Public areas loaded: ' + PublicScenesCollection.getAll().length, 'info');
     }
 }
 
-module.exports = LoadPublicAreasTask;
+module.exports = LoadPublicScenesBoot;

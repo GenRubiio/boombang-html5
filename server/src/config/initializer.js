@@ -1,11 +1,11 @@
-const LoadPublicAreasTask = require('../tasks/LoadPublicAreasTask');
+const LoadPublicScenesBoot = require('../boot/LoadPublicScenesBoot');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
 const initializer = () => {
     logger.log('Initializing preloaded data...');
     
-    LoadPublicAreasTask.main();
+    LoadPublicScenesBoot.main();
 };
 
 module.exports = { initializer };
