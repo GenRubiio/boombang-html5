@@ -1,4 +1,4 @@
-const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
+const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const PublicAreaMenuResource = require('../../../resources/PublicAreaMenuResource');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
@@ -7,7 +7,7 @@ const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCol
 class UpdatePublicAreasController {
     static async main(io) {
         try {
-            const areas = await PublicAreasCollection.getAll();
+            const areas = await PublicScenesCollection.getAll();
             const publicAreaMenuResource = PublicAreaMenuResource.collection(areas);
             const useNotInArea = ConnectedUsersCollection.getAllNotInArea();
             for (let user of useNotInArea) {

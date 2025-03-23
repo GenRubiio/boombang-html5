@@ -1,7 +1,7 @@
 
 const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
+const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const UserAreaResource = require('../../../resources/UserAreaResource');
 const Log = require('../../../utils/Log');
@@ -15,7 +15,7 @@ class JoinPublicAreaController {
                 //throw new Error("User not found");
                 return;
             }
-            const publicArea = PublicAreasCollection.getByUid(data.areaId);
+            const publicArea = PublicScenesCollection.getByUid(data.areaId);
             if (!publicArea) {
                 throw new Error("Public area not found");
             }

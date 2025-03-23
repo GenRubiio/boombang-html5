@@ -1,10 +1,10 @@
-class PublicAreasCollection {
+class PublicScenesCollection {
     constructor() {
         this.collection = new Map();
     }
 
-    add(uuid, publicArea) {
-        this.collection.set(uuid, publicArea);
+    add(uuid, item) {
+        this.collection.set(uuid, item);
     }
 
     getByUid(uid) {
@@ -20,4 +20,4 @@ class PublicAreasCollection {
     }
 }
 
-module.exports = new PublicAreasCollection();
+module.exports = new PublicScenesCollection();

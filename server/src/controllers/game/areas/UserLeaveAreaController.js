@@ -1,5 +1,5 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const PublicAreasCollection = require('../../../collections/PublicAreasCollection');
+const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const Log = require('../../../utils/Log');
 const RemoveUserFromAreaTask = require('../../../tasks/RemoveUserFromAreaTask');
@@ -12,7 +12,7 @@ class UserLeaveAreaController {
             if (!user || !user.currentArea) {
                 throw new Error('User not found or not in any area');
             }
-            const publicArea = PublicAreasCollection.getByUid(user.currentArea.id);
+            const publicArea = PublicScenesCollection.getByUid(user.currentArea.id);
             if (!publicArea) {
                 throw new Error('Area not found');
             }
