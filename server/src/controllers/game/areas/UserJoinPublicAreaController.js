@@ -7,7 +7,7 @@ const UserAreaResource = require('../../../resources/UserAreaResource');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
-class JoinPublicAreaController {
+class UserJoinPublicAreaController {
     static async main(socket, io, data) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -42,4 +42,4 @@ class JoinPublicAreaController {
     }
 }
 
-module.exports = JoinPublicAreaController;
+module.exports = UserJoinPublicAreaController;
