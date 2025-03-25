@@ -1,4 +1,4 @@
-import UserIdleAnimation from "../animations/UserIdleAnimation.js";
+import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 
 class UserUpdatePositionController {
     static main(gameScene, data) {

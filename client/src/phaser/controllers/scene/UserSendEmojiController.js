@@ -1,4 +1,4 @@
-import UserEmojiAnimation from "../animations/UserEmojiAnimation.js";
+import UserEmojiAnimation from "../../animations/UserEmojiAnimation.js";
 
 class UserSendEmojiController {
     static main(gameScene, data) {
