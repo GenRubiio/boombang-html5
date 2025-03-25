@@ -1,7 +1,7 @@
 import MovePlayerToTileController from "./MovePlayerToTileController.js";
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import PlayerModel from "../../models/PlayerModel.js";
-import socket from "../../../sockets/socket"; // Conexión Socket.io
+import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 
 class AddPlayerController {

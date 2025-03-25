@@ -1,8 +1,8 @@
-import AddPlayerController from "../controllers/AddPlayerController.js";
-import socket from "../../../sockets/socket"; // Conexión Socket.io
+import AddPlayerController from "./AddPlayerController.js";
+import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
-import SetUserCardController from "../../controllers/scene/SetUserCardController.js";
-import EventLimiter from "../utils/EventLimiter.js";
+import SetUserCardController from "../scene/SetUserCardController.js";
+import EventLimiter from "../../public-scene/utils/EventLimiter.js";
 import PublicSceneLoad from "../../load/PublicSceneLoad.js";
 
 class CreateSceneController {
