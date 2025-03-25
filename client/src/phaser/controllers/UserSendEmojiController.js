@@ -1,6 +1,6 @@
 import UserEmojiAnimation from "../animations/UserEmojiAnimation.js";
 
-class SendEmojiController {
+class UserSendEmojiController {
     static main(gameScene, data) {
         const user = gameScene.players[data.user_socket];
         const emojiId = data.emoji_id;
@@ -10,4 +10,4 @@ class SendEmojiController {
     }
 }
 
-export default SendEmojiController;
+export default UserSendEmojiController;
