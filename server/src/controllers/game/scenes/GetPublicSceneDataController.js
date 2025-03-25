@@ -3,9 +3,8 @@ const Log = require('../../../utils/Log');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
-const UserAreaResource = require('../../../resources/UserAreaResource');
+const UserSceneResource = require('../../../resources/UserSceneResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
-const AvatarAnimationsCollection = require('../../../collections/AvatarAnimationsCollection');
 
 class GetPublicSceneDataController {
     static async main(socket, io, data) {
@@ -15,29 +14,27 @@ class GetPublicSceneDataController {
                 throw new Error('User not found');
             }
             if (!user.currentArea) return;
-            const publicArea = PublicScenesCollection.getByUid(user.currentArea.id);
-            if (!publicArea) {
-                throw new Error('Public area not found');
+            const scene = PublicScenesCollection.getByUid(user.currentArea.id);
+            if (!scene) {
+                throw new Error('Public scene not found');
             }
 
-            let players = [];
-            for (const user of publicArea.users) {
-                players.push(await new UserAreaResource(user).toObject());
+            let users = [];
+            for (const user of scene.users) {
+                users.push(await new UserSceneResource(user).toObject());
             }
-            const avatarAnimations = Object.fromEntries(AvatarAnimationsCollection.getAllData());
             socket.emit(ResponseSocketsEnum.GET_PUBLIC_SCENE_DATA, {
-                players: players,
+                players: users,
                 scenery: {
-                    id: publicArea.id,
+                    id: scene.id,
                     type: "public_scenery",
-                    map_rows: publicArea.map_width,
-                    map_cols: publicArea.map_height,
-                    game_map: publicArea.game_map,
-                },
-                avatar_animations: avatarAnimations
+                    map_rows: scene.map_width,
+                    map_cols: scene.map_height,
+                    game_map: scene.game_map,
+                }
             });
         } catch (err) {
-            Log.error('Error in GetPublicAreaDataController: ' + err);
+            Log.error('Error in GetPublicSceneDataController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }
