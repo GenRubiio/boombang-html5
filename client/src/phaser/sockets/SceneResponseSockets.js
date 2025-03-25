@@ -7,7 +7,7 @@ import UserMoveDeniedController from "../controllers/UserMoveDeniedController";
 import SendEmojiController from "../controllers/SendEmojiController";
 import UserSendChatController from "../controllers/UserSendChatController";
 
-class AreaSceneResponseSockets {
+class SceneResponseSockets {
     static main(gameScene) {
         socket.on(ResponseSocketsEnum.USER_MOVE_DENIED, (data) => {
             const { id } = data;
@@ -37,4 +37,4 @@ class AreaSceneResponseSockets {
     }
 }
 
-export default AreaSceneResponseSockets;
+export default SceneResponseSockets;
