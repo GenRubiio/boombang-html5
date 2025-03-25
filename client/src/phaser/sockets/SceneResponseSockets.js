@@ -4,7 +4,7 @@ import UserUpdatePositionController from "../controllers/UserUpdatePositionContr
 import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
 import UserMoveDeniedController from "../controllers/UserMoveDeniedController";
-import SendEmojiController from "../controllers/SendEmojiController";
+import UserSendEmojiController from "../controllers/UserSendEmojiController";
 import UserSendChatController from "../controllers/UserSendChatController";
 
 class SceneResponseSockets {
@@ -28,7 +28,7 @@ class SceneResponseSockets {
         });
 
         socket.on(ResponseSocketsEnum.SEND_EMOJI, (data) => {
-            SendEmojiController.main(gameScene, data);
+            UserSendEmojiController.main(gameScene, data);
         });
 
         socket.on(ResponseSocketsEnum.SEND_CHAT, (data) => {
