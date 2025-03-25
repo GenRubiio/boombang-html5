@@ -15,10 +15,10 @@ const ResponseSocketsEnum = new Enum({
     REGISTER_ERROR: 'register_error',
     REGISTER_SUCCESS: 'register_success',
     REMOVE_USER_AREA: 'response:remove_user_area',
-    SEND_UPPERCUT: 'response:send_uppercut',
+    USER_SEND_UPPERCUT: 'response:send_uppercut',
     GET_PUBLIC_AREA_USERS: 'response:get_public_area_users',
-    SEND_EMOJI: 'response:send_emoji',
-    SEND_CHAT: 'response:send_chat',
+    USER_SEND_EMOJI: 'response:send_emoji',
+    USER_SEND_CHAT: 'response:send_chat',
 });
 
 module.exports = ResponseSocketsEnum;

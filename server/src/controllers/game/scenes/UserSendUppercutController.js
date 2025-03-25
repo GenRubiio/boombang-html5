@@ -38,7 +38,7 @@ class UserSendUppercutController {
                     UserService.increaseUppercutReceived(targetUser);
 
                     // Emitir el uppercut sin esperar que estén quietos
-                    user.currentArea.emit(ResponseSocketsEnum.SEND_UPPERCUT, {
+                    user.currentArea.emit(ResponseSocketsEnum.USER_SEND_UPPERCUT, {
                         attacker: user.socket.id,
                         receiver: targetUser.socket.id,
                         direction: deltaX === -1 ? 'right' : 'left',

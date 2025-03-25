@@ -12,7 +12,7 @@ class UserSendChatController {
 
             if (!user.isActionBlocked(AnimationEnum.CHAT)) {
 
-                user.currentArea.emit(ResponseSocketsEnum.SEND_CHAT, {
+                user.currentArea.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
                     'user_socket': socket.id,
                     'message': data.message,
                 });

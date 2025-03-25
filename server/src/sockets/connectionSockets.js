@@ -13,7 +13,7 @@ module.exports = (socket, io) => {
     });
 
     // Enviar un mensaje a un usuario específico
-    socket.on(RequestSocketsEnum.SEND_MESSAGE, (data) => {
+    socket.on(RequestSocketsEnum.USER_SEND_MESSAGE, (data) => {
         const { recipientId, message } = data;
         const recipientSocketId = ConnectedUsersCollection.getSocketIdByUserId(recipientId);
 
