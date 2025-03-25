@@ -7,11 +7,11 @@ const PublicSceneApiService = require('../services-api/PublicSceneApiService');
 
 class LoadPublicScenesBoot {
     static async main() {
-        logger.log('Preloading public areas...');
+        logger.log('Preloading public scenes...');
 
         const response = await PublicSceneApiService.get();
         if (!response || !response.scenes || !response.scenes.length) {
-            logger.log('Error loading public areas', 'error');
+            logger.log('Error loading public scenes', 'error');
             return;
         }
         const publicScenes = response.scenes;
@@ -19,7 +19,7 @@ class LoadPublicScenesBoot {
             PublicScenesCollection.add(scene.id, new PublicSceneModel(scene));
         });
 
-        logger.log('Public areas loaded: ' + PublicScenesCollection.getAll().length, 'info');
+        logger.log('Public scenes loaded: ' + PublicScenesCollection.getAll().length, 'info');
     }
 }
 

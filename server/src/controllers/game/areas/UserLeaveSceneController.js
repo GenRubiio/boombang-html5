@@ -5,7 +5,7 @@ const Log = require('../../../utils/Log');
 const RemoveUserFromAreaTask = require('../../../tasks/RemoveUserFromAreaTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 
-class UserLeaveAreaController {
+class UserLeaveSceneController {
     static async main(socket, io) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -30,4 +30,4 @@ class UserLeaveAreaController {
     }
 }
 
-module.exports = UserLeaveAreaController;
+module.exports = UserLeaveSceneController;

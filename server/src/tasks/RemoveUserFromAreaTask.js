@@ -2,7 +2,7 @@
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
-const UpdatePublicAreasController = require('../controllers/game/lobby/UpdatePublicAreasController');
+const UpdatePublicScenesController = require('../controllers/game/lobby/UpdatePublicScenesController');
 const RemoveSelectedUserTask = require('./RemoveSelectedUserTask');
 
 class RemoveUserFromAreaTask {
@@ -25,7 +25,7 @@ class RemoveUserFromAreaTask {
                 socketId: user.socket.id
             }, user);
 
-            UpdatePublicAreasController.main(io);
+            UpdatePublicScenesController.main(io);
         }
         catch (err) {
             console.log(err);

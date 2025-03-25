@@ -1,5 +1,5 @@
 
-const UpdatePublicAreasController = require('../lobby/UpdatePublicAreasController');
+const UpdatePublicScenesController = require('../lobby/UpdatePublicScenesController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
@@ -7,7 +7,7 @@ const UserAreaResource = require('../../../resources/UserAreaResource');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
-class UserJoinPublicAreaController {
+class UserJoinPublicSceneController {
     static async main(socket, io, data) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -33,13 +33,13 @@ class UserJoinPublicAreaController {
                 user: await new UserAreaResource(user).toObject(),
             }, user);
 
-            UpdatePublicAreasController.main(io);
+            UpdatePublicScenesController.main(io);
         } catch (err) {
-            Log.error('Error in JoinPublicAreaController: ' + err);
+            Log.error('Error in UserJoinPublicSceneController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }
     }
 }
-
-module.exports = UserJoinPublicAreaController;
+module.exports = UserJoinPublicSceneController
+;

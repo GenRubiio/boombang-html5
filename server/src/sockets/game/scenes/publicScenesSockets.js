@@ -1,21 +1,21 @@
 
-const GetPublicAreasController = require('../../../controllers/game/areas/GetPublicAreasController');
-const UserJoinPublicAreaController = require('../../../controllers/game/areas/UserJoinPublicAreaController');
-const GetPublicAreaDataController = require('../../../controllers/game/areas/GetPublicAreaDataController');
-const GetPublicAreaUsersController = require('../../../controllers/game/areas/GetPublicAreaUsersController');
+const GetPublicScenesController = require('../../../controllers/game/areas/GetPublicScenesController');
+const UserJoinPublicSceneController = require('../../../controllers/game/areas/UserJoinPublicSceneController');
+const GetPublicSceneDataController = require('../../../controllers/game/areas/GetPublicSceneDataController');
+const GetPublicSceneUsersController = require('../../../controllers/game/areas/GetPublicSceneUsersController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
     socket.on(RequestSocketsEnum.GET_PUBLIC_AREAS, () => {
-        GetPublicAreasController.main(socket, io);
+        GetPublicScenesController.main(socket, io);
     });
     socket.on(RequestSocketsEnum.JOIN_PUBLIC_AREA, async (data) => {
-        UserJoinPublicAreaController.main(socket, io, data);
+        UserJoinPublicSceneController.main(socket, io, data);
     });
     socket.on(RequestSocketsEnum.GET_PUBLIC_AREA_DATA, async (data) => {
-        GetPublicAreaDataController.main(socket, io, data);
+        GetPublicSceneDataController.main(socket, io, data);
     });
     socket.on(RequestSocketsEnum.GET_PUBLIC_AREA_USERS, async (data) => {
-        GetPublicAreaUsersController.main(socket, io, data);
+        GetPublicSceneUsersController.main(socket, io, data);
     });
 };
