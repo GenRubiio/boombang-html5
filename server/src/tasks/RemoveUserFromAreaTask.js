@@ -13,7 +13,7 @@ class RemoveUserFromAreaTask {
                 return;
             }
             console.log('RemoveUserFromAreaTask');
-            user.emit(ResponseSocketsEnum.REMOVE_USER_AREA);
+            user.emit(ResponseSocketsEnum.REMOVE_USER_SCENE);
 
             RemoveSelectedUserTask.main(user);
 
@@ -21,7 +21,7 @@ class RemoveUserFromAreaTask {
             user.cancelMovement();
             user.setArea(null);
 
-            publicArea.emitToAllExcept(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, {
+            publicArea.emitToAllExcept(ResponseSocketsEnum.USER_LEFT_PUBLIC_SCENE, {
                 socketId: user.socket.id
             }, user);
 

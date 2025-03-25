@@ -26,10 +26,10 @@ class UserJoinPublicSceneController {
 
             user.setArea(publicArea);
             publicArea.addUser(user);
-            socket.emit(ResponseSocketsEnum.JOIN_PUBLIC_AREA, {
+            socket.emit(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, {
                 success: true,
             });
-            publicArea.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_AREA, {
+            publicArea.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
                 user: await new UserAreaResource(user).toObject(),
             }, user);
 

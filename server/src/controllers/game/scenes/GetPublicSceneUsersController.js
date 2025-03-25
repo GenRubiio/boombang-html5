@@ -23,7 +23,7 @@ class GetPublicSceneUsersController {
             for (const user of publicArea.users) {
                 players.push(await new UserAreaResource(user).toObject());
             }
-            socket.emit(ResponseSocketsEnum.GET_PUBLIC_AREA_USERS, {
+            socket.emit(ResponseSocketsEnum.GET_PUBLIC_SCENE_USERS, {
                 players: players
             });
         } catch (err) {

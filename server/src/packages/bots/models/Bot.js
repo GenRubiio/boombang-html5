@@ -25,7 +25,7 @@ class Bot {
             this.selectUser();
         });
 
-        this.socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_USERS, (data) => {
+        this.socket.on(ResponseSocketsEnum.GET_PUBLIC_SCENE_USERS, (data) => {
             clearInterval(this.uppercutInterval);
             // Encuentra la información del jugador local (el que hace la petición)
             const localUser = data.players.find((player) => player.id === this.socket.id);
@@ -101,7 +101,7 @@ class Bot {
 
     selectUser() {
         setInterval(() => {
-            this.socket.emit(RequestSocketsEnum.GET_PUBLIC_AREA_USERS, {});
+            this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENE_USERS, {});
         }, 10000);
     }
 
@@ -120,7 +120,7 @@ class Bot {
     }
 
     joinArea(areaId) {
-        this.socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: areaId });
+        this.socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { areaId: areaId });
     }
 }
 

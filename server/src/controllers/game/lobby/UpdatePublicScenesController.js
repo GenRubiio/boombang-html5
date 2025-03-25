@@ -11,7 +11,7 @@ class UpdatePublicScenesController {
             const publicSceneMenuResource = PublicSceneMenuResource.collection(scenes);
             const useNotInArea = ConnectedUsersCollection.getAllNotInArea();
             for (let user of useNotInArea) {
-                user.socket.emit(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, publicSceneMenuResource);
+                user.socket.emit(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, publicSceneMenuResource);
             }
         } catch (err) {
             Log.error('Error in UpdatePublicScenesController: ' + err);
