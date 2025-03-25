@@ -6,7 +6,7 @@ const UserAreaResource = require('../../../resources/UserAreaResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const Log = require('../../../utils/Log');
 
-class GetPublicAreaUsersController {
+class GetPublicSceneUsersController {
     static async main(socket, io, data) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -34,4 +34,4 @@ class GetPublicAreaUsersController {
     }
 }
 
-module.exports = GetPublicAreaUsersController;
+module.exports = GetPublicSceneUsersController;

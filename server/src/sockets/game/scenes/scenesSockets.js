@@ -1,6 +1,6 @@
 
 const UserMoveController = require('../../../controllers/game/areas/UserMoveController');
-const UserLeaveAreaController = require('../../../controllers/game/areas/UserLeaveAreaController');
+const UserLeaveSceneController = require('../../../controllers/game/areas/UserLeaveSceneController');
 const UserSelectUserController = require('../../../controllers/game/areas/UserSelectUserController');
 const UserSendUppercutController = require('../../../controllers/game/areas/UserSendUppercutController');
 const UserSendEmojiController = require('../../../controllers/game/areas/UserSendEmojiController');
@@ -12,7 +12,7 @@ module.exports = (socket, io) => {
         UserMoveController.main(socket, io, data);
     });
     socket.on(RequestSocketsEnum.USER_LEAVE_AREA, () => {
-        UserLeaveAreaController.main(socket, io);
+        UserLeaveSceneController.main(socket, io);
     });
     socket.on(RequestSocketsEnum.USER_SELECT_USER, (data) => {
         UserSelectUserController.main(socket, io, data);
