@@ -17,13 +17,13 @@ module.exports = (socket, io) => {
     socket.on(RequestSocketsEnum.USER_SELECT_USER, (data) => {
         UserSelectUserController.main(socket, io, data);
     });
-    socket.on(RequestSocketsEnum.SEND_UPPERCUT, () => {
+    socket.on(RequestSocketsEnum.USER_SEND_UPPERCUT, () => {
         UserSendUppercutController.main(socket, io);
     });
-    socket.on(RequestSocketsEnum.SEND_EMOJI, (data) => {
+    socket.on(RequestSocketsEnum.USER_SEND_EMOJI, (data) => {
         UserSendEmojiController.main(socket, io, data);
     });
-    socket.on(RequestSocketsEnum.SEND_CHAT, (data) => {
+    socket.on(RequestSocketsEnum.USER_SEND_CHAT, (data) => {
         UserSendChatController.main(socket, io, data);
     });
 };

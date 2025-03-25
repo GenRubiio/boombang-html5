@@ -11,11 +11,11 @@ const RequestSocketsEnum = new Enum({
     GET_PUBLIC_AREA_DATA: 'request:get_public_area_data',
     DISCONNECT: 'disconnect',
     GET_CONNECTED_USERS: 'get_connected_users',
-    SEND_MESSAGE: 'send_message',
-    SEND_UPPERCUT: 'request:send_uppercut',
+    USER_SEND_MESSAGE: 'send_message',
+    USER_SEND_UPPERCUT: 'request:send_uppercut',
     GET_PUBLIC_AREA_USERS: 'request:get_public_area_users',
-    SEND_EMOJI: 'request:send_emoji',
-    SEND_CHAT: 'request:send_chat',
+    USER_SEND_EMOJI: 'request:send_emoji',
+    USER_SEND_CHAT: 'request:send_chat',
 });
 
 module.exports = RequestSocketsEnum;

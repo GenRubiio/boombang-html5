@@ -60,7 +60,7 @@ class Bot {
                     socketId: usuarioMasCercano.id
                 });
                 this.uppercutInterval = setInterval(() => {
-                    this.socket.emit(RequestSocketsEnum.SEND_UPPERCUT);
+                    this.socket.emit(RequestSocketsEnum.USER_SEND_UPPERCUT);
                 }, 100);
             }
         });
@@ -88,7 +88,7 @@ class Bot {
 
         const sendMessage = () => {
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            this.socket.emit(RequestSocketsEnum.SEND_CHAT, { message: randomMessage });
+            this.socket.emit(RequestSocketsEnum.USER_SEND_CHAT, { message: randomMessage });
 
             // Generar un tiempo aleatorio entre 5 y 20 segundos
             const randomTime = Math.floor(Math.random() * (20000 - 5000 + 1)) + 5000;

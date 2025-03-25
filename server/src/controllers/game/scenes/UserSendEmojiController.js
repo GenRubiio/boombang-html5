@@ -17,7 +17,7 @@ class UserSendEmojiController {
 
                 UserBlockActionsTask.blockByEmojiSend(user, data.emoji_id);
 
-                user.currentArea.emit(ResponseSocketsEnum.SEND_EMOJI, {
+                user.currentArea.emit(ResponseSocketsEnum.USER_SEND_EMOJI, {
                     'user_socket': socket.id,
                     'emoji_id': data.emoji_id,
                     'avatar_id': user.avatarId
