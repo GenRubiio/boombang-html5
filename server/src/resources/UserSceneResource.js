@@ -1,5 +1,5 @@
 const Resource = require('./Resource');
-class UserAreaResource extends Resource {
+class UserSceneResource extends Resource {
     async transform(data) {
         return {
             id: data.socket.id,
@@ -15,4 +15,4 @@ class UserAreaResource extends Resource {
     }
 }
 
-module.exports = UserAreaResource;
+module.exports = UserSceneResource;

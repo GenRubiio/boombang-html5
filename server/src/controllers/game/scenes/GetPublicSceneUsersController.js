@@ -2,7 +2,7 @@
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
-const UserAreaResource = require('../../../resources/UserAreaResource');
+const UserSceneResource = require('../../../resources/UserSceneResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const Log = require('../../../utils/Log');
 
@@ -21,7 +21,7 @@ class GetPublicSceneUsersController {
 
             let players = [];
             for (const user of publicArea.users) {
-                players.push(await new UserAreaResource(user).toObject());
+                players.push(await new UserSceneResource(user).toObject());
             }
             socket.emit(ResponseSocketsEnum.GET_PUBLIC_SCENE_USERS, {
                 players: players
