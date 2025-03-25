@@ -1,8 +1,8 @@
 
-const GetPublicScenesController = require('../../../controllers/game/areas/GetPublicScenesController');
-const UserJoinPublicSceneController = require('../../../controllers/game/areas/UserJoinPublicSceneController');
-const GetPublicSceneDataController = require('../../../controllers/game/areas/GetPublicSceneDataController');
-const GetPublicSceneUsersController = require('../../../controllers/game/areas/GetPublicSceneUsersController');
+const GetPublicScenesController = require('../../../controllers/game/scenes/GetPublicScenesController');
+const UserJoinPublicSceneController = require('../../../controllers/game/scenes/UserJoinPublicSceneController');
+const GetPublicSceneDataController = require('../../../controllers/game/scenes/GetPublicSceneDataController');
+const GetPublicSceneUsersController = require('../../../controllers/game/scenes/GetPublicSceneUsersController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {

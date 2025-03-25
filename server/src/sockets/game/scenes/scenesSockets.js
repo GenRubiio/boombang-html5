@@ -1,10 +1,10 @@
 
-const UserMoveController = require('../../../controllers/game/areas/UserMoveController');
-const UserLeaveSceneController = require('../../../controllers/game/areas/UserLeaveSceneController');
-const UserSelectUserController = require('../../../controllers/game/areas/UserSelectUserController');
-const UserSendUppercutController = require('../../../controllers/game/areas/UserSendUppercutController');
-const UserSendEmojiController = require('../../../controllers/game/areas/UserSendEmojiController');
-const UserSendChatController = require('../../../controllers/game/areas/UserSendChatController');
+const UserMoveController = require('../../../controllers/game/scenes/UserMoveController');
+const UserLeaveSceneController = require('../../../controllers/game/scenes/UserLeaveSceneController');
+const UserSelectUserController = require('../../../controllers/game/scenes/UserSelectUserController');
+const UserSendUppercutController = require('../../../controllers/game/scenes/UserSendUppercutController');
+const UserSendEmojiController = require('../../../controllers/game/scenes/UserSendEmojiController');
+const UserSendChatController = require('../../../controllers/game/scenes/UserSendChatController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
