@@ -1,10 +1,10 @@
-import socket from "../../../sockets/socket"; // Conexión Socket.io
-import MovePlayerController from "../controllers/MovePlayerController";
-import RemovePlayerController from "../controllers/RemovePlayerController";
-import AddPlayerController from "../controllers/AddPlayerController";
-import CreateSceneController from "../controllers/CreateSceneController";
-import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import RemoveUserAreaController from "../controllers/RemoveUserAreaController";
+import socket from "../../sockets/socket"; // Conexión Socket.io
+import MovePlayerController from "../public-scene/controllers/MovePlayerController";
+import RemovePlayerController from "../public-scene/controllers/RemovePlayerController";
+import AddPlayerController from "../public-scene/controllers/AddPlayerController";
+import CreateSceneController from "../public-scene/controllers/CreateSceneController";
+import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
+import RemoveUserAreaController from "../public-scene/controllers/RemoveUserAreaController";
 
 class PublicSceneResponseSockets {
     static main(gameScene) {

@@ -2,10 +2,10 @@ import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
 import asset_shadowImage from "../assets/images/shadow.png"; // Imagen de la sombra
 import asset_tileImage from "../assets/game/scene/tile.png"; // Imagen del suelo
-import PublicSceneResponseSockets from "./public-scene/sockets/PublicSceneResponseSockets"; // Controladores de sockets
-import PublicSceneRequestSockets from "./public-scene/sockets/PublicSceneRequestSockets"; // Controladores de sockets
-import AreaSceneRequestSockets from "./sockets/AreaSceneRequestSockets"; // Controladores de sockets
-import AreaSceneResponseSockets from "./sockets/AreaSceneResponseSockets"; // Controladores de sockets
+import PublicSceneResponseSockets from "./sockets/PublicSceneResponseSockets"; // Controladores de sockets
+import PublicSceneRequestSockets from "./sockets/PublicSceneRequestSockets"; // Controladores de sockets
+import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
+import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
 import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
@@ -36,8 +36,8 @@ export default class PublicScene extends Phaser.Scene {
     }
 
     create() {
-        AreaSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
-        AreaSceneResponseSockets.main(this); // Inicializar controladores de sockets
+        SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
+        SceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         PublicSceneResponseSockets.main(this); // Inicializar controladores de sockets
 

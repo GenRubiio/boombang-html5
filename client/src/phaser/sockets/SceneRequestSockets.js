@@ -1,10 +1,10 @@
 import socket from "../../sockets/socket"; // Conexión Socket.io
 import RequestSocketsEnum from "../../enums/RequestSocketsEnum";
 
-class AreaSceneRequestSockets {
+class SceneRequestSockets {
     static main(gameScene) {
       
     }
 }
 
-export default AreaSceneRequestSockets;
+export default SceneRequestSockets;
