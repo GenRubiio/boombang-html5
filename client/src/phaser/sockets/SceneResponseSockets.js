@@ -1,11 +1,11 @@
 import socket from "../../sockets/socket"; // Conexión Socket.io
-import UserSelectUserController from "../controllers/UserSelectUserController";
-import UserUpdatePositionController from "../controllers/UserUpdatePositionController";
+import UserSelectUserController from "../controllers/scene/UserSelectUserController";
+import UserUpdatePositionController from "../controllers/scene/UserUpdatePositionController";
 import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
-import SendUppercutAnimationController from "../controllers/SendUppercutAnimationController";
-import UserMoveDeniedController from "../controllers/UserMoveDeniedController";
-import UserSendEmojiController from "../controllers/UserSendEmojiController";
-import UserSendChatController from "../controllers/UserSendChatController";
+import SendUppercutAnimationController from "../controllers/scene/SendUppercutAnimationController";
+import UserMoveDeniedController from "../controllers/scene/UserMoveDeniedController";
+import UserSendEmojiController from "../controllers/scene/UserSendEmojiController";
+import UserSendChatController from "../controllers/scene/UserSendChatController";
 
 class SceneResponseSockets {
     static main(gameScene) {

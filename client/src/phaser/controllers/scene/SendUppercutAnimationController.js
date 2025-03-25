@@ -1,5 +1,5 @@
-import UserIdleAnimation from "../animations/UserIdleAnimation.js";
-import UserUppercutAnimation from "../animations/UserUppercutAnimation.js";
+import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
+import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
 
 class SendUppercutAnimationController {
     static main(gameScene, data) {
