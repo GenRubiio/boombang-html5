@@ -1,5 +1,5 @@
 export default class UserModel {
-    constructor(row, spriteAvatar, spriteShadow, playerContainer, gameScene) {
+    constructor(row, spriteAvatar, spriteShadow, containerUser) {
         this.socketId = row.id;
         this.username = row.username;
         this.position = {
@@ -9,9 +9,9 @@ export default class UserModel {
         };
         this.avatarId = row.avatar_id;
         this.animations = row.animations;
-        this.sprite_player = spriteAvatar;
-        this.sprite_shadow = spriteShadow;
-        this.playerContainer = playerContainer;
+        this.spriteAvatar = spriteAvatar;
+        this.spriteShadow = spriteShadow;
+        this.containerUser = containerUser;
         this.uppercuts_send = row.uppercutsSend,
         this.uppercuts_received = row.uppercutsReceived,
         this.ring_wins = 0;

@@ -5,16 +5,16 @@ class RemoveUserController {
 
         // Detener y eliminar tweens activos
         if (user.currentTween) user.currentTween.stop();
-        gameScene.tweens.killTweensOf(user.playerContainer);
+        gameScene.tweens.killTweensOf(user.containerUser);
 
         // Detener cualquier animación activa
-        if (user.sprite_player?.anims) {
-            user.sprite_player.anims.stop();
+        if (user.spriteAvatar?.anims) {
+            user.spriteAvatar.anims.stop();
         }
 
         // Eliminar contenedor completo
-        if (user.playerContainer && user.playerContainer.active) {
-            user.playerContainer.destroy();
+        if (user.containerUser && user.containerUser.active) {
+            user.containerUser.destroy();
         }
 
         // Eliminar datos del jugador

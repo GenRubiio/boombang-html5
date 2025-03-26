@@ -7,12 +7,12 @@ import PublicSceneLoad from "../../load/PublicSceneLoad.js";
 
 class CreateSceneController {
     static async main(gameScene, data) {
-        const playersData = data.players;
+        const usersData = data.players;
         const sceneryData = data.scenery;
 
         PublicSceneLoad.main(gameScene, sceneryData.id);
         this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
-        this.createPlayers(gameScene, playersData);
+        this.createPlayers(gameScene, usersData);
     }
 
     static createTile(gameScene, map, rows, cols) {
@@ -113,11 +113,11 @@ class CreateSceneController {
         });
     }
 
-    static createPlayers(gameScene, playersData) {
+    static createPlayers(gameScene, usersData) {
         // Crear los jugadores iniciales
         (async () => {
-            for (const playerData of playersData) {
-                await AddUserController.main(gameScene, playerData);
+            for (const userData of usersData) {
+                await AddUserController.main(gameScene, userData);
             }
             //console.log("Players loaded", gameScene.users);
             SetUserCardController.main(gameScene, socket.user);

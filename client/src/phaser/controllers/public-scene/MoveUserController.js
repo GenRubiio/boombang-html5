@@ -22,7 +22,7 @@ class MoveUserController {
         if (user.currentTween) {
             user.currentTween.stop();
         }
-        gameScene.tweens.killTweensOf(user.playerContainer);
+        gameScene.tweens.killTweensOf(user.containerUser);
 
         // Guardar el path y reiniciar el índice
         user.path = path;
@@ -63,25 +63,25 @@ class MoveUserController {
 
         // Inicia la animación SOLO una vez (en lugar de cada frame).
         UserWalkAnimation.playWalk(
-            user.sprite_player,
+            user.spriteAvatar,
             step.z,
             user.avatarId
         );
 
         // Crea el tween de movimiento
         const tween = gameScene.tweens.add({
-            targets: user.playerContainer,
+            targets: user.containerUser,
             x: centerX,
             y: centerY,
             duration: AnimationsTimerEnum.WALK,
             onUpdate: () => {
-                if (!user.playerContainer) return;
+                if (!user.containerUser) return;
                 // Actualiza la profundidad según la Y (opcional en cada frame).
-                user.playerContainer.setDepth(user.playerContainer.y);
+                user.containerUser.setDepth(user.containerUser.y);
             },
             onComplete: () => {
                 // Al terminar el movimiento, detenemos la animación
-                user.sprite_player.stop();
+                user.spriteAvatar.stop();
 
                 // Pasamos al siguiente paso del path
                 user.pathIndex++;

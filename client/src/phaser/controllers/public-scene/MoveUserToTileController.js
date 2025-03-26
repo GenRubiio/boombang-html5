@@ -8,16 +8,16 @@ class MoveUserToTileController {
         const centerY = (user.position.x + user.position.y) * (tileHeight / 2);
 
         // Posicionar el contenedor del jugador
-        user.playerContainer.setPosition(centerX, centerY);
+        user.containerUser.setPosition(centerX, centerY);
 
         // Actualizar profundidad en base a la posición Y
-        user.playerContainer.setDepth(centerY);
+        user.containerUser.setDepth(centerY);
 
         // Si necesitas ajustes adicionales:
-        user.sprite_shadow.setPosition(0, 0);
-        user.sprite_player.setPosition(
+        user.spriteShadow.setPosition(0, 0);
+        user.spriteAvatar.setPosition(
             0,
-            -(user.sprite_shadow.displayHeight / 2) - (user.sprite_player.displayHeight / 2) + 15
+            -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15
         );
     }
 }

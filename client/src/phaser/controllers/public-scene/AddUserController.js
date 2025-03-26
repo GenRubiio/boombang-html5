@@ -5,41 +5,41 @@ import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 
 class AddUserController {
-    static async main(gameScene, playerData) {
-        if (gameScene.users[playerData.id]) return;
-        const { playerContainer, spriteAvatar, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
-        const user = new UserModel(playerData, spriteAvatar, spriteShadow, playerContainer, gameScene);
+    static async main(gameScene, userData) {
+        if (gameScene.users[userData.id]) return;
+        const { containerUser, spriteAvatar, spriteShadow } = this.createPlayerContainer(gameScene, userData);
+        const user = new UserModel(userData, spriteAvatar, spriteShadow, containerUser);
         MoveUserToTileController.main(gameScene, user);
         // Almacenar jugador
-        gameScene.users[playerData.id] = user;
+        gameScene.users[userData.id] = user;
     }
 
-    static createPlayerContainer(gameScene, playerData) {
+    static createPlayerContainer(gameScene, userData) {
         // Crear sombra
-        const spriteShadow = this.createShadowSprite(gameScene, playerData);
+        const spriteShadow = this.createShadowSprite(gameScene, userData);
         // Crear personaje
-        const spriteAvatar = this.createPlayerSprite(gameScene, playerData);
+        const spriteAvatar = this.createPlayerSprite(gameScene, userData);
         // Crear texto del nombre
-        const userNameContainer = this.createUserNameText(gameScene, spriteAvatar, playerData);
+        const userNameContainer = this.createUserNameText(gameScene, spriteAvatar, userData);
 
         // Crear contenedor
-        const playerContainer = gameScene.add.container(0, 0, [
+        const containerUser = gameScene.add.container(0, 0, [
             spriteShadow,
             spriteAvatar,
             userNameContainer.background,
             userNameContainer.name
         ]);
-        playerContainer.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
+        containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
-        return { playerContainer, spriteAvatar, spriteShadow };
+        return { containerUser, spriteAvatar, spriteShadow };
     }
 
-    static createShadowSprite(gameScene, playerData) {
+    static createShadowSprite(gameScene, userData) {
         // Crear sombra
         const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
         spriteShadow.setDepth(0);
         spriteShadow.setInteractive({ useHandCursor: true });
-        spriteShadow.playerSocketId = playerData.id;
+        spriteShadow.playerSocketId = userData.id;
 
         //remove listener if already exists
         spriteShadow.removeAllListeners();
@@ -55,21 +55,21 @@ class AddUserController {
         return spriteShadow;
     }
 
-    static createPlayerSprite(gameScene, playerData) {
-        const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + playerData.id);
+    static createPlayerSprite(gameScene, userData) {
+        const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + userData.id);
         UserIdleAnimation.main(
             spriteAvatar,
-            playerData.z,
-            playerData.avatar_id
+            userData.z,
+            userData.avatar_id
         );
         spriteAvatar.setDepth(1);
 
         return spriteAvatar;
     }
 
-    static createUserNameText(gameScene, spriteAvatar, playerData) {
+    static createUserNameText(gameScene, spriteAvatar, userData) {
         // Nombre del usuario
-        const userName = playerData.username || "Usuario";
+        const userName = userData.username || "Usuario";
 
         // Crear temporalmente el texto para calcular el tamaño dinámico
         const userNameText = gameScene.add.text(0, 0, userName, {
