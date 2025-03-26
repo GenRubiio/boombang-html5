@@ -7,18 +7,18 @@ import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 class AddUserController {
     static async main(gameScene, userData) {
         if (gameScene.users[userData.id]) return;
-        const { containerUser, spriteAvatar, spriteShadow } = this.createPlayerContainer(gameScene, userData);
+        const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, userData);
         const user = new UserModel(userData, spriteAvatar, spriteShadow, containerUser);
         MoveUserToTileController.main(gameScene, user);
         // Almacenar jugador
         gameScene.users[userData.id] = user;
     }
 
-    static createPlayerContainer(gameScene, userData) {
+    static createContainerUser(gameScene, userData) {
         // Crear sombra
         const spriteShadow = this.createShadowSprite(gameScene, userData);
         // Crear personaje
-        const spriteAvatar = this.createPlayerSprite(gameScene, userData);
+        const spriteAvatar = this.createAvatarSprite(gameScene, userData);
         // Crear texto del nombre
         const userNameContainer = this.createUserNameText(gameScene, spriteAvatar, userData);
 
@@ -55,7 +55,7 @@ class AddUserController {
         return spriteShadow;
     }
 
-    static createPlayerSprite(gameScene, userData) {
+    static createAvatarSprite(gameScene, userData) {
         const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + userData.id);
         UserIdleAnimation.main(
             spriteAvatar,
