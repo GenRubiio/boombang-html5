@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import asset_lilianTopButtonImage from "../../../assets/game/auth/lilian-top-button.png";
-import asset_rastaTopButtonImage from "../../../assets/game/auth/rasta-top-button.png";
+import asset_lilianTopButtonImage from "../../../assets/game/auth/lilian-top-button.webp";
+import asset_rastaTopButtonImage from "../../../assets/game/auth/rasta-top-button.webp";
 
 export default {
   props: {

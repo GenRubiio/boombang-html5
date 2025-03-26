@@ -51,9 +51,9 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_buttonImage from "../../../assets/game/auth/login-button-image.png";
-import asset_googleImage from "../../../assets/game/auth/google.png";
-import asset_warningImage from "../../../assets/game/auth/warning.png";
+import asset_buttonImage from "../../../assets/game/auth/login-button-image.webp";
+import asset_googleImage from "../../../assets/game/auth/google.webp";
+import asset_warningImage from "../../../assets/game/auth/warning.webp";
 
 export default {
   data() {
