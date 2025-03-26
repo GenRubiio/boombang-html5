@@ -8,7 +8,7 @@ class UserEmojiAnimation {
      * Inicia la animación según la dirección
      */
     static main(user, emojiId) {
-        const spriteAvatar = user.sprite_player;
+        const spriteAvatar = user.spriteAvatar;
         const avatarId = user.avatarId;
         const textureKey = this.getTextureKey(emojiId);
         if (!textureKey) return;
@@ -17,7 +17,7 @@ class UserEmojiAnimation {
 
         spriteAvatar.once("animationcomplete", () => {
             UserIdleAnimation.main(
-                user.sprite_player,
+                user.spriteAvatar,
                 user.position.z,
                 user.avatarId
             );

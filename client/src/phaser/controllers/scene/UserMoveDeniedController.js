@@ -7,12 +7,12 @@ class UserMoveDeniedController {
         const user = gameScene.users[socketId];
         
         if (user) {
-            const spriteAvatar = user.sprite_player;
-            const spriteShadow = user.sprite_shadow;
+            const spriteAvatar = user.spriteAvatar;
+            const spriteShadow = user.spriteShadow;
             const direction = user.position.z;
             const avatarId = user.avatarId;
 
-            // Detener Tweens activos del playerContainer
+            // Detener Tweens activos del containerUser
             if (user.currentTween) {
                 user.currentTween.stop();
                 user.currentTween = null;
@@ -22,7 +22,7 @@ class UserMoveDeniedController {
                 user.currentShadowTween = null;
             }
             // Matar cualquier otro tween de sprites
-            gameScene.tweens.killTweensOf(user.playerContainer);
+            gameScene.tweens.killTweensOf(user.containerUser);
             gameScene.tweens.killTweensOf(spriteAvatar);
             gameScene.tweens.killTweensOf(spriteShadow);
 
@@ -33,8 +33,8 @@ class UserMoveDeniedController {
             const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
 
             // Establecer posición y profundidad
-            user.playerContainer.setPosition(finalX, finalY);
-            user.playerContainer.setDepth(finalY);
+            user.containerUser.setPosition(finalX, finalY);
+            user.containerUser.setDepth(finalY);
 
             // Ajustar posiciones internas del sprite
             spriteShadow.setPosition(0, 0);

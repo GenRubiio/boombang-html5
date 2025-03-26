@@ -12,7 +12,7 @@ class SendUppercutAnimationController {
             attacker.currentTween.stop();
             attacker.currentTween = null;
         }
-        gameScene.tweens.killTweensOf(attacker.playerContainer);
+        gameScene.tweens.killTweensOf(attacker.containerUser);
         attacker.path = [];
         attacker.pathIndex = 0;
 
@@ -21,12 +21,12 @@ class SendUppercutAnimationController {
         const attackerFinalX = (attacker.position.x - attacker.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const attackerFinalY = (attacker.position.x + attacker.position.y) * (tileHeight / 2);
 
-        attacker.playerContainer.setPosition(attackerFinalX, attackerFinalY);
-        attacker.playerContainer.setDepth(attackerFinalY);
-        attacker.sprite_shadow.setPosition(0, 0);
-        attacker.sprite_player.setPosition(
+        attacker.containerUser.setPosition(attackerFinalX, attackerFinalY);
+        attacker.containerUser.setDepth(attackerFinalY);
+        attacker.spriteShadow.setPosition(0, 0);
+        attacker.spriteAvatar.setPosition(
             0,
-            -(attacker.sprite_shadow.displayHeight / 2) - (attacker.sprite_player.displayHeight / 2) + 15
+            -(attacker.spriteShadow.displayHeight / 2) - (attacker.spriteAvatar.displayHeight / 2) + 15
         );
 
         // ===== DETENER Y REPOSICIONAR AL RECEPTOR =====
@@ -34,31 +34,31 @@ class SendUppercutAnimationController {
             receiver.currentTween.stop();
             receiver.currentTween = null;
         }
-        gameScene.tweens.killTweensOf(receiver.playerContainer);
+        gameScene.tweens.killTweensOf(receiver.containerUser);
         receiver.path = [];
         receiver.pathIndex = 0;
 
         const receiverFinalX = (receiver.position.x - receiver.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const receiverFinalY = (receiver.position.x + receiver.position.y) * (tileHeight / 2);
 
-        receiver.playerContainer.setPosition(receiverFinalX, receiverFinalY);
-        receiver.playerContainer.setDepth(receiverFinalY);
-        receiver.sprite_shadow.setPosition(0, 0);
-        receiver.sprite_player.setPosition(
+        receiver.containerUser.setPosition(receiverFinalX, receiverFinalY);
+        receiver.containerUser.setDepth(receiverFinalY);
+        receiver.spriteShadow.setPosition(0, 0);
+        receiver.spriteAvatar.setPosition(
             0,
-            -(receiver.sprite_shadow.displayHeight / 2) - (receiver.sprite_player.displayHeight / 2) + 15
+            -(receiver.spriteShadow.displayHeight / 2) - (receiver.spriteAvatar.displayHeight / 2) + 15
         );
 
         // Ahora ambos están forzados a la posición lógica del servidor
         // Ajustar el frame idle del atacante antes de la animación
         UserIdleAnimation.main(
-            attacker.sprite_player,
+            attacker.spriteAvatar,
             attacker.position.z,
             attacker.avatarId
         );
 
-        const attackerSprite = attacker.sprite_player;
-        const receiverSprite = receiver.sprite_player;
+        const attackerSprite = attacker.spriteAvatar;
+        const receiverSprite = receiver.spriteAvatar;
 
         // Animación de uppercut del atacante
         UserUppercutAnimation.main(
@@ -70,7 +70,7 @@ class SendUppercutAnimationController {
 
         attackerSprite.once("animationcomplete", () => {
             UserIdleAnimation.main(
-                attacker.sprite_player,
+                attacker.spriteAvatar,
                 attacker.position.z,
                 attacker.avatarId
             );

@@ -18,7 +18,7 @@ class UserUpdatePositionController {
             user.currentTween.stop();
             user.currentTween = null;
         }
-        gameScene.tweens.killTweensOf(user.playerContainer);
+        gameScene.tweens.killTweensOf(user.containerUser);
 
         // Si el jugador tiene un path definido, limpiarlo
         user.path = [];
@@ -30,19 +30,19 @@ class UserUpdatePositionController {
         const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
 
-        user.playerContainer.setPosition(finalX, finalY);
-        user.playerContainer.setDepth(finalY);
-        user.sprite_shadow.setPosition(0, 0);
-        user.sprite_player.setPosition(
+        user.containerUser.setPosition(finalX, finalY);
+        user.containerUser.setDepth(finalY);
+        user.spriteShadow.setPosition(0, 0);
+        user.spriteAvatar.setPosition(
             0,
-            -(user.sprite_shadow.displayHeight / 2) - (user.sprite_player.displayHeight / 2) + 15
+            -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15
         );
 
         //console.log(`Updating player ${socketId} position/direction to:`, position);
 
         // Ahora que el jugador está posicionado correctamente, cambiar el frame idle según la dirección
         UserIdleAnimation.main(
-            user.sprite_player,
+            user.spriteAvatar,
             position.z,
             user.avatarId
         );
