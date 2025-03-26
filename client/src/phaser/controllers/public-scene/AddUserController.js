@@ -6,12 +6,12 @@ import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 
 class AddUserController {
     static async main(gameScene, playerData) {
-        if (gameScene.players[playerData.id]) return;
+        if (gameScene.users[playerData.id]) return;
         const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
         const user = new UserModel(playerData, spritePlayer, spriteShadow, playerContainer, gameScene);
         MoveUserToTileController.main(gameScene, user);
         // Almacenar jugador
-        gameScene.players[playerData.id] = user;
+        gameScene.users[playerData.id] = user;
     }
 
     static createPlayerContainer(gameScene, playerData) {
@@ -44,7 +44,7 @@ class AddUserController {
         //remove listener if already exists
         spriteShadow.removeAllListeners();
         spriteShadow.on('pointerdown', () => {
-            const clickedPlayer = gameScene.players[spriteShadow.playerSocketId];
+            const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
             if (clickedPlayer) {
                 //console.log("Jugador clickeado: ", clickedPlayer);
                 socket.emit(RequestSocketsEnum.USER_SELECT_USER, {

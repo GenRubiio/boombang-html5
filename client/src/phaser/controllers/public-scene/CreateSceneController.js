@@ -119,7 +119,7 @@ class CreateSceneController {
             for (const playerData of playersData) {
                 await AddUserController.main(gameScene, playerData);
             }
-            //console.log("Players loaded", gameScene.players);
+            //console.log("Players loaded", gameScene.users);
             SetUserCardController.main(gameScene, socket.user);
         })();
     }

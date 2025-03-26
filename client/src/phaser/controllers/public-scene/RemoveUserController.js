@@ -1,6 +1,6 @@
 class RemoveUserController {
     static main(gameScene, socketId) {
-        const user = gameScene.players[socketId];
+        const user = gameScene.users[socketId];
         if (!user) return;
 
         // Detener y eliminar tweens activos
@@ -18,7 +18,7 @@ class RemoveUserController {
         }
 
         // Eliminar datos del jugador
-        delete gameScene.players[socketId];
+        delete gameScene.users[socketId];
     }
 }
 

@@ -14,13 +14,13 @@ import PublicScenePreload from "./preloaders/PublicScenePreload"; // Precargador
 export default class PublicScene extends Phaser.Scene {
     constructor() {
         super("PublicScene");
-        this.players = {}; // Reiniciar al crear una nueva instancia
+        this.users = {}; // Reiniciar al crear una nueva instancia
         this.avatarAnimations = {}; // Reiniciar al crear una nueva instancia
     }
 
     init(data) {
         this.areaId = data.areaId; // ID de la sala
-        this.players = {}; // Objeto para almacenar jugadores en la sala
+        this.users = {}; // Objeto para almacenar jugadores en la sala
         this.avatarAnimations = {}; // Objeto para almacenar animaciones de avatares
         this.vueComponent = data.vueComponent;
     }

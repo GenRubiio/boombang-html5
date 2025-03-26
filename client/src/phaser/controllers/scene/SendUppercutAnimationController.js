@@ -3,8 +3,8 @@ import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
 
 class SendUppercutAnimationController {
     static main(gameScene, data) {
-        const attacker = gameScene.players[data.attacker];
-        const receiver = gameScene.players[data.receiver];
+        const attacker = gameScene.users[data.attacker];
+        const receiver = gameScene.users[data.receiver];
         if (!attacker || !receiver) return;
 
         // ===== DETENER Y REPOSICIONAR AL ATACANTE =====
