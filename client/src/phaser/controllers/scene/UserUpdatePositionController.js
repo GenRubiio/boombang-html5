@@ -6,9 +6,9 @@ class UserUpdatePositionController {
         const position = data.position;
 
         // Verificar que el jugador exista
-        if (!gameScene.players[socketId]) return;
+        if (!gameScene.users[socketId]) return;
 
-        const user = gameScene.players[socketId];
+        const user = gameScene.users[socketId];
 
         // Actualizar la posición lógica del jugador
         user.position = position;

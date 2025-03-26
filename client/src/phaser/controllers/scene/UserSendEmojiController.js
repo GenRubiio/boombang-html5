@@ -2,7 +2,7 @@ import UserEmojiAnimation from "../../animations/UserEmojiAnimation.js";
 
 class UserSendEmojiController {
     static main(gameScene, data) {
-        const user = gameScene.players[data.user_socket];
+        const user = gameScene.users[data.user_socket];
         const emojiId = data.emoji_id;
         if (!user) return;
 

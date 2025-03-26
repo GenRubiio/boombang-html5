@@ -11,12 +11,12 @@ class MoveUserController {
      * @param {boolean} isLastStep - Indica si al finalizar se aplica lógica de "moveDenied"
      */
     static main(gameScene, socketId, path, isLastStep) {
-        if (!path || path.length === 0 || !gameScene.players[socketId]) return;
+        if (!path || path.length === 0 || !gameScene.users[socketId]) return;
 
         // (Opcional) log de depuración, coméntalo en producción
         // console.log(`Moving player ${socketId} to path:`, path);
 
-        const user = gameScene.players[socketId];
+        const user = gameScene.users[socketId];
 
         // Detener tweens existentes
         if (user.currentTween) {
@@ -36,7 +36,7 @@ class MoveUserController {
      * Mueve al jugador al siguiente paso del path
      */
     static moveToNextStep(gameScene, socketId, isLastStep) {
-        const user = gameScene.players[socketId];
+        const user = gameScene.users[socketId];
         if (!user) return;
 
         // Si ya hemos recorrido todo el path

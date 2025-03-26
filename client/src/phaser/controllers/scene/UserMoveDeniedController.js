@@ -4,7 +4,7 @@ import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 
 class UserMoveDeniedController {
     static main(gameScene, socketId) {
-        const user = gameScene.players[socketId];
+        const user = gameScene.users[socketId];
         
         if (user) {
             const spritePlayer = user.sprite_player;
