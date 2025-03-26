@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import asset_gataRedbullImage from "../../../assets/game/auth/gata-redbull.png";
-import asset_rastaRedbullImage from "../../../assets/game/auth/rasta-redbull.png";
+import asset_gataRedbullImage from "../../../assets/game/auth/gata-redbull.webp";
+import asset_rastaRedbullImage from "../../../assets/game/auth/rasta-redbull.webp";
 
 import $ from "jquery";
 import "slick-carousel";

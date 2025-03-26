@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import asset_maintenanceAvatarImage from "../../../assets/game/auth/maintenance-avatar.png";
+import asset_maintenanceAvatarImage from "../../../assets/game/auth/maintenance-avatar.webp";
 
 export default {
   data() {

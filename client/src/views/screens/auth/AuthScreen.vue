@@ -51,8 +51,8 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import socket from "../../../sockets/socket";
-import asset_backgroundImage from "../../../assets/game/auth/background.png";
-import asset_cloudsBackgroundImage from "../../../assets/game/auth/clouds-background.png";
+import asset_backgroundImage from "../../../assets/game/auth/background.webp";
+import asset_cloudsBackgroundImage from "../../../assets/game/auth/clouds-background.webp";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
 import RegisterFormComponent from "../../components/auth/RegisterFormComponent.vue";
 import TopButtonComponent from "../../components/auth/TopButtonComponent.vue";
