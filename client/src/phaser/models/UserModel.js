@@ -1,4 +1,4 @@
-export default class PlayerModel {
+export default class UserModel {
     constructor(playerData, spritePlayer, spriteShadow, playerContainer, gameScene) {
         this.socketId = playerData.id;
         this.username = playerData.username;

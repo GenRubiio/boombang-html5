@@ -8,43 +8,43 @@ class UserUpdatePositionController {
         // Verificar que el jugador exista
         if (!gameScene.players[socketId]) return;
 
-        const playerModel = gameScene.players[socketId];
+        const user = gameScene.players[socketId];
 
         // Actualizar la posición lógica del jugador
-        playerModel.position = position;
+        user.position = position;
 
         // Detener tweens existentes para asegurar que no se esté moviendo mientras cambias la dirección
-        if (playerModel.currentTween) {
-            playerModel.currentTween.stop();
-            playerModel.currentTween = null;
+        if (user.currentTween) {
+            user.currentTween.stop();
+            user.currentTween = null;
         }
-        gameScene.tweens.killTweensOf(playerModel.playerContainer);
+        gameScene.tweens.killTweensOf(user.playerContainer);
 
         // Si el jugador tiene un path definido, limpiarlo
-        playerModel.path = [];
-        playerModel.pathIndex = 0;
+        user.path = [];
+        user.pathIndex = 0;
 
         // Forzar la posición en el mapa según la lógica isométrica
         const tileWidth = 65;
         const tileHeight = 33;
-        const finalX = (playerModel.position.x - playerModel.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const finalY = (playerModel.position.x + playerModel.position.y) * (tileHeight / 2);
+        const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
+        const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
 
-        playerModel.playerContainer.setPosition(finalX, finalY);
-        playerModel.playerContainer.setDepth(finalY);
-        playerModel.sprite_shadow.setPosition(0, 0);
-        playerModel.sprite_player.setPosition(
+        user.playerContainer.setPosition(finalX, finalY);
+        user.playerContainer.setDepth(finalY);
+        user.sprite_shadow.setPosition(0, 0);
+        user.sprite_player.setPosition(
             0,
-            -(playerModel.sprite_shadow.displayHeight / 2) - (playerModel.sprite_player.displayHeight / 2) + 15
+            -(user.sprite_shadow.displayHeight / 2) - (user.sprite_player.displayHeight / 2) + 15
         );
 
         //console.log(`Updating player ${socketId} position/direction to:`, position);
 
         // Ahora que el jugador está posicionado correctamente, cambiar el frame idle según la dirección
         UserIdleAnimation.main(
-            playerModel.sprite_player,
+            user.sprite_player,
             position.z,
-            playerModel.avatar_id
+            user.avatar_id
         );
     }
 }
