@@ -2,7 +2,7 @@ import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
 import AnimationsTimerEnum from "../../../enums/AnimationsTimerEnum.js";
 import UserMoveDeniedController from "../scene/UserMoveDeniedController.js";
 
-class MovePlayerController {
+class MoveUserController {
     /**
      * Llamada principal para iniciar el movimiento del jugador por un path.
      * @param {Phaser.Scene} gameScene - Escena de Phaser
@@ -94,4 +94,4 @@ class MovePlayerController {
     }
 }
 
-export default MovePlayerController;
+export default MoveUserController;

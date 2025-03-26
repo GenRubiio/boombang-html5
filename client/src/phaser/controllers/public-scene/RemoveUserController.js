@@ -1,4 +1,4 @@
-class RemovePlayerController {
+class RemoveUserController {
     static main(gameScene, socketId) {
         const playerModel = gameScene.players[socketId];
         if (!playerModel) return;
@@ -22,4 +22,4 @@ class RemovePlayerController {
     }
 }
 
-export default RemovePlayerController;
+export default RemoveUserController;
