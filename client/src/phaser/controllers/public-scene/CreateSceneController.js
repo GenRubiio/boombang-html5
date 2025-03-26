@@ -12,7 +12,7 @@ class CreateSceneController {
 
         PublicSceneLoad.main(gameScene, sceneryData.id);
         this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
-        this.createPlayers(gameScene, usersData);
+        this.createUsers(gameScene, usersData);
     }
 
     static createTile(gameScene, map, rows, cols) {
@@ -113,7 +113,7 @@ class CreateSceneController {
         });
     }
 
-    static createPlayers(gameScene, usersData) {
+    static createUsers(gameScene, usersData) {
         // Crear los jugadores iniciales
         (async () => {
             for (const userData of usersData) {
