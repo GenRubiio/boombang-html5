@@ -1,6 +1,6 @@
 import DirectionEnum from "../../enums/DirectionEnum.js";
 import AvatarAnimationsEnum from "../../enums/AvatarAnimationsEnum.js";
-import AnimationUtils from "../public-scene/utils/AnimationUtils.js";
+import AnimationUtils from "../../utils/AnimationUtils.js";
 
 /**
  * Maneja la animación de caminar según la dirección.

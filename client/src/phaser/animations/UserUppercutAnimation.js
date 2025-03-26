@@ -1,4 +1,4 @@
-import AnimationUtils from "../public-scene/utils/AnimationUtils.js";
+import AnimationUtils from "../../utils/AnimationUtils.js";
 class UserUppercutAnimation {
     static main(spritePlayer, direction, attacker, avatarId) {
         if (attacker) {
