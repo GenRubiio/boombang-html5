@@ -9,7 +9,7 @@ class UserEmojiAnimation {
      */
     static main(user, emojiId) {
         const spriteAvatar = user.sprite_player;
-        const avatarId = user.avatar_id;
+        const avatarId = user.avatarId;
         const textureKey = this.getTextureKey(emojiId);
         if (!textureKey) return;
         AnimationUtils.setSpriteConfig(spriteAvatar, avatarId, textureKey);
@@ -19,7 +19,7 @@ class UserEmojiAnimation {
             UserIdleAnimation.main(
                 user.sprite_player,
                 user.position.z,
-                user.avatar_id
+                user.avatarId
             );
         });
     }
