@@ -1,5 +1,5 @@
 export default class UserModel {
-    constructor(playerData, spritePlayer, spriteShadow, playerContainer, gameScene) {
+    constructor(playerData, spriteAvatar, spriteShadow, playerContainer, gameScene) {
         this.socketId = playerData.id;
         this.username = playerData.username;
         this.position = {
@@ -9,7 +9,7 @@ export default class UserModel {
         };
         this.avatar_id = playerData.avatar_id;
         this.animations = playerData.animations;
-        this.sprite_player = spritePlayer;
+        this.sprite_player = spriteAvatar;
         this.sprite_shadow = spriteShadow;
         this.playerContainer = playerContainer;
         this.uppercuts_send = playerData.uppercutsSend,

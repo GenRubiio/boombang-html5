@@ -8,14 +8,14 @@ class UserEmojiAnimation {
      * Inicia la animación según la dirección
      */
     static main(user, emojiId) {
-        const spritePlayer = user.sprite_player;
+        const spriteAvatar = user.sprite_player;
         const avatarId = user.avatar_id;
         const textureKey = this.getTextureKey(emojiId);
         if (!textureKey) return;
-        AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
-        spritePlayer.play(avatarId + "_" + textureKey, false);
+        AnimationUtils.setSpriteConfig(spriteAvatar, avatarId, textureKey);
+        spriteAvatar.play(avatarId + "_" + textureKey, false);
 
-        spritePlayer.once("animationcomplete", () => {
+        spriteAvatar.once("animationcomplete", () => {
             UserIdleAnimation.main(
                 user.sprite_player,
                 user.position.z,

@@ -7,8 +7,8 @@ import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 class AddUserController {
     static async main(gameScene, playerData) {
         if (gameScene.users[playerData.id]) return;
-        const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
-        const user = new UserModel(playerData, spritePlayer, spriteShadow, playerContainer, gameScene);
+        const { playerContainer, spriteAvatar, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
+        const user = new UserModel(playerData, spriteAvatar, spriteShadow, playerContainer, gameScene);
         MoveUserToTileController.main(gameScene, user);
         // Almacenar jugador
         gameScene.users[playerData.id] = user;
@@ -18,20 +18,20 @@ class AddUserController {
         // Crear sombra
         const spriteShadow = this.createShadowSprite(gameScene, playerData);
         // Crear personaje
-        const spritePlayer = this.createPlayerSprite(gameScene, playerData);
+        const spriteAvatar = this.createPlayerSprite(gameScene, playerData);
         // Crear texto del nombre
-        const userNameContainer = this.createUserNameText(gameScene, spritePlayer, playerData);
+        const userNameContainer = this.createUserNameText(gameScene, spriteAvatar, playerData);
 
         // Crear contenedor
         const playerContainer = gameScene.add.container(0, 0, [
             spriteShadow,
-            spritePlayer,
+            spriteAvatar,
             userNameContainer.background,
             userNameContainer.name
         ]);
-        playerContainer.setSize(spritePlayer.width, spritePlayer.height + spriteShadow.height);
+        playerContainer.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
-        return { playerContainer, spritePlayer, spriteShadow };
+        return { playerContainer, spriteAvatar, spriteShadow };
     }
 
     static createShadowSprite(gameScene, playerData) {
@@ -56,18 +56,18 @@ class AddUserController {
     }
 
     static createPlayerSprite(gameScene, playerData) {
-        const spritePlayer = gameScene.add.sprite(0, 0, "player_" + playerData.id);
+        const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + playerData.id);
         UserIdleAnimation.main(
-            spritePlayer,
+            spriteAvatar,
             playerData.z,
             playerData.avatar_id
         );
-        spritePlayer.setDepth(1);
+        spriteAvatar.setDepth(1);
 
-        return spritePlayer;
+        return spriteAvatar;
     }
 
-    static createUserNameText(gameScene, spritePlayer, playerData) {
+    static createUserNameText(gameScene, spriteAvatar, playerData) {
         // Nombre del usuario
         const userName = playerData.username || "Usuario";
 
@@ -99,7 +99,7 @@ class AddUserController {
         }
 
         // Crear el fondo usando la textura generada
-        const textBackground = gameScene.add.image(0, -spritePlayer.displayHeight / 2 - textHeight - 8, textureKey);
+        const textBackground = gameScene.add.image(0, -spriteAvatar.displayHeight / 2 - textHeight - 8, textureKey);
         textBackground.setOrigin(0.5, 1);
         textBackground.setDepth(2);
 
