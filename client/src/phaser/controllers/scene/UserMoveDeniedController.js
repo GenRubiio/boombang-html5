@@ -10,7 +10,7 @@ class UserMoveDeniedController {
             const spriteAvatar = user.sprite_player;
             const spriteShadow = user.sprite_shadow;
             const direction = user.position.z;
-            const avatarId = user.avatar_id;
+            const avatarId = user.avatarId;
 
             // Detener Tweens activos del playerContainer
             if (user.currentTween) {

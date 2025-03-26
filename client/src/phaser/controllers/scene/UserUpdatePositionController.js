@@ -44,7 +44,7 @@ class UserUpdatePositionController {
         UserIdleAnimation.main(
             user.sprite_player,
             position.z,
-            user.avatar_id
+            user.avatarId
         );
     }
 }

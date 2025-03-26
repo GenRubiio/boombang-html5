@@ -1,19 +1,19 @@
 export default class UserModel {
-    constructor(playerData, spriteAvatar, spriteShadow, playerContainer, gameScene) {
-        this.socketId = playerData.id;
-        this.username = playerData.username;
+    constructor(row, spriteAvatar, spriteShadow, playerContainer, gameScene) {
+        this.socketId = row.id;
+        this.username = row.username;
         this.position = {
-            x: playerData.x,
-            y: playerData.y,
-            z: playerData.z
+            x: row.x,
+            y: row.y,
+            z: row.z
         };
-        this.avatar_id = playerData.avatar_id;
-        this.animations = playerData.animations;
+        this.avatarId = row.avatar_id;
+        this.animations = row.animations;
         this.sprite_player = spriteAvatar;
         this.sprite_shadow = spriteShadow;
         this.playerContainer = playerContainer;
-        this.uppercuts_send = playerData.uppercutsSend,
-        this.uppercuts_received = playerData.uppercutsReceived,
+        this.uppercuts_send = row.uppercutsSend,
+        this.uppercuts_received = row.uppercutsReceived,
         this.ring_wins = 0;
     }
 }

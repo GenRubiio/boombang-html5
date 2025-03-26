@@ -54,7 +54,7 @@ class SendUppercutAnimationController {
         UserIdleAnimation.main(
             attacker.sprite_player,
             attacker.position.z,
-            attacker.avatar_id
+            attacker.avatarId
         );
 
         const attackerSprite = attacker.sprite_player;
@@ -65,14 +65,14 @@ class SendUppercutAnimationController {
             attackerSprite,
             data.direction,
             true,
-            attacker.avatar_id
+            attacker.avatarId
         );
 
         attackerSprite.once("animationcomplete", () => {
             UserIdleAnimation.main(
                 attacker.sprite_player,
                 attacker.position.z,
-                attacker.avatar_id
+                attacker.avatarId
             );
         });
 
@@ -81,7 +81,7 @@ class SendUppercutAnimationController {
             receiverSprite,
             data.direction,
             false,
-            receiver.avatar_id
+            receiver.avatarId
         );
     }
 }

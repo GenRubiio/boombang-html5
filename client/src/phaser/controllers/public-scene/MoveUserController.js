@@ -65,7 +65,7 @@ class MoveUserController {
         UserWalkAnimation.playWalk(
             user.sprite_player,
             step.z,
-            user.avatar_id
+            user.avatarId
         );
 
         // Crea el tween de movimiento
