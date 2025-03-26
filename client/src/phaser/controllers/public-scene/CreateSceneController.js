@@ -1,4 +1,4 @@
-import AddPlayerController from "./AddPlayerController.js";
+import AddUserController from "./AddUserController.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../scene/SetUserCardController.js";
@@ -117,7 +117,7 @@ class CreateSceneController {
         // Crear los jugadores iniciales
         (async () => {
             for (const playerData of playersData) {
-                await AddPlayerController.main(gameScene, playerData);
+                await AddUserController.main(gameScene, playerData);
             }
             //console.log("Players loaded", gameScene.players);
             SetUserCardController.main(gameScene, socket.user);

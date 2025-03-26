@@ -1,4 +1,4 @@
-class MovePlayerToTileController {
+class MoveUserToTileController {
     static main(gameScene, playerModel) {
         const tileWidth = 65;
         const tileHeight = 33;
@@ -22,4 +22,4 @@ class MovePlayerToTileController {
     }
 }
 
-export default MovePlayerToTileController;
+export default MoveUserToTileController;

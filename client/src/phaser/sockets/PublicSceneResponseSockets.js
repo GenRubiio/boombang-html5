@@ -1,7 +1,7 @@
 import socket from "../../sockets/socket"; // Conexión Socket.io
-import MovePlayerController from "../controllers/public-scene/MovePlayerController";
-import RemovePlayerController from "../controllers/public-scene/RemovePlayerController";
-import AddPlayerController from "../controllers/public-scene/AddPlayerController";
+import MoveUserController from "../controllers/public-scene/MoveUserController";
+import RemoveUserController from "../controllers/public-scene/RemoveUserController";
+import AddUserController from "../controllers/public-scene/AddUserController";
 import CreateSceneController from "../controllers/public-scene/CreateSceneController";
 import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/public-scene/RemoveUserAreaController";
@@ -16,7 +16,7 @@ class PublicSceneResponseSockets {
         
         // Escuchar cuando un nuevo jugador entra
         socket.on(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_AREA, (data) => {
-            AddPlayerController.main(gameScene, data.user);
+            AddUserController.main(gameScene, data.user);
         });
 
         // Escuchar cuando un jugador se mueve
@@ -25,12 +25,12 @@ class PublicSceneResponseSockets {
             if (gameScene.players[id]) {
                 //console.log(`Moving player ${id} to path:`, path);
                 //console.log(`Is last step: ${data.isLastStep}`);
-                MovePlayerController.main(gameScene, id, path, data.isLastStep);
+                MoveUserController.main(gameScene, id, path, data.isLastStep);
             }
         });
 
         socket.on(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, (data) => {
-            RemovePlayerController.main(gameScene, data.socketId);
+            RemoveUserController.main(gameScene, data.socketId);
         });
 
         socket.on(ResponseSocketsEnum.REMOVE_USER_AREA, () => {

@@ -1,15 +1,15 @@
-import MovePlayerToTileController from "./MovePlayerToTileController.js";
+import MoveUserToTileController from "./MoveUserToTileController.js";
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import PlayerModel from "../../models/PlayerModel.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 
-class AddPlayerController {
+class AddUserController {
     static async main(gameScene, playerData) {
         if (gameScene.players[playerData.id]) return;
         const { playerContainer, spritePlayer, spriteShadow } = this.createPlayerContainer(gameScene, playerData);
         const playerModel = new PlayerModel(playerData, spritePlayer, spriteShadow, playerContainer, gameScene);
-        MovePlayerToTileController.main(gameScene, playerModel);
+        MoveUserToTileController.main(gameScene, playerModel);
         // Almacenar jugador
         gameScene.players[playerData.id] = playerModel;
     }
@@ -113,4 +113,4 @@ class AddPlayerController {
     }
 }
 
-export default AddPlayerController;
+export default AddUserController;
