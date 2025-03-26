@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
-import asset_shadowImage from "../assets/images/shadow.png"; // Imagen de la sombra
+import asset_shadowImage from "../assets/game/avatar/shadow.png"; // Imagen de la sombra
 import asset_tileImage from "../assets/game/scene/tile.png"; // Imagen del suelo
 import PublicSceneResponseSockets from "./sockets/PublicSceneResponseSockets"; // Controladores de sockets
 import PublicSceneRequestSockets from "./sockets/PublicSceneRequestSockets"; // Controladores de sockets
