@@ -16,17 +16,17 @@ class MoveUserController {
         // (Opcional) log de depuración, coméntalo en producción
         // console.log(`Moving player ${socketId} to path:`, path);
 
-        const playerModel = gameScene.players[socketId];
+        const user = gameScene.players[socketId];
 
         // Detener tweens existentes
-        if (playerModel.currentTween) {
-            playerModel.currentTween.stop();
+        if (user.currentTween) {
+            user.currentTween.stop();
         }
-        gameScene.tweens.killTweensOf(playerModel.playerContainer);
+        gameScene.tweens.killTweensOf(user.playerContainer);
 
         // Guardar el path y reiniciar el índice
-        playerModel.path = path;
-        playerModel.pathIndex = 0;
+        user.path = path;
+        user.pathIndex = 0;
 
         // Iniciar movimiento al siguiente paso
         this.moveToNextStep(gameScene, socketId, isLastStep);
@@ -36,11 +36,11 @@ class MoveUserController {
      * Mueve al jugador al siguiente paso del path
      */
     static moveToNextStep(gameScene, socketId, isLastStep) {
-        const playerModel = gameScene.players[socketId];
-        if (!playerModel) return;
+        const user = gameScene.players[socketId];
+        if (!user) return;
 
         // Si ya hemos recorrido todo el path
-        if (playerModel.pathIndex >= playerModel.path.length) {
+        if (user.pathIndex >= user.path.length) {
             // Lógica adicional si es el último paso
             if (isLastStep) {
                 UserMoveDeniedController.main(gameScene, socketId);
@@ -48,7 +48,7 @@ class MoveUserController {
             return;
         }
 
-        const step = playerModel.path[playerModel.pathIndex];
+        const step = user.path[user.pathIndex];
 
         // Ajusta según tu grid isométrico
         const tileWidth = 65;
@@ -59,38 +59,38 @@ class MoveUserController {
         const centerY = (step.x + step.y) * (tileHeight / 2);
 
         // Actualiza posición lógica del jugador
-        playerModel.position = { x: step.x, y: step.y, z: step.z };
+        user.position = { x: step.x, y: step.y, z: step.z };
 
         // Inicia la animación SOLO una vez (en lugar de cada frame).
         UserWalkAnimation.playWalk(
-            playerModel.sprite_player,
+            user.sprite_player,
             step.z,
-            playerModel.avatar_id
+            user.avatar_id
         );
 
         // Crea el tween de movimiento
         const tween = gameScene.tweens.add({
-            targets: playerModel.playerContainer,
+            targets: user.playerContainer,
             x: centerX,
             y: centerY,
             duration: AnimationsTimerEnum.WALK,
             onUpdate: () => {
-                if (!playerModel.playerContainer) return;
+                if (!user.playerContainer) return;
                 // Actualiza la profundidad según la Y (opcional en cada frame).
-                playerModel.playerContainer.setDepth(playerModel.playerContainer.y);
+                user.playerContainer.setDepth(user.playerContainer.y);
             },
             onComplete: () => {
                 // Al terminar el movimiento, detenemos la animación
-                playerModel.sprite_player.stop();
+                user.sprite_player.stop();
 
                 // Pasamos al siguiente paso del path
-                playerModel.pathIndex++;
+                user.pathIndex++;
                 this.moveToNextStep(gameScene, socketId, isLastStep);
             }
         });
 
         // Almacena el tween actual para futuras referencias
-        playerModel.currentTween = tween;
+        user.currentTween = tween;
     }
 }
 

@@ -4,37 +4,37 @@ import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 
 class UserMoveDeniedController {
     static main(gameScene, socketId) {
-        const playerModel = gameScene.players[socketId];
+        const user = gameScene.players[socketId];
         
-        if (playerModel) {
-            const spritePlayer = playerModel.sprite_player;
-            const spriteShadow = playerModel.sprite_shadow;
-            const direction = playerModel.position.z;
-            const avatarId = playerModel.avatar_id;
+        if (user) {
+            const spritePlayer = user.sprite_player;
+            const spriteShadow = user.sprite_shadow;
+            const direction = user.position.z;
+            const avatarId = user.avatar_id;
 
             // Detener Tweens activos del playerContainer
-            if (playerModel.currentTween) {
-                playerModel.currentTween.stop();
-                playerModel.currentTween = null;
+            if (user.currentTween) {
+                user.currentTween.stop();
+                user.currentTween = null;
             }
-            if (playerModel.currentShadowTween) {
-                playerModel.currentShadowTween.stop();
-                playerModel.currentShadowTween = null;
+            if (user.currentShadowTween) {
+                user.currentShadowTween.stop();
+                user.currentShadowTween = null;
             }
             // Matar cualquier otro tween de sprites
-            gameScene.tweens.killTweensOf(playerModel.playerContainer);
+            gameScene.tweens.killTweensOf(user.playerContainer);
             gameScene.tweens.killTweensOf(spritePlayer);
             gameScene.tweens.killTweensOf(spriteShadow);
 
             // Forzar la posición del jugador en el mapa según (x, y)
             const tileWidth = 65;
             const tileHeight = 33;
-            const finalX = (playerModel.position.x - playerModel.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-            const finalY = (playerModel.position.x + playerModel.position.y) * (tileHeight / 2);
+            const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
+            const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
 
             // Establecer posición y profundidad
-            playerModel.playerContainer.setPosition(finalX, finalY);
-            playerModel.playerContainer.setDepth(finalY);
+            user.playerContainer.setPosition(finalX, finalY);
+            user.playerContainer.setDepth(finalY);
 
             // Ajustar posiciones internas del sprite
             spriteShadow.setPosition(0, 0);
