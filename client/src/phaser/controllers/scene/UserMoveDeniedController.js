@@ -7,7 +7,7 @@ class UserMoveDeniedController {
         const user = gameScene.users[socketId];
         
         if (user) {
-            const spritePlayer = user.sprite_player;
+            const spriteAvatar = user.sprite_player;
             const spriteShadow = user.sprite_shadow;
             const direction = user.position.z;
             const avatarId = user.avatar_id;
@@ -23,7 +23,7 @@ class UserMoveDeniedController {
             }
             // Matar cualquier otro tween de sprites
             gameScene.tweens.killTweensOf(user.playerContainer);
-            gameScene.tweens.killTweensOf(spritePlayer);
+            gameScene.tweens.killTweensOf(spriteAvatar);
             gameScene.tweens.killTweensOf(spriteShadow);
 
             // Forzar la posición del jugador en el mapa según (x, y)
@@ -38,21 +38,21 @@ class UserMoveDeniedController {
 
             // Ajustar posiciones internas del sprite
             spriteShadow.setPosition(0, 0);
-            spritePlayer.setPosition(
+            spriteAvatar.setPosition(
                 0,
-                -(spriteShadow.displayHeight / 2) - (spritePlayer.displayHeight / 2) + 15
+                -(spriteShadow.displayHeight / 2) - (spriteAvatar.displayHeight / 2) + 15
             );
 
             // Detener animación actual y asegurar el frame idle
-            this.stopAnimation(spritePlayer, direction, avatarId);
+            this.stopAnimation(spriteAvatar, direction, avatarId);
         }
     }
 
-    static stopAnimation(spritePlayer, direction, avatarId) {
-        if (!spritePlayer || !spritePlayer.anims) {
+    static stopAnimation(spriteAvatar, direction, avatarId) {
+        if (!spriteAvatar || !spriteAvatar.anims) {
             //console.error("Jugador no válido al detener animación.");
             UserIdleAnimation.main(
-                spritePlayer,
+                spriteAvatar,
                 direction,
                 avatarId
             );
@@ -60,13 +60,13 @@ class UserMoveDeniedController {
         }
 
         // Detener cualquier animación activa
-        if (spritePlayer.anims.isPlaying) {
-            spritePlayer.stop();
+        if (spriteAvatar.anims.isPlaying) {
+            spriteAvatar.stop();
         }
 
         // Establecer frame por defecto
         UserIdleAnimation.main(
-            spritePlayer,
+            spriteAvatar,
             direction,
             avatarId
         );

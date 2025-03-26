@@ -8,18 +8,18 @@ import AnimationUtils from "../../utils/AnimationUtils.js";
 class UserWalkAnimation {
     /**
      * Ajusta la animación en el sprite y la reproduce.
-     * @param {Phaser.GameObjects.Sprite} spritePlayer
+     * @param {Phaser.GameObjects.Sprite} spriteAvatar
      * @param {number} direction - Una de las direcciones definidas en DirectionEnum
      * @param {string} avatarId - Para usar la config apropiada
      */
-    static playWalk(spritePlayer, direction, avatarId) {
+    static playWalk(spriteAvatar, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
         
         // Configura sprite (flip, origen, etc.)
-        AnimationUtils.setSpriteConfig(spritePlayer, avatarId, textureKey);
+        AnimationUtils.setSpriteConfig(spriteAvatar, avatarId, textureKey);
         
         // Inicia la animación una sola vez
-        spritePlayer.play(avatarId + "_" + textureKey, true);
+        spriteAvatar.play(avatarId + "_" + textureKey, true);
     }
 
     /**
