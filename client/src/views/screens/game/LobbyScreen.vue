@@ -40,9 +40,9 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_backgroundImage from "../../../assets/game/lobby/background.png";
+import asset_backgroundImage from "../../../assets/game/lobby/background.webp";
 import asset_florImage from "../../../assets/game/lobby/flor.webp";
-import asset_foregroundImage from "../../../assets/game/lobby/foreground.png";
+import asset_foregroundImage from "../../../assets/game/lobby/foreground.webp";
 import asset_marikitaImage from "../../../assets/game/lobby/marikita.webp";
 
 export default {
