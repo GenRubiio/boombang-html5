@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import asset_backgroundImage from "../../../assets/game/loading/background.png";
+import asset_backgroundImage from "../../../assets/game/loading/background.webp";
 import asset_mottoWaterImage from "../../../assets/game/loading/motto-water.webp";
 import asset_fishImage from "../../../assets/game/loading/fish.webp";
 
