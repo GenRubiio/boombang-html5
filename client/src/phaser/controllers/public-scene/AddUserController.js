@@ -3,6 +3,8 @@ import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserModel from "../../models/UserModel.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
+import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
+import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
 
 class AddUserController {
     static async main(gameScene, userData) {
@@ -31,6 +33,7 @@ class AddUserController {
         ]);
         containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
+        this.createOriginButtons(gameScene, spriteAvatar, containerUser);
         return { containerUser, spriteAvatar, spriteShadow };
     }
 
@@ -62,6 +65,17 @@ class AddUserController {
             userData.z,
             userData.avatar_id
         );
+        //UserWalkAnimation.playWalk(
+        //    spriteAvatar,
+        //    8,
+        //    userData.avatar_id
+        //);
+        //UserUppercutAnimation.main(
+        //    spriteAvatar,
+        //    'right',
+        //    true,
+        //    userData.avatar_id
+        //);
         spriteAvatar.setDepth(1);
 
         return spriteAvatar;
@@ -110,6 +124,85 @@ class AddUserController {
             background: textBackground,
             name: userNameText
         }
+    }
+
+    static createOriginButtons(gameScene, spriteAvatar, containerUser) {
+        // Aseguramos que containerUser tenga una posición definida para el debug.
+        if (containerUser.x === 0 && containerUser.y === 0) {
+            // Puedes ajustar estos valores según tu escena
+            containerUser.setPosition(100, 200);
+        }
+
+        // Obtenemos los límites del contenedor para posicionar los controles
+        const bounds = containerUser.getBounds();
+        console.log("Bounds del containerUser:", bounds); // Debug: Ver en consola las coordenadas
+
+        // Posicionamos los controles a la derecha del contenedor
+        const controlX = bounds.right + 10;
+        const controlY = bounds.top;
+
+        // Texto para mostrar el origin actual del spriteAvatar
+        const originDisplay = gameScene.add.text(controlX, controlY, `Origin: (${spriteAvatar.originX.toFixed(2)}, ${spriteAvatar.originY.toFixed(2)})`, {
+            fontSize: '12px',
+            fill: '#fff'
+        });
+
+        // Botón Arriba
+        const btnUp = gameScene.add.text(controlX, controlY + 20, 'Arriba', {
+            fontSize: '12px',
+            fill: '#0f0'
+        }).setInteractive();
+
+        // Botón Abajo
+        const btnDown = gameScene.add.text(controlX, controlY + 60, 'Abajo', {
+            fontSize: '12px',
+            fill: '#0f0'
+        }).setInteractive();
+
+        // Botón Izquierda
+        const btnLeft = gameScene.add.text(controlX - 40, controlY + 40, 'Izquierda', {
+            fontSize: '12px',
+            fill: '#0f0'
+        }).setInteractive();
+
+        // Botón Derecha
+        const btnRight = gameScene.add.text(controlX + 40, controlY + 40, 'Derecha', {
+            fontSize: '12px',
+            fill: '#0f0'
+        }).setInteractive();
+
+        // Función para actualizar el texto del origin
+        const updateOriginText = () => {
+            originDisplay.setText(`Origin: (${spriteAvatar.originX.toFixed(2)}, ${spriteAvatar.originY.toFixed(2)})`);
+        };
+
+        btnUp.on('pointerdown', () => {
+            let newOriginY = spriteAvatar.originY - 0.01;
+            //newOriginY = Phaser.Math.Clamp(newOriginY, 0, 1);
+            spriteAvatar.setOrigin(spriteAvatar.originX, newOriginY);
+            updateOriginText();
+        });
+
+        btnDown.on('pointerdown', () => {
+            let newOriginY = spriteAvatar.originY + 0.01;
+            //newOriginY = Phaser.Math.Clamp(newOriginY, 0, 1);
+            spriteAvatar.setOrigin(spriteAvatar.originX, newOriginY);
+            updateOriginText();
+        });
+
+        btnLeft.on('pointerdown', () => {
+            let newOriginX = spriteAvatar.originX + 0.01;
+            //newOriginX = Phaser.Math.Clamp(newOriginX, 0, 1);
+            spriteAvatar.setOrigin(newOriginX, spriteAvatar.originY);
+            updateOriginText();
+        });
+
+        btnRight.on('pointerdown', () => {
+            let newOriginX = spriteAvatar.originX - 0.01;
+            //newOriginX = Phaser.Math.Clamp(newOriginX, 0, 1);
+            spriteAvatar.setOrigin(newOriginX, spriteAvatar.originY);
+            updateOriginText();
+        });
     }
 }
 
