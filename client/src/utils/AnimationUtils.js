@@ -8,14 +8,16 @@ class AnimationUtils {
         // (window.avatars_config[avatarId][textureKey])
         const animationData = window.avatars_config[avatarId][textureKey];
         if (!animationData) return; // Comprueba que exista
-        
+
         // Ajusta flip horizontal
         spriteAvatar.setFlipX(animationData.flip_horizontally);
 
         // Ajusta el origen en base a offsets
         spriteAvatar.setOrigin(
-            animationData.originX + (animationData.offsetX / animationData.frameWidth),
-            animationData.originY + (animationData.offsetY / animationData.frameHeight)
+            //animationData.originX + (animationData.offsetX / animationData.frameWidth),
+            //animationData.originY + (animationData.offsetY / animationData.frameHeight)
+            animationData.originX,
+            animationData.originY
         );
     }
 }
