@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import asset_baseImage from "../../../../assets/game/basechat/base.png";
-import asset_brujulaImage from "../../../../assets/game/basechat/brujula.png";
+import asset_baseImage from "../../../../assets/game/basechat/base.webp";
+import asset_brujulaImage from "../../../../assets/game/basechat/brujula.webp";
 
 export default {
   data() {
@@ -95,8 +95,8 @@ export default {
 
 .base-chat__container__brujula {
   position: absolute;
-  right: 20px;
-  top: -35px;
+  right: 12px;
+  top: -3px;
   cursor: pointer;
 }
 </style>
