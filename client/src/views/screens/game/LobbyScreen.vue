@@ -18,7 +18,7 @@
     <div class="lobby__rooms">
       <div class="lobby__rooms-container">
         <div class="lobby__rooms-container-title">Areas</div>
-        <hr>
+        <hr />
         <div class="lobby__rooms-list">
           <div
             v-for="publicScene in publicScenes"
@@ -175,7 +175,7 @@ export default {
   height: 35px;
   display: inline-flex;
   align-items: center;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease;
 }
 
 .lobby__rooms-list button:hover {
@@ -191,12 +191,17 @@ export default {
   font-size: 12px;
 }
 
-.lobby__avatar img {
+.lobby__avatar {
   position: absolute;
-  top: 266px;
-  left: 455px;
+  top: 277px;
+  left: 431px;
   z-index: 1;
-  /*animation: floatAnimation 1.5s ease-in-out forwards;*/
+  width: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.lobby__avatar img {
 }
 
 @keyframes floatAnimation {
