@@ -16,20 +16,20 @@
       <img :src="asset_avatarImage" alt="avatar" />
     </div>
     <div class="lobby__rooms">
-      <div class="lobby__rooms-tabs">
-        <div class="lobby__rooms-tabs__tab selected">
-          <div class="lobby__rooms-tabs__tab-title">Areas</div>
-        </div>
-      </div>
-      <div class="lobby__rooms-list">
-        <div
-          v-for="publicScene in publicScenes"
-          :key="publicScene.id"
-          class="room"
-        >
-          <button @click="joinRoom(publicScene.id)">
-            {{ publicScene.name }} ({{ publicScene.total_users_in }})
-          </button>
+      <div class="lobby__rooms-container">
+        <div class="lobby__rooms-container-title">Areas</div>
+        <hr>
+        <div class="lobby__rooms-list">
+          <div
+            v-for="publicScene in publicScenes"
+            :key="publicScene.id"
+            class="room"
+          >
+            <button @click="joinRoom(publicScene.id)">
+              {{ publicScene.name }}
+              <span>{{ publicScene.total_users_in }}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -103,6 +103,21 @@ export default {
   overflow: hidden;
 }
 
+.lobby__rooms-container {
+  background-color: #3c87b3ad;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: start;
+  height: 100vh;
+  max-height: 340px;
+}
+
+.lobby__rooms-container-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+}
+
 .lobby__background img {
   position: absolute;
   top: -22px;
@@ -140,33 +155,40 @@ export default {
   width: 240px;
 }
 
-.lobby__rooms-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-.lobby__rooms-tabs__tab {
-  background-color: #4f4f4f;
-  border-radius: 10px;
-  text-align: center;
-  padding: 0 10px;
-}
-
-.lobby__rooms-tabs__tab.selected {
-  background-color: #4f4f4f;
-}
-
-.lobby__rooms-tabs__tab-title {
-  font-size: 20px;
-  font-weight: bold;
-}
-
 .lobby__rooms-list {
-  background-color: black;
   border-radius: 10px;
   margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.lobby__rooms-list button {
+  background-color: #3a4b54c9;
+  color: white;
+  border: none;
+  border-radius: 5px;
   padding: 5px;
+  width: 100%;
+  text-align: left;
+  font-size: 15px;
+  height: 35px;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.3s ease; 
+}
+
+.lobby__rooms-list button:hover {
+  background-color: #1c2c35ad;
+  cursor: pointer;
+}
+
+.lobby__rooms-list button span {
+  margin-left: auto;
+  background-color: #3c87b3ad;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
 }
 
 .lobby__avatar img {
