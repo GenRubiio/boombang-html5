@@ -11,7 +11,6 @@ class Bot {
         this.uppercutInterval = null;
 
         this.socket.on("connect", () => {
-            //console.log(`${this.username} conectado como bot.`);
             this.login();
         });
 
@@ -21,7 +20,7 @@ class Bot {
             }, 1000);
 
             this.moveRandomly();
-            this.sendRandomMessage();
+            //this.sendRandomMessage();
             this.selectUser();
         });
 

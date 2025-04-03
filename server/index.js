@@ -17,7 +17,7 @@ logger.log('Starting server...', 'success');
 
     // Configurar sockets
     sockets(io);
-    initializer();
+    await initializer();
 
     if (process.env.RUN_BOTS ? process.env.RUN_BOTS === 'true' : false) {
         BotsPackage.main();
