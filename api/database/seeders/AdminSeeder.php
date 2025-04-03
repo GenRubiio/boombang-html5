@@ -23,7 +23,7 @@ class AdminSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
             'password' => '$2y$10$vDDLdNEO2lLvim0VKcoH3uyjPMhfd4E6dOou1bWzeaQeYsvR4yZEm',
             'remember_token' => Str::random(10),
-            'active' => 1,
+            'active' => true,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
