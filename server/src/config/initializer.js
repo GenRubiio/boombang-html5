@@ -2,10 +2,10 @@ const LoadPublicScenesBoot = require('../boot/LoadPublicScenesBoot');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 
-const initializer = () => {
+const initializer = async () => {
     logger.log('Initializing preloaded data...');
     
-    LoadPublicScenesBoot.main();
+    await LoadPublicScenesBoot.main();
 };
 
 module.exports = { initializer };

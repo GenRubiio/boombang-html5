@@ -23,6 +23,7 @@ class BotSeeder extends Seeder
                 'email' => 'bot' . $i . '@test.com',
                 'username' => 'Bot' . $i,
                 'password' => Hash::make('test'),
+                'avatar' => collect([5, 12])->random(),
             ];
         }
         
