@@ -25,6 +25,7 @@ class User extends Authenticatable
         'avatar',
         'uppercuts_sent',
         'uppercuts_received',
+        'is_bot',
         'active',
     ];
 

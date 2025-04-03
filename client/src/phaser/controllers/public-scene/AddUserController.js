@@ -36,7 +36,7 @@ class AddUserController {
         ]);
         containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
-        AvatarSpriteModal.main(gameScene, spriteAvatar);
+        //AvatarSpriteModal.main(gameScene, spriteAvatar);
         return { containerUser, spriteAvatar, spriteShadow };
     }
 
