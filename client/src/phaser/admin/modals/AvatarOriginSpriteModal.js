@@ -1,4 +1,4 @@
-class AvatarSpriteModal {
+class AvatarOriginSpriteModal {
     static main(gameScene, spriteAvatar) {
         const controlX = 100;
         const controlY = 100;
@@ -68,4 +68,4 @@ class AvatarSpriteModal {
     }
 }
 
-export default AvatarSpriteModal;
+export default AvatarOriginSpriteModal;
