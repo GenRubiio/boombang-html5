@@ -5,6 +5,9 @@ const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 const AnimationEnum = require('../enums/AnimationEnum');
 const RemoveUserFromAreaTask = require('./RemoveUserFromAreaTask');
 const EmojisBlockActionsMap = require('../maps/EmojisBlockActionsMap');
+const WalkBlockActionsMap = require('../maps/WalkBlockActionsMap');
+const UppercutSendBlockActionsMap = require('../maps/UppercutSendBlockActionsMap');
+const UppercutReceivedActionsMap = require('../maps/UppercutReceivedActionsMap');
 
 class UserBlockActionsTask {
     static blockByEmojiSend(user, emojiId) {
@@ -25,30 +28,22 @@ class UserBlockActionsTask {
     }
 
     static blockByWalk(user) {
-        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_1, AnimationBlockTimerEnum.WALK);
-        user.blockAction(AnimationEnum.AVATAR_LAUGHTER_2, AnimationBlockTimerEnum.WALK);
-        user.blockAction(AnimationEnum.AVATAR_CRY, AnimationBlockTimerEnum.WALK);
-        user.blockAction(AnimationEnum.AVATAR_LOVE, AnimationBlockTimerEnum.WALK);
-        user.blockAction(AnimationEnum.AVATAR_SPIT, AnimationBlockTimerEnum.WALK);
-        user.blockAction(AnimationEnum.AVATAR_FART, AnimationBlockTimerEnum.WALK);
-        user.blockAction(AnimationEnum.AVATAR_PROVOKE, AnimationBlockTimerEnum.WALK);
-        user.blockAction(AnimationEnum.AVATAR_FLY, AnimationBlockTimerEnum.WALK);
+        try {
+            for (const action of WalkBlockActionsMap.get()) {
+                user.blockAction(action, AnimationBlockTimerEnum.WALK);
+            }
+        }
+        catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by uppercut: ${err.message}`, 'error');
+        }
     }
 
     static blockByUppercutSend(user) {
         try {
-            user.blockAction(AnimationEnum.UPPERCUT, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.WALK, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.LOOK, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.LEAVE_AREA, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_LAUGHTER_1, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_LAUGHTER_2, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_CRY, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_LOVE, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_SPIT, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_FART, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_PROVOKE, AnimationBlockTimerEnum.UPPERCUT_SEND);
-            user.blockAction(AnimationEnum.AVATAR_FLY, AnimationBlockTimerEnum.UPPERCUT_SEND);
+            for (const action of UppercutSendBlockActionsMap.get()) {
+                user.blockAction(action, AnimationBlockTimerEnum.UPPERCUT_SEND);
+            }
         }
         catch (err) {
             console.log(err);
@@ -65,17 +60,9 @@ class UserBlockActionsTask {
                     RemoveUserFromAreaTask.main(user.currentArea, user, io);
                 }
             });
-            user.blockAction(AnimationEnum.WALK, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.LOOK, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.LEAVE_AREA, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_LAUGHTER_1, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_LAUGHTER_2, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_CRY, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_LOVE, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_SPIT, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_FART, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_PROVOKE, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
-            user.blockAction(AnimationEnum.AVATAR_FLY, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
+            for (const action of UppercutReceivedActionsMap.get()) {
+                user.blockAction(action, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
+            }
         }
         catch (err) {
             console.log(err);
