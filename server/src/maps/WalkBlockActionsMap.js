@@ -12,6 +12,14 @@ class WalkBlockActionsMap {
             AnimationEnum.AVATAR_FART,
             AnimationEnum.AVATAR_PROVOKE,
             AnimationEnum.AVATAR_FLY,
+            AnimationEnum.AVATAR_DOWN_TALK,
+            AnimationEnum.AVATAR_UP_TALK,
+            AnimationEnum.AVATAR_LEFT_TALK,
+            AnimationEnum.AVATAR_RIGHT_TALK,
+            AnimationEnum.AVATAR_LEFTDOWN_TALK,
+            AnimationEnum.AVATAR_RIGHTDOWN_TALK,
+            AnimationEnum.AVATAR_LEFTUP_TALK,
+            AnimationEnum.AVATAR_RIGHTUP_TALK
         ]
     }
 }
