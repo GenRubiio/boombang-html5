@@ -5,15 +5,21 @@
     </div>
     <div class="login-form__content">
       <div class="login-form__title">Ya tienes cuenta?</div>
-      <div class="login-form__label">Nombre del Personaje</div>
-      <div class="login-form__input">
-        <input
-          v-model="username"
-          ref="username"
-          type="text"
-          placeholder="Nombre"
-          required
-        />
+      <div class="login-form__input-container">
+        <div class="login-form__error" v-if="showUsernameError">
+          <img :src="asset_warningImage" alt="warning" />
+          {{ usernameError }}
+        </div>
+        <div class="login-form__label">Nombre del Personaje</div>
+        <div class="login-form__input">
+          <input
+            v-model="username"
+            ref="username"
+            type="text"
+            placeholder="Nombre"
+            required
+          />
+        </div>
       </div>
       <div class="login-form__label">Contraseña</div>
       <div class="login-form__input">
@@ -148,6 +154,40 @@ export default {
   margin-bottom: 5px;
 }
 
+.login-form__input-container {
+  position: relative;
+}
+
+.login-form__error {
+  position: absolute;
+  background-color: #000000ab;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 14px;
+  width: 165px;
+  left: -187px;
+  top: 20px;
+}
+
+
+.login-form__error::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%; /* Posiciona el triángulo a la derecha */
+  transform: translateY(-50%);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid black;
+}
+
+.login-form__error img {
+  width: 10px;
+  height: 10px;
+}
+
 .login-form__input input {
   width: 100%;
   box-sizing: border-box;
@@ -269,32 +309,4 @@ export default {
   cursor: not-allowed;
 }
 
-.login-form__error {
-  position: absolute;
-  background-color: #000000ab;
-  color: white;
-  padding: 5px;
-  border-radius: 5px;
-  font-size: 14px;
-  line-height: 14px;
-  width: 165px;
-  left: -179px;
-  top: 53px;
-}
-
-.login-form__error::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 100%; /* Posiciona el triángulo a la derecha */
-  transform: translateY(-50%);
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 10px solid black;
-}
-
-.login-form__error img {
-  width: 10px;
-  height: 10px;
-}
 </style>
