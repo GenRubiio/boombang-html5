@@ -15,10 +15,10 @@ class MoveUserToTileController {
 
         // Si necesitas ajustes adicionales:
         user.spriteShadow.setPosition(0, 0);
-        user.spriteAvatar.setPosition(
-            0,
-            -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15
-        );
+        //user.spriteAvatar.setPosition(
+        //    0,
+        //    -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2)
+        //);
     }
 }
 

@@ -13,11 +13,14 @@ class AnimationUtils {
         spriteAvatar.setFlipX(animationData.flip_horizontally);
 
         // Ajusta el origen en base a offsets
-        spriteAvatar.setOrigin(
-            //animationData.originX + (animationData.offsetX / animationData.frameWidth),
-            //animationData.originY + (animationData.offsetY / animationData.frameHeight)
-            animationData.originX,
-            animationData.originY
+        // AnimationUtils.js
+        //spriteAvatar.setOrigin(
+        //    animationData.originX + (animationData.offsetX / animationData.frameWidth),
+        //    animationData.originY + (animationData.offsetY / animationData.frameHeight)
+        //);
+        spriteAvatar.setPosition(
+            animationData.positionX,
+            animationData.positionY
         );
     }
 }

@@ -14,7 +14,7 @@ class MoveUserController {
         if (!path || path.length === 0 || !gameScene.users[socketId]) return;
 
         // (Opcional) log de depuración, coméntalo en producción
-        // console.log(`Moving player ${socketId} to path:`, path);
+        //console.log(`Moving player ${socketId} to path:`, path);
 
         const user = gameScene.users[socketId];
 

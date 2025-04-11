@@ -37,11 +37,11 @@ class UserMoveDeniedController {
             user.containerUser.setDepth(finalY);
 
             // Ajustar posiciones internas del sprite
-            spriteShadow.setPosition(0, 0);
-            spriteAvatar.setPosition(
-                0,
-                -(spriteShadow.displayHeight / 2) - (spriteAvatar.displayHeight / 2) + 15
-            );
+            //spriteShadow.setPosition(0, 0);
+            //spriteAvatar.setPosition(
+            //    0,
+            //    -(spriteShadow.displayHeight / 2) - (spriteAvatar.displayHeight / 2) + 15
+            //);
 
             // Detener animación actual y asegurar el frame idle
             this.stopAnimation(spriteAvatar, direction, avatarId);

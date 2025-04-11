@@ -32,11 +32,11 @@ class UserUpdatePositionController {
 
         user.containerUser.setPosition(finalX, finalY);
         user.containerUser.setDepth(finalY);
-        user.spriteShadow.setPosition(0, 0);
-        user.spriteAvatar.setPosition(
-            0,
-            -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15
-        );
+        //user.spriteShadow.setPosition(0, 0);
+        //user.spriteAvatar.setPosition(
+        //    0,
+        //    -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15
+        //);
 
         //console.log(`Updating player ${socketId} position/direction to:`, position);
 

@@ -2,32 +2,28 @@
   "left_punch_rec": {
     "atlasKey": "rasta_atlas",
     "prefix": "sprites/leftdown_punch_rec/",
-    "flip_horizontally": false,
-    "start": 1,
-    "end": 400,
-    "frameRate": 19,
-    "frameWidth": 90,
-    "frameHeight": 108,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
-  },
-  "right_punch_rec": {
-    "atlasKey": "rasta_atlas",
-    "prefix": "sprites/leftdown_punch_rec/",
     "flip_horizontally": true,
     "start": 1,
     "end": 400,
     "frameRate": 19,
     "frameWidth": 90,
     "frameHeight": 108,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -69.00
+  },
+  "right_punch_rec": {
+    "atlasKey": "rasta_atlas",
+    "prefix": "sprites/leftdown_punch_rec/",
+    "flip_horizontally": false,
+    "start": 1,
+    "end": 400,
+    "frameRate": 19,
+    "frameWidth": 90,
+    "frameHeight": 108,
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -69.00
   },
   "special": {
     "atlasKey": "rasta_atlas",
@@ -38,11 +34,9 @@
     "frameRate": 19,
     "frameWidth": 92,
     "frameHeight": 110,
-    "originX": 0.53,
-    "originY": 0.77,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": -4.00,
+    "positionY": -114.00
   },
   "down_ouch": {
     "atlasKey": "rasta_atlas",
@@ -53,11 +47,9 @@
     "frameRate": 19,
     "frameWidth": 93,
     "frameHeight": 104,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "left_beber": {
     "atlasKey": "rasta_atlas",
@@ -68,11 +60,9 @@
     "frameRate": 19,
     "frameWidth": 92,
     "frameHeight": 131,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "right_beber": {
     "atlasKey": "rasta_atlas",
@@ -83,11 +73,9 @@
     "frameRate": 19,
     "frameWidth": 92,
     "frameHeight": 131,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "escupir": {
     "atlasKey": "rasta_atlas",
@@ -98,11 +86,9 @@
     "frameRate": 19,
     "frameWidth": 84,
     "frameHeight": 102,
-    "originX": 0.38,
-    "originY": 0.47,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 11.00,
+    "positionY": -45.00
   },
   "up_talk": {
     "atlasKey": "rasta_atlas",
@@ -113,11 +99,9 @@
     "frameRate": 19,
     "frameWidth": 81,
     "frameHeight": 98,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "risa2": {
     "atlasKey": "rasta_atlas",
@@ -128,11 +112,9 @@
     "frameRate": 19,
     "frameWidth": 81,
     "frameHeight": 101,
-    "originX": 0.47,
-    "originY": 0.54,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 3.00,
+    "positionY": -53.00
   },
   "down_coco": {
     "atlasKey": "rasta_atlas",
@@ -143,11 +125,9 @@
     "frameRate": 19,
     "frameWidth": 96,
     "frameHeight": 105,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "risa1": {
     "atlasKey": "rasta_atlas",
@@ -158,11 +138,9 @@
     "frameRate": 19,
     "frameWidth": 84,
     "frameHeight": 101,
-    "originX": 0.49,
-    "originY": 0.52,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "down_talk": {
     "atlasKey": "rasta_atlas",
@@ -173,11 +151,9 @@
     "frameRate": 19,
     "frameWidth": 81,
     "frameHeight": 101,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -51.00
   },
   "leftup_talk": {
     "atlasKey": "rasta_atlas",
@@ -188,11 +164,9 @@
     "frameRate": 19,
     "frameWidth": 68,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 9.00,
+    "positionY": -51.00
   },
   "rightup_talk": {
     "atlasKey": "rasta_atlas",
@@ -203,11 +177,9 @@
     "frameRate": 19,
     "frameWidth": 68,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": -9.00,
+    "positionY": -51.00
   },
   "leftup_idle": {
     "atlasKey": "rasta_atlas",
@@ -218,11 +190,9 @@
     "frameRate": 19,
     "frameWidth": 66,
     "frameHeight": 100,
-    "originX": 0.36,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 8.00,
+    "positionY": -50.00
   },
   "rightup_idle": {
     "atlasKey": "rasta_atlas",
@@ -233,11 +203,9 @@
     "frameRate": 19,
     "frameWidth": 66,
     "frameHeight": 100,
-    "originX": 0.61,
-    "originY": 0.49,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": -8.00,
+    "positionY": -50.00
   },
   "leftdown_walk": {
     "atlasKey": "rasta_atlas",
@@ -248,11 +216,9 @@
     "frameRate": 19,
     "frameWidth": 78,
     "frameHeight": 100,
-    "originX": 0.43,
-    "originY": 0.51,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 4.00,
+    "positionY": -47.00
   },
   "rightdown_walk": {
     "atlasKey": "rasta_atlas",
@@ -263,11 +229,9 @@
     "frameRate": 19,
     "frameWidth": 78,
     "frameHeight": 100,
-    "originX": 0.55,
-    "originY": 0.51,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": -4.00,
+    "positionY": -47.00
   },
   "up_walk": {
     "atlasKey": "rasta_atlas",
@@ -278,11 +242,9 @@
     "frameRate": 19,
     "frameWidth": 79,
     "frameHeight": 101,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "llorar": {
     "atlasKey": "rasta_atlas",
@@ -293,11 +255,9 @@
     "frameRate": 19,
     "frameWidth": 89,
     "frameHeight": 104,
-    "originX": 0.52,
-    "originY": 0.38,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": -2.00,
+    "positionY": -24.00
   },
   "leftup_walk": {
     "atlasKey": "rasta_atlas",
@@ -308,11 +268,9 @@
     "frameRate": 19,
     "frameWidth": 69,
     "frameHeight": 104,
-    "originX": 0.35,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 8.00,
+    "positionY": -50.00
   },
   "rightup_walk": {
     "atlasKey": "rasta_atlas",
@@ -323,11 +281,9 @@
     "frameRate": 19,
     "frameWidth": 69,
     "frameHeight": 104,
-    "originX": 0.64,
-    "originY": 0.49,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": -8.00,
+    "positionY": -50.00
   },
   "left_flor_rec": {
     "atlasKey": "rasta_atlas",
@@ -338,11 +294,9 @@
     "frameRate": 19,
     "frameWidth": 71,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "right_flor_rec": {
     "atlasKey": "rasta_atlas",
@@ -353,11 +307,9 @@
     "frameRate": 19,
     "frameWidth": 71,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "left_idle": {
     "atlasKey": "rasta_atlas",
@@ -368,11 +320,9 @@
     "frameRate": 19,
     "frameWidth": 71,
     "frameHeight": 100,
-    "originX": 0.35,
-    "originY": 0.51,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 11.00,
+    "positionY": -49.00
   },
   "right_idle": {
     "atlasKey": "rasta_atlas",
@@ -383,11 +333,9 @@
     "frameRate": 19,
     "frameWidth": 71,
     "frameHeight": 100,
-    "originX": 0.63,
-    "originY": 0.51,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": -11.00,
+    "positionY": -49.00
   },
   "left_flor": {
     "atlasKey": "rasta_atlas",
@@ -398,11 +346,9 @@
     "frameRate": 19,
     "frameWidth": 88,
     "frameHeight": 104,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "right_flor": {
     "atlasKey": "rasta_atlas",
@@ -413,11 +359,9 @@
     "frameRate": 19,
     "frameWidth": 88,
     "frameHeight": 104,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "left_talk": {
     "atlasKey": "rasta_atlas",
@@ -428,11 +372,9 @@
     "frameRate": 19,
     "frameWidth": 71,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 11.00,
+    "positionY": -50.00
   },
   "right_talk": {
     "atlasKey": "rasta_atlas",
@@ -443,11 +385,9 @@
     "frameRate": 19,
     "frameWidth": 71,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": -11.00,
+    "positionY": -50.00
   },
   "redbull": {
     "atlasKey": "rasta_atlas",
@@ -458,11 +398,9 @@
     "frameRate": 19,
     "frameWidth": 96,
     "frameHeight": 106,
-    "originX": 0.70,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": -22.00,
+    "positionY": -50.00
   },
   "left_walk": {
     "atlasKey": "rasta_atlas",
@@ -473,11 +411,9 @@
     "frameRate": 19,
     "frameWidth": 72,
     "frameHeight": 101,
-    "originX": 0.35,
-    "originY": 0.51,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 11.00,
+    "positionY": -49.00
   },
   "right_walk": {
     "atlasKey": "rasta_atlas",
@@ -488,11 +424,9 @@
     "frameRate": 19,
     "frameWidth": 72,
     "frameHeight": 101,
-    "originX": 0.63,
-    "originY": 0.51,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": -11.00,
+    "positionY": -49.00
   },
   "down_walk": {
     "atlasKey": "rasta_atlas",
@@ -503,11 +437,9 @@
     "frameRate": 19,
     "frameWidth": 83,
     "frameHeight": 104,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "pedo": {
     "atlasKey": "rasta_atlas",
@@ -518,11 +450,9 @@
     "frameRate": 19,
     "frameWidth": 91,
     "frameHeight": 103,
-    "originX": 0.39,
-    "originY": 0.49,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 7.00,
+    "positionY": -46.00
   },
   "left_punch_doy": {
     "atlasKey": "rasta_atlas",
@@ -533,11 +463,9 @@
     "frameRate": 19,
     "frameWidth": 103,
     "frameHeight": 118,
-    "originX": 0.53,
-    "originY": 0.44,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -66.00
   },
   "right_punch_doy": {
     "atlasKey": "rasta_atlas",
@@ -548,11 +476,9 @@
     "frameRate": 19,
     "frameWidth": 103,
     "frameHeight": 118,
-    "originX": 0.47,
-    "originY": 0.44,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -66.00
   },
   "left_fall": {
     "atlasKey": "rasta_atlas",
@@ -563,11 +489,9 @@
     "frameRate": 19,
     "frameWidth": 92,
     "frameHeight": 106,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "right_fall": {
     "atlasKey": "rasta_atlas",
@@ -578,11 +502,9 @@
     "frameRate": 19,
     "frameWidth": 92,
     "frameHeight": 106,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "left_falling": {
     "atlasKey": "rasta_atlas",
@@ -593,11 +515,9 @@
     "frameRate": 19,
     "frameWidth": 91,
     "frameHeight": 106,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "right_falling": {
     "atlasKey": "rasta_atlas",
@@ -608,11 +528,9 @@
     "frameRate": 19,
     "frameWidth": 91,
     "frameHeight": 106,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "down_idle": {
     "atlasKey": "rasta_atlas",
@@ -623,11 +541,9 @@
     "frameRate": 19,
     "frameWidth": 81,
     "frameHeight": 98,
-    "originX": 0.5,
-    "originY": 0.52,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "left_beso": {
     "atlasKey": "rasta_atlas",
@@ -638,11 +554,9 @@
     "frameRate": 19,
     "frameWidth": 82,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "right_beso": {
     "atlasKey": "rasta_atlas",
@@ -653,11 +567,9 @@
     "frameRate": 19,
     "frameWidth": 82,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "leftdown_idle": {
     "atlasKey": "rasta_atlas",
@@ -668,11 +580,9 @@
     "frameRate": 19,
     "frameWidth": 77,
     "frameHeight": 100,
-    "originX": 0.43,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 4.00,
+    "positionY": -47.00
   },
   "rightdown_idle": {
     "atlasKey": "rasta_atlas",
@@ -683,11 +593,9 @@
     "frameRate": 19,
     "frameWidth": 77,
     "frameHeight": 100,
-    "originX": 0.57,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": -4.00,
+    "positionY": -47.00
   },
   "up_idle": {
     "atlasKey": "rasta_atlas",
@@ -698,11 +606,9 @@
     "frameRate": 19,
     "frameWidth": 79,
     "frameHeight": 98,
-    "originX": 0.5,
-    "originY": 0.52,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": -1
+    "repeat": -1,
+    "positionX": 0.00,
+    "positionY": -50.00
   },
   "leftdown_talk": {
     "atlasKey": "rasta_atlas",
@@ -713,11 +619,9 @@
     "frameRate": 19,
     "frameWidth": 79,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": 7.00,
+    "positionY": -47.00
   },
   "rightdown_talk": {
     "atlasKey": "rasta_atlas",
@@ -728,10 +632,8 @@
     "frameRate": 19,
     "frameWidth": 79,
     "frameHeight": 100,
-    "originX": 0.5,
-    "originY": 0.5,
-    "offsetX": 0,
-    "offsetY": 0,
-    "repeat": 0
+    "repeat": 0,
+    "positionX": -7.00,
+    "positionY": -47.00
   }
 }

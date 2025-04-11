@@ -88,14 +88,19 @@ class SceneModel {
     // Lógica para procesar el siguiente movimiento de un usuario
     async processNextMovement(user) {
         try {
-            if (!user.finalTarget) return; // No hay destino final establecido
-
+            // Liberar reserva si el usuario no tiene destino final
+            if (!user.finalTarget) {
+                if (user.lastReservedTile) {
+                    delete this.reservedTiles[user.lastReservedTile];
+                    user.lastReservedTile = null;
+                }
+                return;
+            }
+    
             const startPos = user.currentAreaPosition;
             const target = user.finalTarget;
-
-            // Verificar si ya se alcanzó el destino
+    
             if (startPos.x === target.x && startPos.y === target.y) {
-                // Liberar reserva actual si existe
                 if (user.lastReservedTile) {
                     delete this.reservedTiles[user.lastReservedTile];
                     user.lastReservedTile = null;
@@ -103,46 +108,45 @@ class SceneModel {
                 user.finalTarget = null;
                 return;
             }
-
-            // Liberar la reserva previa (si el usuario se movió en el ciclo anterior)
+    
             if (user.lastReservedTile) {
                 delete this.reservedTiles[user.lastReservedTile];
                 user.lastReservedTile = null;
             }
-
-            // Calcular el mapa de navegación (incluye obstáculos de otros usuarios y reservas)
+    
             const navigationMap = this.getNavigationMapWithPlayers(user.id);
-            const path = await this.findPath(startPos, target, navigationMap);
-
-            if (!path || path.length <= 1) {
-                console.log('No se encontró un camino al destino');
+    
+            // Verificar si la posición final está bloqueada
+            if (navigationMap[target.y][target.x] === 1) {
                 this.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
                 user.finalTarget = null;
                 return;
             }
-
-            // Seleccionar el siguiente paso del camino
+    
+            const path = await this.findPath(startPos, target, navigationMap);
+    
+            if (!path || path.length <= 1) {
+                this.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
+                // No limpiamos finalTarget para permitir reintentos
+                return;
+            }
+    
             const nextStep = path[1];
             const key = `${nextStep.x},${nextStep.y}`;
-
-            // Si la casilla ya está reservada por otro usuario, omitir este ciclo
+    
             if (this.reservedTiles[key] && this.reservedTiles[key] !== user.id) {
-                return; // Se reintentará en el siguiente ciclo
+                return;
             }
-
-            // Reservar la casilla para este usuario
+    
             this.reservedTiles[key] = user.id;
             user.lastReservedTile = key;
-
-            // Calcular la dirección del movimiento
+    
             const deltaX = nextStep.x - startPos.x;
             const deltaY = nextStep.y - startPos.y;
             const direction = UserMovimentUtil.getDirection(deltaX, deltaY);
-
-            // Actualizar la posición actual del usuario
+    
             user.currentAreaPosition = { x: nextStep.x, y: nextStep.y, z: direction };
-
-            // Notificar movimiento al cliente
+    
             const movementData = {
                 id: user.socket.id,
                 path: [{
@@ -154,8 +158,7 @@ class SceneModel {
             };
             UserBlockActionsTask.blockByWalk(user);
             this.emit(ResponseSocketsEnum.USER_MOVE, movementData);
-
-            // Si este es el último paso, liberar la reserva y cancelar el destino final
+    
             if (path.length === 2) {
                 delete this.reservedTiles[key];
                 user.lastReservedTile = null;
