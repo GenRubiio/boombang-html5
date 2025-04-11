@@ -8,7 +8,7 @@ export default class OverheadChatAnimation {
     constructor(scene) {
         this.scene = scene;
         this.chatAreaPercent = 0.2;
-        this.lineSpacing = 20;
+        this.lineSpacing = 5;
         this.pushSpeed = 1;
         this.checkInterval = 5000;
         this.rightReserved = 220;
@@ -16,6 +16,7 @@ export default class OverheadChatAnimation {
         this.textDepth = 9999;
         this.playerSprite = null;
         this.avatarKey = null;
+        this.areaStartHeight = 200;
 
         // Array para almacenar los contenedores de mensajes
         this.messages = [];
@@ -38,97 +39,97 @@ export default class OverheadChatAnimation {
     addMessage(text, userName, playerSprite, avatarId) {
         this.playerSprite = playerSprite;
         this.avatarKey = avatarId + '_cara_media';
-        // Empujar mensajes existentes hacia arriba
 
-        this.messages.forEach(msg => {
-            msg.y -= this.lineSpacing;
-        });
-
-        // Posición vertical fija (20% del alto de la escena)
-        const yPos = this.scene.game.config.height * this.chatAreaPercent;
-        // Centro del sprite del jugador (para el clamping)
-        const bounds = this.playerSprite.getBounds();
-        let xPos = bounds.centerX;
-
-        // Variables de configuración
-        const elementMargin = 5; // separación entre avatar, nombre y mensaje
+        // Configuración de elementos
+        const elementMargin = 0;
         const containerPadding = { left: 4, right: 4, top: 2, bottom: 4 };
 
-        // Crear el avatar y escalarlo
-        const avatar = this.scene.add.image(0, 0, this.avatarKey).setOrigin(0, 0);
-        avatar.setScale(0.5);
+        // Crear elementos del mensaje
+        const avatar = this.scene.add.image(0, 0, this.avatarKey)
+            .setOrigin(0, 0)
+            .setScale(0.5);
 
-        // Crear el texto del nombre
         const nameText = this.scene.add.text(0, 0, `${userName}:`, {
             fontFamily: 'Arial',
             fontSize: '14px',
             fontStyle: 'bold',
             color: '#000000'
-        });
-        nameText.setOrigin(0, 0);
+        }).setOrigin(0, 0);
 
-        // Crear el texto del mensaje
         const messageText = this.scene.add.text(0, 0, text, {
             fontFamily: 'Arial',
             fontSize: '14px',
             color: '#000000'
-        });
-        // Queremos que su posición x represente el centro del mensaje
-        messageText.setOrigin(0.5, 0);
-        messageText.setDepth(this.textDepth);
+        }).setOrigin(0, 0); // Cambiamos el origen a (0,0) para mejor alineación
 
-        // Calcular la altura máxima (baseline de contenido) para alinear por abajo
+        // Calcular dimensiones del contenido
         const contentBaseline = Math.max(avatar.displayHeight, nameText.height, messageText.height);
-
-        // Posicionar cada elemento para que sus bordes inferiores se alineen (baseline)
-        avatar.x = containerPadding.left;
-        avatar.y = containerPadding.top + (contentBaseline - avatar.displayHeight);
-
-        nameText.x = avatar.x + avatar.displayWidth + elementMargin;
-        nameText.y = containerPadding.top + (contentBaseline - nameText.height);
-
-        messageText.x = nameText.x + nameText.width + elementMargin + messageText.width * 0.5;
-        messageText.y = containerPadding.top + (contentBaseline - messageText.height);
-
-        // Calcular dimensiones totales del contenido del container
         const contentWidth = containerPadding.left + avatar.displayWidth +
             elementMargin + nameText.width +
-            elementMargin + messageText.width + containerPadding.right;
+            elementMargin + messageText.width +
+            containerPadding.right;
         const contentHeight = containerPadding.top + contentBaseline + containerPadding.bottom;
 
-        // Crear el fondo usando Graphics para dibujar un rectángulo redondeado
-        // Generamos una textura única para cada mensaje usando Date.now() en la clave
+        // Empujar mensajes existentes hacia arriba
+        this.messages.forEach(msg => {
+            msg.y -= (contentHeight + this.lineSpacing);
+        });
+
+        // Obtener posición del jugador
+        const playerBounds = this.playerSprite.getBounds();
+
+        // Crear fondo del mensaje
         const bgGraphics = this.scene.add.graphics();
-        bgGraphics.fillStyle(0xffffff, 0.5); // Fondo blanco con 50% de opacidad
+        bgGraphics.fillStyle(0xffffff, 0.5);
         bgGraphics.fillRoundedRect(0, 0, contentWidth, contentHeight, 5);
-        const textureKey = 'roundedBg_' + Date.now();
+        const textureKey = `chatBg_${Date.now()}`;
         bgGraphics.generateTexture(textureKey, contentWidth, contentHeight);
         bgGraphics.destroy();
 
-        // Crear una imagen usando la textura generada, centrada en el container
-        const background = this.scene.add.image(contentWidth / 2, contentHeight / 2, textureKey);
+        // Crear contenedor y posicionar elementos
+        const background = this.scene.add.image(0, 0, textureKey)
+            .setOrigin(0, 0);
 
-        // Crear el container y agregar el fondo en la posición 0 para que quede detrás
-        const chatContainer = this.scene.add.container(0, 0, [background, avatar, nameText, messageText]);
+        const chatContainer = this.scene.add.container(0, 0, [
+            background,
+            avatar,
+            nameText,
+            messageText
+        ]);
 
-        // Calcular el clamping para que el centro del mensaje quede correctamente posicionado
-        const halfWidth = messageText.width * 0.5;
+        // Posicionar elementos dentro del contenedor
+        avatar.setPosition(
+            containerPadding.left,
+            containerPadding.top + (contentBaseline - avatar.displayHeight)
+        );
+
+        nameText.setPosition(
+            avatar.x + avatar.displayWidth + elementMargin,
+            containerPadding.top + (contentBaseline - nameText.height)
+        );
+
+        messageText.setPosition(
+            nameText.x + nameText.width + elementMargin,
+            containerPadding.top + (contentBaseline - messageText.height)
+        );
+
+        // Calcular posición horizontal con límites
         const sceneWidth = this.scene.game.config.width;
         const rightBound = sceneWidth - this.rightReserved;
-        const minX = this.leftBound + halfWidth;
-        const maxX = rightBound - halfWidth;
-        const finalMessageX = Phaser.Math.Clamp(xPos, minX, maxX);
+        const minX = this.leftBound + (contentWidth / 2);
+        const maxX = rightBound - (contentWidth / 2);
+        const finalX = Phaser.Math.Clamp(playerBounds.centerX, minX, maxX);
 
-        // Ajustar la posición global del container en X
-        chatContainer.x = finalMessageX - messageText.x;
+        // Posicionar contenedor
+        chatContainer.setPosition(
+            finalX - (contentWidth / 2), // Ajuste para centrado horizontal
+            this.areaStartHeight
+        );
 
-        // Ajustar la posición vertical para que el top del mensaje (global) sea yPosf
-        chatContainer.y = yPos - messageText.y;
-
-        // Establecer la profundidad del container
+        // Configurar profundidad
         chatContainer.setDepth(this.textDepth);
 
-        // Guardar el container y registrar el tiempo del último mensaje
+        // Guardar referencia y actualizar tiempo
         this.messages.push(chatContainer);
         this.lastMessageTime = this.scene.time.now;
     }

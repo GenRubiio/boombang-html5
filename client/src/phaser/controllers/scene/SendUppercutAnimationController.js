@@ -23,11 +23,11 @@ class SendUppercutAnimationController {
 
         attacker.containerUser.setPosition(attackerFinalX, attackerFinalY);
         attacker.containerUser.setDepth(attackerFinalY);
-        attacker.spriteShadow.setPosition(0, 0);
-        attacker.spriteAvatar.setPosition(
-            0,
-            -(attacker.spriteShadow.displayHeight / 2) - (attacker.spriteAvatar.displayHeight / 2) + 15
-        );
+        //attacker.spriteShadow.setPosition(0, 0);
+        //attacker.spriteAvatar.setPosition(
+        //    0,
+        //    -(attacker.spriteShadow.displayHeight / 2) - (attacker.spriteAvatar.displayHeight / 2) + 15
+        //);
 
         // ===== DETENER Y REPOSICIONAR AL RECEPTOR =====
         if (receiver.currentTween) {
@@ -43,11 +43,11 @@ class SendUppercutAnimationController {
 
         receiver.containerUser.setPosition(receiverFinalX, receiverFinalY);
         receiver.containerUser.setDepth(receiverFinalY);
-        receiver.spriteShadow.setPosition(0, 0);
-        receiver.spriteAvatar.setPosition(
-            0,
-            -(receiver.spriteShadow.displayHeight / 2) - (receiver.spriteAvatar.displayHeight / 2) + 15
-        );
+        //receiver.spriteShadow.setPosition(0, 0);
+        //receiver.spriteAvatar.setPosition(
+        //    0,
+        //    -(receiver.spriteShadow.displayHeight / 2) - (receiver.spriteAvatar.displayHeight / 2) + 15
+        //);
 
         // Ahora ambos están forzados a la posición lógica del servidor
         // Ajustar el frame idle del atacante antes de la animación

@@ -3,10 +3,12 @@ import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserModel from "../../models/UserModel.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
-import AvatarSpriteModal from "../../admin/modals/AvatarSpriteModal.js";
+import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
+import AvatarPositionSpriteModal from "../../admin/modals/AvatarPositionSpriteModal.js";
 import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
 import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
 import UserEmojiAnimation from "../../animations/UserEmojiAnimation.js";
+import UserChatAnimation from "../../animations/UserChatAnimation.js";
 
 class AddUserController {
     static async main(gameScene, userData) {
@@ -16,6 +18,7 @@ class AddUserController {
         MoveUserToTileController.main(gameScene, user);
         // Almacenar jugador
         gameScene.users[userData.id] = user;
+        //UserChatAnimation.main(user, "leftup_talk");
         //UserEmojiAnimation.main(user, 8);
     }
 
@@ -36,7 +39,8 @@ class AddUserController {
         ]);
         containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
-        //AvatarSpriteModal.main(gameScene, spriteAvatar);
+        //AvatarOriginSpriteModal.main(gameScene, spriteAvatar);
+        //AvatarPositionSpriteModal.main(gameScene, spriteAvatar);
         return { containerUser, spriteAvatar, spriteShadow };
     }
 
@@ -63,6 +67,11 @@ class AddUserController {
 
     static createAvatarSprite(gameScene, userData) {
         const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + userData.id);
+        //UserIdleAnimation.main(
+        //    spriteAvatar,
+        //    1,
+        //    userData.avatar_id
+        //);
         UserIdleAnimation.main(
             spriteAvatar,
             userData.z,
@@ -70,12 +79,12 @@ class AddUserController {
         );
         //UserWalkAnimation.playWalk(
         //    spriteAvatar,
-        //    8,
+        //    2,
         //    userData.avatar_id
         //);
         //UserUppercutAnimation.main(
         //    spriteAvatar,
-        //    'right',
+        //    'left',
         //    true,
         //    userData.avatar_id
         //);

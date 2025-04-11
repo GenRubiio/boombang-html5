@@ -27,7 +27,7 @@ class PublicSceneResource extends JsonResource
             'max_users' => (int)$this->max_users,
             'map_width' => (int)$this->map_width,
             'map_height' => (int)$this->map_height,
-            'map' => $this->map,
+            'map' => trim($this->map),
             'start_x' => (int)$this->start_x,
             'start_y' => (int)$this->start_y,
             'start_z' => (int)$this->start_z,
