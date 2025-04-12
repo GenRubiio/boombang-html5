@@ -38,7 +38,7 @@ class CreateSceneController {
                 const y = (col + row) * halfTileHeight;
 
                 // Creamos un "bob" solo si el mapa en esta posición es clickeable (0)
-                const isClickable = map[row][col] === 0;
+                const isClickable = map[row][col] == 0;
                 const bob = blitter.create(x, y);
 
                 // Opcionalmente, si deseas diferenciar los tiles no clickeables visualmente:
@@ -102,7 +102,7 @@ class CreateSceneController {
 
                 // Si el tile no es clickeable, ignoramos el clic
                 if (!tile.isClickable) {
-                    //console.log(`Tile at ${col}, ${row} is not clickable.`);
+                    console.log(`Tile at ${col}, ${row} is not clickable.`);
                     return;
                 }
 
