@@ -5,6 +5,7 @@ import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
 import PublicSceneLoad from "../../load/PublicSceneLoad.js";
 
+
 class CreateSceneController {
     static async main(gameScene, data) {
         const usersData = data.players;
@@ -45,7 +46,7 @@ class CreateSceneController {
                 if (!isClickable) {
                     bob.tint = 0x808080; // Color gris, por ejemplo
                 }
-                bob.alpha = 0.5; // Transparencia
+                bob.alpha = import.meta.env.VITE_APP_ENV == 'local' ? 0.5 : 0; // Transparencia 0.5
 
                 // Guarda la información del tile
                 gameScene.tiles[row][col] = {
