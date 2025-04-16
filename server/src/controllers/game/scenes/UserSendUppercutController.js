@@ -19,8 +19,10 @@ class UserSendUppercutController {
                 return;
             }
 
-            if (targetUser.currentAreaPosition.x === targetUser.currentArea.startPosition.x
-                && targetUser.currentAreaPosition.y === targetUser.currentArea.startPosition.y
+            if ((targetUser.currentAreaPosition.x === targetUser.currentArea.startPosition.x
+                && targetUser.currentAreaPosition.y === targetUser.currentArea.startPosition.y)
+                || (user.currentAreaPosition.x === user.currentArea.startPosition.x
+                    && user.currentAreaPosition.y === user.currentArea.startPosition.y)
             ) {
                 return; // No se puede hacer uppercut en la posición de entrada de sala
             }
