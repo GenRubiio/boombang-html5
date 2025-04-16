@@ -19,6 +19,12 @@ class UserSendUppercutController {
                 return;
             }
 
+            if (targetUser.currentAreaPosition.x === targetUser.currentArea.startPosition.x
+                && targetUser.currentAreaPosition.y === targetUser.currentArea.startPosition.y
+            ) {
+                return; // No se puede hacer uppercut en la posición de entrada de sala
+            }
+
             // Aquí NO revisamos si finalTarget es null, ya que queremos permitir el uppercut en movimiento.
             const deltaX = user.currentAreaPosition.x - targetUser.currentAreaPosition.x;
             const deltaY = user.currentAreaPosition.y - targetUser.currentAreaPosition.y;
