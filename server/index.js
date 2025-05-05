@@ -8,7 +8,7 @@ const BotsPackage = require('./src/packages/bots/BotsPackage');
 logger.log('Starting server...', 'success');
 (async () => {
     const port = process.env.PORT || 3000;
-
+    await initializer();
     // Inicializar el servidor
     const { app, io } = server(port);
 
@@ -17,7 +17,6 @@ logger.log('Starting server...', 'success');
 
     // Configurar sockets
     sockets(io);
-    await initializer();
 
     if (process.env.RUN_BOTS ? process.env.RUN_BOTS === 'true' : false) {
         BotsPackage.main();
