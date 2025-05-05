@@ -14,8 +14,8 @@ class LoadPublicScenesBoot {
             logger.log('Error loading public scenes', 'error');
             return;
         }
-        const publicScenes = response.scenes;
-        publicScenes.forEach(scene => {
+        const scenes = response.scenes;
+        scenes.forEach(scene => {
             PublicScenesCollection.add(scene.id, new PublicSceneModel(scene));
         });
 
