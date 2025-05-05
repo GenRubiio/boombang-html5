@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\Auth\RegisterApiController;
 use App\Http\Controllers\Api\User\UpdateUppercutsApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
+use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 
 Route::middleware(VerifyEmulatorToken::class)->group(function () {
     Route::prefix('auth')->group(function () {
@@ -22,6 +23,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
     Route::prefix('public-scene')->group(function () {
         Route::post('get', [PublicSceneApiController::class, 'get']);
+    });
+
+    Route::prefix('minigame-scene')->group(function () {
+        Route::post('get', [MinigameSceneApiController::class, 'get']);
     });
 
     Route::prefix('bots')->group(function () {
