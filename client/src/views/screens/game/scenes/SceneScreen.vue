@@ -17,6 +17,10 @@ export default {
       type: Number,
       required: true,
     },
+    phaserScene: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {};
@@ -32,7 +36,7 @@ export default {
     initializeGame() {
       const gamePhaser = this.$root.gamePhaser;
 
-      gamePhaser.scene.start("PublicScene", {
+      gamePhaser.scene.start(this.phaserScene, {
         sceneType: this.sceneType,
         vueComponent: this,
       });
