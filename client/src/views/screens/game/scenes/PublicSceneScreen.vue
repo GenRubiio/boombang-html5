@@ -7,8 +7,8 @@
 
 <script>
 import socket from "../../../../sockets/socket.js";
-import UserCardComponent from "../../../components/game/areas/UserCardComponent.vue";
-import BaseChatComponent from "../../../components/game/areas/BaseChatComponent.vue";
+import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
+import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {

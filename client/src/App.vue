@@ -14,7 +14,7 @@
         @joinPublicArea="onJoinPublicArea"
         @updateLoading="onUpdateLoading"
       />
-      <PublicAreaScreen
+      <PublicSceneScreen
         v-else-if="currentScreen === 'public_area'"
         :areaId="currentAreaId"
         @exitLobby="onExitLobby"
@@ -53,8 +53,8 @@ export default {
     LobbyScreen: defineAsyncComponent(() =>
       import("./views/screens/game/LobbyScreen.vue")
     ),
-    PublicAreaScreen: defineAsyncComponent(() =>
-      import("./views/screens/game/areas/PublicSceneScreen.vue")
+    PublicSceneScreen: defineAsyncComponent(() =>
+      import("./views/screens/game/scenes/PublicSceneScreen.vue")
     ),
   },
   methods: {
