@@ -13,7 +13,7 @@ import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
   props: {
-    areaId: {
+    sceneType: {
       type: Number,
       required: true,
     },
@@ -33,7 +33,7 @@ export default {
       const gamePhaser = this.$root.gamePhaser;
 
       gamePhaser.scene.start("PublicScene", {
-        areaId: this.areaId,
+        sceneType: this.sceneType,
         vueComponent: this,
       });
     },

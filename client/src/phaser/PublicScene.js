@@ -19,7 +19,7 @@ export default class PublicScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.areaId = data.areaId; // ID de la sala
+        this.sceneType = data.sceneType; // ID de la sala
         this.users = {}; // Objeto para almacenar jugadores en la sala
         this.avatarAnimations = {}; // Objeto para almacenar animaciones de avatares
         this.vueComponent = data.vueComponent;
@@ -27,7 +27,7 @@ export default class PublicScene extends Phaser.Scene {
 
     preload() {
         //this.load.plugin('rexcolorreplacepipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcolorreplacepipelineplugin.min.js', true);
-        PublicScenePreload.main(this, this.areaId); // Precargar imágenes específicas de la sala
+        PublicScenePreload.main(this, this.sceneType); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tileImage);
         this.load.image("shadow", asset_shadowImage);
 
