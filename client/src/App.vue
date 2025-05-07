@@ -4,26 +4,14 @@
     <LoadingScreen v-if="loading" />
     <div id="game-screens">
       <AuthScreen
-        v-if="currentScreen === GameScreensEnum.LOGIN"
+        v-if="!isAuthenticated"
         @loginSuccess="onLoginSuccess"
         @registerSuccess="onRegisterSuccess"
         @goToRegister="onGoToRegister"
       />
-      <LobbyScreen
-        v-else-if="currentScreen === GameScreensEnum.LOBBY"
-        @joinPublicScene="onJoinPublicScene"
-        @updateLoading="onUpdateLoading"
-      />
-      <PublicSceneScreen
-        v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
-        :sceneType="currentScreenType"
-        @exitLobby="onExitLobby"
-        @updateLoading="onUpdateLoading"
-      />
-      <MinigameSceneScreen
-        v-else-if="currentScreen === GameScreensEnum.MINIGAME_SCENE"
-        :sceneType="currentScreenType"
-        @exitLobby="onExitLobby"
+      <GameScreens
+        v-else
+        :gamePhaser="gamePhaser"
         @updateLoading="onUpdateLoading"
       />
     </div>
@@ -40,9 +28,7 @@ export default {
     return {
       gamePhaser: null,
       loading: false,
-      currentScreen: GameScreensEnum.LOGIN, // Controla las escenas: login, lobby, game
-      currentScreenType: null, // ID de la sala actual
-      GameScreensEnum,
+      isAuthenticated: false, // Nueva bandera de autenticación
     };
   },
   created() {
@@ -57,14 +43,8 @@ export default {
     AuthScreen: defineAsyncComponent(() =>
       import("./views/screens/auth/AuthScreen.vue")
     ),
-    LobbyScreen: defineAsyncComponent(() =>
-      import("./views/screens/game/LobbyScreen.vue")
-    ),
-    PublicSceneScreen: defineAsyncComponent(() =>
-      import("./views/screens/game/scenes/PublicSceneScreen.vue")
-    ),
-    MinigameSceneScreen: defineAsyncComponent(() =>
-      import("./views/screens/game/scenes/MinigameSceneScreen.vue")
+    GameScreens: defineAsyncComponent(() =>
+      import("./views/screens/game/GameScreens.vue")
     ),
   },
   methods: {
@@ -88,16 +68,15 @@ export default {
       }
       // Esperar a que termine la precarga antes de cambiar a LOBBY
       this.gamePhaser.events.on("globalPreloaderComplete", () => {
-        this.currentScreen = GameScreensEnum.LOBBY;
+        this.isAuthenticated = true; // Activa GameScreens
+        this.onUpdateLoading(false);
       });
     },
     async initializePhaser() {
       const { default: GlobalPreloader } = await import(
         "./phaser/GlobalPreloader"
       );
-      const { default: PublicScene } = await import(
-        "./phaser/PublicScene"
-      );
+      const { default: PublicScene } = await import("./phaser/PublicScene");
       // Solo creas la instancia la primera vez.
       this.gamePhaser = new Phaser.Game({
         type: Phaser.WEBGL,
@@ -120,17 +99,6 @@ export default {
       });
       // Lanzamos la escena de Preloader para que cargue todo
       this.gamePhaser.scene.start("GlobalPreloaderScene");
-    },
-    onJoinPublicScene(sceneType) {
-      //console.log("Unido a la sala:", sceneType);
-      this.currentScreenType = sceneType;
-      this.currentScreen = GameScreensEnum.PUBLIC_SCENE;
-    },
-    onExitLobby() {
-      this.gamePhaser.scene.stop("PublicScene");
-      this.gamePhaser.scene.stop("MinigameScene");
-      this.currentScreen = GameScreensEnum.LOBBY;
-      this.currentScreenType = null;
     },
     handleDisconnect() {
       this.onUpdateLoading(true);
