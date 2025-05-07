@@ -15,7 +15,7 @@
         @updateLoading="onUpdateLoading"
       />
       <PublicSceneScreen
-        v-else-if="currentScreen === 'public_area'"
+        v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
         :sceneType="currentScreenType"
         @exitLobby="onExitLobby"
         @updateLoading="onUpdateLoading"
@@ -36,6 +36,7 @@ export default {
       loading: false,
       currentScreen: GameScreensEnum.LOGIN, // Controla las escenas: login, lobby, game
       currentScreenType: null, // ID de la sala actual
+      GameScreensEnum,
     };
   },
   created() {
@@ -114,7 +115,7 @@ export default {
     onJoinPublicScene(sceneType) {
       //console.log("Unido a la sala:", sceneType);
       this.currentScreenType = sceneType;
-      this.currentScreen = GameScreensEnum.PUBLIC_AREA;
+      this.currentScreen = GameScreensEnum.PUBLIC_SCENE;
     },
     onExitLobby() {
       this.gamePhaser.scene.stop("PublicScene");
