@@ -4,18 +4,24 @@
     <LoadingScreen v-if="loading" />
     <div id="game-screens">
       <AuthScreen
-        v-if="currentScreen === 'login'"
+        v-if="currentScreen === GameScreensEnum.LOGIN"
         @loginSuccess="onLoginSuccess"
         @registerSuccess="onRegisterSuccess"
         @goToRegister="onGoToRegister"
       />
       <LobbyScreen
-        v-else-if="currentScreen === 'lobby'"
+        v-else-if="currentScreen === GameScreensEnum.LOBBY"
         @joinPublicScene="onJoinPublicScene"
         @updateLoading="onUpdateLoading"
       />
       <PublicSceneScreen
         v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
+        :sceneType="currentScreenType"
+        @exitLobby="onExitLobby"
+        @updateLoading="onUpdateLoading"
+      />
+      <MinigameSceneScreen
+        v-else-if="currentScreen === GameScreensEnum.MINIGAME_SCENE"
         :sceneType="currentScreenType"
         @exitLobby="onExitLobby"
         @updateLoading="onUpdateLoading"
@@ -56,6 +62,9 @@ export default {
     ),
     PublicSceneScreen: defineAsyncComponent(() =>
       import("./views/screens/game/scenes/PublicSceneScreen.vue")
+    ),
+    MinigameSceneScreen: defineAsyncComponent(() =>
+      import("./views/screens/game/scenes/MinigameSceneScreen.vue")
     ),
   },
   methods: {
@@ -119,6 +128,7 @@ export default {
     },
     onExitLobby() {
       this.gamePhaser.scene.stop("PublicScene");
+      this.gamePhaser.scene.stop("MinigameScene");
       this.currentScreen = GameScreensEnum.LOBBY;
       this.currentScreenType = null;
     },
@@ -126,6 +136,7 @@ export default {
       this.onUpdateLoading(true);
       if (this.gamePhaser && this.gamePhaser.scene) {
         this.gamePhaser.scene.stop("PublicScene");
+        this.gamePhaser.scene.stop("MinigameScene");
       }
       this.gamePhaser = null;
       document.getElementById("phaser-container").innerHTML = "";
