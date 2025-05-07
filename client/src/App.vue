@@ -14,9 +14,10 @@
         @joinPublicScene="onJoinPublicScene"
         @updateLoading="onUpdateLoading"
       />
-      <PublicSceneScreen
+      <SceneScreen
         v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
         :sceneType="currentScreenType"
+        phaserScene="PublicScene"
         @exitLobby="onExitLobby"
         @updateLoading="onUpdateLoading"
       />
@@ -54,8 +55,8 @@ export default {
     LobbyScreen: defineAsyncComponent(() =>
       import("./views/screens/game/LobbyScreen.vue")
     ),
-    PublicSceneScreen: defineAsyncComponent(() =>
-      import("./views/screens/game/scenes/PublicSceneScreen.vue")
+    SceneScreen: defineAsyncComponent(() =>
+      import("./views/screens/game/scenes/SceneScreen.vue")
     ),
   },
   methods: {
