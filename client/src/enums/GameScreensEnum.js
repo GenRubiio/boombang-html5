@@ -4,7 +4,8 @@ const GameScreensEnum = new Enum({
     LOGIN: 'login',
     REGISTER: 'register',
     LOBBY: 'lobby',
-    PUBLIC_AREA: 'public_area',
+    PUBLIC_SCENE: 'public_area',
+    MINIGAME_SCENE: 'minigame_scene',
 });
 
 export default GameScreensEnum;
