@@ -15,6 +15,14 @@
     <div class="lobby__avatar">
       <img :src="asset_avatarImage" alt="avatar" />
     </div>
+    <div>
+      <button
+        style="position: absolute; bottom: 0; right: 0; padding: 10px;"
+        @click="suscribeRing"
+      >
+        PLAY
+      </button>
+    </div>
     <div class="lobby__rooms">
       <div class="lobby__rooms-container">
         <div class="lobby__rooms-container-title">Areas</div>
@@ -88,6 +96,11 @@ export default {
         } else {
           console.log("Error al unirse a la sala.");
         }
+      });
+    },
+    suscribeRing() {
+      socket.emit("request:minigame_subscribe", {
+        type: 1,
       });
     },
   },

@@ -1,11 +1,14 @@
-const SceneModel = require('./SceneModel');
-
-class MinigameSceneModel extends SceneModel {
+class MinigameSceneModel {
     constructor(row) {
-        super(row); // Llama al constructor de la clase padre
+        this.id = row.id;
+        this.name = row.name;
+        this.map_width = row.map_width;
+        this.map_height = row.map_height;
+        this.game_map = JSON.parse(row.map);
+        this.startPosition = row.start_position;
+        this.navigationMapBase = JSON.parse(row.map);
         this.position_users = JSON.parse(row.position_users);
     }
-    // Puedes agregar métodos adicionales o sobrescribir los existentes si es necesario
 }
 
 module.exports = MinigameSceneModel; 
