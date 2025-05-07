@@ -33,7 +33,7 @@
             :key="publicScene.id"
             class="room"
           >
-            <button @click="joinRoom(publicScene.id)">
+            <button @click="joinScene(publicScene.type)">
               {{ publicScene.name }}
               <span>{{ publicScene.total_users_in }}</span>
             </button>
@@ -86,13 +86,13 @@ export default {
   },
   components: {},
   methods: {
-    joinRoom(areaId) {
-      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: areaId });
+    joinScene(sceneType) {
+      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: sceneType });
 
       socket.off(ResponseSocketsEnum.JOIN_PUBLIC_AREA);
       socket.on(ResponseSocketsEnum.JOIN_PUBLIC_AREA, (data) => {
         if (data.success) {
-          this.$emit("joinPublicArea", areaId);
+          this.$emit("joinPublicScene", sceneType);
         } else {
           console.log("Error al unirse a la sala.");
         }
@@ -212,9 +212,6 @@ export default {
   width: 100px;
   display: flex;
   justify-content: center;
-}
-
-.lobby__avatar img {
 }
 
 @keyframes floatAnimation {

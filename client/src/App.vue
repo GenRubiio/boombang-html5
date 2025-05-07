@@ -11,12 +11,12 @@
       />
       <LobbyScreen
         v-else-if="currentScreen === 'lobby'"
-        @joinPublicArea="onJoinPublicArea"
+        @joinPublicScene="onJoinPublicScene"
         @updateLoading="onUpdateLoading"
       />
       <PublicSceneScreen
         v-else-if="currentScreen === 'public_area'"
-        :areaId="currentAreaId"
+        :sceneType="currentScreenType"
         @exitLobby="onExitLobby"
         @updateLoading="onUpdateLoading"
       />
@@ -35,7 +35,7 @@ export default {
       gamePhaser: null,
       loading: false,
       currentScreen: GameScreensEnum.LOGIN, // Controla las escenas: login, lobby, game
-      currentAreaId: null, // ID de la sala actual
+      currentScreenType: null, // ID de la sala actual
     };
   },
   created() {
@@ -111,15 +111,15 @@ export default {
       // Lanzamos la escena de Preloader para que cargue todo
       this.gamePhaser.scene.start("GlobalPreloaderScene");
     },
-    onJoinPublicArea(areaId) {
-      //console.log("Unido a la sala:", areaId);
-      this.currentAreaId = areaId;
+    onJoinPublicScene(sceneType) {
+      //console.log("Unido a la sala:", sceneType);
+      this.currentScreenType = sceneType;
       this.currentScreen = GameScreensEnum.PUBLIC_AREA;
     },
     onExitLobby() {
       this.gamePhaser.scene.stop("PublicScene");
       this.currentScreen = GameScreensEnum.LOBBY;
-      this.currentAreaId = null;
+      this.currentScreenType = null;
     },
     handleDisconnect() {
       this.onUpdateLoading(true);

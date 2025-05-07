@@ -10,6 +10,7 @@ class SceneModel {
     constructor(row) {
         this.id = row.id;
         this.name = row.name;
+        this.type = row.type; //Tipo de escena un idetificador de escena para cargar sus componentes
         this.map_width = row.map_width;
         this.map_height = row.map_height;
         this.game_map = JSON.parse(row.map);

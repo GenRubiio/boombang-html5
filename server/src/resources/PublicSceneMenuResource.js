@@ -5,6 +5,7 @@ class PublicSceneMenuResource extends Resource {
         return {
             id: data.id,
             name: data.name,
+            type: data.type,
             total_users_in: data.users.length
         };
     }
