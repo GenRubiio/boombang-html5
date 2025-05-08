@@ -2,8 +2,8 @@ import UfoScenePreload from "./public-scene/UfoScenePreload";
 import PublicSceneEnum from "../../enums/PublicSceneEnum";
 
 class PublicScenePreload {
-    static main(gameScene, areaId) {
-        switch (areaId) {
+    static main(gameScene, sceneType) {
+        switch (sceneType) {
             case PublicSceneEnum.UFO:
                 UfoScenePreload.main(gameScene);
                 break;
