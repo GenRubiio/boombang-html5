@@ -1,10 +1,10 @@
 import GoldenRingPreload from "./minigame-scene/GoldenRingPreload";
-import MinigameSceneEnm from "../../enums/MinigameSceneEnm";
+import MinigameSceneEnum from "../../enums/MinigameSceneEnum";
 
 class MinigameScenePreload {
     static main(gameScene, sceneType) {
         switch (sceneType) {
-            case MinigameSceneEnm.GOLDEN_RING:
+            case MinigameSceneEnum.GOLDEN_RING:
                 GoldenRingPreload.main(gameScene);
                 break;
             default:

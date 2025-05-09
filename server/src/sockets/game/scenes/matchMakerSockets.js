@@ -3,11 +3,11 @@ const MinigameSuscribeController = require('../../../controllers/game/matchmaker
 const MinigameUnSuscribeController = require('../../../controllers/game/matchmaker/MinigameUnSuscribeController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
-module.exports = (socket, matchMakers) => {
+module.exports = (socket, io, matchMakers) => {
     socket.on('request:minigame_subscribe', (data) => {
-        MinigameSuscribeController.main(socket, matchMakers, data);
+        MinigameSuscribeController.main(socket, io, matchMakers, data);
     });
     socket.on('request:minigame_unsubscribe', async (data) => {
-        MinigameUnSuscribeController.main(socket, matchMakers, data);
+        MinigameUnSuscribeController.main(socket, io, matchMakers, data);
     });
 };

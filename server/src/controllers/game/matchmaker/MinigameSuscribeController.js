@@ -3,7 +3,7 @@ const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 
 class MinigameSuscribeController {
-    static async main(socket, matchMakers, data) {
+    static async main(socket, io, matchMakers, data) {
         try {
             const { type } = data;
             if (!type) {
@@ -21,7 +21,7 @@ class MinigameSuscribeController {
 
             // Añadir el socket a la lista de espera del minijuego
             matchMakers[type].register(socket, type, (players, type) => {
-                matchMakers[type].createMinigame(type, players);
+                matchMakers[type].createMinigame(type, players, io);
                 //socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE_SUCCESS, { type });
             });
         } catch (err) {
