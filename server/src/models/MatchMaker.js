@@ -1,6 +1,6 @@
 const MinigamesEnum = require('../enums/MinigamesEnum');
 const MinigameScenesCollection = require('../collections/MinigameScenesCollection');
-const MinigameRingSceneInstance = require('../controllers/game/instances/MinigameRingSceneInstance');
+const MinigameRingSceneInstance = require('../instances/MinigameRingSceneInstance');
 
 class MatchMaker {
     constructor(requiredPlayers) {
@@ -11,11 +11,11 @@ class MatchMaker {
         this.rooms = new Map();
     }
 
-    register(socket, type, onMatchFound) {
-        if (!this.waitingLists.has(type)) {
-            this.waitingLists.set(type, []);
+    register(socket, sceneType, onMatchFound) {
+        if (!this.waitingLists.has(sceneType)) {
+            this.waitingLists.set(sceneType, []);
         }
-        const queue = this.waitingLists.get(type);
+        const queue = this.waitingLists.get(sceneType);
 
         // Evitar duplicados
         if (queue.includes(socket)) return;
@@ -24,20 +24,20 @@ class MatchMaker {
         // Si ya hay suficientes, extraer y llamar callback
         if (queue.length >= this.requiredPlayers) {
             const players = queue.splice(0, this.requiredPlayers);
-            onMatchFound(players, type);
+            onMatchFound(players, sceneType);
         }
     }
 
-    createMinigame(type, players) {
+    createMinigame(sceneType, players, io) {
         console.log('Creando sala de minijuego:');
         let minigame = null;
-        switch (type) {
+        switch (sceneType) {
             case MinigamesEnum.GOLDEN_RING:
-                let sceneModel = MinigameScenesCollection.getByUid(type);
-                minigame = new MinigameRingSceneInstance(sceneModel, players);
+                let sceneModel = MinigameScenesCollection.getByUid(sceneType);
+                minigame = new MinigameRingSceneInstance(sceneModel, players, io);
                 break;
             default:
-                throw new Error(`Tipo de sala desconocido: ${type}`);
+                throw new Error(`Tipo de sala desconocido: ${sceneType}`);
         }
         console.log("hola");
         //for (const player of players) {
@@ -54,10 +54,10 @@ class MatchMaker {
         return this.rooms.get(roomId);
     }
 
-    unregister(socket, type) {
-        const queue = this.waitingLists.get(type) || [];
+    unregister(socket, sceneType) {
+        const queue = this.waitingLists.get(sceneType) || [];
         this.waitingLists.set(
-            type,
+            sceneType,
             queue.filter(s => s !== socket)
         );
     }

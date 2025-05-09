@@ -18,6 +18,6 @@ module.exports = (io) => {
         connectionSockets(socket, io);
         publicScenesSockets(socket, io);
         scenesSockets(socket, io);
-        matchMakerSockets(socket, matchMakers);
+        matchMakerSockets(socket, io, matchMakers);
     });
 };

@@ -60,6 +60,27 @@ export default {
     onUpdateLoading(value) {
       this.$emit("updateLoading", value); // Propaga el evento a App.vue
     },
+    onJoinMinigameScene(sceneType) {
+      this.currentScreenType = sceneType;
+      this.currentScreen = GameScreensEnum.MINIGAME_SCENE;
+    },
+  },
+  mounted() {
+    // Detectar desconexión del socket
+    //socket.on("disconnect", this.handleDisconnect);
+    //
+    //// Detectar reconexión
+    //socket.on("connect", () => {
+    //  //console.log("Reconectado al servidor");
+    //});
+    //
+    //socket.on("error_critical", this.handleDisconnect);
+  },
+  beforeUnmount() {
+    // Remover listeners de socket para evitar fugas de memoria
+    //socket.off("disconnect", this.handleDisconnect);
+    //socket.off("connect");
+    //socket.off("error_critical", this.handleDisconnect);
   },
 };
 </script>
