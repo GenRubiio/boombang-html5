@@ -4,11 +4,12 @@ const logger = new ConsoleLogger();
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const UpdatePublicScenesController = require('../controllers/game/lobby/UpdatePublicScenesController');
 const RemoveSelectedUserTask = require('./RemoveSelectedUserTask');
+const PublicSceneModel = require('../models/PublicSceneModel');
 
 class RemoveUserFromAreaTask {
-    static main(publicArea, user, io) {
+    static main(scene, user, io) {
         try {
-            if (!publicArea.containsUser(user)) {
+            if (!scene.containsUser(user)) {
                 logger.log('User not in area', 'error');
                 return;
             }
@@ -17,15 +18,17 @@ class RemoveUserFromAreaTask {
 
             RemoveSelectedUserTask.main(user);
 
-            publicArea.removeUser(user);
+            scene.removeUser(user);
             user.cancelMovement();
             user.setArea(null);
 
-            publicArea.emitToAllExcept(ResponseSocketsEnum.USER_LEFT_PUBLIC_SCENE, {
+            scene.emitToAllExcept(ResponseSocketsEnum.USER_LEFT_PUBLIC_SCENE, {
                 socketId: user.socket.id
             }, user);
 
-            UpdatePublicScenesController.main(io);
+            if (scene instanceof PublicSceneModel) {
+                UpdatePublicScenesController.main(io);
+            }
         }
         catch (err) {
             console.log(err);

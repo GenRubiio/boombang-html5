@@ -1,5 +1,4 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const Log = require('../../../utils/Log');
 const RemoveUserFromAreaTask = require('../../../tasks/RemoveUserFromAreaTask');
@@ -12,16 +11,12 @@ class UserLeaveSceneController {
             if (!user || !user.currentArea) {
                 throw new Error('User not found or not in any area');
             }
-            const publicArea = PublicScenesCollection.getByUid(user.currentArea.id);
-            if (!publicArea) {
-                throw new Error('Area not found');
-            }
 
             if (user.isActionBlocked(AnimationEnum.LEAVE_AREA)) {
                 return;
             }
 
-            RemoveUserFromAreaTask.main(publicArea, user, io);
+            RemoveUserFromAreaTask.main(user.currentArea, user, io);
         } catch (err) {
             Log.error('Error in UserLeaveAreaController: ' + err);
             DisconnectUserController.main(socket, io);
