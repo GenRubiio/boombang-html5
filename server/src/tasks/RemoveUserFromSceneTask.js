@@ -6,14 +6,14 @@ const UpdatePublicScenesController = require('../controllers/game/lobby/UpdatePu
 const RemoveSelectedUserTask = require('./RemoveSelectedUserTask');
 const PublicSceneModel = require('../models/PublicSceneModel');
 
-class RemoveUserFromAreaTask {
+class RemoveUserFromSceneTask {
     static main(scene, user, io) {
         try {
             if (!scene.containsUser(user)) {
                 logger.log('User not in area', 'error');
                 return;
             }
-            console.log('RemoveUserFromAreaTask');
+            console.log('RemoveUserFromSceneTask');
             user.emit(ResponseSocketsEnum.REMOVE_USER_SCENE);
 
             RemoveSelectedUserTask.main(user);
@@ -37,4 +37,4 @@ class RemoveUserFromAreaTask {
     }
 }
 
-module.exports = RemoveUserFromAreaTask;
+module.exports = RemoveUserFromSceneTask;

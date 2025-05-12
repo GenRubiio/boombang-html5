@@ -56,8 +56,8 @@ class UserBlockActionsTask {
                 // Callback al terminar el tiempo de recibir el uppercut
                 // Aquí expulsas al usuario
                 if (user.currentArea) {
-                    const RemoveUserFromAreaTask = require('./RemoveUserFromAreaTask');
-                    RemoveUserFromAreaTask.main(user.currentArea, user, io);
+                    const RemoveUserFromSceneTask = require('./RemoveUserFromSceneTask');
+                    RemoveUserFromSceneTask.main(user.currentArea, user, io);
                 }
             });
             for (const action of UppercutReceivedActionsMap.get()) {

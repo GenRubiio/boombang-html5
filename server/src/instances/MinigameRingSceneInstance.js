@@ -1,5 +1,5 @@
 const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
-const RemoveUserFromAreaTask = require('../tasks/RemoveUserFromAreaTask');
+const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
 const PublicSceneModel = require('../models/PublicSceneModel');
 
 class MinigameRingSceneInstance {
@@ -25,7 +25,7 @@ class MinigameRingSceneInstance {
             const user = ConnectedUsersCollection.getBySocketId(player.id);
             if (user) {
                 if (publicArea = user.currentArea && user.currentArea instanceof PublicSceneModel) {
-                    RemoveUserFromAreaTask.main(publicArea, user, io);
+                    RemoveUserFromSceneTask.main(publicArea, user, io);
                 }
                 // Aquí puedes enviar un mensaje al usuario para que se una al minijuego
                 // Por ejemplo: user.socket.emit('joinMinigame', { minigameId: this.id });
