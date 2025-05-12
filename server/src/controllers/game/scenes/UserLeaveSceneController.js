@@ -1,7 +1,7 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const Log = require('../../../utils/Log');
-const RemoveUserFromAreaTask = require('../../../tasks/RemoveUserFromAreaTask');
+const RemoveUserFromSceneTask = require('../../../tasks/RemoveUserFromSceneTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 
 class UserLeaveSceneController {
@@ -16,7 +16,7 @@ class UserLeaveSceneController {
                 return;
             }
 
-            RemoveUserFromAreaTask.main(user.currentArea, user, io);
+            RemoveUserFromSceneTask.main(user.currentArea, user, io);
         } catch (err) {
             Log.error('Error in UserLeaveAreaController: ' + err);
             DisconnectUserController.main(socket, io);
