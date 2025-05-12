@@ -3,7 +3,6 @@ const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 const AnimationEnum = require('../enums/AnimationEnum');
-const RemoveUserFromAreaTask = require('./RemoveUserFromAreaTask');
 const EmojisBlockActionsMap = require('../maps/EmojisBlockActionsMap');
 const WalkBlockActionsMap = require('../maps/WalkBlockActionsMap');
 const UppercutSendBlockActionsMap = require('../maps/UppercutSendBlockActionsMap');
@@ -57,6 +56,7 @@ class UserBlockActionsTask {
                 // Callback al terminar el tiempo de recibir el uppercut
                 // Aquí expulsas al usuario
                 if (user.currentArea) {
+                    const RemoveUserFromAreaTask = require('./RemoveUserFromAreaTask');
                     RemoveUserFromAreaTask.main(user.currentArea, user, io);
                 }
             });
