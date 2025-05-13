@@ -15,21 +15,35 @@ class UserJoinPublicSceneController {
                 //throw new Error("User not found");
                 return;
             }
-            const publicArea = PublicScenesCollection.getByUid(data.areaId);
-            if (!publicArea) {
+            const scene = PublicScenesCollection.getByUid(data.areaId);
+            if (!scene) {
                 throw new Error("Public area not found");
             }
-            if (publicArea.containsUser(user)) {
+            if (scene.containsUser(user)) {
                 //throw new Error("User already in area");
                 return;
             }
 
-            user.setArea(publicArea);
-            publicArea.addUser(user);
+            user.setArea(scene);
+            scene.addUser(user);
+            let sceneUsers = [];
+            for (const user of scene.users) {
+                sceneUsers.push(await new UserSceneResource(user).toObject());
+            }
             socket.emit(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, {
                 success: true,
+                data: {
+                    players: sceneUsers,
+                    scenery: {
+                        id: scene.id,
+                        type: "public_scenery",
+                        map_rows: scene.map_width,
+                        map_cols: scene.map_height,
+                        game_map: scene.game_map,
+                    }
+                }
             });
-            publicArea.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
+            scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
                 user: await new UserSceneResource(user).toObject(),
             }, user);
 
@@ -41,5 +55,4 @@ class UserJoinPublicSceneController {
         }
     }
 }
-module.exports = UserJoinPublicSceneController
-;
+module.exports = UserJoinPublicSceneController;

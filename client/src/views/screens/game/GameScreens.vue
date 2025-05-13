@@ -7,12 +7,14 @@
   <PublicSceneScreen
     v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
     :sceneType="currentScreenType"
+    :sceneData="sceneData"
     @exitLobby="onExitLobby"
     @updateLoading="onUpdateLoading"
   />
   <MinigameSceneScreen
     v-else-if="currentScreen === GameScreensEnum.MINIGAME_SCENE"
     :sceneType="currentScreenType"
+    :sceneData="sceneData"
     @exitLobby="onExitLobby"
     @updateLoading="onUpdateLoading"
   />
@@ -21,6 +23,7 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import GameScreensEnum from "../../../enums/GameScreensEnum";
+import socket from "../../../sockets/socket.js";
 
 export default {
   props: {
@@ -30,6 +33,7 @@ export default {
     return {
       currentScreen: GameScreensEnum.LOBBY,
       currentScreenType: null,
+      sceneData: null,
       GameScreensEnum,
     };
   },
@@ -45,7 +49,8 @@ export default {
     ),
   },
   methods: {
-    onJoinPublicScene(sceneType) {
+    onJoinPublicScene(sceneType, sceneData) {
+      this.sceneData = sceneData;
       this.currentScreenType = sceneType;
       this.currentScreen = GameScreensEnum.PUBLIC_SCENE;
     },
@@ -54,18 +59,28 @@ export default {
         this.gamePhaser.scene.stop("PublicScene");
         this.gamePhaser.scene.stop("MinigameScene");
       }
+      this.sceneData = null;
       this.currentScreen = GameScreensEnum.LOBBY;
       this.currentScreenType = null;
     },
     onUpdateLoading(value) {
       this.$emit("updateLoading", value); // Propaga el evento a App.vue
     },
-    onJoinMinigameScene(sceneType) {
+    onJoinMinigameScene(sceneType, sceneData) {
+      this.sceneData = sceneData;
       this.currentScreenType = sceneType;
       this.currentScreen = GameScreensEnum.MINIGAME_SCENE;
     },
   },
   mounted() {
+    socket.off("response:join_minigame");
+    socket.on("response:join_minigame", (data) => {
+      if (data.success) {
+        this.onJoinMinigameScene(data.sceneType);
+      } else {
+        console.log("Error al unirse a la sala.");
+      }
+    });
     // Detectar desconexión del socket
     //socket.on("disconnect", this.handleDisconnect);
     //

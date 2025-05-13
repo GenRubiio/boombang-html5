@@ -17,6 +17,9 @@ export default {
       type: Number,
       required: true,
     },
+    sceneData: {
+      required: true,
+    },
   },
   data() {
     return {};
@@ -34,6 +37,7 @@ export default {
 
       gamePhaser.scene.start("PublicScene", {
         sceneType: this.sceneType,
+        sceneData: this.sceneData,
         vueComponent: this,
       });
     },

@@ -1,6 +1,7 @@
 const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
 const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
 const PublicSceneModel = require('../models/PublicSceneModel');
+const UserSceneResource = require('../resources/UserSceneResource');
 
 class MinigameRingSceneInstance {
     constructor(minigameScene, players, io) {
@@ -17,27 +18,33 @@ class MinigameRingSceneInstance {
         this.position_users = minigameScene.position_users;
         this.users = []; // Lista de usuarios en el minijuego
 
-        this.callUsers(); // Llamar a los usuarios para que se unan al minijuego
+        this.callUsers();
     }
 
-    callUsers() {
-        for (const player of this.players) {
-            const user = ConnectedUsersCollection.getBySocketId(player.id);
-            if (user) {
-                if (publicArea = user.currentArea && user.currentArea instanceof PublicSceneModel) {
-                    RemoveUserFromSceneTask.main(publicArea, user, io);
+    async callUsers() {
+        try {
+            for (const player of this.players) {
+                const user = ConnectedUsersCollection.getBySocketId(player.id);
+                if (user) {
+                    if (user.currentArea && user.currentArea instanceof PublicSceneModel) {
+                        RemoveUserFromSceneTask.main(user.currentArea, user, this.io);
+                    }
+                    user.setArea(this);
+                    this.users.push(user);
+                    player.emit('response:join_minigame', {
+                        success: true,
+                        sceneType: this.minigameScene.type,
+                    });
+                    this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
+                        user: await new UserSceneResource(user).toObject(),
+                    }, user);
+                } else {
+                    console.error(`Usuario no encontrado para el socket ${player.id}`);
                 }
-                // Aquí puedes enviar un mensaje al usuario para que se una al minijuego
-                // Por ejemplo: user.socket.emit('joinMinigame', { minigameId: this.id });
-                //console.log(`Invitando a ${user.username} al minijuego ${this.name}`);
-                //user.setArea(this.minigameScene);
-                //this.users.push(user); // Agregar el usuario a la lista de usuarios del minijuego
-                //user.socket.emit('response:minigame_ring', {
-                //
-                //})
-            } else {
-                console.error(`Usuario no encontrado para el socket ${player.id}`);
             }
+        }
+        catch (err) {
+            console.error('Error al llamar a los usuarios:', err);
         }
     }
 }
