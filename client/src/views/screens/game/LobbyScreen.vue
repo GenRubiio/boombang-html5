@@ -70,7 +70,6 @@ export default {
 
     socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS);
     socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (publicScenes) => {
-      //console.log(publicScenes);
       this.publicScenes = publicScenes;
       this.$emit("updateLoading", false);
     });

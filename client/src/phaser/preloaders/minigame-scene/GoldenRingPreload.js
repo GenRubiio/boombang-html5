@@ -2,7 +2,7 @@ import asset_backgroundImage from "../../../assets/game/minigame-scenes/1/backgr
 
 class GoldenRingPreload {
     static main(gameScene) {
-        gameScene.load.image("background", asset_backgroundImage);
+        gameScene.load.image("background_golden_ring", asset_backgroundImage);
     }
 }
 

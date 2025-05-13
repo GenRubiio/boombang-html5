@@ -1,6 +1,7 @@
 class MinigameSceneModel {
     constructor(row) {
         this.id = row.id;
+        this.type = row.type;
         this.name = row.name;
         this.map_width = row.map_width;
         this.map_height = row.map_height;

@@ -18,7 +18,9 @@ class MinigameRingSceneInstance {
         this.position_users = minigameScene.position_users;
         this.users = []; // Lista de usuarios en el minijuego
 
-        this.callUsers();
+        setTimeout(() => {
+            this.callUsers();
+        }, 10000); // Llamar a los usuarios después de 1 segundo
     }
 
     async callUsers() {
@@ -31,13 +33,27 @@ class MinigameRingSceneInstance {
                     }
                     user.setArea(this);
                     this.users.push(user);
+                    let sceneUsers = [];
+                    for (const user of this.users) {
+                        sceneUsers.push(await new UserSceneResource(user).toObject());
+                    }
+
                     player.emit('response:join_minigame', {
                         success: true,
                         sceneType: this.minigameScene.type,
+                        data: {
+                            players: sceneUsers,
+                            scenery: {
+                                type: this.minigameScene.type,
+                                map_rows: this.map_width,
+                                map_cols: this.map_height,
+                                game_map: this.game_map,
+                            }
+                        }
                     });
-                    this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
-                        user: await new UserSceneResource(user).toObject(),
-                    }, user);
+                    //this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
+                    //    user: await new UserSceneResource(user).toObject(),
+                    //}, user);
                 } else {
                     console.error(`Usuario no encontrado para el socket ${player.id}`);
                 }
