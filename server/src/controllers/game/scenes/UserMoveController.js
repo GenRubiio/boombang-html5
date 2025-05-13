@@ -29,15 +29,13 @@ class UserMoveController {
                 }
             }
 
-            // Validar posición objetivo
-            const publicArea = PublicScenesCollection.getByUid(user.currentArea.id);
             if (
-                targetX < 0 || targetX >= publicArea.map_width ||
-                targetY < 0 || targetY >= publicArea.map_height ||
-                publicArea.game_map[targetY][targetX] !== 0
+                targetX < 0 || targetX >= user.currentArea.map_width ||
+                targetY < 0 || targetY >= user.currentArea.map_height ||
+                user.currentArea.game_map[targetY][targetX] !== 0
             ) {
                 //console.log('Posición objetivo no válida');
-                publicArea.emit(ResponseSocketsEnum.USER_MOVE_DENIED, {
+                user.currentArea.emit(ResponseSocketsEnum.USER_MOVE_DENIED, {
                     id: socket.id,
                 })
                 user.finalTarget = null; // No se puede llegar al destino
