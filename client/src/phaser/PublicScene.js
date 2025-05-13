@@ -11,6 +11,7 @@ import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
 import PublicScenePreload from "./preloaders/PublicScenePreload"; // Precargador de escena
 import CreateSceneController from "./controllers/public-scene/CreateSceneController"; // Controlador de creación de escena
+import PublicSceneLoad from "./load/PublicSceneLoad"; // Cargador de escena
 
 export default class PublicScene extends Phaser.Scene {
     constructor() {
@@ -43,6 +44,7 @@ export default class PublicScene extends Phaser.Scene {
         PublicSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         PublicSceneResponseSockets.main(this); // Inicializar controladores de sockets
 
+        PublicSceneLoad.main(this, this.sceneData.scenery.type);
         CreateSceneController.main(this, this.sceneData); // Crear escena con jugadores
         this.vueComponent.$emit("updateLoading", false);
 

@@ -3,15 +3,12 @@ import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
-import PublicSceneLoad from "../../load/PublicSceneLoad.js";
-
 
 class CreateSceneController {
     static async main(gameScene, data) {
         const usersData = data.players;
         const sceneryData = data.scenery;
 
-        PublicSceneLoad.main(gameScene, sceneryData.id);
         this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
         this.createUsers(gameScene, usersData);
     }
