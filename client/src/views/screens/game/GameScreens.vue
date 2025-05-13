@@ -74,9 +74,9 @@ export default {
   },
   mounted() {
     socket.off("response:join_minigame");
-    socket.on("response:join_minigame", (data) => {
-      if (data.success) {
-        this.onJoinMinigameScene(data.sceneType);
+    socket.on("response:join_minigame", (response) => {
+      if (response.success) {
+        this.onJoinMinigameScene(response.sceneType, response.data);
       } else {
         console.log("Error al unirse a la sala.");
       }

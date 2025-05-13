@@ -1,11 +1,11 @@
-class UfoSceneLoad {
+class GoldenRingSceneLoad {
     static main(gameScene) {
         this.loadBackground(gameScene);
-        this.loadDecorations(gameScene);
+        //this.loadDecorations(gameScene);
     }
 
     static loadBackground(gameScene) {
-        const background = gameScene.add.image(0, 0, "background_ufo").setOrigin(0);
+        const background = gameScene.add.image(0, 0, "background_golden_ring").setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
     }
 
@@ -14,7 +14,7 @@ class UfoSceneLoad {
          * 1) Item en coordenadas absolutas (por encima de todo)
          *    Útil para decoración UI / adorno en pantalla
          ********************************************************/
-        const itemAbsolute = gameScene.add.image(0, 0, "item_2_ufo");
+        const itemAbsolute = gameScene.add.image(0, 0, "item_2");
         itemAbsolute.setOrigin(0, 0); // ancla en la esquina sup. izq.
         itemAbsolute.setDepth(9999);  // muy alto => se ve arriba de todo
         // No se escala, conserva tamaño original.
@@ -37,7 +37,7 @@ class UfoSceneLoad {
         const y = (col + row) * halfTileHeight + 253;
 
         // Creamos la imagen sin redimensionar
-        const itemIso = gameScene.add.image(x, y, "item_1_ufo");
+        const itemIso = gameScene.add.image(x, y, "item_1");
         // Anclamos al centro/base para que su “pie” quede en el tile isométrico
         itemIso.setOrigin(0.5, 1);
         
@@ -49,4 +49,4 @@ class UfoSceneLoad {
     }
 }
 
-export default UfoSceneLoad;
+export default GoldenRingSceneLoad;
