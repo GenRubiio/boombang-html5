@@ -90,9 +90,9 @@ export default {
       socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: sceneType });
 
       socket.off(ResponseSocketsEnum.JOIN_PUBLIC_AREA);
-      socket.on(ResponseSocketsEnum.JOIN_PUBLIC_AREA, (data) => {
-        if (data.success) {
-          this.$emit("joinPublicScene", sceneType);
+      socket.on(ResponseSocketsEnum.JOIN_PUBLIC_AREA, (response) => {
+        if (response.success) {
+          this.$emit("joinPublicScene", sceneType, response.data);
         } else {
           console.log("Error al unirse a la sala.");
         }

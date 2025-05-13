@@ -2,18 +2,11 @@ import socket from "../../sockets/socket"; // Conexión Socket.io
 import MoveUserController from "../controllers/public-scene/MoveUserController";
 import RemoveUserController from "../controllers/public-scene/RemoveUserController";
 import AddUserController from "../controllers/public-scene/AddUserController";
-import CreateSceneController from "../controllers/public-scene/CreateSceneController";
 import ResponseSocketsEnum from "../../enums/ResponseSocketsEnum";
 import RemoveUserAreaController from "../controllers/public-scene/RemoveUserAreaController";
 
 class PublicSceneResponseSockets {
     static main(gameScene) {
-        // Escuchar respuesta con datos de la sala
-        socket.on(ResponseSocketsEnum.GET_PUBLIC_AREA_DATA, async (data) => {
-            await CreateSceneController.main(gameScene, data); // Crear escena con jugadores
-            gameScene.vueComponent.$emit("updateLoading", false);
-        });
-        
         // Escuchar cuando un nuevo jugador entra
         socket.on(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_AREA, (data) => {
             AddUserController.main(gameScene, data.user);

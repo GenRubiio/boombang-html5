@@ -1,7 +1,6 @@
 
 const GetPublicScenesController = require('../../../controllers/game/scenes/GetPublicScenesController');
 const UserJoinPublicSceneController = require('../../../controllers/game/scenes/UserJoinPublicSceneController');
-const GetPublicSceneDataController = require('../../../controllers/game/scenes/GetPublicSceneDataController');
 const GetPublicSceneUsersController = require('../../../controllers/game/scenes/GetPublicSceneUsersController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
@@ -11,9 +10,6 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.JOIN_PUBLIC_SCENE, async (data) => {
         UserJoinPublicSceneController.main(socket, io, data);
-    });
-    socket.on(RequestSocketsEnum.GET_PUBLIC_SCENE_DATA, async (data) => {
-        GetPublicSceneDataController.main(socket, io, data);
     });
     socket.on(RequestSocketsEnum.GET_PUBLIC_SCENE_USERS, async (data) => {
         GetPublicSceneUsersController.main(socket, io, data);

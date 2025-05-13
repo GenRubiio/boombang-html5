@@ -17,6 +17,9 @@ export default {
       type: Number,
       required: true,
     },
+    sceneData: {
+      required: true,
+    },
   },
   data() {
     return {};
@@ -32,8 +35,9 @@ export default {
     initializeGame() {
       const gamePhaser = this.$root.gamePhaser;
 
-      gamePhaser.scene.start("PublicScene", {
+      gamePhaser.scene.start("MinigameScene", {
         sceneType: this.sceneType,
+        sceneData: this.sceneData,
         vueComponent: this,
       });
     },
