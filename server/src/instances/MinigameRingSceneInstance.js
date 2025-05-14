@@ -1,21 +1,19 @@
+const uuidv4 = require('uuid');
 const EasyStar = require('easystarjs').js;
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
-const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
-const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
-const PublicSceneModel = require('../models/PublicSceneModel');
-const UserSceneResource = require('../resources/UserSceneResource');
 const UserMovimentUtil = require('../utils/UserMovimentUtil');
 const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
+const SceneTypesEnum = require('../enums/SceneTypesEnum');
 
 class MinigameRingSceneInstance {
-    constructor(minigameScene, players, io) {
+    constructor(minigameScene) {
+        this.id = uuidv4.v4(); // ID único de la escena
         this.minigameScene = minigameScene; // Escena del minijuego
-        this.players = players; // Lista de jugadores
-        this.io = io; // Instancia de socket.io
 
+        this.scene_type = SceneTypesEnum.MINIGAME_RING; // Tipo de modelo
         this.name = minigameScene.name;
         this.map_width = minigameScene.map_width;
         this.map_height = minigameScene.map_height;
@@ -28,67 +26,24 @@ class MinigameRingSceneInstance {
         this.motionBlocked = true; // Indica si el movimiento está bloqueado
         this.reservedTiles = {};
 
+        this.startMovementProcessor();
+
+
+
         setTimeout(() => {
-            this.callUsers();
+            console.log('Desbloqueando movimiento');
+            this.motionBlocked = false; // Desbloquear el movimiento
         }, 10000); // Llamar a los usuarios después de 1 segundo
-
-        setTimeout(() => {
-            this.startMovementProcessor();
-        }, 15000); // Llamar a los usuarios después de 1 segundo
     }
 
-    async callUsers() {
-        try {
-            for (const player of this.players) {
-                const user = ConnectedUsersCollection.getBySocketId(player.id);
-                if (user) {
-                    if (user.currentArea && user.currentArea instanceof PublicSceneModel) {
-                        RemoveUserFromSceneTask.main(user.currentArea, user, this.io);
-                    }
-                    user.setArea(this);
-                    this.addUser(user);
-                    let sceneUsers = [];
-                    for (const user of this.users) {
-                        sceneUsers.push(await new UserSceneResource(user).toObject());
-                    }
-
-                    player.emit('response:join_minigame', {
-                        success: true,
-                        sceneType: this.minigameScene.type,
-                        data: {
-                            players: sceneUsers,
-                            scenery: {
-                                type: this.minigameScene.type,
-                                map_rows: this.map_width,
-                                map_cols: this.map_height,
-                                game_map: this.game_map,
-                            }
-                        }
-                    });
-                    //this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
-                    //    user: await new UserSceneResource(user).toObject(),
-                    //}, user);
-                } else {
-                    console.error(`Usuario no encontrado para el socket ${player.id}`);
-                }
-            }
-        }
-        catch (err) {
-            console.error('Error al llamar a los usuarios:', err);
-        }
-    }
-
-    addUser(user) {
+    addUser(user, currentAreaPosition) {
         if (this.users.includes(user)) {
             logger.log('User already in area', 'error');
             return;
         }
-        // Inicializamos la posición actual del usuario si no existe
-        if (!user.currentAreaPosition) {
-            user.currentAreaPosition = { ...this.startPosition };
-        }
-        // Propiedad para recordar la casilla reservada previamente
+        user.currentAreaPosition = currentAreaPosition;
         user.lastReservedTile = null;
+        user.finalTarget = null;
         this.users.push(user);
     }
 
@@ -251,7 +206,9 @@ class MinigameRingSceneInstance {
         this.users.forEach(user => {
             if (user.id !== excludeUserId) {
                 const pos = user.currentAreaPosition;
-                navigationMap[pos.y][pos.x] = 1;
+                if (navigationMap[pos.y] && navigationMap[pos.y][pos.x] !== undefined) {
+                    navigationMap[pos.y][pos.x] = 1;
+                }
             }
         });
 

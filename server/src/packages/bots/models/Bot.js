@@ -22,6 +22,9 @@ class Bot {
             this.moveRandomly();
             //this.sendRandomMessage();
             this.selectUser();
+            this.socket.emit("request:minigame_subscribe", {
+                type: 1,
+            });
         });
 
         this.socket.on(ResponseSocketsEnum.GET_PUBLIC_SCENE_USERS, (data) => {

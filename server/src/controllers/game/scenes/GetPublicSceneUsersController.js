@@ -14,19 +14,17 @@ class GetPublicSceneUsersController {
                 throw new Error('User not found');
             }
             if (!user.currentArea) return;
-            const publicArea = PublicScenesCollection.getByUid(user.currentArea.id);
-            if (!publicArea) {
-                throw new Error('Public area not found');
-            }
 
+            const scene = user.currentArea;
             let players = [];
-            for (const user of publicArea.users) {
+            for (const user of scene.users) {
                 players.push(await new UserSceneResource(user).toObject());
             }
             socket.emit(ResponseSocketsEnum.GET_PUBLIC_SCENE_USERS, {
                 players: players
             });
         } catch (err) {
+            console.log(err);
             Log.error('Error in GetPublicAreaUsersController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
