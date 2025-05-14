@@ -26,6 +26,7 @@ class UserSelectUserController {
 
         } catch (err) {
             Log.error('Error in UserSelectUserController: ' + err);
+            console.log(err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }

@@ -19,7 +19,7 @@ class UserJoinPublicSceneController {
             if (!scene) {
                 throw new Error("Public area not found");
             }
-            if (scene.containsUser(user)) {
+            if (scene.containsUser(user) || user.currentArea) {
                 //throw new Error("User already in area");
                 return;
             }

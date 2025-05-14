@@ -4,7 +4,7 @@ const logger = new ConsoleLogger();
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const UpdatePublicScenesController = require('../controllers/game/lobby/UpdatePublicScenesController');
 const RemoveSelectedUserTask = require('./RemoveSelectedUserTask');
-const PublicSceneModel = require('../models/PublicSceneModel');
+const SceneTypesEnum = require('../enums/SceneTypesEnum');
 
 class RemoveUserFromSceneTask {
     static main(scene, user, io) {
@@ -26,7 +26,7 @@ class RemoveUserFromSceneTask {
                 socketId: user.socket.id
             }, user);
 
-            if (scene instanceof PublicSceneModel) {
+            if (scene.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
                 UpdatePublicScenesController.main(io);
             }
         }

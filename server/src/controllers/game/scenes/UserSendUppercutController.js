@@ -19,6 +19,10 @@ class UserSendUppercutController {
                 return;
             }
 
+            if (targetUser.motionBlocked || user.motionBlocked) {
+                return; // No se puede hacer uppercut si el usuario está bloqueado
+            }
+
             if ((targetUser.currentAreaPosition.x === targetUser.currentArea.startPosition.x
                 && targetUser.currentAreaPosition.y === targetUser.currentArea.startPosition.y)
                 || (user.currentAreaPosition.x === user.currentArea.startPosition.x
