@@ -15,6 +15,7 @@ class SceneModel {
         this.map_height = row.map_height;
         this.game_map = JSON.parse(row.map);
         this.startPosition = row.start_position; // Posición de inicio del área {x, y, z}
+        this.motionBlocked = false; // Indica si el movimiento está bloqueado
 
         this.users = []; // Lista vacía de usuarios
         // Guardamos una copia base del mapa para evitar clonaciones repetidas
