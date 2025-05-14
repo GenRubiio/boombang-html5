@@ -9,12 +9,12 @@ class UserMoveController {
     static async main(socket, io, data) {
         try {
             let user = ConnectedUsersCollection.getBySocketId(socket.id);
-            if (!user || !user.currentArea) {
+            if (!user || !user.currentArea || user.motionBlocked || user.currentArea.motionBlocked) {
                 //throw new Error('User not found or not in an area');
                 return;
             }
 
-            if (user.isActionBlocked(AnimationEnum.WALK)){
+            if (user.isActionBlocked(AnimationEnum.WALK)) {
                 return;
             }
 

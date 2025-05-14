@@ -25,6 +25,7 @@ class MinigameRingSceneInstance {
         this.position_users = minigameScene.position_users;
         this.users = []; // Lista de usuarios en el minijuego
 
+        this.motionBlocked = true; // Indica si el movimiento está bloqueado
         this.reservedTiles = {};
 
         setTimeout(() => {
