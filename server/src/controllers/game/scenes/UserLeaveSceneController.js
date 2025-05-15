@@ -16,7 +16,7 @@ class UserLeaveSceneController {
                 return;
             }
 
-            RemoveUserFromSceneTask.main(user.currentArea, user, io);
+            RemoveUserFromSceneTask.main(user.currentArea, user);
         } catch (err) {
             Log.error('Error in UserLeaveAreaController: ' + err);
             DisconnectUserController.main(socket, io);

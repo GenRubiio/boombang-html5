@@ -7,7 +7,7 @@ const RemoveSelectedUserTask = require('./RemoveSelectedUserTask');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 
 class RemoveUserFromSceneTask {
-    static main(scene, user, io) {
+    static main(scene, user) {
         try {
             if (!scene.containsUser(user)) {
                 logger.log('User not in area', 'error');
@@ -27,7 +27,7 @@ class RemoveUserFromSceneTask {
             }, user);
 
             if (scene.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
-                UpdatePublicScenesController.main(io);
+                UpdatePublicScenesController.main();
             }
         }
         catch (err) {

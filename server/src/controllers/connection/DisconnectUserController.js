@@ -6,7 +6,7 @@ class DisconnectUserController {
         const user = ConnectedUsersCollection.getBySocketId(socket.id);
         if (user) {
             if (user.currentArea) {
-                RemoveUserFromSceneTask.main(user.currentArea, user, io);
+                RemoveUserFromSceneTask.main(user.currentArea, user);
             }
             ConnectedUsersCollection.removeUser(socket.id);
             //console.log(`User ${user.username} disconnected with socket ID ${socket.id}`);

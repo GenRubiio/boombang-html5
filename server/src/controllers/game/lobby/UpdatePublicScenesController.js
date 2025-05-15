@@ -5,7 +5,7 @@ const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 
 class UpdatePublicScenesController {
-    static async main(io) {
+    static async main() {
         try {
             const scenes = await PublicScenesCollection.getAll();
             const publicSceneMenuResource = PublicSceneMenuResource.collection(scenes);

@@ -63,7 +63,7 @@ class MatchMaker {
                 const user = ConnectedUsersCollection.getBySocketId(player.id);
                 if (user) {
                     if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
-                        RemoveUserFromSceneTask.main(user.currentArea, user, io);
+                        RemoveUserFromSceneTask.main(user.currentArea, user);
                         console.log('Usuario eliminado de la escena pública', user.username);
                     }
                     user.setArea(minigameScene);
