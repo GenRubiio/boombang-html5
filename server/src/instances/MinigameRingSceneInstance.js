@@ -7,6 +7,7 @@ const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
+const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
 
 class MinigameRingSceneInstance {
     constructor(minigameScene) {
@@ -22,19 +23,108 @@ class MinigameRingSceneInstance {
         this.navigationMapBase = minigameScene.navigationMapBase;
         this.position_users = minigameScene.position_users;
         this.users = []; // Lista de usuarios en el minijuego
+        this.disqualifiedUsers = []; // Lista de usuarios descalificados
 
         this.motionBlocked = true; // Indica si el movimiento está bloqueado
         this.reservedTiles = {};
 
+        this.startGameInSeconds = 10;
+        this.endGameInSeconds = 60;
+        this.removeUserInSeconds = 10;
+        this.gameStarted = false;
+
         this.startMovementProcessor();
     }
 
+    /**
+     * Inicia el minijuego
+    * 
+    * 
+    * 
+    * 
+    */
+
     startMinigame() {
-        setTimeout(() => {
-            console.log('Desbloqueando movimiento');
-            this.motionBlocked = false; // Desbloquear el movimiento
-        }, 10000); // Llamar a los usuarios después de 1 segundo
+        this.startCountdownTimerStartGame();
     }
+
+    startCountdownTimerStartGame() {
+        let intervalStartGame = setInterval(() => {
+            this.startGameInSeconds--;
+            if (this.startGameInSeconds <= 0) {
+                clearInterval(intervalStartGame);
+                if (this.validateUsersInGame()) {
+                    console.log('Desbloqueando movimiento');
+                    this.gameStarted = true;
+                    this.motionBlocked = false;
+                    this.startCountdownTimerEndGame();
+                }
+                else {
+                    this.endGame();
+                }
+            }
+            if (this.users.length < 2) {
+                clearInterval(intervalStartGame);
+                this.endGame();
+            }
+        }, 1000);
+    }
+
+    validateUsersInGame() {
+        if (this.users.length < 2) {
+            return false;
+        }
+        return true;
+    }
+
+    startCountdownTimerEndGame() {
+        let intervalEndGame = setInterval(() => {
+            this.endGameInSeconds--;
+            if (this.endGameInSeconds <= 0) {
+                clearInterval(intervalEndGame);
+                this.endGame();
+            }
+        }, 1000);
+    }
+
+    disqualifyUser(user) {
+        if (this.disqualifiedUsers.includes(user)) {
+            logger.log('User already disqualified', 'error');
+            return;
+        }
+        this.disqualifiedUsers.push(user);
+        if (this.disqualifiedUsers.length === this.users.length - 1) {
+            this.endGame();
+        }
+    }
+
+    endGame() {
+        let intervalEndGame = setInterval(() => {
+            this.removeUserInSeconds--;
+            if (this.removeUserInSeconds <= 0) {
+                clearInterval(intervalEndGame);
+                this.users.forEach(user => {
+                    if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
+                        RemoveUserFromSceneTask.main(user.currentArea, user);
+                    }
+                });
+                this.users = [];
+                this.disqualifiedUsers = [];
+                this.motionBlocked = true;
+                this.gameStarted = false;
+                this.reservedTiles = {};
+            }
+        }, 1000);
+    }
+
+    /**
+    * Metodos para gestionar los usuarios en el área
+    * 
+    * 
+    * 
+    * 
+    */
+
 
     addUser(user, currentAreaPosition) {
         if (this.users.includes(user)) {
@@ -64,6 +154,10 @@ class MinigameRingSceneInstance {
             delete this.reservedTiles[user.lastReservedTile];
         }
         this.users = this.users.filter(u => u !== user);
+        this.disqualifiedUsers = this.disqualifiedUsers.filter(u => u !== user);
+        if (this.users.length === 1 && this.gameStarted) {
+            this.endGame();
+        }
     }
 
     // Método para emitir un evento a todos los usuarios del área

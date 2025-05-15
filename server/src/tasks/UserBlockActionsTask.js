@@ -60,10 +60,11 @@ class UserBlockActionsTask {
                 // Aquí expulsas al usuario
                 if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
                     user.motionBlocked = true;
+                    user.currentArea.disqualifyUser(user);
                     MoveUserToSceneDoorTask.main(user.currentArea, user);
                 }
                 else if (user.currentArea) {
-                    RemoveUserFromSceneTask.main(user.currentArea, user, io);
+                    RemoveUserFromSceneTask.main(user.currentArea, user);
                 }
             });
             for (const action of UppercutReceivedActionsMap.get()) {
