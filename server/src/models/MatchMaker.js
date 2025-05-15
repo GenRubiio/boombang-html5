@@ -34,27 +34,26 @@ class MatchMaker {
     }
 
     createMinigame(sceneType, players, io) {
-        console.log('Creando sala de minijuego:');
         let minigame = null;
         switch (sceneType) {
             case MinigamesEnum.GOLDEN_RING:
-                let sceneModel = MinigameScenesCollection.getByUid(sceneType);
-                minigame = new MinigameRingSceneInstance(sceneModel);
+                minigame = new MinigameRingSceneInstance(MinigameScenesCollection.getByUid(sceneType));
                 break;
             default:
                 throw new Error(`Tipo de sala desconocido: ${sceneType}`);
         }
+
+        this.sendNotificationToUsers(players);
         setTimeout(() => {
             this.callUsers(minigame, players, io);
-        }, 1000); // Llamar a los usuarios después de 1 segundo
-        console.log("hola");
-        //for (const player of players) {
-        //    minigame.addUser(player.user);
-        //    player.user.currentArea = minigame;
-        //}
-        //const room = new GameRoom(type, players);
-        //this.rooms.set(room.id, room);
-        //return room;
+            minigame.startMinigame();
+        }, 10000);
+    }
+
+    sendNotificationToUsers(players) {
+        for (const player of players) {
+            player.emit('response:minigame_call_notification');
+        }
     }
 
     async callUsers(minigameScene, players, io) {
@@ -65,7 +64,7 @@ class MatchMaker {
                 if (user) {
                     if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
                         RemoveUserFromSceneTask.main(user.currentArea, user, io);
-                        console.log('Usuario eliminado de la escena pública' , user.username);
+                        console.log('Usuario eliminado de la escena pública', user.username);
                     }
                     user.setArea(minigameScene);
                     minigameScene.addUser(user, {

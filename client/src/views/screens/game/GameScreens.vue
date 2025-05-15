@@ -1,23 +1,29 @@
 <template>
-  <LobbyScreen
-    v-if="currentScreen === GameScreensEnum.LOBBY"
-    @joinPublicScene="onJoinPublicScene"
-    @updateLoading="onUpdateLoading"
-  />
-  <PublicSceneScreen
-    v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
-    :sceneType="currentScreenType"
-    :sceneData="sceneData"
-    @exitLobby="onExitLobby"
-    @updateLoading="onUpdateLoading"
-  />
-  <MinigameSceneScreen
-    v-else-if="currentScreen === GameScreensEnum.MINIGAME_SCENE"
-    :sceneType="currentScreenType"
-    :sceneData="sceneData"
-    @exitLobby="onExitLobby"
-    @updateLoading="onUpdateLoading"
-  />
+  <div class="game-screens">
+    <LobbyScreen
+      v-if="currentScreen === GameScreensEnum.LOBBY"
+      @joinPublicScene="onJoinPublicScene"
+      @updateLoading="onUpdateLoading"
+    />
+    <PublicSceneScreen
+      v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
+      :sceneType="currentScreenType"
+      :sceneData="sceneData"
+      @exitLobby="onExitLobby"
+      @updateLoading="onUpdateLoading"
+    />
+    <MinigameSceneScreen
+      v-else-if="currentScreen === GameScreensEnum.MINIGAME_SCENE"
+      :sceneType="currentScreenType"
+      :sceneData="sceneData"
+      @exitLobby="onExitLobby"
+      @updateLoading="onUpdateLoading"
+    />
+    <NotificationMinigameComponent
+      v-if="showMinigameNotification"
+      @close="showMinigameNotification = false"
+    />
+  </div>
 </template>
 
 <script>
@@ -35,6 +41,7 @@ export default {
       currentScreenType: null,
       sceneData: null,
       GameScreensEnum,
+      showMinigameNotification: false,
     };
   },
   components: {
@@ -46,6 +53,9 @@ export default {
     ),
     MinigameSceneScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/scenes/MinigameSceneScreen.vue")
+    ),
+    NotificationMinigameComponent: defineAsyncComponent(() =>
+      import("../../components/interface/NotificationMinigameComponent.vue")
     ),
   },
   methods: {
@@ -81,21 +91,19 @@ export default {
         console.log("Error al unirse a la sala.");
       }
     });
-    // Detectar desconexión del socket
-    //socket.on("disconnect", this.handleDisconnect);
-    //
-    //// Detectar reconexión
-    //socket.on("connect", () => {
-    //  //console.log("Reconectado al servidor");
-    //});
-    //
-    //socket.on("error_critical", this.handleDisconnect);
+    socket.off("response:minigame_call_notification");
+    socket.on("response:minigame_call_notification", () => {
+      this.showMinigameNotification = true;
+    });
   },
-  beforeUnmount() {
-    // Remover listeners de socket para evitar fugas de memoria
-    //socket.off("disconnect", this.handleDisconnect);
-    //socket.off("connect");
-    //socket.off("error_critical", this.handleDisconnect);
-  },
+  beforeUnmount() {},
 };
 </script>
+
+<style>
+.game-screens {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+</style>
