@@ -29,7 +29,7 @@ class MinigameRingSceneInstance {
         this.reservedTiles = {};
 
         this.startGameInSeconds = 10;
-        this.endGameInSeconds = 60;
+        this.endGameInSeconds = 10;
         this.removeUserInSeconds = 10;
         this.gameStarted = false;
 
@@ -51,6 +51,7 @@ class MinigameRingSceneInstance {
     startCountdownTimerStartGame() {
         let intervalStartGame = setInterval(() => {
             this.startGameInSeconds--;
+            this.usersUpdateCounter(this.startGameInSeconds);
             if (this.startGameInSeconds <= 0) {
                 clearInterval(intervalStartGame);
                 if (this.validateUsersInGame()) {
@@ -68,6 +69,15 @@ class MinigameRingSceneInstance {
                 this.endGame();
             }
         }, 1000);
+    }
+
+    usersUpdateCounter(counter) {
+        this.users.forEach(user => {
+            user.socket.emit("response:minigame_counter", {
+                counter: counter,
+                show: counter == 0 ? false : true,
+            });
+        });
     }
 
     validateUsersInGame() {
@@ -99,8 +109,10 @@ class MinigameRingSceneInstance {
     }
 
     endGame() {
+        this.motionBlocked = true;
         let intervalEndGame = setInterval(() => {
             this.removeUserInSeconds--;
+            this.usersUpdateCounter(this.removeUserInSeconds);
             if (this.removeUserInSeconds <= 0) {
                 clearInterval(intervalEndGame);
                 this.users.forEach(user => {
