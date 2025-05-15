@@ -27,9 +27,9 @@ class MinigameRingSceneInstance {
         this.reservedTiles = {};
 
         this.startMovementProcessor();
+    }
 
-
-
+    startMinigame() {
         setTimeout(() => {
             console.log('Desbloqueando movimiento');
             this.motionBlocked = false; // Desbloquear el movimiento
