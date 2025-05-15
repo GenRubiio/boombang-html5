@@ -2,6 +2,7 @@
   <div class="game-container">
     <UserCardComponent ref="userCard" />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
+    <CounterMinigameComponent v-if="showCounter" :counter="counter" />
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
+import CounterMinigameComponent from "../../../components/game/minigames/CounterMinigameComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
@@ -22,7 +24,10 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      counter: 999,
+      showCounter: false,
+    };
   },
   created() {
     this.$emit("updateLoading", true);
@@ -30,6 +35,7 @@ export default {
   components: {
     UserCardComponent,
     BaseChatComponent,
+    CounterMinigameComponent,
   },
   methods: {
     initializeGame() {
@@ -62,6 +68,15 @@ export default {
   },
   mounted() {
     this.initializeGame();
+    socket.off("response:minigame_counter");
+    socket.on("response:minigame_counter", (response) => {
+      if (response.show) {
+        this.counter = response.counter;
+        this.showCounter = true;
+      } else {
+        this.showCounter = false;
+      }
+    });
   },
   beforeUnmount() {},
 };
