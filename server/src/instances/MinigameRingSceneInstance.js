@@ -31,7 +31,7 @@ class MinigameRingSceneInstance {
 
         this.startGameInSeconds = 10;
         this.endGameInSeconds = 60 * 5;
-        this.removeUserInSeconds = 10;
+        this.removeUserInSeconds = 15;
         this.gameStarted = false;
 
         this.startMovementProcessor();
