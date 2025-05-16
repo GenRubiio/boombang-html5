@@ -24,6 +24,7 @@ class PublicScene extends Model
     protected $fillable = [
         'name',
         'type',
+        'menu_type',
         'max_users',
         'map_width',
         'map_height',

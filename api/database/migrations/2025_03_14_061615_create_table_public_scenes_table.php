@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('type');
+            $table->integer('menu_type');
             $table->integer('max_users')->default(10);
             $table->integer('map_width')->default(30);
             $table->integer('map_height')->default(30);
