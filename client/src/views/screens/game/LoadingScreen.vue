@@ -40,7 +40,7 @@ export default {
 .loading-screen {
   height: 100%;
   width: 100%;
-  background-color: black;
+  background: linear-gradient(to bottom, #92dff3 0%, #009fe3 50%, #007ac1 100%);
   color: white;
   position: absolute;
   z-index: 9999;

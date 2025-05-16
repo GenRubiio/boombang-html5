@@ -30,6 +30,8 @@
 import { defineAsyncComponent } from "vue";
 import GameScreensEnum from "../../../enums/GameScreensEnum";
 import socket from "../../../sockets/socket.js";
+import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
+import MenuTypeEnum from "../../../enums/MenuTypeEnum";
 
 export default {
   props: {
@@ -62,7 +64,10 @@ export default {
     onJoinPublicScene(sceneType, sceneData) {
       this.sceneData = sceneData;
       this.currentScreenType = sceneType;
-      this.currentScreen = GameScreensEnum.PUBLIC_SCENE;
+      this.currentScreen =
+        sceneData.scenery.menu_type == MenuTypeEnum.PUBLIC_SCENE
+          ? GameScreensEnum.PUBLIC_SCENE
+          : GameScreensEnum.GAME_SCENE;
     },
     onExitLobby() {
       if (this.gamePhaser) {
@@ -83,16 +88,16 @@ export default {
     },
   },
   mounted() {
-    socket.off("response:join_minigame");
-    socket.on("response:join_minigame", (response) => {
+    socket.off(ResponseSocketsEnum.MINIGAME_JOIN);
+    socket.on(ResponseSocketsEnum.MINIGAME_JOIN, (response) => {
       if (response.success) {
         this.onJoinMinigameScene(response.sceneType, response.data);
       } else {
         console.log("Error al unirse a la sala.");
       }
     });
-    socket.off("response:minigame_call_notification");
-    socket.on("response:minigame_call_notification", () => {
+    socket.off(ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION);
+    socket.on(ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION, () => {
       this.showMinigameNotification = true;
     });
   },

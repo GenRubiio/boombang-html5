@@ -11,6 +11,7 @@ class SceneModel {
         this.id = row.id;
         this.name = row.name;
         this.type = row.type; //Tipo de escena un idetificador de escena para cargar sus componentes
+        this.menu_type = row.menu_type; // Tipo de menú para la escena
         this.map_width = row.map_width;
         this.map_height = row.map_height;
         this.game_map = JSON.parse(row.map);
