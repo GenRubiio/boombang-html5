@@ -5,6 +5,7 @@ const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 const UserService = require('../../../services/UserService');
+const SceneTypesEnum = require('../../../enums/SceneTypesEnum');
 
 class UserSendUppercutController {
     static async main(socket, io) {
@@ -19,7 +20,7 @@ class UserSendUppercutController {
                 return;
             }
 
-            if (targetUser.motionBlocked || user.motionBlocked) {
+            if (targetUser.movementBlocked || user.movementBlocked) {
                 return; // No se puede hacer uppercut si el usuario está bloqueado
             }
 
@@ -55,6 +56,11 @@ class UserSendUppercutController {
                         receiver: targetUser.socket.id,
                         direction: (deltaX === -1 && deltaY === 1) ? 'right' : 'left',
                     });
+
+                    if (targetUser.currentArea && targetUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
+                        targetUser.movementBlocked = true;
+                        targetUser.currentArea.disqualifyUser(targetUser);
+                    }
 
                     //console.log(`Uppercut realizado entre ${user.id} y ${targetUser.id}`);
                 }
