@@ -5,6 +5,7 @@ const GameScreensEnum = new Enum({
     REGISTER: 'register',
     LOBBY: 'lobby',
     PUBLIC_SCENE: 'public_area',
+    GAME_SCENE: 'game_scene',
     MINIGAME_SCENE: 'minigame_scene',
 });
 

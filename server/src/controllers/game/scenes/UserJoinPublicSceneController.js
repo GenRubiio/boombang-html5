@@ -36,6 +36,7 @@ class UserJoinPublicSceneController {
                     players: sceneUsers,
                     scenery: {
                         type: scene.type,
+                        menu_type: scene.menu_type,
                         map_rows: scene.map_width,
                         map_cols: scene.map_height,
                         game_map: scene.game_map,
