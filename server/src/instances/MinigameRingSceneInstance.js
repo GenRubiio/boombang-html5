@@ -8,6 +8,7 @@ const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
+const MinigameAlertsEnum = require('../enums/MinigameAlertsEnum');
 
 class MinigameRingSceneInstance {
     constructor(minigameScene) {
@@ -55,7 +56,6 @@ class MinigameRingSceneInstance {
             if (this.startGameInSeconds <= 0) {
                 clearInterval(intervalStartGame);
                 if (this.validateUsersInGame()) {
-                    console.log('Desbloqueando movimiento');
                     this.gameStarted = true;
                     this.motionBlocked = false;
                     this.startCountdownTimerEndGame();
@@ -109,6 +109,7 @@ class MinigameRingSceneInstance {
     }
 
     endGame() {
+        this.sendAlertToAllUsers();
         this.motionBlocked = true;
         let intervalEndGame = setInterval(() => {
             this.removeUserInSeconds--;
@@ -127,6 +128,32 @@ class MinigameRingSceneInstance {
                 this.reservedTiles = {};
             }
         }, 1000);
+    }
+
+    sendAlertToAllUsers() {
+        if (this.gameStarted && (this.disqualifiedUsers.length === this.users.length - 1)) {
+            let winner = this.users.find(user => !this.disqualifiedUsers.includes(user));
+            this.users.forEach(user => {
+                user.socket.emit('response:minigame_alert', {
+                    alertType: MinigameAlertsEnum.WIN,
+                    winnerName: winner.username,
+                });
+            });
+        }
+        else if (!this.gameStarted) {
+            this.users.forEach(user => {
+                user.socket.emit('response:minigame_alert', {
+                    alertType: MinigameAlertsEnum.NO_MIN_USERS,
+                });
+            });
+        }
+        else {
+            this.users.forEach(user => {
+                user.socket.emit('response:minigame_alert', {
+                    alertType: MinigameAlertsEnum.TIMEOUT,
+                });
+            });
+        }
     }
 
     /**

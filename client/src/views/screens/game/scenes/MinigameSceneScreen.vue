@@ -3,6 +3,11 @@
     <UserCardComponent ref="userCard" />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
     <CounterMinigameComponent v-if="showCounter" :counter="counter" />
+    <AlertMinigameComponent
+      v-if="showAlert"
+      :alertType="alertType"
+      :winnerName="winnerName"
+    />
   </div>
 </template>
 
@@ -11,7 +16,9 @@ import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import CounterMinigameComponent from "../../../components/game/minigames/CounterMinigameComponent.vue";
+import AlertMinigameComponent from "../../../components/game/minigames/AlertMinigameComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
+import MinigameAlertsEnum from "../../../../enums/MinigameAlertsEnum.js";
 
 export default {
   props: {
@@ -27,6 +34,9 @@ export default {
     return {
       counter: 999,
       showCounter: false,
+      showAlert: false,
+      alertType: "win",
+      winnerName: null,
     };
   },
   created() {
@@ -36,6 +46,7 @@ export default {
     UserCardComponent,
     BaseChatComponent,
     CounterMinigameComponent,
+    AlertMinigameComponent,
   },
   methods: {
     initializeGame() {
@@ -76,6 +87,16 @@ export default {
       } else {
         this.showCounter = false;
       }
+    });
+    socket.off("response:minigame_alert");
+    socket.on("response:minigame_alert", (response) => {
+      this.alertType = response.alertType;
+      switch (response.alertType) {
+        case MinigameAlertsEnum.WIN:
+          this.winnerName = response.winnerName;
+          break;
+      }
+      this.showAlert = true;
     });
   },
   beforeUnmount() {},
