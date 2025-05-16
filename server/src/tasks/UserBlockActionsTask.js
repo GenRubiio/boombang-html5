@@ -59,8 +59,6 @@ class UserBlockActionsTask {
                 // Callback al terminar el tiempo de recibir el uppercut
                 // Aquí expulsas al usuario
                 if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
-                    user.motionBlocked = true;
-                    user.currentArea.disqualifyUser(user);
                     MoveUserToSceneDoorTask.main(user.currentArea, user);
                 }
                 else if (user.currentArea) {

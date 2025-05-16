@@ -26,11 +26,11 @@ class MinigameRingSceneInstance {
         this.users = []; // Lista de usuarios en el minijuego
         this.disqualifiedUsers = []; // Lista de usuarios descalificados
 
-        this.motionBlocked = true; // Indica si el movimiento está bloqueado
+        this.movementBlocked = true; // Indica si el movimiento está bloqueado
         this.reservedTiles = {};
 
         this.startGameInSeconds = 10;
-        this.endGameInSeconds = 10;
+        this.endGameInSeconds = 60 * 5;
         this.removeUserInSeconds = 10;
         this.gameStarted = false;
 
@@ -57,7 +57,7 @@ class MinigameRingSceneInstance {
                 clearInterval(intervalStartGame);
                 if (this.validateUsersInGame()) {
                     this.gameStarted = true;
-                    this.motionBlocked = false;
+                    this.movementBlocked = false;
                     this.startCountdownTimerEndGame();
                 }
                 else {
@@ -110,7 +110,7 @@ class MinigameRingSceneInstance {
 
     endGame() {
         this.sendAlertToAllUsers();
-        this.motionBlocked = true;
+        this.movementBlocked = true;
         let intervalEndGame = setInterval(() => {
             this.removeUserInSeconds--;
             this.usersUpdateCounter(this.removeUserInSeconds);
@@ -123,7 +123,7 @@ class MinigameRingSceneInstance {
                 });
                 this.users = [];
                 this.disqualifiedUsers = [];
-                this.motionBlocked = true;
+                this.movementBlocked = true;
                 this.gameStarted = false;
                 this.reservedTiles = {};
             }

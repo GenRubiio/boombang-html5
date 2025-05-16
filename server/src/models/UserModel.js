@@ -11,7 +11,7 @@ class UserModel {
         this.currentArea = null; // Área actual del usuario
         this.currentAreaPosition = { x: null, y: null, z: null }; // Posición actual del usuario en el área
         this.selectedUser = null; // Usuario seleccionado por el usuario
-        this.motionBlocked = false; // Indica si el movimiento está bloqueado
+        this.movementBlocked = false; // Indica si el movimiento está bloqueado
 
         this.finalTarget = null; // Destino final del usuario
 
@@ -70,7 +70,7 @@ class UserModel {
         this.currentArea = area;
         this.currentAreaPosition = area ? { ...area.startPosition } : { x: null, y: null, z: null };
         this.finalTarget = null;
-        this.motionBlocked = false;
+        this.movementBlocked = false;
         if (!area) {
             this.setSelectedUser(null);
         }
