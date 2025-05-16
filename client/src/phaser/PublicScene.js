@@ -6,12 +6,11 @@ import PublicSceneResponseSockets from "./sockets/PublicSceneResponseSockets"; /
 import PublicSceneRequestSockets from "./sockets/PublicSceneRequestSockets"; // Controladores de sockets
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
-import ResponseSocketsEnum from "../enums/ResponseSocketsEnum"; // Enumeración de eventos de sockets
-import RequestSocketsEnum from "../enums/RequestSocketsEnum"; // Enumeración de eventos de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
 import PublicScenePreload from "./preloaders/PublicScenePreload"; // Precargador de escena
 import CreateSceneController from "./controllers/public-scene/CreateSceneController"; // Controlador de creación de escena
 import PublicSceneLoad from "./load/PublicSceneLoad"; // Cargador de escena
+import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 
 export default class PublicScene extends Phaser.Scene {
     constructor() {
@@ -59,31 +58,7 @@ export default class PublicScene extends Phaser.Scene {
     shutdown() {
         //console.log("Shutting down scene with exclusion lists.");
 
-        // Listas de exclusión
-        const excludedResponseEvents = [
-            ResponseSocketsEnum.UPDATE_PUBLIC_AREAS,
-            ResponseSocketsEnum.JOIN_PUBLIC_AREA
-        ];
-
-        const excludedRequestEvents = [
-            RequestSocketsEnum.GET_PUBLIC_AREAS,
-            RequestSocketsEnum.JOIN_PUBLIC_AREA
-        ];
-
-        // Remover solo eventos que no están en las listas de exclusión
-        Object.values(ResponseSocketsEnum).forEach((event) => {
-            if (!excludedResponseEvents.includes(event)) {
-                //console.log(`Eliminando evento de respuesta de socket: ${event}`);
-                socket.off(event);
-            }
-        });
-
-        Object.values(RequestSocketsEnum).forEach((event) => {
-            if (!excludedRequestEvents.includes(event)) {
-                //console.log(`Eliminando evento de solicitud de socket: ${event}`);
-                socket.off(event);
-            }
-        });
+        RemovePhaserSocketsUtil.main(socket); // Eliminar eventos de socket
 
         if (this.chatManager) {
             this.chatManager.destroy();
