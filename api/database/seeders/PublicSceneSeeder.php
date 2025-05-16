@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\MenuTypeEnum;
 use Illuminate\Database\Seeder;
 use App\Enums\PublicSceneTypeEnum;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class PublicSceneSeeder extends Seeder
             [
                 'name' => 'Beluga Beach',
                 'type' => PublicSceneTypeEnum::BELUGA_BEACH->key(),
+                'menu_type' => MenuTypeEnum::PUBLIC_SCENE->key(),
                 'max_users' => 10,
                 'map_width' => 30,
                 'map_height' => 30,
@@ -60,6 +62,7 @@ class PublicSceneSeeder extends Seeder
             [
                 'name' => 'UFO',
                 'type' => PublicSceneTypeEnum::UFO->key(),
+                'menu_type' => MenuTypeEnum::PUBLIC_SCENE->key(),
                 'max_users' => 10,
                 'map_width' => 30,
                 'map_height' => 30,
