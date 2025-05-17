@@ -1,11 +1,17 @@
-class UfoSceneLoad {
-    static main(gameScene) {
+import asset_backgroundImage from "../../../assets/game/scenarios/100/background.webp";
+
+class RingScenePreload {
+    static preload(gameScene) {
+        gameScene.load.image("background_ring", asset_backgroundImage);
+    }
+
+    static load(gameScene) {
         this.loadBackground(gameScene);
-        this.loadDecorations(gameScene);
+        //this.loadDecorations(gameScene);
     }
 
     static loadBackground(gameScene) {
-        const background = gameScene.add.image(0, 0, "background_ufo").setOrigin(0);
+        const background = gameScene.add.image(0, 0, "background_ring").setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
     }
 
@@ -40,7 +46,7 @@ class UfoSceneLoad {
         const itemIso = gameScene.add.image(x, y, "item_1_ufo");
         // Anclamos al centro/base para que su “pie” quede en el tile isométrico
         itemIso.setOrigin(0.5, 1);
-        
+
         // Para que se solape correctamente con jugadores/tiles,
         // asignamos la profundidad según la Y
         itemIso.setDepth(y);
@@ -49,4 +55,4 @@ class UfoSceneLoad {
     }
 }
 
-export default UfoSceneLoad;
+export default RingScenePreload;

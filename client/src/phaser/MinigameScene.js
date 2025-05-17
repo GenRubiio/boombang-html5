@@ -7,9 +7,8 @@ import PublicSceneRequestSockets from "./sockets/PublicSceneRequestSockets"; // 
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
-import MinigameScenePreload from "./preloaders/MinigameScenePreload"; // Precargador de escena
+import MinigameSceneLoader from "./loaders/MinigameSceneLoader"; // Precargador de escena
 import CreateSceneController from "./controllers/public-scene/CreateSceneController"; // Controlador de creación de escena
-import MinigameSceneLoad from "./load/MinigameSceneLoad"; // Cargador de escena
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 
 export default class MinigameScene extends Phaser.Scene {
@@ -29,7 +28,7 @@ export default class MinigameScene extends Phaser.Scene {
 
     preload() {
         //this.load.plugin('rexcolorreplacepipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcolorreplacepipelineplugin.min.js', true);
-        MinigameScenePreload.main(this, this.sceneType); // Precargar imágenes específicas de la sala
+        MinigameSceneLoader.main(this, this.sceneType, true); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tileImage);
         this.load.image("shadow", asset_shadowImage);
 
@@ -43,7 +42,7 @@ export default class MinigameScene extends Phaser.Scene {
         PublicSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         PublicSceneResponseSockets.main(this); // Inicializar controladores de sockets
 
-        MinigameSceneLoad.main(this, this.sceneData.scenery.type);
+        MinigameSceneLoader.main(this, this.sceneData.scenery.type, false);
         CreateSceneController.main(this, this.sceneData); // Crear escena con jugadores
         this.vueComponent.$emit("updateLoading", false);
 
