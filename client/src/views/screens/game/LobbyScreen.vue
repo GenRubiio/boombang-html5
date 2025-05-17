@@ -17,7 +17,7 @@
     </div>
     <div>
       <button
-        style="position: absolute; bottom: 0; right: 0; padding: 10px;"
+        style="position: absolute; bottom: 0; right: 0; padding: 10px"
         @click="suscribeRing"
       >
         PLAY
@@ -33,7 +33,7 @@
             :key="publicScene.id"
             class="room"
           >
-            <button @click="joinScene(publicScene.type)">
+            <button @click="joinScene(publicScene.id)">
               {{ publicScene.name }}
               <span>{{ publicScene.total_users_in }}</span>
             </button>
@@ -85,13 +85,14 @@ export default {
   },
   components: {},
   methods: {
-    joinScene(sceneType) {
-      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: sceneType });
+    joinScene(sceneId) {
+      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: sceneId });
 
       socket.off(ResponseSocketsEnum.JOIN_PUBLIC_AREA);
       socket.on(ResponseSocketsEnum.JOIN_PUBLIC_AREA, (response) => {
         if (response.success) {
-          this.$emit("joinPublicScene", sceneType, response.data);
+          let sceneryType = response.data.scenery.type;
+          this.$emit("joinPublicScene", sceneryType, response.data);
         } else {
           console.log("Error al unirse a la sala.");
         }
