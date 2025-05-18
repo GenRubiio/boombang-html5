@@ -31,12 +31,12 @@ export default class PublicScene extends Phaser.Scene {
         PublicSceneLoader.main(this, this.sceneType, true); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tileImage);
         this.load.image("shadow", asset_shadowImage);
-
-        this.input.enabled = true;
-        this.input.topOnly = false; // Permitir que objetos en capas más bajas reciban eventos
     }
 
     create() {
+        this.input.enabled = true;
+        this.input.topOnly = false;
+
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala

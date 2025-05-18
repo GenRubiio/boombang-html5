@@ -2,6 +2,11 @@
   <div class="game-container">
     <UserCardComponent ref="userCard" />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
+    <NpcComponent
+      v-if="showNpcModal"
+      @close="closeNpcModal"
+      :npcId="npcId"
+    />
   </div>
 </template>
 
@@ -10,6 +15,7 @@ import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
+import NpcComponent from "../../../components/game/scenes/NpcComponent.vue";
 
 export default {
   props: {
@@ -22,7 +28,10 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      showNpcModal: false,
+      npcId: null, // usa esto si quieres pasar datos al modal
+    };
   },
   created() {
     this.$emit("updateLoading", true);
@@ -30,6 +39,7 @@ export default {
   components: {
     UserCardComponent,
     BaseChatComponent,
+    NpcComponent,
   },
   methods: {
     initializeGame() {
@@ -58,6 +68,15 @@ export default {
     updateUserCard(userData) {
       //console.log("Usuario seleccionado:", userData);
       this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
+    },
+    openNpcModal(npcId) {
+      // opcional: carga datos en currentNpcData
+      // this.currentNpcData = { /* ... */ };
+      this.npcId = npcId; // Guarda el ID del NPC
+      this.showNpcModal = true;
+    },
+    closeNpcModal() {
+      this.showNpcModal = false;
     },
   },
   mounted() {

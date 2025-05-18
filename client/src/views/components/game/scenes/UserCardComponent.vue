@@ -68,6 +68,7 @@ export default {
   border-radius: 5px;
   padding: 10px;
   width: 180px;
+  pointer-events: auto;
 }
 
 .user-card__header {
