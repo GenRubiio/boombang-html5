@@ -1,7 +1,11 @@
 <template>
   <div id="login">
     <MaintenanceComponent v-if="!isSocketConnected" />
-    <img :src="asset_backgroundImage" alt="background" class="auth__background" />
+    <img
+      :src="asset_backgroundImage"
+      alt="background"
+      class="auth__background"
+    />
     <div class="auth__clouds-wrapper">
       <div
         class="auth__clouds"
@@ -106,6 +110,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: auto;
 }
 
 .auth__background {

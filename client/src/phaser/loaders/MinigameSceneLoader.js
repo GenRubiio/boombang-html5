@@ -6,11 +6,7 @@ class MinigameSceneLoader {
         switch (sceneType) {
             case MinigameSceneEnum.GOLDEN_RING:
                 //TODO: el import debe producirse aquí
-                if (preload) {
-                    GoldenRingPreload.preload(gameScene);
-                } else {
-                    GoldenRingPreload.load(gameScene);
-                }
+                preload ? GoldenRingPreload.preload(gameScene) : GoldenRingPreload.load(gameScene);
                 break;
             default:
                 break;

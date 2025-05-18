@@ -1,13 +1,15 @@
 import asset_backgroundImage from "../../../assets/game/scenarios/100/background.webp";
+import asset_npcImage from "../../../assets/game/npc/wise_ring.webp";
 
 class RingScenePreload {
     static preload(gameScene) {
         gameScene.load.image("background_ring", asset_backgroundImage);
+        gameScene.load.image("npc_ring", asset_npcImage);
     }
 
     static load(gameScene) {
         this.loadBackground(gameScene);
-        //this.loadDecorations(gameScene);
+        this.loadNPC(gameScene);
     }
 
     static loadBackground(gameScene) {
@@ -15,43 +17,32 @@ class RingScenePreload {
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
     }
 
-    static loadDecorations(gameScene) {
-        /********************************************************
-         * 1) Item en coordenadas absolutas (por encima de todo)
-         *    Útil para decoración UI / adorno en pantalla
-         ********************************************************/
-        const itemAbsolute = gameScene.add.image(0, 0, "item_2_ufo");
-        itemAbsolute.setOrigin(0, 0); // ancla en la esquina sup. izq.
-        itemAbsolute.setDepth(9999);  // muy alto => se ve arriba de todo
-        // No se escala, conserva tamaño original.
-
-
-        /********************************************************
-         * 2) Item en el mundo isométrico (sin escalarlo a "rombo")
-         *    Se comporta igual que un mueble o árbol grande.
-         ********************************************************/
+    static loadNPC(gameScene) {
         const tileWidth = 65;
         const tileHeight = 33;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = gameScene.scale.width / 2;
 
-        // Ejemplo: lo ponemos en col=8, row=4 del mapa isométrico
         const col = 8;
         const row = 4;
         const x = (col - row) * halfTileWidth + centerX + 40;
         const y = (col + row) * halfTileHeight + 253;
 
-        // Creamos la imagen sin redimensionar
-        const itemIso = gameScene.add.image(x, y, "item_1_ufo");
-        // Anclamos al centro/base para que su “pie” quede en el tile isométrico
-        itemIso.setOrigin(0.5, 1);
+        const npc = gameScene.add.image(x, y, "npc_ring");
+        npc.setOrigin(0.5, 1);
+        npc.setDepth(y);
 
-        // Para que se solape correctamente con jugadores/tiles,
-        // asignamos la profundidad según la Y
-        itemIso.setDepth(y);
-
-        // También lo hacemos clicable para voltearlo
+        npc.setInteractive({
+            cursor: 'pointer',
+            pixelPerfect: true  // opcional, si tu sprite tiene transparencias
+        });
+        
+        // 3) Detectar clic y llamar al método de Vue
+        npc.on("pointerdown", () => {
+            // Llama a openNpcModal() que definiremos en el componente Vue
+            gameScene.vueComponent.openNpcModal(1);
+        });
     }
 }
 

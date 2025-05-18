@@ -12,6 +12,13 @@
       @exitLobby="onExitLobby"
       @updateLoading="onUpdateLoading"
     />
+    <GameSceneScreen
+      v-else-if="currentScreen === GameScreensEnum.GAME_SCENE"
+      :sceneType="currentScreenType"
+      :sceneData="sceneData"
+      @exitLobby="onExitLobby"
+      @updateLoading="onUpdateLoading"
+    />
     <MinigameSceneScreen
       v-else-if="currentScreen === GameScreensEnum.MINIGAME_SCENE"
       :sceneType="currentScreenType"
@@ -52,6 +59,9 @@ export default {
     ),
     PublicSceneScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/scenes/PublicSceneScreen.vue")
+    ),
+    GameSceneScreen: defineAsyncComponent(() =>
+      import("../../../views/screens/game/scenes/GameSceneScreen.vue")
     ),
     MinigameSceneScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/scenes/MinigameSceneScreen.vue")

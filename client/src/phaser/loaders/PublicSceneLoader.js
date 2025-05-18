@@ -7,18 +7,10 @@ class PublicSceneLoader {
         switch (sceneType) {
             case PublicSceneEnum.UFO:
                 //TODO: el import debe producirse aquí
-                if (preload) {
-                    UfoScenePreload.preload(gameScene);
-                } else {
-                    UfoScenePreload.load(gameScene);
-                }
+                preload ? UfoScenePreload.preload(gameScene) : UfoScenePreload.load(gameScene);
                 break;
             case PublicSceneEnum.RING:
-                if (preload) {
-                    RingScenePreload.preload(gameScene);
-                } else {
-                    RingScenePreload.load(gameScene);
-                }
+                preload ? RingScenePreload.preload(gameScene) : RingScenePreload.load(gameScene);
                 break;
         }
     }
