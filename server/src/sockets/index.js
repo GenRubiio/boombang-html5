@@ -4,11 +4,11 @@ const publicScenesSockets = require('./game/scenes/publicScenesSockets');
 const scenesSockets = require('./game/scenes/scenesSockets');
 const matchMakerSockets = require('./game/scenes/matchMakerSockets');
 const MinigamesEnum = require('../enums/MinigamesEnum');
-const MatchMaker = require('../models/MatchMaker');
+const MatchMakerInstance = require('../instances/MatchMakerInstance');
 
 module.exports = (io) => {
     const matchMakers = {
-        [MinigamesEnum.GOLDEN_RING]: new MatchMaker(7),
+        [MinigamesEnum.GOLDEN_RING]: new MatchMakerInstance(7),
     }
 
     io.on('connection', (socket) => {

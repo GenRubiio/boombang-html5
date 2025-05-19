@@ -5,8 +5,8 @@ const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCol
 class MinigameSuscribeController {
     static async main(socket, io, matchMakers, data) {
         try {
-            const { type } = data;
-            if (!type) {
+            const sceneType = data.type;
+            if (!sceneType) {
                 console.error('Tipo de minijuego no especificado');
                 //socket.emit(ResponseSocketsEnum.ERROR, 'Tipo de minijuego no especificado');
                 return;
@@ -20,8 +20,8 @@ class MinigameSuscribeController {
             }
 
             // Añadir el socket a la lista de espera del minijuego
-            matchMakers[type].register(socket, type, (players, type) => {
-                matchMakers[type].createMinigame(type, players, io);
+            matchMakers[sceneType].register(socket, sceneType, (players, sceneType) => {
+                matchMakers[sceneType].createMinigame(sceneType, players, io);
                 //socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE_SUCCESS, { type });
             });
         } catch (err) {
