@@ -116,7 +116,7 @@ class CreateSceneController {
                     return;
                 }
 
-                //console.log(`Clicked tile at ${col}, ${row}`);
+                console.log(`Clicked tile at ${col}, ${row}`);
                 socket.emit("request:user_move", { x: col, y: row });
                 FloorPulseAnimation.main(gameScene, mx, my);
             }
