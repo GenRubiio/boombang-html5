@@ -16,7 +16,6 @@ class UserModel {
         this.finalTarget = null; // Destino final del usuario
 
         this.blockedActions = {};
-        this.blockMinigameSuscribe = false; // Bloqueo para la suscripción a minijuegos
     }
 
     // Bloquea una acción específica durante 'duration' ms
@@ -72,9 +71,10 @@ class UserModel {
         this.currentAreaPosition = area ? { ...area.startPosition } : { x: null, y: null, z: null };
         this.finalTarget = null;
         this.movementBlocked = false;
+        this.blockedActions = {};
+        
         if (!area) {
             this.setSelectedUser(null);
-            this.blockMinigameSuscribe = false;
         }
     }
 

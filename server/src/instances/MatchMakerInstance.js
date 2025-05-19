@@ -1,26 +1,28 @@
 const MinigamesEnum = require('../enums/MinigamesEnum');
 const MinigameScenesCollection = require('../collections/MinigameScenesCollection');
-const MinigameRingSceneInstance = require('../instances/MinigameRingSceneInstance');
+const MinigameRingSceneInstance = require('./MinigameRingSceneInstance');
 const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
 const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
 const UserSceneResource = require('../resources/UserSceneResource');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 
-class MatchMaker {
+class MatchMakerInstance {
     constructor(requiredPlayers) {
         this.requiredPlayers = requiredPlayers;
         // Map<type, Array<socket>>
         this.waitingLists = new Map();
         // Map<roomId, GameRoom>
         this.rooms = new Map();
+        this.notifiedUsers = new Map();
     }
 
     register(socket, sceneType, onMatchFound) {
-        const user = ConnectedUsersCollection.getBySocketId(socket.id);
-        if (!user || user.blockMinigameSuscribe) {
+        const notifiedSet = this.notifiedUsers.get(sceneType);
+        if (notifiedSet?.has(socket.id)) {
             return;
         }
+
         if (!this.waitingLists.has(sceneType)) {
             this.waitingLists.set(sceneType, []);
         }
@@ -58,21 +60,25 @@ class MatchMaker {
             default:
                 throw new Error(`Tipo de sala desconocido: ${sceneType}`);
         }
-
-        this.sendNotificationToUsers(players);
+        this.sendNotificationToUsers(players, sceneType);
         setTimeout(() => {
             this.callUsers(minigame, players, io);
             minigame.startMinigame();
         }, 10000);
     }
 
-    sendNotificationToUsers(players) {
+    sendNotificationToUsers(players, sceneType) {
+        if (!this.notifiedUsers.has(sceneType)) {
+            this.notifiedUsers.set(sceneType, new Set());
+        }
+        const notifiedSet = this.notifiedUsers.get(sceneType);
+
         for (const player of players) {
             const user = ConnectedUsersCollection.getBySocketId(player.id);
             if (!user) {
                 continue;
             }
-            user.blockMinigameSuscribe = true;
+            notifiedSet.add(player.id);
             player.emit('response:minigame_call_notification');
         }
     }
@@ -119,26 +125,29 @@ class MatchMaker {
                 minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
                     user: await new UserSceneResource(user).toObject(),
                 }, user);
+
                 position++;
             }
+            this.clearNotifiedUsers(minigameScene, players);
         }
         catch (err) {
             console.error('Error al llamar a los usuarios:', err);
         }
     }
 
-    // (Opcional) Recuperar sala por ID
-    getRoom(roomId) {
-        return this.rooms.get(roomId);
-    }
-
-    unregister(socket, sceneType) {
-        const queue = this.waitingLists.get(sceneType) || [];
-        this.waitingLists.set(
-            sceneType,
-            queue.filter(s => s !== socket)
-        );
+    clearNotifiedUsers(minigameScene, players) {
+        const type = minigameScene.minigameScene.type;
+        const notifiedSet = this.notifiedUsers.get(type);
+        if (notifiedSet) {
+            for (const player of players) {
+                notifiedSet.delete(player.id);
+            }
+            // opcional: si está vacío, eliminar la clave
+            if (notifiedSet.size === 0) {
+                this.notifiedUsers.delete(type);
+            }
+        }
     }
 }
 
-module.exports = MatchMaker;
+module.exports = MatchMakerInstance;
