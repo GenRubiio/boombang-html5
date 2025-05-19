@@ -19,6 +19,8 @@ import CounterMinigameComponent from "../../../components/game/minigames/Counter
 import AlertMinigameComponent from "../../../components/game/minigames/AlertMinigameComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import MinigameAlertsEnum from "../../../../enums/MinigameAlertsEnum.js";
+import { useNpcSubscriptionStore } from "../../../../stores/npcSubscription.js";
+import NpcEnum from "../../../../enums/NpcEnum.js";
 
 export default {
   props: {
@@ -59,6 +61,8 @@ export default {
       });
     },
     exitToLobby() {
+      const store = useNpcSubscriptionStore();
+      store.toggle(NpcEnum.WISE_RING);
       socket.emit(RequestSocketsEnum.USER_LEAVE_AREA); // Enviar evento para salir de la sala
     },
     sendMessage(message) {

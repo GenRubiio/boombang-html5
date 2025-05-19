@@ -17,14 +17,30 @@ class MatchMaker {
     }
 
     register(socket, sceneType, onMatchFound) {
+        const user = ConnectedUsersCollection.getBySocketId(socket.id);
+        if (!user || user.blockMinigameSuscribe) {
+            return;
+        }
         if (!this.waitingLists.has(sceneType)) {
             this.waitingLists.set(sceneType, []);
         }
         const queue = this.waitingLists.get(sceneType);
 
         // Evitar duplicados
+        const idx = queue.findIndex(s => s.id === socket.id);
+        if (idx !== -1) {
+            queue.splice(idx, 1);
+            socket.emit('response:minigame_subscribe', {
+                success: true,
+            });
+            return;
+        }
         if (queue.includes(socket)) return;
         queue.push(socket);
+
+        socket.emit('response:minigame_subscribe', {
+            success: true,
+        });
 
         // Si ya hay suficientes, extraer y llamar callback
         if (queue.length >= this.requiredPlayers) {
@@ -52,6 +68,11 @@ class MatchMaker {
 
     sendNotificationToUsers(players) {
         for (const player of players) {
+            const user = ConnectedUsersCollection.getBySocketId(player.id);
+            if (!user) {
+                continue;
+            }
+            user.blockMinigameSuscribe = true;
             player.emit('response:minigame_call_notification');
         }
     }
@@ -61,43 +82,44 @@ class MatchMaker {
             let position = 0;
             for (const player of players) {
                 const user = ConnectedUsersCollection.getBySocketId(player.id);
-                if (user) {
-                    if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
-                        RemoveUserFromSceneTask.main(user.currentArea, user);
-                        console.log('Usuario eliminado de la escena pública', user.username);
-                    }
-                    user.setArea(minigameScene);
-                    minigameScene.addUser(user, {
-                        x: minigameScene.position_users[position][0],
-                        y: minigameScene.position_users[position][1],
-                        z: minigameScene.position_users[position][2]
-                    });
-
-                    let sceneUsers = [];
-                    for (const user of minigameScene.users) {
-                        sceneUsers.push(await new UserSceneResource(user).toObject());
-                    }
-
-                    player.emit('response:join_minigame', {
-                        success: true,
-                        sceneType: minigameScene.minigameScene.type,
-                        data: {
-                            players: sceneUsers,
-                            scenery: {
-                                type: minigameScene.minigameScene.type,
-                                map_rows: minigameScene.map_width,
-                                map_cols: minigameScene.map_height,
-                                game_map: minigameScene.game_map,
-                            }
-                        }
-                    });
-                    minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
-                        user: await new UserSceneResource(user).toObject(),
-                    }, user);
-                    position++;
-                } else {
+                if (!user) {
                     console.error(`Usuario no encontrado para el socket ${player.id}`);
+                    continue;
                 }
+
+                if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
+                    RemoveUserFromSceneTask.main(user.currentArea, user);
+                    console.log('Usuario eliminado de la escena pública', user.username);
+                }
+                user.setArea(minigameScene);
+                minigameScene.addUser(user, {
+                    x: minigameScene.position_users[position][0],
+                    y: minigameScene.position_users[position][1],
+                    z: minigameScene.position_users[position][2]
+                });
+
+                let sceneUsers = [];
+                for (const user of minigameScene.users) {
+                    sceneUsers.push(await new UserSceneResource(user).toObject());
+                }
+
+                player.emit('response:join_minigame', {
+                    success: true,
+                    sceneType: minigameScene.minigameScene.type,
+                    data: {
+                        players: sceneUsers,
+                        scenery: {
+                            type: minigameScene.minigameScene.type,
+                            map_rows: minigameScene.map_width,
+                            map_cols: minigameScene.map_height,
+                            game_map: minigameScene.game_map,
+                        }
+                    }
+                });
+                minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
+                    user: await new UserSceneResource(user).toObject(),
+                }, user);
+                position++;
             }
         }
         catch (err) {

@@ -2,7 +2,7 @@
   <div class="modal-overlay">
     <div class="modal-content">
       <button class="close-btn" @click="$emit('close')">×</button>
-      <RingNpcModalComponent v-if="npcId == NpcEnum.WISE_RING" />
+      <RingNpcModalComponent v-if="npcId == NpcEnum.WISE_RING" :npcId="npcId"/>
     </div>
   </div>
 </template>
