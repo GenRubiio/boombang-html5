@@ -3,6 +3,7 @@ import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserModel from "../../models/UserModel.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
+import SceneUtils from "../../../utils/SceneUtils.js";
 import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
 import AvatarPositionSpriteModal from "../../admin/modals/AvatarPositionSpriteModal.js";
 import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
@@ -54,6 +55,15 @@ class AddUserController {
         //remove listener if already exists
         spriteShadow.removeAllListeners();
         spriteShadow.on('pointerdown', () => {
+            if (!gameScene.selectedShadow) {
+                SceneUtils.tintSelectedUserShadow(gameScene, spriteShadow, 0x000000, 0xff6700);
+                gameScene.selectedShadow = spriteShadow;
+            }
+            else if (gameScene.selectedShadow != spriteShadow) {
+                SceneUtils.tintSelectedUserShadow(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000);
+                SceneUtils.tintSelectedUserShadow(gameScene, spriteShadow, 0x000000, 0xff6700);
+                gameScene.selectedShadow = spriteShadow;
+            }
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
             if (clickedPlayer) {
                 //console.log("Jugador clickeado: ", clickedPlayer);
