@@ -29,15 +29,14 @@ export default class PublicScene extends Phaser.Scene {
     }
 
     preload() {
-        if (!this.plugins.get('rexcolorreplacepipelineplugin')) {
-            this.load.plugin('rexcolorreplacepipelineplugin', 'plugins/rexcolorreplacepipelineplugin.min.js', true);
-        }
         PublicSceneLoader.main(this, this.sceneType, true); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tileImage);
         this.load.image("shadow", asset_shadowImage);
     }
 
     create() {
+        this.scene.pauseOnBlur = false;
+        this.scene.pauseOnHide = false;
         this.input.enabled = true;
         this.input.topOnly = false;
 

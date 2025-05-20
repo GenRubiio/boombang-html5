@@ -14,6 +14,7 @@
     "jquery": "^3.7.1",
     "p-queue": "^8.0.1",
     "phaser": "^3.87.0",
+    "phaser3-rex-plugins": "^1.80.15",
     "pinia": "^3.0.2",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.8.1",
