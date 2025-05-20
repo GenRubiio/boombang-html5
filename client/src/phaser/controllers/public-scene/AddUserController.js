@@ -60,7 +60,10 @@ class AddUserController {
                 gameScene.selectedShadow = spriteShadow;
             }
             else if (gameScene.selectedShadow != spriteShadow) {
-                SceneUtils.tintSelectedUserShadow(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000);
+                try {
+                    SceneUtils.tintSelectedUserShadow(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000);
+                }
+                catch (e) { }
                 SceneUtils.tintSelectedUserShadow(gameScene, spriteShadow, 0x000000, 0xff6700);
                 gameScene.selectedShadow = spriteShadow;
             }

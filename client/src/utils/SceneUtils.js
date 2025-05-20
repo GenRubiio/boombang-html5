@@ -26,7 +26,7 @@ class SceneUtils {
     }
 
     static tintSelectedUserShadow(gameScene, spriteShadow, originalColor, newColor) {
-        const plugin = gameScene.plugins.get('rexcolorreplacepipelineplugin');
+        const plugin = gameScene.plugins.get('rexColorReplacePipeline');
         // Comprueba si ya tiene aplicado el pipeline
         let pipeline = plugin.get(spriteShadow)[0];
         if (pipeline) {

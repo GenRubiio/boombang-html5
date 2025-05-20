@@ -19,9 +19,11 @@
 </template>
 
 <script>
+import Phaser from "phaser";
 import { defineAsyncComponent } from "vue";
 import socket from "./sockets/socket";
 import GameScreensEnum from "./enums/GameScreensEnum";
+import ColorReplacePipelinePlugin from "phaser3-rex-plugins/plugins/colorreplacepipeline-plugin.js";
 
 export default {
   data() {
@@ -88,6 +90,15 @@ export default {
         height: 657,
         // Registras todas las escenas globales que vayas a usar
         scene: [GlobalPreloader, PublicScene, MinigameScene],
+        plugins: {
+          global: [
+            {
+              key: "rexColorReplacePipeline",
+              plugin: ColorReplacePipelinePlugin,
+              start: true,
+            },
+          ],
+        },
         parent: "phaser-container",
         physics: {
           default: "arcade",
@@ -96,6 +107,13 @@ export default {
           min: 30,
           target: 60,
           forceSetTimeOut: true, // Mantiene el juego corriendo aunque pierda foco
+        },
+        autoFocus: true,
+        callbacks: {
+          postBoot: function (game) {
+            game.events.off("hidden", game.renderer.onHidden, game.renderer);
+            game.events.off("visible", game.renderer.onVisible, game.renderer);
+          },
         },
       });
       // Lanzamos la escena de Preloader para que cargue todo
