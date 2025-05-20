@@ -11,6 +11,7 @@ import PublicSceneLoader from "./loaders/PublicSceneLoader"; // Precargador de e
 import CreateSceneController from "./controllers/public-scene/CreateSceneController"; // Controlador de creación de escena
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 
+
 export default class PublicScene extends Phaser.Scene {
     constructor() {
         super("PublicScene");
@@ -24,10 +25,13 @@ export default class PublicScene extends Phaser.Scene {
         this.users = {}; // Objeto para almacenar jugadores en la sala
         this.avatarAnimations = {}; // Objeto para almacenar animaciones de avatares
         this.vueComponent = data.vueComponent;
+        this.selectedShadow = null; // Sombra seleccionada
     }
 
     preload() {
-        //this.load.plugin('rexcolorreplacepipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcolorreplacepipelineplugin.min.js', true);
+        if (!this.plugins.get('rexcolorreplacepipelineplugin')) {
+            this.load.plugin('rexcolorreplacepipelineplugin', 'plugins/rexcolorreplacepipelineplugin.min.js', true);
+        }
         PublicSceneLoader.main(this, this.sceneType, true); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tileImage);
         this.load.image("shadow", asset_shadowImage);

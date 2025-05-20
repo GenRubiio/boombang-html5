@@ -5,7 +5,7 @@ class SceneUtils {
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = gameScene.scale.width / 2;
-        
+
         const x = (col - row) * halfTileWidth + centerX + 40;
         const y = (col + row) * halfTileHeight + 253;
 
@@ -23,6 +23,24 @@ class SceneUtils {
             // Llama a openNpcModal() que definiremos en el componente Vue
             gameScene.vueComponent.openNpcModal(npcId);
         });
+    }
+
+    static tintSelectedUserShadow(gameScene, spriteShadow, originalColor, newColor) {
+        const plugin = gameScene.plugins.get('rexcolorreplacepipelineplugin');
+        // Comprueba si ya tiene aplicado el pipeline
+        let pipeline = plugin.get(spriteShadow)[0];
+        if (pipeline) {
+            // actualiza el color
+            pipeline.setOriginalColor(originalColor);
+            pipeline.setNewColor(newColor);
+        } else {
+            // lo aplica por primera vez
+            plugin.add(spriteShadow, {
+                originalColor: originalColor,
+                newColor: newColor,
+                // epsilon: 0.1 // sensibilidad, si tienes matices
+            });
+        }
     }
 }
 
