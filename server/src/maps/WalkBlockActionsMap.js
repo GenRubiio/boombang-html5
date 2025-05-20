@@ -4,6 +4,7 @@ const AnimationEnum = require('../enums/AnimationEnum');
 class WalkBlockActionsMap {
     static get() {
         return [
+            AnimationEnum.LOOK,
             AnimationEnum.AVATAR_LAUGHTER_1,
             AnimationEnum.AVATAR_LAUGHTER_2,
             AnimationEnum.AVATAR_CRY,

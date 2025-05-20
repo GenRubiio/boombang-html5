@@ -22,7 +22,9 @@ class UserSelectUserController {
             }
 
             this.selectUser(user, selectedUser);
-            this.updateUserZPositionInArea(user, selectedUser);
+            if (!user.isActionBlocked(AnimationEnum.LOOK)) {
+                this.updateUserZPositionInArea(user, selectedUser);
+            }
 
         } catch (err) {
             Log.error('Error in UserSelectUserController: ' + err);
