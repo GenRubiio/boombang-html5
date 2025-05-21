@@ -57,15 +57,15 @@ class AddUserController {
         spriteShadow.removeAllListeners();
         spriteShadow.on('pointerdown', () => {
             if (!gameScene.selectedShadow) {
-                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700);
+                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700, true);
                 gameScene.selectedShadow = spriteShadow;
             }
             else if (gameScene.selectedShadow != spriteShadow) {
                 try {
-                    TintSpriteUtils.tint(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000);
+                    TintSpriteUtils.tint(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000, true);
                 }
                 catch (e) { }
-                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700);
+                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700, true);
                 gameScene.selectedShadow = spriteShadow;
             }
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
