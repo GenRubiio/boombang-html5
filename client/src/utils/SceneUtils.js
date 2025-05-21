@@ -24,24 +24,6 @@ class SceneUtils {
             gameScene.vueComponent.openNpcModal(npcId);
         });
     }
-
-    static tintSelectedUserShadow(gameScene, spriteShadow, originalColor, newColor) {
-        const plugin = gameScene.plugins.get('rexColorReplacePipeline');
-        // Comprueba si ya tiene aplicado el pipeline
-        let pipeline = plugin.get(spriteShadow)[0];
-        if (pipeline) {
-            // actualiza el color
-            pipeline.setOriginalColor(originalColor);
-            pipeline.setNewColor(newColor);
-        } else {
-            // lo aplica por primera vez
-            plugin.add(spriteShadow, {
-                originalColor: originalColor,
-                newColor: newColor,
-                // epsilon: 0.1 // sensibilidad, si tienes matices
-            });
-        }
-    }
 }
 
 export default SceneUtils;

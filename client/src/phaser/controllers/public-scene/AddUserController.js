@@ -4,6 +4,7 @@ import UserModel from "../../models/UserModel.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 import SceneUtils from "../../../utils/SceneUtils.js";
+import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
 import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
 import AvatarPositionSpriteModal from "../../admin/modals/AvatarPositionSpriteModal.js";
 import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
@@ -56,15 +57,15 @@ class AddUserController {
         spriteShadow.removeAllListeners();
         spriteShadow.on('pointerdown', () => {
             if (!gameScene.selectedShadow) {
-                SceneUtils.tintSelectedUserShadow(gameScene, spriteShadow, 0x000000, 0xff6700);
+                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700);
                 gameScene.selectedShadow = spriteShadow;
             }
             else if (gameScene.selectedShadow != spriteShadow) {
                 try {
-                    SceneUtils.tintSelectedUserShadow(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000);
+                    TintSpriteUtils.tint(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000);
                 }
                 catch (e) { }
-                SceneUtils.tintSelectedUserShadow(gameScene, spriteShadow, 0x000000, 0xff6700);
+                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700);
                 gameScene.selectedShadow = spriteShadow;
             }
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
@@ -102,7 +103,9 @@ class AddUserController {
         //    userData.avatar_id
         //);
         spriteAvatar.setDepth(1);
-
+        //spriteAvatar.setTint(0x00ff00);
+        TintSpriteUtils.tint(gameScene, spriteAvatar, 0xff9900, 0x36c5bf);
+        TintSpriteUtils.tint(gameScene, spriteAvatar, 0xff0000, 0xf8b700);
         return spriteAvatar;
     }
 
