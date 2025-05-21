@@ -11,6 +11,10 @@ class UserResource extends Resource {
             gender: "man",
             uppercuts_send: data.uppercutsSend,
             uppercuts_received: data.uppercutsReceived,
+            user: {
+                uppercut_level: data.uppercutLevel,
+                uppercut_selected: data.uppercutSelected,
+            }
         };
     }
 }
