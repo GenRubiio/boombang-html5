@@ -49,7 +49,7 @@ class UserSelectUserController {
         }
         if (updateCard) {
             user.emit(ResponseSocketsEnum.USER_SELECT_USER, {
-                selected_user: new UserResource(selectedUser).toObject()
+                selected_user: new UserResource(selectedUser).toObject(),
             });
         }
     }

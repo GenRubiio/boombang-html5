@@ -10,11 +10,7 @@ class UserResource extends Resource {
             avatar_id: data.avatarId,
             gender: "man",
             uppercuts_send: data.uppercutsSend,
-            uppercuts_received: data.uppercutsReceived,
-            user: {
-                uppercut_level: data.uppercutLevel,
-                uppercut_selected: data.uppercutSelected,
-            }
+            uppercuts_received: data.uppercutsReceived
         };
     }
 }

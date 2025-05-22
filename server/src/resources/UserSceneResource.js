@@ -10,6 +10,8 @@ class UserSceneResource extends Resource {
             avatar_id: data.avatarId,
             uppercuts_send: data.uppercutsSend,
             uppercuts_received: data.uppercutsReceived,
+            uppercut_level: data.uppercutLevel,
+            uppercut_selected: data.uppercutSelected,
             animations: [],
         };
     }
