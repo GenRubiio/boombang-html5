@@ -57,15 +57,16 @@ class AddUserController {
         spriteShadow.removeAllListeners();
         spriteShadow.on('pointerdown', () => {
             if (!gameScene.selectedShadow) {
-                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700, true);
+                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
                 gameScene.selectedShadow = spriteShadow;
             }
             else if (gameScene.selectedShadow != spriteShadow) {
                 try {
-                    TintSpriteUtils.tint(gameScene, gameScene.selectedShadow, 0xff6700, 0x000000, true);
+                    console.log("Desmarcando sombra: ");
+                    gameScene.tintMgr.clearPart(gameScene.selectedShadow, 'shadow');
                 }
                 catch (e) { }
-                TintSpriteUtils.tint(gameScene, spriteShadow, 0x000000, 0xff6700, true);
+                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
                 gameScene.selectedShadow = spriteShadow;
             }
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
@@ -103,15 +104,14 @@ class AddUserController {
         //    userData.avatar_id
         //);
         spriteAvatar.setDepth(1);
-        //spriteAvatar.setTint(0x00ff00);
-        TintSpriteUtils.tint(gameScene, spriteAvatar, 0xff9900, 0x36c5bf);
-        TintSpriteUtils.tint(gameScene, spriteAvatar, 0xff0000, 0xf8b700);
+        gameScene.tintMgr.replaceColor(spriteAvatar, 'pelo', 0xff9900, 0x36c5bf);
+        gameScene.tintMgr.changeUppercutColor(spriteAvatar, userData.uppercut_selected);
         return spriteAvatar;
     }
 
     static createUserNameText(gameScene, spriteAvatar, userData) {
         // Nombre del usuario
-        const userName = userData.username || "Usuario";
+        const userName = userData.username || "Undefined";
 
         // Crear temporalmente el texto para calcular el tamaño dinámico
         const userNameText = gameScene.add.text(0, 0, userName, {

@@ -10,6 +10,7 @@ import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Anima
 import PublicSceneLoader from "./loaders/PublicSceneLoader"; // Precargador de escena
 import CreateSceneController from "./controllers/public-scene/CreateSceneController"; // Controlador de creación de escena
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
+import TintManager from "./managers/TintManager"; // Gestor de tintes
 
 
 export default class PublicScene extends Phaser.Scene {
@@ -35,6 +36,7 @@ export default class PublicScene extends Phaser.Scene {
     }
 
     create() {
+        this.tintMgr = new TintManager(this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
         this.input.enabled = true;

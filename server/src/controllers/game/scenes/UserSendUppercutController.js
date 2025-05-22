@@ -55,6 +55,7 @@ class UserSendUppercutController {
                         attacker: user.socket.id,
                         receiver: targetUser.socket.id,
                         direction: (deltaX === -1 && deltaY === 1) ? 'right' : 'left',
+                        uppercutSelected: user.uppercutSelected,
                     });
 
                     if (targetUser.currentArea && targetUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {

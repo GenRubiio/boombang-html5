@@ -67,6 +67,7 @@ class SendUppercutAnimationController {
             true,
             attacker.avatarId
         );
+        gameScene.tintMgr.changeUppercutColor(attackerSprite, data.uppercutSelected);
 
         attackerSprite.once("animationcomplete", () => {
             UserIdleAnimation.main(

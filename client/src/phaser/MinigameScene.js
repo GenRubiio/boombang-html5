@@ -10,6 +10,7 @@ import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Anima
 import MinigameSceneLoader from "./loaders/MinigameSceneLoader"; // Precargador de escena
 import CreateSceneController from "./controllers/public-scene/CreateSceneController"; // Controlador de creación de escena
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
+import TintManager from "./managers/TintManager"; // Gestor de tintes
 
 export default class MinigameScene extends Phaser.Scene {
     constructor() {
@@ -34,6 +35,7 @@ export default class MinigameScene extends Phaser.Scene {
     }
 
     create() {
+        this.tintMgr = new TintManager(this);
         this.input.enabled = true;
         this.input.topOnly = false; // Permitir que objetos en capas más bajas reciban eventos
 
