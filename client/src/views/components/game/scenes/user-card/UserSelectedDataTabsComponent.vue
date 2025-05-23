@@ -1,29 +1,31 @@
 <template>
-  <div class="tabs-container" :class="colorUser">
-    <div
-      class="tabs-container__interactions"
-      :class="{ active: activeTab === 'interactions' }"
-      @click="activeTab = 'interactions'"
-    >
-      <img
-        :src="asset_emojisTabIconImage"
-        class="tab-icon"
+  <div>
+    <div class="tabs-container" :class="colorUser">
+      <div
+        class="tabs-container__interactions"
         :class="{ active: activeTab === 'interactions' }"
-      />
-    </div>
-    <div
-      class="tabs-container__statistics"
-      :class="{ active: activeTab === 'statistics' }"
-      @click="activeTab = 'statistics'"
-    >
-      <img
-        :src="asset_statisticsTabIconImage"
-        class="tab-icon"
+        @click="activeTab = 'interactions'"
+      >
+        <img
+          :src="asset_emojisTabIconImage"
+          class="tab-icon"
+          :class="{ active: activeTab === 'interactions' }"
+        />
+      </div>
+      <div
+        class="tabs-container__statistics"
         :class="{ active: activeTab === 'statistics' }"
-      />
+        @click="activeTab = 'statistics'"
+      >
+        <img
+          :src="asset_statisticsTabIconImage"
+          class="tab-icon"
+          :class="{ active: activeTab === 'statistics' }"
+        />
+      </div>
     </div>
+    <component :is="activeTabComponent" :user="user" />
   </div>
-  <component :is="activeTabComponent" :user="user" />
 </template>
 
 <script>
