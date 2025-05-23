@@ -1,7 +1,7 @@
 import AddUserController from "./AddUserController.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
-import SetUserCardController from "../scene/SetUserCardController.js";
+import SetUserCardController from "./SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
 
 class CreateSceneController {
