@@ -49,7 +49,7 @@ import asset_flyImage from "../../../../../../assets/game/ficha/emojis/fly.png";
 
 export default {
   props: {
-    user: {
+    selectedUser: {
       type: Object,
       required: true,
     },
@@ -75,13 +75,13 @@ export default {
   },
   computed: {
     colorUser() {
-      if (this.user.is_admin) {
+      if (this.selectedUser.is_admin) {
         return "admin";
       }
-      if (this.user.is_vip) {
+      if (this.selectedUser.is_vip) {
         return "vip";
       }
-      return this.user.is_selected ? "selected" : "user";
+      return this.selectedUser.is_selected ? "selected" : "user";
     },
   },
 };

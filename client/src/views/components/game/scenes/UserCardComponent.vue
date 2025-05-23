@@ -2,24 +2,31 @@
   <div
     class="user-card unselectable"
     :class="computedClass"
-    v-if="user"
+    v-if="selectedUser"
     @pointerdown.stop
     @mousedown.stop
     @touchstart.stop
   >
     <div class="user-card__header unselectable">
-      {{ user.username }}
+      {{ selectedUser.username }}
     </div>
     <div class="user-card__avatar-container">
       <div class="user-card__avatar-container__message-container">
         <div class="user-card__avatar-container__message-container__text"></div>
       </div>
       <div class="user-card__avatar-container__avatar">
-        <FichaComponent :avatarId="user.avatar_id" />
+        <FichaComponent :avatarId="selectedUser.avatar_id" />
       </div>
     </div>
-    <UserDataTabsComponents v-if="!user.is_selected" :user="user" />
-    <UserSelectedDataTabsComponent v-if="user.is_selected" :user="user" />
+    <UserDataTabsComponents
+      v-if="!selectedUser.is_selected"
+      :selectedUser="selectedUser"
+    />
+    <UserSelectedDataTabsComponent
+      v-if="selectedUser.is_selected"
+      :selectedUser="selectedUser"
+      :authUser="authUser"
+    />
   </div>
 </template>
 
@@ -31,7 +38,8 @@ import UserSelectedDataTabsComponent from "./user-card/UserSelectedDataTabsCompo
 export default {
   data() {
     return {
-      user: null,
+      selectedUser: null,
+      authUser: null,
     };
   },
   components: {
@@ -40,20 +48,21 @@ export default {
     UserSelectedDataTabsComponent,
   },
   methods: {
-    updateData(userData) {
-      //console.log("User data updated:", userData);
-      this.user = userData;
+    updateData(usersData) {
+      console.log("User data updated:", usersData);
+      this.selectedUser = usersData.selectedUser;
+      this.authUser = usersData.authUser;
     },
   },
   computed: {
     computedClass() {
-      if (this.user.is_admin) {
+      if (this.selectedUser.is_admin) {
         return "admin";
       }
-      if (this.user.is_vip) {
+      if (this.selectedUser.is_vip) {
         return "vip";
       }
-      return this.user.is_selected ? "selected" : "user";
+      return this.selectedUser.is_selected ? "selected" : "user";
     },
   },
 };
