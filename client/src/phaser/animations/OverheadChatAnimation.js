@@ -16,7 +16,7 @@ export default class OverheadChatAnimation {
         this.textDepth = 9999;
         this.playerSprite = null;
         this.avatarKey = null;
-        this.areaStartHeight = 200;
+        this.areaStartHeight = 140;
 
         // Array para almacenar los contenedores de mensajes
         this.messages = [];
