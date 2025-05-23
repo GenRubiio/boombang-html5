@@ -24,7 +24,7 @@
         />
       </div>
     </div>
-    <component :is="activeTabComponent" :user="user" />
+    <component :is="activeTabComponent" :selectedUser="selectedUser" />
   </div>
 </template>
 
@@ -36,7 +36,7 @@ import StatisticsTabComponent from "./tabs/StatisticsTabComponent.vue";
 
 export default {
   props: {
-    user: {
+    selectedUser: {
       type: Object,
       required: true,
     },
@@ -55,10 +55,10 @@ export default {
         : StatisticsTabComponent;
     },
     colorUser() {
-      if (this.user.is_admin) {
+      if (this.selectedUser.is_admin) {
         return "admin";
       }
-      if (this.user.is_vip) {
+      if (this.selectedUser.is_vip) {
         return "vip";
       }
       return "user";

@@ -6,7 +6,11 @@
       <div></div>
       <div></div>
       <div class="upper-red">
-        <img :src="items[selectedUpperIndex]" alt="upper" @click="handleMainClick" />
+        <img
+          :src="items[selectedUpperIndex]"
+          alt="upper"
+          @click="handleMainClick"
+        />
         <span class="plus-button" @click.stop="toggleContainer">+</span>
       </div>
       <div></div>
@@ -46,7 +50,11 @@ import asset_goldUpperImage from "../../../../../../assets/game/ficha/uppercuts/
 
 export default {
   props: {
-    user: {
+    selectedUser: {
+      type: Object,
+      required: true,
+    },
+    authUser: {
       type: Object,
       required: true,
     },
@@ -65,9 +73,9 @@ export default {
         asset_blackUpperImage,
         asset_goldUpperImage,
       ],
-      selectedUpperIndex: 0,
+      selectedUpperIndex: (this.authUser.uppercut_selected),
       showContainer: false,
-      activeCount: 8,
+      activeCount: (this.authUser.uppercut_level + 1),
     };
   },
   methods: {
@@ -95,9 +103,9 @@ export default {
   },
   computed: {
     colorUser() {
-      if (this.user.is_admin) return "admin";
-      if (this.user.is_vip) return "vip";
-      return this.user.is_selected ? "selected" : "user";
+      if (this.selectedUser.is_admin) return "admin";
+      if (this.selectedUser.is_vip) return "vip";
+      return this.selectedUser.is_selected ? "selected" : "user";
     },
   },
 };

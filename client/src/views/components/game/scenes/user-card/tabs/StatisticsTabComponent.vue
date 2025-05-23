@@ -4,7 +4,7 @@
       <div class="container__uppers-data__title">Uppercuts</div>
       <div class="container__uppers-data__data-container">
         <div class="container__uppers-data__data-container__count">
-          {{ user.uppercuts_send }}
+          {{ selectedUser.uppercuts_send }}
         </div>
         <div class="container__uppers-data__data-container__title">
           Enviados
@@ -12,7 +12,7 @@
       </div>
       <div class="container__uppers-data__data-container">
         <div class="container__uppers-data__data-container__count">
-          {{ user.uppercuts_received }}
+          {{ selectedUser.uppercuts_received }}
         </div>
         <div class="container__uppers-data__data-container__title">
           Recibidos
@@ -30,7 +30,7 @@ import asset_redUpperImage from "../../../../../../assets/game/ficha/uppercuts/r
 
 export default {
   props: {
-    user: {
+    selectedUser: {
       type: Object,
       required: true,
     },
@@ -43,17 +43,17 @@ export default {
   methods: {},
   computed: {
     colorUser() {
-      if (this.user.is_admin) {
+      if (this.selectedUser.is_admin) {
         return "admin";
       }
-      if (this.user.is_vip) {
+      if (this.selectedUser.is_vip) {
         return "vip";
       }
-      return this.user.is_selected ? "selected" : "user";
+      return this.selectedUser.is_selected ? "selected" : "user";
     },
   },
   mounted() {
-    console.log("User data received in component:", this.user);
+    console.log("User data received in component:", this.selectedUser);
   },
 };
 </script>

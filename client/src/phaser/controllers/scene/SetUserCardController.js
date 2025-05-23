@@ -1,8 +1,11 @@
 
 class SetUserCardController {
-    static main(gameScene, data) {
+    static main(gameScene, selectedUser, authUser) {
         const vueComponent = gameScene.sys.settings.data.vueComponent;
-        vueComponent.updateUserCard(data);
+        vueComponent.updateUserCard({
+            selectedUser: selectedUser,
+            authUser: authUser,
+        });
     }
 }
 
