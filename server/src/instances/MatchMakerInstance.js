@@ -3,7 +3,7 @@ const MinigameScenesCollection = require('../collections/MinigameScenesCollectio
 const MinigameRingSceneInstance = require('./MinigameRingSceneInstance');
 const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
 const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
-const UserSceneResource = require('../resources/UserSceneResource');
+const UserResource = require('../resources/UserResource');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 
@@ -106,7 +106,7 @@ class MatchMakerInstance {
 
                 let sceneUsers = [];
                 for (const user of minigameScene.users) {
-                    sceneUsers.push(await new UserSceneResource(user).toObject());
+                    sceneUsers.push(await new UserResource(user).toObject());
                 }
 
                 player.emit('response:join_minigame', {
@@ -123,7 +123,7 @@ class MatchMakerInstance {
                     }
                 });
                 minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
-                    user: await new UserSceneResource(user).toObject(),
+                    user: await new UserResource(user).toObject(),
                 }, user);
 
                 position++;

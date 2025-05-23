@@ -3,7 +3,7 @@ const UpdatePublicScenesController = require('../lobby/UpdatePublicScenesControl
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
-const UserSceneResource = require('../../../resources/UserSceneResource');
+const UserResource = require('../../../resources/UserResource');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 
@@ -28,7 +28,7 @@ class UserJoinPublicSceneController {
             scene.addUser(user);
             let sceneUsers = [];
             for (const user of scene.users) {
-                sceneUsers.push(await new UserSceneResource(user).toObject());
+                sceneUsers.push(await new UserResource(user).toObject());
             }
             socket.emit(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, {
                 success: true,
@@ -44,7 +44,7 @@ class UserJoinPublicSceneController {
                 }
             });
             scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
-                user: await new UserSceneResource(user).toObject(),
+                user: await new UserResource(user).toObject(),
             }, user);
 
             UpdatePublicScenesController.main(io);
