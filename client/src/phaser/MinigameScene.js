@@ -2,13 +2,11 @@ import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
 import asset_shadowImage from "../assets/game/avatar/shadow.png"; // Imagen de la sombra
 import asset_tileImage from "../assets/game/scene/tile.png"; // Imagen del suelo
-import PublicSceneResponseSockets from "./sockets/PublicSceneResponseSockets"; // Controladores de sockets
-import PublicSceneRequestSockets from "./sockets/PublicSceneRequestSockets"; // Controladores de sockets
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
 import MinigameSceneLoader from "./loaders/MinigameSceneLoader"; // Precargador de escena
-import CreateSceneController from "./controllers/public-scene/CreateSceneController"; // Controlador de creación de escena
+import CreateSceneController from "./controllers/scene/CreateSceneController"; // Controlador de creación de escena
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 import TintManager from "./managers/TintManager"; // Gestor de tintes
 
@@ -41,8 +39,6 @@ export default class MinigameScene extends Phaser.Scene {
 
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
-        PublicSceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
-        PublicSceneResponseSockets.main(this); // Inicializar controladores de sockets
 
         MinigameSceneLoader.main(this, this.sceneData.scenery.type, false);
         CreateSceneController.main(this, this.sceneData); // Crear escena con jugadores
