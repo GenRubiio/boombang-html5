@@ -62,7 +62,7 @@ class AddUserController {
             }
             else if (gameScene.selectedShadow != spriteShadow) {
                 try {
-                    console.log("Desmarcando sombra: ");
+                    //console.log("Desmarcando sombra: ");
                     gameScene.tintMgr.clearPart(gameScene.selectedShadow, 'shadow');
                 }
                 catch (e) { }
