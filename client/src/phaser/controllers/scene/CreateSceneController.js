@@ -1,7 +1,7 @@
 import AddUserController from "./AddUserController.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
-import SetUserCardController from "./SetUserCardController.js";
+import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
 
 class CreateSceneController {
@@ -38,7 +38,7 @@ class CreateSceneController {
                 // Creamos un "bob" solo si el mapa en esta posición es clickeable (0)
                 const isClickable = map[row][col] == 0;
                 const bob = blitter.create(x, y);
-          
+
                 if (import.meta.env.VITE_MAP_MAKER === "true") {
                     if (!isClickable) {
                         bob.tint = 0x808080; // Color gris, por ejemplo
@@ -106,7 +106,7 @@ class CreateSceneController {
                 // Si el tile no es clickeable, ignoramos el clic
                 if (!tile.isClickable) {
                     console.log(`Tile at ${col}, ${row} is not clickable.`);
-                    if (import.meta.env.VITE_MAP_MAKER === "true"){
+                    if (import.meta.env.VITE_MAP_MAKER === "true") {
                         gameScene.tiles[row][col - 1].bob.setTint(0xffffff);
                         gameScene.tiles[row][col].isClickable = 0;
                         map[row][col] = 0;

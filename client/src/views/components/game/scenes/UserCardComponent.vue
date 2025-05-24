@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     updateData(usersData) {
-      console.log("User data updated:", usersData);
+      //console.log("User data updated:", usersData);
       this.selectedUser = usersData.selectedUser;
       this.authUser = usersData.authUser;
     },
