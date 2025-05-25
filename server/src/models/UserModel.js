@@ -39,6 +39,7 @@ class UserModel {
         }, duration);
 
         this.blockedActions[actionType] = { until, timeoutId, callback };
+        return timeoutId;
     }
 
     // Quita el bloqueo de una acción
@@ -103,6 +104,11 @@ class UserModel {
 
         if (!area) {
             this.setSelectedUser(null);
+
+            if (this._uppercutTimeout) {
+                clearTimeout(this._uppercutTimeout);
+                delete this._uppercutTimeout;
+            }
         }
     }
 

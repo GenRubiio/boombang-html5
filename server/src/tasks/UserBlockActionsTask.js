@@ -55,7 +55,7 @@ class UserBlockActionsTask {
 
     static blockByUppercutReceive(user, io) {
         try {
-            user.blockAction(AnimationEnum.UPPERCUT, AnimationBlockTimerEnum.UPPERCUT_RECEIVE, () => {
+            user._uppercutTimeout = user.blockAction(AnimationEnum.UPPERCUT, AnimationBlockTimerEnum.UPPERCUT_RECEIVE, () => {
                 // Callback al terminar el tiempo de recibir el uppercut
                 // Aquí expulsas al usuario
                 if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
@@ -65,6 +65,7 @@ class UserBlockActionsTask {
                     RemoveUserFromSceneTask.main(user.currentArea, user);
                 }
             });
+
             for (const action of UppercutReceivedActionsMap.get()) {
                 user.blockAction(action, AnimationBlockTimerEnum.UPPERCUT_RECEIVE);
             }
