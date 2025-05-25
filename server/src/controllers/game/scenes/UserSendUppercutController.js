@@ -43,6 +43,11 @@ class UserSendUppercutController {
                     user.cancelMovement();
                     targetUser.cancelMovement();
 
+                    if (targetUser.currentArea && targetUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
+                        targetUser.movementBlocked = true;
+                        targetUser.currentArea.disqualifyUser(targetUser);
+                    }
+
                     // Bloquear acciones para uppercut
                     UserBlockActionsTask.blockByUppercutSend(user);
                     UserBlockActionsTask.blockByUppercutReceive(targetUser, io);
@@ -57,11 +62,6 @@ class UserSendUppercutController {
                         direction: (deltaX === -1 && deltaY === 1) ? 'right' : 'left',
                         uppercutSelected: user.uppercutSelected,
                     });
-
-                    if (targetUser.currentArea && targetUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
-                        targetUser.movementBlocked = true;
-                        targetUser.currentArea.disqualifyUser(targetUser);
-                    }
 
                     //console.log(`Uppercut realizado entre ${user.id} y ${targetUser.id}`);
                 }
