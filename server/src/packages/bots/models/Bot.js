@@ -2,6 +2,7 @@ const { io } = require("socket.io-client");
 require('dotenv').config();
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 
 class Bot {
     constructor(username, password) {
@@ -112,12 +113,43 @@ class Bot {
     }
 
     moveRandomly() {
-        // Se mueve aleatoriamente cada 2, 3, 5, 8 segundos
-        let arrayInterval = [2000, 3000, 5000, 8000];
-        setInterval(() => {
-            const x = Math.floor(Math.random() * 30);
-            const y = Math.floor(Math.random() * 30);
-            this.socket.emit(RequestSocketsEnum.USER_MOVE, { x: x, y: y });
+        // Intervalos de tiempo aleatorios
+        const arrayInterval = [2000, 3000, 5000, 8000];
+
+        const moveInterval = setInterval(() => {
+            const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
+            if (!user || !user.currentArea) {
+                console.error("Usuario o área no encontrados");
+                return;
+            }
+
+            // Obtener el mapa del área actual
+            const sceneModel = user.currentArea;
+            const gameMap = sceneModel.game_map; // Asumiendo que game_map está accesible
+
+
+            // Recoger todas las posiciones válidas (0 = walkable)
+            const validPositions = [];
+            for (let y = 0; y < gameMap.length; y++) {
+                for (let x = 0; x < gameMap[y].length; x++) {
+                    if (gameMap[y][x] === 0) { // 0 = posición walkable
+                        validPositions.push({ x, y });
+                    }
+                }
+            }
+
+            if (validPositions.length === 0) {
+                console.error("No hay posiciones válidas");
+                return;
+            }
+
+            // Seleccionar posición aleatoria válida
+            const randomPos = validPositions[Math.floor(Math.random() * validPositions.length)];
+            this.socket.emit(RequestSocketsEnum.USER_MOVE, {
+                x: randomPos.x,
+                y: randomPos.y
+            });
+
         }, arrayInterval[Math.floor(Math.random() * arrayInterval.length)]);
     }
 
