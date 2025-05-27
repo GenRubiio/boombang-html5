@@ -18,6 +18,7 @@ Route::group([
 ], function () { // custom admin routes
     Route::crud('public-scene', 'PublicSceneCrudController');
     Route::crud('minigame-scene', 'MinigameSceneCrudController');
+    Route::crud('scene-item', 'SceneItemCrudController');
 }); // this should be the absolute last line of this file
 
 /**
