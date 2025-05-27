@@ -17,7 +17,7 @@ class PublicSceneApiController extends Controller
     public function get(Request $request): JsonResource
     {
         try {
-            $items = PublicScene::all();
+            $items = PublicScene::with('items')->get();
             return $this->successResponse(
                 [
                     'scenes' => PublicSceneResource::collection($items)

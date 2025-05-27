@@ -37,6 +37,7 @@ class PublicSceneResource extends JsonResource
                 'y' => (int)$this->start_y,
                 'z' => (int)$this->start_z,
             ],
+            'items' => $this->relationLoaded('items') ? SceneItemResource::collection($this->items) : [],
         ];
     }
 }

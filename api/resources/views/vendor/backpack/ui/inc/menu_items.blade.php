@@ -9,3 +9,4 @@
     <x-backpack::menu-dropdown-item title="Permissions" icon="la la-key" :link="backpack_url('permission')" />
 </x-backpack::menu-dropdown>
 <x-backpack::menu-item title="Minigame scenes" icon="la la-question" :link="backpack_url('minigame-scene')" />
+<x-backpack::menu-item title="Scene items" icon="la la-question" :link="backpack_url('scene-item')" />
