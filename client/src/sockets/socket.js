@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 // Configura la conexión con el servidor de Socket.io
-const socket = io('http://localhost:3000', {
+const socket = io(import.meta.env.VITE_API_URL, {
     transports: ['websocket'], // Usa solo websockets
     reconnection: true, // Intenta reconectar automáticamente
     reconnectionAttempts: 5, // Número de intentos antes de fallar

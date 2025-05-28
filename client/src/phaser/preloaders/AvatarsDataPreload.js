@@ -1,42 +1,42 @@
-import AvatarEnum from "../enums/AvatarEnum";
-import boomer_config from "../../assets/game/avatars/boomer/config.json";
-import brujita_config from "../../assets/game/avatars/brujita/config.json";
-import cholo_config from "../../assets/game/avatars/cholo/config.json";
-import empollon_config from "../../assets/game/avatars/empollon/config.json";
-import gata_config from "../../assets/game/avatars/gata/config.json";
-import ghost_config from "../../assets/game/avatars/ghost/config.json";
-import india_config from "../../assets/game/avatars/india/config.json";
-import lilian_config from "../../assets/game/avatars/lilian/config.json";
-import marsu_config from "../../assets/game/avatars/marsu/config.json";
-import modern_config from "../../assets/game/avatars/modern/config.json";
-import ninja_config from "../../assets/game/avatars/ninja/config.json";
-import rasta_config from "../../assets/game/avatars/rasta/config.json";
-import skeleton_config from "../../assets/game/avatars/skeleton/config.json";
-import werewolf_config from "../../assets/game/avatars/werewolf/config.json";
-import wraith_config from "../../assets/game/avatars/wraith/config.json";
-import yayo_config from "../../assets/game/avatars/yayo/config.json";
-import zombie_config from "../../assets/game/avatars/zombie/config.json";
+import AvatarEnum from "../../enums/AvatarEnum";
+//import asset_boomerJson from "../../assets/game/avatars/boomer/config.json";
+//import asset_brujitaJson from "../../assets/game/avatars/brujita/config.json";
+//import asset_choloJson from "../../assets/game/avatars/cholo/config.json";
+//import asset_empollonJson from "../../assets/game/avatars/empollon/config.json";
+import asset_gataJson from "../../assets/game/avatars/gata/config.json";
+//import asset_ghostJson from "../../assets/game/avatars/ghost/config.json";
+//import asset_indiaJson from "../../assets/game/avatars/india/config.json";
+//import asset_lilianJson from "../../assets/game/avatars/lilian/config.json";
+//import asset_marsuJson from "../../assets/game/avatars/marsu/config.json";
+//import asset_modernJson from "../../assets/game/avatars/modern/config.json";
+//import asset_ninjaJson from "../../assets/game/avatars/ninja/config.json";
+import asset_rastaJson from "../../assets/game/avatars/rasta/config.json";
+//import asset_skeletonJson from "../../assets/game/avatars/skeleton/config.json";
+//import asset_werewolfJson from "../../assets/game/avatars/werewolf/config.json";
+//import asset_wraithJson from "../../assets/game/avatars/wraith/config.json";
+//import asset_yayoJson from "../../assets/game/avatars/yayo/config.json";
+//import asset_zombieJson from "../../assets/game/avatars/zombie/config.json";
 
 class AvatarsDataPreload {
     static main() {
         window.avatars_config = {
-            [AvatarEnum.BOOMER]: boomer_config,
-            [AvatarEnum.BRUJITA]: brujita_config,
-            [AvatarEnum.CHOLO]: cholo_config,
-            [AvatarEnum.EMPOLLON]: empollon_config,
-            [AvatarEnum.GATA]: gata_config,
-            [AvatarEnum.GHOST]: ghost_config,
-            [AvatarEnum.INDIA]: india_config,
-            [AvatarEnum.LILIAN]: lilian_config,
-            [AvatarEnum.MARSU]: marsu_config,
-            [AvatarEnum.MODERN]: modern_config,
-            [AvatarEnum.NINJA]: ninja_config,
-            [AvatarEnum.RASTA]: rasta_config,
-            [AvatarEnum.SKELETON]: skeleton_config,
-            [AvatarEnum.WEREWOLF]: werewolf_config,
-            [AvatarEnum.WRAITH]: wraith_config,
-            [AvatarEnum.YAYO]: yayo_config,
-            [AvatarEnum.ZOMBIE]: zombie_config
+            //[AvatarEnum.BOOMER]: asset_boomerJson,
+            //[AvatarEnum.BRUJITA]: asset_brujitaJson,
+            //[AvatarEnum.CHOLO]: asset_choloJson,
+            //[AvatarEnum.EMPOLLON]: asset_empollonJson,
+            [AvatarEnum.GATA]: asset_gataJson,
+            //[AvatarEnum.GHOST]: asset_ghostJson,
+            //[AvatarEnum.INDIA]: asset_indiaJson,
+            //[AvatarEnum.LILIAN]: asset_lilianJson,
+            //[AvatarEnum.MARSU]: asset_marsuJson,
+            //[AvatarEnum.MODERN]: asset_modernJson,
+            //[AvatarEnum.NINJA]: asset_ninjaJson,
+            [AvatarEnum.RASTA]: asset_rastaJson,
+            //[AvatarEnum.SKELETON]: asset_skeletonJson,
+            //[AvatarEnum.WEREWOLF]: asset_werewolfJson,
+            //[AvatarEnum.WRAITH]: asset_wraithJson,
+            //[AvatarEnum.YAYO]: asset_yayoJson,
+            //[AvatarEnum.ZOMBIE]: asset_zombieJson
         };
     }
 }

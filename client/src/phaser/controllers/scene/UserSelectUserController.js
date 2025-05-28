@@ -1,0 +1,14 @@
+
+import SetUserCardController from "./SetUserCardController.js";
+import socket from "../../../sockets/socket.js"; // Conexión Socket.io
+
+class UserSelectUserController {
+    static main(gameScene, data) {
+        //console.log("UserSelectUserController.main", data);
+        let selectedUser = data.selected_user;
+        selectedUser.is_selected = selectedUser.socket_id != socket.id ? true : false;
+        SetUserCardController.main(gameScene, data.selected_user, data.auth_user);
+    }
+}
+
+export default UserSelectUserController;
