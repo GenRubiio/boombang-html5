@@ -1,15 +1,23 @@
 const authSockets = require('./authSockets');
 const connectionSockets = require('./connectionSockets');
-const publicAreaSockets = require('./game/areas/publicAreaSockets');
-const areaSockets = require('./game/areas/areaSockets');
+const publicScenesSockets = require('./game/scenes/publicScenesSockets');
+const scenesSockets = require('./game/scenes/scenesSockets');
+const matchMakerSockets = require('./game/scenes/matchMakerSockets');
+const MinigamesEnum = require('../enums/MinigamesEnum');
+const MatchMakerInstance = require('../instances/MatchMakerInstance');
 
 module.exports = (io) => {
+    const matchMakers = {
+        [MinigamesEnum.GOLDEN_RING]: new MatchMakerInstance(7),
+    }
+
     io.on('connection', (socket) => {
         console.log('A player connected:', socket.id);
 
         authSockets(socket, io);
         connectionSockets(socket, io);
-        publicAreaSockets(socket, io);
-        areaSockets(socket, io);
+        publicScenesSockets(socket, io);
+        scenesSockets(socket, io);
+        matchMakerSockets(socket, io, matchMakers);
     });
 };

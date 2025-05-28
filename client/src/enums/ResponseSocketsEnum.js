@@ -16,6 +16,13 @@ const ResponseSocketsEnum = new Enum({
     REGISTER_ERROR: 'register_error',
     UPDATE_PUBLIC_AREAS: 'update_public_areas',
     JOIN_PUBLIC_AREA: 'response:join_public_area',
+    SEND_EMOJI: 'response:send_emoji',
+    SEND_CHAT: 'response:send_chat',
+    MINIGAME_JOIN: 'response:join_minigame',
+    MINIGAME_CALL_NOTIFICATION: 'response:minigame_call_notification',
+    SCENE_OBJECT_SPAWNED: 'reponse:object_spawned',
+    SCENE_OBJECT_REMOVED: 'reponse:object_removed',
+    SCENE_OBJECT_COLLECTED: 'reponse:object_collected',
 });
 
 export default ResponseSocketsEnum;

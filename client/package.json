@@ -6,16 +6,23 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "jsonmin": "node scripts/jsonmin.cjs",
+    "jsonunmin": "node scripts/jsonunmin.cjs"
   },
   "dependencies": {
+    "jquery": "^3.7.1",
     "p-queue": "^8.0.1",
     "phaser": "^3.87.0",
+    "phaser3-rex-plugins": "^1.80.15",
+    "pinia": "^3.0.2",
+    "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.8.1",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
-    "vite": "^6.0.1"
+    "vite": "^6.0.1",
+    "vue-svg-loader": "^0.16.0"
   }
 }

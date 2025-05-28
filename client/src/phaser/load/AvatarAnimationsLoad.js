@@ -1,4 +1,4 @@
-import AvatarEnum from "../enums/AvatarEnum";
+import AvatarEnum from "../../enums/AvatarEnum";
 import AvatarBoomerLoad from "./avatars/AvatarBoomerLoad";
 import AvatarBrujitaLoad from "./avatars/AvatarBrujitaLoad";
 import AvatarCholoLoad from "./avatars/AvatarCholoLoad";
@@ -24,23 +24,23 @@ class AvatarAnimationsLoad {
      * definidos en werewolf_config.
      */
     static preload(gameScene) {
-        AvatarBoomerLoad.main(gameScene);
-        AvatarBrujitaLoad.main(gameScene);
-        AvatarCholoLoad.main(gameScene);
-        AvatarEmpollonLoad.main(gameScene);
-        AvatarGataLoad.main(gameScene);
-        AvatarGhostLoad.main(gameScene);
-        AvatarIndiaLoad.main(gameScene);
-        AvatarLilianLoad.main(gameScene);
-        AvatarMarsuLoad.main(gameScene);
-        AvatarModernLoad.main(gameScene);
-        AvatarNinjaLoad.main(gameScene);
-        AvatarRastaLoad.main(gameScene);
-        AvatarSkeletonLoad.main(gameScene);
-        AvatarWerewolfLoad.main(gameScene);
-        AvatarWraithLoad.main(gameScene);
-        AvatarYayoLoad.main(gameScene);
-        AvatarZombieLoad.main(gameScene);
+        //AvatarBoomerLoad.main(gameScene, AvatarEnum.BOOMER);
+        //AvatarBrujitaLoad.main(gameScene, AvatarEnum.BRUJITA);
+        //AvatarCholoLoad.main(gameScene, AvatarEnum.CHOLO);
+        //AvatarEmpollonLoad.main(gameScene, AvatarEnum.EMPOLLON);
+        AvatarGataLoad.main(gameScene, AvatarEnum.GATA);
+        //AvatarGhostLoad.main(gameScene, AvatarEnum.GHOST);
+        //AvatarIndiaLoad.main(gameScene, AvatarEnum.INDIA);
+        //AvatarLilianLoad.main(gameScene, AvatarEnum.LILIAN);
+        //AvatarMarsuLoad.main(gameScene, AvatarEnum.MARSU);
+        //AvatarModernLoad.main(gameScene, AvatarEnum.MODERN);
+        //AvatarNinjaLoad.main(gameScene, AvatarEnum.NINJA);
+        AvatarRastaLoad.main(gameScene, AvatarEnum.RASTA);
+        //AvatarSkeletonLoad.main(gameScene, AvatarEnum.SKELETON);
+        //AvatarWerewolfLoad.main(gameScene, AvatarEnum.WEREWOLF);
+        //AvatarWraithLoad.main(gameScene, AvatarEnum.WRAITH);
+        //AvatarYayoLoad.main(gameScene, AvatarEnum.YAYO);
+        //AvatarZombieLoad.main(gameScene, AvatarEnum.ZOMBIE);
     }
 
     /**
@@ -48,23 +48,23 @@ class AvatarAnimationsLoad {
      * Aquí creamos las animaciones a partir de los atlases ya cargados.
      */
     static create(gameScene) {
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.BOOMER], AvatarEnum.BOOMER);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.BRUJITA], AvatarEnum.BRUJITA);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.CHOLO], AvatarEnum.CHOLO);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.EMPOLLON], AvatarEnum.EMPOLLON);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.BOOMER], AvatarEnum.BOOMER);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.BRUJITA], AvatarEnum.BRUJITA);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.CHOLO], AvatarEnum.CHOLO);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.EMPOLLON], AvatarEnum.EMPOLLON);
         this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.GATA], AvatarEnum.GATA);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.GHOST], AvatarEnum.GHOST);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.INDIA], AvatarEnum.INDIA);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.LILIAN], AvatarEnum.LILIAN);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.MARSU], AvatarEnum.MARSU);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.MODERN], AvatarEnum.MODERN);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.NINJA], AvatarEnum.NINJA);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.GHOST], AvatarEnum.GHOST);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.INDIA], AvatarEnum.INDIA);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.LILIAN], AvatarEnum.LILIAN);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.MARSU], AvatarEnum.MARSU);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.MODERN], AvatarEnum.MODERN);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.NINJA], AvatarEnum.NINJA);
         this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.RASTA], AvatarEnum.RASTA);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.SKELETON], AvatarEnum.SKELETON);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.WEREWOLF], AvatarEnum.WEREWOLF);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.WRAITH], AvatarEnum.WRAITH);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.YAYO], AvatarEnum.YAYO);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.ZOMBIE], AvatarEnum.ZOMBIE);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.SKELETON], AvatarEnum.SKELETON);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.WEREWOLF], AvatarEnum.WEREWOLF);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.WRAITH], AvatarEnum.WRAITH);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.YAYO], AvatarEnum.YAYO);
+        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.ZOMBIE], AvatarEnum.ZOMBIE);
     }
 
     /**

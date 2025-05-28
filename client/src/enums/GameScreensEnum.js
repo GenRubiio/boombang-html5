@@ -1,10 +1,12 @@
-import Enum from '../phaser/enums/Enum';
+import Enum from './Enum';
 
 const GameScreensEnum = new Enum({
     LOGIN: 'login',
     REGISTER: 'register',
     LOBBY: 'lobby',
-    PUBLIC_AREA: 'public_area',
+    PUBLIC_SCENE: 'public_area',
+    GAME_SCENE: 'game_scene',
+    MINIGAME_SCENE: 'minigame_scene',
 });
 
 export default GameScreensEnum;

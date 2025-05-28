@@ -3,24 +3,15 @@
     <div id="phaser-container"></div>
     <LoadingScreen v-if="loading" />
     <div id="game-screens">
-      <LoginScreen
-        v-if="currentScreen === 'login'"
+      <AuthScreen
+        v-if="!isAuthenticated"
         @loginSuccess="onLoginSuccess"
+        @registerSuccess="onRegisterSuccess"
         @goToRegister="onGoToRegister"
       />
-      <RegisterScreen
-        v-else-if="currentScreen === 'register'"
-        @goToLogin="onGoToLogin"
-      />
-      <LobbyScreen
-        v-else-if="currentScreen === 'lobby'"
-        @joinPublicArea="onJoinPublicArea"
-        @updateLoading="onUpdateLoading"
-      />
-      <PublicAreaScreen
-        v-else-if="currentScreen === 'public_area'"
-        :areaId="currentAreaId"
-        @exitLobby="onExitLobby"
+      <GameScreens
+        v-else
+        :gamePhaser="gamePhaser"
         @updateLoading="onUpdateLoading"
       />
     </div>
@@ -28,22 +19,18 @@
 </template>
 
 <script>
+import Phaser from "phaser";
+import { defineAsyncComponent } from "vue";
 import socket from "./sockets/socket";
-import LoginScreen from "./screens/auth/LoginScreen.vue";
-import RegisterScreen from "./screens/auth/RegisterScreen.vue";
-import LobbyScreen from "./screens/game/LobbyScreen.vue";
-import PublicAreaScreen from "./screens/game/areas/PublicAreaScreen.vue";
-import LoadingScreen from "./screens/game/LoadingScreen.vue";
-
 import GameScreensEnum from "./enums/GameScreensEnum";
+import ColorReplacePipelinePlugin from "phaser3-rex-plugins/plugins/colorreplacepipeline-plugin.js";
 
 export default {
   data() {
     return {
       gamePhaser: null,
       loading: false,
-      currentScreen: GameScreensEnum.LOGIN, // Controla las escenas: login, lobby, game
-      currentAreaId: null, // ID de la sala actual
+      isAuthenticated: false, // Nueva bandera de autenticación
     };
   },
   created() {
@@ -52,11 +39,15 @@ export default {
     //}, 5000);
   },
   components: {
-    LoadingScreen,
-    LoginScreen,
-    RegisterScreen,
-    LobbyScreen,
-    PublicAreaScreen,
+    LoadingScreen: defineAsyncComponent(() =>
+      import("./views/screens/game/LoadingScreen.vue")
+    ),
+    AuthScreen: defineAsyncComponent(() =>
+      import("./views/screens/auth/AuthScreen.vue")
+    ),
+    GameScreens: defineAsyncComponent(() =>
+      import("./views/screens/game/GameScreens.vue")
+    ),
   },
   methods: {
     onGoToLogin() {
@@ -65,6 +56,9 @@ export default {
     onGoToRegister() {
       this.currentScreen = GameScreensEnum.REGISTER;
     },
+    async onRegisterSuccess() {
+      this.onLoginSuccess();
+    },
     async onLoginSuccess() {
       this.onUpdateLoading(true);
       const { default: GamePreloaders } = await import(
@@ -72,57 +66,71 @@ export default {
       );
       GamePreloaders.main();
       if (!this.gamePhaser) {
-        const { default: GlobalPreloader } = await import(
-          "./phaser/GlobalPreloader"
-        );
-        const { default: PublicAreaScene } = await import(
-          "./phaser/PublicAreaScene"
-        );
-        // Solo creas la instancia la primera vez.
-        this.gamePhaser = new Phaser.Game({
-          type: Phaser.CANVAS,
-          powerPreference: "high-performance",
-          antialias: false, // Desactiva si no necesitas suavizado
-          roundPixels: true, // Reduce cálculos de subpíxeles
-          width: 1012,
-          height: 657,
-          // Registras todas las escenas globales que vayas a usar
-          scene: [GlobalPreloader, PublicAreaScene],
-          parent: "phaser-container",
-          physics: {
-            default: "arcade",
-          },
-          fps: {
-            min: 30,
-            target: 60,
-            forceSetTimeOut: true, // Mantiene el juego corriendo aunque pierda foco
-          },
-        });
-        // Lanzamos la escena de Preloader para que cargue todo
-        this.gamePhaser.scene.start("GlobalPreloaderScene");
+        await this.initializePhaser();
       }
       // Esperar a que termine la precarga antes de cambiar a LOBBY
       this.gamePhaser.events.on("globalPreloaderComplete", () => {
-        this.currentScreen = GameScreensEnum.LOBBY;
+        this.isAuthenticated = true; // Activa GameScreens
+        this.onUpdateLoading(false);
       });
     },
-    onJoinPublicArea(areaId) {
-      console.log("Unido a la sala:", areaId);
-      this.currentAreaId = areaId;
-      this.currentScreen = GameScreensEnum.PUBLIC_AREA;
-    },
-    onExitLobby() {
-      this.gamePhaser.scene.stop("PublicAreaScene");
-      this.currentScreen = GameScreensEnum.LOBBY;
-      this.currentAreaId = null;
+    async initializePhaser() {
+      const { default: GlobalPreloader } = await import(
+        "./phaser/GlobalPreloader"
+      );
+      const { default: PublicScene } = await import("./phaser/PublicScene");
+      const { default: MinigameScene } = await import("./phaser/MinigameScene");
+      // Solo creas la instancia la primera vez.
+      this.gamePhaser = new Phaser.Game({
+        type: Phaser.WEBGL,
+        powerPreference: "high-performance",
+        antialias: false, // Desactiva si no necesitas suavizado
+        roundPixels: true, // Reduce cálculos de subpíxeles
+        width: 1012,
+        height: 657,
+        // Registras todas las escenas globales que vayas a usar
+        scene: [GlobalPreloader, PublicScene, MinigameScene],
+        plugins: {
+          global: [
+            {
+              key: "rexColorReplacePipeline",
+              plugin: ColorReplacePipelinePlugin,
+              start: true,
+            },
+          ],
+        },
+        parent: "phaser-container",
+        physics: {
+          default: "arcade",
+        },
+        fps: {
+          min: 30,
+          target: 60,
+          forceSetTimeOut: true, // Mantiene el juego corriendo aunque pierda foco
+        },
+        autoFocus: true,
+        callbacks: {
+          postBoot: function (game) {
+            game.events.off("hidden", game.renderer.onHidden, game.renderer);
+            game.events.off("visible", game.renderer.onVisible, game.renderer);
+          },
+        },
+      });
+      // Lanzamos la escena de Preloader para que cargue todo
+      this.gamePhaser.scene.start("GlobalPreloaderScene");
     },
     handleDisconnect() {
-      // Cambiar escena a login al detectar desconexión
       this.onUpdateLoading(true);
-      this.gamePhaser.scene.stop("PublicAreaScene");
+      if (this.gamePhaser && this.gamePhaser.scene) {
+        this.gamePhaser.scene.stop("PublicScene");
+        this.gamePhaser.scene.stop("MinigameScene");
+      }
+      this.gamePhaser = null;
+      document.getElementById("phaser-container").innerHTML = "";
       this.currentScreen = GameScreensEnum.LOGIN;
-      console.log("Desconexión detectada. Redirigiendo al login.");
       this.onUpdateLoading(false);
+
+      location.reload();
     },
     onUpdateLoading(value) {
       this.loading = value;
@@ -134,7 +142,7 @@ export default {
 
     // Detectar reconexión
     socket.on("connect", () => {
-      console.log("Reconectado al servidor");
+      //console.log("Reconectado al servidor");
     });
 
     socket.on("error_critical", this.handleDisconnect);
@@ -170,5 +178,9 @@ export default {
   position: absolute;
   z-index: 1;
   overflow: hidden;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  pointer-events: none;
 }
 </style>
