@@ -1,0 +1,15 @@
+Copyright © 2025 Evgeny Lyubeznyy
+Todos los derechos reservados.
+
+Este software y todo su contenido, incluyendo el código fuente, estructuras de base de datos, archivos de configuración, diseño y documentación, están protegidos por derechos de autor bajo la legislación internacional y española sobre propiedad intelectual.
+
+Queda estrictamente prohibido:
+- Usar, copiar, reproducir o distribuir este software total o parcialmente sin autorización expresa y por escrito del titular.
+- Modificar, descompilar, desensamblar, aplicar ingeniería inversa o crear productos derivados del código contenido en este proyecto.
+- Utilizar este software en aplicaciones comerciales, educativas o personales sin un acuerdo de licencia.
+
+Este software se proporciona "tal cual", sin garantías de ningún tipo, expresas o implícitas, incluyendo pero no limitándose a garantías de comerciabilidad o idoneidad para un propósito en particular.
+
+Para obtener una licencia o permiso de uso, contacte con #genrubio vía Discord
+
+Fecha de publicación: [28 de mayo de 2025]
