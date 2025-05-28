@@ -20,6 +20,9 @@ const ResponseSocketsEnum = new Enum({
     SEND_CHAT: 'response:send_chat',
     MINIGAME_JOIN: 'response:join_minigame',
     MINIGAME_CALL_NOTIFICATION: 'response:minigame_call_notification',
+    SCENE_OBJECT_SPAWNED: 'reponse:object_spawned',
+    SCENE_OBJECT_REMOVED: 'reponse:object_removed',
+    SCENE_OBJECT_COLLECTED: 'reponse:object_collected',
 });
 
 export default ResponseSocketsEnum;

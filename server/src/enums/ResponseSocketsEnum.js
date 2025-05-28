@@ -19,6 +19,7 @@ const ResponseSocketsEnum = new Enum({
     GET_PUBLIC_SCENE_USERS: 'response:get_public_area_users',
     USER_SEND_EMOJI: 'response:send_emoji',
     USER_SEND_CHAT: 'response:send_chat',
+    
 });
 
 module.exports = ResponseSocketsEnum;

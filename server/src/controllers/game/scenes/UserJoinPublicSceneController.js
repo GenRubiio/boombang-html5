@@ -6,6 +6,7 @@ const DisconnectUserController = require('../../connection/DisconnectUserControl
 const UserResource = require('../../../resources/UserResource');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const PublicSceneResource = require('../../../resources/PublicSceneResource');
 
 class UserJoinPublicSceneController {
     static async main(socket, io, data) {
@@ -34,13 +35,7 @@ class UserJoinPublicSceneController {
                 success: true,
                 data: {
                     players: sceneUsers,
-                    scenery: {
-                        type: scene.type,
-                        menu_type: scene.menu_type,
-                        map_rows: scene.map_width,
-                        map_cols: scene.map_height,
-                        game_map: scene.game_map,
-                    }
+                    scenery: await new PublicSceneResource(scene).toObject()
                 }
             });
             scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {

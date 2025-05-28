@@ -13,6 +13,16 @@ class PublicSceneLoader {
                 preload ? RingScenePreload.preload(gameScene) : RingScenePreload.load(gameScene);
                 break;
         }
+        if (preload) {
+            this.#loadItems(gameScene);
+        }
+    }
+
+    static async #loadItems(gameScene) {
+        for (const item of gameScene.sceneData.scenery.items) {
+            const { default: itemImage } = await import(`../../assets/game/items-scene/${item.file_name}.png`);
+            gameScene.load.image(item.file_name, itemImage);
+        }
     }
 }
 

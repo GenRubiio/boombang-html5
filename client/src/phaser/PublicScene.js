@@ -9,6 +9,7 @@ import PublicSceneLoader from "./loaders/PublicSceneLoader"; // Precargador de e
 import CreateSceneController from "./controllers/scene/CreateSceneController"; // Controlador de creación de escena
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 import TintManager from "./managers/TintManager"; // Gestor de tintes
+import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
 
 
 export default class PublicScene extends Phaser.Scene {
@@ -25,6 +26,7 @@ export default class PublicScene extends Phaser.Scene {
         this.avatarAnimations = {}; // Objeto para almacenar animaciones de avatares
         this.vueComponent = data.vueComponent;
         this.selectedShadow = null; // Sombra seleccionada
+        this.activeItems = new Map();
     }
 
     preload() {
@@ -42,6 +44,7 @@ export default class PublicScene extends Phaser.Scene {
 
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
+        PublicSceneResponse.main(this); // Respuesta de la escena pública
 
         PublicSceneLoader.main(this, this.sceneData.scenery.type, false);
         CreateSceneController.main(this, this.sceneData); // Crear escena con jugadores

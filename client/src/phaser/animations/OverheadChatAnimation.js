@@ -134,6 +134,62 @@ export default class OverheadChatAnimation {
         this.lastMessageTime = this.scene.time.now;
     }
 
+    // En la clase OverheadChatAnimation
+    addSystemAlert(text) {
+        // Configuración de elementos
+        const containerPadding = { left: 4, right: 4, top: 2, bottom: 4 };
+        const elementMargin = 0;
+
+        // Crear texto del mensaje
+        const messageText = this.scene.add.text(0, 0, text, {
+            fontFamily: 'Arial',
+            fontSize: '14px',
+            color: '#000000',
+            align: 'center'
+        }).setOrigin(0.5); // Texto centrado
+
+        // Calcular dimensiones del contenido
+        const contentWidth = messageText.width + containerPadding.left + containerPadding.right;
+        const contentHeight = messageText.height + containerPadding.top + containerPadding.bottom;
+
+        // Crear fondo del mensaje
+        const bgGraphics = this.scene.add.graphics();
+        bgGraphics.fillStyle(0xf7c004, 1); // Color sólido sin transparencia (#f7c004)
+        bgGraphics.fillRoundedRect(0, 0, contentWidth, contentHeight, 5);
+        const textureKey = `sysAlertBg_${Date.now()}`;
+        bgGraphics.generateTexture(textureKey, contentWidth, contentHeight);
+        bgGraphics.destroy();
+
+        const background = this.scene.add.image(0, 0, textureKey)
+            .setOrigin(0.5); // Fondo centrado
+
+        // Crear contenedor
+        const chatContainer = this.scene.add.container(0, 0, [
+            background,
+            messageText
+        ]);
+
+        // Ajustar posición del texto
+        messageText.setPosition(0, 0);
+
+        // Posición horizontal centrada
+        const sceneWidth = this.scene.game.config.width;
+        chatContainer.setPosition(
+            sceneWidth / 2, // Centrado horizontal
+            this.areaStartHeight
+        );
+
+        // Empujar mensajes existentes hacia arriba
+        this.messages.forEach(msg => {
+            msg.y -= (contentHeight + this.lineSpacing);
+        });
+
+        // Configurar profundidad y guardar referencia
+        chatContainer.setDepth(this.textDepth);
+        this.messages.push(chatContainer);
+        this.lastMessageTime = this.scene.time.now;
+    }
+
     /**
      * Se llama cada checkInterval ms. Si no llegó ningún mensaje en ese lapso,
      * empuja los textos pushSpeed hacia arriba.
