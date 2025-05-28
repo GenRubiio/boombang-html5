@@ -1,6 +1,7 @@
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const MovementProcessorInstance = require('../instances/MovementProcessorInstance');
+const SceneItemModel = require('./SceneItemModel');
 
 class SceneModel {
     constructor(row) {
@@ -19,6 +20,12 @@ class SceneModel {
         this.navigationMapBase = JSON.parse(row.map);
         // Objeto para reservar tiles: clave "x,y" → id del usuario
         this.reservedTiles = {};
+
+
+        this.possible_items = row.items ? row.items.map(item => new SceneItemModel(item)) : []; // Lista de posibles items que se pueden cargar en la escena
+        this.spawnedObjects = []; // Array de objetos activos
+        this.itemActivationTimers = new Map();
+        this.#startItemActivationChecks();
 
         // Inicializar el procesador de movimiento
         this.movementProcessorInstance = new MovementProcessorInstance(this);
@@ -95,6 +102,83 @@ class SceneModel {
         }
 
         return navigationMap;
+    }
+
+    #startItemActivationChecks() {
+        this.itemCheckInterval = setInterval(() => {
+            this.possible_items.forEach(item => {
+                if (this.users.length >= item.min_users) {
+                    if (!this.itemActivationTimers.has(item.id)) {
+                        // Usar item.time (configurable) para el tiempo de aparición
+                        const timer = setTimeout(() => {
+                            this.#spawnObject(item);
+                            this.itemActivationTimers.delete(item.id);
+                        }, item.time * 1000); // ← Tiempo del item
+
+                        this.itemActivationTimers.set(item.id, {
+                            timer: timer,
+                            startTime: Date.now()
+                        });
+                    }
+                } else {
+                    // Cancelar si no se cumplen las condiciones
+                    if (this.itemActivationTimers.has(item.id)) {
+                        clearTimeout(this.itemActivationTimers.get(item.id).timer);
+                        this.itemActivationTimers.delete(item.id);
+                    }
+                }
+            });
+        }, 1000);
+    }
+
+    #spawnObject(item) {
+        const walkablePositions = [];
+        // Obtener posiciones válidas del mapa
+        for (let y = 0; y < this.game_map.length; y++) {
+            for (let x = 0; x < this.game_map[y].length; x++) {
+                if (this.game_map[y][x] === 0) walkablePositions.push({ x, y });
+            }
+        }
+
+        // Filtrar posiciones ocupadas
+        const availablePositions = walkablePositions.filter(pos => {
+            return !this.users.some(user =>
+                user.currentAreaPosition.x === pos.x &&
+                user.currentAreaPosition.y === pos.y
+            ) && !this.spawnedObjects.some(obj =>
+                obj.position.x === pos.x &&
+                obj.position.y === pos.y
+            );
+        });
+
+        if (availablePositions.length === 0) {
+            logger.log(`No hay posiciones para ${item.name}`, 'warning');
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * availablePositions.length);
+        const newObject = {
+            item: item,
+            position: availablePositions[randomIndex],
+            timer: setTimeout(() => {
+                this.removeObject(newObject);
+            }, 15000) // ← 15 segundos FIJOS para todos
+        };
+
+        this.spawnedObjects.push(newObject);
+        this.emit('reponse:object_spawned', {
+            itemId: item.id,
+            position: newObject.position
+        });
+    }
+
+    removeObject(object) {
+        this.spawnedObjects = this.spawnedObjects.filter(obj => obj !== object);
+        clearTimeout(object.timer);
+        this.emit('reponse:object_removed', {
+            itemId: object.item.id,
+            position: object.position
+        });
     }
 }
 

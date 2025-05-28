@@ -55,7 +55,7 @@ class MovementProcessorInstance {
                 return;
             }
 
-            const path = await this.findPath(startPos, target, navigationMap);
+            const path = await this.#findPath(startPos, target, navigationMap);
 
             if (!path || path.length <= 1) {
                 this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
@@ -77,6 +77,8 @@ class MovementProcessorInstance {
             const direction = UserMovimentUtil.getDirection(deltaX, deltaY);
 
             user.currentAreaPosition = { x: nextStep.x, y: nextStep.y, z: direction };
+
+            this.#validateUserOnSpawnedObject(user, nextStep);
 
             const movementData = {
                 id: user.socket.id,
@@ -102,7 +104,7 @@ class MovementProcessorInstance {
         }
     }
 
-    findPath(startPos, endPos, customMap) {
+    #findPath(startPos, endPos, customMap) {
         const easystar = new EasyStar();
         const mapToUse = customMap || this.scene.game_map;
         easystar.setGrid(mapToUse);
@@ -115,6 +117,24 @@ class MovementProcessorInstance {
                 resolve(path);
             });
             easystar.calculate();
+        });
+    }
+
+    #validateUserOnSpawnedObject(user, nextStep) {
+        if (!this.scene.spawnedObjects || this.scene.spawnedObjects.length === 0) {
+            return;
+        }
+        this.scene.spawnedObjects.forEach(obj => {
+            if (nextStep.x === obj.position.x && nextStep.y === obj.position.y) {
+                this.scene.removeObject(obj);
+                this.scene.emit('reponse:object_collected', {
+                    userId: user.id,
+                    userName: user.username,
+                    itemName: obj.item.name,
+                    itemId: obj.item.id,
+                    position: obj.position
+                });
+            }
         });
     }
 }
