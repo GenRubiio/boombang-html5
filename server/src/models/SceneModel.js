@@ -113,7 +113,7 @@ class SceneModel {
                         const timer = setTimeout(() => {
                             this.#spawnObject(item);
                             this.itemActivationTimers.delete(item.id);
-                        }, item.time * 1000); // ← Tiempo del item
+                        }, item.activate_time * 1000); // ← Tiempo del item
 
                         this.itemActivationTimers.set(item.id, {
                             timer: timer,
@@ -162,7 +162,7 @@ class SceneModel {
             position: availablePositions[randomIndex],
             timer: setTimeout(() => {
                 this.removeObject(newObject);
-            }, 15000) // ← 15 segundos FIJOS para todos
+            }, item.desactivate_time * 1000) // ← 15 segundos
         };
 
         this.spawnedObjects.push(newObject);
