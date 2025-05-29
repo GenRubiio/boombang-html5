@@ -24,8 +24,11 @@ class SceneItemResource extends JsonResource
             'id' => (int)$this->id,
             'name' => $this->name,
             'file_name' => $this->file_name,
-            'time' => $this->whenPivotLoaded('public_scene_items', function () {
-                return (int)$this->pivot->time;
+            'activate_time' => $this->whenPivotLoaded('public_scene_items', function () {
+                return (int)$this->pivot->activate_time;
+            }),
+            'desactivate_time' => $this->whenPivotLoaded('public_scene_items', function () {
+                return (int)$this->pivot->desactivate_time;
             }),
             'min_users' => $this->whenPivotLoaded('public_scene_items', function () {
                 return (int)$this->pivot->min_users;

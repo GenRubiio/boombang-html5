@@ -55,7 +55,7 @@ class PublicScene extends Model
     public function items()
     {
         return $this->belongsToMany(SceneItem::class, 'public_scene_items', 'public_scenes_id', 'scene_item_id')
-            ->withPivot('time', 'min_users');
+            ->withPivot('activate_time', 'desactivate_time', 'min_users');
     }
 
     /*
