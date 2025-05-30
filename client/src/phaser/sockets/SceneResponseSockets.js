@@ -21,12 +21,7 @@ class SceneResponseSockets {
 
         // Escuchar cuando un jugador se mueve
         socket.on(ResponseSocketsEnum.USER_MOVE, (data) => {
-            const { id, path } = data;
-            if (gameScene.users[id]) {
-                //console.log(`Moving player ${id} to path:`, path);
-                //console.log(`Is last step: ${data.isLastStep}`);
-                MoveUserController.main(gameScene, id, path, data.isLastStep);
-            }
+            MoveUserController.main(gameScene, data);
         });
 
         socket.on(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, (data) => {
