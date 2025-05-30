@@ -63,7 +63,7 @@ class Bot {
                     socketId: usuarioMasCercano.id
                 });
                 this.uppercutInterval = setInterval(() => {
-                    this.socket.emit(RequestSocketsEnum.USER_SEND_UPPERCUT);
+                    //this.socket.emit(RequestSocketsEnum.USER_SEND_UPPERCUT);
                 }, 100);
             }
         });
