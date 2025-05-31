@@ -50,7 +50,12 @@ class MovementProcessorInstance {
             const navigationMap = this.scene.getNavigationMapWithPlayers(user.id);
 
             if (navigationMap[target.y][target.x] === 1) {
-                this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
+                //this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
+                this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
+                    id: user.socket.id,
+                    path: [],
+                    isLastStep: true
+                });
                 user.finalTarget = null;
                 return;
             }
@@ -58,7 +63,12 @@ class MovementProcessorInstance {
             const path = await this.#findPath(startPos, target, navigationMap);
 
             if (!path || path.length <= 1) {
-                this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
+                 this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
+                    id: user.socket.id,
+                    path: [],
+                    isLastStep: true
+                });
+                //this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
                 return;
             }
 
@@ -66,6 +76,11 @@ class MovementProcessorInstance {
             const key = `${nextStep.x},${nextStep.y}`;
 
             if (this.scene.reservedTiles[key] && this.scene.reservedTiles[key] !== user.id) {
+                this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
+                    id: user.socket.id,
+                    path: [],
+                    isLastStep: true
+                });
                 return;
             }
 
