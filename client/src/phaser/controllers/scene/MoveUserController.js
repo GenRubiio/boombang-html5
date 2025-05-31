@@ -7,17 +7,18 @@ class MoveUserController {
     /**
      * Llamada principal para iniciar el movimiento del jugador por un path.
      * @param {Phaser.Scene} gameScene - Escena de Phaser
-     * @param {string} socketId - Identificador único del usuario
-     * @param {Array} path - Lista de pasos (objetos con {x, y, z})
-     * @param {boolean} isLastStep - Indica si al finalizar se aplica lógica de "moveDenied"
+     * @param {Object} data - Datos del movimiento, incluyendo el ID del socket, el path y si es el último paso.
      */
-    static main(gameScene, socketId, path, isLastStep) {
-        if (!path || path.length === 0 || !gameScene.users[socketId]) return;
+    static main(gameScene, data) {
+        const socketId = data.id;
+        const path = data.path;
+        const isLastStep = data.isLastStep;
+        const user  = gameScene.users[socketId];
+
+        if (!path || path.length === 0 || !user) return;
 
         // (Opcional) log de depuración, coméntalo en producción
         //console.log(`Moving player ${socketId} to path:`, path);
-
-        const user = gameScene.users[socketId];
 
         // Detener tweens existentes
         if (user.currentTween) {
