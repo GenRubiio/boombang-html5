@@ -13,9 +13,16 @@ class MoveUserController {
         const socketId = data.id;
         const path = data.path;
         const isLastStep = data.isLastStep;
-        const user  = gameScene.users[socketId];
+        const user = gameScene.users[socketId];
 
-        if (!path || path.length === 0 || !user) return;
+        if (!path || !user) {
+            return;
+        }
+
+        if (path.length === 0) {
+            UserMoveDeniedController.main(gameScene, socketId);
+            return;
+        }
 
         // (Opcional) log de depuración, coméntalo en producción
         //console.log(`Moving player ${socketId} to path:`, path);
@@ -41,15 +48,6 @@ class MoveUserController {
         const user = gameScene.users[socketId];
         if (!user) return;
 
-        // Si ya hemos recorrido todo el path
-        if (user.pathIndex >= user.path.length) {
-            // Lógica adicional si es el último paso
-            if (isLastStep) {
-                UserMoveDeniedController.main(gameScene, socketId);
-            }
-            return;
-        }
-
         const step = user.path[user.pathIndex];
 
         // Ajusta según tu grid isométrico
@@ -70,8 +68,8 @@ class MoveUserController {
             user.avatarId
         );
 
-        // Crea el tween de movimiento
-        const tween = gameScene.tweens.add({
+        // Crea el tween de movimiento y almacena el tween actual para futuras referencias
+        user.currentTween = gameScene.tweens.add({
             targets: user.containerUser,
             x: centerX,
             y: centerY,
@@ -84,15 +82,11 @@ class MoveUserController {
             onComplete: () => {
                 // Al terminar el movimiento, detenemos la animación
                 user.spriteAvatar.stop();
-
-                // Pasamos al siguiente paso del path
-                user.pathIndex++;
-                this.moveToNextStep(gameScene, socketId, isLastStep);
+                if (isLastStep) {
+                    UserMoveDeniedController.main(gameScene, socketId);
+                }
             }
         });
-
-        // Almacena el tween actual para futuras referencias
-        user.currentTween = tween;
     }
 }
 
