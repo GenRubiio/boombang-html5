@@ -76,7 +76,7 @@ export default class TintManager {
     changeUppercutColor(sprite, newId, epsilon = 0) {
         const arr = this._getPipelines(sprite, 'uppercut');
         // Si hay al menos un pipeline, tomo el newHex de ese último
-        let origHex = TintManager.COLOR_HEX[TintManager.UPPERCUT.RED];
+        let origHex = 0x11051C;
         if (arr.length > 0) {
             origHex = arr[arr.length - 1].newHex;
         }
