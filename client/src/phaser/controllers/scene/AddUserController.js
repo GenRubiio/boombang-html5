@@ -104,7 +104,7 @@ class AddUserController {
         //    userData.avatar_id
         //);
         spriteAvatar.setDepth(1);
-        gameScene.tintMgr.replaceColor(spriteAvatar, 'pelo', 0xff9900, 0x36c5bf);
+        //gameScene.tintMgr.replaceColor(spriteAvatar, 'pelo', 0xff9900, 0x36c5bf);
         gameScene.tintMgr.changeUppercutColor(spriteAvatar, userData.uppercut_selected);
         return spriteAvatar;
     }

@@ -1,13 +1,12 @@
 import asset_spritesheet0Image from '../../../assets/game/avatars/rasta/animations/spritesheet-0.webp';
 import asset_spritesheet1Image from '../../../assets/game/avatars/rasta/animations/spritesheet-1.webp';
-import asset_spritesheet2Image from '../../../assets/game/avatars/rasta/animations/spritesheet-2.webp';
 import asset_atlasJson from '../../../assets/game/avatars/rasta/animations/atlas.json';
 import asset_caraPequeImage from '../../../assets/game/avatars/rasta/cara_peque.svg';
 import asset_caraMediaImage from '../../../assets/game/avatars/rasta/cara_media.svg';
 
 class AvatarRastaLoad {
     static main(gameScene, avatarId) {
-        const webpFiles = [asset_spritesheet0Image, asset_spritesheet1Image, asset_spritesheet2Image];
+        const webpFiles = [asset_spritesheet0Image, asset_spritesheet1Image];
 
         asset_atlasJson.textures.forEach((texture, i) => {
             texture.image = webpFiles[i];
