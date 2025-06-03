@@ -8,5 +8,8 @@
   },
   "dependencies": {
     "electron": "^26.0.0"
+  },
+  "devDependencies": {
+    "electron-packager": "^17.1.2"
   }
 }
