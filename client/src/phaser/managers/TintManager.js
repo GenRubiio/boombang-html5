@@ -7,10 +7,10 @@ export default class TintManager {
     };
 
     static COLOR_HEX = {
-        [0]: 0xff0000, [1]: 0xffc0cb, [2]: 0xffa500,
-        [3]: 0x00ff00, [4]: 0x0000ff, [5]: 0xffffff,
-        [6]: 0x800080, [7]: 0x8b4513, [8]: 0x000000,
-        [9]: 0xffd700
+        [0]: 0xee4724, [1]: 0xe93dc7, [2]: 0xf09b20,
+        [3]: 0x46f020, [4]: 0x2056f0, [5]: 0xf5f5f7,
+        [6]: 0x8c19c6, [7]: 0xa96a0a, [8]: 0x464643,
+        [9]: 0xfdd419
     };
 
     constructor(scene) {
