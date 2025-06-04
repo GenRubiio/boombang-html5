@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const targetDir = path.join(__dirname, '../src/assets/game/avatars');
+const targetDir = path.join(__dirname, '../src/assets/game');
 
 function walk(dir, callback) {
     fs.readdirSync(dir).forEach(file => {
