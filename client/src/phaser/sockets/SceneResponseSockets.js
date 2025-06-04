@@ -10,6 +10,7 @@ import MoveUserController from "../controllers/scene/MoveUserController";
 import RemoveUserController from "../controllers/scene/RemoveUserController";
 import AddUserController from "../controllers/scene/AddUserController";
 import RemoveUserAreaController from "../controllers/scene/RemoveUserAreaController";
+import UserReceiveEffectController from "../controllers/scene/UserReceiveEffectController";
 
 
 class SceneResponseSockets {
@@ -55,6 +56,10 @@ class SceneResponseSockets {
 
         socket.on(ResponseSocketsEnum.SEND_CHAT, (data) => {
             UserSendChatController.main(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.USER_RECEIVE_EFFECT, (data) => {
+            UserReceiveEffectController.main(gameScene, data);
         });
     }
 }

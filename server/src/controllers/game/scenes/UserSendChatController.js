@@ -11,10 +11,14 @@ class UserSendChatController {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user || !user.currentArea) return;//throw new Error('User not found or not in any area');
 
+            if (this.#validateIfCommand(user, data)) {
+                return;
+            }
+
             if (!user.isActionBlocked(AnimationEnum.CHAT)) {
                 const animation = this.getTalkAnimation(user.currentAreaPosition.z);
                 user.currentArea.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
-                    'user_socket': socket.id,
+                    'user_socket': user.socket.id,
                     'message': data.message,
                     'animation': !user.isActionBlocked(animation) ? animation : null,
                 });
@@ -25,6 +29,27 @@ class UserSendChatController {
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }
+    }
+
+    static #validateIfCommand(user, data) {
+        if (data.message.startsWith('/')) {
+            const command = data.message.split(' ')[0].substring(1);
+            switch (command) {
+                case 'coco':
+                    user.currentArea.emit('response:user_receive_effect',
+                        {
+                            'user_socket': user.socket.id,
+                            'effect': 'coco_garbage',
+                        }
+                    );
+                    return true;
+                case 'say':
+                    // Handle say command
+                    return true;
+            }
+            return true;
+        }
+        return false;
     }
 
     static getTalkAnimation(direction) {

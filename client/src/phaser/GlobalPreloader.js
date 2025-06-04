@@ -1,6 +1,7 @@
 // phaser/GlobalPreloaderScene.js
 import Phaser from "phaser";
 import AvatarAnimationsLoad from "./load/AvatarAnimationsLoad";
+import EffectAnimationsLoad from "./load/EffectAnimationsLoad";
 // ...otros assets que quieras precargar globalmente
 
 export default class GlobalPreloader extends Phaser.Scene {
@@ -11,6 +12,8 @@ export default class GlobalPreloader extends Phaser.Scene {
     preload() {
         // Cargar animaciones de avatar
         AvatarAnimationsLoad.preload(this);
+        // Cargar animaciones de efectos
+        EffectAnimationsLoad.preload(this);
 
         // ...carga aquí TODO lo que se use en distintas escenas
     }
@@ -18,6 +21,7 @@ export default class GlobalPreloader extends Phaser.Scene {
     create() {
         // Si necesitas crear las animaciones inmediatamente:
         AvatarAnimationsLoad.create(this);
+        EffectAnimationsLoad.create(this);
 
         // Al terminar, pasas a otra escena o quedas en espera
         // Por ejemplo, inicias la escena de “Lobby” de Phaser
