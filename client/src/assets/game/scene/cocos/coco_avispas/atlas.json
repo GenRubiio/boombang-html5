@@ -1,0 +1,4640 @@
+{
+	"textures": [
+		{
+			"image": "spritesheet-0.webp",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1894,
+				"h": 1852
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "coco_avispas/72",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1839,
+						"y": 501,
+						"w": 362,
+						"h": 235
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 362,
+						"h": 235
+					}
+				},
+				{
+					"filename": "coco_avispas/93",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1839,
+						"y": 551,
+						"w": 362,
+						"h": 185
+					},
+					"frame": {
+						"x": 1,
+						"y": 238,
+						"w": 362,
+						"h": 185
+					}
+				},
+				{
+					"filename": "coco_avispas/95",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1839,
+						"y": 556,
+						"w": 361,
+						"h": 180
+					},
+					"frame": {
+						"x": 365,
+						"y": 1,
+						"w": 361,
+						"h": 180
+					}
+				},
+				{
+					"filename": "coco_avispas/82",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1839,
+						"y": 559,
+						"w": 362,
+						"h": 177
+					},
+					"frame": {
+						"x": 1,
+						"y": 425,
+						"w": 362,
+						"h": 177
+					}
+				},
+				{
+					"filename": "coco_avispas/106",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1839,
+						"y": 559,
+						"w": 362,
+						"h": 177
+					},
+					"frame": {
+						"x": 728,
+						"y": 1,
+						"w": 362,
+						"h": 177
+					}
+				},
+				{
+					"filename": "coco_avispas/66",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1886,
+						"y": 466,
+						"w": 323,
+						"h": 208
+					},
+					"frame": {
+						"x": 365,
+						"y": 183,
+						"w": 323,
+						"h": 208
+					}
+				},
+				{
+					"filename": "coco_avispas/63",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1893,
+						"y": 462,
+						"w": 316,
+						"h": 212
+					},
+					"frame": {
+						"x": 1,
+						"y": 604,
+						"w": 316,
+						"h": 212
+					}
+				},
+				{
+					"filename": "coco_avispas/64",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1894,
+						"y": 464,
+						"w": 316,
+						"h": 210
+					},
+					"frame": {
+						"x": 1,
+						"y": 818,
+						"w": 316,
+						"h": 210
+					}
+				},
+				{
+					"filename": "coco_avispas/65",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1887,
+						"y": 468,
+						"w": 320,
+						"h": 206
+					},
+					"frame": {
+						"x": 365,
+						"y": 393,
+						"w": 320,
+						"h": 206
+					}
+				},
+				{
+					"filename": "coco_avispas/67",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1895,
+						"y": 467,
+						"w": 312,
+						"h": 207
+					},
+					"frame": {
+						"x": 1,
+						"y": 1030,
+						"w": 312,
+						"h": 207
+					}
+				},
+				{
+					"filename": "coco_avispas/69",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1894,
+						"y": 471,
+						"w": 307,
+						"h": 203
+					},
+					"frame": {
+						"x": 1,
+						"y": 1239,
+						"w": 307,
+						"h": 203
+					}
+				},
+				{
+					"filename": "coco_avispas/68",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1903,
+						"y": 467,
+						"w": 298,
+						"h": 207
+					},
+					"frame": {
+						"x": 1,
+						"y": 1444,
+						"w": 298,
+						"h": 207
+					}
+				},
+				{
+					"filename": "coco_avispas/100",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1968,
+						"y": 548,
+						"w": 232,
+						"h": 198
+					},
+					"frame": {
+						"x": 1,
+						"y": 1653,
+						"w": 232,
+						"h": 198
+					}
+				},
+				{
+					"filename": "coco_avispas/98",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1874,
+						"y": 550,
+						"w": 326,
+						"h": 166
+					},
+					"frame": {
+						"x": 1092,
+						"y": 1,
+						"w": 326,
+						"h": 166
+					}
+				},
+				{
+					"filename": "coco_avispas/85",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1874,
+						"y": 553,
+						"w": 327,
+						"h": 163
+					},
+					"frame": {
+						"x": 1420,
+						"y": 1,
+						"w": 327,
+						"h": 163
+					}
+				},
+				{
+					"filename": "coco_avispas/74",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1874,
+						"y": 561,
+						"w": 327,
+						"h": 155
+					},
+					"frame": {
+						"x": 1092,
+						"y": 169,
+						"w": 327,
+						"h": 155
+					}
+				},
+				{
+					"filename": "coco_avispas/70",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1906,
+						"y": 472,
+						"w": 295,
+						"h": 202
+					},
+					"frame": {
+						"x": 1421,
+						"y": 166,
+						"w": 295,
+						"h": 202
+					}
+				},
+				{
+					"filename": "coco_avispas/55",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2123,
+						"y": 539,
+						"w": 175,
+						"h": 135
+					},
+					"frame": {
+						"x": 1718,
+						"y": 166,
+						"w": 175,
+						"h": 135
+					}
+				},
+				{
+					"filename": "coco_avispas/71",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1908,
+						"y": 494,
+						"w": 293,
+						"h": 180
+					},
+					"frame": {
+						"x": 365,
+						"y": 601,
+						"w": 293,
+						"h": 180
+					}
+				},
+				{
+					"filename": "coco_avispas/62",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1957,
+						"y": 464,
+						"w": 256,
+						"h": 210
+					},
+					"frame": {
+						"x": 319,
+						"y": 783,
+						"w": 256,
+						"h": 210
+					}
+				},
+				{
+					"filename": "coco_avispas/113",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1968,
+						"y": 548,
+						"w": 293,
+						"h": 145
+					},
+					"frame": {
+						"x": 728,
+						"y": 180,
+						"w": 293,
+						"h": 145
+					}
+				},
+				{
+					"filename": "coco_avispas/112",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1967,
+						"y": 549,
+						"w": 293,
+						"h": 142
+					},
+					"frame": {
+						"x": 690,
+						"y": 327,
+						"w": 293,
+						"h": 142
+					}
+				},
+				{
+					"filename": "coco_avispas/111",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1968,
+						"y": 550,
+						"w": 292,
+						"h": 145
+					},
+					"frame": {
+						"x": 687,
+						"y": 471,
+						"w": 292,
+						"h": 145
+					}
+				},
+				{
+					"filename": "coco_avispas/110",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 552,
+						"w": 291,
+						"h": 141
+					},
+					"frame": {
+						"x": 660,
+						"y": 618,
+						"w": 291,
+						"h": 141
+					}
+				},
+				{
+					"filename": "coco_avispas/114",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1967,
+						"y": 548,
+						"w": 289,
+						"h": 139
+					},
+					"frame": {
+						"x": 660,
+						"y": 761,
+						"w": 289,
+						"h": 139
+					}
+				},
+				{
+					"filename": "coco_avispas/117",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1974,
+						"y": 551,
+						"w": 288,
+						"h": 122
+					},
+					"frame": {
+						"x": 577,
+						"y": 902,
+						"w": 288,
+						"h": 122
+					}
+				},
+				{
+					"filename": "coco_avispas/107",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 557,
+						"w": 254,
+						"h": 135
+					},
+					"frame": {
+						"x": 319,
+						"y": 995,
+						"w": 254,
+						"h": 135
+					}
+				},
+				{
+					"filename": "coco_avispas/73",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1914,
+						"y": 562,
+						"w": 287,
+						"h": 112
+					},
+					"frame": {
+						"x": 575,
+						"y": 1026,
+						"w": 287,
+						"h": 112
+					}
+				},
+				{
+					"filename": "coco_avispas/119",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1972,
+						"y": 570,
+						"w": 251,
+						"h": 104
+					},
+					"frame": {
+						"x": 315,
+						"y": 1132,
+						"w": 251,
+						"h": 104
+					}
+				},
+				{
+					"filename": "coco_avispas/118",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1974,
+						"y": 572,
+						"w": 285,
+						"h": 101
+					},
+					"frame": {
+						"x": 568,
+						"y": 1140,
+						"w": 285,
+						"h": 101
+					}
+				},
+				{
+					"filename": "coco_avispas/14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1957,
+						"y": 487,
+						"w": 121,
+						"h": 141
+					},
+					"frame": {
+						"x": 1749,
+						"y": 1,
+						"w": 121,
+						"h": 141
+					}
+				},
+				{
+					"filename": "coco_avispas/87",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 550,
+						"w": 230,
+						"h": 196
+					},
+					"frame": {
+						"x": 235,
+						"y": 1653,
+						"w": 230,
+						"h": 196
+					}
+				},
+				{
+					"filename": "coco_avispas/59",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2124,
+						"y": 467,
+						"w": 173,
+						"h": 207
+					},
+					"frame": {
+						"x": 301,
+						"y": 1444,
+						"w": 173,
+						"h": 207
+					}
+				},
+				{
+					"filename": "coco_avispas/54",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 547,
+						"w": 170,
+						"h": 127
+					},
+					"frame": {
+						"x": 1718,
+						"y": 303,
+						"w": 170,
+						"h": 127
+					}
+				},
+				{
+					"filename": "coco_avispas/91",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1967,
+						"y": 546,
+						"w": 234,
+						"h": 128
+					},
+					"frame": {
+						"x": 315,
+						"y": 1238,
+						"w": 234,
+						"h": 128
+					}
+				},
+				{
+					"filename": "coco_avispas/109",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 553,
+						"w": 284,
+						"h": 141
+					},
+					"frame": {
+						"x": 551,
+						"y": 1243,
+						"w": 284,
+						"h": 141
+					}
+				},
+				{
+					"filename": "coco_avispas/61",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2028,
+						"y": 462,
+						"w": 230,
+						"h": 212
+					},
+					"frame": {
+						"x": 476,
+						"y": 1386,
+						"w": 230,
+						"h": 212
+					}
+				},
+				{
+					"filename": "coco_avispas/16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1920,
+						"y": 454,
+						"w": 176,
+						"h": 211
+					},
+					"frame": {
+						"x": 708,
+						"y": 1386,
+						"w": 176,
+						"h": 211
+					}
+				},
+				{
+					"filename": "coco_avispas/115",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1977,
+						"y": 546,
+						"w": 275,
+						"h": 139
+					},
+					"frame": {
+						"x": 476,
+						"y": 1600,
+						"w": 275,
+						"h": 139
+					}
+				},
+				{
+					"filename": "coco_avispas/80",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1974,
+						"y": 564,
+						"w": 227,
+						"h": 110
+					},
+					"frame": {
+						"x": 467,
+						"y": 1741,
+						"w": 227,
+						"h": 110
+					}
+				},
+				{
+					"filename": "coco_avispas/78",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1980,
+						"y": 564,
+						"w": 221,
+						"h": 110
+					},
+					"frame": {
+						"x": 696,
+						"y": 1741,
+						"w": 221,
+						"h": 110
+					}
+				},
+				{
+					"filename": "coco_avispas/108",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 556,
+						"w": 277,
+						"h": 135
+					},
+					"frame": {
+						"x": 753,
+						"y": 1599,
+						"w": 277,
+						"h": 135
+					}
+				},
+				{
+					"filename": "coco_avispas/75",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1979,
+						"y": 559,
+						"w": 222,
+						"h": 115
+					},
+					"frame": {
+						"x": 919,
+						"y": 1736,
+						"w": 222,
+						"h": 115
+					}
+				},
+				{
+					"filename": "coco_avispas/90",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1968,
+						"y": 548,
+						"w": 233,
+						"h": 126
+					},
+					"frame": {
+						"x": 1143,
+						"y": 326,
+						"w": 233,
+						"h": 126
+					}
+				},
+				{
+					"filename": "coco_avispas/116",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1976,
+						"y": 546,
+						"w": 280,
+						"h": 133
+					},
+					"frame": {
+						"x": 1378,
+						"y": 370,
+						"w": 280,
+						"h": 133
+					}
+				},
+				{
+					"filename": "coco_avispas/101",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1967,
+						"y": 548,
+						"w": 233,
+						"h": 126
+					},
+					"frame": {
+						"x": 1660,
+						"y": 432,
+						"w": 233,
+						"h": 126
+					}
+				},
+				{
+					"filename": "coco_avispas/125",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1967,
+						"y": 571,
+						"w": 233,
+						"h": 102
+					},
+					"frame": {
+						"x": 1143,
+						"y": 454,
+						"w": 233,
+						"h": 102
+					}
+				},
+				{
+					"filename": "coco_avispas/124",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1968,
+						"y": 566,
+						"w": 232,
+						"h": 107
+					},
+					"frame": {
+						"x": 1378,
+						"y": 505,
+						"w": 232,
+						"h": 107
+					}
+				},
+				{
+					"filename": "coco_avispas/15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1932,
+						"y": 459,
+						"w": 160,
+						"h": 178
+					},
+					"frame": {
+						"x": 981,
+						"y": 471,
+						"w": 160,
+						"h": 178
+					}
+				},
+				{
+					"filename": "coco_avispas/89",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 548,
+						"w": 230,
+						"h": 126
+					},
+					"frame": {
+						"x": 1143,
+						"y": 558,
+						"w": 230,
+						"h": 126
+					}
+				},
+				{
+					"filename": "coco_avispas/88",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 549,
+						"w": 230,
+						"h": 125
+					},
+					"frame": {
+						"x": 1375,
+						"y": 614,
+						"w": 230,
+						"h": 125
+					}
+				},
+				{
+					"filename": "coco_avispas/86",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 552,
+						"w": 230,
+						"h": 122
+					},
+					"frame": {
+						"x": 1143,
+						"y": 686,
+						"w": 230,
+						"h": 122
+					}
+				},
+				{
+					"filename": "coco_avispas/99",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 549,
+						"w": 229,
+						"h": 125
+					},
+					"frame": {
+						"x": 1375,
+						"y": 741,
+						"w": 229,
+						"h": 125
+					}
+				},
+				{
+					"filename": "coco_avispas/56",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2118,
+						"y": 508,
+						"w": 184,
+						"h": 166
+					},
+					"frame": {
+						"x": 953,
+						"y": 651,
+						"w": 184,
+						"h": 166
+					}
+				},
+				{
+					"filename": "coco_avispas/76",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1982,
+						"y": 561,
+						"w": 219,
+						"h": 185
+					},
+					"frame": {
+						"x": 951,
+						"y": 819,
+						"w": 219,
+						"h": 185
+					}
+				},
+				{
+					"filename": "coco_avispas/60",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2100,
+						"y": 465,
+						"w": 192,
+						"h": 209
+					},
+					"frame": {
+						"x": 1172,
+						"y": 810,
+						"w": 192,
+						"h": 209
+					}
+				},
+				{
+					"filename": "coco_avispas/103",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1974,
+						"y": 546,
+						"w": 226,
+						"h": 128
+					},
+					"frame": {
+						"x": 1366,
+						"y": 868,
+						"w": 226,
+						"h": 128
+					}
+				},
+				{
+					"filename": "coco_avispas/104",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1973,
+						"y": 551,
+						"w": 228,
+						"h": 123
+					},
+					"frame": {
+						"x": 1366,
+						"y": 998,
+						"w": 228,
+						"h": 123
+					}
+				},
+				{
+					"filename": "coco_avispas/97",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 552,
+						"w": 229,
+						"h": 122
+					},
+					"frame": {
+						"x": 1612,
+						"y": 560,
+						"w": 229,
+						"h": 122
+					}
+				},
+				{
+					"filename": "coco_avispas/96",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 553,
+						"w": 229,
+						"h": 121
+					},
+					"frame": {
+						"x": 1607,
+						"y": 684,
+						"w": 229,
+						"h": 121
+					}
+				},
+				{
+					"filename": "coco_avispas/123",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 566,
+						"w": 229,
+						"h": 107
+					},
+					"frame": {
+						"x": 1606,
+						"y": 807,
+						"w": 229,
+						"h": 107
+					}
+				},
+				{
+					"filename": "coco_avispas/58",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2123,
+						"y": 473,
+						"w": 169,
+						"h": 201
+					},
+					"frame": {
+						"x": 1596,
+						"y": 916,
+						"w": 169,
+						"h": 201
+					}
+				},
+				{
+					"filename": "coco_avispas/17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2031,
+						"y": 482,
+						"w": 78,
+						"h": 184
+					},
+					"frame": {
+						"x": 1767,
+						"y": 916,
+						"w": 78,
+						"h": 184
+					}
+				},
+				{
+					"filename": "coco_avispas/19",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2054,
+						"y": 506,
+						"w": 73,
+						"h": 162
+					},
+					"frame": {
+						"x": 867,
+						"y": 902,
+						"w": 73,
+						"h": 162
+					}
+				},
+				{
+					"filename": "coco_avispas/84",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1973,
+						"y": 556,
+						"w": 228,
+						"h": 118
+					},
+					"frame": {
+						"x": 942,
+						"y": 1006,
+						"w": 228,
+						"h": 118
+					}
+				},
+				{
+					"filename": "coco_avispas/126",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 608,
+						"w": 192,
+						"h": 65
+					},
+					"frame": {
+						"x": 1172,
+						"y": 1021,
+						"w": 192,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/133",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 608,
+						"w": 192,
+						"h": 65
+					},
+					"frame": {
+						"x": 1172,
+						"y": 1088,
+						"w": 192,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/94",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1973,
+						"y": 557,
+						"w": 228,
+						"h": 117
+					},
+					"frame": {
+						"x": 1366,
+						"y": 1123,
+						"w": 228,
+						"h": 117
+					}
+				},
+				{
+					"filename": "coco_avispas/57",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2117,
+						"y": 485,
+						"w": 177,
+						"h": 189
+					},
+					"frame": {
+						"x": 1596,
+						"y": 1119,
+						"w": 177,
+						"h": 189
+					}
+				},
+				{
+					"filename": "coco_avispas/18",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2041,
+						"y": 503,
+						"w": 93,
+						"h": 164
+					},
+					"frame": {
+						"x": 1775,
+						"y": 1102,
+						"w": 93,
+						"h": 164
+					}
+				},
+				{
+					"filename": "coco_avispas/48",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 608,
+						"w": 127,
+						"h": 65
+					},
+					"frame": {
+						"x": 310,
+						"y": 1368,
+						"w": 127,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/77",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1983,
+						"y": 562,
+						"w": 218,
+						"h": 112
+					},
+					"frame": {
+						"x": 1143,
+						"y": 1155,
+						"w": 218,
+						"h": 112
+					}
+				},
+				{
+					"filename": "coco_avispas/121",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 568,
+						"w": 229,
+						"h": 105
+					},
+					"frame": {
+						"x": 1363,
+						"y": 1242,
+						"w": 229,
+						"h": 105
+					}
+				},
+				{
+					"filename": "coco_avispas/92",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1976,
+						"y": 546,
+						"w": 225,
+						"h": 128
+					},
+					"frame": {
+						"x": 1594,
+						"y": 1310,
+						"w": 225,
+						"h": 128
+					}
+				},
+				{
+					"filename": "coco_avispas/25",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2111,
+						"y": 570,
+						"w": 72,
+						"h": 100
+					},
+					"frame": {
+						"x": 1821,
+						"y": 1268,
+						"w": 72,
+						"h": 100
+					}
+				},
+				{
+					"filename": "coco_avispas/128",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 608,
+						"w": 193,
+						"h": 65
+					},
+					"frame": {
+						"x": 1143,
+						"y": 1269,
+						"w": 193,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/129",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 608,
+						"w": 193,
+						"h": 65
+					},
+					"frame": {
+						"x": 1143,
+						"y": 1336,
+						"w": 193,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/122",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 568,
+						"w": 229,
+						"h": 105
+					},
+					"frame": {
+						"x": 1338,
+						"y": 1349,
+						"w": 229,
+						"h": 105
+					}
+				},
+				{
+					"filename": "coco_avispas/130",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 608,
+						"w": 193,
+						"h": 65
+					},
+					"frame": {
+						"x": 1143,
+						"y": 1403,
+						"w": 193,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/120",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1971,
+						"y": 569,
+						"w": 229,
+						"h": 104
+					},
+					"frame": {
+						"x": 1338,
+						"y": 1456,
+						"w": 229,
+						"h": 104
+					}
+				},
+				{
+					"filename": "coco_avispas/105",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1974,
+						"y": 561,
+						"w": 227,
+						"h": 118
+					},
+					"frame": {
+						"x": 1569,
+						"y": 1440,
+						"w": 227,
+						"h": 118
+					}
+				},
+				{
+					"filename": "coco_avispas/131",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 608,
+						"w": 193,
+						"h": 65
+					},
+					"frame": {
+						"x": 1143,
+						"y": 1470,
+						"w": 193,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/83",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1974,
+						"y": 557,
+						"w": 227,
+						"h": 117
+					},
+					"frame": {
+						"x": 1569,
+						"y": 1560,
+						"w": 227,
+						"h": 117
+					}
+				},
+				{
+					"filename": "coco_avispas/132",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 608,
+						"w": 193,
+						"h": 65
+					},
+					"frame": {
+						"x": 1143,
+						"y": 1537,
+						"w": 193,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/79",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1974,
+						"y": 565,
+						"w": 227,
+						"h": 109
+					},
+					"frame": {
+						"x": 1338,
+						"y": 1562,
+						"w": 227,
+						"h": 109
+					}
+				},
+				{
+					"filename": "coco_avispas/102",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1977,
+						"y": 546,
+						"w": 223,
+						"h": 128
+					},
+					"frame": {
+						"x": 1032,
+						"y": 1604,
+						"w": 223,
+						"h": 128
+					}
+				},
+				{
+					"filename": "coco_avispas/81",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1977,
+						"y": 561,
+						"w": 224,
+						"h": 113
+					},
+					"frame": {
+						"x": 1143,
+						"y": 1734,
+						"w": 224,
+						"h": 113
+					}
+				},
+				{
+					"filename": "coco_avispas/52",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 551,
+						"w": 167,
+						"h": 123
+					},
+					"frame": {
+						"x": 1369,
+						"y": 1673,
+						"w": 167,
+						"h": 123
+					}
+				},
+				{
+					"filename": "coco_avispas/51",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 564,
+						"w": 170,
+						"h": 110
+					},
+					"frame": {
+						"x": 1538,
+						"y": 1679,
+						"w": 170,
+						"h": 110
+					}
+				},
+				{
+					"filename": "coco_avispas/7",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 988,
+						"y": 172,
+						"w": 83,
+						"h": 53
+					},
+					"frame": {
+						"x": 1369,
+						"y": 1798,
+						"w": 83,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/9",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1371,
+						"y": 290,
+						"w": 83,
+						"h": 53
+					},
+					"frame": {
+						"x": 1454,
+						"y": 1798,
+						"w": 83,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/47",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2139,
+						"y": 611,
+						"w": 79,
+						"h": 62
+					},
+					"frame": {
+						"x": 1257,
+						"y": 1604,
+						"w": 79,
+						"h": 62
+					}
+				},
+				{
+					"filename": "coco_avispas/53",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 548,
+						"w": 160,
+						"h": 126
+					},
+					"frame": {
+						"x": 1710,
+						"y": 1679,
+						"w": 160,
+						"h": 126
+					}
+				},
+				{
+					"filename": "coco_avispas/33",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 609,
+						"w": 62,
+						"h": 64
+					},
+					"frame": {
+						"x": 1257,
+						"y": 1668,
+						"w": 62,
+						"h": 64
+					}
+				},
+				{
+					"filename": "coco_avispas/35",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 609,
+						"w": 62,
+						"h": 64
+					},
+					"frame": {
+						"x": 1257,
+						"y": 1668,
+						"w": 62,
+						"h": 64
+					}
+				},
+				{
+					"filename": "coco_avispas/42",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 609,
+						"w": 62,
+						"h": 64
+					},
+					"frame": {
+						"x": 1257,
+						"y": 1668,
+						"w": 62,
+						"h": 64
+					}
+				},
+				{
+					"filename": "coco_avispas/13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1977,
+						"y": 512,
+						"w": 80,
+						"h": 102
+					},
+					"frame": {
+						"x": 577,
+						"y": 783,
+						"w": 80,
+						"h": 102
+					}
+				},
+				{
+					"filename": "coco_avispas/20",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2071,
+						"y": 564,
+						"w": 65,
+						"h": 105
+					},
+					"frame": {
+						"x": 1023,
+						"y": 180,
+						"w": 65,
+						"h": 105
+					}
+				},
+				{
+					"filename": "coco_avispas/24",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2108,
+						"y": 573,
+						"w": 66,
+						"h": 97
+					},
+					"frame": {
+						"x": 864,
+						"y": 1066,
+						"w": 66,
+						"h": 97
+					}
+				},
+				{
+					"filename": "coco_avispas/127",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 608,
+						"w": 191,
+						"h": 65
+					},
+					"frame": {
+						"x": 932,
+						"y": 1126,
+						"w": 191,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_avispas/27",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2117,
+						"y": 587,
+						"w": 66,
+						"h": 84
+					},
+					"frame": {
+						"x": 1821,
+						"y": 1370,
+						"w": 66,
+						"h": 84
+					}
+				},
+				{
+					"filename": "coco_avispas/23",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2099,
+						"y": 581,
+						"w": 78,
+						"h": 89
+					},
+					"frame": {
+						"x": 1798,
+						"y": 1456,
+						"w": 78,
+						"h": 89
+					}
+				},
+				{
+					"filename": "coco_avispas/22",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2098,
+						"y": 577,
+						"w": 60,
+						"h": 93
+					},
+					"frame": {
+						"x": 1798,
+						"y": 1547,
+						"w": 60,
+						"h": 93
+					}
+				},
+				{
+					"filename": "coco_avispas/2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 4,
+						"w": 84,
+						"h": 54
+					},
+					"frame": {
+						"x": 1539,
+						"y": 1791,
+						"w": 84,
+						"h": 54
+					}
+				},
+				{
+					"filename": "coco_avispas/10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1558,
+						"y": 359,
+						"w": 83,
+						"h": 53
+					},
+					"frame": {
+						"x": 1625,
+						"y": 1791,
+						"w": 83,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/50",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2137,
+						"y": 579,
+						"w": 159,
+						"h": 95
+					},
+					"frame": {
+						"x": 855,
+						"y": 1193,
+						"w": 159,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_avispas/49",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 588,
+						"w": 152,
+						"h": 86
+					},
+					"frame": {
+						"x": 837,
+						"y": 1290,
+						"w": 152,
+						"h": 86
+					}
+				},
+				{
+					"filename": "coco_avispas/26",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2116,
+						"y": 582,
+						"w": 62,
+						"h": 88
+					},
+					"frame": {
+						"x": 1016,
+						"y": 1193,
+						"w": 62,
+						"h": 88
+					}
+				},
+				{
+					"filename": "coco_avispas/32",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2140,
+						"y": 606,
+						"w": 61,
+						"h": 67
+					},
+					"frame": {
+						"x": 1080,
+						"y": 1193,
+						"w": 61,
+						"h": 67
+					}
+				},
+				{
+					"filename": "coco_avispas/34",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2140,
+						"y": 606,
+						"w": 61,
+						"h": 67
+					},
+					"frame": {
+						"x": 1080,
+						"y": 1193,
+						"w": 61,
+						"h": 67
+					}
+				},
+				{
+					"filename": "coco_avispas/38",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2140,
+						"y": 606,
+						"w": 61,
+						"h": 67
+					},
+					"frame": {
+						"x": 1080,
+						"y": 1193,
+						"w": 61,
+						"h": 67
+					}
+				},
+				{
+					"filename": "coco_avispas/41",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2140,
+						"y": 606,
+						"w": 61,
+						"h": 67
+					},
+					"frame": {
+						"x": 1080,
+						"y": 1193,
+						"w": 61,
+						"h": 67
+					}
+				},
+				{
+					"filename": "coco_avispas/45",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2140,
+						"y": 606,
+						"w": 61,
+						"h": 67
+					},
+					"frame": {
+						"x": 1080,
+						"y": 1193,
+						"w": 61,
+						"h": 67
+					}
+				},
+				{
+					"filename": "coco_avispas/21",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2077,
+						"y": 622,
+						"w": 90,
+						"h": 48
+					},
+					"frame": {
+						"x": 886,
+						"y": 1378,
+						"w": 90,
+						"h": 48
+					}
+				},
+				{
+					"filename": "coco_avispas/12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1921,
+						"y": 521,
+						"w": 83,
+						"h": 53
+					},
+					"frame": {
+						"x": 886,
+						"y": 1428,
+						"w": 83,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/3",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 201,
+						"y": 23,
+						"w": 82,
+						"h": 53
+					},
+					"frame": {
+						"x": 886,
+						"y": 1483,
+						"w": 82,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/4",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 400,
+						"y": 49,
+						"w": 82,
+						"h": 53
+					},
+					"frame": {
+						"x": 886,
+						"y": 1538,
+						"w": 82,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/28",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2118,
+						"y": 630,
+						"w": 88,
+						"h": 41
+					},
+					"frame": {
+						"x": 1710,
+						"y": 1807,
+						"w": 88,
+						"h": 41
+					}
+				},
+				{
+					"filename": "coco_avispas/142",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 611,
+						"w": 43,
+						"h": 20
+					},
+					"frame": {
+						"x": 1749,
+						"y": 144,
+						"w": 43,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/205",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 611,
+						"w": 43,
+						"h": 20
+					},
+					"frame": {
+						"x": 1794,
+						"y": 144,
+						"w": 43,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/30",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2140,
+						"y": 601,
+						"w": 60,
+						"h": 70
+					},
+					"frame": {
+						"x": 985,
+						"y": 327,
+						"w": 60,
+						"h": 70
+					}
+				},
+				{
+					"filename": "coco_avispas/37",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 608,
+						"w": 62,
+						"h": 66
+					},
+					"frame": {
+						"x": 985,
+						"y": 399,
+						"w": 62,
+						"h": 66
+					}
+				},
+				{
+					"filename": "coco_avispas/44",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 608,
+						"w": 62,
+						"h": 66
+					},
+					"frame": {
+						"x": 985,
+						"y": 399,
+						"w": 62,
+						"h": 66
+					}
+				},
+				{
+					"filename": "coco_avispas/206",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 610,
+						"w": 42,
+						"h": 20
+					},
+					"frame": {
+						"x": 1839,
+						"y": 144,
+						"w": 42,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/5",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 598,
+						"y": 83,
+						"w": 82,
+						"h": 53
+					},
+					"frame": {
+						"x": 1047,
+						"y": 326,
+						"w": 82,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/6",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 794,
+						"y": 124,
+						"w": 82,
+						"h": 53
+					},
+					"frame": {
+						"x": 1049,
+						"y": 381,
+						"w": 82,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/29",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2134,
+						"y": 608,
+						"w": 66,
+						"h": 63
+					},
+					"frame": {
+						"x": 991,
+						"y": 1290,
+						"w": 66,
+						"h": 63
+					}
+				},
+				{
+					"filename": "coco_avispas/8",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1181,
+						"y": 227,
+						"w": 82,
+						"h": 53
+					},
+					"frame": {
+						"x": 1059,
+						"y": 1283,
+						"w": 82,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 1743,
+						"y": 436,
+						"w": 82,
+						"h": 53
+					},
+					"frame": {
+						"x": 1059,
+						"y": 1338,
+						"w": 82,
+						"h": 53
+					}
+				},
+				{
+					"filename": "coco_avispas/145",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 611,
+						"w": 42,
+						"h": 19
+					},
+					"frame": {
+						"x": 1080,
+						"y": 1262,
+						"w": 42,
+						"h": 19
+					}
+				},
+				{
+					"filename": "coco_avispas/134",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 610,
+						"w": 41,
+						"h": 21
+					},
+					"frame": {
+						"x": 1378,
+						"y": 326,
+						"w": 41,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/155",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 610,
+						"w": 41,
+						"h": 21
+					},
+					"frame": {
+						"x": 1378,
+						"y": 326,
+						"w": 41,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/146",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 611,
+						"w": 41,
+						"h": 19
+					},
+					"frame": {
+						"x": 1378,
+						"y": 349,
+						"w": 41,
+						"h": 19
+					}
+				},
+				{
+					"filename": "coco_avispas/36",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2139,
+						"y": 611,
+						"w": 64,
+						"h": 62
+					},
+					"frame": {
+						"x": 991,
+						"y": 1355,
+						"w": 64,
+						"h": 62
+					}
+				},
+				{
+					"filename": "coco_avispas/40",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2139,
+						"y": 611,
+						"w": 64,
+						"h": 62
+					},
+					"frame": {
+						"x": 991,
+						"y": 1355,
+						"w": 64,
+						"h": 62
+					}
+				},
+				{
+					"filename": "coco_avispas/43",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2139,
+						"y": 611,
+						"w": 64,
+						"h": 62
+					},
+					"frame": {
+						"x": 991,
+						"y": 1355,
+						"w": 64,
+						"h": 62
+					}
+				},
+				{
+					"filename": "coco_avispas/31",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2137,
+						"y": 609,
+						"w": 63,
+						"h": 63
+					},
+					"frame": {
+						"x": 1057,
+						"y": 1393,
+						"w": 63,
+						"h": 63
+					}
+				},
+				{
+					"filename": "coco_avispas/212",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 614,
+						"w": 36,
+						"h": 15
+					},
+					"frame": {
+						"x": 690,
+						"y": 183,
+						"w": 36,
+						"h": 15
+					}
+				},
+				{
+					"filename": "coco_avispas/139",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 319,
+						"y": 604,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/160",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1660,
+						"y": 370,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/161",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1612,
+						"y": 505,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/162",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1843,
+						"y": 560,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/163",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1775,
+						"y": 1268,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/164",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1125,
+						"y": 1126,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/165",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1798,
+						"y": 1642,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/166",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/167",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/168",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/169",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/170",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/171",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/172",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/173",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/174",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/175",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/176",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/177",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/178",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/179",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/180",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/181",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/182",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/183",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/184",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/185",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/186",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/187",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/188",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/189",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/190",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/191",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/192",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/193",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/194",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/195",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/196",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/197",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/198",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1807,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/144",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 611,
+						"w": 41,
+						"h": 20
+					},
+					"frame": {
+						"x": 1800,
+						"y": 1831,
+						"w": 41,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/199",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1023,
+						"y": 287,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/200",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1049,
+						"y": 436,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/201",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 319,
+						"y": 628,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/202",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 609,
+						"w": 43,
+						"h": 22
+					},
+					"frame": {
+						"x": 1660,
+						"y": 394,
+						"w": 43,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/135",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 1612,
+						"y": 529,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/156",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 1612,
+						"y": 529,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/136",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 1843,
+						"y": 584,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/157",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 1843,
+						"y": 584,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/137",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 319,
+						"y": 652,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/138",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 1843,
+						"y": 608,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/158",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 319,
+						"y": 676,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/159",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 609,
+						"w": 42,
+						"h": 22
+					},
+					"frame": {
+						"x": 1843,
+						"y": 632,
+						"w": 42,
+						"h": 22
+					}
+				},
+				{
+					"filename": "coco_avispas/140",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 610,
+						"w": 43,
+						"h": 21
+					},
+					"frame": {
+						"x": 319,
+						"y": 700,
+						"w": 43,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/141",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 610,
+						"w": 43,
+						"h": 21
+					},
+					"frame": {
+						"x": 319,
+						"y": 723,
+						"w": 43,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/143",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 610,
+						"w": 43,
+						"h": 21
+					},
+					"frame": {
+						"x": 319,
+						"y": 746,
+						"w": 43,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/203",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 610,
+						"w": 43,
+						"h": 21
+					},
+					"frame": {
+						"x": 1843,
+						"y": 656,
+						"w": 43,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/149",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 611,
+						"w": 41,
+						"h": 20
+					},
+					"frame": {
+						"x": 1843,
+						"y": 1831,
+						"w": 41,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/39",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 609,
+						"w": 62,
+						"h": 63
+					},
+					"frame": {
+						"x": 970,
+						"y": 1483,
+						"w": 62,
+						"h": 63
+					}
+				},
+				{
+					"filename": "coco_avispas/46",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2138,
+						"y": 609,
+						"w": 62,
+						"h": 63
+					},
+					"frame": {
+						"x": 970,
+						"y": 1483,
+						"w": 62,
+						"h": 63
+					}
+				},
+				{
+					"filename": "coco_avispas/204",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 610,
+						"w": 43,
+						"h": 21
+					},
+					"frame": {
+						"x": 970,
+						"y": 1548,
+						"w": 43,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/151",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 610,
+						"w": 41,
+						"h": 21
+					},
+					"frame": {
+						"x": 970,
+						"y": 1571,
+						"w": 41,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/152",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 610,
+						"w": 41,
+						"h": 21
+					},
+					"frame": {
+						"x": 1094,
+						"y": 436,
+						"w": 41,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/154",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 610,
+						"w": 41,
+						"h": 21
+					},
+					"frame": {
+						"x": 855,
+						"y": 1165,
+						"w": 41,
+						"h": 21
+					}
+				},
+				{
+					"filename": "coco_avispas/153",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 610,
+						"w": 41,
+						"h": 20
+					},
+					"frame": {
+						"x": 1845,
+						"y": 1807,
+						"w": 41,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/208",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2007,
+						"y": 612,
+						"w": 42,
+						"h": 18
+					},
+					"frame": {
+						"x": 1843,
+						"y": 679,
+						"w": 42,
+						"h": 18
+					}
+				},
+				{
+					"filename": "coco_avispas/207",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 611,
+						"w": 41,
+						"h": 20
+					},
+					"frame": {
+						"x": 1838,
+						"y": 699,
+						"w": 41,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/148",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 611,
+						"w": 40,
+						"h": 20
+					},
+					"frame": {
+						"x": 1838,
+						"y": 721,
+						"w": 40,
+						"h": 20
+					}
+				},
+				{
+					"filename": "coco_avispas/147",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 611,
+						"w": 41,
+						"h": 19
+					},
+					"frame": {
+						"x": 1838,
+						"y": 743,
+						"w": 41,
+						"h": 19
+					}
+				},
+				{
+					"filename": "coco_avispas/150",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 611,
+						"w": 41,
+						"h": 19
+					},
+					"frame": {
+						"x": 1838,
+						"y": 764,
+						"w": 41,
+						"h": 19
+					}
+				},
+				{
+					"filename": "coco_avispas/209",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 612,
+						"w": 41,
+						"h": 19
+					},
+					"frame": {
+						"x": 1838,
+						"y": 785,
+						"w": 41,
+						"h": 19
+					}
+				},
+				{
+					"filename": "coco_avispas/210",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2009,
+						"y": 612,
+						"w": 39,
+						"h": 18
+					},
+					"frame": {
+						"x": 1321,
+						"y": 1673,
+						"w": 39,
+						"h": 18
+					}
+				},
+				{
+					"filename": "coco_avispas/211",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 2008,
+						"y": 613,
+						"w": 40,
+						"h": 17
+					},
+					"frame": {
+						"x": 1321,
+						"y": 1693,
+						"w": 40,
+						"h": 17
+					}
+				},
+				{
+					"filename": "coco_avispas/1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/213",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/214",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/215",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/216",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/217",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/218",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/219",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_avispas/220",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 2308,
+						"h": 749
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 551,
+						"y": 1238,
+						"w": 3,
+						"h": 3
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b7479ce5665a3fbae942058f08d683b4:15478d05222778cb1f74cfc08fb430ae:89348abdf7a8c6e61e077452d7044a99$"
+	}
+}

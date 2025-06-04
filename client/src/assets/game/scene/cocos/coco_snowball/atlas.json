@@ -1,0 +1,2099 @@
+{
+	"textures": [
+		{
+			"image": "spritesheet-0.webp",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1897,
+				"h": 125
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "coco_snowball/24",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1838,
+						"y": 244,
+						"w": 133,
+						"h": 92
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 133,
+						"h": 92
+					}
+				},
+				{
+					"filename": "coco_snowball/89",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 25,
+						"h": 29
+					},
+					"frame": {
+						"x": 1,
+						"y": 95,
+						"w": 25,
+						"h": 29
+					}
+				},
+				{
+					"filename": "coco_snowball/4",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 269,
+						"y": 12,
+						"w": 194,
+						"h": 28
+					},
+					"frame": {
+						"x": 28,
+						"y": 95,
+						"w": 194,
+						"h": 28
+					}
+				},
+				{
+					"filename": "coco_snowball/19",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1671,
+						"y": 212,
+						"w": 182,
+						"h": 80
+					},
+					"frame": {
+						"x": 136,
+						"y": 1,
+						"w": 182,
+						"h": 80
+					}
+				},
+				{
+					"filename": "coco_snowball/20",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1867,
+						"y": 281,
+						"w": 49,
+						"h": 41
+					},
+					"frame": {
+						"x": 224,
+						"y": 83,
+						"w": 49,
+						"h": 41
+					}
+				},
+				{
+					"filename": "coco_snowball/11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 899,
+						"y": 37,
+						"w": 193,
+						"h": 40
+					},
+					"frame": {
+						"x": 275,
+						"y": 83,
+						"w": 193,
+						"h": 40
+					}
+				},
+				{
+					"filename": "coco_snowball/23",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1842,
+						"y": 251,
+						"w": 116,
+						"h": 76
+					},
+					"frame": {
+						"x": 320,
+						"y": 1,
+						"w": 116,
+						"h": 76
+					}
+				},
+				{
+					"filename": "coco_snowball/18",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1578,
+						"y": 178,
+						"w": 183,
+						"h": 75
+					},
+					"frame": {
+						"x": 438,
+						"y": 1,
+						"w": 183,
+						"h": 75
+					}
+				},
+				{
+					"filename": "coco_snowball/1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/27",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/28",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/29",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/30",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/31",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/32",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/33",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/34",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/35",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/36",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/37",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/38",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/39",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/40",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/41",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/42",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/43",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/44",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/45",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/90",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/91",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/92",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/93",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/94",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/95",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/96",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/97",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/98",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/99",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 438,
+						"y": 78,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_snowball/12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 999,
+						"y": 45,
+						"w": 191,
+						"h": 44
+					},
+					"frame": {
+						"x": 470,
+						"y": 78,
+						"w": 191,
+						"h": 44
+					}
+				},
+				{
+					"filename": "coco_snowball/22",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1849,
+						"y": 250,
+						"w": 100,
+						"h": 71
+					},
+					"frame": {
+						"x": 623,
+						"y": 1,
+						"w": 100,
+						"h": 71
+					}
+				},
+				{
+					"filename": "coco_snowball/13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1098,
+						"y": 58,
+						"w": 189,
+						"h": 50
+					},
+					"frame": {
+						"x": 663,
+						"y": 74,
+						"w": 189,
+						"h": 50
+					}
+				},
+				{
+					"filename": "coco_snowball/17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1484,
+						"y": 148,
+						"w": 185,
+						"h": 70
+					},
+					"frame": {
+						"x": 725,
+						"y": 1,
+						"w": 185,
+						"h": 70
+					}
+				},
+				{
+					"filename": "coco_snowball/10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 809,
+						"y": 33,
+						"w": 193,
+						"h": 38
+					},
+					"frame": {
+						"x": 854,
+						"y": 73,
+						"w": 193,
+						"h": 38
+					}
+				},
+				{
+					"filename": "coco_snowball/16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1389,
+						"y": 120,
+						"w": 186,
+						"h": 65
+					},
+					"frame": {
+						"x": 912,
+						"y": 1,
+						"w": 186,
+						"h": 65
+					}
+				},
+				{
+					"filename": "coco_snowball/25",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1840,
+						"y": 243,
+						"w": 142,
+						"h": 56
+					},
+					"frame": {
+						"x": 1049,
+						"y": 68,
+						"w": 142,
+						"h": 56
+					}
+				},
+				{
+					"filename": "coco_snowball/15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1292,
+						"y": 96,
+						"w": 188,
+						"h": 60
+					},
+					"frame": {
+						"x": 1100,
+						"y": 1,
+						"w": 188,
+						"h": 60
+					}
+				},
+				{
+					"filename": "coco_snowball/26",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1955,
+						"y": 251,
+						"w": 35,
+						"h": 56
+					},
+					"frame": {
+						"x": 1193,
+						"y": 63,
+						"w": 35,
+						"h": 56
+					}
+				},
+				{
+					"filename": "coco_snowball/14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1195,
+						"y": 75,
+						"w": 189,
+						"h": 55
+					},
+					"frame": {
+						"x": 1230,
+						"y": 63,
+						"w": 189,
+						"h": 55
+					}
+				},
+				{
+					"filename": "coco_snowball/21",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 1860,
+						"y": 263,
+						"w": 69,
+						"h": 55
+					},
+					"frame": {
+						"x": 1290,
+						"y": 1,
+						"w": 69,
+						"h": 55
+					}
+				},
+				{
+					"filename": "coco_snowball/9",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 719,
+						"y": 30,
+						"w": 193,
+						"h": 36
+					},
+					"frame": {
+						"x": 1361,
+						"y": 1,
+						"w": 193,
+						"h": 36
+					}
+				},
+				{
+					"filename": "coco_snowball/8",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 629,
+						"y": 26,
+						"w": 193,
+						"h": 35
+					},
+					"frame": {
+						"x": 1421,
+						"y": 39,
+						"w": 193,
+						"h": 35
+					}
+				},
+				{
+					"filename": "coco_snowball/7",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 539,
+						"y": 23,
+						"w": 193,
+						"h": 33
+					},
+					"frame": {
+						"x": 1556,
+						"y": 1,
+						"w": 193,
+						"h": 33
+					}
+				},
+				{
+					"filename": "coco_snowball/6",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 449,
+						"y": 19,
+						"w": 193,
+						"h": 32
+					},
+					"frame": {
+						"x": 1421,
+						"y": 76,
+						"w": 193,
+						"h": 32
+					}
+				},
+				{
+					"filename": "coco_snowball/5",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 359,
+						"y": 16,
+						"w": 194,
+						"h": 30
+					},
+					"frame": {
+						"x": 1616,
+						"y": 36,
+						"w": 194,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/46",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/47",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/48",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/49",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/50",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/51",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/52",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/53",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/54",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/55",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/56",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/57",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/58",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/59",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/60",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/61",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/62",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/63",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/64",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/65",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/66",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/67",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/68",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/69",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/70",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/71",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/72",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/73",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/74",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/75",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/76",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/77",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/78",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/79",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/80",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1751,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/81",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1780,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/82",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1809,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/83",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1616,
+						"y": 68,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/84",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1645,
+						"y": 68,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/85",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1674,
+						"y": 68,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/3",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 180,
+						"y": 8,
+						"w": 193,
+						"h": 27
+					},
+					"frame": {
+						"x": 1703,
+						"y": 68,
+						"w": 193,
+						"h": 27
+					}
+				},
+				{
+					"filename": "coco_snowball/2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1990,
+						"h": 392
+					},
+					"spriteSourceSize": {
+						"x": 90,
+						"y": 5,
+						"w": 193,
+						"h": 25
+					},
+					"frame": {
+						"x": 1703,
+						"y": 97,
+						"w": 193,
+						"h": 25
+					}
+				},
+				{
+					"filename": "coco_snowball/86",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1812,
+						"y": 33,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/87",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1838,
+						"y": 1,
+						"w": 27,
+						"h": 30
+					}
+				},
+				{
+					"filename": "coco_snowball/88",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1693,
+						"h": 735
+					},
+					"spriteSourceSize": {
+						"x": 1606,
+						"y": 704,
+						"w": 27,
+						"h": 30
+					},
+					"frame": {
+						"x": 1841,
+						"y": 33,
+						"w": 27,
+						"h": 30
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:ca82249174b538428e34bffe74b7b5aa:20826608a95ac85f999d997202a497a6:89348abdf7a8c6e61e077452d7044a99$"
+	}
+}
