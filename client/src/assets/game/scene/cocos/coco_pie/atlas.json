@@ -1,0 +1,2120 @@
+{
+	"textures": [
+		{
+			"image": "spritesheet-0.webp",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1698,
+				"h": 971
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "coco_pie/2",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 1137,
+						"h": 969
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 1137,
+						"h": 969
+					}
+				},
+				{
+					"filename": "coco_pie/3",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 366,
+						"y": 97,
+						"w": 380,
+						"h": 296
+					},
+					"frame": {
+						"x": 1140,
+						"y": 1,
+						"w": 380,
+						"h": 296
+					}
+				},
+				{
+					"filename": "coco_pie/5",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 475,
+						"y": 237,
+						"w": 153,
+						"h": 127
+					},
+					"frame": {
+						"x": 1522,
+						"y": 1,
+						"w": 153,
+						"h": 127
+					}
+				},
+				{
+					"filename": "coco_pie/1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/92",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/93",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/94",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/95",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/96",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/97",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/98",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/99",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/100",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 1677,
+						"y": 1,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "coco_pie/12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 479,
+						"y": 319,
+						"w": 142,
+						"h": 145
+					},
+					"frame": {
+						"x": 1522,
+						"y": 130,
+						"w": 142,
+						"h": 145
+					}
+				},
+				{
+					"filename": "coco_pie/11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 480,
+						"y": 316,
+						"w": 138,
+						"h": 147
+					},
+					"frame": {
+						"x": 1522,
+						"y": 277,
+						"w": 138,
+						"h": 147
+					}
+				},
+				{
+					"filename": "coco_pie/4",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 435,
+						"y": 171,
+						"w": 235,
+						"h": 190
+					},
+					"frame": {
+						"x": 1140,
+						"y": 299,
+						"w": 235,
+						"h": 190
+					}
+				},
+				{
+					"filename": "coco_pie/10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 484,
+						"y": 323,
+						"w": 130,
+						"h": 129
+					},
+					"frame": {
+						"x": 1377,
+						"y": 299,
+						"w": 130,
+						"h": 129
+					}
+				},
+				{
+					"filename": "coco_pie/13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 480,
+						"y": 332,
+						"w": 123,
+						"h": 132
+					},
+					"frame": {
+						"x": 1509,
+						"y": 426,
+						"w": 123,
+						"h": 132
+					}
+				},
+				{
+					"filename": "coco_pie/14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 484,
+						"y": 366,
+						"w": 119,
+						"h": 95
+					},
+					"frame": {
+						"x": 1377,
+						"y": 430,
+						"w": 119,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/6",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 495,
+						"y": 287,
+						"w": 112,
+						"h": 97
+					},
+					"frame": {
+						"x": 1140,
+						"y": 491,
+						"w": 112,
+						"h": 97
+					}
+				},
+				{
+					"filename": "coco_pie/16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1254,
+						"y": 491,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1366,
+						"y": 527,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/18",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1254,
+						"y": 588,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/19",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1140,
+						"y": 590,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/20",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 560,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/21",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1366,
+						"y": 624,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/22",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1252,
+						"y": 685,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/23",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1140,
+						"y": 687,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/9",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 500,
+						"y": 339,
+						"w": 104,
+						"h": 97
+					},
+					"frame": {
+						"x": 1590,
+						"y": 560,
+						"w": 104,
+						"h": 97
+					}
+				},
+				{
+					"filename": "coco_pie/24",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/25",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/26",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/27",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/28",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/29",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/30",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/31",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/32",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/33",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/34",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/35",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/36",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/37",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/38",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/39",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/40",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/41",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/42",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/43",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/44",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/45",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/46",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/47",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/48",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/49",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/50",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/51",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/52",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/53",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/54",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/55",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/56",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/57",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/58",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/59",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/60",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/61",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/62",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/63",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/64",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/65",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/66",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/67",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/68",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/69",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/70",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/71",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/72",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/73",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/74",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/75",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/76",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/77",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/78",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/79",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/80",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/81",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/82",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/83",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/84",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/85",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1478,
+						"y": 657,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/86",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1364,
+						"y": 721,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/87",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1252,
+						"y": 782,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/88",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1140,
+						"y": 784,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/8",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 503,
+						"y": 344,
+						"w": 98,
+						"h": 87
+					},
+					"frame": {
+						"x": 1140,
+						"y": 881,
+						"w": 98,
+						"h": 87
+					}
+				},
+				{
+					"filename": "coco_pie/7",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 509,
+						"y": 327,
+						"w": 85,
+						"h": 77
+					},
+					"frame": {
+						"x": 1240,
+						"y": 881,
+						"w": 85,
+						"h": 77
+					}
+				},
+				{
+					"filename": "coco_pie/89",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1364,
+						"y": 818,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/90",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1476,
+						"y": 754,
+						"w": 110,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 494,
+						"y": 366,
+						"w": 109,
+						"h": 95
+					},
+					"frame": {
+						"x": 1588,
+						"y": 754,
+						"w": 109,
+						"h": 95
+					}
+				},
+				{
+					"filename": "coco_pie/91",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1137,
+						"h": 969
+					},
+					"spriteSourceSize": {
+						"x": 493,
+						"y": 366,
+						"w": 110,
+						"h": 95
+					},
+					"frame": {
+						"x": 1476,
+						"y": 851,
+						"w": 110,
+						"h": 95
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:4ae7abea335fa7e5469b4ac780881cde:2eec66e781e8d16c47ff8e1ef2288e37:89348abdf7a8c6e61e077452d7044a99$"
+	}
+}
