@@ -1,0 +1,32 @@
+{
+    "coco_garbage": {
+        "atlasKey": "coco_garbage_atlas",
+        "prefix": "coco_garbage/",
+        "flip_horizontally": false,
+        "start": 1,
+        "end": 140,
+        "frameRate": 19,
+        "frameWidth": 4144,
+        "frameHeight": 1592,
+        "originX": 0.5,
+        "originY": 0.5,
+        "offsetX": 0,
+        "offsetY": 0,
+        "repeat": 0
+    },
+    "coco_piano": {
+        "atlasKey": "coco_piano_atlas",
+        "prefix": "coco_piano/",
+        "flip_horizontally": false,
+        "start": 1,
+        "end": 261,
+        "frameRate": 19,
+        "frameWidth": 355,
+        "frameHeight": 1706,
+        "originX": 0.5,
+        "originY": 0.5,
+        "offsetX": 0,
+        "offsetY": 0,
+        "repeat": 0
+    }
+}

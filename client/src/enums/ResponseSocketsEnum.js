@@ -23,6 +23,7 @@ const ResponseSocketsEnum = new Enum({
     SCENE_OBJECT_SPAWNED: 'reponse:object_spawned',
     SCENE_OBJECT_REMOVED: 'reponse:object_removed',
     SCENE_OBJECT_COLLECTED: 'reponse:object_collected',
+    USER_RECEIVE_EFFECT: 'response:user_receive_effect',
 });
 
 export default ResponseSocketsEnum;
