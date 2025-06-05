@@ -12,7 +12,16 @@
         "originY": 0.5,
         "offsetX": 0,
         "offsetY": 0,
-        "repeat": 0
+        "repeat": 0,
+        "effect": {
+            "positionOffset": {
+                "x": 55,
+                "y": -680
+            },
+            "hideAvatar": true,
+            "avatarVisibilityFalseStartTime": 3800,
+            "avatarVisibilityTrueStartTime": 7200
+        }
     },
     "coco_piano": {
         "atlasKey": "coco_piano_atlas",
@@ -27,7 +36,16 @@
         "originY": 0.5,
         "offsetX": 0,
         "offsetY": 0,
-        "repeat": 0
+        "repeat": 0,
+        "effect": {
+            "positionOffset": {
+                "x": 25,
+                "y": -760
+            },
+            "hideAvatar": true,
+            "avatarVisibilityFalseStartTime": 1500,
+            "avatarVisibilityTrueStartTime": 13300
+        }
     },
     "coco_avispas": {
         "atlasKey": "coco_avispas_atlas",
@@ -42,7 +60,16 @@
         "originY": 0.5,
         "offsetX": 0,
         "offsetY": 0,
-        "repeat": 0
+        "repeat": 0,
+        "effect": {
+            "positionOffset": {
+                "x": -875,
+                "y": -300
+            },
+            "hideAvatar": false,
+            "avatarVisibilityFalseStartTime": 3800,
+            "avatarVisibilityTrueStartTime": 7200
+        }
     },
     "coco_coco": {
         "atlasKey": "coco_coco_atlas",

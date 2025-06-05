@@ -2,39 +2,38 @@ class UserReceiveEffectController {
     static main(gameScene, data) {
         const user = gameScene.users[data.user_socket];
         if (!user) return;
-        switch (data.effect) {
-            case 'coco_garbage':
-                this.#playCocoGarbageEffect(gameScene, user);
-                break;
-            case 'coco_piano':
-                this.#playCocoPianoEffect(gameScene, user);
-        }
-    }
 
-    static #playCocoGarbageEffect(gameScene, user) {
-        let sprite = user.spriteAvatar;
-        const container = sprite.parentContainer;
+        let effectData = window.avatar_effects_config[data.effect];
+        if (!effectData) return;
+
+        let spriteAvatar = user.spriteAvatar;
+        const container = spriteAvatar.parentContainer;
 
         // Crear sprite del efecto en la posición deseada
         const effect = gameScene.add.sprite(
-            container.x + 55,
-            container.y - 680,
-            'coco_garbage'
+            container.x + effectData.effect.positionOffset.x,
+            container.y + effectData.effect.positionOffset.y,
+            data.effect
         );
 
         // Asegurarte de que el efecto esté por encima del avatar
         effect.setDepth(container.depth);
 
         // Reproducir la animación
-        effect.play('coco_garbage');
+        effect.play(data.effect);
 
         // Destruir el sprite del efecto cuando termine la animación
         effect.once('animationcomplete', () => {
             effect.destroy();
         });
 
+        if (!effectData.effect.hideAvatar) {
+            // Si no se especifica que se oculte el avatar, no hacemos nada más
+            return;
+        }
+
         // 2 segundos después de lanzar el efecto, ocultar el avatar
-        gameScene.time.delayedCall(3800, () => {
+        gameScene.time.delayedCall(effectData.effect.avatarVisibilityFalseStartTime, () => {
             // Si tu avatar está dentro de un container:
             container.setVisible(false);
             // Si en lugar de un container quieres ocultar solo el sprite:
@@ -42,42 +41,9 @@ class UserReceiveEffectController {
         });
 
         // 4 segundos después de lanzar el efecto (es decir, 2 segundos tras ocultarlo), volver a mostrar el avatar
-        gameScene.time.delayedCall(7200, () => {
+        gameScene.time.delayedCall(effectData.effect.avatarVisibilityTrueStartTime, () => {
             container.setVisible(true);
             // o sprite.setVisible(true);
-        });
-    }
-
-    static #playCocoPianoEffect(gameScene, user) {
-        let sprite = user.spriteAvatar;
-        const container = sprite.parentContainer;
-
-        // Crear sprite del efecto en la posición deseada
-        const effect = gameScene.add.sprite(
-            container.x + 25,
-            container.y - 760,
-            'coco_piano'
-        );
-
-        // Asegurarte de que el efecto esté por encima del avatar
-        effect.setDepth(container.depth);
-
-        // Reproducir la animación
-        effect.play('coco_piano');
-
-        // Destruir el sprite del efecto cuando termine la animación
-        effect.once('animationcomplete', () => {
-            effect.destroy();
-        });
-
-        // 2 segundos después de lanzar el efecto, ocultar el avatar
-        gameScene.time.delayedCall(1500, () => {
-            container.setVisible(false);
-        });
-
-        // 4 segundos después de lanzar el efecto (es decir, 2 segundos tras ocultarlo), volver a mostrar el avatar
-        gameScene.time.delayedCall(13300, () => {
-            container.setVisible(true);
         });
     }
 }

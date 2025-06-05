@@ -157,6 +157,27 @@
 					}
 				},
 				{
+					"filename": "coco_yunque/51",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 192,
+						"h": 2134
+					},
+					"spriteSourceSize": {
+						"x": 47,
+						"y": 2086,
+						"w": 87,
+						"h": 17
+					},
+					"frame": {
+						"x": 1,
+						"y": 1999,
+						"w": 87,
+						"h": 17
+					}
+				},
+				{
 					"filename": "coco_yunque/49",
 					"rotated": false,
 					"trimmed": true,
