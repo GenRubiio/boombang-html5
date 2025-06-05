@@ -1,11 +1,11 @@
 <template>
-  <div class="upper-wrapper">
+  <div class="interactions-wrapper">
     <div class="container" :class="colorUser">
       <div></div>
       <div></div>
       <div></div>
       <div></div>
-      <div class="upper-red">
+      <div class="upper-container">
         <img
           :src="items[selectedUpperIndex]"
           alt="upper"
@@ -18,8 +18,8 @@
       <div></div>
     </div>
 
-    <div class="uppercuts-container" v-if="showContainer">
-      <div class="uppercuts-container__list">
+    <div class="uppercuts-list-container" v-if="showContainer">
+      <div class="uppercuts-list-container__list">
         <div
           v-for="(img, index) in items"
           :key="index"
@@ -29,7 +29,7 @@
           <img :src="img" alt="upper-item" />
         </div>
       </div>
-      <div class="uppercuts-container__close" @click="toggleContainer">x</div>
+      <div class="uppercuts-list-container__close" @click="toggleContainer">x</div>
     </div>
   </div>
 </template>
@@ -73,9 +73,9 @@ export default {
         asset_blackUpperImage,
         asset_goldUpperImage,
       ],
-      selectedUpperIndex: (this.authUser.uppercut_selected),
+      selectedUpperIndex: this.authUser.uppercut_selected,
       showContainer: false,
-      activeCount: (this.authUser.uppercut_level + 1),
+      activeCount: this.authUser.uppercut_level + 1,
     };
   },
   methods: {
@@ -112,7 +112,7 @@ export default {
 </script>
 
 <style scoped>
-.upper-wrapper {
+.interactions-wrapper {
   position: relative;
 }
 
@@ -146,13 +146,13 @@ export default {
   transition: opacity 0.1s ease-in-out;
 }
 
-.upper-red {
+.upper-container {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-.upper-red img {
+.upper-container img {
   max-width: 100%;
   height: auto;
   cursor: pointer;
@@ -168,7 +168,7 @@ export default {
   position: absolute;
 }
 
-.uppercuts-container {
+.uppercuts-list-container {
   position: absolute;
   width: 230px;
   top: 13px;
@@ -181,7 +181,7 @@ export default {
   z-index: 2;
 }
 
-.uppercuts-container__list {
+.uppercuts-list-container__list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
@@ -189,34 +189,34 @@ export default {
   margin-right: 15px;
 }
 
-.uppercuts-container__list div {
+.uppercuts-list-container__list div {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.uppercuts-container__list img {
+.uppercuts-list-container__list img {
   max-width: 100%;
   height: auto;
   object-fit: contain;
 }
 
-.uppercuts-container__list div {
+.uppercuts-list-container__list div {
   opacity: 0.5;
 }
 
-.uppercuts-container__list div.active {
+.uppercuts-list-container__list div.active {
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
-.uppercuts-container__list div.active:hover img {
+.uppercuts-list-container__list div.active:hover img {
   background-color: #f0f0f0;
 }
 
-.uppercuts-container__close {
+.uppercuts-list-container__close {
   position: absolute;
   top: 4px;
   right: 6px;
