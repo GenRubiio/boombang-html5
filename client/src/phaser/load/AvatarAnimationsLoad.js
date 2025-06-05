@@ -1,21 +1,21 @@
 import AvatarEnum from "../../enums/AvatarEnum";
-import AvatarBoomerLoad from "./avatars/AvatarBoomerLoad";
-import AvatarBrujitaLoad from "./avatars/AvatarBrujitaLoad";
-import AvatarCholoLoad from "./avatars/AvatarCholoLoad";
-import AvatarEmpollonLoad from "./avatars/AvatarEmpollonLoad";
+//import AvatarBoomerLoad from "./avatars/AvatarBoomerLoad";
+//import AvatarBrujitaLoad from "./avatars/AvatarBrujitaLoad";
+//import AvatarCholoLoad from "./avatars/AvatarCholoLoad";
+//import AvatarEmpollonLoad from "./avatars/AvatarEmpollonLoad";
 import AvatarGataLoad from "./avatars/AvatarGataLoad";
-import AvatarGhostLoad from "./avatars/AvatarGhostLoad";
-import AvatarIndiaLoad from "./avatars/AvatarIndiaLoad";
-import AvatarLilianLoad from "./avatars/AvatarLilianLoad";
-import AvatarMarsuLoad from "./avatars/AvatarMarsuLoad";
-import AvatarModernLoad from "./avatars/AvatarModernLoad";
-import AvatarNinjaLoad from "./avatars/AvatarNinjaLoad";
+//import AvatarGhostLoad from "./avatars/AvatarGhostLoad";
+//import AvatarIndiaLoad from "./avatars/AvatarIndiaLoad";
+//import AvatarLilianLoad from "./avatars/AvatarLilianLoad";
+//import AvatarMarsuLoad from "./avatars/AvatarMarsuLoad";
+//import AvatarModernLoad from "./avatars/AvatarModernLoad";
+//import AvatarNinjaLoad from "./avatars/AvatarNinjaLoad";
 import AvatarRastaLoad from "./avatars/AvatarRastaLoad";
-import AvatarSkeletonLoad from "./avatars/AvatarSkeletonLoad";
-import AvatarWerewolfLoad from "./avatars/AvatarWerewolfLoad";
-import AvatarWraithLoad from "./avatars/AvatarWraithLoad";
-import AvatarYayoLoad from "./avatars/AvatarYayoLoad";
-import AvatarZombieLoad from "./avatars/AvatarZombieLoad";
+//import AvatarSkeletonLoad from "./avatars/AvatarSkeletonLoad";
+//import AvatarWerewolfLoad from "./avatars/AvatarWerewolfLoad";
+//import AvatarWraithLoad from "./avatars/AvatarWraithLoad";
+//import AvatarYayoLoad from "./avatars/AvatarYayoLoad";
+//import AvatarZombieLoad from "./avatars/AvatarZombieLoad";
 
 class AvatarAnimationsLoad {
     /**
