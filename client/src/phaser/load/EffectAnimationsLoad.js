@@ -1,5 +1,13 @@
 import CocoGarbageLoad from "./cocos/CocoGarbageLoad";
 import CocoPianoLoad from "./cocos/CocoPianoLoad";
+import CocoAvispasLoad from "./cocos/CocoAvispasLoad";
+import CocoCocoLoad from "./cocos/CocoCocoLoad";
+import CocoMacetaLoad from "./cocos/CocoMacetaLoad";
+import CocoPieLoad from "./cocos/CocoPieLoad";
+import CocoSandiaLoad from "./cocos/CocoSandiaLoad";
+import CocoShoeLoad from "./cocos/CocoShoeLoad";
+import CocoSnowballLoad from "./cocos/CocoSnowballLoad";
+import CocoYunqueLoad from "./cocos/CocoYunqueLoad";
 import asset_configJson from '../../assets/game/scene/cocos/config.json';
 
 class EffectAnimationsLoad {
@@ -10,6 +18,14 @@ class EffectAnimationsLoad {
     static preload(gameScene) {
         CocoGarbageLoad.main(gameScene);
         CocoPianoLoad.main(gameScene);
+        CocoAvispasLoad.main(gameScene);
+        CocoCocoLoad.main(gameScene);
+        CocoMacetaLoad.main(gameScene);
+        CocoPieLoad.main(gameScene);
+        CocoSandiaLoad.main(gameScene);
+        CocoShoeLoad.main(gameScene);
+        CocoSnowballLoad.main(gameScene);
+        CocoYunqueLoad.main(gameScene);
     }
 
     /**
@@ -20,8 +36,6 @@ class EffectAnimationsLoad {
         Object.entries(asset_configJson).forEach(([animationName, animData]) => {
             const animKey = `${animationName}`;
             const atlasKey = animData.atlasKey;
-            console.log(animationName);
-            console.log(animData);
 
             gameScene.anims.create({
                 key: animKey,

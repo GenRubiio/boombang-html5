@@ -36,10 +36,11 @@ class UserSendChatController {
             const command = data.message.split(' ')[0].substring(1);
             switch (command) {
                 case 'coco':
+                    const effect = data.message.split(' ')[1];
                     user.currentArea.emit('response:user_receive_effect',
                         {
                             'user_socket': user.socket.id,
-                            'effect': 'coco_garbage',
+                            'effect': effect,
                         }
                     );
                     return true;
