@@ -6,11 +6,11 @@ class PublicSceneResource extends Resource {
             id: data.id,
             name: data.name,
             type: data.type,
-            menu_type: data.menu_type,
-            map_rows: data.map_width,
-            map_cols: data.map_height,
-            game_map: data.game_map,
-            items: data.possible_items,
+            menu_type: data.menuType,
+            map_rows: data.mapWidth,
+            map_cols: data.mapHeight,
+            game_map: data.gameMap,
+            items: data.possibleItems,
         };
     }
 }

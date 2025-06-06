@@ -58,7 +58,7 @@ class UserBlockActionsTask {
             user._uppercutTimeout = user.blockAction(AnimationEnum.UPPERCUT, AnimationBlockTimerEnum.UPPERCUT_RECEIVE, () => {
                 // Callback al terminar el tiempo de recibir el uppercut
                 // Aquí expulsas al usuario
-                if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
+                if (user.currentArea && user.currentArea.sceneType == SceneTypesEnum.MINIGAME_RING) {
                     MoveUserToSceneDoorTask.main(user.currentArea, user);
                 }
                 else if (user.currentArea) {

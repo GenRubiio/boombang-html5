@@ -125,7 +125,7 @@ class Bot {
 
             // Obtener el mapa del área actual
             const sceneModel = user.currentArea;
-            const gameMap = sceneModel.game_map; // Asumiendo que game_map está accesible
+            const gameMap = sceneModel.gameMap; // Asumiendo que game_map está accesible
 
 
             // Recoger todas las posiciones válidas (0 = walkable)

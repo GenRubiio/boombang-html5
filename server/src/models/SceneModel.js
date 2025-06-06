@@ -8,10 +8,10 @@ class SceneModel {
         this.id = row.id;
         this.name = row.name;
         this.type = row.type; //Tipo de escena un idetificador de escena para cargar sus componentes
-        this.menu_type = row.menu_type; // Tipo de menú para la escena
-        this.map_width = row.map_width;
-        this.map_height = row.map_height;
-        this.game_map = JSON.parse(row.map);
+        this.menuType = row.menu_type; // Tipo de menú para la escena
+        this.mapWidth = row.map_width;
+        this.mapHeight = row.map_height;
+        this.gameMap = JSON.parse(row.map);
         this.startPosition = row.start_position; // Posición de inicio del área {x, y, z}
         this.movementBlocked = false; // Indica si el movimiento está bloqueado
 
@@ -22,7 +22,7 @@ class SceneModel {
         this.reservedTiles = {};
 
 
-        this.possible_items = row.items ? row.items.map(item => new SceneItemModel(item)) : []; // Lista de posibles items que se pueden cargar en la escena
+        this.possibleItems = row.items ? row.items.map(item => new SceneItemModel(item)) : []; // Lista de posibles items que se pueden cargar en la escena
         this.spawnedObjects = []; // Array de objetos activos
         this.itemActivationTimers = new Map();
         this.#startItemActivationChecks();
@@ -106,14 +106,14 @@ class SceneModel {
 
     #startItemActivationChecks() {
         this.itemCheckInterval = setInterval(() => {
-            this.possible_items.forEach(item => {
-                if (this.users.length >= item.min_users) {
+            this.possibleItems.forEach(item => {
+                if (this.users.length >= item.minUsers) {
                     if (!this.itemActivationTimers.has(item.id)) {
                         // Usar item.time (configurable) para el tiempo de aparición
                         const timer = setTimeout(() => {
                             this.#spawnObject(item);
                             this.itemActivationTimers.delete(item.id);
-                        }, item.activate_time * 1000); // ← Tiempo del item
+                        }, item.activateTime * 1000); // ← Tiempo del item
 
                         this.itemActivationTimers.set(item.id, {
                             timer: timer,
@@ -134,9 +134,9 @@ class SceneModel {
     #spawnObject(item) {
         const walkablePositions = [];
         // Obtener posiciones válidas del mapa
-        for (let y = 0; y < this.game_map.length; y++) {
-            for (let x = 0; x < this.game_map[y].length; x++) {
-                if (this.game_map[y][x] === 0) walkablePositions.push({ x, y });
+        for (let y = 0; y < this.gameMap.length; y++) {
+            for (let x = 0; x < this.gameMap[y].length; x++) {
+                if (this.gameMap[y][x] === 0) walkablePositions.push({ x, y });
             }
         }
 
@@ -162,7 +162,7 @@ class SceneModel {
             position: availablePositions[randomIndex],
             timer: setTimeout(() => {
                 this.removeObject(newObject);
-            }, item.desactivate_time * 1000) // ← 15 segundos
+            }, item.desactivateTime * 1000) // ← 15 segundos
         };
 
         this.spawnedObjects.push(newObject);

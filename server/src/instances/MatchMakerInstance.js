@@ -93,15 +93,15 @@ class MatchMakerInstance {
                     continue;
                 }
 
-                if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
+                if (user.currentArea && user.currentArea.sceneType == SceneTypesEnum.PUBLIC_SCENE) {
                     RemoveUserFromSceneTask.main(user.currentArea, user);
                     console.log('Usuario eliminado de la escena pública', user.username);
                 }
                 user.setArea(minigameScene);
                 minigameScene.addUser(user, {
-                    x: minigameScene.position_users[position][0],
-                    y: minigameScene.position_users[position][1],
-                    z: minigameScene.position_users[position][2]
+                    x: minigameScene.positionUsers[position][0],
+                    y: minigameScene.positionUsers[position][1],
+                    z: minigameScene.positionUsers[position][2]
                 });
 
                 let sceneUsers = [];
@@ -116,9 +116,9 @@ class MatchMakerInstance {
                         players: sceneUsers,
                         scenery: {
                             type: minigameScene.minigameScene.type,
-                            map_rows: minigameScene.map_width,
-                            map_cols: minigameScene.map_height,
-                            game_map: minigameScene.game_map,
+                            map_rows: minigameScene.mapWidth,
+                            map_cols: minigameScene.mapHeight,
+                            game_map: minigameScene.gameMap,
                         }
                     }
                 });
