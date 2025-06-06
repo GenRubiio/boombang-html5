@@ -1,16 +1,16 @@
 <template>
   <div id="lobby">
     <div class="lobby__background">
-      <img :src="asset_backgroundImage" alt="background" />
+      <img :src="asset_background_image" alt="background" />
     </div>
     <div class="lobby__flor">
-      <img :src="asset_florImage" alt="flor" />
+      <img :src="asset_flor_image" alt="flor" />
     </div>
     <div class="lobby__foreground">
-      <img :src="asset_foregroundImage" alt="foreground" />
+      <img :src="asset_foreground_image" alt="foreground" />
     </div>
     <div class="lobby__marikita">
-      <img :src="asset_marikitaImage" alt="marikita" />
+      <img :src="asset_marikita_image" alt="marikita" />
     </div>
     <div class="lobby__avatar">
       <img :src="asset_avatarImage" alt="avatar" />
@@ -40,19 +40,19 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_backgroundImage from "../../../assets/game/lobby/background.webp";
-import asset_florImage from "../../../assets/game/lobby/flor.webp";
-import asset_foregroundImage from "../../../assets/game/lobby/foreground.webp";
-import asset_marikitaImage from "../../../assets/game/lobby/marikita.webp";
+import asset_background_image from "../../../assets/game/lobby/background.webp";
+import asset_flor_image from "../../../assets/game/lobby/flor.webp";
+import asset_foreground_image from "../../../assets/game/lobby/foreground.webp";
+import asset_marikita_image from "../../../assets/game/lobby/marikita.webp";
 
 export default {
   data() {
     return {
       publicScenes: [],
-      asset_backgroundImage,
-      asset_florImage,
-      asset_foregroundImage,
-      asset_marikitaImage,
+      asset_background_image,
+      asset_flor_image,
+      asset_foreground_image,
+      asset_marikita_image,
       asset_avatarImage: null,
     };
   },

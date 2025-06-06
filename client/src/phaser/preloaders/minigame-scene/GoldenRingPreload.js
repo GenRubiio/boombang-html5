@@ -1,8 +1,8 @@
-import asset_backgroundImage from "../../../assets/game/minigame-scenes/1/background.webp";
+import asset_background_image from "../../../assets/game/minigame-scenes/1/background.webp";
 
 class GoldenRingPreload {
     static preload(gameScene) {
-        gameScene.load.image("background_golden_ring", asset_backgroundImage);
+        gameScene.load.image("background_golden_ring", asset_background_image);
     }
 
     static load(gameScene) {

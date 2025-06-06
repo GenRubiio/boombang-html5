@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
-import asset_shadowImage from "../assets/game/avatar/shadow.png"; // Imagen de la sombra
-import asset_tileImage from "../assets/game/scene/tile.png"; // Imagen del suelo
+import asset_shadow_image from "../assets/game/avatar/shadow.png"; // Imagen de la sombra
+import asset_tile_image from "../assets/game/scene/tile.png"; // Imagen del suelo
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
@@ -31,8 +31,8 @@ export default class PublicScene extends Phaser.Scene {
 
     preload() {
         PublicSceneLoader.main(this, this.sceneType, true); // Precargar imágenes específicas de la sala
-        this.load.image("tile", asset_tileImage);
-        this.load.image("shadow", asset_shadowImage);
+        this.load.image("tile", asset_tile_image);
+        this.load.image("shadow", asset_shadow_image);
     }
 
     create() {
