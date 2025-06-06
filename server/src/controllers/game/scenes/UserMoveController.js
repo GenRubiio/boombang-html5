@@ -30,9 +30,9 @@ class UserMoveController {
             }
 
             if (
-                targetX < 0 || targetX >= user.currentArea.map_width ||
-                targetY < 0 || targetY >= user.currentArea.map_height ||
-                user.currentArea.game_map[targetY][targetX] !== 0
+                targetX < 0 || targetX >= user.currentArea.mapWidth ||
+                targetY < 0 || targetY >= user.currentArea.mapHeight ||
+                user.currentArea.gameMap[targetY][targetX] !== 0
             ) {
                 //console.log('Posición objetivo no válida');
                 user.currentArea.emit(ResponseSocketsEnum.USER_MOVE_DENIED, {
