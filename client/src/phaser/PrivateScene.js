@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
-import asset_shadowImage from "../assets/game/avatar/shadow.png"; // Imagen de la sombra
-import asset_tileImage from "../assets/game/scene/tile.png"; // Imagen del suelo
-import asset_500oroCatalogImage from "../assets/game/objects/500oroCatalog.png"; // Imagen de objeto para inventario
+import asset_shadow_image from "../assets/game/avatar/shadow.png"; // Imagen de la sombra
+import asset_tile_image from "../assets/game/scene/tile.png"; // Imagen del suelo
+import asset_500oro_catalog_image from "../assets/game/objects/500oroCatalog.png"; // Imagen de objeto para inventario
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
@@ -30,10 +30,10 @@ export default class PrivateScene extends Phaser.Scene {
 
     preload() {
         PublicSceneLoader.main(this, this.sceneType, true); // Precargar imágenes específicas de la sala
-        this.load.image("tile", asset_tileImage);
-        this.load.image("shadow", asset_shadowImage);
+        this.load.image("tile", asset_tile_image);
+        this.load.image("shadow", asset_shadow_image);
         // Cargar sprite de objeto para inventario
-        this.load.image("500oroCatalog", asset_500oroCatalogImage);
+        this.load.image("500oroCatalog", asset_500oro_catalog_image);
     }
 
     create() {

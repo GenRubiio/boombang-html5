@@ -2,7 +2,7 @@
   <div class="base-chat" @pointerdown.stop @mousedown.stop @touchstart.stop>
     <div class="base-chat__container">
       <div class="base-chat__container__chat">
-        <img :src="asset_baseImage" alt="Base" />
+        <img :src="asset_base_image" alt="Base" />
         <input
           ref="messageInput"
           v-model="message"
@@ -12,21 +12,21 @@
         />
       </div>
       <div class="base-chat__container__brujula" @click="exitToLobby">
-        <img :src="asset_brujulaImage" alt="Brujula" />
+        <img :src="asset_brujula_image" alt="Brujula" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import asset_baseImage from "../../../../assets/game/basechat/base.webp";
-import asset_brujulaImage from "../../../../assets/game/basechat/brujula.webp";
+import asset_base_image from "../../../../assets/game/basechat/base.webp";
+import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
 
 export default {
   data() {
     return {
-      asset_baseImage,
-      asset_brujulaImage,
+      asset_base_image,
+      asset_brujula_image,
       message: "", // Variable para almacenar el mensaje
     };
   },

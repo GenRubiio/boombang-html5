@@ -1,13 +1,13 @@
 <template>
   <form class="login-form" @submit.prevent="login">
     <div class="login-form__error" v-if="showUsernameError">
-      <img :src="asset_warningImage" alt="warning" /> {{ usernameError }}
+      <img :src="asset_warning_image" alt="warning" /> {{ usernameError }}
     </div>
     <div class="login-form__content">
       <div class="login-form__title">Ya tienes cuenta?</div>
       <div class="login-form__input-container">
         <div class="login-form__error" v-if="showUsernameError">
-          <img :src="asset_warningImage" alt="warning" />
+          <img :src="asset_warning_image" alt="warning" />
           {{ usernameError }}
         </div>
         <div class="login-form__label">Nombre del Personaje</div>
@@ -36,12 +36,12 @@
       <div class="login-form__google">
         <div class="login-form__google-separator">O</div>
         <div class="login-form__google-button">
-          <img :src="asset_googleImage" alt="Google" /> Continuar con Google
+          <img :src="asset_google_image" alt="Google" /> Continuar con Google
         </div>
       </div>
     </div>
     <div class="login-form__button-container">
-      <img :src="asset_buttonImage" alt="Jugar" />
+      <img :src="asset_button_image" alt="Jugar" />
       <button
         class="login-form__button-container-button"
         type="submit"
@@ -57,9 +57,9 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_buttonImage from "../../../assets/game/auth/login-button-image.webp";
-import asset_googleImage from "../../../assets/game/auth/google.webp";
-import asset_warningImage from "../../../assets/game/auth/warning.webp";
+import asset_button_image from "../../../assets/game/auth/login-button-image.webp";
+import asset_google_image from "../../../assets/game/auth/google.webp";
+import asset_warning_image from "../../../assets/game/auth/warning.webp";
 
 export default {
   data() {
@@ -70,9 +70,9 @@ export default {
       showUsernameError: false,
       loading: false,
       isSocketConnected: socket.connected,
-      asset_buttonImage,
-      asset_googleImage,
-      asset_warningImage,
+      asset_button_image,
+      asset_google_image,
+      asset_warning_image,
     };
   },
   methods: {

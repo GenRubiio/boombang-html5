@@ -8,7 +8,7 @@ import CocoSandiaLoad from "./cocos/CocoSandiaLoad";
 import CocoShoeLoad from "./cocos/CocoShoeLoad";
 import CocoSnowballLoad from "./cocos/CocoSnowballLoad";
 import CocoYunqueLoad from "./cocos/CocoYunqueLoad";
-import asset_configJson from '../../assets/game/scene/cocos/config.json';
+import asset_config_json from '../../assets/game/scene/cocos/config.json';
 
 class EffectAnimationsLoad {
     /**
@@ -33,7 +33,7 @@ class EffectAnimationsLoad {
      * Aquí creamos las animaciones a partir de los atlases ya cargados.
      */
     static create(gameScene) {
-        Object.entries(asset_configJson).forEach(([animationName, animData]) => {
+        Object.entries(asset_config_json).forEach(([animationName, animData]) => {
             const animKey = `${animationName}`;
             const atlasKey = animData.atlasKey;
 
