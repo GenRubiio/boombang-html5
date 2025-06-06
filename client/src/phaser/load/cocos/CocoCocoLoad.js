@@ -1,14 +1,14 @@
-import asset_spritesheet0Image from '../../../assets/game/scene/cocos/coco_coco/spritesheet-0.webp';
-import asset_atlasJson from '../../../assets/game/scene/cocos/coco_coco/atlas.json';
+import asset_spritesheet0_image from '../../../assets/game/scene/cocos/coco_coco/spritesheet-0.webp';
+import asset_atlas_json from '../../../assets/game/scene/cocos/coco_coco/atlas.json';
 
 class CocoCocoLoad {
     static main(gameScene) {
-        const webpFiles = [asset_spritesheet0Image];
+        const webpFiles = [asset_spritesheet0_image];
 
-        asset_atlasJson.textures.forEach((texture, i) => {
+        asset_atlas_json.textures.forEach((texture, i) => {
             texture.image = webpFiles[i];
         });
-        gameScene.load.multiatlas('coco_coco_atlas', asset_atlasJson);
+        gameScene.load.multiatlas('coco_coco_atlas', asset_atlas_json);
     }
 }
 

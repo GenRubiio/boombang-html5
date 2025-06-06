@@ -2,15 +2,15 @@
   <div id="loading" class="loading-screen">
     <div class="loading-screen__container">
       <img
-        :src="asset_backgroundImage"
+        :src="asset_background_image"
         alt="background"
         class="loading-screen__container-background"
       />
       <div class="loading-screen__container-motto">
-        <img :src="asset_mottoWaterImage" alt="motto_water" />
+        <img :src="asset_motto_water_image" alt="motto_water" />
       </div>
       <div class="loading-screen__container-fish">
-        <img :src="asset_fishImage" alt="motto_water" />
+        <img :src="asset_fish_image" alt="motto_water" />
       </div>
       <div class="loading-screen__container-text">
         <div class="spinner"></div>
@@ -21,16 +21,16 @@
 </template>
 
 <script>
-import asset_backgroundImage from "../../../assets/game/loading/background.webp";
-import asset_mottoWaterImage from "../../../assets/game/loading/motto-water.webp";
-import asset_fishImage from "../../../assets/game/loading/fish.webp";
+import asset_background_image from "../../../assets/game/loading/background.webp";
+import asset_motto_water_image from "../../../assets/game/loading/motto-water.webp";
+import asset_fish_image from "../../../assets/game/loading/fish.webp";
 
 export default {
   data() {
     return {
-      asset_backgroundImage,
-      asset_mottoWaterImage,
-      asset_fishImage,
+      asset_background_image,
+      asset_motto_water_image,
+      asset_fish_image,
     };
   },
 };

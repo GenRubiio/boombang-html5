@@ -2,18 +2,18 @@
   <div id="login">
     <MaintenanceComponent v-if="!isSocketConnected" />
     <img
-      :src="asset_backgroundImage"
+      :src="asset_background_image"
       alt="background"
       class="auth__background"
     />
     <div class="auth__clouds-wrapper">
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + asset_cloudsBackgroundImage + ')' }"
+        :style="{ backgroundImage: 'url(' + asset_clouds_background_image + ')' }"
       ></div>
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + asset_cloudsBackgroundImage + ')' }"
+        :style="{ backgroundImage: 'url(' + asset_clouds_background_image + ')' }"
       ></div>
     </div>
     <div class="auth__content">
@@ -55,8 +55,8 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import socket from "../../../sockets/socket";
-import asset_backgroundImage from "../../../assets/game/auth/background.webp";
-import asset_cloudsBackgroundImage from "../../../assets/game/auth/clouds-background.webp";
+import asset_background_image from "../../../assets/game/auth/background.webp";
+import asset_clouds_background_image from "../../../assets/game/auth/clouds-background.webp";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
 import RegisterFormComponent from "../../components/auth/RegisterFormComponent.vue";
 import TopButtonComponent from "../../components/auth/TopButtonComponent.vue";
@@ -66,8 +66,8 @@ export default {
   data() {
     return {
       showForm: "login",
-      asset_backgroundImage,
-      asset_cloudsBackgroundImage,
+      asset_background_image,
+      asset_clouds_background_image,
       avatar_id: 13,
       isSocketConnected: socket.connected,
     };

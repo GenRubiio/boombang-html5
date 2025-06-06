@@ -64,16 +64,16 @@
 <script>
 import socket from "../../../../../../sockets/socket";
 import RequestSocketsEnum from "../../../../../../enums/RequestSocketsEnum";
-import asset_redUpperImage from "../../../../../../assets/game/ficha/uppercuts/red.png";
-import asset_pinkUpperImage from "../../../../../../assets/game/ficha/uppercuts/pink.png";
-import asset_orangeUpperImage from "../../../../../../assets/game/ficha/uppercuts/orange.png";
-import asset_greenUpperImage from "../../../../../../assets/game/ficha/uppercuts/green.png";
-import asset_blueUpperImage from "../../../../../../assets/game/ficha/uppercuts/blue.png";
-import asset_whiteUpperImage from "../../../../../../assets/game/ficha/uppercuts/white.png";
-import asset_purpleUpperImage from "../../../../../../assets/game/ficha/uppercuts/purple.png";
-import asset_brownUpperImage from "../../../../../../assets/game/ficha/uppercuts/brown.png";
-import asset_blackUpperImage from "../../../../../../assets/game/ficha/uppercuts/black.png";
-import asset_goldUpperImage from "../../../../../../assets/game/ficha/uppercuts/gold.png";
+import asset_red_upper_image from "../../../../../../assets/game/ficha/uppercuts/red.png";
+import asset_pink_upper_image from "../../../../../../assets/game/ficha/uppercuts/pink.png";
+import asset_orange_upper_image from "../../../../../../assets/game/ficha/uppercuts/orange.png";
+import asset_green_upper_image from "../../../../../../assets/game/ficha/uppercuts/green.png";
+import asset_blue_upper_image from "../../../../../../assets/game/ficha/uppercuts/blue.png";
+import asset_white_upper_image from "../../../../../../assets/game/ficha/uppercuts/white.png";
+import asset_purple_upper_image from "../../../../../../assets/game/ficha/uppercuts/purple.png";
+import asset_brown_upper_image from "../../../../../../assets/game/ficha/uppercuts/brown.png";
+import asset_black_upper_image from "../../../../../../assets/game/ficha/uppercuts/black.png";
+import asset_gold_upper_image from "../../../../../../assets/game/ficha/uppercuts/gold.png";
 
 import asset_cocoCoconutImage from "../../../../../../assets/game/ficha/coconuts/coco.png";
 import asset_snowballCoconutImage from "../../../../../../assets/game/ficha/coconuts/snowball.png";
@@ -99,17 +99,17 @@ export default {
   },
   data() {
     return {
-      uppercuts: [
-        asset_redUpperImage,
-        asset_pinkUpperImage,
-        asset_orangeUpperImage,
-        asset_greenUpperImage,
-        asset_blueUpperImage,
-        asset_whiteUpperImage,
-        asset_purpleUpperImage,
-        asset_brownUpperImage,
-        asset_blackUpperImage,
-        asset_goldUpperImage,
+     uppercuts: [
+        asset_red_upper_image,
+        asset_pink_upper_image,
+        asset_orange_upper_image,
+        asset_green_upper_image,
+        asset_blue_upper_image,
+        asset_white_upper_image,
+        asset_purple_upper_image,
+        asset_brown_upper_image,
+        asset_black_upper_image,
+        asset_gold_upper_image,
       ],
       coconuts: [
         asset_cocoCoconutImage,
