@@ -2,6 +2,7 @@ const Enum = require('./Enum');
 
 const AnimationEnum = new Enum({
     UPPERCUT: 'UPPERCUT',
+    COCONUT: 'COCONUT',
     CHAT: 'CHAT',
     WALK: 'WALK',
     LOOK: 'LOOK',

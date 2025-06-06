@@ -12,8 +12,8 @@ export default class UserModel {
         this.spriteAvatar = spriteAvatar;
         this.spriteShadow = spriteShadow;
         this.containerUser = containerUser;
-        this.uppercuts_send = row.uppercutsSend,
-        this.uppercuts_received = row.uppercutsReceived,
+        this.uppercuts_send = row.uppercutsSend;
+        this.uppercuts_received = row.uppercutsReceived;
         this.ring_wins = 0;
     }
 }

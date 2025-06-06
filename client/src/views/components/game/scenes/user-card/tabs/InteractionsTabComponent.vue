@@ -7,29 +7,56 @@
       <div></div>
       <div class="upper-container">
         <img
-          :src="items[selectedUpperIndex]"
+          :src="uppercuts[selectedUpperIndex]"
           alt="upper"
-          @click="handleMainClick"
+          @click="handleUpperClick"
         />
-        <span class="plus-button" @click.stop="toggleContainer">+</span>
+        <span class="plus-button" @click.stop="toggleContainerUppers">+</span>
       </div>
-      <div></div>
+      <div class="coco-container">
+        <img
+          :src="coconuts[selectedCocoIndex]"
+          alt="coco"
+          @click="handleCocoClick"
+        />
+        <span class="plus-button" @click.stop="toggleContainerCocos">+</span>
+      </div>
       <div></div>
       <div></div>
     </div>
 
-    <div class="uppercuts-list-container" v-if="showContainer">
+    <div class="uppercuts-list-container" v-if="showContainerUppers">
       <div class="uppercuts-list-container__list">
         <div
-          v-for="(img, index) in items"
+          v-for="(img, index) in uppercuts"
           :key="index"
-          :class="{ active: index < activeCount }"
-          @click="handleItemClick(index)"
+          :class="{ active: index < activeUpperCount }"
+          @click="handleUpperItemClick(index)"
         >
           <img :src="img" alt="upper-item" />
         </div>
       </div>
-      <div class="uppercuts-list-container__close" @click="toggleContainer">x</div>
+      <div
+        class="uppercuts-list-container__close"
+        @click="toggleContainerUppers"
+      >
+        x
+      </div>
+    </div>
+    <div class="coconuts-list-container" v-if="showContainerCocos">
+      <div class="coconuts-list-container__list">
+        <div
+          v-for="(img, index) in coconuts"
+          :key="index"
+          :class="{ active: index < activeCocoCount }"
+          @click="handleCocoItemClick(index)"
+        >
+          <img :src="img" alt="coco-item" />
+        </div>
+      </div>
+      <div class="coconuts-list-container__close" @click="toggleContainerCocos">
+        x
+      </div>
     </div>
   </div>
 </template>
@@ -48,6 +75,17 @@ import asset_brown_upper_image from "../../../../../../assets/game/ficha/uppercu
 import asset_black_upper_image from "../../../../../../assets/game/ficha/uppercuts/black.png";
 import asset_gold_upper_image from "../../../../../../assets/game/ficha/uppercuts/gold.png";
 
+import asset_cocoCoconutImage from "../../../../../../assets/game/ficha/coconuts/coco.png";
+import asset_snowballCoconutImage from "../../../../../../assets/game/ficha/coconuts/snowball.png";
+import asset_shoeCoconutImage from "../../../../../../assets/game/ficha/coconuts/shoe.png";
+import asset_pieCoconutImage from "../../../../../../assets/game/ficha/coconuts/pie.png";
+import asset_macetaCoconutImage from "../../../../../../assets/game/ficha/coconuts/maceta.png";
+import asset_avispasCoconutImage from "../../../../../../assets/game/ficha/coconuts/avispas.png";
+import asset_garbageCoconutImage from "../../../../../../assets/game/ficha/coconuts/garbage.png";
+import asset_sandiaCoconutImage from "../../../../../../assets/game/ficha/coconuts/sandia.png";
+import asset_yunqueCoconutImage from "../../../../../../assets/game/ficha/coconuts/yunque.png";
+import asset_pianoCoconutImage from "../../../../../../assets/game/ficha/coconuts/piano.png";
+
 export default {
   props: {
     selectedUser: {
@@ -61,7 +99,7 @@ export default {
   },
   data() {
     return {
-      items: [
+     uppercuts: [
         asset_red_upper_image,
         asset_pink_upper_image,
         asset_orange_upper_image,
@@ -73,31 +111,67 @@ export default {
         asset_black_upper_image,
         asset_gold_upper_image,
       ],
+      coconuts: [
+        asset_cocoCoconutImage,
+        asset_snowballCoconutImage,
+        asset_shoeCoconutImage,
+        asset_pieCoconutImage,
+        asset_macetaCoconutImage,
+        asset_avispasCoconutImage,
+        asset_garbageCoconutImage,
+        asset_sandiaCoconutImage,
+        asset_yunqueCoconutImage,
+        asset_pianoCoconutImage,
+      ],
       selectedUpperIndex: this.authUser.uppercut_selected,
-      showContainer: false,
-      activeCount: this.authUser.uppercut_level + 1,
+      selectedCocoIndex: this.authUser.coconut_selected,
+      showContainerUppers: false,
+      showContainerCocos: false,
+      activeUpperCount: this.authUser.uppercut_level + 1,
+      activeCocoCount: this.authUser.coconut_level + 1,
     };
   },
   methods: {
-    sendUppercut() {
+    toggleContainerUppers() {
+      if (this.showContainerCocos) {
+        this.showContainerCocos = false;
+      }
+      this.showContainerUppers = !this.showContainerUppers;
+    },
+    toggleContainerCocos() {
+      if (this.showContainerUppers) {
+        this.showContainerUppers = false;
+      }
+      this.showContainerCocos = !this.showContainerCocos;
+    },
+    handleUpperClick() {
       socket.emit(RequestSocketsEnum.SEND_UPPERCUT);
-    },
-    toggleContainer() {
-      this.showContainer = !this.showContainer;
-    },
-    handleMainClick() {
-      this.sendUppercut();
-      if (this.showContainer) {
-        this.showContainer = false;
+      if (this.showContainerUppers) {
+        this.showContainerUppers = false;
       }
     },
-    handleItemClick(index) {
-      if (index < this.activeCount) {
+    handleCocoClick() {
+      socket.emit(RequestSocketsEnum.SEND_COCONUT);
+      if (this.showContainerCocos) {
+        this.showContainerCocos = false;
+      }
+    },
+    handleUpperItemClick(index) {
+      if (index < this.activeUpperCount) {
         socket.emit("request:user_change_uppercut", {
           uppercut: index,
         });
         this.selectedUpperIndex = index;
-        this.showContainer = false;
+        this.showContainerUppers = false;
+      }
+    },
+    handleCocoItemClick(index) {
+      if (index < this.activeCocoCount) {
+        socket.emit("request:user_change_coconut", {
+          coconut: index,
+        });
+        this.selectedCocoIndex = index;
+        this.showContainerCocos = false;
       }
     },
   },
@@ -127,6 +201,7 @@ export default {
   box-sizing: border-box;
   height: 90px;
   z-index: 1;
+  gap: 8px;
 }
 
 .container div {
@@ -159,7 +234,7 @@ export default {
 }
 
 .plus-button {
-  margin-left: 54px;
+  margin-left: 44px;
   margin-top: 15px;
   font-weight: bold;
   font-size: 20px;
@@ -217,6 +292,74 @@ export default {
 }
 
 .uppercuts-list-container__close {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.coco-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.coco-container img {
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.coconuts-list-container {
+  position: absolute;
+  width: 230px;
+  top: 13px;
+  left: -250px;
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  padding: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.coconuts-list-container__list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+  margin-right: 15px;
+}
+
+.coconuts-list-container__list div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.coconuts-list-container__list img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.coconuts-list-container__list div {
+  opacity: 0.5;
+}
+
+.coconuts-list-container__list div.active {
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.coconuts-list-container__list div.active:hover img {
+  background-color: #f0f0f0;
+}
+
+.coconuts-list-container__close {
   position: absolute;
   top: 4px;
   right: 6px;

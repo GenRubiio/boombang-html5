@@ -142,6 +142,16 @@ const AnimationBlockTimerEnum = new Enum({
     ZOMBIE_FART: 5000,
     ZOMBIE_PROVOKE: 5000,
     ZOMBIE_FLY: 5000,
+    COCO_COCO: 5000,
+    COCO_SHOWBALL: 5000,
+    COCO_SHOE: 5000,
+    COCO_PIE: 5000,
+    COCO_MACETA: 5000,
+    COCO_AVISPAS: 5000,
+    COCO_GARBAGE: 10000,
+    COCO_SANDIA: 5000,
+    COCO_YUNQUE: 5000,
+    COCO_PIANO: 15000,
 });
 
 module.exports = AnimationBlockTimerEnum;
