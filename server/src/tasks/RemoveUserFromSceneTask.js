@@ -26,7 +26,7 @@ class RemoveUserFromSceneTask {
                 socketId: user.socket.id
             }, user);
 
-            if (scene.sceneType == SceneTypesEnum.PUBLIC_SCENE) {
+            if (scene.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
                 UpdatePublicScenesController.main();
             }
         }

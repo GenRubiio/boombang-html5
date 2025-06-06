@@ -121,7 +121,7 @@ class MovementProcessorInstance {
 
     #findPath(startPos, endPos, customMap) {
         const easystar = new EasyStar();
-        const mapToUse = customMap || this.scene.gameMap;
+        const mapToUse = customMap || this.scene.game_map;
         easystar.setGrid(mapToUse);
         easystar.setAcceptableTiles([0]);
         easystar.enableDiagonals();

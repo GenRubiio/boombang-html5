@@ -11,14 +11,14 @@ class MinigameRingSceneInstance {
         this.id = uuidv4.v4(); // ID único de la escena
         this.minigameScene = minigameScene; // Escena del minijuego
 
-        this.sceneType = SceneTypesEnum.MINIGAME_RING; // Tipo de modelo
+        this.scene_type = SceneTypesEnum.MINIGAME_RING; // Tipo de modelo
         this.name = minigameScene.name;
-        this.mapWidth = minigameScene.mapWidth;
-        this.mapHeight = minigameScene.mapHeight;
-        this.gameMap = minigameScene.gameMap;
+        this.map_width = minigameScene.map_width;
+        this.map_height = minigameScene.map_height;
+        this.game_map = minigameScene.game_map;
         this.startPosition = minigameScene.startPosition;
         this.navigationMapBase = minigameScene.navigationMapBase;
-        this.positionUsers = minigameScene.positionUsers;
+        this.position_users = minigameScene.position_users;
         this.users = []; // Lista de usuarios en el minijuego
         this.disqualifiedUsers = []; // Lista de usuarios descalificados
 
@@ -115,7 +115,7 @@ class MinigameRingSceneInstance {
             if (this.removeUserInSeconds <= 0) {
                 clearInterval(intervalEndGame);
                 this.users.forEach(user => {
-                    if (user.currentArea && user.currentArea.sceneType == SceneTypesEnum.MINIGAME_RING) {
+                    if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
                         RemoveUserFromSceneTask.main(user.currentArea, user);
                     }
                 });

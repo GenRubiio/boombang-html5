@@ -43,7 +43,7 @@ class UserSendUppercutController {
                     user.cancelMovement();
                     targetUser.cancelMovement();
 
-                    if (targetUser.currentArea && targetUser.currentArea.sceneType == SceneTypesEnum.MINIGAME_RING) {
+                    if (targetUser.currentArea && targetUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING) {
                         targetUser.movementBlocked = true;
                         targetUser.currentArea.disqualifyUser(targetUser);
                     }
