@@ -20,13 +20,13 @@
       </div>
     </div>
     <div class="container__uppers-right">
-      <img :src="asset_redUpperImage" alt="upper" />
+      <img :src="asset_red_upper_image" alt="upper" />
     </div>
   </div>
 </template>
 
 <script>
-import asset_redUpperImage from "../../../../../../assets/game/ficha/uppercuts/red.png";
+import asset_red_upper_image from "../../../../../../assets/game/ficha/uppercuts/red.png";
 
 export default {
   props: {
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      asset_redUpperImage,
+      asset_red_upper_image,
     };
   },
   methods: {},

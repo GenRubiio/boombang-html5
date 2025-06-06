@@ -5,18 +5,18 @@
       <p class="maintenance__description">
         El servidor está en mantenimiento.<br />Por favor, inténtalo más tarde.
       </p>
-      <img :src="asset_maintenanceAvatarImage" alt="Mantenimiento" />
+      <img :src="asset_maintenance_avatar_image" alt="Mantenimiento" />
     </div>
   </div>
 </template>
 
 <script>
-import asset_maintenanceAvatarImage from "../../../assets/game/auth/maintenance-avatar.webp";
+import asset_maintenance_avatar_image from "../../../assets/game/auth/maintenance-avatar.webp";
 
 export default {
   data() {
     return {
-      asset_maintenanceAvatarImage,
+      asset_maintenance_avatar_image,
     };
   },
   methods: {},

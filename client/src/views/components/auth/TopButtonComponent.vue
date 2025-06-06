@@ -2,12 +2,12 @@
   <div class="button-top__container">
     <img
       class="button-top__container-img-left"
-      :src="asset_rastaTopButtonImage"
+      :src="asset_rasta_top_button_image"
       alt="Rasta"
     />
     <img
       class="button-top__container-img-right"
-      :src="asset_lilianTopButtonImage"
+      :src="asset_lilian_top_button_image"
       alt="Lilian"
     />
     <div class="button-top__container-title">{{ title }}</div>
@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import asset_lilianTopButtonImage from "../../../assets/game/auth/lilian-top-button.webp";
-import asset_rastaTopButtonImage from "../../../assets/game/auth/rasta-top-button.webp";
+import asset_lilian_top_button_image from "../../../assets/game/auth/lilian-top-button.webp";
+import asset_rasta_top_button_image from "../../../assets/game/auth/rasta-top-button.webp";
 
 export default {
   props: {
@@ -30,8 +30,8 @@ export default {
   },
   data() {
     return {
-      asset_lilianTopButtonImage,
-      asset_rastaTopButtonImage,
+      asset_lilian_top_button_image,
+      asset_rasta_top_button_image,
     };
   },
   methods: {},

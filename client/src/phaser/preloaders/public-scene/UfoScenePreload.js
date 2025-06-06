@@ -1,12 +1,12 @@
-import asset_backgroundImage from "../../../assets/game/scenarios/1/background.webp";
-import asset_item1Image from "../../../assets/game/scenarios/1/item_1.webp";
-import asset_item2Image from "../../../assets/game/scenarios/1/item_2.webp";
+import asset_background_image from "../../../assets/game/scenarios/1/background.webp";
+import asset_item1_image from "../../../assets/game/scenarios/1/item_1.webp";
+import asset_item2_image from "../../../assets/game/scenarios/1/item_2.webp";
 
 class UfoScenePreload {
     static preload(gameScene) {
-        gameScene.load.image("background_ufo", asset_backgroundImage);
-        gameScene.load.image("item_1_ufo", asset_item1Image);
-        gameScene.load.image("item_2_ufo", asset_item2Image);
+        gameScene.load.image("background_ufo", asset_background_image);
+        gameScene.load.image("item_1_ufo", asset_item1_image);
+        gameScene.load.image("item_2_ufo", asset_item2_image);
     }
 
     static load(gameScene) {

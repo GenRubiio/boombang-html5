@@ -1,12 +1,12 @@
-import asset_backgroundImage from "../../../assets/game/scenarios/100/background.webp";
-import asset_npcImage from "../../../assets/game/npc/wise_ring.webp";
+import asset_background_image from "../../../assets/game/scenarios/100/background.webp";
+import asset_npc_image from "../../../assets/game/npc/wise_ring.webp";
 import SceneUtils from "../../../utils/SceneUtils"; // Utilidad para cargar NPCs
 import NpcEnum from "../../../enums/NpcEnum"; // Enum para NPCs
 
 class RingScenePreload {
     static preload(gameScene) {
-        gameScene.load.image("background_ring", asset_backgroundImage);
-        gameScene.load.image("npc_ring", asset_npcImage);
+        gameScene.load.image("background_ring", asset_background_image);
+        gameScene.load.image("npc_ring", asset_npc_image);
     }
 
     static load(gameScene) {
