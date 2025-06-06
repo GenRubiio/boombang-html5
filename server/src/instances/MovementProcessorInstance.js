@@ -142,7 +142,7 @@ class MovementProcessorInstance {
         this.scene.spawnedObjects.forEach(obj => {
             if (nextStep.x === obj.position.x && nextStep.y === obj.position.y) {
                 this.scene.removeObject(obj);
-                this.scene.emit('reponse:object_collected', {
+                this.scene.emit(ResponseSocketsEnum.SCENE_OBJECT_COLLECTED, {
                     userId: user.id,
                     userName: user.username,
                     itemName: obj.item.name,

@@ -32,7 +32,7 @@ class MatchMakerInstance {
         const idx = queue.findIndex(s => s.id === socket.id);
         if (idx !== -1) {
             queue.splice(idx, 1);
-            socket.emit('response:minigame_subscribe', {
+            socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE, {
                 success: true,
             });
             return;
@@ -40,7 +40,7 @@ class MatchMakerInstance {
         if (queue.includes(socket)) return;
         queue.push(socket);
 
-        socket.emit('response:minigame_subscribe', {
+        socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE, {
             success: true,
         });
 
@@ -79,7 +79,7 @@ class MatchMakerInstance {
                 continue;
             }
             notifiedSet.add(player.id);
-            player.emit('response:minigame_call_notification');
+            player.emit(ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION);
         }
     }
 
@@ -109,7 +109,7 @@ class MatchMakerInstance {
                     sceneUsers.push(await new UserResource(user).toObject());
                 }
 
-                player.emit('response:join_minigame', {
+                player.emit(ResponseSocketsEnum.MINIGAME_JOIN, {
                     success: true,
                     sceneType: minigameScene.minigameScene.type,
                     data: {

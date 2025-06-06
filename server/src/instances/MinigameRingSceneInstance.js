@@ -5,6 +5,7 @@ const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
 const MinigameAlertsEnum = require('../enums/MinigameAlertsEnum');
 const MovementProcessorInstance = require('../instances/MovementProcessorInstance');
+const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 
 class MinigameRingSceneInstance {
     constructor(minigameScene) {
@@ -71,7 +72,7 @@ class MinigameRingSceneInstance {
 
     usersUpdateCounter(counter) {
         this.users.forEach(user => {
-            user.socket.emit("response:minigame_counter", {
+            user.socket.emit(ResponseSocketsEnum.MINIGAME_COUNTER, {
                 counter: counter,
                 show: counter == 0 ? false : true,
             });
@@ -132,7 +133,7 @@ class MinigameRingSceneInstance {
         if (this.gameStarted && (this.disqualifiedUsers.length === this.users.length - 1)) {
             let winner = this.users.find(user => !this.disqualifiedUsers.includes(user));
             this.users.forEach(user => {
-                user.socket.emit('response:minigame_alert', {
+                user.socket.emit(ResponseSocketsEnum.MINIGAME_ALERT, {
                     alertType: MinigameAlertsEnum.WIN,
                     winnerName: winner.username,
                 });
@@ -140,14 +141,14 @@ class MinigameRingSceneInstance {
         }
         else if (!this.gameStarted) {
             this.users.forEach(user => {
-                user.socket.emit('response:minigame_alert', {
+                user.socket.emit(ResponseSocketsEnum.MINIGAME_ALERT, {
                     alertType: MinigameAlertsEnum.NO_MIN_USERS,
                 });
             });
         }
         else {
             this.users.forEach(user => {
-                user.socket.emit('response:minigame_alert', {
+                user.socket.emit(ResponseSocketsEnum.MINIGAME_ALERT, {
                     alertType: MinigameAlertsEnum.TIMEOUT,
                 });
             });
