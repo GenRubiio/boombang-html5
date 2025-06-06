@@ -15,7 +15,7 @@ class Bot {
             this.login();
         });
 
-        this.socket.on("login_success", (data) => {
+        this.socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
             setInterval(() => {
                 this.joinArea(1);
             }, 1000);
@@ -23,7 +23,7 @@ class Bot {
             this.moveRandomly();
             //this.sendRandomMessage();
             this.selectUser();
-            this.socket.emit("request:minigame_subscribe", {
+            this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
                 type: 1,
             });
         });
@@ -109,7 +109,7 @@ class Bot {
     }
 
     login() {
-        this.socket.emit("login", { username: this.username, password: this.password });
+        this.socket.emit(RequestSocketsEnum.LOGIN, { username: this.username, password: this.password });
     }
 
     moveRandomly() {

@@ -158,7 +158,7 @@ export default {
     },
     handleUpperItemClick(index) {
       if (index < this.activeUpperCount) {
-        socket.emit("request:user_change_uppercut", {
+        socket.emit(RequestSocketsEnum.USER_CHANGE_UPPERCUT, {
           uppercut: index,
         });
         this.selectedUpperIndex = index;
@@ -167,7 +167,7 @@ export default {
     },
     handleCocoItemClick(index) {
       if (index < this.activeCocoCount) {
-        socket.emit("request:user_change_coconut", {
+        socket.emit(RequestSocketsEnum.USER_CHANGE_COCONUT, {
           coconut: index,
         });
         this.selectedCocoIndex = index;

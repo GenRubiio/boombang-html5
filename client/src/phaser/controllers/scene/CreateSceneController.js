@@ -1,5 +1,6 @@
 import AddUserController from "./AddUserController.js";
 import socket from "../../../sockets/socket.js"; // Conexión Socket.io
+import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
@@ -117,7 +118,7 @@ class CreateSceneController {
                 }
 
                 console.log(`Clicked tile at ${col}, ${row}`);
-                socket.emit("request:user_move", { x: col, y: row });
+                socket.emit(RequestSocketsEnum.USER_MOVE, { x: col, y: row });
                 FloorPulseAnimation.main(gameScene, mx, my);
             }
         });
