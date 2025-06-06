@@ -1,3 +1,7 @@
+
+import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
+import DirectionEnum from "../../../enums/DirectionEnum.js";
+
 class UserReceiveEffectController {
     static main(gameScene, data) {
         const user = gameScene.users[data.user_socket];
@@ -5,6 +9,12 @@ class UserReceiveEffectController {
 
         let effectData = window.avatar_effects_config[data.effect];
         if (!effectData) return;
+
+        UserIdleAnimation.main(
+            user.spriteAvatar,
+            DirectionEnum.DOWN,
+            user.avatarId
+        );
 
         let spriteAvatar = user.spriteAvatar;
         const container = spriteAvatar.parentContainer;

@@ -18,6 +18,8 @@ class UserResource extends Resource {
             uppercuts_received: data.uppercutsReceived,
             uppercut_level: data.uppercutLevel,
             uppercut_selected: data.uppercutSelected,
+            coconut_level: data.coconutLevel,
+            coconut_selected: data.coconutSelected,
             animations: [],
         };
     }

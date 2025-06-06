@@ -17,6 +17,9 @@ class UserModel {
         this.uppercutLevel = this.calculateUppercutLevel(); // Nivel del uppercut
         this.uppercutSelected = this.uppercutLevel; // Indica si el usuario ha seleccionado un uppercut
 
+        this.coconutLevel  = 9; // Nivel del coco
+        this.coconutSelected = this.coconutLevel; // Indica si el usuario ha seleccionado un coco
+
         this.finalTarget = null; // Destino final del usuario
 
         this.blockedActions = {};
