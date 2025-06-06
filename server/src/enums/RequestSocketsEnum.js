@@ -16,6 +16,7 @@ const RequestSocketsEnum = new Enum({
     GET_PUBLIC_SCENE_USERS: 'request:get_public_area_users',
     USER_SEND_EMOJI: 'request:send_emoji',
     USER_SEND_CHAT: 'request:send_chat',
+    USER_SEND_COCONUT: 'request:send_coconut',
 });
 
 module.exports = RequestSocketsEnum;

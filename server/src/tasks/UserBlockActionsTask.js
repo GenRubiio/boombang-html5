@@ -10,6 +10,7 @@ const UppercutReceivedActionsMap = require('../maps/UppercutReceivedActionsMap')
 const MoveUserToSceneDoorTask = require('./MoveUserToSceneDoorTask');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const RemoveUserFromSceneTask = require('./RemoveUserFromSceneTask');
+const CoconutsBlockActionsMap = require('../maps/CoconutsBlockActionsMap');
 
 class UserBlockActionsTask {
     static blockByEmojiSend(user, emojiId) {
@@ -53,7 +54,7 @@ class UserBlockActionsTask {
         }
     }
 
-    static blockByUppercutReceive(user, io) {
+    static blockByUppercutReceive(user) {
         try {
             user._uppercutTimeout = user.blockAction(AnimationEnum.UPPERCUT, AnimationBlockTimerEnum.UPPERCUT_RECEIVE, () => {
                 // Callback al terminar el tiempo de recibir el uppercut
@@ -73,6 +74,23 @@ class UserBlockActionsTask {
         catch (err) {
             console.log(err);
             logger.log(`Error blocking by uppercut: ${err.message}`, 'error');
+        }
+    }
+
+    static blockByCoconutReceive(user, coconutId) {
+        try {
+            const actionData = CoconutsBlockActionsMap.get(coconutId);
+            if (!actionData) {
+                throw new Error('Invalid coconut id');
+            }
+            const blockTime = actionData.time;
+            actionData.actions.forEach(action => {
+                user.blockAction(action, blockTime);
+            });
+        }
+        catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by coconut: ${err.message}`, 'error');
         }
     }
 }
