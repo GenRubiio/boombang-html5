@@ -30,6 +30,8 @@
 <script>
 import socket from "../../../../../sockets/socket";
 import { useNpcSubscriptionStore } from "../../../../../stores/npcSubscription";
+import RequestSocketsEnum from "../../../../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../../../../enums/ResponseSocketsEnum";
 
 export default {
   props: {
@@ -47,12 +49,12 @@ export default {
   },
   methods: {
     onToggle() {
-      socket.emit("request:minigame_subscribe", {
+      socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
         type: this.npcId,
       });
 
-      socket.off("response:minigame_subscribe");
-      socket.on("response:minigame_subscribe", (response) => {
+      socket.off(ResponseSocketsEnum.MINIGAME_SUBSCRIBE);
+      socket.on(ResponseSocketsEnum.MINIGAME_SUBSCRIBE, (response) => {
         if (response.success) {
           const store = useNpcSubscriptionStore();
           store.toggle(this.npcId);

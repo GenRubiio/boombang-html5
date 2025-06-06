@@ -29,13 +29,13 @@ module.exports = (socket, io) => {
     socket.on(RequestSocketsEnum.USER_SEND_CHAT, (data) => {
         UserSendChatController.main(socket, io, data);
     });
-    socket.on("request:user_change_uppercut", (data) => {
+    socket.on(RequestSocketsEnum.USER_CHANGE_UPPERCUT, (data) => {
         UserChangeUppercutController.main(socket, io, data);
     });
     socket.on(RequestSocketsEnum.USER_SEND_COCONUT, () => {
         UserSendCoconutController.main(socket, io);
     });
-    socket.on("request:user_change_coconut", (data) => {
+    socket.on(RequestSocketsEnum.USER_CHANGE_COCONUT, (data) => {
         UserChangeCoconutController.main(socket, io, data);
     });
 };

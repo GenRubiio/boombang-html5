@@ -2,6 +2,7 @@ const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const MovementProcessorInstance = require('../instances/MovementProcessorInstance');
 const SceneItemModel = require('./SceneItemModel');
+const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 
 class SceneModel {
     constructor(row) {
@@ -166,7 +167,7 @@ class SceneModel {
         };
 
         this.spawnedObjects.push(newObject);
-        this.emit('reponse:object_spawned', {
+        this.emit(ResponseSocketsEnum.SCENE_OBJECT_SPAWNED, {
             itemId: item.id,
             position: newObject.position
         });
@@ -175,7 +176,7 @@ class SceneModel {
     removeObject(object) {
         this.spawnedObjects = this.spawnedObjects.filter(obj => obj !== object);
         clearTimeout(object.timer);
-        this.emit('reponse:object_removed', {
+        this.emit(ResponseSocketsEnum.SCENE_OBJECT_REMOVED, {
             itemId: object.item.id,
             position: object.position
         });

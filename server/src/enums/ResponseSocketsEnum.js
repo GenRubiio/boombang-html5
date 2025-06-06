@@ -19,6 +19,15 @@ const ResponseSocketsEnum = new Enum({
     GET_PUBLIC_SCENE_USERS: 'response:get_public_area_users',
     USER_SEND_EMOJI: 'response:send_emoji',
     USER_SEND_CHAT: 'response:send_chat',
+    MINIGAME_SUBSCRIBE: 'response:minigame_subscribe',
+    MINIGAME_COUNTER: 'response:minigame_counter',
+    MINIGAME_ALERT: 'response:minigame_alert',
+    MINIGAME_JOIN: 'response:join_minigame',
+    MINIGAME_CALL_NOTIFICATION: 'response:minigame_call_notification',
+    SCENE_OBJECT_SPAWNED: 'reponse:object_spawned',
+    SCENE_OBJECT_REMOVED: 'reponse:object_removed',
+    SCENE_OBJECT_COLLECTED: 'reponse:object_collected',
+    USER_RECEIVE_EFFECT: 'response:user_receive_effect',
     
 });
 
