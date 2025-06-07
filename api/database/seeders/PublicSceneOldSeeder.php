@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Enums\PublicSceneTypeEnum;
 use Illuminate\Support\Facades\DB;
 
-class PublicSceneSeeder extends Seeder
+class PublicSceneOldSeeder extends Seeder
 {
     /**
      * Run the database seeds.

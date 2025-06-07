@@ -32,6 +32,7 @@ class BotSeeder extends Seeder
                 'name' => $bot['name'],
                 'email' => $bot['email'],
                 'username' => $bot['username'],
+                'avatar' => $bot['avatar'],
                 'email_verified_at' => Carbon::now(),
                 'password' => $bot['password'],
                 'remember_token' => Str::random(10),

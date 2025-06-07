@@ -29,6 +29,7 @@ class UserSeeder extends Seeder
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'username' => $user['username'],
+                'avatar' => collect([5, 12])->random(),
                 'email_verified_at' => Carbon::now(),
                 'password' => $user['password'],
                 'remember_token' => Str::random(10),
