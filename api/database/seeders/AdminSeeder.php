@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AdminSeeder extends Seeder
@@ -18,10 +19,10 @@ class AdminSeeder extends Seeder
     {
         $userId = DB::table('users')->insertGetId([
             'name' => 'Admin',
-            'email' => 'hello@basetis.com',
+            'email' => 'admin@test.com',
             'username' => 'God',
             'email_verified_at' => Carbon::now(),
-            'password' => '$2y$10$vDDLdNEO2lLvim0VKcoH3uyjPMhfd4E6dOou1bWzeaQeYsvR4yZEm',
+            'password' => Hash::make('test'),
             'remember_token' => Str::random(10),
             'active' => true,
             'created_at' => Carbon::now(),

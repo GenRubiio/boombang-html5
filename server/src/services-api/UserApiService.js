@@ -34,6 +34,19 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async increaseStats(userId, statsType) {
+        try {
+            const data = {
+                user_id: userId,
+                stats_type: statsType
+            };
+            return await ApiService.post('api/user/increase-stats', data);
+        } catch (error) {
+            console.error('Error al aumentar las estadísticas del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;
