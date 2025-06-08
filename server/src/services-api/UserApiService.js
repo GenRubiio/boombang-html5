@@ -35,13 +35,13 @@ class UserApiService {
         }
     }
 
-    static async increaseStats(userId, statsType) {
+    static async increaseStats(user, statsType) {
         try {
             const data = {
-                user_id: userId,
+                user_id: user.id,
                 stats_type: statsType
             };
-            return await ApiService.post('api/user/increase-stats', data);
+            return await ApiService.post('api/user/increase-stats', data, user.authJwt);
         } catch (error) {
             console.error('Error al aumentar las estadísticas del usuario:', error.response ? error.response.data : error.message);
             throw error;

@@ -2,14 +2,22 @@ const axios = require('axios');
 require('dotenv').config();
 
 class ApiService {
-    static async post(route, data) {
+    static async post(route, data, bearerToken = null) {
         try {
             const apiUrl = process.env.API_URL;
+
+            const headers = {
+                'X-Emulator-Token': process.env.EMULATOR_API_TOKEN
+            };
+
+            if (bearerToken) {
+                headers['Authorization'] = `Bearer ${bearerToken}`;
+            }
+
             const response = await axios.post(`${apiUrl}/${route}`, data, {
-                headers: {
-                    'X-Emulator-Token': process.env.EMULATOR_API_TOKEN
-                }
+                headers
             });
+
             return response.data.data;
         } catch (error) {
             throw error;

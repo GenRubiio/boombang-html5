@@ -14,10 +14,6 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::post('register', [RegisterApiController::class, 'register']);
     });
 
-    Route::prefix('user')->group(function () {
-        Route::post('increase-stats', [IncreaseStatsApiController::class, 'index']);
-    });
-
     Route::prefix('public-scene')->group(function () {
         Route::post('get', [PublicSceneApiController::class, 'get']);
     });
@@ -26,7 +22,9 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::post('get', [MinigameSceneApiController::class, 'get']);
     });
 
-    Route::prefix('bots')->group(function () {
-        Route::post('get', [PublicSceneApiController::class, 'get']);
+    Route::middleware(['auth:api'])->group(function () {
+        Route::prefix('user')->group(function () {
+            Route::post('increase-stats', [IncreaseStatsApiController::class, 'index']);
+        });
     });
 });
