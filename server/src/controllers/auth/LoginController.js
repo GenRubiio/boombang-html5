@@ -24,6 +24,7 @@ class LoginController {
                     connectedUser.socket.emit('error_critical');
                 }
                 user.addSocket(socket);
+                user.addAuthJwt(auth.token);
                 ConnectedUsersCollection.add(socket.id, user);
 
                 const userResource = new UserResource(user);

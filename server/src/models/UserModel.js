@@ -15,6 +15,7 @@ class UserModel {
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
 
         this.socket = null; // Socket del usuario
+        this.authJwt = null; // JWT de autenticación del usuario
         this.currentArea = null; // Área actual del usuario
         this.currentAreaPosition = { x: null, y: null, z: null }; // Posición actual del usuario en el área
         this.selectedUser = null; // Usuario seleccionado por el usuario
@@ -23,7 +24,7 @@ class UserModel {
         this.uppercutLevel = this.calculateUppercutLevel(); // Nivel del uppercut
         this.uppercutSelected = this.uppercutLevel; // Indica si el usuario ha seleccionado un uppercut
 
-        this.coconutLevel  = 9; // Nivel del coco
+        this.coconutLevel = 9; // Nivel del coco
         this.coconutSelected = this.coconutLevel; // Indica si el usuario ha seleccionado un coco
 
         this.finalTarget = null; // Destino final del usuario
@@ -102,6 +103,11 @@ class UserModel {
     // Método para añadir socket al usuario
     addSocket(socket) {
         this.socket = socket;
+    }
+
+    //Metodo para añadir JWT de autenticación al usuario
+    addAuthJwt(jwt) {
+        this.authJwt = jwt;
     }
 
     setArea(area) {

@@ -73,7 +73,7 @@ class UserService {
     static async increaseUppercutSend(user) {
         user.uppercutsSend += 1;
         try {
-            await UserApiService.increaseStats(user.id, 'uppercuts_sent');
+            await UserApiService.increaseStats(user, 'uppercuts_sent');
         } catch (error) {
             console.error('Error increasing uppercut send:', error);
         }
@@ -82,7 +82,7 @@ class UserService {
     static async increaseUppercutReceived(user) {
         user.uppercutsReceived += 1;
         try {
-            await UserApiService.increaseStats(user.id, 'uppercuts_received');
+            await UserApiService.increaseStats(user, 'uppercuts_received');
         } catch (error) {
             console.error('Error increasing uppercut received:', error);
         }
@@ -91,7 +91,7 @@ class UserService {
     static async increaseCoconutsSend(user) {
         user.coconutsSend += 1;
         try {
-            await UserApiService.increaseStats(user.id, 'coconuts_sent');
+            await UserApiService.increaseStats(user, 'coconuts_sent');
         } catch (error) {
             console.error('Error increasing coconut send:', error);
         }
@@ -100,7 +100,7 @@ class UserService {
     static async increaseCoconutsReceived(user) {
         user.coconutsReceived += 1;
         try {
-            await UserApiService.increaseStats(user.id, 'coconuts_received');
+            await UserApiService.increaseStats(user, 'coconuts_received');
         } catch (error) {
             console.error('Error increasing coconut received:', error);
         }
