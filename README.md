@@ -19,7 +19,7 @@ El entorno de desarrollo está preparado para ejecutarse mediante Docker y `dock
 
 1. Clona este repositorio.
 2. Ejecuta `docker compose up --build` para compilar las imágenes y levantar todos los servicios.
-3. Vuelve a arabcar la imagen de 'server' con `docker compose build server` si se encuentra apagado.
+3. Vuelve a levantar la imagen de 'server' con `docker compose build server` si se encuentra apagado.
 4. Accede al juego en [http://play.boombang.com](http://play.boombang.com).
 
 Los contenedores lanzarán los siguientes servicios:
