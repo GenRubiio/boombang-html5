@@ -1,0 +1,82 @@
+version: "3.9"
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - boombang
+
+  api:
+    build: ./api
+    env_file:
+      - ./api/.env.example
+    environment:
+      APP_URL: http://api.boombang.com
+      DB_HOST: db
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+    networks:
+      boombang:
+        aliases:
+          - api.boombang.com
+
+  web:
+    build: ./web
+    env_file:
+      - ./web/.env.example
+    environment:
+      APP_URL: http://boombang.com
+      DB_HOST: db
+    depends_on:
+      - db
+    ports:
+      - "8001:80"
+    networks:
+      boombang:
+        aliases:
+          - boombang.com
+
+  server:
+    build: ./server
+    env_file:
+      - ./server/.env.example
+    environment:
+      DB_HOST: db
+      API_URL: http://api.boombang.com
+      CLIENT_URL: http://play.boombang.com
+      EMULATOR_URL: http://server.boombang.com:3000
+    depends_on:
+      - db
+      - api
+    ports:
+      - "3000:3000"
+    networks:
+      boombang:
+        aliases:
+          - server.boombang.com
+
+  client:
+    build: ./client
+    env_file:
+      - ./client/.env.example
+    environment:
+      VITE_SERVER_URL: http://server.boombang.com:3000
+    depends_on:
+      - server
+    ports:
+      - "5173:5173"
+    networks:
+      boombang:
+        aliases:
+          - play.boombang.com
+
+volumes:
+  dbdata:
+
+networks:
+  boombang:
