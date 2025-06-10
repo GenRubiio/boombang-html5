@@ -1,9 +1,10 @@
 version: "3.9"
+
 services:
   db:
     image: mariadb:11
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -31,11 +32,11 @@ services:
     env_file:
       - ./api/.env
     environment:
-      VIRTUAL_HOST: api.boombang.com
-      VIRTUAL_PORT: 80
-      VIRTUAL_PROTO: http
-      APP_URL: http://api.boombang.com
-      DB_HOST: db
+      VIRTUAL_HOST: ${API_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${API_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${API_VIRTUAL_PROTO}
+      APP_URL: ${API_APP_URL}
+      DB_HOST: ${API_DB_HOST}
     depends_on:
       - db
       - proxy
@@ -44,24 +45,23 @@ services:
     expose:
       - "80"
     labels:
-      - "VIRTUAL_HOST=api.boombang.com"
-    command: >
-      sh -c "until php artisan migrate --force --no-interaction --seed; do echo 'Migration attempt failed, retrying in 3 seconds...'; sleep 3; done; php -S 0.0.0.0:80 -t public"
+      - "VIRTUAL_HOST=${API_VIRTUAL_HOST}"
+    command: php -S 0.0.0.0:80 -t public
     networks:
       boombang:
         aliases:
-          - api.boombang.com
+          - ${API_VIRTUAL_HOST}
 
   web:
     build: ./web
     env_file:
       - ./web/.env
     environment:
-      VIRTUAL_HOST: boombang.com
-      VIRTUAL_PORT: 80
-      VIRTUAL_PROTO: http
-      APP_URL: http://boombang.com
-      DB_HOST: db
+      VIRTUAL_HOST: ${WEB_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${WEB_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${WEB_VIRTUAL_PROTO}
+      APP_URL: ${WEB_APP_URL}
+      DB_HOST: ${WEB_DB_HOST}
     depends_on:
       - db
       - proxy
@@ -70,26 +70,25 @@ services:
     expose:
       - "80"
     labels:
-      - "VIRTUAL_HOST=boombang.com"
-    command: >
-      sh -c "until php artisan migrate --force --no-interaction --seed; do echo 'Migration attempt failed, retrying in 3 seconds...'; sleep 3; done; php -S 0.0.0.0:80 -t public"
+      - "VIRTUAL_HOST=${WEB_VIRTUAL_HOST}"
+    command: php -S 0.0.0.0:80 -t public
     networks:
       boombang:
         aliases:
-          - boombang.com
+          - ${WEB_VIRTUAL_HOST}
 
   server:
     build: ./server
     env_file:
       - ./server/.env
     environment:
-      VIRTUAL_HOST: server.boombang.com
-      VIRTUAL_PORT: 3000
-      VIRTUAL_PROTO: http
-      DB_HOST: db
-      API_URL: http://api.boombang.com
-      CLIENT_URL: http://play.boombang.com
-      EMULATOR_URL: http://server.boombang.com:3000
+      VIRTUAL_HOST: ${SERVER_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${SERVER_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${SERVER_VIRTUAL_PROTO}
+      DB_HOST: ${SERVER_DB_HOST}
+      API_URL: ${SERVER_API_URL}
+      CLIENT_URL: ${SERVER_CLIENT_URL}
+      EMULATOR_URL: ${SERVER_EMULATOR_URL}
     depends_on:
       - db
       - api
@@ -99,32 +98,32 @@ services:
     expose:
       - "3000"
     labels:
-      - "VIRTUAL_HOST=server.boombang.com"
+      - "VIRTUAL_HOST=${SERVER_VIRTUAL_HOST}"
     networks:
       boombang:
         aliases:
-          - server.boombang.com
+          - ${SERVER_VIRTUAL_HOST}
 
   client:
     build: ./client
     env_file:
       - ./client/.env
     environment:
-      VIRTUAL_HOST: play.boombang.com
-      VIRTUAL_PORT: 5173
-      VIRTUAL_PROTO: http
-      VITE_SERVER_URL: http://server.boombang.com:3000
+      VIRTUAL_HOST: ${CLIENT_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${CLIENT_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${CLIENT_VIRTUAL_PROTO}
+      VITE_SERVER_URL: ${CLIENT_VITE_SERVER_URL}
     depends_on:
       - server
       - proxy
     expose:
       - "5173"
     labels:
-      - "VIRTUAL_HOST=play.boombang.com"
+      - "VIRTUAL_HOST=${CLIENT_VIRTUAL_HOST}"
     networks:
       boombang:
         aliases:
-          - play.boombang.com
+          - ${CLIENT_VIRTUAL_HOST}
 
 volumes:
   dbdata:

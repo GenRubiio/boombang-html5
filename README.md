@@ -20,7 +20,21 @@ El entorno de desarrollo está preparado para ejecutarse mediante Docker y `dock
 1. Clona este repositorio.
 2. Ejecuta `docker compose up --build` para compilar las imágenes y levantar todos los servicios.
 3. Vuelve a levantar la imagen de 'server' con `docker compose build server` si se encuentra apagado.
-4. Accede al juego en [http://play.boombang.com](http://play.boombang.com).
+4. Ejecutar migraciones y sembrar la base de datos con:
+   ```
+   docker compose exec api php artisan migrate --force --no-interaction --seed
+   ```
+   ```
+   docker compose exec web php artisan migrate --force --no-interaction --seed
+   ```
+5. Accede al juego en [http://play.boombang.com](http://play.boombang.com).
+
+## Help
+Para limitar el consumo de RAM de Docker, puedes ajustar la configuración de Docker Desktop. Ve a "Settings" > "Resources" y ajusta el límite de memoria según tus necesidades. También puedes usar la opción `--memory` al iniciar contenedores específicos con `docker run`, por ejemplo:
+
+```bash
+docker run --memory=512m api
+```
 
 Los contenedores lanzarán los siguientes servicios:
 
