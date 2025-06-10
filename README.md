@@ -30,10 +30,31 @@ El entorno de desarrollo está preparado para ejecutarse mediante Docker y `dock
 5. Accede al juego en [http://play.boombang.com](http://play.boombang.com).
 
 ## Help
+
 Para limitar el consumo de RAM de Docker, puedes ajustar la configuración de Docker Desktop. Ve a "Settings" > "Resources" y ajusta el límite de memoria según tus necesidades. También puedes usar la opción `--memory` al iniciar contenedores específicos con `docker run`, por ejemplo:
 
 ```bash
 docker run --memory=512m api
+```
+
+Comandos útiles para gestionar el entorno:
+
+```bash
+docker compose up -d # Levanta los servicios en segundo plano
+docker compose down # Detiene y elimina los contenedores
+docker compose logs -f # Muestra los logs de todos los servicios
+docker system df # Muestra el uso de espacio en disco por Docker
+docker stop $(docker ps -aq) # Detiene todos los contenedores en ejecución
+docker rm $(docker ps -aq) # Elimina todos los contenedores detenidos
+docker rmi $(docker images -q) --force # Elimina todas las imágenes
+docker volume rm $(docker volume ls -q) # Elimina todos los volúmenes
+docker builder prune --all --force # Limpia el caché de compilación
+```
+
+Eliminar todos lo relacionado con Docker ejecutando el archivo `docker-clean.ps1` en PowerShell:
+
+```powershell
+.\docker-clean.ps1
 ```
 
 Los contenedores lanzarán los siguientes servicios:

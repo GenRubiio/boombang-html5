@@ -67,10 +67,11 @@ export default {
     });
 
     try {
-      const { default: avatarImage } = await import(
-        /* @vite-ignore */ `../../../assets/game/lobby/avatars/${this.$socket.user.avatar_id}.svg`
-      );
-      this.asset_avatarImage = avatarImage;
+      const avatarUrl = new URL(
+        `../../../assets/game/lobby/avatars/${this.$socket.user.avatar_id}.svg`,
+        import.meta.url
+      ).href;
+      this.asset_avatarImage = avatarUrl;
     } catch (error) {
       console.error("Error cargando el avatar:", error);
     }
@@ -90,7 +91,6 @@ export default {
         }
       });
     },
-
   },
 };
 </script>
