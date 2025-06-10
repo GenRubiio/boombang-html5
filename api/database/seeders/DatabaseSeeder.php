@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,7 +16,14 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminSeeder::class,
             UserSeeder::class,
-            PublicSceneSeeder::class,
+            BotSeeder::class,
+            //PublicSceneSeeder::class,
         ]);
+        $this->call(PublicScenesTableSeeder::class);
+        $this->call(MinigameScenesTableSeeder::class);
+        $this->call(SceneItemsTableSeeder::class);
+        $this->call(PublicSceneItemsTableSeeder::class);
+
+        Artisan::call('passport:client --personal');
     }
 }

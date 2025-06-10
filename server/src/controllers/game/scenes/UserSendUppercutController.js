@@ -50,7 +50,7 @@ class UserSendUppercutController {
 
                     // Bloquear acciones para uppercut
                     UserBlockActionsTask.blockByUppercutSend(user);
-                    UserBlockActionsTask.blockByUppercutReceive(targetUser, io);
+                    UserBlockActionsTask.blockByUppercutReceive(targetUser);
 
                     UserService.increaseUppercutSend(user);
                     UserService.increaseUppercutReceived(targetUser);

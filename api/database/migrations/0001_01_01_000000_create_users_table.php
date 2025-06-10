@@ -17,6 +17,19 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            $table->string('username')->unique();
+            $table->integer('avatar')->default(1);
+            $table->integer('gold_coins')->default(0);
+            $table->integer('silver_coins')->default(0);
+            $table->integer('rings_won')->default(0);
+            $table->integer('coconuts_caught')->default(0);
+            $table->integer('uppercuts_sent')->default(0);
+            $table->integer('uppercuts_received')->default(0);
+            $table->integer('coconuts_sent')->default(0);
+            $table->integer('coconuts_received')->default(0);
+
+            $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

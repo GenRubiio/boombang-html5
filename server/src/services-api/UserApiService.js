@@ -34,6 +34,18 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async increaseStats(user, statsType) {
+        try {
+            const data = {
+                stats_type: statsType
+            };
+            return await ApiService.post('api/user/increase-stats', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al aumentar las estadísticas del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;

@@ -25,8 +25,14 @@ class UserResource extends JsonResource
             'username' => $this->username,
             'email' => $this->email,
             'avatar_id' => $this->avatar,
+            'gold_coins' => (int)$this->gold_coins,
+            'silver_coins' => (int)$this->silver_coins,
+            'rings_won' => (int)$this->rings_won,
+            'coconuts_caught' => (int)$this->coconuts_caught,
             'uppercuts_sent' => (int)$this->uppercuts_sent,
             'uppercuts_received' => (int)$this->uppercuts_received,
+            'coconuts_sent' => (int)$this->coconuts_sent,
+            'coconuts_received' => (int)$this->coconuts_received,
         ];
     }
 }

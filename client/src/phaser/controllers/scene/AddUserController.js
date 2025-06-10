@@ -57,6 +57,8 @@ class AddUserController {
         spriteShadow.removeAllListeners();
         spriteShadow.on('pointerdown', () => {
             if (!gameScene.selectedShadow) {
+                //change image shadow to shadow_selected
+                spriteShadow.setTexture("shadow_selected");
                 gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
                 gameScene.selectedShadow = spriteShadow;
             }
@@ -64,8 +66,10 @@ class AddUserController {
                 try {
                     //console.log("Desmarcando sombra: ");
                     gameScene.tintMgr.clearPart(gameScene.selectedShadow, 'shadow');
+                    gameScene.selectedShadow.setTexture("shadow");
                 }
                 catch (e) { }
+                spriteShadow.setTexture("shadow_selected");
                 gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
                 gameScene.selectedShadow = spriteShadow;
             }

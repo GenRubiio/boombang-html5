@@ -12,8 +12,13 @@ export default class UserModel {
         this.spriteAvatar = spriteAvatar;
         this.spriteShadow = spriteShadow;
         this.containerUser = containerUser;
+        this.gold_coins = row.gold_coins;
+        this.silver_coins = row.silver_coins;
+        this.rings_won = row.rings_won;
+        this.coconuts_caught = row.coconuts_caught;
         this.uppercuts_send = row.uppercutsSend;
         this.uppercuts_received = row.uppercutsReceived;
-        this.ring_wins = 0;
+        this.coconuts_sent = row.coconutsSent;
+        this.coconuts_received = row.coconutsReceived;
     }
 }

@@ -1,5 +1,6 @@
 const pool = require('../config/database');
 const UserModel = require('../models/UserModel');
+const UserApiService = require('../services-api/UserApiService');
 
 class UserService {
     static async getAllUsers() {
@@ -71,10 +72,38 @@ class UserService {
 
     static async increaseUppercutSend(user) {
         user.uppercutsSend += 1;
+        try {
+            await UserApiService.increaseStats(user, 'uppercuts_sent');
+        } catch (error) {
+            console.error('Error increasing uppercut send:', error);
+        }
     }
 
     static async increaseUppercutReceived(user) {
         user.uppercutsReceived += 1;
+        try {
+            await UserApiService.increaseStats(user, 'uppercuts_received');
+        } catch (error) {
+            console.error('Error increasing uppercut received:', error);
+        }
+    }
+
+    static async increaseCoconutsSend(user) {
+        user.coconutsSend += 1;
+        try {
+            await UserApiService.increaseStats(user, 'coconuts_sent');
+        } catch (error) {
+            console.error('Error increasing coconut send:', error);
+        }
+    }
+
+    static async increaseCoconutsReceived(user) {
+        user.coconutsReceived += 1;
+        try {
+            await UserApiService.increaseStats(user, 'coconuts_received');
+        } catch (error) {
+            console.error('Error increasing coconut received:', error);
+        }
     }
 }
 

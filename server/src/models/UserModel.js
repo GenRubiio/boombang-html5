@@ -4,11 +4,18 @@ class UserModel {
         this.id = row.id.toString();
         this.username = row.username;
         this.email = row.email;
-        this.avatarId = row.avatar_id; // ID del avatar del usuarioio
-        this.uppercutsSend = row.uppercuts_sent;
-        this.uppercutsReceived = row.uppercuts_received;
+        this.avatarId = row.avatar_id; // ID del avatar del usuario
+        this.goldCoins = row.gold_coins; // Monedas de oro del usuario
+        this.silverCoins = row.silver_coins; // Monedas de plata del usuario
+        this.ringsWon = row.rings_won; // Anillos ganados por el usuario
+        this.coconutsCaught = row.coconuts_caught; // Cocos atrapados por el usuario
+        this.uppercutsSend = row.uppercuts_sent; // Uppercuts enviados por el usuario
+        this.uppercutsReceived = row.uppercuts_received; // Uppercuts recibidos por el usuario
+        this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
+        this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
 
         this.socket = null; // Socket del usuario
+        this.authJwt = null; // JWT de autenticación del usuario
         this.currentArea = null; // Área actual del usuario
         this.currentAreaPosition = { x: null, y: null, z: null }; // Posición actual del usuario en el área
         this.selectedUser = null; // Usuario seleccionado por el usuario
@@ -17,7 +24,7 @@ class UserModel {
         this.uppercutLevel = this.calculateUppercutLevel(); // Nivel del uppercut
         this.uppercutSelected = this.uppercutLevel; // Indica si el usuario ha seleccionado un uppercut
 
-        this.coconutLevel  = 9; // Nivel del coco
+        this.coconutLevel = 9; // Nivel del coco
         this.coconutSelected = this.coconutLevel; // Indica si el usuario ha seleccionado un coco
 
         this.finalTarget = null; // Destino final del usuario
@@ -96,6 +103,11 @@ class UserModel {
     // Método para añadir socket al usuario
     addSocket(socket) {
         this.socket = socket;
+    }
+
+    //Metodo para añadir JWT de autenticación al usuario
+    addAuthJwt(jwt) {
+        this.authJwt = jwt;
     }
 
     setArea(area) {

@@ -18,6 +18,7 @@ import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent
 import CounterMinigameComponent from "../../../components/game/minigames/CounterMinigameComponent.vue";
 import AlertMinigameComponent from "../../../components/game/minigames/AlertMinigameComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
+import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum.js";
 import MinigameAlertsEnum from "../../../../enums/MinigameAlertsEnum.js";
 import { useNpcSubscriptionStore } from "../../../../stores/npcSubscription.js";
 import NpcEnum from "../../../../enums/NpcEnum.js";
@@ -83,8 +84,8 @@ export default {
   },
   mounted() {
     this.initializeGame();
-    socket.off("response:minigame_counter");
-    socket.on("response:minigame_counter", (response) => {
+    socket.off(ResponseSocketsEnum.MINIGAME_COUNTER);
+    socket.on(ResponseSocketsEnum.MINIGAME_COUNTER, (response) => {
       if (response.show) {
         this.counter = response.counter;
         this.showCounter = true;
@@ -92,8 +93,8 @@ export default {
         this.showCounter = false;
       }
     });
-    socket.off("response:minigame_alert");
-    socket.on("response:minigame_alert", (response) => {
+    socket.off(ResponseSocketsEnum.MINIGAME_ALERT);
+    socket.on(ResponseSocketsEnum.MINIGAME_ALERT, (response) => {
       this.alertType = response.alertType;
       switch (response.alertType) {
         case MinigameAlertsEnum.WIN:

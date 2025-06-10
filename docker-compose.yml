@@ -1,0 +1,141 @@
+version: "3.9"
+
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/db/init/create_databases.sql:/docker-entrypoint-initdb.d/create_databases.sql
+    networks:
+      - boombang
+
+  proxy:
+    image: jwilder/nginx-proxy:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - boombang
+
+  api:
+    build: ./api
+    volumes:
+      - ./api:/var/www/html
+    env_file:
+      - ./api/.env
+    environment:
+      VIRTUAL_HOST: ${API_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${API_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${API_VIRTUAL_PROTO}
+      APP_URL: ${API_APP_URL}
+      DB_HOST: ${API_DB_HOST}
+    depends_on:
+      - db
+      - proxy
+    ports:
+      - "8000:80"
+    expose:
+      - "80"
+    labels:
+      - "VIRTUAL_HOST=${API_VIRTUAL_HOST}"
+    command: php -S 0.0.0.0:80 -t public
+    networks:
+      boombang:
+        aliases:
+          - ${API_VIRTUAL_HOST}
+
+  web:
+    build: ./web
+    volumes:
+      - ./web:/var/www/html
+    env_file:
+      - ./web/.env
+    environment:
+      VIRTUAL_HOST: ${WEB_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${WEB_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${WEB_VIRTUAL_PROTO}
+      APP_URL: ${WEB_APP_URL}
+      DB_HOST: ${WEB_DB_HOST}
+    depends_on:
+      - db
+      - proxy
+    ports:
+      - "8001:80"
+    expose:
+      - "80"
+    labels:
+      - "VIRTUAL_HOST=${WEB_VIRTUAL_HOST}"
+    command: php -S 0.0.0.0:80 -t public
+    networks:
+      boombang:
+        aliases:
+          - ${WEB_VIRTUAL_HOST}
+
+  server:
+    build: ./server
+    volumes:
+      - ./server:/usr/src/app
+    env_file:
+      - ./server/.env
+    environment:
+      VIRTUAL_HOST: ${SERVER_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${SERVER_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${SERVER_VIRTUAL_PROTO}
+      DB_HOST: ${SERVER_DB_HOST}
+      API_URL: ${SERVER_API_URL}
+      CLIENT_URL: ${SERVER_CLIENT_URL}
+      EMULATOR_URL: ${SERVER_EMULATOR_URL}
+    depends_on:
+      - db
+      - api
+      - proxy
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    labels:
+      - "VIRTUAL_HOST=${SERVER_VIRTUAL_HOST}"
+    networks:
+      boombang:
+        aliases:
+          - ${SERVER_VIRTUAL_HOST}
+
+  client:
+    build: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules # To persist node_modules
+    env_file:
+      - ./client/.env
+    environment:
+      VIRTUAL_HOST: ${CLIENT_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${CLIENT_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${CLIENT_VIRTUAL_PROTO}
+      VITE_SERVER_URL: ${CLIENT_VITE_SERVER_URL}
+    depends_on:
+      - server
+      - proxy
+    expose:
+      - "5173"
+    labels:
+      - "VIRTUAL_HOST=${CLIENT_VIRTUAL_HOST}"
+    networks:
+      boombang:
+        aliases:
+          - ${CLIENT_VIRTUAL_HOST}
+
+volumes:
+  dbdata:
+
+networks:
+  boombang:
