@@ -49,6 +49,8 @@ docker rm $(docker ps -aq) # Elimina todos los contenedores detenidos
 docker rmi $(docker images -q) --force # Elimina todas las imágenes
 docker volume rm $(docker volume ls -q) # Elimina todos los volúmenes
 docker builder prune --all --force # Limpia el caché de compilación
+docker stats # Ver estadísticas en tiempo real de todos los contenedores
+docker system df # Ver uso de disco
 ```
 
 Eliminar todos lo relacionado con Docker ejecutando el archivo `docker-clean.ps1` en PowerShell:
