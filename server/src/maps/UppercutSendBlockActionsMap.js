@@ -23,7 +23,8 @@ class UppercutSendBlockActionsMap {
             AnimationEnum.AVATAR_LEFTDOWN_TALK,
             AnimationEnum.AVATAR_RIGHTDOWN_TALK,
             AnimationEnum.AVATAR_LEFTUP_TALK,
-            AnimationEnum.AVATAR_RIGHTUP_TALK
+            AnimationEnum.AVATAR_RIGHTUP_TALK,
+            AnimationEnum.COCONUT,
         ]
     }
 }
