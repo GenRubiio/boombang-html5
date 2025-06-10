@@ -29,6 +29,8 @@ services:
 
   api:
     build: ./api
+    volumes:
+      - ./api:/var/www/html
     env_file:
       - ./api/.env
     environment:
@@ -54,6 +56,8 @@ services:
 
   web:
     build: ./web
+    volumes:
+      - ./web:/var/www/html
     env_file:
       - ./web/.env
     environment:
@@ -79,6 +83,8 @@ services:
 
   server:
     build: ./server
+    volumes:
+      - ./server:/usr/src/app
     env_file:
       - ./server/.env
     environment:
@@ -106,6 +112,9 @@ services:
 
   client:
     build: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules # To persist node_modules
     env_file:
       - ./client/.env
     environment:
