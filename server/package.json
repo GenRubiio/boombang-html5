@@ -8,10 +8,16 @@
     "flatted": "^3.3.2",
     "image-size": "^1.1.1",
     "mariadb": "^3.4.0",
-    "nodemon": "^3.1.7",
     "sharp": "^0.33.5",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "uuid": "^11.1.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
