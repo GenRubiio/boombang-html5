@@ -82,12 +82,17 @@ services:
           - ${WEB_VIRTUAL_HOST}
 
   server:
-    build: ./server
+    build:
+      context: ./server
+      args:
+        NODE_ENV: development
     volumes:
-      - ./server:/usr/src/app
+      - ./server:/app           # Solo útil si usas nodemon y modo desarrollo
+      - /app/node_modules       # Evita sobrescribir node_modules del contenedor
     env_file:
       - ./server/.env
     environment:
+      NODE_ENV: development
       VIRTUAL_HOST: ${SERVER_VIRTUAL_HOST}
       VIRTUAL_PORT: ${SERVER_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${SERVER_VIRTUAL_PROTO}
