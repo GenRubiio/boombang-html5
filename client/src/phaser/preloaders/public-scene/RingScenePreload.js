@@ -24,36 +24,11 @@ class RingScenePreload {
         const suffix = '_ring';
         this.#loadBackground(gameScene, suffix);
         let items = [
-            {
-                name: "item_1",
-                x: 671,
-                y: 451,
-                show_controller: false
-            },
-            {
-                name: "item_2",
-                x: 671,
-                y: 451,
-                show_controller: false
-            },
-            {
-                name: "item_3",
-                x: 671,
-                y: 451,
-                show_controller: false
-            },
-            {
-                name: "item_4",
-                x: 671,
-                y: 451,
-                show_controller: false
-            },
-            {
-                name: "item_5",
-                x: 671,
-                y: 451,
-                show_controller: true
-            }
+            { name: "item_1", x: 206, y: 266, show_controller: false },
+            { name: "item_2", x: 806, y: 266, show_controller: false },
+            { name: "item_3", x: 941, y: 411, show_controller: false },
+            { name: "item_4", x: 66, y: 411, show_controller: false },
+            { name: "item_5", x: 511, y: 661, show_controller: false }
         ];
 
         items.forEach(item => {
