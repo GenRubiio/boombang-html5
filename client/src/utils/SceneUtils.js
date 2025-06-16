@@ -28,7 +28,8 @@ class SceneUtils {
     static moveItem(gameScene, sprite) {
         // Texto fijo en pantalla para Pix: x/y
         const info = gameScene.add.text(10, 10, '', { font: '16px Arial', backgroundColor: '#000000AA' })
-            .setScrollFactor(0);
+            .setScrollFactor(0)
+            .setDepth(9999);
 
         // Actualiza posición del sprite y del texto
         function updateInfo() {
@@ -53,6 +54,7 @@ class SceneUtils {
             gameScene.add.text(btn.x, btn.y, btn.label, { font: '20px Arial', backgroundColor: '#555' })
                 .setInteractive()
                 .setScrollFactor(0)
+                .setDepth(9999)
                 .on('pointerdown', () => {
                     sprite.x += btn.dx;
                     sprite.y += btn.dy;
