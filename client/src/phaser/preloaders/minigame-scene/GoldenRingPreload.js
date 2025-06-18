@@ -1,57 +1,62 @@
 import asset_background_image from "../../../assets/game/minigame-scenes/1/background.webp";
+import asset_item1_image from "../../../assets/game/minigame-scenes/1/108.webp";
+import asset_item2_image from "../../../assets/game/minigame-scenes/1/105.webp";
+import asset_item3_image from "../../../assets/game/minigame-scenes/1/111.webp";
+import asset_item4_image from "../../../assets/game/minigame-scenes/1/114.webp";
+import asset_item5_image from "../../../assets/game/minigame-scenes/1/117.webp";
+import asset_item6_image from "../../../assets/game/minigame-scenes/1/120.webp";
+import asset_item7_image from "../../../assets/game/minigame-scenes/1/136.webp";
+import asset_item8_image from "../../../assets/game/minigame-scenes/1/139.webp";
+import SceneUtils from "../../../utils/SceneUtils";
 
 class GoldenRingPreload {
     static preload(gameScene) {
-        gameScene.load.image("background_golden_ring", asset_background_image);
+        const suffix = '_golden_ring';
+        gameScene.load.image("background" + suffix, asset_background_image);
+        gameScene.load.image("item_1" + suffix, asset_item1_image);
+        gameScene.load.image("item_2" + suffix, asset_item2_image);
+        gameScene.load.image("item_3" + suffix, asset_item3_image);
+        gameScene.load.image("item_4" + suffix, asset_item4_image);
+        gameScene.load.image("item_5" + suffix, asset_item5_image);
+        gameScene.load.image("item_6" + suffix, asset_item6_image);
+        gameScene.load.image("item_7" + suffix, asset_item7_image);
+        gameScene.load.image("item_8" + suffix, asset_item8_image);
     }
 
     static load(gameScene) {
-        this.loadBackground(gameScene);
-        //this.loadDecorations(gameScene);
+        const suffix = '_golden_ring';
+        this.loadBackground(gameScene, suffix);
+        let items = [
+            { name: "item_1", x: 206, y: 266, show_controller: false },
+            { name: "item_2", x: 810, y: 263, show_controller: false },
+            { name: "item_3", x: 949, y: 410, show_controller: false },
+            { name: "item_4", x: 66, y: 411, show_controller: false },
+            { name: "item_5", x: 173, y: 492, show_controller: false },
+            { name: "item_6", x: 476, y: 326, show_controller: true },
+            { name: "item_7", x: 505, y: 658, show_controller: false },
+            { name: "item_8", x: 506, y: 656, show_controller: false },
+        ];
+
+        items.forEach(item => {
+            this.#loadSingleItem(gameScene, suffix, item);
+        });
     }
 
-    static loadBackground(gameScene) {
-        const background = gameScene.add.image(0, 0, "background_golden_ring").setOrigin(0);
+    static loadBackground(gameScene, suffix) {
+        const background = gameScene.add.image(0, 0, "background" + suffix).setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
     }
 
-    static loadDecorations(gameScene) {
-        /********************************************************
-         * 1) Item en coordenadas absolutas (por encima de todo)
-         *    Útil para decoración UI / adorno en pantalla
-         ********************************************************/
-        const itemAbsolute = gameScene.add.image(0, 0, "item_2");
-        itemAbsolute.setOrigin(0, 0); // ancla en la esquina sup. izq.
-        itemAbsolute.setDepth(9999);  // muy alto => se ve arriba de todo
-        // No se escala, conserva tamaño original.
-
-
-        /********************************************************
-         * 2) Item en el mundo isométrico (sin escalarlo a "rombo")
-         *    Se comporta igual que un mueble o árbol grande.
-         ********************************************************/
-        const tileWidth = 65;
-        const tileHeight = 33;
-        const halfTileWidth = tileWidth / 2;
-        const halfTileHeight = tileHeight / 2;
-        const centerX = gameScene.scale.width / 2;
-
-        // Ejemplo: lo ponemos en col=8, row=4 del mapa isométrico
-        const col = 8;
-        const row = 4;
-        const x = (col - row) * halfTileWidth + centerX + 40;
-        const y = (col + row) * halfTileHeight + 253;
-
-        // Creamos la imagen sin redimensionar
-        const itemIso = gameScene.add.image(x, y, "item_1");
-        // Anclamos al centro/base para que su “pie” quede en el tile isométrico
-        itemIso.setOrigin(0.5, 1);
-
-        // Para que se solape correctamente con jugadores/tiles,
-        // asignamos la profundidad según la Y
-        itemIso.setDepth(y);
-
-        // También lo hacemos clicable para voltearlo
+    static #loadSingleItem(gameScene, suffix, item) {
+        // Creamos el sprite en (x,y)
+        const sprite = gameScene.add.image(item.x, item.y, item.name + suffix)
+            .setOrigin(0.5, 1)
+            .setDepth(item.custom_depth || item.y)
+            .setName(item.name + suffix);
+        if (item.show_controller) {
+            // Si es un item que se puede mover, añadimos el controlador
+            SceneUtils.moveItem(gameScene, sprite);
+        }
     }
 }
 
