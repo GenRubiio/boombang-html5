@@ -77,9 +77,9 @@ export default {
   },
   data() {
     return {
-      username: "sadfsd",
-      password: "sadfsdfsf",
-      email: "gen2@test.com",
+      username: "",
+      password: "",
+      email: "",
       showUsernameError: false,
       showEmailError: false,
       showPasswordError: false,
