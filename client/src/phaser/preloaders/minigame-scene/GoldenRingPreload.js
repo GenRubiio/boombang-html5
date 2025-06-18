@@ -27,13 +27,13 @@ class GoldenRingPreload {
         const suffix = '_golden_ring';
         this.loadBackground(gameScene, suffix);
         let items = [
-            { name: "item_1", x: 206, y: 266, show_controller: false },
-            { name: "item_2", x: 810, y: 263, show_controller: false },
+            { name: "item_1", x: 206, y: 266, custom_depth: 239, show_controller: false },
+            { name: "item_2", x: 810, y: 263, custom_depth: 239, show_controller: false },
             { name: "item_3", x: 949, y: 410, show_controller: false },
-            { name: "item_4", x: 66, y: 411, show_controller: false },
-            { name: "item_5", x: 173, y: 492, show_controller: false },
-            { name: "item_6", x: 476, y: 326, show_controller: true },
-            { name: "item_7", x: 505, y: 658, show_controller: false },
+            { name: "item_4", x: 66, y: 411, custom_depth: 352, show_controller: false },
+            { name: "item_5", x: 173, y: 492, custom_depth: 353, show_controller: false },
+            { name: "item_6", x: 476, y: 326, custom_depth: 240, show_controller: false },
+            { name: "item_7", x: 505, y: 658, custom_depth: 655, show_controller: false },
             { name: "item_8", x: 506, y: 656, show_controller: false },
         ];
 
