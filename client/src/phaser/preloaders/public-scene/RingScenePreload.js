@@ -48,7 +48,7 @@ class RingScenePreload {
         // Creamos el sprite en (x,y)
         const sprite = gameScene.add.image(item.x, item.y, item.name + suffix)
             .setOrigin(0.5, 1)
-            .setDepth(item.y)
+            .setDepth(item.custom_depth || item.y)
             .setName(item.name + suffix);
         if (item.show_controller) {
             // Si es un item que se puede mover, añadimos el controlador
