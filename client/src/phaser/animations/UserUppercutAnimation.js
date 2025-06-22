@@ -1,6 +1,10 @@
 import AnimationUtils from "../../utils/AnimationUtils.js";
+import UserEmojiAnimation from "./UserEmojiAnimation.js";
 class UserUppercutAnimation {
-    static main(spriteAvatar, direction, attacker, avatarId) {
+    static main(spriteAvatar, direction, attacker, avatarId, gameScene) {
+        if (UserEmojiAnimation.isFlying(spriteAvatar)) {
+            UserEmojiAnimation.cancelFly(spriteAvatar, gameScene);
+        }
         if (attacker) {
             const textureKey = direction + "_punch_doy";
             AnimationUtils.setSpriteConfig(spriteAvatar, avatarId, textureKey);
@@ -22,7 +26,7 @@ class UserUppercutAnimation {
         }
     }
 
-    static changeColor(spriteAvatar){
+    static changeColor(spriteAvatar) {
         // Genera un color aleatorio
         const randomColor = Phaser.Display.Color.RandomRGB().color;
 

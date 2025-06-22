@@ -65,7 +65,8 @@ class SendUppercutAnimationController {
             attackerSprite,
             data.direction,
             true,
-            attacker.avatarId
+            attacker.avatarId,
+            gameScene
         );
         gameScene.tintMgr.changeUppercutColor(attackerSprite, data.uppercutSelected);
 
@@ -82,7 +83,8 @@ class SendUppercutAnimationController {
             receiverSprite,
             data.direction,
             false,
-            receiver.avatarId
+            receiver.avatarId,
+            gameScene
         );
     }
 }

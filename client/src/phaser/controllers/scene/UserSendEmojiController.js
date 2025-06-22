@@ -6,7 +6,7 @@ class UserSendEmojiController {
         const emojiId = data.emoji_id;
         if (!user) return;
 
-        UserEmojiAnimation.main(user, emojiId);
+        UserEmojiAnimation.main(user, emojiId, gameScene);
     }
 }
 
