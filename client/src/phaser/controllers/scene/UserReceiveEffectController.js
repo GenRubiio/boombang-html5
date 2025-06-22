@@ -31,7 +31,7 @@ class UserReceiveEffectController {
         if (effectData.effect.avatarAnimation) {
             gameScene.time.delayedCall(
                 effectData.effect.avatarAnimationStartTime,
-                () => UserCocoAnimation.main(spriteAvatar, user.avatarId)
+                () => UserCocoAnimation.main(spriteAvatar, user.avatarId, gameScene)
             );
         }
 

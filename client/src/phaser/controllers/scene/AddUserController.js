@@ -86,6 +86,8 @@ class AddUserController {
 
     static createAvatarSprite(gameScene, userData) {
         const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + userData.id);
+        spriteAvatar._avatarId = userData.avatar_id;
+        spriteAvatar._z = userData.z;
         //UserIdleAnimation.main(
         //    spriteAvatar,
         //    1,

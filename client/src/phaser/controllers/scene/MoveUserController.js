@@ -65,7 +65,8 @@ class MoveUserController {
         UserWalkAnimation.playWalk(
             user.spriteAvatar,
             step.z,
-            user.avatarId
+            user.avatarId,
+            gameScene
         );
 
         // Crea el tween de movimiento y almacena el tween actual para futuras referencias

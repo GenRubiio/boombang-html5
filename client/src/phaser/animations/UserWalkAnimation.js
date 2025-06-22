@@ -1,6 +1,7 @@
 import DirectionEnum from "../../enums/DirectionEnum.js";
 import AvatarAnimationsEnum from "../../enums/AvatarAnimationsEnum.js";
 import AnimationUtils from "../../utils/AnimationUtils.js";
+import UserEmojiAnimation from "./UserEmojiAnimation.js";
 
 /**
  * Maneja la animación de caminar según la dirección.
@@ -12,12 +13,15 @@ class UserWalkAnimation {
      * @param {number} direction - Una de las direcciones definidas en DirectionEnum
      * @param {string} avatarId - Para usar la config apropiada
      */
-    static playWalk(spriteAvatar, direction, avatarId) {
+    static playWalk(spriteAvatar, direction, avatarId, gameScene) {
+        if (UserEmojiAnimation.isFlying(spriteAvatar)) {
+            UserEmojiAnimation.cancelFly(spriteAvatar, gameScene);
+        }
         const textureKey = this.getTextureKey(direction);
-        
+
         // Configura sprite (flip, origen, etc.)
         AnimationUtils.setSpriteConfig(spriteAvatar, avatarId, textureKey);
-        
+
         // Inicia la animación una sola vez
         spriteAvatar.play(avatarId + "_" + textureKey, true);
     }
