@@ -64,7 +64,7 @@ export default {
     exitToLobby() {
       const store = useNpcSubscriptionStore();
       store.toggle(NpcEnum.WISE_RING);
-      socket.emit(RequestSocketsEnum.USER_LEAVE_AREA); // Enviar evento para salir de la sala
+      socket.emit(RequestSocketsEnum.USER_LEAVE_SCENE); // Enviar evento para salir de la sala
     },
     sendMessage(message) {
       socket.emit(RequestSocketsEnum.SEND_CHAT, {

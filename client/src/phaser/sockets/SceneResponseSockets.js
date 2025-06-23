@@ -16,7 +16,7 @@ import UserReceiveEffectController from "../controllers/scene/UserReceiveEffectC
 class SceneResponseSockets {
     static main(gameScene) {
         // Escuchar cuando un nuevo jugador entra
-        socket.on(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_AREA, (data) => {
+        socket.on(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, (data) => {
             AddUserController.main(gameScene, data.user);
         });
 
@@ -25,11 +25,11 @@ class SceneResponseSockets {
             MoveUserController.main(gameScene, data);
         });
 
-        socket.on(ResponseSocketsEnum.USER_LEFT_PUBLIC_AREA, (data) => {
+        socket.on(ResponseSocketsEnum.USER_LEFT_PUBLIC_SCENE, (data) => {
             RemoveUserController.main(gameScene, data.socketId);
         });
 
-        socket.on(ResponseSocketsEnum.REMOVE_USER_AREA, () => {
+        socket.on(ResponseSocketsEnum.REMOVE_USER_SCENE, () => {
             RemoveUserAreaController.main(gameScene);
         });
 
