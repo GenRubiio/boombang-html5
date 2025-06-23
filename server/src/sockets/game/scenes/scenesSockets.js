@@ -8,6 +8,7 @@ const UserSendChatController = require('../../../controllers/game/scenes/UserSen
 const UserChangeUppercutController = require('../../../controllers/game/scenes/UserChangeUppercutController');
 const UserSendCoconutController = require('../../../controllers/game/scenes/UserSendCoconutController');
 const UserChangeCoconutController = require('../../../controllers/game/scenes/UserChangeCoconutController');
+const UserChangeLookController = require('../../../controllers/game/scenes/UserChangeLookController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
@@ -37,5 +38,8 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.USER_CHANGE_COCONUT, (data) => {
         UserChangeCoconutController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.CHANGE_LOOK, (data) => {
+        UserChangeLookController.main(socket, io, data);
     });
 };

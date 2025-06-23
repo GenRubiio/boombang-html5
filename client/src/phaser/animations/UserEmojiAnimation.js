@@ -7,25 +7,132 @@ class UserEmojiAnimation {
     /**
      * Inicia la animación según la dirección
      */
-    static main(user, emojiId) {
-        const spriteAvatar = user.spriteAvatar;
+    /**
+    * Inicia la animación según el emoji
+    * @param {{ spriteAvatar: Phaser.GameObjects.Sprite, avatarId: string, position: {z: number} }} user
+    * @param {string} emojiId
+    * @param {Phaser.Scene} scene
+    */
+    static main(user, emojiId, scene) {
+        const sprite = user.spriteAvatar;
+
+        // Cancelar vuelo en curso si existe
+        if (this.isFlying(sprite)) {
+            this.cancelFly(sprite, scene);
+        }
+
         const avatarId = user.avatarId;
         const textureKey = this.getTextureKey(emojiId);
         if (!textureKey) return;
-        AnimationUtils.setSpriteConfig(spriteAvatar, avatarId, textureKey);
-        spriteAvatar.play(avatarId + "_" + textureKey, false);
 
-        spriteAvatar.once("animationcomplete", () => {
+        // Acción de volar
+        if (emojiId === AvatarEmojisEnum.FLY) {
+            this.flyAnimation(sprite, avatarId, textureKey, scene);
+            return;
+        }
+
+        // Otras animaciones: texturas y vuelta a idle
+        AnimationUtils.setSpriteConfig(sprite, avatarId, textureKey);
+        sprite.play(`${avatarId}_${textureKey}`, false);
+        sprite.once("animationcomplete", () => {
+            // Usa propiedades del sprite (_z y _avatarId) para el idle
             UserIdleAnimation.main(
-                user.spriteAvatar,
-                user.position.z,
-                user.avatarId
+                sprite,
+                sprite._z,
+                sprite._avatarId
             );
         });
     }
 
     /**
-     * Devuelve el key correcto de la animación o textura
+     * Indica si el sprite está en medio de vuelo
+     * @param {Phaser.GameObjects.Sprite} sprite
+     */
+    static isFlying(sprite) {
+        return sprite._flyOriginalLocalY !== undefined;
+    }
+
+    /**
+     * Cancela la animación de vuelo en curso y restaura posición
+     * @param {Phaser.GameObjects.Sprite} sprite
+     * @param {Phaser.Scene} scene
+     */
+    static cancelFly(sprite, scene) {
+        // Matar tweens activos sobre el sprite
+        scene.tweens.killTweensOf(sprite);
+        // Quitar temporizador si existe
+        if (sprite._flyTimerMid) {
+            sprite._flyTimerMid.remove();
+            delete sprite._flyTimerMid;
+        }
+        // Restaurar posición local original
+        sprite.y = sprite._flyOriginalLocalY;
+        delete sprite._flyOriginalLocalY;
+    }
+
+    /**
+     * Animación de vuelo: mueve sólo el sprite dentro de su contenedor padre
+     * para que la sombra quede fija. Sube, flota y baja en 7000ms.
+     * @param {Phaser.GameObjects.Sprite} sprite
+     * @param {string} avatarIdParam
+     * @param {string} textureKey
+     * @param {Phaser.Scene} scene
+     */
+    static flyAnimation(sprite, avatarIdParam, textureKey, scene) {
+        const container = sprite.parentContainer;
+        // Guardar propiedades en el sprite para posterior cancelación o idle
+        sprite._avatarId = avatarIdParam;
+        sprite._z = sprite._z !== undefined ? sprite._z : sprite.y; // Asigna z si no existe
+
+        // Guardar posición local original
+        sprite._flyOriginalLocalY = sprite.y;
+
+        // Margen superior para no pasar del viewport
+        const marginTop = 10;
+        const worldTopY = scene.cameras.main.worldView.y + (sprite.displayHeight / 2) + marginTop;
+        const localTopY = worldTopY - container.y;
+
+        // Configurar animación de frames
+        AnimationUtils.setSpriteConfig(sprite, avatarIdParam, textureKey);
+        sprite.play(`${avatarIdParam}_${textureKey}`, false);
+
+        // Duraciones
+        const upDuration = 2000;
+        const floatDuration = 2000;
+        const downDuration = 2000;
+
+        // Subir
+        scene.tweens.add({
+            targets: sprite,
+            y: localTopY,
+            duration: upDuration,
+            ease: 'Linear',
+            onComplete: () => {
+                // Flotar
+                sprite._flyTimerMid = scene.time.delayedCall(floatDuration, () => {
+                    // Bajar
+                    scene.tweens.add({
+                        targets: sprite,
+                        y: sprite._flyOriginalLocalY,
+                        duration: downDuration,
+                        ease: 'Linear',
+                        onComplete: () => {
+                            // Limpiar estado y volver a idle
+                            delete sprite._flyOriginalLocalY;
+                            UserIdleAnimation.main(
+                                sprite,
+                                sprite._z,
+                                sprite._avatarId
+                            );
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    /**
+     * Devuelve el key de la animación/texture
      */
     static getTextureKey(emojiId) {
         switch (emojiId) {

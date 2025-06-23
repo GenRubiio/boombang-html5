@@ -64,7 +64,7 @@ class MatchMakerInstance {
         setTimeout(() => {
             this.callUsers(minigame, players, io);
             minigame.startMinigame();
-        }, 10000);
+        }, 1000);//time to wait before starting the minigame
     }
 
     sendNotificationToUsers(players, sceneType) {
