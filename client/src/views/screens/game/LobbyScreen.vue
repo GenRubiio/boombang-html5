@@ -58,10 +58,10 @@ export default {
   },
   async created() {
     this.$emit("updateLoading", true);
-    socket.emit(RequestSocketsEnum.GET_PUBLIC_AREAS);
+    socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
 
-    socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS);
-    socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_AREAS, (publicScenes) => {
+    socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES);
+    socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, (publicScenes) => {
       this.publicScenes = publicScenes;
       this.$emit("updateLoading", false);
     });
@@ -79,10 +79,10 @@ export default {
   components: {},
   methods: {
     joinScene(sceneUuid) {
-      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { sceneUuid: sceneUuid });
+      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { sceneUuid: sceneUuid });
 
-      socket.off(ResponseSocketsEnum.JOIN_PUBLIC_AREA);
-      socket.on(ResponseSocketsEnum.JOIN_PUBLIC_AREA, (response) => {
+      socket.off(ResponseSocketsEnum.JOIN_PUBLIC_SCENE);
+      socket.on(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, (response) => {
         if (response.success) {
           let sceneryType = response.data.scenery.type;
           this.$emit("joinPublicScene", sceneryType, response.data);

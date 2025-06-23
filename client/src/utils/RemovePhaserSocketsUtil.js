@@ -6,15 +6,15 @@ class RemovePhaserSocketsUtil {
     static main(socket) {
         // Listas de exclusión
         const excludedResponseEvents = [
-            ResponseSocketsEnum.UPDATE_PUBLIC_AREAS,
-            ResponseSocketsEnum.JOIN_PUBLIC_AREA,
+            ResponseSocketsEnum.UPDATE_PUBLIC_SCENES,
+            ResponseSocketsEnum.JOIN_PUBLIC_SCENE,
             ResponseSocketsEnum.MINIGAME_JOIN,
             ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION
         ];
 
         const excludedRequestEvents = [
-            RequestSocketsEnum.GET_PUBLIC_AREAS,
-            RequestSocketsEnum.JOIN_PUBLIC_AREA
+            RequestSocketsEnum.GET_PUBLIC_SCENES,
+            RequestSocketsEnum.JOIN_PUBLIC_SCENE
         ];
 
         // Remover solo eventos que no están en las listas de exclusión
