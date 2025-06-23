@@ -16,8 +16,12 @@ class Bot {
         });
 
         this.socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
+            this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
+        });
+
+        this.socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, (publicScenes) => {
             setInterval(() => {
-                this.joinArea(1);
+                this.joinArea(publicScenes[0].uuid);
             }, 1000);
 
             this.moveRandomly();
@@ -68,7 +72,8 @@ class Bot {
             }
         });
 
-        this.socket.on("disconnect", () => {
+        this.socket.on("disconnect", (data) => {
+            console.error(`Bot ${this.username} desconectado. Motivo: ${data}`);
             console.log(`${this.username} desconectado.`);
         });
 
@@ -153,8 +158,8 @@ class Bot {
         }, arrayInterval[Math.floor(Math.random() * arrayInterval.length)]);
     }
 
-    joinArea(areaId) {
-        this.socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { areaId: areaId });
+    joinArea(sceneUuid) {
+        this.socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { sceneUuid: sceneUuid });
     }
 }
 
