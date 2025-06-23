@@ -3,6 +3,7 @@ const Resource = require('./Resource');
 class PublicSceneMenuResource extends Resource {
     transform(data) {
         return {
+            uuid: data.uuid,
             id: data.id,
             name: data.name,
             type: data.type,

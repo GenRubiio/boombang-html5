@@ -22,10 +22,10 @@
         <div class="lobby__rooms-list">
           <div
             v-for="publicScene in publicScenes"
-            :key="publicScene.id"
+            :key="publicScene.uuid"
             class="room"
           >
-            <button @click="joinScene(publicScene.id)">
+            <button @click="joinScene(publicScene.uuid)">
               {{ publicScene.name }}
               <span>{{ publicScene.total_users_in }}</span>
             </button>
@@ -78,8 +78,8 @@ export default {
   },
   components: {},
   methods: {
-    joinScene(sceneId) {
-      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { areaId: sceneId });
+    joinScene(sceneUuid) {
+      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_AREA, { sceneUuid: sceneUuid });
 
       socket.off(ResponseSocketsEnum.JOIN_PUBLIC_AREA);
       socket.on(ResponseSocketsEnum.JOIN_PUBLIC_AREA, (response) => {

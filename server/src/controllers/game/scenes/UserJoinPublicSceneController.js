@@ -16,7 +16,7 @@ class UserJoinPublicSceneController {
                 //throw new Error("User not found");
                 return;
             }
-            const scene = PublicScenesCollection.getByUid(data.areaId);
+            const scene = PublicScenesCollection.getByUid(data.sceneUuid);
             if (!scene) {
                 throw new Error("Public area not found");
             }
