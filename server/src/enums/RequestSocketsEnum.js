@@ -20,6 +20,7 @@ const RequestSocketsEnum = new Enum({
     USER_SEND_EMOJI: 'request:send_emoji',
     USER_SEND_CHAT: 'request:send_chat',
     USER_SEND_COCONUT: 'request:send_coconut',
+    CHANGE_LOOK: 'request:change_look',
 });
 
 module.exports = RequestSocketsEnum;

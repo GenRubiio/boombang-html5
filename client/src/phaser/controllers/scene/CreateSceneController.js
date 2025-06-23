@@ -107,6 +107,7 @@ class CreateSceneController {
                 // Si el tile no es clickeable, ignoramos el clic
                 if (!tile.isClickable) {
                     console.log(`Tile at ${col}, ${row} is not clickable.`);
+                    socket.emit(RequestSocketsEnum.CHANGE_LOOK, { x: col, y: row });
                     if (import.meta.env.VITE_MAP_MAKER === "true") {
                         gameScene.tiles[row][col - 1].bob.setTint(0xffffff);
                         gameScene.tiles[row][col].isClickable = 0;
