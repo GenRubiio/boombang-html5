@@ -28,9 +28,9 @@ goto MAIN_MENU
 
 
 :START_ALL
+call :START_API
 call :START_SERVER
 call :START_CLIENT
-call :START_API
 pause
 goto MAIN_MENU
 
