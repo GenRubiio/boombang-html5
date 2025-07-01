@@ -38,7 +38,10 @@ class CreateSceneController {
 
                 // Creamos un "bob" solo si el mapa en esta posición es clickeable (0)
                 const isClickable = map[row][col] == 0;
-                const bob = blitter.create(x, y);
+                const bob = blitter.create(
+                    x - halfTileWidth,
+                    y - halfTileHeight
+                );
 
                 if (import.meta.env.VITE_MAP_MAKER === "true") {
                     if (!isClickable) {

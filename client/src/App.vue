@@ -79,6 +79,7 @@ export default {
         "./phaser/GlobalPreloader"
       );
       const { default: PublicScene } = await import("./phaser/PublicScene");
+      const { default: PrivateScene } = await import("./phaser/PrivateScene");
       const { default: MinigameScene } = await import("./phaser/MinigameScene");
       // Solo creas la instancia la primera vez.
       this.gamePhaser = new Phaser.Game({
@@ -90,7 +91,7 @@ export default {
         width: 1012,
         height: 657,
         // Registras todas las escenas globales que vayas a usar
-        scene: [GlobalPreloader, PublicScene, MinigameScene],
+        scene: [GlobalPreloader, PublicScene, PrivateScene, MinigameScene],
         plugins: {
           global: [
             {
