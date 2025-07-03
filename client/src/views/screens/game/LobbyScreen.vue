@@ -1,24 +1,14 @@
 <template>
   <div id="lobby">
-    <div class="lobby__background">
-      <img :src="asset_background_image" alt="background" />
-    </div>
-    <div class="lobby__flor">
-      <img :src="asset_flor_image" alt="flor" />
-    </div>
-    <div class="lobby__foreground">
-      <img :src="asset_foreground_image" alt="foreground" />
-    </div>
-    <div class="lobby__marikita">
-      <img :src="asset_marikita_image" alt="marikita" />
-    </div>
-    <div class="lobby__avatar">
-      <img :src="asset_avatarImage" alt="avatar" />
-    </div>
+    <UiElementsComponent />
     <div class="lobby__rooms">
       <div class="lobby__rooms-container">
-        <div class="lobby__rooms-container-title">Areas</div>
-        <hr />
+        <div class="lobby__rooms-container__tabs">
+          <div class="lobby__rooms-container__tabs-tab fixed-width selected">Areas</div>
+          <div class="lobby__rooms-container__tabs-tab fixed-width">Juegos</div>
+          <div class="lobby__rooms-container__tabs-tab fixed-width">Islas</div>
+          <div class="lobby__rooms-container__tabs-tab"><i class="las la-search"></i></div>
+        </div>
         <div class="lobby__rooms-list">
           <div
             v-for="publicScene in publicScenes"
@@ -40,20 +30,12 @@
 import socket from "../../../sockets/socket";
 import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_background_image from "../../../assets/game/lobby/background.webp";
-import asset_flor_image from "../../../assets/game/lobby/flor.webp";
-import asset_foreground_image from "../../../assets/game/lobby/foreground.webp";
-import asset_marikita_image from "../../../assets/game/lobby/marikita.webp";
+import UiElementsComponent from "../../components/game/lobby/UiElementsComponent.vue";
 
 export default {
   data() {
     return {
       publicScenes: [],
-      asset_background_image,
-      asset_flor_image,
-      asset_foreground_image,
-      asset_marikita_image,
-      asset_avatarImage: null,
     };
   },
   async created() {
@@ -65,21 +47,15 @@ export default {
       this.publicScenes = publicScenes;
       this.$emit("updateLoading", false);
     });
-
-    try {
-      const avatarUrl = new URL(
-        `../../../assets/game/lobby/avatars/${this.$socket.user.avatar_id}.svg`,
-        import.meta.url
-      ).href;
-      this.asset_avatarImage = avatarUrl;
-    } catch (error) {
-      console.error("Error cargando el avatar:", error);
-    }
   },
-  components: {},
+  components: {
+    UiElementsComponent,
+  },
   methods: {
     joinScene(sceneUuid) {
-      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { sceneUuid: sceneUuid });
+      socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, {
+        sceneUuid: sceneUuid,
+      });
 
       socket.off(ResponseSocketsEnum.JOIN_PUBLIC_SCENE);
       socket.on(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, (response) => {
@@ -114,38 +90,25 @@ export default {
   max-height: 340px;
 }
 
-.lobby__rooms-container-title {
-  font-size: 26px;
-  font-weight: bold;
+.lobby__rooms-container__tabs {
+  display: flex;
+  gap: 3px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lobby__rooms-container__tabs-tab {
+  background-color: #3a4b54c9;
   color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
 }
 
-.lobby__background img {
-  position: absolute;
-  top: -22px;
-  left: 0;
-  z-index: 0;
-}
-
-.lobby__flor img {
-  position: absolute;
-  top: 0px;
-  left: 35px;
-  z-index: 0;
-}
-
-.lobby__marikita img {
-  position: absolute;
-  top: 395px;
-  left: -222px;
-  z-index: 0;
-}
-
-.lobby__foreground img {
-  position: absolute;
-  top: 227px;
-  left: 0px;
-  z-index: 0;
+.lobby__rooms-container__tabs-tab.selected {
+  background-color: #1c2c35ad;
 }
 
 .lobby__rooms {
@@ -154,7 +117,7 @@ export default {
   color: white;
   padding: 25px 10px;
   border-radius: 10px;
-  width: 240px;
+  width: 255px;
 }
 
 .lobby__rooms-list {
@@ -193,25 +156,8 @@ export default {
   font-size: 12px;
 }
 
-.lobby__avatar {
-  position: absolute;
-  top: 277px;
-  left: 431px;
-  z-index: 1;
+.fixed-width{
   width: 100px;
-  display: flex;
-  justify-content: center;
-}
-
-@keyframes floatAnimation {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(20px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+  text-align: center;
 }
 </style>
