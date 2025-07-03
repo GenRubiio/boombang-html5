@@ -60,6 +60,9 @@ export default {
     PublicSceneScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/scenes/PublicSceneScreen.vue")
     ),
+    PrivateSceneScreen: defineAsyncComponent(() =>
+      import("../../../views/screens/game/scenes/PrivateSceneScreen.vue")
+    ),
     GameSceneScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/scenes/GameSceneScreen.vue")
     ),
