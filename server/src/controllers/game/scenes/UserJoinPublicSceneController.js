@@ -38,7 +38,7 @@ class UserJoinPublicSceneController {
                     scenery: await new PublicSceneResource(scene).toObject()
                 }
             });
-            scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
+            scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
                 user: await new UserResource(user).toObject(),
             }, user);
 

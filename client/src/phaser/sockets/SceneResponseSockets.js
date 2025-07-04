@@ -16,7 +16,7 @@ import UserReceiveEffectController from "../controllers/scene/UserReceiveEffectC
 class SceneResponseSockets {
     static main(gameScene) {
         // Escuchar cuando un nuevo jugador entra
-        socket.on(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, (data) => {
+        socket.on(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, (data) => {
             AddUserController.main(gameScene, data.user);
         });
 
