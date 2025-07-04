@@ -122,7 +122,7 @@ class MatchMakerInstance {
                         }
                     }
                 });
-                minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_PUBLIC_SCENE, {
+                minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
                     user: await new UserResource(user).toObject(),
                 }, user);
 

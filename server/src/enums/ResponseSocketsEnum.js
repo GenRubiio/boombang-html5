@@ -3,7 +3,7 @@ const Enum = require('./Enum');
 const ResponseSocketsEnum = new Enum({
     GET_PUBLIC_SCENE_DATA: 'response:get_public_area_data',
     JOIN_PUBLIC_SCENE: 'response:join_public_area',
-    NEW_USER_JOIN_PUBLIC_SCENE: 'response:new_user_join_public_area',
+    NEW_USER_JOIN_SCENE: 'response:new_user_join_public_area',
     USER_LEFT_PUBLIC_SCENE: 'response:user_left_public_area',
     USER_MOVE_DENIED: 'response:user_move_denied',
     USER_MOVE: 'response:user_move',
