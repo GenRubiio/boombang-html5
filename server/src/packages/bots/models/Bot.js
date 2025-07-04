@@ -159,7 +159,7 @@ class Bot {
     }
 
     joinArea(sceneUuid) {
-        this.socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { sceneUuid: sceneUuid });
+        this.socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { sceneUuid: sceneUuid, menuType: 1 });
     }
 }
 

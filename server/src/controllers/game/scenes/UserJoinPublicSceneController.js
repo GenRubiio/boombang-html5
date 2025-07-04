@@ -2,11 +2,13 @@
 const UpdatePublicScenesController = require('../lobby/UpdatePublicScenesController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PublicScenesCollection = require('../../../collections/PublicScenesCollection');
+const GameScenesCollection = require('../../../collections/GameScenesCollection');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const UserResource = require('../../../resources/UserResource');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const PublicSceneResource = require('../../../resources/PublicSceneResource');
+const MenuTypeEnum = require('../../../enums/MenuTypeEnum');
 
 class UserJoinPublicSceneController {
     static async main(socket, io, data) {
@@ -16,9 +18,11 @@ class UserJoinPublicSceneController {
                 //throw new Error("User not found");
                 return;
             }
-            const scene = PublicScenesCollection.getByUid(data.sceneUuid);
+            const scene = data.menuType == MenuTypeEnum.PUBLIC_SCENE ?
+                PublicScenesCollection.getByUid(data.sceneUuid) :
+                GameScenesCollection.getByUid(data.sceneUuid);
             if (!scene) {
-                throw new Error("Public area not found");
+                throw new Error("Scene not found");
             }
             if (scene.containsUser(user) || user.currentArea) {
                 //throw new Error("User already in area");
