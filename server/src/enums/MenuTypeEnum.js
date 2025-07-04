@@ -1,8 +1,8 @@
 const Enum = require('./Enum');
 
-const MinigameAlertsEnum = new Enum({
+const MenuTypeEnum = new Enum({
     PUBLIC_SCENE: 1,
-    GAME: 2,
+    GAME_SCENE: 2,
 });
 
-module.exports = MinigameAlertsEnum;
+module.exports = MenuTypeEnum;

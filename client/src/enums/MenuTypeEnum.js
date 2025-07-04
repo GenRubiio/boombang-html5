@@ -1,8 +1,8 @@
 import Enum from './Enum';
 
-const MinigameAlertsEnum = new Enum({
+const MenuTypeEnum = new Enum({
     PUBLIC_SCENE: 1,
-    GAME: 2,
+    GAME_SCENE: 2,
 });
 
-export default MinigameAlertsEnum;
+export default MenuTypeEnum;
