@@ -5,6 +5,7 @@ use App\Http\Middleware\VerifyEmulatorToken;
 use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\Auth\RegisterApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
+use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 
@@ -16,6 +17,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
     Route::prefix('public-scene')->group(function () {
         Route::post('get', [PublicSceneApiController::class, 'get']);
+    });
+
+    Route::prefix('game-scene')->group(function () {
+        Route::post('get', [GameSceneApiController::class, 'get']);
     });
 
     Route::prefix('minigame-scene')->group(function () {
