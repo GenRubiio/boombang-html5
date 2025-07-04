@@ -11,14 +11,14 @@ use App\Http\Resources\PublicSceneResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 
-class PublicSceneApiController extends Controller
+class GameSceneApiController extends Controller
 {
     use ResponseApiControllerTrait;
 
     public function get(Request $request): JsonResource
     {
         try {
-            $items = PublicScene::with('items')->where('menu_type', MenuTypeEnum::PUBLIC_SCENE->key())->get();
+            $items = PublicScene::with('items')->where('menu_type', MenuTypeEnum::GAME_SCENE->key())->get();
             return $this->successResponse(
                 [
                     'scenes' => PublicSceneResource::collection($items)
