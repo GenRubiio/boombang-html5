@@ -23,9 +23,9 @@ const ResponseSocketsEnum = new Enum({
     MINIGAME_ALERT: 'response:minigame_alert',
     MINIGAME_JOIN: 'response:join_minigame',
     MINIGAME_CALL_NOTIFICATION: 'response:minigame_call_notification',
-    SCENE_OBJECT_SPAWNED: 'reponse:object_spawned',
-    SCENE_OBJECT_REMOVED: 'reponse:object_removed',
-    SCENE_OBJECT_COLLECTED: 'reponse:object_collected',
+    SCENE_OBJECT_SPAWNED: 'response:object_spawned',
+    SCENE_OBJECT_REMOVED: 'response:object_removed',
+    SCENE_OBJECT_COLLECTED: 'response:object_collected',
     USER_RECEIVE_EFFECT: 'response:user_receive_effect',
 });
 
