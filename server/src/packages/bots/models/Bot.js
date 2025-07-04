@@ -17,6 +17,9 @@ class Bot {
 
         this.socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
             this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
+            this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
+                type: 1,
+            });
         });
 
         this.socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, (publicScenes) => {
@@ -27,9 +30,6 @@ class Bot {
             this.moveRandomly();
             //this.sendRandomMessage();
             this.selectUser();
-            this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
-                type: 1,
-            });
         });
 
         this.socket.on(ResponseSocketsEnum.GET_PUBLIC_SCENE_USERS, (data) => {
