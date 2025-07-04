@@ -93,7 +93,13 @@ class MatchMakerInstance {
                     continue;
                 }
 
-                if (user.currentArea && user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE) {
+                if (user.currentArea
+                    && (
+                        user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE
+                        || user.currentArea.scene_type == SceneTypesEnum.GAME_SCENE
+                        || user.currentArea.scene_type == SceneTypesEnum.PRIVATE_SCENE
+                    )
+                ) {
                     RemoveUserFromSceneTask.main(user.currentArea, user);
                     console.log('Usuario eliminado de la escena pública', user.username);
                 }

@@ -29,6 +29,7 @@ const ResponseSocketsEnum = new Enum({
     SCENE_OBJECT_COLLECTED: 'response:object_collected',
     USER_RECEIVE_EFFECT: 'response:user_receive_effect',
     USER_CHANGE_LOOK: 'response:user_change_look',
+    UPDATE_GAME_SCENES: 'response:update_game_scenes',
 });
 
 module.exports = ResponseSocketsEnum;

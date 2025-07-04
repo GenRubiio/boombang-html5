@@ -1,4 +1,5 @@
 const LoadPublicScenesBoot = require('../boot/LoadPublicScenesBoot');
+const LoadGameScenesBoot = require('../boot/LoadGameScenesBoot');
 const LoadMinigameScenesBoot = require('../boot/LoadMinigameScenesBoot');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
@@ -7,6 +8,7 @@ const initializer = async () => {
     logger.log('Initializing preloaded data...');
     
     await LoadPublicScenesBoot.main();
+    await LoadGameScenesBoot.main();
     await LoadMinigameScenesBoot.main();
 };
 
