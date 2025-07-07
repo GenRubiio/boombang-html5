@@ -7,6 +7,7 @@ const GameScreensEnum = new Enum({
     PUBLIC_SCENE: 'public_area',
     GAME_SCENE: 'game_scene',
     MINIGAME_SCENE: 'minigame_scene',
+    ISLAND_CREATE: 'island_create'
 });
 
 export default GameScreensEnum;

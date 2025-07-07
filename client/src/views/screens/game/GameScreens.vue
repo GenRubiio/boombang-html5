@@ -4,6 +4,7 @@
       v-if="currentScreen === GameScreensEnum.LOBBY"
       @joinPublicScene="onJoinPublicScene"
       @updateLoading="onUpdateLoading"
+      @createIsland="onCreateIsland"
     />
     <PublicSceneScreen
       v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
@@ -25,6 +26,13 @@
       :sceneData="sceneData"
       @exitLobby="onExitLobby"
       @updateLoading="onUpdateLoading"
+    />
+    <!-- Nueva pantalla para creación de islas -->
+    <IslandCreateScreen
+      v-else-if="currentScreen === GameScreensEnum.ISLAND_CREATE"
+      @exit="onExitIslandCreation"
+      @updateLoading="onUpdateLoading"
+      @exitLobby="onExitLobby"
     />
     <NotificationMinigameComponent
       v-if="showMinigameNotification"
@@ -69,6 +77,9 @@ export default {
     MinigameSceneScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/scenes/MinigameSceneScreen.vue")
     ),
+    IslandCreateScreen: defineAsyncComponent(() =>
+      import("../../../views/screens/game/island/IslandCreateScreen.vue")
+    ),
     NotificationMinigameComponent: defineAsyncComponent(() =>
       import("../../components/interface/NotificationMinigameComponent.vue")
     ),
@@ -98,6 +109,14 @@ export default {
       this.sceneData = sceneData;
       this.currentScreenType = sceneType;
       this.currentScreen = GameScreensEnum.MINIGAME_SCENE;
+    },
+    // Nuevo método para manejar creación de islas
+    onCreateIsland() {
+      this.currentScreen = GameScreensEnum.ISLAND_CREATE;
+    },
+    // Método para salir de la creación de islas
+    onExitIslandCreation() {
+      this.currentScreen = GameScreensEnum.LOBBY;
     },
   },
   mounted() {
