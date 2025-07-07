@@ -3,7 +3,10 @@
     <UiElementsComponent />
     <div class="lobby__scenes">
       <div class="lobby__scenes-container">
-        <LobbyTabs :active-tab="activeTab" @update:activeTab="activeTab = $event" />
+        <LobbyTabs
+          :active-tab="activeTab"
+          @update:activeTab="activeTab = $event"
+        />
 
         <AreasTab
           v-if="activeTab === 'areas'"
@@ -44,6 +47,8 @@ import AreasTab from "../../components/game/lobby/AreasTabComponent.vue";
 import GamesTab from "../../components/game/lobby/GamesTabComponent.vue";
 import IslandsTab from "../../components/game/lobby/IslandsTabComponent.vue";
 import SearchTab from "../../components/game/lobby/SearchTabComponent.vue";
+import { useLobbyStore } from "../../../stores/LobbyStore";
+import { mapActions, mapState } from "pinia";
 
 export default {
   components: {
@@ -56,7 +61,6 @@ export default {
   },
   data() {
     return {
-      activeTab: "areas",
       activeIslandTab: "public",
       publicScenes: [],
       gameScenes: [],
@@ -64,6 +68,16 @@ export default {
       favoriteIslands: [],
       myIslands: [],
     };
+  },
+  computed: {
+    activeTab: {
+      get() {
+        return useLobbyStore().activeTab;
+      },
+      set(newTab) {
+        useLobbyStore().setActiveTab(newTab);
+      },
+    },
   },
   async created() {
     this.$emit("updateLoading", true);
@@ -74,6 +88,7 @@ export default {
     this.loadMyIslands();
   },
   methods: {
+    ...mapActions(useLobbyStore, ["setActiveTab"]),
     loadAreas() {
       socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
       socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES);
@@ -99,8 +114,7 @@ export default {
       // Lógica para cargar mis islas
     },
     createIsland() {
-      console.log("Crear nueva isla");
-      this.$emit('createIsland');
+      this.$emit("createIsland");
     },
     joinScene(sceneUuid, menuType) {
       socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, {
