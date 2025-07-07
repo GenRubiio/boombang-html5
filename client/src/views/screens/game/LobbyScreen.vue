@@ -62,14 +62,78 @@
           </div>
         </div>
 
-        <!-- Contenido de Islas -->
+        <!-- Contenido de Islas (principal) -->
         <div v-if="activeTab === 'islands'" class="lobby__scenes-tab">
-          <div class="lobby__scenes-list">
+          <!-- Sub-tabs dentro de la pestaña Islas -->
+          <div class="lobby__islands-subtabs">
+            <div
+              class="lobby__islands-subtabs-tab fixed-width"
+              :class="{ selected: activeIslandTab === 'public' }"
+              @click="activeIslandTab = 'public'"
+            >
+              Islas
+            </div>
+            <div
+              class="lobby__islands-subtabs-tab fixed-width"
+              :class="{ selected: activeIslandTab === 'favorites' }"
+              @click="activeIslandTab = 'favorites'"
+            >
+              Favoritas
+            </div>
+            <div
+              class="lobby__islands-subtabs-tab fixed-width"
+              :class="{ selected: activeIslandTab === 'myIslands' }"
+              @click="activeIslandTab = 'myIslands'"
+            >
+              Mis Islas
+            </div>
+            <button
+              class="lobby__islands-subtabs-tab create-button"
+              @click="createIsland"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Contenido para Islas Públicas -->
+          <div v-if="activeIslandTab === 'public'" class="lobby__scenes-list">
             <div v-for="island in publicIslands" :key="island.id">
               <button @click="joinIsland(island.id)">
                 {{ island.name }}
                 <span>{{ island.visitors }}</span>
               </button>
+            </div>
+          </div>
+
+          <!-- Contenido para Islas Favoritas -->
+          <div
+            v-if="activeIslandTab === 'favorites'"
+            class="lobby__scenes-list"
+          >
+            <div v-for="island in favoriteIslands" :key="island.id">
+              <button @click="joinIsland(island.id)">
+                {{ island.name }}
+                <span>{{ island.visitors }}</span>
+              </button>
+            </div>
+            <div v-if="favoriteIslands.length === 0" class="empty-message">
+              No tienes islas favoritas
+            </div>
+          </div>
+
+          <!-- Contenido para Mis Islas -->
+          <div
+            v-if="activeIslandTab === 'myIslands'"
+            class="lobby__scenes-list"
+          >
+            <div v-for="island in myIslands" :key="island.id">
+              <button @click="joinIsland(island.id)">
+                {{ island.name }}
+                <span>{{ island.visitors }}</span>
+              </button>
+            </div>
+            <div v-if="myIslands.length === 0" class="empty-message">
+              Aún no has creado islas
             </div>
           </div>
         </div>
@@ -95,10 +159,13 @@ import UiElementsComponent from "../../components/game/lobby/UiElementsComponent
 export default {
   data() {
     return {
-      activeTab: "areas", // Pestaña activa por defecto
+      activeTab: "areas", // Pestaña principal activa por defecto
+      activeIslandTab: "public", // Sub-pestaña de Islas activa por defecto
       publicScenes: [],
       gameScenes: [], // Datos para juegos
       publicIslands: [], // Datos para islas
+      favoriteIslands: [],
+      myIslands: [],
       MenuTypeEnum,
     };
   },
@@ -109,6 +176,8 @@ export default {
     this.loadAreas();
     this.loadGames();
     this.loadIslands();
+    this.loadFavoriteIslands();
+    this.loadMyIslands();
   },
   components: {
     UiElementsComponent,
@@ -144,6 +213,28 @@ export default {
       // socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS, (islands) => {
       //   this.publicIslands = islands;
       // });
+    },
+
+    // Cargar islas favoritas
+    loadFavoriteIslands() {
+      //socket.emit(RequestSocketsEnum.GET_FAVORITE_ISLANDS);
+      //socket.on(ResponseSocketsEnum.UPDATE_FAVORITE_ISLANDS, (islands) => {
+      //  this.favoriteIslands = islands;
+      //});
+    },
+
+    // Cargar mis islas
+    loadMyIslands() {
+      //socket.emit(RequestSocketsEnum.GET_MY_ISLANDS);
+      //socket.on(ResponseSocketsEnum.UPDATE_MY_ISLANDS, (islands) => {
+      //  this.myIslands = islands;
+      //});
+    },
+
+    // Crear nueva isla
+    createIsland() {
+      console.log("Crear nueva isla");
+      // Lógica para crear nueva isla
     },
 
     joinScene(sceneUuid, menuType) {
@@ -260,5 +351,43 @@ export default {
 .fixed-width {
   width: 100px;
   text-align: center;
+}
+
+/* Nuevos estilos para las sub-tabs de islas */
+.lobby__islands-subtabs {
+  display: flex;
+  gap: 3px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lobby__islands-subtabs-tab {
+  background-color: #3a4b54c9;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  border: none;
+}
+
+.lobby__islands-subtabs-tab.selected {
+  background-color: #1c2c35ad;
+}
+
+.create-button {
+  background-color: #4caf50; /* Color verde para el botón de crear */
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-message {
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
 }
 </style>
