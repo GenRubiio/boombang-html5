@@ -11,6 +11,7 @@ class IslandResource extends Resource {
             user_id: data.userId,
             count_users: data.countUsers || 0, // Default to 0 if not provided
             scenes: data.scenes || [], // Default to empty array if not provided
+            my_island: data.myIsland || false // Default to false if not provided
         };
     }
 }

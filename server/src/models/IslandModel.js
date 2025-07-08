@@ -8,6 +8,7 @@ class IslandModel {
         this.userId = row.user_id;
         this.countUsers = 0;
         this.scenes = row.scenes || [];
+        this.myIsland = row.my_island || false; // Default to false if not provided
     }
 }
 
