@@ -22,6 +22,7 @@ const RequestSocketsEnum = new Enum({
     USER_SEND_COCONUT: 'request:send_coconut',
     CHANGE_LOOK: 'request:change_look',
     GET_GAME_SCENES: 'request:get_game_scenes',
+    ISLAND_CREATE: 'request:island_create',
 });
 
 module.exports = RequestSocketsEnum;

@@ -22,15 +22,29 @@
 
     <!-- Controles de navegación -->
     <div class="controls">
-      <button class="control-btn" @click="prevIsland">Anterior</button>
-      <span class="label">Escoge el fondo</span>
-      <button class="control-btn" @click="nextIsland">Siguiente</button>
-      <button class="accept-btn" @click="acceptIsland">Aceptar</button>
+      <template v-if="step === 1">
+        <button class="control-btn" @click="prevIsland">Anterior</button>
+        <span class="label">Escoge el fondo</span>
+        <button class="control-btn" @click="nextIsland">Siguiente</button>
+        <button class="accept-btn" @click="goToStep(2)">Aceptar</button>
+      </template>
+      <template v-if="step === 2">
+        <span class="label">Pon un nombre a tu isla</span>
+        <input
+          type="text"
+          v-model="islandName"
+          placeholder="Nombre de la isla"
+        />
+        <button class="accept-btn" @click="createIsland">Crear Isla</button>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+import socket from "../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
 import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
 import asset_island1_image from "../../../../assets/game/islands/isla1.png";
 import asset_island2_image from "../../../../assets/game/islands/isla2.png";
@@ -53,6 +67,8 @@ export default {
       imagesToLoad: 6, // 5 islas + 1 brújula
       loadedImages: 0,
       imagesLoaded: false,
+      step: 1,
+      islandName: "",
     };
   },
   computed: {
@@ -68,23 +84,30 @@ export default {
     nextIsland() {
       this.currentIndex = (this.currentIndex + 1) % this.islands.length;
     },
-    acceptIsland() {
-      this.$emit("islandSelected", this.currentIsland);
+    goToStep(step) {
+      this.step = step;
     },
-
+    createIsland() {
+      socket.emit(RequestSocketsEnum.ISLAND_CREATE, {
+        name: this.islandName,
+        type: this.currentIndex + 1, // Asumiendo que el tipo de isla es el índice + 1
+      });
+      socket.off(ResponseSocketsEnum.ISLAND_CREATE_ERROR);
+      socket.on(ResponseSocketsEnum.ISLAND_CREATE_ERROR, (response) => {
+        console.log("Error al crear la isla:", response);
+        alert("Error al crear la isla. Por favor, inténtalo de nuevo.");
+      });
+    },
     handleImageLoad() {
       if (this.imagesLoaded) return;
 
       this.loadedImages++;
 
-      // Solo emitir cuando todas las imágenes estén cargadas
       if (this.loadedImages >= this.imagesToLoad) {
         this.imagesLoaded = true;
         this.$emit("updateLoading", false);
       }
     },
-
-    // Precarga de imágenes en segundo plano
     preloadImages() {
       const allImages = [...this.islands, this.asset_brujula_image];
 
@@ -95,10 +118,9 @@ export default {
         img.onerror = this.handleImageLoad;
       });
     },
-
     goBackToLobby() {
       this.$emit("updateLoading", true);
-      this.$emit("exitLobby"); // Emite un evento para cambiar la escena
+      this.$emit("exitLobby");
     },
   },
   created() {
@@ -106,7 +128,6 @@ export default {
     this.preloadImages();
   },
   mounted() {
-    // Forzar verificación de imágenes ya cargadas
     this.$nextTick(() => {
       const images = this.$el.querySelectorAll("img");
       images.forEach((img) => {
@@ -153,7 +174,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
-  z-index: 110; /* Encima de otros elementos */
+  z-index: 110;
 }
 
 .control-btn,
@@ -164,8 +185,8 @@ export default {
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 4px;
-  z-index: 120; /* Máxima prioridad */
-  position: relative; /* Necesario para z-index */
+  z-index: 120;
+  position: relative;
 }
 
 .control-btn:hover,
@@ -177,5 +198,11 @@ export default {
   color: #fff;
   font-size: 1.2em;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+input[type="text"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 </style>
