@@ -111,7 +111,11 @@ export default {
       // Lógica para cargar islas favoritas
     },
     loadMyIslands() {
-      // Lógica para cargar mis islas
+      socket.emit(RequestSocketsEnum.GET_MY_ISLANDS);
+      socket.off(ResponseSocketsEnum.GET_MY_ISLANDS);
+      socket.on(ResponseSocketsEnum.GET_MY_ISLANDS, (data) => {
+        this.myIslands = data.islands;
+      });
     },
     createIsland() {
       this.$emit("createIsland");
@@ -133,7 +137,9 @@ export default {
       });
     },
     joinIsland(islandId) {
-      console.log("Visitar isla:", islandId);
+      socket.emit(RequestSocketsEnum.JOIN_ISLAND, {
+        islandId: islandId,
+      });
     },
   },
 };
@@ -155,7 +161,7 @@ export default {
   padding: 10px;
   text-align: start;
   height: 100vh;
-  max-height: 340px;
+  max-height: 350px;
 }
 
 .lobby__scenes {

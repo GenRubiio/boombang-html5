@@ -9,9 +9,10 @@ class IslandResource extends Resource {
             type: data.type,
             is_uppercut_active: data.isUppercutActive,
             user_id: data.userId,
-            count_users: data.countUsers || 0, // Default to 0 if not provided
+            visitors: data.visitors || 0, // Default to 0 if not provided
             scenes: data.scenes || [], // Default to empty array if not provided
-            my_island: data.myIsland || false // Default to false if not provided
+            my_island: data.myIsland || false, // Default to false if not provided
+            user: data.user || null
         };
     }
 }

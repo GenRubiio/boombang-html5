@@ -29,6 +29,11 @@ class IslandResource extends JsonResource
             'is_uppercut_active' => $this->is_uppercut_active,
             'user_id' => $this->user_id,
             'my_island' => Auth::user()->id == $this->user_id,
+            'user' => [
+                'username' => $this->user->username,
+                'avatar_id' => $this->user->avatar,
+            ],
+            'scenes' => []
         ];
     }
 }

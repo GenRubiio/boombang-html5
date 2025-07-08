@@ -40,8 +40,13 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         });
 
         Route::prefix('island')->group(function () {
-            Route::get('/', [IslandApiController::class, 'index']);
+            Route::post('/', [IslandApiController::class, 'index']);
             Route::post('create', [IslandApiController::class, 'create']);
+            Route::post('join', [IslandApiController::class, 'join']);
+        });
+
+        Route::prefix('islands')->group(function () {
+            Route::post('get', [IslandApiController::class, 'getMyIslands']);
         });
     });
 });

@@ -19,6 +19,8 @@ const RequestSocketsEnum = new Enum({
     CHANGE_LOOK: 'request:change_look',
     GET_GAME_SCENES: 'request:get_game_scenes',
     ISLAND_CREATE: 'request:island_create',
+    GET_MY_ISLANDS: 'request:get_my_islands',
+    JOIN_ISLAND: 'request:join_island',
 });
 
 export default RequestSocketsEnum;
