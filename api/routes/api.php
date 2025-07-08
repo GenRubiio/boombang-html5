@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\User\IncreaseStatsApiController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
+use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 
 Route::middleware(VerifyEmulatorToken::class)->group(function () {
     Route::prefix('auth')->group(function () {
@@ -15,6 +16,9 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::post('register', [RegisterApiController::class, 'register']);
     });
 
+    /**
+     * Boot Emulator API Routes
+     */
     Route::prefix('public-scene')->group(function () {
         Route::post('get', [PublicSceneApiController::class, 'get']);
     });
@@ -27,9 +31,17 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::post('get', [MinigameSceneApiController::class, 'get']);
     });
 
+    /**
+     * Game API Routes
+     */
     Route::middleware(['auth:api'])->group(function () {
         Route::prefix('user')->group(function () {
             Route::post('increase-stats', [IncreaseStatsApiController::class, 'index']);
+        });
+
+        Route::prefix('island')->group(function () {
+            Route::get('/', [IslandApiController::class, 'index']);
+            Route::post('create', [IslandApiController::class, 'create']);
         });
     });
 });
