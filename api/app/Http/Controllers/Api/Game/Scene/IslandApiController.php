@@ -40,4 +40,29 @@ class IslandApiController extends Controller
             'island' => (new IslandResource($island))->toDTO()
         ]);
     }
+
+    public function getMyIslands()
+    {
+        $user = Auth::user();
+        $islands = Island::where('user_id', $user->id)->get();
+        return $this->successResponse([
+            'islands' => IslandResource::collection($islands)
+        ]);
+    }
+
+    public function join(Request $request)
+    {
+        $validated = $request->validate([
+            'islandId' => 'required|integer|exists:islands,id',
+        ]);
+
+        $island = Island::find($validated['islandId']);
+        if (!$island) {
+            return $this->errorResponse('Island not found', 404);
+        }
+
+        return $this->successResponse([
+            'island' => (new IslandResource($island))->toDTO()
+        ]);
+    }
 }

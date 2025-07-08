@@ -19,11 +19,20 @@ class IslandApiService {
         }
     }
 
-    static async getByUuids(uuids, user) {
+    static async joinIsland(islandData, user) {
         try {
-            return await ApiService.post('api/islands/get-by-uuids', uuids, user.authJwt);
+            return await ApiService.post('api/island/join', islandData, user.authJwt);
         } catch (error) {
-            console.error('Error al obtener islas por UUIDs:', error.response ? error.response.data : error.message);
+            console.error('Error al unirse a la isla:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async getByIds(ids, user) {
+        try {
+            return await ApiService.post('api/islands/get-by-ids', ids, user.authJwt);
+        } catch (error) {
+            console.error('Error al obtener islas por IDs:', error.response ? error.response.data : error.message);
             throw error;
         }
     }

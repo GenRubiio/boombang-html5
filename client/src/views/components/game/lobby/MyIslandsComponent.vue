@@ -27,6 +27,49 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  height: 240px;
+  overflow-y: scroll;
+  border-radius: 0 !important;
+}
+
+.lobby__scenes-list {
+  border-radius: 12px; /* bordes redondeados en el contenedor */
+  padding-right: 8px; /* espacio entre contenido y scrollbar */
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 240px;
+  overflow-y: scroll;
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #3c87b3ad #2a3a46;
+}
+
+/* WebKit: ancho/alto */
+.lobby__scenes-list::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* WebKit: track */
+.lobby__scenes-list::-webkit-scrollbar-track {
+  background: #2a3a46;
+  border-radius: 12px; /* mismo radio que el contenedor */
+  margin: 4px 0; /* separa ligeramente el track de los extremos */
+}
+
+/* WebKit: thumb */
+.lobby__scenes-list::-webkit-scrollbar-thumb {
+  background-color: #3c87b3ad;
+  border-radius: 12px; /* bordes redondeados en el thumb */
+  border: 2px solid #2a3a46; /* crea “acolchado” entre thumb y track */
+}
+
+/* WebKit: hover thumb */
+.lobby__scenes-list::-webkit-scrollbar-thumb:hover {
+  background-color: #559ac0;
 }
 
 .lobby__scenes-list button {
