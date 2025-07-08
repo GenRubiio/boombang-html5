@@ -27,12 +27,17 @@
       @exitLobby="onExitLobby"
       @updateLoading="onUpdateLoading"
     />
-    <!-- Nueva pantalla para creación de islas -->
     <IslandCreateScreen
       v-else-if="currentScreen === GameScreensEnum.ISLAND_CREATE"
       @exit="onExitIslandCreation"
       @updateLoading="onUpdateLoading"
       @exitLobby="onExitLobby"
+    />
+    <IslandScreen
+      v-else-if="currentScreen === GameScreensEnum.ISLAND"
+      :sceneData="sceneData"
+      @exitLobby="onExitLobby"
+      @updateLoading="onUpdateLoading"
     />
     <NotificationMinigameComponent
       v-if="showMinigameNotification"
@@ -80,6 +85,9 @@ export default {
     IslandCreateScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/island/IslandCreateScreen.vue")
     ),
+    IslandScreen: defineAsyncComponent(() =>
+      import("../../../views/screens/game/island/IslandScreen.vue")
+    ),
     NotificationMinigameComponent: defineAsyncComponent(() =>
       import("../../components/interface/NotificationMinigameComponent.vue")
     ),
@@ -118,6 +126,10 @@ export default {
     onExitIslandCreation() {
       this.currentScreen = GameScreensEnum.LOBBY;
     },
+    onJoinIsland(sceneData) {
+      this.sceneData = sceneData;
+      this.currentScreen = GameScreensEnum.ISLAND;
+    },
   },
   mounted() {
     socket.off(ResponseSocketsEnum.MINIGAME_JOIN);
@@ -128,9 +140,15 @@ export default {
         console.log("Error al unirse a la sala.");
       }
     });
+
     socket.off(ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION);
     socket.on(ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION, () => {
       this.showMinigameNotification = true;
+    });
+
+    socket.off(ResponseSocketsEnum.JOIN_ISLAND);
+    socket.on(ResponseSocketsEnum.JOIN_ISLAND, (response) => {
+      this.onJoinIsland(response.island);
     });
   },
   beforeUnmount() {},

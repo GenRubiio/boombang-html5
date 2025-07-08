@@ -31,6 +31,7 @@ const ResponseSocketsEnum = new Enum({
     USER_CHANGE_LOOK: 'response:user_change_look',
     UPDATE_GAME_SCENES: 'response:update_game_scenes',
     ISLAND_CREATE_ERROR: 'response:island_create_error',
+    JOIN_ISLAND: 'response:join_island',
 });
 
 module.exports = ResponseSocketsEnum;
