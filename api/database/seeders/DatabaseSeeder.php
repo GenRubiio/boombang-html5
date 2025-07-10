@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MinigameScenesTableSeeder::class);
         $this->call(SceneItemsTableSeeder::class);
         $this->call(PublicSceneItemsTableSeeder::class);
+        $this->call(PrivateSceneConfigSeeder::class);
 
         Artisan::call('passport:client --personal');
     }

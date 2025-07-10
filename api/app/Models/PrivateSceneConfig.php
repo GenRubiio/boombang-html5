@@ -5,34 +5,34 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Island extends Model
+class PrivateSceneConfig extends Model
 {
     use CrudTrait;
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'description',
-        'type',
-        'is_uppercut_active',
-        'user_id',
-    ];
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_uppercut_active' => 'boolean',
+    protected $table = 'private_scene_configs';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    protected $guarded = ['id'];
+    protected $fillable = [
+        'island_type',
+        'max_users',
+        'map_width',
+        'map_height',
+        'map',
+        'start_x',
+        'start_y',
+        'start_z',
+        'default_colors'
     ];
+    // protected $hidden = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -45,16 +45,6 @@ class Island extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function privateScenes()
-    {
-        return $this->hasMany(PrivateScene::class);
-    }
 
     /*
     |--------------------------------------------------------------------------
