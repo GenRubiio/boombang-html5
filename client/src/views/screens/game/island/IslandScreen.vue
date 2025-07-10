@@ -1,5 +1,21 @@
 <template>
   <div id="island-screen" class="island-screen">
+    <!-- Botones de escenario -->
+    <div class="scenario-buttons">
+      <button
+        v-for="n in 5"
+        :key="n"
+        class="scenario-button"
+        @click="handleSceneAction(sceneData.scenes && sceneData.scenes[n - 1])"
+      >
+        {{
+          sceneData.scenes && sceneData.scenes[n - 1]
+            ? sceneData.scenes[n - 1].name
+            : "Añadir escenario"
+        }}
+      </button>
+    </div>
+
     <!-- Imagen de la brújula -->
     <img
       class="brujiula"
@@ -78,6 +94,15 @@ export default {
       this.$emit("updateLoading", true);
       this.$emit("exitLobby");
     },
+    handleSceneAction(scene) {
+      if (scene) {
+        console.log("Acción para el escenario existente:", scene);
+        // Aquí iría la lógica para editar o entrar al escenario
+      } else {
+        console.log("Añadir nuevo escenario");
+        this.$emit("createIslandScene", this.sceneData);
+      }
+    }
   },
   created() {
     this.$emit("updateLoading", true);
@@ -92,6 +117,34 @@ export default {
 .island-screen {
   position: relative;
   background-color: #f0f0f0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.scenario-buttons {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.scenario-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.scenario-button:hover {
+  background-color: #45a049;
   width: 100%;
   height: 100%;
   overflow: hidden;

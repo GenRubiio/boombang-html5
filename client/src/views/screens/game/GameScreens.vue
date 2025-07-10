@@ -29,7 +29,6 @@
     />
     <IslandCreateScreen
       v-else-if="currentScreen === GameScreensEnum.ISLAND_CREATE"
-      @exit="onExitIslandCreation"
       @updateLoading="onUpdateLoading"
       @exitLobby="onExitLobby"
     />
@@ -37,6 +36,13 @@
       v-else-if="currentScreen === GameScreensEnum.ISLAND"
       :sceneData="sceneData"
       @exitLobby="onExitLobby"
+      @updateLoading="onUpdateLoading"
+      @createIslandScene="onCreateIslandScene"
+    />
+    <IslandSceneCreateScreen
+      v-else-if="currentScreen === GameScreensEnum.ISLAND_SCENE_CREATE"
+      :sceneData="sceneData"
+      @exitIslandSceneCreation="onExitIslandSceneCreation"
       @updateLoading="onUpdateLoading"
     />
     <NotificationMinigameComponent
@@ -88,6 +94,9 @@ export default {
     IslandScreen: defineAsyncComponent(() =>
       import("../../../views/screens/game/island/IslandScreen.vue")
     ),
+    IslandSceneCreateScreen: defineAsyncComponent(() =>
+      import("../../../views/screens/game/island/IslandSceneCreateScreen.vue")
+    ),
     NotificationMinigameComponent: defineAsyncComponent(() =>
       import("../../components/interface/NotificationMinigameComponent.vue")
     ),
@@ -122,9 +131,14 @@ export default {
     onCreateIsland() {
       this.currentScreen = GameScreensEnum.ISLAND_CREATE;
     },
-    // Método para salir de la creación de islas
-    onExitIslandCreation() {
-      this.currentScreen = GameScreensEnum.LOBBY;
+    // Método para manejar la creación de una escena en una isla
+    onCreateIslandScene(islandData) {
+      this.sceneData = islandData;
+      this.currentScreen = GameScreensEnum.ISLAND_SCENE_CREATE;
+    },
+    onExitIslandSceneCreation(sceneData) {
+      this.sceneData = sceneData;
+      this.currentScreen = GameScreensEnum.ISLAND;
     },
     onJoinIsland(sceneData) {
       this.sceneData = sceneData;

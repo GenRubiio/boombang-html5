@@ -44,7 +44,7 @@ class IslandApiController extends Controller
     public function getMyIslands()
     {
         $user = Auth::user();
-        $islands = Island::where('user_id', $user->id)->get();
+        $islands = Island::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         return $this->successResponse([
             'islands' => IslandResource::collection($islands)
         ]);
