@@ -60,6 +60,7 @@ class IslandApiController extends Controller
         if (!$island) {
             return $this->errorResponse('Island not found', 404);
         }
+        $island->load('privateScenes'); // Load user relationship for the island
 
         return $this->successResponse([
             'island' => (new IslandResource($island))->toDTO()

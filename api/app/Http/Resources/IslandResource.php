@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\PublicSceneResource;
 use App\Http\Resources\Traits\DtoResourceTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -33,7 +34,7 @@ class IslandResource extends JsonResource
                 'username' => $this->user->username,
                 'avatar_id' => $this->user->avatar,
             ],
-            'scenes' => []
+            'scenes' => $this->relationLoaded('privateScenes') ? PublicSceneResource::collection($this->privateScenes) : [],
         ];
     }
 }

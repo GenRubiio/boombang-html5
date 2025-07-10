@@ -97,12 +97,13 @@ export default {
       this.step = step;
     },
     createScene() {
-      socket.emit(RequestSocketsEnum.SCENE_CREATE, {
+      socket.emit(RequestSocketsEnum.PRIVATE_SCENE_CREATE, {
+        island_id: this.sceneData.id,
         name: this.sceneName,
-        scene_uuid: this.currentScene.uuid,
+        type: this.currentScene.uuid,
       });
-      socket.off(ResponseSocketsEnum.SCENE_CREATE_ERROR);
-      socket.on(ResponseSocketsEnum.SCENE_CREATE_ERROR, (response) => {
+      socket.off(ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR);
+      socket.on(ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR, (response) => {
         console.error("Error al crear la sala:", response);
         alert("Error al crear la sala. Por favor, inténtalo de nuevo.");
       });
