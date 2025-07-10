@@ -21,7 +21,7 @@ class PrivateSceneApiController extends Controller
         try {
             $validated = $request->validate([
                 'island_id' => 'required|integer|exists:islands,id',
-                'name' => 'required|string|max:15|unique:private_scenes,name',
+                'name' => 'required|string|max:15',
                 'type' => 'required|integer|exists:private_scene_configs,id',
             ]);
             // Validate if island belongs to the user
@@ -55,6 +55,7 @@ class PrivateSceneApiController extends Controller
                 'scene_id' => $scene->id
             ]);
         } catch (Exception $e) {
+            dd($e);
             return $this->handleException($e);
         }
     }
