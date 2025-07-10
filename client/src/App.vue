@@ -88,6 +88,9 @@ export default {
         antialias: false, // Desactiva si no necesitas suavizado
         roundPixels: true, // Reduce cálculos de subpíxeles
         pixelArt: true,
+        render: {
+          antialias: true, // desactívalo si quieres bordes más duros para pixel art
+        },
         width: 1012,
         height: 657,
         // Registras todas las escenas globales que vayas a usar

@@ -2,7 +2,7 @@
   <div id="island-create-screen" class="island-create-screen">
     <!-- Imagen de la brújula -->
     <img
-      class="brujiula"
+      class="brujula"
       :src="asset_brujula_image"
       alt="Brújula"
       @load="handleImageLoad"
@@ -148,7 +148,7 @@ export default {
   pointer-events: auto;
 }
 
-.brujiula {
+.brujula {
   position: absolute;
   cursor: pointer;
   z-index: 100;
