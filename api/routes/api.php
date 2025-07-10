@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyEmulatorToken;
 use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\Auth\RegisterApiController;
+use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
+use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
-use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 
 Route::middleware(VerifyEmulatorToken::class)->group(function () {
     Route::prefix('auth')->group(function () {
@@ -47,6 +48,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
         Route::prefix('islands')->group(function () {
             Route::post('get', [IslandApiController::class, 'getMyIslands']);
+        });
+
+        Route::prefix('private-scene')->group(function () {
+            Route::post('create', [PrivateSceneApiController::class, 'create']);
         });
     });
 });

@@ -5,34 +5,31 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Island extends Model
+class PrivateScene extends Model
 {
     use CrudTrait;
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'description',
-        'type',
-        'is_uppercut_active',
-        'user_id',
-    ];
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_uppercut_active' => 'boolean',
+    protected $table = 'private_scenes';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    protected $guarded = ['id'];
+    protected $fillable = [
+        'island_id',
+        'user_id',
+        'type',
+        'name',
+        'colors',
+        'password'
     ];
+    // protected $hidden = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -46,14 +43,19 @@ class Island extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user(): BelongsTo
+    public function island()
+    {
+        return $this->belongsTo(Island::class);
+    }
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function privateScenes()
+    public function privateSceneConfig()
     {
-        return $this->hasMany(PrivateScene::class);
+        return $this->belongsTo(PrivateSceneConfig::class, 'type');
     }
 
     /*

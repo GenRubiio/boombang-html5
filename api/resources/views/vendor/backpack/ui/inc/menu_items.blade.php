@@ -11,3 +11,5 @@
 <x-backpack::menu-item title="Minigame scenes" icon="la la-question" :link="backpack_url('minigame-scene')" />
 <x-backpack::menu-item title="Scene items" icon="la la-question" :link="backpack_url('scene-item')" />
 <x-backpack::menu-item title="Islands" icon="la la-question" :link="backpack_url('island')" />
+<x-backpack::menu-item title="Private scene configs" icon="la la-question" :link="backpack_url('private-scene-config')" />
+<x-backpack::menu-item title="Private scenes" icon="la la-question" :link="backpack_url('private-scene')" />

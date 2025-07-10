@@ -20,6 +20,8 @@ Route::group([
     Route::crud('minigame-scene', 'MinigameSceneCrudController');
     Route::crud('scene-item', 'SceneItemCrudController');
     Route::crud('island', 'IslandCrudController');
+    Route::crud('private-scene-config', 'PrivateSceneConfigCrudController');
+    Route::crud('private-scene', 'PrivateSceneCrudController');
 }); // this should be the absolute last line of this file
 
 /**
