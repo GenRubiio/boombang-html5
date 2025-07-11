@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import socket from "../../../../sockets/socket.js";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
 
 export default {
@@ -97,12 +99,15 @@ export default {
     handleSceneAction(scene) {
       if (scene) {
         console.log("Acción para el escenario existente:", scene);
-        // Aquí iría la lógica para editar o entrar al escenario
+        socket.emit(RequestSocketsEnum.JOIN_PRIVATE_SCENE, {
+          sceneId: scene.id,
+          password: null, // Aquí puedes manejar la contraseña si es necesario
+        });
       } else {
         console.log("Añadir nuevo escenario");
         this.$emit("createIslandScene", this.sceneData);
       }
-    }
+    },
   },
   created() {
     this.$emit("updateLoading", true);

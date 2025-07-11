@@ -32,6 +32,8 @@ const ResponseSocketsEnum = new Enum({
     JOIN_ISLAND: 'response:join_island',
     GET_MY_ISLANDS: 'response:get_my_islands',
     PRIVATE_SCENE_CREATE_ERROR: 'response:private_scene_create_error',
+    JOIN_PRIVATE_SCENE: 'response:join_private_scene',
+    JOIN_PRIVATE_SCENE_ERROR: 'response:join_private_scene_error',
 });
 
 export default ResponseSocketsEnum;

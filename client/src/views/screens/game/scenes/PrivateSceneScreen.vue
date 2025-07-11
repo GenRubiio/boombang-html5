@@ -53,7 +53,7 @@ export default {
       // Limpia el juego Phaser antes de salir
       console.log("Saliendo de la sala...");
       this.$emit("updateLoading", true);
-      this.$emit("exitLobby"); // Emite un evento para cambiar la escena
+      this.$emit("joinIsland", this.sceneData.scenery.island.data);
     },
     updateUserCard(userData) {
       //console.log("Usuario seleccionado:", userData);

@@ -13,6 +13,13 @@
       @exitLobby="onExitLobby"
       @updateLoading="onUpdateLoading"
     />
+    <PrivateSceneScreen
+      v-else-if="currentScreen === GameScreensEnum.PRIVATE_SCENE"
+      :sceneType="currentScreenType"
+      :sceneData="sceneData"
+      @updateLoading="onUpdateLoading"
+      @joinIsland="onJoinIsland"
+    />
     <GameSceneScreen
       v-else-if="currentScreen === GameScreensEnum.GAME_SCENE"
       :sceneType="currentScreenType"
@@ -42,7 +49,7 @@
     <IslandSceneCreateScreen
       v-else-if="currentScreen === GameScreensEnum.ISLAND_SCENE_CREATE"
       :sceneData="sceneData"
-      @exitIslandSceneCreation="onExitIslandSceneCreation"
+      @joinIsland="onJoinIsland"
       @updateLoading="onUpdateLoading"
     />
     <NotificationMinigameComponent
@@ -111,10 +118,7 @@ export default {
           : GameScreensEnum.GAME_SCENE;
     },
     onExitLobby() {
-      if (this.gamePhaser) {
-        this.gamePhaser.scene.stop("PublicScene");
-        this.gamePhaser.scene.stop("MinigameScene");
-      }
+      this.resetPhaser();
       this.sceneData = null;
       this.currentScreen = GameScreensEnum.LOBBY;
       this.currentScreenType = null;
@@ -127,6 +131,11 @@ export default {
       this.currentScreenType = sceneType;
       this.currentScreen = GameScreensEnum.MINIGAME_SCENE;
     },
+    onJoinPrivateScene(sceneType, sceneData) {
+      this.sceneData = sceneData;
+      this.currentScreenType = sceneType;
+      this.currentScreen = GameScreensEnum.PRIVATE_SCENE;
+    },
     // Nuevo método para manejar creación de islas
     onCreateIsland() {
       this.currentScreen = GameScreensEnum.ISLAND_CREATE;
@@ -136,13 +145,17 @@ export default {
       this.sceneData = islandData;
       this.currentScreen = GameScreensEnum.ISLAND_SCENE_CREATE;
     },
-    onExitIslandSceneCreation(sceneData) {
+    onJoinIsland(sceneData) {
+      this.resetPhaser();
       this.sceneData = sceneData;
       this.currentScreen = GameScreensEnum.ISLAND;
     },
-    onJoinIsland(sceneData) {
-      this.sceneData = sceneData;
-      this.currentScreen = GameScreensEnum.ISLAND;
+    resetPhaser() {
+      if (this.gamePhaser) {
+        this.gamePhaser.scene.stop("PublicScene");
+        this.gamePhaser.scene.stop("PrivateScene");
+        this.gamePhaser.scene.stop("MinigameScene");
+      }
     },
   },
   mounted() {
@@ -163,6 +176,24 @@ export default {
     socket.off(ResponseSocketsEnum.JOIN_ISLAND);
     socket.on(ResponseSocketsEnum.JOIN_ISLAND, (response) => {
       this.onJoinIsland(response.island);
+    });
+
+    socket.off(ResponseSocketsEnum.JOIN_PRIVATE_SCENE);
+    socket.on(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, (response) => {
+      if (response.success) {
+        let sceneryType = response.data.scenery.type;
+        this.onJoinPrivateScene(sceneryType, response.data);
+      } else {
+        console.log("Error al unirse a la sala privada.");
+      }
+    });
+
+    socket.off(ResponseSocketsEnum.JOIN_PRIVATE_SCENE_ERROR);
+    socket.on(ResponseSocketsEnum.JOIN_PRIVATE_SCENE_ERROR, (response) => {
+      console.error("Error al unirse a la sala privada:", response);
+      alert(
+        "Error al unirse a la sala privada. Por favor, inténtalo de nuevo."
+      );
     });
   },
   beforeUnmount() {},

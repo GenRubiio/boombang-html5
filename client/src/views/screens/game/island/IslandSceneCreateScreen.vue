@@ -135,7 +135,7 @@ export default {
     },
     goBackToIsland() {
       this.$emit("updateLoading", true);
-      this.$emit("exitIslandSceneCreation", this.sceneData);
+      this.$emit("joinIsland", this.sceneData);
     },
     loadScenes() {
       const island = islandsData.find((i) => i.uuid == this.sceneData.type);
