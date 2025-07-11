@@ -3,6 +3,8 @@ const logger = new ConsoleLogger();
 const MovementProcessorInstance = require('../instances/MovementProcessorInstance');
 const SceneItemModel = require('./SceneItemModel');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
+const SceneTypesEnum = require('../enums/SceneTypesEnum');
+const PrivateScenesCollection = require('../collections/PrivateScenesCollection');
 
 class SceneModel {
     constructor(row) {
@@ -65,6 +67,13 @@ class SceneModel {
             delete this.reservedTiles[user.lastReservedTile];
         }
         this.users = this.users.filter(u => u !== user);
+        // Si es un área privada y no quedan usuarios, eliminamos la escena
+        if (this.scene_type == SceneTypesEnum.PRIVATE_SCENE
+            && this.users.length == 0
+        ) {
+            // Si no quedan usuarios, eliminamos la escena
+            PrivateScenesCollection.remove(this.id);
+        }
     }
 
     // Método para emitir un evento a todos los usuarios del área

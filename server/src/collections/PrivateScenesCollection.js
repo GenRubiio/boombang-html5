@@ -3,16 +3,20 @@ class PrivateScenesCollection {
         this.collection = new Map();
     }
 
-    add(uuid, item) {
-        this.collection.set(uuid, item);
+    add(id, item) {
+        this.collection.set(id, item);
     }
 
-    getByUid(uid) {
-        return this.collection.get(uid);
+    getById(id) {
+        return this.collection.get(id);
     }
 
     getAll() {
         return Array.from(this.collection.values());
+    }
+
+    remove(id) {
+        this.collection.delete(id);
     }
 }
 

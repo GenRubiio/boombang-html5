@@ -22,6 +22,7 @@ const RequestSocketsEnum = new Enum({
     GET_MY_ISLANDS: 'request:get_my_islands',
     JOIN_ISLAND: 'request:join_island',
     PRIVATE_SCENE_CREATE: 'request:private_scene_create',
+    JOIN_PRIVATE_SCENE: 'request:join_private_scene',
 });
 
 export default RequestSocketsEnum;
