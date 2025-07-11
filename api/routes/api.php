@@ -11,6 +11,12 @@ use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 
+Route::prefix('test')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [LoginApiController::class, 'login']);
+    });
+});
+
 Route::middleware(VerifyEmulatorToken::class)->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('login', [LoginApiController::class, 'login']);
@@ -52,6 +58,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
         Route::prefix('private-scene')->group(function () {
             Route::post('create', [PrivateSceneApiController::class, 'create']);
+            Route::post('join', [PrivateSceneApiController::class, 'join']);
         });
     });
 });

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\PrivateSceneConfig;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\PrivateSceneResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 
@@ -60,12 +61,24 @@ class PrivateSceneApiController extends Controller
         }
     }
 
-    //public function find(Request $request): JsonResource
-    //{
-    //    try {
-    //        
-    //    } catch (Exception $e) {
-    //        return $this->handleException($e);
-    //    }
-    //}
+    public function join(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'scene_id' => 'required|integer|exists:private_scenes,id',
+                'password' => 'nullable|string|max:255',
+            ]);
+            $scene = PrivateScene::findOrFail($validated['scene_id']);
+            if ($scene->password && $scene->password != $validated['password']) {
+                throw new Exception('Incorrect password for the private scene.');
+            }
+            $scene->load('island', 'island.privateScenes');
+            return $this->successResponse([
+                'success' => true,
+                'scene' => (new PrivateSceneResource($scene))->toDTO(),
+            ]);
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
 }

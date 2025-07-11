@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Traits\DtoResourceTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PublicSceneResource extends JsonResource
+class PrivateSceneResource extends JsonResource
 {
     use DtoResourceTrait;
 
@@ -21,11 +21,12 @@ class PublicSceneResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        return [
+        $return = [
             'id' => (int)$this->id,
             'name' => $this->name,
             'colors' => $this->colors,
             'type' => $this->type,
+            'island_id' => $this->island_id,
             'has_password' => !empty($this->password),
             'max_users' => (int)$this->privateSceneConfig->max_users,
             'map_width' => (int)$this->privateSceneConfig->map_width,
@@ -41,6 +42,17 @@ class PublicSceneResource extends JsonResource
             ],
             'my_scene' => Auth::user()->id == $this->user_id,
             'items' => [],
+            'objects' => [],
         ];
+
+        if (debug_backtrace()[1]['function'] == "toDTO") {
+            if ($this->relationLoaded('island')) {
+                $return['island'] = (new IslandResource($this->whenLoaded('island')))->toDTO();
+            }
+        } else {
+            $return['island'] = (new IslandResource($this->whenLoaded('island')));
+        }
+
+        return $return;
     }
 }
