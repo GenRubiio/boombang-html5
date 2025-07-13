@@ -1,16 +1,12 @@
-import UfoScenePreload from "../preloaders/public-scene/UfoScenePreload";
-import RingScenePreload from "../preloaders/public-scene/RingScenePreload";
-import PublicSceneEnum from "../../enums/PublicSceneEnum";
+import PrivateScene1Preload from "../preloaders/private-scene/PrivateScene1Preload";
+import PrivateSceneEnum from "../../enums/PrivateSceneEnum";
 
 class PrivateSceneLoader {
     static main(gameScene, sceneType, preload = true) {
         switch (sceneType) {
-            case PublicSceneEnum.UFO:
+            case PrivateSceneEnum.SCENE_1:
                 //TODO: el import debe producirse aquí
-                preload ? UfoScenePreload.preload(gameScene) : UfoScenePreload.load(gameScene);
-                break;
-            case PublicSceneEnum.RING:
-                preload ? RingScenePreload.preload(gameScene) : RingScenePreload.load(gameScene);
+                preload ? PrivateScene1Preload.preload(gameScene) : PrivateScene1Preload.load(gameScene);
                 break;
         }
     }

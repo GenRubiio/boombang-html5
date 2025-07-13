@@ -24,7 +24,7 @@ class PrivateSceneResource extends JsonResource
         $return = [
             'id' => (int)$this->id,
             'name' => $this->name,
-            'colors' => $this->colors,
+            'colors' => json_decode($this->colors, true),
             'type' => $this->type,
             'island_id' => $this->island_id,
             'has_password' => !empty($this->password),
