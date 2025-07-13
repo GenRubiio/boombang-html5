@@ -6,10 +6,11 @@ import asset_tile_image from "../assets/game/scene/tile.png";
 import SceneRequestSockets from "./sockets/SceneRequestSockets";
 import SceneResponseSockets from "./sockets/SceneResponseSockets";
 import OverheadChatAnimation from "./animations/OverheadChatAnimation";
-import PublicSceneLoader from "./loaders/PublicSceneLoader";
+import PrivateSceneLoader from "./loaders/PrivateSceneLoader";
 import CreateSceneController from "./controllers/scene/CreateSceneController";
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil";
 import TintManager from "./managers/TintManager";
+import PrivateSceneUpdateColorsService from "./services/PrivateScene/PrivateSceneUpdateColorsService";
 
 export default class PrivateScene extends Phaser.Scene {
     constructor() {
@@ -46,7 +47,7 @@ export default class PrivateScene extends Phaser.Scene {
                 occupied_tiles: [],
                 display_name: "500 Oro"
             },
-             {
+            {
                 id: 5,
                 sprite_name: "well",
                 path: "assets/game/objects/well.png",
@@ -95,7 +96,7 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     preload() {
-        PublicSceneLoader.main(this, this.sceneType, true);
+        PrivateSceneLoader.main(this, this.sceneType, true);
         this.load.image("tile", asset_tile_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
@@ -114,6 +115,7 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     create() {
+        //this.cameras.main.setBackgroundColor('#2ecc71');
         this.tintMgr = new TintManager(this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
@@ -123,19 +125,19 @@ export default class PrivateScene extends Phaser.Scene {
         SceneRequestSockets.main(this);
         SceneResponseSockets.main(this);
 
-        PublicSceneLoader.main(this, this.sceneData.scenery.type, false);
+        PrivateSceneLoader.main(this, this.sceneData.scenery.type, false);
         CreateSceneController.main(this, this.sceneData);
 
-        this.initializeTileGrid();
+        //this.initializeTileGrid();
 
         // Marcar tiles ocupados
-        this.markOccupiedTiles();
+        //this.markOccupiedTiles();
 
         // Renderizar objetos existentes en la escena
-        this.renderSceneObjects();
+        //this.renderSceneObjects();
 
         this.vueComponent.$emit("updateLoading", false);
-        this.createInventory();
+        //this.createInventory();
 
         this.chatManager = new OverheadChatAnimation(this);
 
@@ -144,16 +146,17 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
 
-        this.createMoveButton();
+        //this.createMoveButton();
         // Al recuperar el foco del navegador, refrescar overlays y eventos de mover
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                this.markOccupiedTiles();
-                if (this.moveModeActive) {
-                    this.prepareObjectsForMoving();
-                }
-            }
-        });
+        //document.addEventListener('visibilitychange', () => {
+        //    if (document.visibilityState === 'visible') {
+        //        this.markOccupiedTiles();
+        //        if (this.moveModeActive) {
+        //            this.prepareObjectsForMoving();
+        //        }
+        //    }
+        //});
+        PrivateSceneUpdateColorsService.main(this);
     }
 
     initializeTileGrid() {
