@@ -3,50 +3,43 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class CatalogItem extends Model
 {
     use CrudTrait;
-    use HasRoles;
     use HasFactory;
-    use HasApiTokens;
-    use Notifiable;
+
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
+
+    protected $table = 'catalog_items';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    protected $guarded = ['id'];
 
     protected $fillable = [
+        'category_id',
         'name',
-        'email',
-        'password',
-        'username',
-        'avatar',
-        'gold_coins',
-        'silver_coins',
-        'rings_won',
-        'coconuts_caught',
-        'uppercuts_sent',
-        'uppercuts_received',
-        'coconuts_sent',
-        'coconuts_received',
-        'is_bot',
-        'active',
+        'sprite_name',
+        'image',
+        'description',
+        'price',
+        'price_type',
+        'discount',
+        'map_size',
+        'is_purchasable',
+        'is_active',
+        'parent_id',
+        'lft',
+        'rgt',
+        'depth'
     ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    // protected $hidden = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -60,14 +53,9 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
-    public function islands()
+    public function category()
     {
-        return $this->hasMany(Island::class);
-    }
-
-    public function catalogItems()
-    {
-        return $this->hasMany(UserCatalogItem::class);
+        return $this->belongsTo(CatalogCategory::class, 'category_id');
     }
 
     /*

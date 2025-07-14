@@ -3,50 +3,31 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class CatalogCategory extends Model
 {
     use CrudTrait;
-    use HasRoles;
     use HasFactory;
-    use HasApiTokens;
-    use Notifiable;
 
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
+
+    protected $table = 'catalog_categories';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    protected $guarded = ['id'];
     protected $fillable = [
         'name',
-        'email',
-        'password',
-        'username',
-        'avatar',
-        'gold_coins',
-        'silver_coins',
-        'rings_won',
-        'coconuts_caught',
-        'uppercuts_sent',
-        'uppercuts_received',
-        'coconuts_sent',
-        'coconuts_received',
-        'is_bot',
-        'active',
+        'image',
+        'description',
+        'is_active'
     ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    // protected $hidden = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -59,16 +40,6 @@ class User extends Authenticatable
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function islands()
-    {
-        return $this->hasMany(Island::class);
-    }
-
-    public function catalogItems()
-    {
-        return $this->hasMany(UserCatalogItem::class);
-    }
 
     /*
     |--------------------------------------------------------------------------

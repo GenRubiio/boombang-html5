@@ -22,6 +22,9 @@ Route::group([
     Route::crud('island', 'IslandCrudController');
     Route::crud('private-scene-config', 'PrivateSceneConfigCrudController');
     Route::crud('private-scene', 'PrivateSceneCrudController');
+    Route::crud('catalog-category', 'CatalogCategoryCrudController');
+    Route::crud('catalog-item', 'CatalogItemCrudController');
+    Route::crud('user-catalog-item', 'UserCatalogItemCrudController');
 }); // this should be the absolute last line of this file
 
 /**
