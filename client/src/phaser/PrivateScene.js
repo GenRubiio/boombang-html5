@@ -128,16 +128,16 @@ export default class PrivateScene extends Phaser.Scene {
         PrivateSceneLoader.main(this, this.sceneData.scenery.type, false);
         CreateSceneController.main(this, this.sceneData);
 
-        //this.initializeTileGrid();
+        this.initializeTileGrid();
 
         // Marcar tiles ocupados
-        //this.markOccupiedTiles();
+        this.markOccupiedTiles();
 
         // Renderizar objetos existentes en la escena
-        //this.renderSceneObjects();
+        this.renderSceneObjects();
 
         this.vueComponent.$emit("updateLoading", false);
-        //this.createInventory();
+        this.createInventory();
 
         this.chatManager = new OverheadChatAnimation(this);
 
@@ -146,16 +146,16 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
 
-        //this.createMoveButton();
+        this.createMoveButton();
         // Al recuperar el foco del navegador, refrescar overlays y eventos de mover
-        //document.addEventListener('visibilitychange', () => {
-        //    if (document.visibilityState === 'visible') {
-        //        this.markOccupiedTiles();
-        //        if (this.moveModeActive) {
-        //            this.prepareObjectsForMoving();
-        //        }
-        //    }
-        //});
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                this.markOccupiedTiles();
+                if (this.moveModeActive) {
+                    this.prepareObjectsForMoving();
+                }
+            }
+        });
         PrivateSceneUpdateColorsService.main(this);
     }
 
@@ -249,12 +249,13 @@ export default class PrivateScene extends Phaser.Scene {
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
         this.tileBlitter = this.add.blitter(0, 0, "tile");
+        this.tileBlitter.setDepth(100);
         this.sceneItems.forEach(item => {
             item.occupied_tiles.forEach(([col, row]) => {
                 const x = (col - row) * halfTileWidth + centerX - halfTileWidth;
                 const y = (col + row) * halfTileHeight - halfTileHeight;
                 const bob = this.tileBlitter.create(x, y);
-                bob.alpha = 0.5;
+                bob.alpha = 1;
                 if (row < this.tileGrid.length && col < this.tileGrid[row].length) {
                     this.tileGrid[row][col].occupied = true;
                     this.tileGrid[row][col].objectId = item.id;

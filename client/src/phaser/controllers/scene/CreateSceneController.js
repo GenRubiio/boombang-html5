@@ -26,6 +26,7 @@ class CreateSceneController {
 
         // Crear un Blitter
         const blitter = gameScene.add.blitter(0, 0, "tile");
+        blitter.setDepth(100);
 
         // Guardamos la información de posición de cada celda si fuera necesario
         gameScene.tiles = [];
@@ -43,7 +44,9 @@ class CreateSceneController {
                     y - halfTileHeight
                 );
 
-                if (import.meta.env.VITE_MAP_MAKER === "true") {
+                if (import.meta.env.VITE_MAP_MAKER == "true"
+                    || import.meta.env.VITE_SHOW_ISOMAP == "true"
+                ) {
                     if (!isClickable) {
                         bob.tint = 0x808080; // Color gris, por ejemplo
                     }
