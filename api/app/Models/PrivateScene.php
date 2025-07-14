@@ -58,6 +58,11 @@ class PrivateScene extends Model
         return $this->belongsTo(PrivateSceneConfig::class, 'type');
     }
 
+    public function userCatalogItems()
+    {
+        return $this->hasMany(UserCatalogItem::class, 'private_scenes_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

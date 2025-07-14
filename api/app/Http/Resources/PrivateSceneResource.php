@@ -48,9 +48,11 @@ class PrivateSceneResource extends JsonResource
         if (debug_backtrace()[1]['function'] == "toDTO") {
             if ($this->relationLoaded('island')) {
                 $return['island'] = (new IslandResource($this->whenLoaded('island')))->toDTO();
+                $return['objects'] = UserCatalogItemsResource::collectionToDTO($this->whenLoaded('userCatalogItems'));
             }
         } else {
             $return['island'] = (new IslandResource($this->whenLoaded('island')));
+            $return['objects'] = UserCatalogItemsResource::collection($this->whenLoaded('userCatalogItems'));
         }
 
         return $return;

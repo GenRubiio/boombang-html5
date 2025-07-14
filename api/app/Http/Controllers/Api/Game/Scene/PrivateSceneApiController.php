@@ -50,13 +50,16 @@ class PrivateSceneApiController extends Controller
                 'user_id' => $user->id,
                 'colors' => $sceneConfig->default_colors,
             ]);
-            $scene->load('island', 'island.privateScenes');
+            $scene->load(
+                'island',
+                'island.privateScenes',
+                'userCatalogItems'
+            );
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
             ]);
         } catch (Exception $e) {
-            dd($e);
             return $this->handleException($e);
         }
     }
@@ -72,7 +75,11 @@ class PrivateSceneApiController extends Controller
             if ($scene->password && $scene->password != $validated['password']) {
                 throw new Exception('Incorrect password for the private scene.');
             }
-            $scene->load('island', 'island.privateScenes');
+            $scene->load(
+                'island',
+                'island.privateScenes',
+                'userCatalogItems'
+            );
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),

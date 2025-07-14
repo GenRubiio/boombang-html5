@@ -1,6 +1,7 @@
 const SceneModel = require('./SceneModel');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const IslandModel = require('./IslandModel');
+const UserCatalogItemModel = require('./UserCatalogItemModel'); // Importar el modelo de UserCatalogItem
 
 class PrivateSceneModel extends SceneModel {
     constructor(uuid, row) {
@@ -12,8 +13,9 @@ class PrivateSceneModel extends SceneModel {
         this.has_password = row.has_password || null; // Contraseña de la escena privada
         this.my_scene = row.my_scene || false; // Indica si es la escena del usuario
         //this.objects = row.objects ? row.objects.map(item => new SceneItemModel(item)) : []; // Lista de objetos activos en la escena
-        this.objects = row.objects || []; // Lista de objetos activos en la escena
+        this.objects = row.objects ? row.objects.map(item => new UserCatalogItemModel(item)) : []; // Lista de objetos del catálogo del usuario en la escena
         this.island = new IslandModel(row.island); // Isla asociada a la escena
+        this.building = false;
     }
     // Puedes agregar métodos adicionales o sobrescribir los existentes si es necesario
 }
