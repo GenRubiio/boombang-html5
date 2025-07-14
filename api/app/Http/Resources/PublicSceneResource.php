@@ -20,7 +20,7 @@ class PublicSceneResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        return [
+        $return = [
             'id' => (int)$this->id,
             'name' => $this->name,
             'type' => $this->type,
@@ -37,7 +37,16 @@ class PublicSceneResource extends JsonResource
                 'y' => (int)$this->start_y,
                 'z' => (int)$this->start_z,
             ],
-            'items' => $this->relationLoaded('items') ? SceneItemResource::collection($this->items) : [],
         ];
+
+        if (debug_backtrace()[1]['function'] == "toDTO") {
+            if ($this->relationLoaded('items')) {
+                $return['items'] = SceneItemResource::collectionToDTO($this->whenLoaded('items'));
+            }
+        } else {
+            $return['items'] = SceneItemResource::collection($this->whenLoaded('items'));
+        }
+
+        return $return;
     }
 }
