@@ -16,20 +16,21 @@ class CreatePrivateSceneController {
             }
             if (user.currentArea) return;
 
-            let responseScene = await PrivateSceneApiService.create({
+            let response = await PrivateSceneApiService.create({
                 island_id: data.island_id,
                 name: data.name,
                 type: data.type,
             }, user);
-            if (!responseScene.success) {
+            if (!response.success) {
                 socket.emit(ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR, { message: 'Error creating private scene' });
                 return;
             }
 
-            let scene = new PrivateSceneModel(responseScene.scene.id, responseScene.scene);
+            let scene = new PrivateSceneModel(response.scene.id, response.scene);
             PrivateScenesCollection.add(scene.id, scene);
 
             user.setArea(scene);
+            user.setInventory(response.user_inventory_items || []);
             scene.addUser(user);
             let sceneUsers = [];
             for (const user of scene.users) {
@@ -39,7 +40,8 @@ class CreatePrivateSceneController {
                 success: true,
                 data: {
                     players: sceneUsers,
-                    scenery: await new PrivateSceneResource(scene).toObject()
+                    scenery: await new PrivateSceneResource(scene).toObject(),
+                    userInventory: user.inventory
                 }
             });
             scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {

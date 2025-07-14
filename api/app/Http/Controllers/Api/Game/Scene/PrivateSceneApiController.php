@@ -10,6 +10,7 @@ use App\Models\PrivateSceneConfig;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PrivateSceneResource;
+use App\Http\Resources\UserCatalogItemsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 
@@ -83,6 +84,8 @@ class PrivateSceneApiController extends Controller
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
+                'user_inventory_items' => $scene->user_id == Auth::user()->id
+                    ? UserCatalogItemsResource::collection($scene->userCatalogItems) : [],
             ]);
         } catch (Exception $e) {
             return $this->handleException($e);

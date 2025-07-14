@@ -1,4 +1,5 @@
 const UppercutsEnum = require('../enums/UppercutsEnum');
+const UserCatalogItemModel = require('./UserCatalogItemModel'); // Importar el modelo de UserCatalogItem
 class UserModel {
     constructor(row) {
         this.id = row.id.toString();
@@ -30,6 +31,8 @@ class UserModel {
         this.finalTarget = null; // Destino final del usuario
 
         this.blockedActions = {};
+
+        this.inventory = []; // Inventario del usuario
     }
 
     // Bloquea una acción específica durante 'duration' ms
@@ -125,6 +128,10 @@ class UserModel {
                 delete this._uppercutTimeout;
             }
         }
+    }
+
+    setInventory(items) {
+        this.inventory = items.map(item => new UserCatalogItemModel(item));
     }
 
     setSelectedUser(user) {
