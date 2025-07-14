@@ -28,61 +28,68 @@ export default class PrivateScene extends Phaser.Scene {
         this.avatarAnimations = {};
         this.vueComponent = data.vueComponent;
         this.selectedShadow = null;
+        console.log("PrivateScene init", this.sceneType, this.sceneData);
 
         // Datos dinámicos de inventario y objetos
-        this.backpackUserItems = [
-            {
-                id: 1,
-                sprite_name: "500oroCatalog",
-                path: "assets/game/objects/500oroCatalog.png",
-                map_size: [[0, 0]],
-                occupied_tiles: [],
-                display_name: "500 Oro"
-            },
-            {
-                id: 4,
-                sprite_name: "500oroCatalog",
-                path: "assets/game/objects/500oroCatalog.png",
-                map_size: [[0, 0]],
-                occupied_tiles: [],
-                display_name: "500 Oro"
-            },
-            {
-                id: 5,
-                sprite_name: "well",
-                path: "assets/game/objects/well.png",
-                map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-                occupied_tiles: [],
-                display_name: "Pozo"
-            },
-        ];
+        this.backpackUserItems = this.sceneData.userInventory;
 
-        this.sceneItems = [
-            {
-                id: 2,
-                sprite_name: "well",
-                path: "assets/game/objects/well.png",
-                map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-                occupied_tiles: [[11, 10], [12, 11], [11, 12], [10, 11], [11, 11]],
-                display_name: "Pozo"
-            },
-            {
-                id: 3,
-                sprite_name: "well",
-                path: "assets/game/objects/well.png",
-                map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-                occupied_tiles: [[12, 18], [13, 17], [14, 18], [13, 19], [13, 18]],
-                display_name: "Pozo"
-            },
-            {
-                id: 6,
-                sprite_name: "wood_ball",
-                path: "assets/game/objects/wood_ball.png",
-                map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-                occupied_tiles: [[18, 14], [19, 13], [20, 14], [19, 15], [19, 14]],
-                display_name: "Bola de Madera"
-            }
-        ];
+        // Datos de objetos de escena
+        this.sceneItems = this.sceneData.scenery.objects;
+
+
+        //this.backpackUserItems = [
+        //    {
+        //        id: 1,
+        //        sprite_name: "500oroCatalog",
+        //        path: "assets/game/objects/500oroCatalog.png",
+        //        map_size: [[0, 0]],
+        //        occupied_tiles: [],
+        //        display_name: "500 Oro"
+        //    },
+        //    {
+        //        id: 4,
+        //        sprite_name: "500oroCatalog",
+        //        path: "assets/game/objects/500oroCatalog.png",
+        //        map_size: [[0, 0]],
+        //        occupied_tiles: [],
+        //        display_name: "500 Oro"
+        //    },
+        //    {
+        //        id: 5,
+        //        sprite_name: "well",
+        //        path: "assets/game/objects/well.png",
+        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
+        //        occupied_tiles: [],
+        //        display_name: "Pozo"
+        //    },
+        //];
+        //
+        //this.sceneItems = [
+        //    {
+        //        id: 2,
+        //        sprite_name: "well",
+        //        path: "assets/game/objects/well.png",
+        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
+        //        occupied_tiles: [[11, 10], [12, 11], [11, 12], [10, 11], [11, 11]],
+        //        display_name: "Pozo"
+        //    },
+        //    {
+        //        id: 3,
+        //        sprite_name: "well",
+        //        path: "assets/game/objects/well.png",
+        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
+        //        occupied_tiles: [[12, 18], [13, 17], [14, 18], [13, 19], [13, 18]],
+        //        display_name: "Pozo"
+        //    },
+        //    {
+        //        id: 6,
+        //        sprite_name: "wood_ball",
+        //        path: "assets/game/objects/wood_ball.png",
+        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
+        //        occupied_tiles: [[18, 14], [19, 13], [20, 14], [19, 15], [19, 14]],
+        //        display_name: "Bola de Madera"
+        //    }
+        //];
 
 
         this.moveModeActive = false;    // Modo mover activado/desactivado
@@ -103,13 +110,13 @@ export default class PrivateScene extends Phaser.Scene {
 
         // Cargar dinámicamente los assets de inventario
         this.backpackUserItems.forEach(item => {
-            this.load.image(item.sprite_name, item.path);
+            this.load.image(item.sprite_name, 'assets/game/objects/' + item.sprite_name + '.png');
         });
 
         // Cargar objetos de escena existentes
         this.sceneItems.forEach(item => {
             if (!this.textures.exists(item.sprite_name)) {
-                this.load.image(item.sprite_name, item.path);
+                this.load.image(item.sprite_name, 'assets/game/objects/' + item.sprite_name + '.png');
             }
         });
     }
