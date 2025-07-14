@@ -55,7 +55,14 @@ class PrivateSceneConfigSeeder extends Seeder
                 'start_x' => 7,
                 'start_y' => 19,
                 'start_z' => 2,
-                'default_colors' => null,
+                'default_colors' => json_encode([
+                   "item_1" => "00b3fb",
+                   "item_2" => "0ba4e3",
+                   "item_3" => "d8cfb3",
+                   "item_4" => "3d240c",
+                   "item_5" => "002700",
+                   "item_6" => "002700"
+                ]),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
