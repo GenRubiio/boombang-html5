@@ -353,34 +353,58 @@ export default class PrivateScene extends Phaser.Scene {
     createDetailPanel(item) {
         if (this.detailPanel) this.detailPanel.destroy();
 
-        const pad = 10;
-        const iconMax = 80;
-        const nameStyle = { fontSize: '14px', color: '#ffffff' };
-        const btnStyle = { fontSize: '12px', color: '#ffffff' };
-        const panelW = 200;
-        const panelH = iconMax + pad * 3 + 30;
+        if (this.inventoryContainer) {
+            this.inventoryContainer.setVisible(false);
+        }
 
-        this.detailPanel = this.add.container(pad, pad)
+        const pad = 10;
+        const iconSize = 100;
+        const nameStyle = { fontSize: '14px', color: '#000000' };
+        const btnStyle = { fontSize: '12px', color: '#ffffff' }; // White text on red button
+
+        // Match inventory width
+        const slotSize = 60;
+        const slotPad = 5;
+        const panelW = slotSize * 3 + slotPad * 4;
+        const invNavH = 30; // Height of inventory navigation
+        const panelH = slotSize * 3 + slotPad * 4 + invNavH + slotPad; // Match inventory height
+
+        const x = this.scale.width - panelW - pad;
+        const y = this.scale.height - panelH - 100; // 100px bottom margin
+
+        this.detailPanel = this.add.container(x, y)
             .setDepth(10000)
             .setScrollFactor(0);
 
-        const bg = this.add.rectangle(0, 0, panelW, panelH, 0x000000, 0.7)
-            .setOrigin(0);
+        const bg = this.add.graphics();
+        bg.fillStyle(0xffffff, 0.8); // White, slightly transparent background
+        bg.fillRoundedRect(0, 0, panelW, panelH, 5); // 5px border radius
         this.detailPanel.add(bg);
 
-        const icon = this.add.image(pad, pad, item.sprite_name).setOrigin(0);
-        const scale = Math.min(iconMax / icon.width, iconMax / icon.height);
-        icon.setScale(scale);
-        this.detailPanel.add(icon);
+        const closeButton = this.add.text(panelW - pad, pad, 'X', { fontSize: '16px', color: '#000000', fontStyle: 'bold' })
+            .setOrigin(1, 0)
+            .setInteractive({ useHandCursor: true });
+        this.detailPanel.add(closeButton);
+        closeButton.on('pointerdown', () => this.deselectObject());
 
-        const nameText = this.add.text(pad * 2 + iconMax, pad, item.display_name, nameStyle)
+        // Name at the left
+        const nameText = this.add.text(pad, pad, item.display_name, nameStyle)
             .setOrigin(0, 0);
         this.detailPanel.add(nameText);
 
+        // Image 100x100 centered below name
+        const icon = this.add.image(panelW / 2, nameText.y + nameText.height + pad + iconSize / 2, item.sprite_name)
+            .setOrigin(0.5);
+        // Scale to fit, don't stretch
+        const scale = Math.min(iconSize / icon.width, iconSize / icon.height);
+        icon.setScale(scale);
+        this.detailPanel.add(icon);
+
+        // Delete button aligned left below image
         const btnW = 60;
         const btnH = 25;
-        const btnX = panelW - btnW - pad;
-        const btnY = panelH - btnH - pad;
+        const btnX = pad;
+        const btnY = icon.y + icon.displayHeight / 2 + pad;
         const btnBg = this.add.rectangle(btnX, btnY, btnW, btnH, 0xff0000)
             .setOrigin(0)
             .setInteractive({ useHandCursor: true });
@@ -578,6 +602,10 @@ export default class PrivateScene extends Phaser.Scene {
             this.detailPanel.destroy();
             this.detailPanel = null;
         }
+
+        if (this.inventoryContainer) {
+            this.inventoryContainer.setVisible(true);
+        }
     }
 
     /**
@@ -636,22 +664,24 @@ export default class PrivateScene extends Phaser.Scene {
      * Crear panel de inventario con grid 3×3 y paginación.
      */
     createInventory() {
-        // Contenedor fijo en esquina inferior izquierda
+        // Contenedor fijo en esquina inferior derecha
         const pad = 10;
         const slotSize = 60;
         const slotPad = 5;
         const navH = 30;
         const invW = slotSize * 3 + slotPad * 4;
         const invH = slotSize * 3 + slotPad * 4 + navH + slotPad;
-        const x = pad;
-        const y = this.scale.height - invH - pad;
+        const x = this.scale.width - invW - pad;
+        const y = this.scale.height - invH - 100; // 100px bottom margin
 
         if (this.inventoryContainer) this.inventoryContainer.destroy();
         this.inventoryContainer = this.add.container(x, y)
             .setDepth(10000)
             .setScrollFactor(0);
 
-        const bg = this.add.rectangle(0, 0, invW, invH, 0x000000, 0.5).setOrigin(0);
+        const bg = this.add.graphics();
+        bg.fillStyle(0xffffff, 0.8); // White, slightly transparent background
+        bg.fillRoundedRect(0, 0, invW, invH, 5); // 5px border radius
         this.inventoryContainer.add(bg);
 
         // Contenedor para slots dinámicos
@@ -659,12 +689,12 @@ export default class PrivateScene extends Phaser.Scene {
         this.inventoryContainer.add(this.slotsContainer);
 
         // Botones de paginación
-        const btnStyle = { fontSize: '18px', color: '#ffffff' };
+        const btnStyle = { fontSize: '18px', color: '#000000' };
         const prevBtn = this.add.text(slotPad, slotSize * 3 + slotPad * 2, '<', btnStyle)
             .setInteractive({ useHandCursor: true });
         const nextBtn = this.add.text(invW - slotPad - 18, slotSize * 3 + slotPad * 2, '>', btnStyle)
             .setInteractive({ useHandCursor: true });
-        this.pageText = this.add.text(invW / 2, slotSize * 3 + slotPad * 2 + 5, '', { fontSize: '14px', color: '#ffffff' })
+        this.pageText = this.add.text(invW / 2, slotSize * 3 + slotPad * 2 + 5, '', { fontSize: '14px', color: '#000000' })
             .setOrigin(0.5, 0);
         this.inventoryContainer.add([prevBtn, nextBtn, this.pageText]);
 
@@ -700,8 +730,9 @@ export default class PrivateScene extends Phaser.Scene {
             const x = slotPad + col * (slotSize + slotPad);
             const y = slotPad + row * (slotSize + slotPad);
 
-            const slotBg = this.add.rectangle(x, y, slotSize, slotSize, 0xffffff, 0.2)
-                .setOrigin(0);
+            const slotBg = this.add.graphics({ x: x, y: y });
+            slotBg.fillStyle(0xffffff, 1); // White, opaque background
+            slotBg.fillRoundedRect(0, 0, slotSize, slotSize, 5); // 5px border radius
             this.slotsContainer.add(slotBg);
 
             const icon = this.add.image(x + slotSize / 2, y + slotSize / 2, group.sprite_name)
@@ -713,7 +744,7 @@ export default class PrivateScene extends Phaser.Scene {
             this.slotsContainer.add(icon);
 
             if (group.count > 1) {
-                const countText = this.add.text(x + slotSize - 5, y + slotSize - 5, `${group.count}`, { fontSize: '14px', color: '#ffffff' })
+                const countText = this.add.text(x + slotSize - 5, y + slotSize - 5, `${group.count}`, { fontSize: '14px', color: '#000000' })
                     .setOrigin(1);
                 this.slotsContainer.add(countText);
             }
