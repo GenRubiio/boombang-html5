@@ -50,10 +50,10 @@ class PrivateSceneApiController extends Controller
                 'user_id' => $user->id,
                 'colors' => $sceneConfig->default_colors,
             ]);
-
+            $scene->load('island', 'island.privateScenes');
             return $this->successResponse([
-                'message' => 'Private scene created successfully.',
-                'scene_id' => $scene->id
+                'success' => true,
+                'scene' => (new PrivateSceneResource($scene))->toDTO(),
             ]);
         } catch (Exception $e) {
             dd($e);
