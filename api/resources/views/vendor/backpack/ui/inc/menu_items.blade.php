@@ -13,3 +13,6 @@
 <x-backpack::menu-item title="Islands" icon="la la-question" :link="backpack_url('island')" />
 <x-backpack::menu-item title="Private scene configs" icon="la la-question" :link="backpack_url('private-scene-config')" />
 <x-backpack::menu-item title="Private scenes" icon="la la-question" :link="backpack_url('private-scene')" />
+<x-backpack::menu-item title="Catalog categories" icon="la la-question" :link="backpack_url('catalog-category')" />
+<x-backpack::menu-item title="Catalog items" icon="la la-question" :link="backpack_url('catalog-item')" />
+<x-backpack::menu-item title="User catalog items" icon="la la-question" :link="backpack_url('user-catalog-item')" />

@@ -75,7 +75,7 @@ export default class PrivateScene extends Phaser.Scene {
                 display_name: "Pozo"
             },
             {
-                id: 4,
+                id: 6,
                 sprite_name: "wood_ball",
                 path: "assets/game/objects/wood_ball.png",
                 map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
