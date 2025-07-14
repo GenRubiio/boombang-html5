@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     public function catalogItems()
     {
-        return $this->hasMany(UserCatalogItem::class);
+        return $this->hasMany(UserCatalogItem::class)->where('private_scenes_id', null);
     }
 
     /*
