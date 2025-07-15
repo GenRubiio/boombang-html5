@@ -13,6 +13,7 @@ use App\Http\Resources\PrivateSceneResource;
 use App\Http\Resources\UserCatalogItemsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
+use App\Models\UserCatalogItem;
 
 class PrivateSceneApiController extends Controller
 {
@@ -91,4 +92,76 @@ class PrivateSceneApiController extends Controller
             return $this->handleException($e);
         }
     }
+
+    public function removeItem(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'user_catalog_item_id' => 'required|integer|exists:user_catalog_items,id',
+            ]);
+            $user = Auth::user();
+            $responseUpdate = UserCatalogItem::where('id', $validated['user_catalog_item_id'])
+                ->where('user_id', $user->id)
+                ->whereNotNull('private_scene_id')
+                ->update([
+                    'private_scene_id' => null,
+                    'occupied_tiles' => '[]'
+                ]);
+
+            if ($responseUpdate == 0) {
+                throw new Exception('Item does not belong to the current private scene or does not exist.');
+            }
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function putItem(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'user_catalog_item_id' => 'required|integer|exists:user_catalog_items,id',
+                'private_scene_id' => 'required|integer|exists:private_scenes,id',
+                'occupied_tiles' => 'required|array',
+            ]);
+            $user = Auth::user();
+            $responseUpdate = UserCatalogItem::where('id', $validated['user_catalog_item_id'])
+                ->where('user_id', $user->id)
+                ->whereNull('private_scene_id')
+                ->update([
+                    'private_scene_id' => $validated['private_scene_id'],
+                    'occupied_tiles' => json_encode($validated['occupied_tiles'])
+                ]);
+
+            if ($responseUpdate == 0) {
+                throw new Exception('Item does not belong to the current user or does not exist.');
+            }
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function updateItemPosition(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'user_catalog_item_id' => 'required|integer|exists:user_catalog_items,id',
+                'occupied_tiles' => 'required|array',
+            ]);
+            $user = Auth::user();
+            $responseUpdate = UserCatalogItem::where('id', $validated['user_catalog_item_id'])
+                ->where('user_id', $user->id)
+                ->whereNotNull('private_scene_id')
+                ->update([
+                    'occupied_tiles' => json_encode($validated['occupied_tiles'])
+                ]);
+
+            if ($responseUpdate == 0) {
+                throw new Exception('Item does not belong to the current user or does not exist.');
+            }
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
 }
