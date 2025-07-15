@@ -35,6 +35,10 @@ const ResponseSocketsEnum = new Enum({
     GET_MY_ISLANDS: 'response:get_my_islands',
     PRIVATE_SCENE_CREATE_ERROR: 'response:private_scene_create_error',
     JOIN_PRIVATE_SCENE: 'response:join_private_scene',
+    SCENE_PUT_ITEM: 'response:scene_put_item',
+    SCENE_REMOVE_ITEM: 'response:scene_remove_item',
+    ADD_ITEM_TO_INVENTORY: 'response:add_item_to_inventory',
+    REMOVE_ITEM_FROM_INVENTORY: 'response:remove_item_from_inventory',
 });
 
 module.exports = ResponseSocketsEnum;

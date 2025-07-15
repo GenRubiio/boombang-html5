@@ -24,7 +24,7 @@ class UserCatalogItem extends Model
     protected $fillable = [
         'user_id',
         'catalog_item_id',
-        'private_scenes_id',
+        'private_scene_id',
         'occupied_tiles'
     ];
     // protected $hidden = [];
@@ -53,7 +53,7 @@ class UserCatalogItem extends Model
 
     public function privateScene()
     {
-        return $this->belongsTo(PrivateScene::class, 'private_scenes_id');
+        return $this->belongsTo(PrivateScene::class, 'private_scene_id');
     }
 
     /*

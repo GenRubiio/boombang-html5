@@ -40,7 +40,7 @@ class PrivateSceneResource extends JsonResource
                 'y' => (int)$this->privateSceneConfig->start_y,
                 'z' => (int)$this->privateSceneConfig->start_z,
             ],
-            'my_scene' => Auth::user()->id == $this->user_id,
+            'user_id' => $this->user_id,
             'items' => [],
             'objects' => [],
         ];

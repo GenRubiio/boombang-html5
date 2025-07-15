@@ -22,6 +22,7 @@ class UserCatalogItemsResource extends JsonResource
     {
         return [
             'id' => (int)$this->id,
+            'private_scene_id' => $this->private_scene_id,
             'display_name' => $this->catalogItem->name,
             'sprite_name' => $this->catalogItem->sprite_name,
             'map_size' => $this->catalogItem->map_size,

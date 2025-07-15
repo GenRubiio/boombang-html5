@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('catalog_item_id')->constrained('catalog_items')->onDelete('cascade');
-            $table->foreignId('private_scenes_id')
+            $table->foreignId('private_scene_id')
                 ->nullable()
                 ->constrained('private_scenes')
                 ->onDelete('set null');

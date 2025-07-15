@@ -59,6 +59,9 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::prefix('private-scene')->group(function () {
             Route::post('create', [PrivateSceneApiController::class, 'create']);
             Route::post('join', [PrivateSceneApiController::class, 'join']);
+            Route::post('remove-item', [PrivateSceneApiController::class, 'removeItem']);
+            Route::post('put-item', [PrivateSceneApiController::class, 'putItem']);
+            Route::post('update-item-position', [PrivateSceneApiController::class, 'updateItemPosition']);
         });
     });
 });

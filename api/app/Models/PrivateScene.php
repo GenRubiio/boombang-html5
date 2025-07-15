@@ -60,7 +60,7 @@ class PrivateScene extends Model
 
     public function userCatalogItems()
     {
-        return $this->hasMany(UserCatalogItem::class, 'private_scenes_id');
+        return $this->hasMany(UserCatalogItem::class, 'private_scene_id');
     }
 
     /*

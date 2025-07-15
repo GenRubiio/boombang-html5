@@ -11,6 +11,8 @@ import CreateSceneController from "./controllers/scene/CreateSceneController";
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil";
 import TintManager from "./managers/TintManager";
 import PrivateSceneUpdateColorsService from "./services/PrivateScene/PrivateSceneUpdateColorsService";
+import RequestSocketsEnum from "../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
 
 export default class PrivateScene extends Phaser.Scene {
     constructor() {
@@ -154,6 +156,7 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnHide = false;
 
         this.createMoveButton();
+        this.handleSockets();
         // Al recuperar el foco del navegador, refrescar overlays y eventos de mover
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
@@ -164,6 +167,56 @@ export default class PrivateScene extends Phaser.Scene {
             }
         });
         PrivateSceneUpdateColorsService.main(this);
+    }
+
+    handleSockets() {
+        socket.on(ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY, (data) => {
+            if (data.item) {
+                this.inventoryItemsList.push(data.item);
+                this.updateInventoryUI();
+            }
+        });
+        socket.on(ResponseSocketsEnum.SCENE_REMOVE_ITEM, (data) => {
+            const itemId = data.user_catalog_item_id;
+            const itemToRemove = this.sceneItems.find(i => i.id === itemId);
+
+            if (itemToRemove) {
+                // Eliminar sprite y del array de objetos de escena
+                if (itemToRemove.sprite) {
+                    itemToRemove.sprite.destroy();
+                }
+                this.sceneItems = this.sceneItems.filter(i => i.id !== itemId);
+
+                // Actualizar escena
+                this.markOccupiedTiles();
+                this.renderSceneObjects();
+            }
+        });
+        socket.on(ResponseSocketsEnum.SCENE_PUT_ITEM, (data) => {
+            if (data.item) {
+                const existingItem = this.sceneItems.find(i => i.id === data.item.id);
+                if (existingItem) {
+                    // It's a move, just update the tiles
+                    existingItem.occupied_tiles = data.item.occupied_tiles;
+                } else {
+                    // It's a new item from inventory
+                    this.sceneItems.push(data.item);
+                }
+                this.markOccupiedTiles();
+                this.renderSceneObjects();
+                if (this.moveModeActive) {
+                    this.prepareObjectsForMoving();
+                }
+            }
+        });
+        socket.on(ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY, (data) => {
+            const itemId = data.user_catalog_item_id;
+            const itemIndex = this.inventoryItemsList.findIndex(i => i.id === itemId);
+            if (itemIndex !== -1) {
+                this.inventoryItemsList.splice(itemIndex, 1);
+                this.updateInventoryUI();
+            }
+        });
     }
 
     initializeTileGrid() {
@@ -428,25 +481,14 @@ export default class PrivateScene extends Phaser.Scene {
      */
     removeSelectedObject() {
         if (!this.selectedObject) return;
-        const removed = this.selectedObject;
-        // Deseleccionar primero para evitar errores en setDraggable
-        this.deselectObject();
-        // Eliminar sprite y del array de objetos de escena
-        const spriteToDestroy = removed.sprite;
-        this.sceneItems = this.sceneItems.filter(i => i.id !== removed.id);
-        spriteToDestroy.destroy();
-        // Añadir de nuevo al inventario
-        this.inventoryItemsList.push({
-            id: removed.id,
-            sprite_name: removed.sprite_name,
-            path: removed.path,
-            map_size: removed.map_size,
-            display_name: removed.display_name
+
+        // Emitir el evento por socket para que el servidor gestione la eliminación
+        socket.emit(RequestSocketsEnum.SCENE_REMOVE_ITEM, {
+            user_catalog_item_id: this.selectedObject.id
         });
-        // Actualizar escena e inventario
-        this.markOccupiedTiles();
-        this.renderSceneObjects();
-        this.updateInventoryUI();
+
+        // Deseleccionar el objeto en la UI para dar feedback inmediato
+        this.deselectObject();
     }
 
     setupDragEvents(item) {
@@ -460,7 +502,6 @@ export default class PrivateScene extends Phaser.Scene {
         sprite.on('drag', (pointer, dragX, dragY) => {
             sprite.x = dragX;
             sprite.y = dragY;
-
         });
 
         sprite.off('dragend');
@@ -475,10 +516,14 @@ export default class PrivateScene extends Phaser.Scene {
                 halfTileWidth,
                 halfTileHeight
             );
+
             if (this.isPositionValid(newTiles, item.id)) {
-                item.occupied_tiles = newTiles;
-                this.markOccupiedTiles();
-                this.renderSceneObjects();
+                // Emit socket event instead of updating locally
+                socket.emit(RequestSocketsEnum.SCENE_PUT_ITEM, {
+                    user_catalog_item_id: item.id,
+                    occupied_tiles: newTiles,
+                    is_move: true
+                });
             } else {
                 this.returnObjectToOriginalPosition(item);
             }
@@ -770,22 +815,16 @@ export default class PrivateScene extends Phaser.Scene {
                 const dropY = pointer.worldY;
                 const newTiles = this.calculateNewTiles(dropX, dropY, group.map_size, centerX, halfTileWidth, halfTileHeight);
                 if (this.isPositionValid(newTiles, null)) {
-                    // Tomar una instancia del inventario y asignar un ID único para evitar colisiones
-                    const idxInv = this.inventoryItemsList.findIndex(i => i.sprite_name === group.sprite_name);
-                    const used = this.inventoryItemsList.splice(idxInv, 1)[0];
-                    used.occupied_tiles = newTiles;
-                    // Generar un ID único para el objeto en escena
-                    used.id = `dyn_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-                    this.sceneItems.push(used);
-                    this.markOccupiedTiles();
-                    this.renderSceneObjects();
-                    if (this.moveModeActive) {
-                        this.prepareObjectsForMoving();
+                    const itemInstance = this.inventoryItemsList.find(i => i.sprite_name === group.sprite_name);
+                    if (itemInstance) {
+                        socket.emit(RequestSocketsEnum.SCENE_PUT_ITEM, {
+                            user_catalog_item_id: itemInstance.id,
+                            occupied_tiles: newTiles
+                        });
                     }
-                    this.updateInventoryUI();
-                } else {
-                    this.updateInventoryUI();
                 }
+                // Always update UI to return the icon to the inventory slot
+                this.updateInventoryUI();
             });
         });
     }
