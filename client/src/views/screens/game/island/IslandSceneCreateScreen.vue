@@ -24,24 +24,47 @@
       <!-- Controles de navegación y creación -->
       <div class="controls">
         <template v-if="step === 1">
-          <button class="control-btn" @click="prevScene">Anterior</button>
-          <span class="label">Escoge la escena</span>
-          <button class="control-btn" @click="nextScene">Siguiente</button>
-          <button class="accept-btn" @click="goToStep(2)">Aceptar</button>
+          <div class="navigation">
+            <div>
+              <button class="control-btn" @click="prevScene">Anterior</button>
+            </div>
+            <div>
+              <button class="control-btn" @click="nextScene">Siguiente</button>
+            </div>
+            <div>
+              <button class="accept-btn" @click="goToStep(2)">Aceptar</button>
+            </div>
+          </div>
+          <div class="navigation-label">
+            <span class="label">Escoge la escena</span>
+          </div>
         </template>
         <template v-else-if="step === 2">
-          <span class="label">Pon un nombre a tu sala</span>
-          <input
-            type="text"
-            v-model="sceneName"
-            placeholder="Nombre de la sala"
-          />
-          <button class="accept-btn" @click="createScene">Crear Sala</button>
+          <div v-if="errorCreateScene" class="error-message">
+            {{ errorMessage }}
+          </div>
+          <div class="navigation">
+            <div style="flex: 2">
+              <input
+                type="text"
+                v-model="sceneName"
+                placeholder="Nombre de la sala"
+              />
+            </div>
+            <div>
+              <button class="accept-btn" @click="createScene">
+                Aceptar
+              </button>
+            </div>
+          </div>
+          <div class="navigation-label">
+            <span class="label">Pon un nombre a tu sala</span>
+          </div>
         </template>
       </div>
     </div>
 
-    <div v-else class="error-message">
+    <div v-else class="error-message-centered">
       <p>La isla no se ha encontrado o no tiene escenas.</p>
     </div>
   </div>
@@ -56,8 +79,8 @@ import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
 
 // Importar todas las imágenes de escena
 const sceneImageModules = import.meta.glob(
-  '/src/assets/game/islands/**/scene*.png',
-  { eager: true, import: 'default' }
+  "/src/assets/game/islands/**/scene*.png",
+  { eager: true, import: "default" }
 );
 
 export default {
@@ -78,6 +101,8 @@ export default {
       imagesLoaded: false,
       step: 1,
       sceneName: "",
+      errorCreateScene: false,
+      errorMessage: "",
     };
   },
   computed: {
@@ -97,6 +122,7 @@ export default {
       this.step = step;
     },
     createScene() {
+      this.errorCreateScene = false;
       socket.emit(RequestSocketsEnum.PRIVATE_SCENE_CREATE, {
         island_id: this.sceneData.id,
         name: this.sceneName,
@@ -104,8 +130,8 @@ export default {
       });
       socket.off(ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR);
       socket.on(ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR, (response) => {
-        console.error("Error al crear la sala:", response);
-        alert("Error al crear la sala. Por favor, inténtalo de nuevo.");
+        this.errorCreateScene = true;
+        this.errorMessage = response.message;
       });
     },
     handleImageLoad() {
@@ -121,7 +147,7 @@ export default {
         const key = `/src/assets/${s.image}`;
         const url = sceneImageModules[key];
         if (!url) console.error(`Asset no encontrado: ${key}`);
-        return url || '';
+        return url || "";
       });
       urls.push(this.asset_brujula_image);
       this.imagesToLoad = urls.length;
@@ -143,7 +169,7 @@ export default {
         // Añadir URL de imagen importada a cada escena
         this.scenes = island.scenes.map((s) => ({
           ...s,
-          url: sceneImageModules[`/src/assets/${s.image}`] || '',
+          url: sceneImageModules[`/src/assets/${s.image}`] || "",
         }));
       } else {
         console.error(
@@ -174,6 +200,41 @@ export default {
 </script>
 
 <style scoped>
+.error-message {
+  color: #ffdc00;
+  font-weight: bold;
+  text-align: start;
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: -9px;
+}
+
+.navigation-label {
+  box-sizing: border-box;
+  background-color: #3a4b54c9;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 100%;
+  padding: 5px;
+  text-align: left;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 5px;
+}
+
+.navigation div {
+  flex: 1;
+  text-align: center;
+}
+
+.navigation button {
+  width: 100%;
+}
+
 .island-scene-create-screen {
   position: relative;
   background-color: #f0f0f0;
@@ -203,18 +264,24 @@ export default {
 
 .controls {
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 10px;
   z-index: 110;
+  padding: 10px 10px 0;
+  background-color: #3c87b3ad;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  flex-direction: column;
+  width: 340px;
 }
 
 .control-btn,
 .accept-btn {
-  background-color: #0057e7;
+  background-color: #3a4b54c9;
   color: #fff;
   border: none;
   padding: 8px 12px;
@@ -226,7 +293,7 @@ export default {
 
 .control-btn:hover,
 .accept-btn:hover {
-  background-color: #0040a0;
+  background-color: #3a4b54c9;
 }
 
 .label {
@@ -236,12 +303,15 @@ export default {
 }
 
 input[type="text"] {
-  padding: 8px;
+  padding: 5px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 
-.error-message {
+.error-message-centered {
   color: red;
   text-align: center;
   margin-top: 50px;
