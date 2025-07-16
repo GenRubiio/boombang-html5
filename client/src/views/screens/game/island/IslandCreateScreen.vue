@@ -23,19 +23,40 @@
     <!-- Controles de navegación -->
     <div class="controls">
       <template v-if="step === 1">
-        <button class="control-btn" @click="prevIsland">Anterior</button>
-        <span class="label">Escoge el fondo</span>
-        <button class="control-btn" @click="nextIsland">Siguiente</button>
-        <button class="accept-btn" @click="goToStep(2)">Aceptar</button>
+        <div class="navigation">
+          <div>
+            <button class="control-btn" @click="prevIsland">Anterior</button>
+          </div>
+          <div>
+            <button class="control-btn" @click="nextIsland">Siguiente</button>
+          </div>
+          <div>
+            <button class="accept-btn" @click="goToStep(2)">Aceptar</button>
+          </div>
+        </div>
+        <div class="navigation-label">
+          <span class="label">Escoge el fondo</span>
+        </div>
       </template>
       <template v-if="step === 2">
-        <span class="label">Pon un nombre a tu isla</span>
-        <input
-          type="text"
-          v-model="islandName"
-          placeholder="Nombre de la isla"
-        />
-        <button class="accept-btn" @click="createIsland">Crear Isla</button>
+        <div v-if="errorCreateIsland" class="error-message">
+          {{ errorMessage }}
+        </div>
+        <div class="navigation">
+          <div style="flex: 2">
+            <input
+              type="text"
+              v-model="islandName"
+              placeholder="Nombre de la isla"
+            />
+          </div>
+          <div>
+            <button class="accept-btn" @click="createIsland">Aceptar</button>
+          </div>
+        </div>
+        <div class="navigation-label">
+          <span class="label">Pon un nombre a tu isla</span>
+        </div>
       </template>
     </div>
   </div>
@@ -69,6 +90,8 @@ export default {
       imagesLoaded: false,
       step: 1,
       islandName: "",
+      errorCreateIsland: false,
+      errorMessage: "",
     };
   },
   computed: {
@@ -88,14 +111,16 @@ export default {
       this.step = step;
     },
     createIsland() {
+      this.errorCreateIsland = false;
       socket.emit(RequestSocketsEnum.ISLAND_CREATE, {
         name: this.islandName,
         type: this.currentIndex + 1, // Asumiendo que el tipo de isla es el índice + 1
       });
       socket.off(ResponseSocketsEnum.ISLAND_CREATE_ERROR);
       socket.on(ResponseSocketsEnum.ISLAND_CREATE_ERROR, (response) => {
-        console.log("Error al crear la isla:", response);
-        alert("Error al crear la isla. Por favor, inténtalo de nuevo.");
+        let message = response.message;
+        this.errorCreateIsland = true;
+        this.errorMessage = message;
       });
     },
     handleImageLoad() {
@@ -139,6 +164,41 @@ export default {
 </script>
 
 <style scoped>
+.error-message {
+  color: #ffdc00;
+  font-weight: bold;
+  text-align: start;
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: -9px;
+}
+
+.navigation-label {
+  box-sizing: border-box;
+  background-color: #3a4b54c9;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 100%;
+  padding: 5px;
+  text-align: left;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 5px;
+}
+
+.navigation div {
+  flex: 1;
+  text-align: center;
+}
+
+.navigation button {
+  width: 100%;
+}
+
 .island-create-screen {
   position: relative;
   background-color: #f0f0f0;
@@ -168,18 +228,24 @@ export default {
 
 .controls {
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 10px;
   z-index: 110;
+  padding: 10px 10px 0;
+  background-color: #3c87b3ad;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  flex-direction: column;
+  width: 340px;
 }
 
 .control-btn,
 .accept-btn {
-  background-color: #0057e7;
+  background-color: #3a4b54c9;
   color: #fff;
   border: none;
   padding: 8px 12px;
@@ -191,7 +257,7 @@ export default {
 
 .control-btn:hover,
 .accept-btn:hover {
-  background-color: #0040a0;
+  background-color: #3a4b54c9;
 }
 
 .label {
@@ -201,8 +267,11 @@ export default {
 }
 
 input[type="text"] {
-  padding: 8px;
+  padding: 5px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 </style>
