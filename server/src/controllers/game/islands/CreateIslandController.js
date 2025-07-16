@@ -28,10 +28,15 @@ class CreateIslandController {
                 island: islandResource.toObject()
             });
 
-        } catch (err) {
-            console.error('Error in CreateIslandController:', err);
-            Log.error('Error in CreateIslandController: ' + err);
-            socket.emit(ResponseSocketsEnum.ISLAND_CREATE_ERROR, { message: 'Error creating island' });
+        } catch (error) {
+            let message = 'Error creating island';
+            let dataError = error.response ? error.response.data : error.message;
+            if (dataError && dataError.message) {
+                message = dataError.message;
+            }
+            //console.error('Error in CreateIslandController:', error);
+            //Log.error('Error in CreateIslandController: ' + error);
+            socket.emit(ResponseSocketsEnum.ISLAND_CREATE_ERROR, { message: message });
         }
     }
 }
