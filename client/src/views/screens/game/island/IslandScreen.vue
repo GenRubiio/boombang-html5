@@ -2,18 +2,32 @@
   <div id="island-screen" class="island-screen">
     <!-- Botones de escenario -->
     <div class="scenario-buttons">
+      <!-- Botones para escenarios existentes -->
       <button
-        v-for="n in 5"
-        :key="n"
+        v-for="scene in sceneData.scenes"
+        :key="scene.id"
         class="scenario-button"
-        @click="handleSceneAction(sceneData.scenes && sceneData.scenes[n - 1])"
+        @click="handleSceneAction(scene)"
       >
-        {{
-          sceneData.scenes && sceneData.scenes[n - 1]
-            ? sceneData.scenes[n - 1].name
-            : "Añadir escenario"
-        }}
+        {{ scene.name }}
       </button>
+
+      <!-- Botones para añadir nuevos escenarios (solo si es mi isla) -->
+      <template
+        v-if="
+          sceneData.user_id == $socket.user.db_id ||
+          sceneData.userId == $socket.user.db_id
+        "
+      >
+        <button
+          v-for="n in 5 - (sceneData.scenes ? sceneData.scenes.length : 0)"
+          :key="'add-' + n"
+          class="scenario-button"
+          @click="handleSceneAction(null)"
+        >
+          Añadir escenario
+        </button>
+      </template>
     </div>
 
     <!-- Imagen de la brújula -->

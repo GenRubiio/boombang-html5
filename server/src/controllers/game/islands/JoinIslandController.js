@@ -23,6 +23,7 @@ class JoinIslandController {
             }
             const island = new IslandModel(responseIsland.island);
             const islandResource = new IslandResource(island);
+
             socket.emit(ResponseSocketsEnum.JOIN_ISLAND, {
                 island: islandResource.toObject()
             });

@@ -5,6 +5,7 @@ class UserResource extends Resource {
         return {
             id: data.socket.id,
             socket_id: data.socket.id,
+            db_id: data.id,
             username: data.username,
             is_admin: false,
             is_vip: false,
