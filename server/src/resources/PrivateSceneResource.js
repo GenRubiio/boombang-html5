@@ -9,7 +9,6 @@ class PrivateSceneResource extends Resource {
             name: data.name,
             type: data.type,
             colors: data.colors,
-            my_scene: data.my_scene,
             menu_type: data.menu_type,
             map_rows: data.map_width,
             map_cols: data.map_height,
