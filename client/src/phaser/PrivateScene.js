@@ -13,8 +13,11 @@ import TintManager from "./managers/TintManager";
 import PrivateSceneUpdateColorsService from "./services/PrivateScene/PrivateSceneUpdateColorsService";
 import RequestSocketsEnum from "../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
-import asset_ui_backpack_image from "../assets/game/scene/backpack.png";
-import asset_ui_move_item_image from "../assets/game/scene/move_item.png";
+import asset_ui_backpack_image from "../assets/game/scene/ui/backpack.png";
+import asset_ui_move_item_image from "../assets/game/scene/ui/move_item.png";
+import asset_ui_shop_image from "../assets/game/scene/ui/shop.png";
+import asset_ui_avatars_image from "../assets/game/scene/ui/avatars.png";
+import asset_ui_color_scene_image from "../assets/game/scene/ui/color_scene.png";
 
 export default class PrivateScene extends Phaser.Scene {
     constructor() {
@@ -59,6 +62,9 @@ export default class PrivateScene extends Phaser.Scene {
             // Cargar assets de UI
             this.load.image("asset_ui_backpack_image", asset_ui_backpack_image);
             this.load.image("asset_ui_move_item_image", asset_ui_move_item_image);
+            this.load.image("asset_ui_color_scene_image", asset_ui_color_scene_image);
+            this.load.image("asset_ui_shop_image", asset_ui_shop_image);
+            this.load.image("asset_ui_avatars_image", asset_ui_avatars_image);
 
             // Cargar dinámicamente los assets de inventario
             this.backpackUserItems.forEach(item => {
@@ -229,7 +235,7 @@ export default class PrivateScene extends Phaser.Scene {
         const BUTTON_SIZE = 50;
         const BUTTON_SPACING = 15;
         const START_X = 30;
-        const Y = 30;
+        const Y = 10;
 
         /* ---------- TEXTURAS COMPARTIDAS (una sola vez) ---------- */
         if (!this.textures.exists('btn_bg')) {
@@ -281,7 +287,7 @@ export default class PrivateScene extends Phaser.Scene {
         const hideTooltip = () => tooltip.setVisible(false);
 
         /* ------------------ FÁBRICA DE BOTONES ------------------- */
-        const makeButton = (x, iconKey, cb, tip) => {
+        const makeButton = (x, iconKey, cb, tip, isMiddle = false) => {
             const cont = this.add.container(x, Y)
                 .setScrollFactor(0)
                 .setDepth(10000);
@@ -296,8 +302,9 @@ export default class PrivateScene extends Phaser.Scene {
 
             /* icono */
             const icon = this.add.image(BUTTON_SIZE / 2, BUTTON_SIZE / 2, iconKey);
-            icon.setScale(Math.min((BUTTON_SIZE - 20) / icon.width,
-                (BUTTON_SIZE - 20) / icon.height));
+            const padding = isMiddle ? 10 : 20;
+            icon.setScale(Math.min((BUTTON_SIZE - padding) / icon.width,
+                (BUTTON_SIZE - padding) / icon.height));
 
             cont.add([bg, icon, zone]);
 
@@ -314,9 +321,40 @@ export default class PrivateScene extends Phaser.Scene {
             return cont;
         };
 
+        /* --------------------- BOTÓN “TIENDA” --------------------- */
+        this.shopButton = makeButton(
+            START_X,
+            'asset_ui_shop_image',
+            () => {
+                console.log('Botón de tienda pulsado');
+            },
+            'Tienda'
+        );
+
+        /* --------------------- BOTÓN “AVATARES” --------------------- */
+        this.avatarsButton = makeButton(
+            START_X + BUTTON_SIZE + BUTTON_SPACING,
+            'asset_ui_avatars_image',
+            () => {
+                console.log('Botón de avatares pulsado');
+            },
+            'Avatares'
+        );
+
+        /* --------------------- BOTÓN “COLOREAR” --------------------- */
+        this.colorButton = makeButton(
+            START_X + (BUTTON_SIZE + BUTTON_SPACING) * 2,
+            'asset_ui_color_scene_image',
+            () => {
+                console.log('Boton de colorear pulsado');
+            },
+            'Colorear',
+            true
+        );
+
         /* --------------------- BOTÓN “MOVER” --------------------- */
         this.moveButton = makeButton(
-            START_X,
+            START_X + (BUTTON_SIZE + BUTTON_SPACING) * 3,
             'asset_ui_move_item_image',
             () => this.toggleMoveMode(),
             'Mover'
@@ -324,7 +362,7 @@ export default class PrivateScene extends Phaser.Scene {
 
         /* ------------------ BOTÓN “INVENTARIO” ------------------ */
         this.inventoryButton = makeButton(
-            START_X + BUTTON_SIZE + BUTTON_SPACING,
+            START_X + (BUTTON_SIZE + BUTTON_SPACING) * 4,
             'asset_ui_backpack_image',
             () => {
                 if (this.inventoryContainer) {

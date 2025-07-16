@@ -11,6 +11,8 @@ import CreateSceneController from "./controllers/scene/CreateSceneController"; /
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 import TintManager from "./managers/TintManager"; // Gestor de tintes
 import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
+import asset_ui_shop_image from "../assets/game/scene/ui/shop.png";
+import asset_ui_avatars_image from "../assets/game/scene/ui/avatars.png";
 
 
 export default class PublicScene extends Phaser.Scene {
@@ -35,6 +37,8 @@ export default class PublicScene extends Phaser.Scene {
         this.load.image("tile", asset_tile_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
+        this.load.image("asset_ui_shop_image", asset_ui_shop_image);
+        this.load.image("asset_ui_avatars_image", asset_ui_avatars_image);
     }
 
     create() {
@@ -58,6 +62,118 @@ export default class PublicScene extends Phaser.Scene {
         this.events.on('destroy', this.destroy, this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
+        
+        this.createButtons();
+    }
+
+    createButtons() {
+        const BUTTON_SIZE = 50;
+        const BUTTON_SPACING = 15;
+        const START_X = 30;
+        const Y = 10;
+
+        /* ---------- TEXTURAS COMPARTIDAS (una sola vez) ---------- */
+        if (!this.textures.exists('btn_bg')) {
+            const g = this.add.graphics();
+            g.fillStyle(0xffffff, 0.8)
+                .fillRoundedRect(0, 0, BUTTON_SIZE, BUTTON_SIZE, 5)
+                .lineStyle(1, 0xcccccc, 1)
+                .strokeRoundedRect(0, 0, BUTTON_SIZE, BUTTON_SIZE, 5);
+            g.generateTexture('btn_bg', BUTTON_SIZE, BUTTON_SIZE);
+            g.destroy();
+        }
+
+        if (!this.textures.exists('tooltip_bg')) {
+            const W = 100, H = 25, A = 8;
+            const g = this.add.graphics();
+            g.fillStyle(0x000000, 0.8);
+            g.fillRoundedRect(0, A, W, H, 5);
+            g.beginPath();
+            g.moveTo(W / 2, 0);
+            g.lineTo(W / 2 - 8, A);
+            g.lineTo(W / 2 + 8, A);
+            g.closePath();
+            g.fill();
+            g.generateTexture('tooltip_bg', W, H + A);
+            g.destroy();
+        }
+
+        /* ------------------ TOOLTIP REUTILIZABLE ------------------ */
+        const tooltip = this.add.container(0, 0)
+            .setDepth(10002)
+            .setScrollFactor(0)
+            .setVisible(false);
+
+        const tooltipBg = this.add.image(0, 0, 'tooltip_bg').setOrigin(0);
+        const tooltipText = this.add.text(50, 20.5, '', {
+            fontSize: '12px',
+            color: '#ffffff',
+            align: 'center',
+            wordWrap: { width: 90, useAdvancedWrap: true }
+        }).setOrigin(0.5, 0.5);
+
+        tooltip.add([tooltipBg, tooltipText]);
+
+        const showTooltip = (btn, txt) => {
+            tooltipText.setText(txt);
+            tooltip.setPosition(btn.x + BUTTON_SIZE / 2 - 50, btn.y + BUTTON_SIZE + 5);
+            tooltip.setVisible(true);
+        };
+        const hideTooltip = () => tooltip.setVisible(false);
+
+        /* ------------------ FÁBRICA DE BOTONES ------------------- */
+        const makeButton = (x, iconKey, cb, tip) => {
+            const cont = this.add.container(x, Y)
+                .setScrollFactor(0)
+                .setDepth(10000);
+
+            /* fondo visible */
+            const bg = this.add.image(0, 0, 'btn_bg').setOrigin(0);
+
+            /* zona invisible de input que cubre TODO el cuadrado */
+            const zone = this.add.zone(0, 0, BUTTON_SIZE, BUTTON_SIZE)
+                .setOrigin(0)
+                .setInteractive();
+
+            /* icono */
+            const icon = this.add.image(BUTTON_SIZE / 2, BUTTON_SIZE / 2, iconKey);
+            icon.setScale(Math.min((BUTTON_SIZE - 20) / icon.width,
+                (BUTTON_SIZE - 20) / icon.height));
+
+            cont.add([bg, icon, zone]);
+
+            zone.on('pointerdown', cb)
+                .on('pointerover', () => {
+                    this.input.setDefaultCursor('pointer');
+                    showTooltip(cont, tip);
+                })
+                .on('pointerout', () => {
+                    this.input.setDefaultCursor('default');
+                    hideTooltip();
+                });
+
+            return cont;
+        };
+
+        /* --------------------- BOTÓN “TIENDA” --------------------- */
+        this.shopButton = makeButton(
+            START_X,
+            'asset_ui_shop_image',
+            () => {
+                console.log('Botón de tienda pulsado');
+            },
+            'Tienda'
+        );
+
+        /* --------------------- BOTÓN “AVATARES” --------------------- */
+        this.avatarsButton = makeButton(
+            START_X + BUTTON_SIZE + BUTTON_SPACING,
+            'asset_ui_avatars_image',
+            () => {
+                console.log('Botón de avatares pulsado');
+            },
+            'Avatares'
+        );
     }
 
     shutdown() {
