@@ -38,6 +38,7 @@ const ResponseSocketsEnum = new Enum({
     SCENE_REMOVE_ITEM: 'response:scene_remove_item',
     ADD_ITEM_TO_INVENTORY: 'response:add_item_to_inventory',
     REMOVE_ITEM_FROM_INVENTORY: 'response:remove_item_from_inventory',
+    UPDATE_PUBLIC_ISLANDS: 'response:update_public_islands',
 });
 
 export default ResponseSocketsEnum;

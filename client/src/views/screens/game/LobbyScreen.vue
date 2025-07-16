@@ -23,7 +23,6 @@
         <IslandsTab
           v-if="activeTab === 'islands'"
           :active-island-tab="activeIslandTab"
-          :public-islands="publicIslands"
           :favorite-islands="favoriteIslands"
           :my-islands="myIslands"
           @update:activeIslandTab="activeIslandTab = $event"
@@ -64,7 +63,6 @@ export default {
       activeIslandTab: "public",
       publicScenes: [],
       gameScenes: [],
-      publicIslands: [],
       favoriteIslands: [],
       myIslands: [],
     };
@@ -83,7 +81,6 @@ export default {
     this.$emit("updateLoading", true);
     this.loadAreas();
     this.loadGames();
-    this.loadIslands();
     this.loadFavoriteIslands();
     this.loadMyIslands();
   },
@@ -103,9 +100,6 @@ export default {
       socket.on(ResponseSocketsEnum.UPDATE_GAME_SCENES, (gameScenes) => {
         this.gameScenes = gameScenes;
       });
-    },
-    loadIslands() {
-      // Lógica para cargar islas
     },
     loadFavoriteIslands() {
       // Lógica para cargar islas favoritas

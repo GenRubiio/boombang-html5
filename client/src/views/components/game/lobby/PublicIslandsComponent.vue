@@ -10,9 +10,27 @@
 </template>
 
 <script>
+import socket from "../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
+
 export default {
-  props: {
-    islands: Array,
+  data() {
+    return {
+      islands: [],
+    };
+  },
+  async created() {
+    this.loadIslands();
+  },
+  methods: {
+    loadIslands() {
+      socket.emit(RequestSocketsEnum.GET_PUBLIC_ISLANDS);
+      socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS);
+      socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS, (data) => {
+        this.islands = data.islands;
+      });
+    },
   },
 };
 </script>

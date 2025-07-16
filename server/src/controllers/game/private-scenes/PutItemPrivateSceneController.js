@@ -116,34 +116,30 @@ class PutItemPrivateSceneController {
 
     static #validateOccupiedTiles(currentArea, occupiedTiles, itemIdToIgnore = null) {
         const sceneObjects = currentArea.objects;
-        const navigationMap = currentArea.navigationMapBase;
+        const gameMap = currentArea.game_map; // Usar el mapa de juego original
+        const rows = currentArea.map_rows;
+        const cols = currentArea.map_cols;
 
         for (const tile of occupiedTiles) {
             const [x, y] = tile;
 
-            if (!navigationMap[y] || navigationMap[y][x] === undefined) {
-                return false; // Out of bounds
-            }
-            
-            if (navigationMap[y][x] === 1) { // Unwalkable tile
-                 // Allow placing on unwalkable tiles if they are part of the object being moved
-                if (itemIdToIgnore) {
-                    const itemBeingMoved = sceneObjects.find(obj => obj.id === itemIdToIgnore);
-                    if (!itemBeingMoved || !itemBeingMoved.occupied_tiles.some(t => t[0] === x && t[1] === y)) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+            // 1. Verificar límites del mapa
+            if (y < 0 || y >= rows || x < 0 || x >= cols) {
+                return false;
             }
 
+            // 2. Verificar si el tile es transitable según el mapa de juego base
+            if (gameMap[y][x] !== 0) {
+                return false;
+            }
 
+            // 3. Verificar si está ocupado por OTRO objeto
             for (const sceneObject of sceneObjects) {
                 if (itemIdToIgnore && sceneObject.id === itemIdToIgnore) {
-                    continue; // Don't check against itself
+                    continue; // No comprobar colisión con el objeto que se está moviendo
                 }
                 if (sceneObject.occupied_tiles.some(t => t[0] === x && t[1] === y)) {
-                    return false; // Occupied by another object
+                    return false; // Ocupado por otro objeto
                 }
             }
         }

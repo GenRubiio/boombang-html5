@@ -6,7 +6,7 @@ class IslandModel {
         this.type = row.type;
         this.isUppercutActive = row.is_uppercut_active;
         this.userId = row.user_id;
-        this.visitors = 0;
+        this.visitors = row.visitors || 0;
         this.scenes = row.scenes || [];
         this.myIsland = row.my_island || false; // Default to false if not provided
         this.user = row.user || null;
