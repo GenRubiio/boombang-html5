@@ -87,7 +87,7 @@ export default {
         powerPreference: "high-performance",
         antialias: false, // Desactiva si no necesitas suavizado
         roundPixels: true, // Reduce cálculos de subpíxeles
-        pixelArt: true,
+        pixelArt: false, // TODO: ANTES LO TENIA EN TRUE ES PARA SUAVIZAR BORDES
         render: {
           antialias: true, // desactívalo si quieres bordes más duros para pixel art
         },
