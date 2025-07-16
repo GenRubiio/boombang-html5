@@ -16,16 +16,18 @@ class JoinPrivateSceneController {
                 throw new Error('User not found');
             }
             if (user.currentArea) return;
-            let response = null;
+
+            const response = await PrivateSceneApiService.join({
+                scene_id: data.sceneId,
+                password: data.password
+            }, user);
+
+            if (!response.success) {
+                throw new Error('Failed to join private scene');
+            };
+
             let scene = PrivateScenesCollection.getById(data.sceneId);
             if (!scene) {
-                response = await PrivateSceneApiService.join({
-                    scene_id: data.sceneId,
-                    password: data.password
-                }, user);
-                if (!response.success) {
-                    throw new Error('Failed to join private scene');
-                }
                 scene = new PrivateSceneModel(response.scene.id, response.scene);
                 PrivateScenesCollection.add(scene.id, scene);
             }
@@ -46,7 +48,8 @@ class JoinPrivateSceneController {
                 data: {
                     players: sceneUsers,
                     scenery: await new PrivateSceneResource(scene).toObject(),
-                    userInventory: user.inventory
+                    userInventory: user.inventory,
+                    myScene: scene.user_id == user.id,
                 }
             });
             scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {

@@ -6,6 +6,7 @@ import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
 
 class CreateSceneController {
+    //TODO: El bob y blitter esta consumiendo 5% de CPU hay que condicionarlo para que no aparezca si no es necesario. Ya lo he comprobado y solo hay que quitarlo
     static async main(gameScene, data) {
         const usersData = data.players;
         const sceneryData = data.scenery;

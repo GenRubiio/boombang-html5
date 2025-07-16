@@ -13,6 +13,8 @@ import TintManager from "./managers/TintManager";
 import PrivateSceneUpdateColorsService from "./services/PrivateScene/PrivateSceneUpdateColorsService";
 import RequestSocketsEnum from "../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
+import asset_ui_backpack_image from "../assets/game/scene/backpack.png";
+import asset_ui_move_item_image from "../assets/game/scene/move_item.png";
 
 export default class PrivateScene extends Phaser.Scene {
     constructor() {
@@ -38,62 +40,6 @@ export default class PrivateScene extends Phaser.Scene {
         // Datos de objetos de escena
         this.sceneItems = this.sceneData.scenery.objects;
 
-
-        //this.backpackUserItems = [
-        //    {
-        //        id: 1,
-        //        sprite_name: "500oroCatalog",
-        //        path: "assets/game/objects/500oroCatalog.png",
-        //        map_size: [[0, 0]],
-        //        occupied_tiles: [],
-        //        display_name: "500 Oro"
-        //    },
-        //    {
-        //        id: 4,
-        //        sprite_name: "500oroCatalog",
-        //        path: "assets/game/objects/500oroCatalog.png",
-        //        map_size: [[0, 0]],
-        //        occupied_tiles: [],
-        //        display_name: "500 Oro"
-        //    },
-        //    {
-        //        id: 5,
-        //        sprite_name: "well",
-        //        path: "assets/game/objects/well.png",
-        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-        //        occupied_tiles: [],
-        //        display_name: "Pozo"
-        //    },
-        //];
-        //
-        //this.sceneItems = [
-        //    {
-        //        id: 2,
-        //        sprite_name: "well",
-        //        path: "assets/game/objects/well.png",
-        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-        //        occupied_tiles: [[11, 10], [12, 11], [11, 12], [10, 11], [11, 11]],
-        //        display_name: "Pozo"
-        //    },
-        //    {
-        //        id: 3,
-        //        sprite_name: "well",
-        //        path: "assets/game/objects/well.png",
-        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-        //        occupied_tiles: [[12, 18], [13, 17], [14, 18], [13, 19], [13, 18]],
-        //        display_name: "Pozo"
-        //    },
-        //    {
-        //        id: 6,
-        //        sprite_name: "wood_ball",
-        //        path: "assets/game/objects/wood_ball.png",
-        //        map_size: [[0, 1], [1, 2], [2, 1], [1, 0], [1, 1]],
-        //        occupied_tiles: [[18, 14], [19, 13], [20, 14], [19, 15], [19, 14]],
-        //        display_name: "Bola de Madera"
-        //    }
-        //];
-
-
         this.moveModeActive = false;    // Modo mover activado/desactivado
         this.selectedObject = null;     // Objeto actualmente seleccionado
         this.detailPanel = null;        // Panel de detalles del objeto seleccionado
@@ -101,7 +47,6 @@ export default class PrivateScene extends Phaser.Scene {
         // Inventario dinámico
         this.inventoryItemsList = [...this.backpackUserItems];
         this.inventoryPage = 0;
-
     }
 
     preload() {
@@ -110,10 +55,16 @@ export default class PrivateScene extends Phaser.Scene {
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
 
-        // Cargar dinámicamente los assets de inventario
-        this.backpackUserItems.forEach(item => {
-            this.load.image(item.sprite_name, 'assets/game/objects/' + item.sprite_name + '.png');
-        });
+        if (this.sceneData.myScene) {
+            // Cargar assets de UI
+            this.load.image("asset_ui_backpack_image", asset_ui_backpack_image);
+            this.load.image("asset_ui_move_item_image", asset_ui_move_item_image);
+
+            // Cargar dinámicamente los assets de inventario
+            this.backpackUserItems.forEach(item => {
+                this.load.image(item.sprite_name, 'assets/game/objects/' + item.sprite_name + '.png');
+            });
+        }
 
         // Cargar objetos de escena existentes
         this.sceneItems.forEach(item => {
@@ -137,6 +88,7 @@ export default class PrivateScene extends Phaser.Scene {
         PrivateSceneLoader.main(this, this.sceneData.scenery.type, false);
         CreateSceneController.main(this, this.sceneData);
 
+        this.tileBlitter = this.add.blitter(0, 0, "tile");
         this.initializeTileGrid();
 
         // Marcar tiles ocupados
@@ -146,7 +98,10 @@ export default class PrivateScene extends Phaser.Scene {
         this.renderSceneObjects();
 
         this.vueComponent.$emit("updateLoading", false);
-        this.createInventory();
+
+        if (this.sceneData.myScene) {
+            this.createInventory();
+        }
 
         this.chatManager = new OverheadChatAnimation(this);
 
@@ -154,8 +109,11 @@ export default class PrivateScene extends Phaser.Scene {
         this.events.on('destroy', this.destroy, this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
+        
+        if (this.sceneData.myScene) {
+            this.createButtons();
+        }
 
-        this.createMoveButton();
         this.handleSockets();
         // Al recuperar el foco del navegador, refrescar overlays y eventos de mover
         document.addEventListener('visibilitychange', () => {
@@ -171,12 +129,14 @@ export default class PrivateScene extends Phaser.Scene {
 
     handleSockets() {
         socket.on(ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY, (data) => {
+            console.log('Socket event received:', ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY);
             if (data.item) {
                 this.inventoryItemsList.push(data.item);
                 this.updateInventoryUI();
             }
         });
         socket.on(ResponseSocketsEnum.SCENE_REMOVE_ITEM, (data) => {
+            console.log('Socket event received:', ResponseSocketsEnum.SCENE_REMOVE_ITEM);
             const itemId = data.user_catalog_item_id;
             const itemToRemove = this.sceneItems.find(i => i.id === itemId);
 
@@ -193,23 +153,49 @@ export default class PrivateScene extends Phaser.Scene {
             }
         });
         socket.on(ResponseSocketsEnum.SCENE_PUT_ITEM, (data) => {
+            console.log('Socket event received:', ResponseSocketsEnum.SCENE_PUT_ITEM);
             if (data.item) {
                 const existingItem = this.sceneItems.find(i => i.id === data.item.id);
                 if (existingItem) {
                     // It's a move, just update the tiles
                     existingItem.occupied_tiles = data.item.occupied_tiles;
+                    this.markOccupiedTiles();
+                    this.renderSceneObjects();
+                    if (this.moveModeActive) {
+                        this.prepareObjectsForMoving();
+                    }
                 } else {
                     // It's a new item from inventory
-                    this.sceneItems.push(data.item);
-                }
-                this.markOccupiedTiles();
-                this.renderSceneObjects();
-                if (this.moveModeActive) {
-                    this.prepareObjectsForMoving();
+                    const item = data.item;
+                    const textureName = item.sprite_name;
+
+                    if (this.textures.exists(textureName)) {
+                        this.sceneItems.push(item);
+                        this.markOccupiedTiles();
+                        this.renderSceneObjects();
+                        if (this.moveModeActive) {
+                            this.prepareObjectsForMoving();
+                        }
+                    } else {
+                        // Texture doesn't exist, load it first
+                        this.load.image(textureName, 'assets/game/objects/' + textureName + '.png');
+
+                        this.load.once(`filecomplete-image-${textureName}`, () => {
+                            this.sceneItems.push(item);
+                            this.markOccupiedTiles();
+                            this.renderSceneObjects();
+                            if (this.moveModeActive) {
+                                this.prepareObjectsForMoving();
+                            }
+                        });
+
+                        this.load.start();
+                    }
                 }
             }
         });
         socket.on(ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY, (data) => {
+            console.log('Socket event received:', ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY);
             const itemId = data.user_catalog_item_id;
             const itemIndex = this.inventoryItemsList.findIndex(i => i.id === itemId);
             if (itemIndex !== -1) {
@@ -239,50 +225,115 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     // ================ NUEVOS MÉTODOS ================ //
-    createMoveButton() {
-        // Crear botón cuadrado en la esquina superior derecha
-        this.moveButton = this.add.rectangle(
-            50, // Posición X (esquina derecha)
-            100,
-            40,  // ancho
-            40,  // alto
-            0x00ff00 // color verde
-        )
-            .setInteractive()
-            .setScrollFactor(0)
-            .setDepth(10000)
-            .setAlpha(0.7)
-            .on('pointerdown', () => {
-                this.toggleMoveMode();
-            });
+    createButtons() {
+        const BUTTON_SIZE = 50;
+        const BUTTON_SPACING = 15;
+        const START_X = 30;
+        const Y = 30;
 
-        // Texto dentro del botón
-        this.add.text(
-            this.moveButton.x,
-            this.moveButton.y,
-            'M', // Texto del botón
-            {
-                fontSize: '20px',
-                color: '#ffffff',
-                fontStyle: 'bold'
-            }
-        )
-            .setOrigin(0.5)
-            .setScrollFactor(0)
-            .setDepth(10001);
+        /* ---------- TEXTURAS COMPARTIDAS (una sola vez) ---------- */
+        if (!this.textures.exists('btn_bg')) {
+            const g = this.add.graphics();
+            g.fillStyle(0xffffff, 0.8)
+                .fillRoundedRect(0, 0, BUTTON_SIZE, BUTTON_SIZE, 5)
+                .lineStyle(1, 0xcccccc, 1)
+                .strokeRoundedRect(0, 0, BUTTON_SIZE, BUTTON_SIZE, 5);
+            g.generateTexture('btn_bg', BUTTON_SIZE, BUTTON_SIZE);
+            g.destroy();
+        }
 
-        // Texto indicativo debajo
-        this.add.text(
-            this.moveButton.x,
-            this.moveButton.y + 30,
-            'Mover',
-            { fontSize: '12px', color: '#fff' }
-        )
-            .setOrigin(0.5)
+        if (!this.textures.exists('tooltip_bg')) {
+            const W = 100, H = 25, A = 8;
+            const g = this.add.graphics();
+            g.fillStyle(0x000000, 0.8);
+            g.fillRoundedRect(0, A, W, H, 5);
+            g.beginPath();
+            g.moveTo(W / 2, 0);
+            g.lineTo(W / 2 - 8, A);
+            g.lineTo(W / 2 + 8, A);
+            g.closePath();
+            g.fill();
+            g.generateTexture('tooltip_bg', W, H + A);
+            g.destroy();
+        }
+
+        /* ------------------ TOOLTIP REUTILIZABLE ------------------ */
+        const tooltip = this.add.container(0, 0)
+            .setDepth(10002)
             .setScrollFactor(0)
-            .setDepth(10001);
+            .setVisible(false);
+
+        const tooltipBg = this.add.image(0, 0, 'tooltip_bg').setOrigin(0);
+        const tooltipText = this.add.text(50, 20.5, '', {
+            fontSize: '12px',
+            color: '#ffffff',
+            align: 'center',
+            wordWrap: { width: 90, useAdvancedWrap: true }
+        }).setOrigin(0.5, 0.5);
+
+        tooltip.add([tooltipBg, tooltipText]);
+
+        const showTooltip = (btn, txt) => {
+            tooltipText.setText(txt);
+            tooltip.setPosition(btn.x + BUTTON_SIZE / 2 - 50, btn.y + BUTTON_SIZE + 5);
+            tooltip.setVisible(true);
+        };
+        const hideTooltip = () => tooltip.setVisible(false);
+
+        /* ------------------ FÁBRICA DE BOTONES ------------------- */
+        const makeButton = (x, iconKey, cb, tip) => {
+            const cont = this.add.container(x, Y)
+                .setScrollFactor(0)
+                .setDepth(10000);
+
+            /* fondo visible */
+            const bg = this.add.image(0, 0, 'btn_bg').setOrigin(0);
+
+            /* zona invisible de input que cubre TODO el cuadrado */
+            const zone = this.add.zone(0, 0, BUTTON_SIZE, BUTTON_SIZE)
+                .setOrigin(0)
+                .setInteractive();
+
+            /* icono */
+            const icon = this.add.image(BUTTON_SIZE / 2, BUTTON_SIZE / 2, iconKey);
+            icon.setScale(Math.min((BUTTON_SIZE - 20) / icon.width,
+                (BUTTON_SIZE - 20) / icon.height));
+
+            cont.add([bg, icon, zone]);
+
+            zone.on('pointerdown', cb)
+                .on('pointerover', () => {
+                    this.input.setDefaultCursor('pointer');
+                    showTooltip(cont, tip);
+                })
+                .on('pointerout', () => {
+                    this.input.setDefaultCursor('default');
+                    hideTooltip();
+                });
+
+            return cont;
+        };
+
+        /* --------------------- BOTÓN “MOVER” --------------------- */
+        this.moveButton = makeButton(
+            START_X,
+            'asset_ui_move_item_image',
+            () => this.toggleMoveMode(),
+            'Mover'
+        );
+
+        /* ------------------ BOTÓN “INVENTARIO” ------------------ */
+        this.inventoryButton = makeButton(
+            START_X + BUTTON_SIZE + BUTTON_SPACING,
+            'asset_ui_backpack_image',
+            () => {
+                if (this.inventoryContainer) {
+                    this.inventoryContainer.setVisible(!this.inventoryContainer.visible);
+                }
+            },
+            'Inventario'
+        );
     }
-
 
     /**
      * Marcar y renderizar overlays de tiles ocupados por objetos existentes
@@ -308,7 +359,6 @@ export default class PrivateScene extends Phaser.Scene {
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
-        this.tileBlitter = this.add.blitter(0, 0, "tile");
         this.tileBlitter.setDepth(100);
         this.sceneItems.forEach(item => {
             item.occupied_tiles.forEach(([col, row]) => {
@@ -347,6 +397,10 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     makeButtonBlink() {
+        if (this.tween) {
+            this.tween.stop();
+            this.tween.remove();
+        }
         this.tween = this.tweens.add({
             targets: this.moveButton,
             alpha: 0.3,
@@ -360,7 +414,8 @@ export default class PrivateScene extends Phaser.Scene {
         if (this.tween) {
             this.tween.stop();
             this.tween.remove();
-            this.moveButton.alpha = 0.7;
+            this.tween = null;
+            this.moveButton.alpha = 1;
         }
     }
 
@@ -412,69 +467,98 @@ export default class PrivateScene extends Phaser.Scene {
      */
     createDetailPanel(item) {
         if (this.detailPanel) this.detailPanel.destroy();
+        if (this.inventoryContainer) this.inventoryContainer.setVisible(false);
 
-        if (this.inventoryContainer) {
-            this.inventoryContainer.setVisible(false);
-        }
+        /* ---------- CONSTANTES ---------- */
+        const PAD = 10;
+        const ICON_SIZE = 100;
+        const SLOT_SIZE = 60;
+        const SLOT_PAD = 5;
+        const INV_NAV_H = 30;
+        const PANEL_W = SLOT_SIZE * 3 + SLOT_PAD * 4;
+        const PANEL_H = SLOT_SIZE * 3 + SLOT_PAD * 4 + INV_NAV_H + SLOT_PAD;
+        const BTN_W = 60;
+        const BTN_H = 25;
 
-        const pad = 10;
-        const iconSize = 100;
         const nameStyle = { fontSize: '14px', color: '#000000' };
-        const btnStyle = { fontSize: '12px', color: '#ffffff' }; // White text on red button
+        const btnTextStyle = { fontSize: '12px', color: '#ffffff' };
 
-        // Match inventory width
-        const slotSize = 60;
-        const slotPad = 5;
-        const panelW = slotSize * 3 + slotPad * 4;
-        const invNavH = 30; // Height of inventory navigation
-        const panelH = slotSize * 3 + slotPad * 4 + invNavH + slotPad; // Match inventory height
+        /* ---------- POSICIÓN PANEL ---------- */
+        const x = this.scale.width - PANEL_W - PAD;
+        const y = this.scale.height - PANEL_H - 100;
 
-        const x = this.scale.width - panelW - pad;
-        const y = this.scale.height - panelH - 100; // 100px bottom margin
-
+        /* ---------- CONTENEDOR PRINCIPAL ---------- */
         this.detailPanel = this.add.container(x, y)
             .setDepth(10000)
             .setScrollFactor(0);
 
-        const bg = this.add.graphics();
-        bg.fillStyle(0xffffff, 0.8); // White, slightly transparent background
-        bg.fillRoundedRect(0, 0, panelW, panelH, 5); // 5px border radius
-        this.detailPanel.add(bg);
+        /* ---------- TEXTURA DE FONDO (solo se crea 1ª vez) ---------- */
+        if (!this.textures.exists('detail_panel_bg')) {
+            const g = this.add.graphics();
+            g.fillStyle(0xffffff, 0.8)
+                .fillRoundedRect(0, 0, PANEL_W, PANEL_H, 5);
+            g.generateTexture('detail_panel_bg', PANEL_W, PANEL_H);
+            g.destroy();
+        }
+        this.detailPanel.add(this.add.image(0, 0, 'detail_panel_bg').setOrigin(0));
 
-        const closeButton = this.add.text(panelW - pad, pad, 'X', { fontSize: '16px', color: '#000000', fontStyle: 'bold' })
-            .setOrigin(1, 0)
+        /* ---------- BOTÓN CERRAR ---------- */
+        const closeZone = this.add.zone(PANEL_W - PAD - 16, PAD, 16, 16)
+            .setOrigin(0)
             .setInteractive({ useHandCursor: true });
-        this.detailPanel.add(closeButton);
-        closeButton.on('pointerdown', () => this.deselectObject());
+        closeZone.on('pointerdown', () => this.deselectObject());
 
-        // Name at the left
-        const nameText = this.add.text(pad, pad, item.display_name, nameStyle)
+        const closeText = this.add.text(
+            closeZone.x + 8, closeZone.y, 'X',
+            { fontSize: '16px', color: '#000000', fontStyle: 'bold' }
+        ).setOrigin(0.5, 0);
+
+        this.detailPanel.add([closeText, closeZone]);
+
+        /* ---------- NOMBRE DEL OBJETO ---------- */
+        const nameText = this.add.text(PAD, PAD, item.display_name, nameStyle)
             .setOrigin(0, 0);
         this.detailPanel.add(nameText);
 
-        // Image 100x100 centered below name
-        const icon = this.add.image(panelW / 2, nameText.y + nameText.height + pad + iconSize / 2, item.sprite_name)
-            .setOrigin(0.5);
-        // Scale to fit, don't stretch
-        const scale = Math.min(iconSize / icon.width, iconSize / icon.height);
-        icon.setScale(scale);
+        /* ---------- ICONO DEL OBJETO ---------- */
+        const icon = this.add.image(
+            PANEL_W / 2,
+            nameText.y + nameText.height + PAD + ICON_SIZE / 2,
+            item.sprite_name
+        ).setOrigin(0.5);
+        icon.setScale(Math.min(ICON_SIZE / icon.width, ICON_SIZE / icon.height));
         this.detailPanel.add(icon);
 
-        // Delete button aligned left below image
-        const btnW = 60;
-        const btnH = 25;
-        const btnX = pad;
-        const btnY = icon.y + icon.displayHeight / 2 + pad;
-        const btnBg = this.add.rectangle(btnX, btnY, btnW, btnH, 0xff0000)
+        /* ---------- BOTÓN “BORRAR” ---------- */
+
+        /* textura roja compartida */
+        if (!this.textures.exists('btn_red_bg')) {
+            const g = this.add.graphics();
+            g.fillStyle(0xff0000, 1)
+                .fillRoundedRect(0, 0, BTN_W, BTN_H, 4);
+            g.generateTexture('btn_red_bg', BTN_W, BTN_H);
+            g.destroy();
+        }
+
+        const btnX = PAD;
+        const btnY = icon.y + ICON_SIZE / 2 + PAD;
+
+        const deleteBg = this.add.image(btnX, btnY, 'btn_red_bg').setOrigin(0);
+        const deleteText = this.add.text(
+            btnX + BTN_W / 2,
+            btnY + BTN_H / 2,
+            'Borrar',
+            btnTextStyle
+        ).setOrigin(0.5);
+
+        const deleteZone = this.add.zone(btnX, btnY, BTN_W, BTN_H)
             .setOrigin(0)
             .setInteractive({ useHandCursor: true });
-        const btnText = this.add.text(btnX + btnW / 2, btnY + btnH / 2, 'Borrar', btnStyle)
-            .setOrigin(0.5);
-        this.detailPanel.add(btnBg);
-        this.detailPanel.add(btnText);
+        deleteZone.on('pointerdown', () => this.removeSelectedObject());
 
-        btnBg.on('pointerdown', () => this.removeSelectedObject());
+        this.detailPanel.add([deleteBg, deleteText, deleteZone]);
     }
+
 
     /**
      * Eliminar el objeto seleccionado y añadirlo al inventario.
@@ -499,12 +583,17 @@ export default class PrivateScene extends Phaser.Scene {
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
 
-        sprite.on('drag', (pointer, dragX, dragY) => {
-            sprite.x = dragX;
-            sprite.y = dragY;
+        // Limpiar listeners previos para evitar duplicados
+        sprite.off('drag');
+        sprite.off('dragend');
+
+        sprite.on('drag', (pointer) => {
+            // Forzar el origen del sprite (su base) a seguir la posición del cursor.
+            // Esto anula el desfase del clic inicial y centra el arrastre en la base.
+            sprite.x = pointer.worldX;
+            sprite.y = pointer.worldY;
         });
 
-        sprite.off('dragend');
         sprite.on('dragend', (pointer) => {
             const dropX = pointer.worldX;
             const dropY = pointer.worldY;
@@ -543,6 +632,7 @@ export default class PrivateScene extends Phaser.Scene {
         // Verificar que todos los tiles estén dentro del grid
         const rows = this.sceneData.scenery.map_rows;
         const cols = this.sceneData.scenery.map_cols;
+        const gameMap = this.sceneData.scenery.game_map;
 
         for (const [col, row] of newTiles) {
             // Verificar límites
@@ -550,10 +640,12 @@ export default class PrivateScene extends Phaser.Scene {
                 return false;
             }
 
-            // No se puede posicionar si el piso no es clickeable (mapa) o está ocupado por otro objeto
-            if (this.tiles?.[row]?.[col]?.isClickable === false) {
+            // No se puede posicionar si el piso no es transitable según el mapa base
+            if (gameMap && gameMap[row] && typeof gameMap[row][col] !== 'undefined' && gameMap[row][col] !== 0) {
                 return false;
             }
+
+            // No se puede posicionar si el tile está ocupado por OTRO objeto
             if (this.tileGrid[row][col].occupied && this.tileGrid[row][col].objectId !== currentObjectId) {
                 return false;
             }
@@ -646,6 +738,7 @@ export default class PrivateScene extends Phaser.Scene {
     deselectObject() {
         if (!this.selectedObject) return;
 
+        this.selectedObject.isDragging = false;
         // CORRECCIÓN: Desactivar el arrastre
         this.input.setDraggable(this.selectedObject.sprite, false);
         this.selectedObject = null;
@@ -656,7 +749,7 @@ export default class PrivateScene extends Phaser.Scene {
         }
 
         if (this.inventoryContainer) {
-            this.inventoryContainer.setVisible(true);
+
         }
     }
 
@@ -713,119 +806,195 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     /**
-     * Crear panel de inventario con grid 3×3 y paginación.
+     * Crear panel de inventario reutilizable para optimizar rendimiento.
+     * Los slots se crean una vez y solo se actualiza su contenido.
      */
     createInventory() {
-        // Contenedor fijo en esquina inferior derecha
-        const pad = 10;
-        const slotSize = 60;
-        const slotPad = 5;
-        const navH = 30;
-        const invW = slotSize * 3 + slotPad * 4;
-        const invH = slotSize * 3 + slotPad * 4 + navH + slotPad;
-        const x = this.scale.width - invW - pad;
-        const y = this.scale.height - invH - 100; // 100px bottom margin
+        const PAD = 10;
+        const SLOT_SIZE = 60;
+        const SLOT_PAD = 5;
+        const NAV_H = 30;
+        const INV_W = SLOT_SIZE * 3 + SLOT_PAD * 4;
+        const INV_H = SLOT_SIZE * 3 + SLOT_PAD * 4 + NAV_H + SLOT_PAD;
+        const x = this.scale.width - INV_W - PAD;
+        const y = this.scale.height - INV_H - 100;
 
         if (this.inventoryContainer) this.inventoryContainer.destroy();
+
         this.inventoryContainer = this.add.container(x, y)
             .setDepth(10000)
-            .setScrollFactor(0);
+            .setScrollFactor(0)
+            .setVisible(false);
 
-        const bg = this.add.graphics();
-        bg.fillStyle(0xffffff, 0.8); // White, slightly transparent background
-        bg.fillRoundedRect(0, 0, invW, invH, 5); // 5px border radius
-        this.inventoryContainer.add(bg);
+        if (!this.textures.exists('inv_bg')) {
+            const g = this.add.graphics();
+            g.fillStyle(0xffffff, 0.8);
+            g.fillRoundedRect(0, 0, INV_W, INV_H, 5);
+            g.generateTexture('inv_bg', INV_W, INV_H);
+            g.destroy();
+        }
+        this.inventoryContainer.add(this.add.image(0, 0, 'inv_bg').setOrigin(0));
 
-        // Contenedor para slots dinámicos
-        this.slotsContainer = this.add.container(0, 0);
-        this.inventoryContainer.add(this.slotsContainer);
+        const closeButton = this.add.text(INV_W - SLOT_PAD, SLOT_PAD, 'X', {
+            fontSize: '16px', color: '#000000', fontStyle: 'bold'
+        })
+            .setOrigin(1, 0)
+            .setInteractive({ useHandCursor: true });
+        closeButton.on('pointerdown', () => this.inventoryContainer.setVisible(false));
+        this.inventoryContainer.add(closeButton);
 
-        // Botones de paginación
+        /* ---------- PAGINACIÓN (ARRIBA) ---------- */
         const btnStyle = { fontSize: '18px', color: '#000000' };
-        const prevBtn = this.add.text(slotPad, slotSize * 3 + slotPad * 2, '<', btnStyle)
+        const navY = SLOT_PAD + 5;
+        const prevBtn = this.add.text(SLOT_PAD + 10, navY, '<', btnStyle)
             .setInteractive({ useHandCursor: true });
-        const nextBtn = this.add.text(invW - slotPad - 18, slotSize * 3 + slotPad * 2, '>', btnStyle)
+        const nextBtn = this.add.text(INV_W - SLOT_PAD - 28, navY, '>', btnStyle)
             .setInteractive({ useHandCursor: true });
-        this.pageText = this.add.text(invW / 2, slotSize * 3 + slotPad * 2 + 5, '', { fontSize: '14px', color: '#000000' })
-            .setOrigin(0.5, 0);
+        this.pageText = this.add.text(INV_W / 2, navY, '', {
+            fontSize: '14px', color: '#000000'
+        }).setOrigin(0.5, 0);
+
+        prevBtn.on('pointerdown', () => {
+            this.inventoryPage = Math.max(0, this.inventoryPage - 1);
+            this.updateInventoryUI();
+        });
+        nextBtn.on('pointerdown', () => {
+            this.inventoryPage = Math.min(this.totalPages - 1, this.inventoryPage + 1);
+            this.updateInventoryUI();
+        });
         this.inventoryContainer.add([prevBtn, nextBtn, this.pageText]);
 
-        prevBtn.on('pointerdown', () => { this.inventoryPage = Math.max(0, this.inventoryPage - 1); this.updateInventoryUI(); });
-        nextBtn.on('pointerdown', () => { this.inventoryPage = Math.min(this.totalPages - 1, this.inventoryPage + 1); this.updateInventoryUI(); });
+        /* ---------- TOTAL DE OBJETOS ---------- */
+        this.totalItemsText = this.add.text(INV_W / 2, INV_H - NAV_H + 5, '', {
+            fontSize: '12px', color: '#000000'
+        }).setOrigin(0.5, 0);
+        this.inventoryContainer.add(this.totalItemsText);
+
+        /* ---------- CREACIÓN DE SLOTS Y REJILLA DE FONDO ---------- */
+        this.inventorySlots = [];
+        const slotsY = navY + NAV_H;
+
+        if (!this.textures.exists('slot_grid_bg')) {
+            const gridGraphics = this.add.graphics();
+            gridGraphics.lineStyle(1, 0x000000, 0.2);
+            for (let i = 0; i < 9; i++) {
+                const col = i % 3;
+                const row = Math.floor(i / 3);
+                const slotX = SLOT_PAD + col * (SLOT_SIZE + SLOT_PAD);
+                const slotY = slotsY + row * (SLOT_SIZE + SLOT_PAD);
+                gridGraphics.strokeRect(slotX, slotY, SLOT_SIZE, SLOT_SIZE);
+            }
+            gridGraphics.generateTexture('slot_grid_bg', INV_W, INV_H);
+            gridGraphics.destroy();
+        }
+        this.inventoryContainer.add(this.add.image(0, 0, 'slot_grid_bg').setOrigin(0));
+
+
+        for (let i = 0; i < 9; i++) {
+            const col = i % 3;
+            const row = Math.floor(i / 3);
+            const slotX = SLOT_PAD + col * (SLOT_SIZE + SLOT_PAD);
+            const slotY = slotsY + row * (SLOT_SIZE + SLOT_PAD);
+
+            const slotContainer = this.add.container(slotX, slotY).setVisible(false);
+
+            const icon = this.add.image(SLOT_SIZE / 2, SLOT_SIZE / 2, '__DEFAULT')
+                .setOrigin(0.5)
+                .setInteractive({ useHandCursor: true });
+
+            const countText = this.add.text(SLOT_SIZE - 5, SLOT_SIZE - 5, '', {
+                fontSize: '14px', color: '#000000'
+            }).setOrigin(1);
+
+            slotContainer.add([icon, countText]);
+            this.inventoryContainer.add(slotContainer);
+
+            this.inventorySlots.push({ container: slotContainer, icon, countText, group: null });
+        }
 
         this.updateInventoryUI();
     }
 
-    /**
-     * Actualizar visualización del inventario según la página actual.
-     */
     updateInventoryUI() {
-        const pad = 10;
-        const slotSize = 60;
-        const slotPad = 5;
-        const tileWidth = 65;
-        const tileHeight = 33;
-        const halfTileWidth = tileWidth / 2;
-        const halfTileHeight = tileHeight / 2;
-        const centerX = this.scale.width / 2;
+        if (!this.inventorySlots || !this.pageText) return;
+
+        const TILE_WIDTH = 65;
+        const TILE_HEIGHT = 33;
+        const HALF_TILE_WIDTH = TILE_WIDTH / 2;
+        const HALF_TILE_HEIGHT = TILE_HEIGHT / 2;
+        const CENTER_X = this.scale.width / 2;
+        const SLOT_SIZE = 60;
 
         const grouped = this.groupItems(this.inventoryItemsList);
         this.totalPages = Math.max(1, Math.ceil(grouped.length / 9));
         this.inventoryPage = Phaser.Math.Clamp(this.inventoryPage, 0, this.totalPages - 1);
-        this.pageText.setText(`${this.inventoryPage + 1}/${this.totalPages}`);
+        this.pageText.setText(`${this.inventoryPage + 1} / ${this.totalPages}`);
+        this.totalItemsText.setText(`Total: ${this.inventoryItemsList.length}`);
 
-        this.slotsContainer.removeAll(true);
         const pageItems = grouped.slice(this.inventoryPage * 9, this.inventoryPage * 9 + 9);
-        pageItems.forEach((group, idx) => {
-            const col = idx % 3;
-            const row = Math.floor(idx / 3);
-            const x = slotPad + col * (slotSize + slotPad);
-            const y = slotPad + row * (slotSize + slotPad);
 
-            const slotBg = this.add.graphics({ x: x, y: y });
-            slotBg.fillStyle(0xffffff, 1); // White, opaque background
-            slotBg.fillRoundedRect(0, 0, slotSize, slotSize, 5); // 5px border radius
-            this.slotsContainer.add(slotBg);
+        this.inventorySlots.forEach((slot, idx) => {
+            const group = pageItems[idx];
+            if (group) {
+                slot.group = group;
+                slot.icon.setTexture(group.sprite_name);
+                const maxSize = SLOT_SIZE - 10;
+                const scale = Math.min(maxSize / slot.icon.width, maxSize / slot.icon.height);
+                slot.icon.setScale(scale);
 
-            const icon = this.add.image(x + slotSize / 2, y + slotSize / 2, group.sprite_name)
-                .setOrigin(0.5)
-                .setInteractive({ useHandCursor: true });
-            const maxSize = slotSize - 10;
-            const scale = Math.min(maxSize / icon.width, maxSize / icon.height);
-            icon.setScale(scale);
-            this.slotsContainer.add(icon);
+                slot.countText.setText(group.count > 1 ? `${group.count}` : '');
+                slot.container.setVisible(true);
 
-            if (group.count > 1) {
-                const countText = this.add.text(x + slotSize - 5, y + slotSize - 5, `${group.count}`, { fontSize: '14px', color: '#000000' })
-                    .setOrigin(1);
-                this.slotsContainer.add(countText);
-            }
+                this.input.setDraggable(slot.icon, true);
 
-            // Permitir arrastrar desde inventario
-            this.input.setDraggable(icon);
-            icon.on('dragstart', () => {
-                // Restaurar tamaño real al iniciar arrastre fuera del inventario
-                icon.setScale(1);
-                icon.setTint(0xaaaaaa);
-            });
-            icon.on('drag', (pointer, dragX, dragY) => { icon.x = dragX; icon.y = dragY; });
-            icon.on('dragend', (pointer) => {
-                icon.clearTint();
-                const dropX = pointer.worldX;
-                const dropY = pointer.worldY;
-                const newTiles = this.calculateNewTiles(dropX, dropY, group.map_size, centerX, halfTileWidth, halfTileHeight);
-                if (this.isPositionValid(newTiles, null)) {
-                    const itemInstance = this.inventoryItemsList.find(i => i.sprite_name === group.sprite_name);
-                    if (itemInstance) {
-                        socket.emit(RequestSocketsEnum.SCENE_PUT_ITEM, {
-                            user_catalog_item_id: itemInstance.id,
-                            occupied_tiles: newTiles
-                        });
+                slot.icon.off('dragstart').off('drag').off('dragend');
+
+                slot.icon.on('dragstart', () => {
+                    slot.icon.setScale(1);
+                    slot.icon.setTint(0xaaaaaa);
+                    slot.container.setVisible(false);
+                    this.inventoryContainer.add(slot.icon);
+                });
+
+                slot.icon.on('drag', (pointer) => {
+                    const localPoint = this.inventoryContainer.pointToContainer(pointer);
+                    if (localPoint) {
+                        const iconHeight = slot.icon.height;
+                        const originOffsetY = iconHeight * (0.9 - 0.5);
+                        slot.icon.x = localPoint.x;
+                        slot.icon.y = localPoint.y - originOffsetY;
                     }
-                }
-                // Always update UI to return the icon to the inventory slot
-                this.updateInventoryUI();
-            });
+                });
+
+                slot.icon.on('dragend', (pointer) => {
+                    slot.icon.clearTint();
+                    const dropX = pointer.worldX;
+                    const dropY = pointer.worldY;
+
+                    const newTiles = this.calculateNewTiles(
+                        dropX, dropY, slot.group.map_size,
+                        CENTER_X, HALF_TILE_WIDTH, HALF_TILE_HEIGHT
+                    );
+
+                    if (this.isPositionValid(newTiles, null)) {
+                        const itemInstance = this.inventoryItemsList.find(i => i.sprite_name === slot.group.sprite_name);
+                        if (itemInstance) {
+                            socket.emit(RequestSocketsEnum.SCENE_PUT_ITEM, {
+                                user_catalog_item_id: itemInstance.id,
+                                occupied_tiles: newTiles
+                            });
+                        }
+                    }
+                    slot.container.add(slot.icon);
+                    slot.icon.setPosition(SLOT_SIZE / 2, SLOT_SIZE / 2);
+                    this.updateInventoryUI();
+                });
+
+            } else {
+                slot.group = null;
+                slot.container.setVisible(false);
+                this.input.setDraggable(slot.icon, false);
+            }
         });
     }
 

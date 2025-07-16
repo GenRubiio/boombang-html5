@@ -7,7 +7,6 @@
     />
     <PublicIslands
       v-if="activeIslandTab === 'public'"
-      :islands="publicIslands"
       @join-island="$emit('join-island', $event)"
     />
     <FavoriteIslands
@@ -38,7 +37,6 @@ export default {
   },
   props: {
     activeIslandTab: String,
-    publicIslands: Array,
     favoriteIslands: Array,
     myIslands: Array,
   },
