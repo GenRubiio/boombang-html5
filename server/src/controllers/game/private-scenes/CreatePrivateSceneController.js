@@ -48,10 +48,15 @@ class CreatePrivateSceneController {
                 user: await new UserResource(user).toObject(),
             }, user);
 
-        } catch (err) {
-            console.error('Error in CreateIslandController:', err);
-            Log.error('Error in CreateIslandController: ' + err);
-            socket.emit(ResponseSocketsEnum.ISLAND_CREATE_ERROR, { message: 'Error creating island' });
+        } catch (error) {
+            //console.error('Error in CreateIslandController:', error);
+            //Log.error('Error in CreateIslandController: ' + error);
+            let message = 'Error creating private scene';
+            let dataError = error.response ? error.response.data : error.message;
+            if (dataError && dataError.message) {
+                message = dataError.message;
+            }
+            socket.emit(ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR, { message: message });
         }
     }
 }
