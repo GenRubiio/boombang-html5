@@ -76,23 +76,24 @@ class UserModel {
     }
 
     calculateUppercutLevel() {
-        const uppercuts = this.uppercutsSend;
-
-        if (uppercuts >= 2000) {
+        const ringsWon = this.ringsWon;
+        if (ringsWon >= 3000) {
             return UppercutsEnum.GOLD;
-        } else if (uppercuts >= 1000) {
+        } else if (ringsWon >= 1000) {
             return UppercutsEnum.BLACK;
-        } else if (uppercuts >= 500) {
+        } else if (ringsWon >= 500) {
             return UppercutsEnum.BROWN;
-        } else if (uppercuts >= 300) {
+        } else if (ringsWon >= 200) {
             return UppercutsEnum.PURPLE;
-        } else if (uppercuts >= 100) {
+        } else if (ringsWon >= 100) {
+            return UppercutsEnum.WHITE;
+        } else if (ringsWon >= 50) {
             return UppercutsEnum.BLUE;
-        } else if (uppercuts >= 50) {
+        } else if (ringsWon >= 25) {
             return UppercutsEnum.GREEN;
-        } else if (uppercuts >= 25) {
+        } else if (ringsWon >= 10) {
             return UppercutsEnum.ORANGE;
-        } else if (uppercuts >= 10) {
+        } else if (ringsWon >= 1) {
             return UppercutsEnum.PINK;
         } else {
             return UppercutsEnum.RED;

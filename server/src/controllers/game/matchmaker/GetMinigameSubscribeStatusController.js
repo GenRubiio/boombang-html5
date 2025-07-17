@@ -2,7 +2,7 @@ const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 
-class MinigameSuscribeController {
+class GetMinigameSubscribeStatusController {
     static async main(socket, io, matchMakers, data) {
         try {
             const sceneType = data.type;
@@ -17,21 +17,24 @@ class MinigameSuscribeController {
                 return;
             }
 
-            // Alterna la suscripción del usuario
-            matchMakers[sceneType].register(socket, sceneType, (players, sceneType) => {
-                matchMakers[sceneType].createMinigame(sceneType, players, io);
-            });
+            const matchmaker = matchMakers[sceneType];
+            if (!matchmaker) {
+                console.error(`Matchmaker para el tipo ${sceneType} no encontrado`);
+                return;
+            }
 
-            // Emite una respuesta para que el cliente actualice la UI
-            socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE, {
+            const isSubscribed = matchmaker.isUserInQueue(user.id);
+
+            socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS, {
                 success: true,
+                isSubscribed,
                 npcId: sceneType
             });
 
         } catch (err) {
-            Log.error('Error in MinigameSuscribeController: ' + err);
+            Log.error('Error in GetMinigameSubscribeStatusController: ' + err);
         }
     }
 }
 
-module.exports = MinigameSuscribeController;
+module.exports = GetMinigameSubscribeStatusController;

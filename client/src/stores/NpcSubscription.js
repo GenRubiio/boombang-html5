@@ -29,6 +29,13 @@ export const useNpcSubscriptionStore = defineStore('npcSubscription', {
             } else {
                 this.subscribe(npcId)
             }
+        },
+        setSubscription(npcId, status) {
+            if (status) {
+                this.subscribe(npcId);
+            } else {
+                this.unsubscribe(npcId);
+            }
         }
     },
     persist: {
