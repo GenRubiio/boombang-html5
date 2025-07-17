@@ -55,7 +55,8 @@ class MatchMakerInstance {
         let minigame = null;
         switch (sceneType) {
             case MinigamesEnum.GOLDEN_RING:
-                minigame = new MinigameRingSceneInstance(MinigameScenesCollection.getByUid(sceneType));
+                let miniGameScene = { ...MinigameScenesCollection.getByUid(sceneType) }
+                minigame = new MinigameRingSceneInstance(miniGameScene);
                 break;
             default:
                 throw new Error(`Tipo de sala desconocido: ${sceneType}`);
@@ -85,35 +86,47 @@ class MatchMakerInstance {
 
     async callUsers(minigameScene, players, io) {
         try {
-            let position = 0;
+            // Notificar a los clientes que ya no están en la cola de espera
             for (const player of players) {
+                player.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS, {
+                    success: true,
+                    isSubscribed: false,
+                    npcId: minigameScene.minigameScene.type
+                });
+            }
+
+            // 1. Añadir todos los usuarios a la escena primero
+            for (const [index, player] of players.entries()) {
                 const user = ConnectedUsersCollection.getBySocketId(player.id);
                 if (!user) {
                     console.error(`Usuario no encontrado para el socket ${player.id}`);
                     continue;
                 }
 
-                if (user.currentArea
-                    && (
-                        user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE
-                        || user.currentArea.scene_type == SceneTypesEnum.GAME_SCENE
-                        || user.currentArea.scene_type == SceneTypesEnum.PRIVATE_SCENE
-                    )
-                ) {
+                if (user.currentArea && (user.currentArea.scene_type !== SceneTypesEnum.MINIGAME_RING)) {
                     RemoveUserFromSceneTask.main(user.currentArea, user);
-                    console.log('Usuario eliminado de la escena pública', user.username);
                 }
-                user.setArea(minigameScene);
-                minigameScene.addUser(user, {
-                    x: minigameScene.position_users[position][0],
-                    y: minigameScene.position_users[position][1],
-                    z: minigameScene.position_users[position][2]
-                });
+                
+                const startPosition = {
+                    x: minigameScene.position_users[index][0],
+                    y: minigameScene.position_users[index][1],
+                    z: minigameScene.position_users[index][2]
+                };
 
-                let sceneUsers = [];
-                for (const user of minigameScene.users) {
-                    sceneUsers.push(await new UserResource(user).toObject());
-                }
+                user.setArea(minigameScene);
+                minigameScene.addUser(user, startPosition);
+            }
+
+            // 2. Obtener la lista completa de usuarios en la escena
+            const sceneUsers = [];
+            for (const user of minigameScene.users) {
+                sceneUsers.push(await new UserResource(user).toObject());
+            }
+
+            // 3. Notificar a cada jugador con la lista completa
+            for (const player of players) {
+                const user = ConnectedUsersCollection.getBySocketId(player.id);
+                 if (!user) continue;
 
                 player.emit(ResponseSocketsEnum.MINIGAME_JOIN, {
                     success: true,
@@ -128,15 +141,10 @@ class MatchMakerInstance {
                         }
                     }
                 });
-                minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
-                    user: await new UserResource(user).toObject(),
-                }, user);
-
-                position++;
             }
+
             this.clearNotifiedUsers(minigameScene, players);
-        }
-        catch (err) {
+        } catch (err) {
             console.error('Error al llamar a los usuarios:', err);
         }
     }

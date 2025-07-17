@@ -130,26 +130,56 @@ export default {
     };
   },
   computed: {
-    // Calcula si está inscrito llamando al getter del store
     isSubscribed() {
       const store = useNpcSubscriptionStore();
       return store.isSubscribed(this.npcId);
     },
   },
   methods: {
+    handleSubscriptionStatus(response) {
+      if (response.npcId === this.npcId) {
+        const store = useNpcSubscriptionStore();
+        store.setSubscription(this.npcId, response.isSubscribed);
+      }
+    },
+    handleSubscriptionToggle(response) {
+      if (response.success && response.npcId === this.npcId) {
+        const store = useNpcSubscriptionStore();
+        store.toggle(this.npcId);
+      }
+    },
     onToggle() {
       socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
         type: this.npcId,
       });
-
-      socket.off(ResponseSocketsEnum.MINIGAME_SUBSCRIBE);
-      socket.on(ResponseSocketsEnum.MINIGAME_SUBSCRIBE, (response) => {
-        if (response.success) {
-          const store = useNpcSubscriptionStore();
-          store.toggle(this.npcId);
-        }
-      });
     },
+  },
+  mounted() {
+    // Listener para saber el estado inicial al abrir el modal
+    socket.on(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
+      this.handleSubscriptionStatus
+    );
+    // Listener para la respuesta al hacer clic en el botón
+    socket.on(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE,
+      this.handleSubscriptionToggle
+    );
+
+    // Pedir el estado actual al servidor
+    socket.emit(RequestSocketsEnum.GET_MINIGAME_SUBSCRIBE_STATUS, {
+      type: this.npcId,
+    });
+  },
+  unmounted() {
+    socket.off(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
+      this.handleSubscriptionStatus
+    );
+    socket.off(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE,
+      this.handleSubscriptionToggle
+    );
   },
 };
 </script>

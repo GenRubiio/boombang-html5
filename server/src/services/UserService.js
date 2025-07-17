@@ -105,6 +105,15 @@ class UserService {
             console.error('Error increasing coconut received:', error);
         }
     }
+
+    static async increaseRingsWon(user) {
+        user.ringsWon += 1;
+        try {
+            await UserApiService.increaseStats(user, 'rings_won');
+        } catch (error) {
+            console.error('Error increasing rings won:', error);
+        }
+    }
 }
 
 module.exports = UserService;

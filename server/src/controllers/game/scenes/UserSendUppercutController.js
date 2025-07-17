@@ -14,6 +14,11 @@ class UserSendUppercutController {
             if (!user || !user.currentArea) return;//throw new Error('User not found or not in any area');
             if (!user.selectedUser) return; //throw new Error('No user selected');
 
+            if (user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+                && !user.currentArea.gameStarted) {
+                return; // No se puede hacer uppercut si el juego no ha comenzado
+            }
+
             const targetUser = ConnectedUsersCollection.getBySocketId(user.selectedUser.socket.id);
             if (!targetUser || targetUser.currentArea.id !== user.currentArea.id) {
                 //throw new Error('Target user not found or not in the same area');
@@ -52,8 +57,10 @@ class UserSendUppercutController {
                     UserBlockActionsTask.blockByUppercutSend(user);
                     UserBlockActionsTask.blockByUppercutReceive(targetUser);
 
-                    UserService.increaseUppercutSend(user);
-                    UserService.increaseUppercutReceived(targetUser);
+                    if (user.currentArea.scene_type != SceneTypesEnum.MINIGAME_RING) {
+                        UserService.increaseUppercutSend(user);
+                        UserService.increaseUppercutReceived(targetUser);
+                    }
 
                     // Emitir el uppercut sin esperar que estén quietos
                     user.currentArea.emit(ResponseSocketsEnum.USER_SEND_UPPERCUT, {

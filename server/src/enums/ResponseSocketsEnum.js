@@ -30,6 +30,7 @@ const ResponseSocketsEnum = new Enum({
     USER_RECEIVE_EFFECT: 'response:user_receive_effect',
     USER_CHANGE_LOOK: 'response:user_change_look',
     UPDATE_GAME_SCENES: 'response:update_game_scenes',
+    MINIGAME_SUBSCRIBE_STATUS: 'response:minigame_subscribe_status',
 });
 
 module.exports = ResponseSocketsEnum;
