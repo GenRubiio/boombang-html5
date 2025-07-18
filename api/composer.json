@@ -13,6 +13,7 @@
         "backpack/crud": "^6.8",
         "backpack/permissionmanager": "*",
         "backpack/theme-coreuiv4": "^1.1",
+        "darkaonline/l5-swagger": "^9.0",
         "laravel/framework": "^12.0",
         "laravel/passport": "^12.0",
         "laravel/tinker": "^2.10.1",

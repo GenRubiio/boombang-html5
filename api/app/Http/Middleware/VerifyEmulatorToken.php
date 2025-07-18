@@ -15,6 +15,9 @@ class VerifyEmulatorToken
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (app()->environment('local')) {
+            return $next($request);
+        }
         $token = $request->header('X-Emulator-Token');
         $validToken = config('app.emulator_api_token');
 

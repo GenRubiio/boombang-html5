@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginApiLoginRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
+use App\Http\Controllers\Api\Auth\Interfaces\LoginApiControllerInterface;
 
-class LoginApiController extends Controller
+class LoginApiController extends Controller implements LoginApiControllerInterface
 {
     use ResponseApiControllerTrait;
 

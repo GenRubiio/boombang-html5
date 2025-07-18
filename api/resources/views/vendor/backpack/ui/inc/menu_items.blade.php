@@ -16,3 +16,6 @@
 <x-backpack::menu-item title="Catalog categories" icon="la la-question" :link="backpack_url('catalog-category')" />
 <x-backpack::menu-item title="Catalog items" icon="la la-question" :link="backpack_url('catalog-item')" />
 <x-backpack::menu-item title="User catalog items" icon="la la-question" :link="backpack_url('user-catalog-item')" />
+<x-backpack::menu-item title="Ranking categories" icon="la la-question" :link="backpack_url('ranking-category')" />
+<x-backpack::menu-item title="Rankings" icon="la la-question" :link="backpack_url('ranking')" />
+<x-backpack::menu-item title="V ranking summaries" icon="la la-question" :link="backpack_url('v-ranking-summary')" />
