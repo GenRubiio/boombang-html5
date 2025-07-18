@@ -18,9 +18,11 @@ class Bot {
         this.socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
             this.socket.user = data.user;
             this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
-            this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
-                type: 1,
-            });
+            setTimeout(() => {
+                this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
+                    type: 1,
+                });
+            }, 5000); // Espera 5 segundos antes de unirse al minijuego
         });
 
         this.socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, (publicScenes) => {
@@ -77,12 +79,13 @@ class Bot {
         });
 
         this.socket.on(ResponseSocketsEnum.MINIGAME_ALERT, (data) => {
-            console.log('\x1b[33m%s\x1b[0m', `Bot ${this.username} recibió alerta: ${data.alertType}`);
+            console.log('\x1b[33m%s\x1b[0m', `Bot ${this.username} recibió alerta: ${data.alertType} - ${data.winnerName}`);
             setTimeout(() => {
+                console.log(`Bot ${this.username} se suscribe nuevamente al minijuego.`);
                 this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
                     type: 1,
                 });
-            }, 8000); // Espera 8 segundos antes de unirse al minijuego
+            }, 20000); // Espera 8 segundos antes de unirse al minijuego
         });
 
         this.socket.on("disconnect", (data) => {
@@ -141,7 +144,7 @@ class Bot {
         const moveInterval = setInterval(() => {
             const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
             if (!user || !user.currentArea) {
-                console.log('\x1b[31m' + "Usuario o área no encontrados: " + this.socket.user.username + " - " + user + '\x1b[0m');
+                console.log('\x1b[31m' + "Usuario o área no encontrados: " + this.socket.user.username + '\x1b[0m');
                 return;
             }
 

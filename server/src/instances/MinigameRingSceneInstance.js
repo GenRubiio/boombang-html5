@@ -1,4 +1,3 @@
-const uuidv4 = require('uuid');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
@@ -7,10 +6,11 @@ const MinigameAlertsEnum = require('../enums/MinigameAlertsEnum');
 const MovementProcessorInstance = require('../instances/MovementProcessorInstance');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const UserService = require('../services/UserService');
+const MinigameInstancesCollection = require('../collections/MinigameInstancesCollection');
 
 class MinigameRingSceneInstance {
-    constructor(minigameScene) {
-        this.id = uuidv4.v4(); // ID único de la escena
+    constructor(id, minigameScene) {
+        this.id = id; // ID único de la escena
         this.minigameScene = minigameScene; // Escena del minijuego
 
         this.scene_type = SceneTypesEnum.MINIGAME_RING; // Tipo de modelo
@@ -29,7 +29,7 @@ class MinigameRingSceneInstance {
         this.movementBlocked = true; // Indica si el movimiento está bloqueado
         this.reservedTiles = {};
 
-        this.startGameInSeconds = 10;
+        this.startGameInSeconds = 10; //10
         this.endGameInSeconds = 60 * 5; //60 * 5
         this.removeUserInSeconds = 15; //15
 
@@ -105,42 +105,38 @@ class MinigameRingSceneInstance {
         this.gameEnded = true;
         this.movementBlocked = true;
 
-        // Limpiar todos los temporizadores
+        // Limpiar todos los temporizadores principales
         clearInterval(this.intervalStartGame);
         clearInterval(this.intervalEndGame);
-        clearInterval(this.intervalRemoveUsers);
+
+        // Detener el procesador de movimiento
+        this.movementProcessorInstance.stopProcessing();
 
         this.sendAlertToAllUsers();
 
         let countdown = this.removeUserInSeconds;
-        this.intervalRemoveUsers = setInterval(() => {
+
+        // Iniciar un nuevo temporizador para la cuenta atrás final
+        const finalCountdownTimer = setInterval(() => {
             countdown--;
             this.usersUpdateCounter(countdown);
             if (countdown <= 0) {
-                clearInterval(this.intervalRemoveUsers);
+                clearInterval(finalCountdownTimer);
+ 
+                // Expulsar a todos los usuarios de forma segura
+                // Hacemos una copia del array porque RemoveUserFromSceneTask lo modifica
                 const usersToRemove = [...this.users];
                 usersToRemove.forEach(user => {
-                    if (user.currentArea && user.currentArea.id === this.id) {
+                    console.log(`Expulsando a usuario: ${user.username} | area: ${user.currentArea} | id: ${user.currentArea.id} | instanceId: ${this.id}`);
+                    if (user.currentArea && user.currentArea.id == this.id) {
+                        console.log(`Expulsando a usuario: ${user.username} de la escena ${this.name}`);
                         RemoveUserFromSceneTask.main(this, user);
                     }
                 });
-                this.reset();
+
+                MinigameInstancesCollection.remove(this.id);
             }
         }, 1000);
-    }
-
-    reset() {
-        this.users = [];
-        this.disqualifiedUsers = [];
-        this.coconutCounts.clear();
-        this.movementBlocked = true;
-        this.gameStarted = false;
-        this.gameEnded = false;
-        this.reservedTiles = {};
-        // Reset timers just in case
-        clearInterval(this.intervalStartGame);
-        clearInterval(this.intervalEndGame);
-        clearInterval(this.intervalRemoveUsers);
     }
 
     sendAlertToAllUsers() {
