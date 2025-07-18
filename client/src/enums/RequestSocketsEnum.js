@@ -26,6 +26,7 @@ const RequestSocketsEnum = new Enum({
     SCENE_PUT_ITEM: 'request:scene_put_item',
     SCENE_REMOVE_ITEM: 'request:scene_remove_item',
     GET_PUBLIC_ISLANDS: 'request:get_public_islands',
+    GET_MINIGAME_SUBSCRIBE_STATUS: 'request:get_minigame_subscribe_status',
 });
 
 export default RequestSocketsEnum;

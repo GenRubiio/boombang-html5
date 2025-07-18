@@ -16,15 +16,21 @@ class Bot {
         });
 
         this.socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
+            this.socket.user = data.user;
             this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
-            this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
-                type: 1,
-            });
+            setTimeout(() => {
+                this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
+                    type: 1,
+                });
+            }, 5000); // Espera 5 segundos antes de unirse al minijuego
         });
 
         this.socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, (publicScenes) => {
             setInterval(() => {
-                this.joinArea(publicScenes[0].uuid);
+                const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
+                if (!user || !user.currentArea) {
+                    this.joinArea(publicScenes[0].uuid);
+                }
             }, 1000);
 
             this.moveRandomly();
@@ -67,9 +73,19 @@ class Bot {
                     socketId: usuarioMasCercano.id
                 });
                 this.uppercutInterval = setInterval(() => {
-                    //this.socket.emit(RequestSocketsEnum.USER_SEND_UPPERCUT);
+                    this.socket.emit(RequestSocketsEnum.USER_SEND_UPPERCUT);
                 }, 100);
             }
+        });
+
+        this.socket.on(ResponseSocketsEnum.MINIGAME_ALERT, (data) => {
+            console.log('\x1b[33m%s\x1b[0m', `Bot ${this.username} recibió alerta: ${data.alertType} - ${data.winnerName}`);
+            setTimeout(() => {
+                console.log(`Bot ${this.username} se suscribe nuevamente al minijuego.`);
+                this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
+                    type: 1,
+                });
+            }, 20000); // Espera 8 segundos antes de unirse al minijuego
         });
 
         this.socket.on("disconnect", (data) => {
@@ -109,6 +125,10 @@ class Bot {
 
     selectUser() {
         setInterval(() => {
+            const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
+            if (!user || !user.currentArea) {
+                return;
+            }
             this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENE_USERS, {});
         }, 10000);
     }
@@ -124,7 +144,7 @@ class Bot {
         const moveInterval = setInterval(() => {
             const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
             if (!user || !user.currentArea) {
-                console.error("Usuario o área no encontrados");
+                console.log('\x1b[31m' + "Usuario o área no encontrados: " + this.socket.user.username + '\x1b[0m');
                 return;
             }
 

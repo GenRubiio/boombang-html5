@@ -18,6 +18,7 @@ class RemovePhaserSocketsUtil {
             ResponseSocketsEnum.JOIN_PRIVATE_SCENE,
             ResponseSocketsEnum.JOIN_PRIVATE_SCENE_ERROR,
             ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS,
+            ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
         ];
 
         const excludedRequestEvents = [
@@ -31,6 +32,7 @@ class RemovePhaserSocketsUtil {
             RequestSocketsEnum.PRIVATE_SCENE_CREATE,
             RequestSocketsEnum.JOIN_PRIVATE_SCENE,
             RequestSocketsEnum.GET_PUBLIC_ISLANDS,
+            RequestSocketsEnum.GET_MINIGAME_SUBSCRIBE_STATUS,
         ];
 
         // Remover solo eventos que no están en las listas de exclusión

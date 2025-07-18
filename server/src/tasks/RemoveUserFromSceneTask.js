@@ -13,7 +13,7 @@ class RemoveUserFromSceneTask {
                 logger.log('User not in area', 'error');
                 return;
             }
-            console.log('RemoveUserFromSceneTask');
+            console.log('RemoveUserFromSceneTask: ' + user.username + ' from scene: ' + scene.id);
             user.emit(ResponseSocketsEnum.REMOVE_USER_SCENE);
 
             RemoveSelectedUserTask.main(user);
