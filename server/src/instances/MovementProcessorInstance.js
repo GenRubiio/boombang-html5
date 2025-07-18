@@ -9,10 +9,13 @@ const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 class MovementProcessorInstance {
     constructor(scene) {
         this.scene = scene;
+        this.processing = false;
     }
 
     startProcessing() {
+        this.processing = true;
         const processMovement = async () => {
+            if (!this.processing) return; // Si se detuvo, no continuar
             const movers = this.scene.users.filter(user => user.finalTarget);
             await Promise.all(movers.map(user => this.processUserMovement(user)));
             setTimeout(processMovement, AnimationBlockTimerEnum.WALK);
@@ -68,6 +71,7 @@ class MovementProcessorInstance {
                     path: [],
                     isLastStep: true
                 });
+                user.finalTarget = null;
                 //this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
                 return;
             }
@@ -114,7 +118,7 @@ class MovementProcessorInstance {
             }
         } catch (err) {
             console.log(err);
-            logger.log(`Error processing user movement: ${err.message}`, 'error');
+            logger.log(`Error processing user movement: ${err.message}, user: ${user.username}`, 'error');
             user.socket.emit('error_critical');
         }
     }
@@ -151,6 +155,10 @@ class MovementProcessorInstance {
                 });
             }
         });
+    }
+
+    stopProcessing() {
+        this.processing = false;
     }
 }
 

@@ -1,4 +1,4 @@
-class MinigameScenesCollection {
+class MinigameInstancesCollection {
     constructor() {
         this.collection = new Map();
     }
@@ -18,6 +18,14 @@ class MinigameScenesCollection {
     getBySceneType(type) {
         return Array.from(this.collection.values()).filter(item => item.scene_type == type);
     }
+
+    remove(uuid) {
+        if (this.collection.has(uuid)) {
+            this.collection.delete(uuid);
+        } else {
+            throw new Error(`Minigame instance with UUID ${uuid} not found.`);
+        }
+    }
 }
 
-module.exports = new MinigameScenesCollection();
+module.exports = new MinigameInstancesCollection();

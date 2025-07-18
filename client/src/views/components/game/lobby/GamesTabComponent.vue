@@ -12,19 +12,30 @@
 </template>
 
 <script>
+import socket from "../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
 import MenuTypeEnum from "../../../../enums/MenuTypeEnum";
 export default {
-  props: {
-    gameScenes: Array,
-  },
   data() {
     return {
       MenuTypeEnum,
+      gameScenes: [],
     };
+  },
+  created() {
+    this.loadGames();
   },
   methods: {
     joinScene(sceneUuid, menuType) {
       this.$emit("join-scene", sceneUuid, menuType);
+    },
+    loadGames() {
+      socket.emit(RequestSocketsEnum.GET_GAME_SCENES);
+      socket.off(ResponseSocketsEnum.UPDATE_GAME_SCENES);
+      socket.on(ResponseSocketsEnum.UPDATE_GAME_SCENES, (gameScenes) => {
+        this.gameScenes = gameScenes;
+      });
     },
   },
 };

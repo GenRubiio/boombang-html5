@@ -16,7 +16,6 @@
 
         <GamesTab
           v-if="activeTab === 'games'"
-          :game-scenes="gameScenes"
           @join-scene="joinScene"
         />
 
@@ -63,7 +62,6 @@ export default {
     return {
       activeIslandTab: "public",
       publicScenes: [],
-      gameScenes: [],
       publicIslands: [],
       favoriteIslands: [],
       myIslands: [],
@@ -82,7 +80,6 @@ export default {
   async created() {
     this.$emit("updateLoading", true);
     this.loadAreas();
-    this.loadGames();
     this.loadIslands();
     this.loadFavoriteIslands();
     this.loadMyIslands();
@@ -95,13 +92,6 @@ export default {
       socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, (publicScenes) => {
         this.publicScenes = publicScenes;
         this.$emit("updateLoading", false);
-      });
-    },
-    loadGames() {
-      socket.emit(RequestSocketsEnum.GET_GAME_SCENES);
-      socket.off(ResponseSocketsEnum.UPDATE_GAME_SCENES);
-      socket.on(ResponseSocketsEnum.UPDATE_GAME_SCENES, (gameScenes) => {
-        this.gameScenes = gameScenes;
       });
     },
     loadIslands() {
