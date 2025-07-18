@@ -27,55 +27,55 @@
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_white_image" alt="Guante Blanco" />
         </div>
-        <div class="modal-info__grid-item-name">Blanco<br />100 Victorias</div>
+        <div class="modal-info__grid-item-name">Blanco<br />1.000 Victorias</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_pink_image" alt="Guante Rosa" />
         </div>
-        <div class="modal-info__grid-item-name">Rosa<br />1 Victoria</div>
+        <div class="modal-info__grid-item-name">Rosa<br />10 Victoria</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_purple_image" alt="Guante Púrpura" />
         </div>
-        <div class="modal-info__grid-item-name">Púrpura<br />200 Victorias</div>
+        <div class="modal-info__grid-item-name">Púrpura<br />2.000 Victorias</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_orange_image" alt="Guante Naranja" />
         </div>
-        <div class="modal-info__grid-item-name">Naranja<br />10 Victorias</div>
+        <div class="modal-info__grid-item-name">Naranja<br />100 Victorias</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_brown_image" alt="Guante Marrón" />
         </div>
-        <div class="modal-info__grid-item-name">Marrón<br />500 Victorias</div>
+        <div class="modal-info__grid-item-name">Marrón<br />5.000 Victorias</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_green_image" alt="Guante Verde" />
         </div>
-        <div class="modal-info__grid-item-name">Verde<br />25 Victorias</div>
+        <div class="modal-info__grid-item-name">Verde<br />250 Victorias</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_black_image" alt="Guante Negro" />
         </div>
-        <div class="modal-info__grid-item-name">Negro<br />1000 Victorias</div>
+        <div class="modal-info__grid-item-name">Negro<br />10.000 Victorias</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_blue_image" alt="Guante Azul" />
         </div>
-        <div class="modal-info__grid-item-name">Azul<br />50 Victorias</div>
+        <div class="modal-info__grid-item-name">Azul<br />500 Victorias</div>
       </div>
       <div class="modal-info__grid-item">
         <div class="modal-info__grid-item-image">
           <img :src="asset_upper_gold_image" alt="Guante Dorado" />
         </div>
-        <div class="modal-info__grid-item-name">Dorado<br />3000 Victorias</div>
+        <div class="modal-info__grid-item-name">Dorado<br />30.000 Victorias</div>
       </div>
     </div>
     <p>********************************************************</p>
