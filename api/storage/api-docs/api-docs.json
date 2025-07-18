@@ -1,0 +1,135 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BoomBang",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Login",
+                "operationId": "8e8897b9cf3637a444d95939205504dc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "Gen"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "test"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/ranking/categories": {
+            "post": {
+                "tags": [
+                    "Ranking"
+                ],
+                "summary": "Get Ranking Categories",
+                "operationId": "071396642afc82b506a830242a145f2d",
+                "responses": {
+                    "200": {
+                        "description": "A list of ranking categories"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/ranking/get": {
+            "post": {
+                "tags": [
+                    "Ranking"
+                ],
+                "summary": "Get Rankings",
+                "operationId": "36cfbc8aad2bcb2ff43ddf5b5acc4782",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ranking_category_id"
+                                ],
+                                "properties": {
+                                    "ranking_category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "season": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "page": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A list of rankings"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Ranking",
+            "description": "Ranking"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}

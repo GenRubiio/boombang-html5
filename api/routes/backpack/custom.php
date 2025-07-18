@@ -25,6 +25,9 @@ Route::group([
     Route::crud('catalog-category', 'CatalogCategoryCrudController');
     Route::crud('catalog-item', 'CatalogItemCrudController');
     Route::crud('user-catalog-item', 'UserCatalogItemCrudController');
+    Route::crud('ranking-category', 'RankingCategoryCrudController');
+    Route::crud('ranking', 'RankingCrudController');
+    Route::crud('v-ranking-summary', 'VRankingSummaryCrudController');
 }); // this should be the absolute last line of this file
 
 /**
