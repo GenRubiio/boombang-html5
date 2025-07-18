@@ -13,9 +13,10 @@ use App\Http\Resources\PrivateSceneResource;
 use App\Http\Resources\UserCatalogItemsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
+use App\Http\Controllers\Api\Game\Scene\Interfaces\PrivateSceneApiControllerInterface;
 use App\Models\UserCatalogItem;
 
-class PrivateSceneApiController extends Controller
+class PrivateSceneApiController extends Controller implements PrivateSceneApiControllerInterface
 {
     use ResponseApiControllerTrait;
 

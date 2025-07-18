@@ -46,6 +46,413 @@
                 }
             }
         },
+        "/api/game-scenes": {
+            "get": {
+                "tags": [
+                    "Game Scene"
+                ],
+                "summary": "Get all game scenes",
+                "operationId": "1790e8755d4c4c741c69ba641eec3588",
+                "responses": {
+                    "200": {
+                        "description": "A list of game scenes"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/islands": {
+            "get": {
+                "tags": [
+                    "Island"
+                ],
+                "summary": "Get all islands",
+                "operationId": "0b771f99f7bc46496e81c40db02f1100",
+                "responses": {
+                    "200": {
+                        "description": "A list of islands"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/islands/create": {
+            "post": {
+                "tags": [
+                    "Island"
+                ],
+                "summary": "Create a new island",
+                "operationId": "18eb2861cfeda67fa4d0006f84533e3e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "My Island"
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Island created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/islands/my-islands": {
+            "get": {
+                "tags": [
+                    "Island"
+                ],
+                "summary": "Get my islands",
+                "operationId": "d0db52566e3071f382aefdb528ad5c84",
+                "responses": {
+                    "200": {
+                        "description": "A list of my islands"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/islands/join": {
+            "post": {
+                "tags": [
+                    "Island"
+                ],
+                "summary": "Join an island",
+                "operationId": "deeebf1aafd9dd449bc301448ec8c366",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "islandId"
+                                ],
+                                "properties": {
+                                    "islandId": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Joined island successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/minigame-scenes": {
+            "get": {
+                "tags": [
+                    "Minigame Scene"
+                ],
+                "summary": "Get all minigame scenes",
+                "operationId": "64df8d26a118cb429f8ca934bcfaf398",
+                "responses": {
+                    "200": {
+                        "description": "A list of minigame scenes"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/scene/private/create": {
+            "post": {
+                "tags": [
+                    "Private Scene"
+                ],
+                "summary": "Create a new private scene",
+                "operationId": "19a991e6bcab1833ed022cde39a4d9d6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "island_id",
+                                    "name",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "island_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "My Scene"
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Scene created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/scene/private/join": {
+            "post": {
+                "tags": [
+                    "Private Scene"
+                ],
+                "summary": "Join a private scene",
+                "operationId": "41e39cdb31ed7cad44b10e0e91104a09",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "scene_id"
+                                ],
+                                "properties": {
+                                    "scene_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Joined scene successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/scene/private/remove-item": {
+            "post": {
+                "tags": [
+                    "Private Scene"
+                ],
+                "summary": "Remove an item from a private scene",
+                "operationId": "e252510a2926d69d3ac99c4b2aa2d00e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_catalog_item_id"
+                                ],
+                                "properties": {
+                                    "user_catalog_item_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Item removed successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/scene/private/put-item": {
+            "post": {
+                "tags": [
+                    "Private Scene"
+                ],
+                "summary": "Put an item in a private scene",
+                "operationId": "62806bfc69926aacdd782ab5f972f806",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_catalog_item_id",
+                                    "private_scene_id",
+                                    "occupied_tiles"
+                                ],
+                                "properties": {
+                                    "user_catalog_item_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "private_scene_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "occupied_tiles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "example": "[[1,2],[3,4]]"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Item placed successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/scene/private/update-item-position": {
+            "post": {
+                "tags": [
+                    "Private Scene"
+                ],
+                "summary": "Update an item's position in a private scene",
+                "operationId": "6e64180e41690cd9acfd693b90394d1b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_catalog_item_id",
+                                    "occupied_tiles"
+                                ],
+                                "properties": {
+                                    "user_catalog_item_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "occupied_tiles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "example": "[[1,2],[3,4]]"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Item position updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/public-scenes": {
+            "get": {
+                "tags": [
+                    "Public Scene"
+                ],
+                "summary": "Get all public scenes",
+                "operationId": "8d1a9333ac3453141bc2404cf4b68c68",
+                "responses": {
+                    "200": {
+                        "description": "A list of public scenes"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
         "/api/ranking/categories": {
             "post": {
                 "tags": [
@@ -116,6 +523,26 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Game Scene",
+            "description": "Game Scene"
+        },
+        {
+            "name": "Island",
+            "description": "Island"
+        },
+        {
+            "name": "Minigame Scene",
+            "description": "Minigame Scene"
+        },
+        {
+            "name": "Private Scene",
+            "description": "Private Scene"
+        },
+        {
+            "name": "Public Scene",
+            "description": "Public Scene"
         },
         {
             "name": "Ranking",

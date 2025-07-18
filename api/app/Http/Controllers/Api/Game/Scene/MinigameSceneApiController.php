@@ -9,8 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MinigameSceneResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
+use App\Http\Controllers\Api\Game\Scene\Interfaces\MinigameSceneApiControllerInterface;
 
-class MinigameSceneApiController extends Controller
+class MinigameSceneApiController extends Controller implements MinigameSceneApiControllerInterface
 {
     use ResponseApiControllerTrait;
 
