@@ -18,12 +18,16 @@ class IncreaseStatsApiController extends Controller
     public function index(Request $request): JsonResource
     {
         try {
+            $user = Auth::user();
             switch ($request->stats_type) {
                 case 'uppercuts_sent':
-                    Auth::user()->update(['uppercuts_sent' => DB::raw('uppercuts_sent + 1')]);
+                    $user->update(['uppercuts_sent' => DB::raw('uppercuts_sent + 1')]);
                     break;
                 case 'uppercuts_received':
-                    Auth::user()->update(['uppercuts_received' => DB::raw('uppercuts_received + 1')]);
+                    $user->update(['uppercuts_received' => DB::raw('uppercuts_received + 1')]);
+                    break;
+                case 'rings_won':
+                    $user->update(['rings_won' => DB::raw('rings_won + 1')]);
                     break;
                 default:
                     throw new Exception('Invalid stats type provided', 400);

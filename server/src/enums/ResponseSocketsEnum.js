@@ -40,6 +40,7 @@ const ResponseSocketsEnum = new Enum({
     ADD_ITEM_TO_INVENTORY: 'response:add_item_to_inventory',
     REMOVE_ITEM_FROM_INVENTORY: 'response:remove_item_from_inventory',
     UPDATE_PUBLIC_ISLANDS: 'response:update_public_islands',
+    MINIGAME_SUBSCRIBE_STATUS: 'response:minigame_subscribe_status',
 });
 
 module.exports = ResponseSocketsEnum;

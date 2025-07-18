@@ -8,29 +8,19 @@ const AnimationEnum = require('../../../enums/AnimationEnum');
 
 class UserSelectUserController {
     static main(socket, io, data) {
-        try {
-            const user = ConnectedUsersCollection.getBySocketId(socket.id);
-            if (!user || !user.currentArea) {
-                throw new Error('User not found or not in an area');
-            }
-            const selectedUser = ConnectedUsersCollection.getBySocketId(data.socketId);
-            if (!selectedUser || !selectedUser.currentArea) {
-                throw new Error('Selected user not found or not in an area');
-            }
-            if (user.currentArea != selectedUser.currentArea) {
-                throw new Error('Selected user is not in the same area');
-            }
+        const user = ConnectedUsersCollection.getBySocketId(socket.id);
+        if (!user || !user.currentArea) {
+            return;
+        }
 
-            this.selectUser(user, selectedUser);
-            if (!user.isActionBlocked(AnimationEnum.LOOK)) {
-                this.updateUserZPositionInArea(user, selectedUser);
-            }
+        const selectedUser = ConnectedUsersCollection.getBySocketId(data.socketId);
+        if (!selectedUser || !selectedUser.currentArea || user.currentArea !== selectedUser.currentArea) {
+            return;
+        }
 
-        } catch (err) {
-            Log.error('Error in UserSelectUserController: ' + err);
-            console.log(err);
-            DisconnectUserController.main(socket, io);
-            socket.emit('error_critical');
+        this.selectUser(user, selectedUser);
+        if (!user.isActionBlocked(AnimationEnum.LOOK)) {
+            this.updateUserZPositionInArea(user, selectedUser);
         }
     }
 

@@ -1,3 +1,4 @@
+const uuidv4 = require('uuid');
 const MinigamesEnum = require('../enums/MinigamesEnum');
 const MinigameScenesCollection = require('../collections/MinigameScenesCollection');
 const MinigameRingSceneInstance = require('./MinigameRingSceneInstance');
@@ -6,6 +7,7 @@ const RemoveUserFromSceneTask = require('../tasks/RemoveUserFromSceneTask');
 const UserResource = require('../resources/UserResource');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
+const MinigameInstancesCollection = require('../collections/MinigameInstancesCollection');
 
 class MatchMakerInstance {
     constructor(requiredPlayers) {
@@ -52,18 +54,22 @@ class MatchMakerInstance {
     }
 
     createMinigame(sceneType, players, io) {
-        let minigame = null;
+        const id = uuidv4.v4();
+        console.log(id);
+        let miniGameInstance = null;
         switch (sceneType) {
             case MinigamesEnum.GOLDEN_RING:
-                minigame = new MinigameRingSceneInstance(MinigameScenesCollection.getByUid(sceneType));
+                let miniGameScene = { ...MinigameScenesCollection.getByUid(sceneType) }
+                miniGameInstance = new MinigameRingSceneInstance(id, miniGameScene);
                 break;
             default:
                 throw new Error(`Tipo de sala desconocido: ${sceneType}`);
         }
         this.sendNotificationToUsers(players, sceneType);
         setTimeout(() => {
-            this.callUsers(minigame, players, io);
-            minigame.startMinigame();
+            this.callUsers(miniGameInstance, players, io);
+            miniGameInstance.startMinigame();
+            MinigameInstancesCollection.add(id, miniGameInstance);
         }, 1000);//time to wait before starting the minigame
     }
 
@@ -83,66 +89,73 @@ class MatchMakerInstance {
         }
     }
 
-    async callUsers(minigameScene, players, io) {
+    async callUsers(miniGameInstance, players, io) {
         try {
-            let position = 0;
+            // Notificar a los clientes que ya no están en la cola de espera
             for (const player of players) {
+                player.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS, {
+                    success: true,
+                    isSubscribed: false,
+                    npcId: miniGameInstance.minigameScene.type
+                });
+            }
+
+            // 1. Añadir todos los usuarios a la escena primero
+            for (const [index, player] of players.entries()) {
                 const user = ConnectedUsersCollection.getBySocketId(player.id);
                 if (!user) {
                     console.error(`Usuario no encontrado para el socket ${player.id}`);
                     continue;
                 }
 
-                if (user.currentArea
-                    && (
-                        user.currentArea.scene_type == SceneTypesEnum.PUBLIC_SCENE
-                        || user.currentArea.scene_type == SceneTypesEnum.GAME_SCENE
-                        || user.currentArea.scene_type == SceneTypesEnum.PRIVATE_SCENE
-                    )
-                ) {
+                if (user.currentArea && (user.currentArea.scene_type !== SceneTypesEnum.MINIGAME_RING)) {
                     RemoveUserFromSceneTask.main(user.currentArea, user);
-                    console.log('Usuario eliminado de la escena pública', user.username);
                 }
-                user.setArea(minigameScene);
-                minigameScene.addUser(user, {
-                    x: minigameScene.position_users[position][0],
-                    y: minigameScene.position_users[position][1],
-                    z: minigameScene.position_users[position][2]
-                });
+                
+                const startPosition = {
+                    x: miniGameInstance.position_users[index][0],
+                    y: miniGameInstance.position_users[index][1],
+                    z: miniGameInstance.position_users[index][2]
+                };
 
-                let sceneUsers = [];
-                for (const user of minigameScene.users) {
-                    sceneUsers.push(await new UserResource(user).toObject());
-                }
+                user.setArea(miniGameInstance);
+                miniGameInstance.addUser(user, startPosition);
+            }
+
+            // 2. Obtener la lista completa de usuarios en la escena
+            const sceneUsers = [];
+            for (const user of miniGameInstance.users) {
+                sceneUsers.push(await new UserResource(user).toObject());
+            }
+
+            // 3. Notificar a cada jugador con la lista completa
+            for (const player of players) {
+                const user = ConnectedUsersCollection.getBySocketId(player.id);
+                 if (!user) continue;
 
                 player.emit(ResponseSocketsEnum.MINIGAME_JOIN, {
                     success: true,
-                    sceneType: minigameScene.minigameScene.type,
+                    sceneType: miniGameInstance.minigameScene.type,
                     data: {
                         players: sceneUsers,
                         scenery: {
-                            type: minigameScene.minigameScene.type,
-                            map_rows: minigameScene.map_width,
-                            map_cols: minigameScene.map_height,
-                            game_map: minigameScene.game_map,
+                            type: miniGameInstance.minigameScene.type,
+                            map_rows: miniGameInstance.map_width,
+                            map_cols: miniGameInstance.map_height,
+                            game_map: miniGameInstance.game_map,
                         }
                     }
                 });
-                minigameScene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
-                    user: await new UserResource(user).toObject(),
-                }, user);
-
-                position++;
             }
-            this.clearNotifiedUsers(minigameScene, players);
-        }
-        catch (err) {
+
+            this.clearNotifiedUsers(miniGameInstance, players);
+        } catch (err) {
             console.error('Error al llamar a los usuarios:', err);
         }
     }
 
-    clearNotifiedUsers(minigameScene, players) {
-        const type = minigameScene.minigameScene.type;
+    clearNotifiedUsers(miniGameInstance, players) {
+        const type = miniGameInstance.minigameScene.type;
         const notifiedSet = this.notifiedUsers.get(type);
         if (notifiedSet) {
             for (const player of players) {

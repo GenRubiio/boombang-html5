@@ -28,7 +28,7 @@ class UserJoinPublicSceneController {
                 //throw new Error("User already in area");
                 return;
             }
-
+            console.log('UserJoinPublicSceneController: ' + user.username + ' joining scene: ' + scene.id);
             user.setArea(scene);
             scene.addUser(user);
             let sceneUsers = [];

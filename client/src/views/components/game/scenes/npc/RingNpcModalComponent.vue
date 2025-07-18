@@ -17,17 +17,91 @@
     <p>********************************************************</p>
     <p>Gana puntos compitiendo y desbloquea los siguentes guantes:</p>
     <div class="modal-info__grid">
-      <div>
-        <p>Rojo = 0 Victorias</p>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_red_image" alt="Guante Rojo" />
+        </div>
+        <div class="modal-info__grid-item-name">Rojo<br />0 Victorias</div>
       </div>
-      <div>
-        <p>Blanco = 100 Victorias</p>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_white_image" alt="Guante Blanco" />
+        </div>
+        <div class="modal-info__grid-item-name">Blanco<br />100 Victorias</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_pink_image" alt="Guante Rosa" />
+        </div>
+        <div class="modal-info__grid-item-name">Rosa<br />1 Victoria</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_purple_image" alt="Guante Púrpura" />
+        </div>
+        <div class="modal-info__grid-item-name">Púrpura<br />200 Victorias</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_orange_image" alt="Guante Naranja" />
+        </div>
+        <div class="modal-info__grid-item-name">Naranja<br />10 Victorias</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_brown_image" alt="Guante Marrón" />
+        </div>
+        <div class="modal-info__grid-item-name">Marrón<br />500 Victorias</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_green_image" alt="Guante Verde" />
+        </div>
+        <div class="modal-info__grid-item-name">Verde<br />25 Victorias</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_black_image" alt="Guante Negro" />
+        </div>
+        <div class="modal-info__grid-item-name">Negro<br />1000 Victorias</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_blue_image" alt="Guante Azul" />
+        </div>
+        <div class="modal-info__grid-item-name">Azul<br />50 Victorias</div>
+      </div>
+      <div class="modal-info__grid-item">
+        <div class="modal-info__grid-item-image">
+          <img :src="asset_upper_gold_image" alt="Guante Dorado" />
+        </div>
+        <div class="modal-info__grid-item-name">Dorado<br />3000 Victorias</div>
+      </div>
+    </div>
+    <p>********************************************************</p>
+    <p>
+      Los que más puntos ganen cada semana, conseguirán estos trofeos únicos:
+    </p>
+    <div class="modal-info__footer">
+      <div class="modal-info__footer-image">
+        <img :src="asset_trophies_image" alt="Trofeos" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import asset_upper_red_image from "../../../../../assets/game/ficha/uppercuts/red.png";
+import asset_upper_pink_image from "../../../../../assets/game/ficha/uppercuts/pink.png";
+import asset_upper_orange_image from "../../../../../assets/game/ficha/uppercuts/orange.png";
+import asset_upper_green_image from "../../../../../assets/game/ficha/uppercuts/green.png";
+import asset_upper_blue_image from "../../../../../assets/game/ficha/uppercuts/blue.png";
+import asset_upper_white_image from "../../../../../assets/game/ficha/uppercuts/white.png";
+import asset_upper_purple_image from "../../../../../assets/game/ficha/uppercuts/purple.png";
+import asset_upper_brown_image from "../../../../../assets/game/ficha/uppercuts/brown.png";
+import asset_upper_black_image from "../../../../../assets/game/ficha/uppercuts/black.png";
+import asset_upper_gold_image from "../../../../../assets/game/ficha/uppercuts/gold.png";
+import asset_trophies_image from "../../../../../assets/game/games/trophie_game_1.png";
 import socket from "../../../../../sockets/socket";
 import { useNpcSubscriptionStore } from "../../../../../stores/npcSubscription";
 import RequestSocketsEnum from "../../../../../enums/RequestSocketsEnum";
@@ -40,36 +114,104 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      asset_upper_red_image,
+      asset_upper_pink_image,
+      asset_upper_orange_image,
+      asset_upper_green_image,
+      asset_upper_blue_image,
+      asset_upper_white_image,
+      asset_upper_purple_image,
+      asset_upper_brown_image,
+      asset_upper_black_image,
+      asset_upper_gold_image,
+      asset_trophies_image,
+    };
+  },
   computed: {
-    // Calcula si está inscrito llamando al getter del store
     isSubscribed() {
       const store = useNpcSubscriptionStore();
       return store.isSubscribed(this.npcId);
     },
   },
   methods: {
+    handleSubscriptionStatus(response) {
+      if (response.npcId === this.npcId) {
+        const store = useNpcSubscriptionStore();
+        store.setSubscription(this.npcId, response.isSubscribed);
+      }
+    },
+    handleSubscriptionToggle(response) {
+      if (response.success && response.npcId === this.npcId) {
+        const store = useNpcSubscriptionStore();
+        store.toggle(this.npcId);
+      }
+    },
     onToggle() {
       socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
         type: this.npcId,
       });
-
-      socket.off(ResponseSocketsEnum.MINIGAME_SUBSCRIBE);
-      socket.on(ResponseSocketsEnum.MINIGAME_SUBSCRIBE, (response) => {
-        if (response.success) {
-          const store = useNpcSubscriptionStore();
-          store.toggle(this.npcId);
-        }
-      });
     },
+  },
+  mounted() {
+    // Listener para saber el estado inicial al abrir el modal
+    socket.on(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
+      this.handleSubscriptionStatus
+    );
+    // Listener para la respuesta al hacer clic en el botón
+    socket.on(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE,
+      this.handleSubscriptionToggle
+    );
+
+    // Pedir el estado actual al servidor
+    socket.emit(RequestSocketsEnum.GET_MINIGAME_SUBSCRIBE_STATUS, {
+      type: this.npcId,
+    });
+  },
+  unmounted() {
+    socket.off(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
+      this.handleSubscriptionStatus
+    );
+    socket.off(
+      ResponseSocketsEnum.MINIGAME_SUBSCRIBE,
+      this.handleSubscriptionToggle
+    );
   },
 };
 </script>
 
 <style>
+.modal-info__footer-image {
+  width: 180px;
+}
+
+.modal-info__footer-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal-info__footer {
+  display: flex;
+}
+
+.modal-info__grid-item-image {
+}
+
+.modal-info__grid-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .modal-info {
   text-align: start;
   color: #fd9a03;
-  padding-top: 18px;
+  padding-top: 5px;
 }
 
 .modal-info h2 {
@@ -89,25 +231,37 @@ export default {
   color: #fd9900;
   padding: 0;
   margin: 0;
-  margin-top: 5px;
   line-height: 1.2;
 }
 
 .modal-info__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 5px;
   margin-top: 10px;
 }
 
-.modal-info__grid div {
-  background-color: #fd9a03;
-  padding: 8px;
-  border-radius: 5px;
-  text-align: center;
+.modal-info__grid-item-name {
+  font-size: 12px;
+  line-height: 14px;
+  text-align: start;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
-.modal-info__grid div p {
+.modal-info__grid-item {
+  background-color: #fd9a03;
+  padding: 0px 8px;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  color: white;
+  height: 35px;
+  position: relative;
+}
+
+.modal-info__grid-item p {
   color: white;
   padding: 0;
   margin: 0;
