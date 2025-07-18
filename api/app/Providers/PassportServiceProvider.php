@@ -20,6 +20,7 @@ class PassportServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Passport::tokensExpireIn(now()->addYears(100));
         Passport::refreshTokensExpireIn(now()->addYears(100));
     }
 }
