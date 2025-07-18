@@ -81,13 +81,14 @@ export default {
       const { default: PublicScene } = await import("./phaser/PublicScene");
       const { default: PrivateScene } = await import("./phaser/PrivateScene");
       const { default: MinigameScene } = await import("./phaser/MinigameScene");
+      const monitorScaling = window.devicePixelRatio === 1 ? false : true; // Ajusta según tu lógica de escalado
       // Solo creas la instancia la primera vez.
       this.gamePhaser = new Phaser.Game({
         type: Phaser.WEBGL,
         powerPreference: "high-performance",
         antialias: false, // Desactiva si no necesitas suavizado
         roundPixels: true, // Reduce cálculos de subpíxeles
-        pixelArt: false, // TODO: ANTES LO TENIA EN TRUE ES PARA SUAVIZAR BORDES
+        pixelArt: monitorScaling, // TODO: ANTES LO TENIA EN TRUE ES PARA SUAVIZAR BORDES
         render: {
           antialias: true, // desactívalo si quieres bordes más duros para pixel art
         },
