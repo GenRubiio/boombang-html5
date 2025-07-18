@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\IslandResource;
 use App\Models\Island;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
+use App\Http\Controllers\Api\Game\Scene\Interfaces\IslandApiControllerInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class IslandApiController extends Controller
+class IslandApiController extends Controller implements IslandApiControllerInterface
 {
     use ResponseApiControllerTrait;
 

@@ -10,8 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PublicSceneResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
+use App\Http\Controllers\Api\Game\Scene\Interfaces\GameSceneApiControllerInterface;
 
-class GameSceneApiController extends Controller
+class GameSceneApiController extends Controller implements GameSceneApiControllerInterface
 {
     use ResponseApiControllerTrait;
 
