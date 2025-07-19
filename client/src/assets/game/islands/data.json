@@ -10,6 +10,10 @@
             {
                 "uuid": 2,
                 "image": "game/islands/1/scene2.png"
+            },
+            {
+                "uuid": 3,
+                "image": "game/islands/1/scene3.png"
             }
         ]
     },
