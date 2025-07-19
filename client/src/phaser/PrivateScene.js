@@ -24,6 +24,7 @@ export default class PrivateScene extends Phaser.Scene {
         super("PrivateScene");
         this.users = {};
         this.avatarAnimations = {};
+        this.selectedSprite = null;
         /** Blitter for tile overlays */
         this.tileBlitter = null;
     }
@@ -117,7 +118,7 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnHide = false;
         
         if (this.sceneData.myScene) {
-            this.createButtons();
+            //this.createButtons();
         }
 
         this.handleSockets();

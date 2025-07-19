@@ -106,6 +106,9 @@ export default {
           ],
         },
         parent: "phaser-container",
+        dom: {
+          createContainer: true
+        },
         physics: {
           default: "arcade",
         },

@@ -37,6 +37,8 @@ class PrivateScene1Preload {
         items.forEach(item => {
             this.#loadSingleItem(gameScene, suffix, item);
         });
+
+        //SceneUtils.moveItems(gameScene);
     }
 
     static #loadSingleItem(gameScene, suffix, item) {
