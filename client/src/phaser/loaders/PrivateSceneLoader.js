@@ -1,5 +1,6 @@
 import PrivateScene1Preload from "../preloaders/private-scene/PrivateScene1Preload";
 import PrivateScene2Preload from "../preloaders/private-scene/PrivateScene2Preload";
+import PrivateScene3Preload from "../preloaders/private-scene/PrivateScene3Preload";
 import PrivateSceneEnum from "../../enums/PrivateSceneEnum";
 
 class PrivateSceneLoader {
@@ -10,6 +11,9 @@ class PrivateSceneLoader {
                 break;
             case PrivateSceneEnum.SCENE_2:
                 preload ? PrivateScene2Preload.preload(gameScene) : PrivateScene2Preload.load(gameScene);
+                break;
+            case PrivateSceneEnum.SCENE_3:
+                preload ? PrivateScene3Preload.preload(gameScene) : PrivateScene3Preload.load(gameScene);
                 break;
         }
     }
