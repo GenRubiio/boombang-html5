@@ -69,9 +69,9 @@ import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
 import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
 import asset_island1_image from "../../../../assets/game/islands/isla1.png";
 import asset_island2_image from "../../../../assets/game/islands/isla2.png";
-import asset_island3_image from "../../../../assets/game/islands/isla3.png";
-import asset_island4_image from "../../../../assets/game/islands/isla4.png";
-import asset_island5_image from "../../../../assets/game/islands/isla5.png";
+//import asset_island3_image from "../../../../assets/game/islands/isla3.png";
+//import asset_island4_image from "../../../../assets/game/islands/isla4.png";
+//import asset_island5_image from "../../../../assets/game/islands/isla5.png";
 
 export default {
   data() {
@@ -79,13 +79,13 @@ export default {
       islands: [
         asset_island1_image,
         asset_island2_image,
-        asset_island3_image,
-        asset_island4_image,
-        asset_island5_image,
+        //asset_island3_image,
+        //asset_island4_image,
+        //asset_island5_image,
       ],
       asset_brujula_image,
       currentIndex: 0,
-      imagesToLoad: 6, // 5 islas + 1 brújula
+      imagesToLoad: 3, // 5 islas + 1 brújula
       loadedImages: 0,
       imagesLoaded: false,
       step: 1,
