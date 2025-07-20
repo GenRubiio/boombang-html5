@@ -38,7 +38,7 @@ class PrivateScene3Preload {
             this.#loadSingleItem(gameScene, suffix, item);
         });
 
-        SceneUtils.moveItems(gameScene);
+        //SceneUtils.moveItems(gameScene);
     }
 
     static #loadSingleItem(gameScene, suffix, item) {
