@@ -82,7 +82,7 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     create() {
-        //this.cameras.main.setBackgroundColor('#2ecc71');
+        this.cameras.main.setBackgroundColor('#2ecc71');
         this.tintMgr = new TintManager(this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;

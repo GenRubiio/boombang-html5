@@ -22,8 +22,16 @@
         "name": "isla2",
         "scenes": [
             {
-                "uuid": 3,
+                "uuid": 4,
                 "image": "game/islands/2/scene1.png"
+            },
+            {
+                "uuid": 5,
+                "image": "game/islands/2/scene2.png"
+            },
+            {
+                "uuid": 6,
+                "image": "game/islands/2/scene3.png"
             }
         ]
     },
@@ -32,8 +40,16 @@
         "name": "isla3",
         "scenes": [
             {
-                "uuid": 4,
+                "uuid": 7,
                 "image": "game/islands/3/scene1.png"
+            },
+            {
+                "uuid": 8,
+                "image": "game/islands/3/scene2.png"
+            },
+            {
+                "uuid": 9,
+                "image": "game/islands/3/scene3.png"
             }
         ]
     },
@@ -42,8 +58,16 @@
         "name": "isla4",
         "scenes": [
             {
-                "uuid": 5,
+                "uuid": 10,
                 "image": "game/islands/4/scene1.png"
+            },
+            {
+                "uuid": 11,
+                "image": "game/islands/4/scene2.png"
+            },
+            {
+                "uuid": 12,
+                "image": "game/islands/4/scene3.png"
             }
         ]
     },
@@ -52,8 +76,16 @@
         "name": "isla5",
         "scenes": [
             {
-                "uuid": 6,
+                "uuid": 13,
                 "image": "game/islands/5/scene1.png"
+            },
+            {
+                "uuid": 14,
+                "image": "game/islands/5/scene2.png"
+            },
+            {
+                "uuid": 15,
+                "image": "game/islands/5/scene3.png"
             }
         ]
     }
