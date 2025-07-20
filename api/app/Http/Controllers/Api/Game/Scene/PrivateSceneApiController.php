@@ -6,7 +6,9 @@ use Exception;
 use App\Models\Island;
 use App\Models\PrivateScene;
 use Illuminate\Http\Request;
+use App\Models\UserCatalogItem;
 use App\Models\PrivateSceneConfig;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PrivateSceneResource;
@@ -14,7 +16,6 @@ use App\Http\Resources\UserCatalogItemsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 use App\Http\Controllers\Api\Game\Scene\Interfaces\PrivateSceneApiControllerInterface;
-use App\Models\UserCatalogItem;
 
 class PrivateSceneApiController extends Controller implements PrivateSceneApiControllerInterface
 {
@@ -63,6 +64,11 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
             ]);
         } catch (Exception $e) {
+            Log::error('Error creating private scene: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'island_id' => $request->input('island_id'),
+                'type' => $request->input('type'),
+            ]);
             return $this->handleException($e);
         }
     }
