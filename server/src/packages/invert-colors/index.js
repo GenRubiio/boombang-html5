@@ -1,36 +1,51 @@
+/* index.js */
 const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
 
 /**
- * Invierte los colores de una imagen y mejora el contraste de las sombras.
- * El problema con una inversión simple (negate) es que las sombras oscuras se convierten
- * en sombras muy claras, perdiendo contraste con el fondo blanco.
+ * Invierte las imagenes de la carpeta input y las guarda en la carpeta output
+ * aplicando una curva lineal.
  *
- * Para solucionarlo, después de invertir los colores, aplicamos una corrección gamma.
- * Un valor de gamma > 1 oscurece la imagen, pero afecta más a los tonos medios (nuestras
- * sombras invertidas), haciéndolas más oscuras y visibles contra el fondo.
- *
- * Puedes experimentar con el valor de gamma (por ejemplo, entre 1.5 y 2.5) para
- * obtener el resultado deseado.
- *
- * @param {string} inputPath - Ruta de la imagen de entrada.
- * @param {string} outputPath - Ruta para guardar la imagen de salida.
- * @param {number} gammaValue - El valor para la corrección gamma.
+ * - slope: multiplicador de contraste.
  */
-async function invertirConMejora(inputPath, outputPath, gammaValue = 2.2) {
-  try {
-    await sharp(inputPath)
-      .negate({ alpha: false }) // Invierte los colores (negro -> blanco, gris oscuro -> gris claro)
-      .gamma(gammaValue)      // Oscurece la imagen para que las sombras claras resalten
-      .toFile(outputPath);
+async function main() {
+  const inputDir = path.join(__dirname, 'input');
+  const outputDir = path.join(__dirname, 'output');
+  const slope = 1.8;
+  const offset = 0;
 
-    console.log(`Imagen invertida y corregida guardada en: ${outputPath}`);
-  } catch (error) {
-    console.error('Ocurrió un error durante la inversión:', error);
+  if (!fs.existsSync(inputDir)) {
+    console.error(`⛔ El directorio de entrada no existe: ${inputDir}`);
+    process.exit(1);
+  }
+
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const files = fs.readdirSync(inputDir);
+
+  for (const file of files) {
+    const inPath = path.join(inputDir, file);
+    const outPath = path.join(outputDir, file);
+
+    try {
+      const pipeline = sharp(inPath)
+        .negate({ alpha: false })      // invertir colores
+        .linear(slope, offset);        // ajustar contraste (sin offset)
+
+      // .clamp() solo existe en versiones ≥0.33; lo usamos si está disponible
+      if (typeof pipeline.clamp === 'function') {
+        pipeline.clamp();              // recortar a 0‑255 si se puede
+      }
+
+      await pipeline.toFile(outPath);
+      console.log(`✔ Imagen procesada: ${outPath}`);
+    } catch (err) {
+      console.error(`⛔ Error procesando la imagen ${file}:`, err);
+    }
   }
 }
 
-// Ejecutamos la función con la imagen de entrada y una nueva de salida.
-// Se generará un archivo 'salida.png' para que puedas comparar.
-invertirConMejora('entrada.png', 'salida.png')
-  .then(() => console.log('Proceso completado.'))
-  .catch(console.error);
+main();
