@@ -31,8 +31,8 @@ class PrivateScene2Preload {
             { name: "item_3", x: 347, y: 398, custom_depth: 97, show_item: true, show_controller: false }, //
             { name: "item_4", x: 180, y: 657, custom_depth: 98, show_item: true, show_controller: false }, // ok
             { name: "item_5", x: 506, y: 658, custom_depth: 99, show_item: true, show_controller: false }, // ok
-            { name: "item_6", x: 129, y: 546, custom_depth: 101, show_item: true, show_controller: false }, //
-            { name: "item_7", x: 621, y: 657, custom_depth: 99, show_item: true, show_controller: false }, // ok
+            { name: "item_6", x: 128, y: 548, custom_depth: 101, show_item: true, show_controller: false }, //
+            { name: "item_7", x: 622, y: 657, custom_depth: 99, show_item: true, show_controller: false }, // ok
             { name: "item_8", x: 324, y: 444, custom_depth: 103, show_item: true, show_controller: false }, // ok
             { name: "item_9", x: 425, y: 381, custom_depth: 365, show_item: true, show_controller: false } //
         ];
