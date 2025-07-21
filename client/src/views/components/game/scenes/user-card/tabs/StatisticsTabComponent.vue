@@ -1,32 +1,33 @@
 <template>
   <div class="container" :class="colorUser">
     <div class="container__uppers-data">
-      <div class="container__uppers-data__title">Uppercuts</div>
-      <div class="container__uppers-data__data-container">
+      <div class="container__uppers-data__title">{{ currentView.title }}</div>
+      <div
+        v-for="stat in currentView.stats"
+        :key="stat.key"
+        class="container__uppers-data__data-container"
+      >
         <div class="container__uppers-data__data-container__count">
-          {{ selectedUser.uppercuts_send }}
+          {{ selectedUser[stat.key] }}
         </div>
         <div class="container__uppers-data__data-container__title">
-          Enviados
-        </div>
-      </div>
-      <div class="container__uppers-data__data-container">
-        <div class="container__uppers-data__data-container__count">
-          {{ selectedUser.uppercuts_received }}
-        </div>
-        <div class="container__uppers-data__data-container__title">
-          Recibidos
+          {{ stat.label }}
         </div>
       </div>
     </div>
     <div class="container__uppers-right">
-      <img :src="asset_red_upper_image" alt="upper" />
+      <img :src="currentView.image" :alt="currentView.title" />
     </div>
+    <button class="container__cycle-button" @click="cycleStatistic">
+      <i class="la la-chevron-right"></i>
+    </button>
   </div>
 </template>
 
 <script>
-import asset_red_upper_image from "../../../../../../assets/game/ficha/uppercuts/red.png";
+import asset_stat_upper_image from "../../../../../../assets/game/ficha/statistics/uppercut.png";
+import asset_stat_coconut_image from "../../../../../../assets/game/ficha/statistics/coconut.png";
+import asset_stat_ring_image from "../../../../../../assets/game/ficha/statistics/ring.png";
 
 export default {
   props: {
@@ -37,11 +38,42 @@ export default {
   },
   data() {
     return {
-      asset_red_upper_image,
+      currentViewIndex: 0,
+      statisticsViews: [
+        {
+          title: "Uppercuts",
+          image: asset_stat_upper_image,
+          stats: [
+            { key: "uppercuts_send", label: "Enviados" },
+            { key: "uppercuts_received", label: "Recibidos" },
+          ],
+        },
+        {
+          title: "Coconuts",
+          image: asset_stat_coconut_image,
+          stats: [
+            { key: "coconuts_sent", label: "Enviados" },
+            { key: "coconuts_received", label: "Recibidos" },
+          ],
+        },
+        {
+          title: "Rings",
+          image: asset_stat_ring_image,
+          stats: [{ key: "rings_won", label: "Ganados" }],
+        },
+      ],
     };
   },
-  methods: {},
+  methods: {
+    cycleStatistic() {
+      this.currentViewIndex =
+        (this.currentViewIndex + 1) % this.statisticsViews.length;
+    },
+  },
   computed: {
+    currentView() {
+      return this.statisticsViews[this.currentViewIndex];
+    },
     colorUser() {
       if (this.selectedUser.is_admin) {
         return "admin";
@@ -141,6 +173,31 @@ export default {
 }
 
 .container.selected .container__uppers-data__data-container__title {
+  background-color: #045d03;
+}
+
+.container__cycle-button {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  background-color: #005491;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container__cycle-button:focus {
+  outline: none;
+}
+
+.container.selected .container__cycle-button {
   background-color: #045d03;
 }
 </style>
