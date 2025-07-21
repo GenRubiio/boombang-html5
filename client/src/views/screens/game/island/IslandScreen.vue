@@ -14,7 +14,7 @@
         <!-- Botones de escenario -->
         <div class="scenario-buttons">
           <div class="scenario-button__list">
-            <div class="scenario-button__list-title">Localizaciones</div>
+            <div class="scenario-button__list-title">{{ $t('island.locations') }}</div>
           </div>
           <!-- Botones para escenarios existentes -->
           <div
@@ -54,7 +54,7 @@
                   class="scenario-button scenario-button--add"
                   @click="handleSceneAction(null)"
                 >
-                  Añadir escenario
+                  {{ $t('island.add_scenario') }}
                 </button>
               </div>
               <div class="scenario-button__container-right">

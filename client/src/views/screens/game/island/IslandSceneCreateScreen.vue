@@ -26,17 +26,17 @@
         <template v-if="step === 1">
           <div class="navigation">
             <div>
-              <button class="control-btn" @click="prevScene">Anterior</button>
+              <button class="control-btn" @click="prevScene">{{ $t('common.previous') }}</button>
             </div>
             <div>
-              <button class="control-btn" @click="nextScene">Siguiente</button>
+              <button class="control-btn" @click="nextScene">{{ $t('common.next') }}</button>
             </div>
             <div>
-              <button class="accept-btn" @click="goToStep(2)">Aceptar</button>
+              <button class="accept-btn" @click="goToStep(2)">{{ $t('common.accept') }}</button>
             </div>
           </div>
           <div class="navigation-label">
-            <span class="label">Escoge la escena</span>
+            <span class="label">{{ $t('scene_create.choose_scene') }}</span>
           </div>
         </template>
         <template v-else-if="step === 2">
@@ -48,24 +48,24 @@
               <input
                 type="text"
                 v-model="sceneName"
-                placeholder="Nombre de la sala"
+                :placeholder="$t('scene_create.scene_name_placeholder')"
               />
             </div>
             <div>
               <button class="accept-btn" @click="createScene">
-                Aceptar
+                {{ $t('common.accept') }}
               </button>
             </div>
           </div>
           <div class="navigation-label">
-            <span class="label">Pon un nombre a tu sala</span>
+            <span class="label">{{ $t('scene_create.set_scene_name') }}</span>
           </div>
         </template>
       </div>
     </div>
 
     <div v-else class="error-message-centered">
-      <p>La isla no se ha encontrado o no tiene escenas.</p>
+      <p>{{ $t('scene_create.error_no_scenes') }}</p>
     </div>
   </div>
 </template>

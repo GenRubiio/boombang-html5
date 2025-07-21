@@ -1,19 +1,19 @@
 <template>
   <form class="register-form" @submit.prevent="register">
     <div class="register-form__content">
-      <div class="register-form__title">Crea tu cuenta</div>
+      <div class="register-form__title">{{ $t('register.title') }}</div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showUsernameError">
           <img :src="asset_warning_image" alt="warning" />
           {{ usernameError }}
         </div>
-        <div class="register-form__label">Nombre del Personaje</div>
+        <div class="register-form__label">{{ $t('register.character_name') }}</div>
         <div class="register-form__input">
           <input
             v-model="username"
             ref="username"
             type="text"
-            placeholder="Nombre"
+            :placeholder="$t('register.username_placeholder')"
             required
           />
         </div>
@@ -23,12 +23,12 @@
           <img :src="asset_warning_image" alt="warning" />
           {{ passwordError }}
         </div>
-        <div class="register-form__label">Contraseña</div>
+        <div class="register-form__label">{{ $t('register.password') }}</div>
         <div class="register-form__input">
           <input
             v-model="password"
             type="password"
-            placeholder="Contraseña"
+            :placeholder="$t('register.password_placeholder')"
             required
           />
         </div>
@@ -38,16 +38,16 @@
           <img :src="asset_warning_image" alt="warning" />
           {{ emailError }}
         </div>
-        <div class="register-form__label">Email</div>
+        <div class="register-form__label">{{ $t('register.email') }}</div>
         <div class="register-form__input">
-          <input v-model="email" type="email" placeholder="Email" required />
+          <input v-model="email" type="email" :placeholder="$t('register.email_placeholder')" required />
         </div>
       </div>
       <div class="register-form__input-container">
         <div class="register-form__terms">
           <input id="checkbox" type="checkbox" required />
-          <label for="checkbox"> I agree to these</label>
-          <a>Terms and Conditions</a>
+          <label for="checkbox"> {{ $t('register.terms_agree') }}</label>
+          <a>{{ $t('register.terms_and_conditions') }}</a>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
         type="submit"
         :class="{ 'disabled-button': loading || !isSocketConnected }"
       >
-        Jugar
+        {{ $t('register.play_button') }}
       </button>
     </div>
   </form>

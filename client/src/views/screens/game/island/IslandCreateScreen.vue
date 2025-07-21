@@ -25,17 +25,17 @@
       <template v-if="step === 1">
         <div class="navigation">
           <div>
-            <button class="control-btn" @click="prevIsland">Anterior</button>
+            <button class="control-btn" @click="prevIsland">{{ $t('common.previous') }}</button>
           </div>
           <div>
-            <button class="control-btn" @click="nextIsland">Siguiente</button>
+            <button class="control-btn" @click="nextIsland">{{ $t('common.next') }}</button>
           </div>
           <div>
-            <button class="accept-btn" @click="goToStep(2)">Aceptar</button>
+            <button class="accept-btn" @click="goToStep(2)">{{ $t('common.accept') }}</button>
           </div>
         </div>
         <div class="navigation-label">
-          <span class="label">Escoge el fondo</span>
+          <span class="label">{{ $t('island_create.choose_background') }}</span>
         </div>
       </template>
       <template v-if="step === 2">
@@ -47,15 +47,15 @@
             <input
               type="text"
               v-model="islandName"
-              placeholder="Nombre de la isla"
+              :placeholder="$t('island_create.island_name_placeholder')"
             />
           </div>
           <div>
-            <button class="accept-btn" @click="createIsland">Aceptar</button>
+            <button class="accept-btn" @click="createIsland">{{ $t('common.accept') }}</button>
           </div>
         </div>
         <div class="navigation-label">
-          <span class="label">Pon un nombre a tu isla</span>
+          <span class="label">{{ $t('island_create.set_island_name') }}</span>
         </div>
       </template>
     </div>

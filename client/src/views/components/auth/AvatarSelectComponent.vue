@@ -2,8 +2,8 @@
   <div>
     <div class="select-avatar">
       <div class="select-avatar__container">
-        <div class="select-avatar__title">Personaje</div>
-        <div class="select-avatar__label">Selecciona tu personaje</div>
+        <div class="select-avatar__title">{{ $t('avatar_select.title') }}</div>
+        <div class="select-avatar__label">{{ $t('avatar_select.label') }}</div>
         <div class="select-avatar__slider">
           <div class="slider">
             <div id="slide-0" data-avatar="5">

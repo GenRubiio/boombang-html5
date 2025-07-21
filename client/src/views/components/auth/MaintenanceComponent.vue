@@ -1,10 +1,8 @@
 <template>
   <div class="maintenance">
     <div class="maintenance__content">
-      <h1 class="maintenance__title">Mantenimiento</h1>
-      <p class="maintenance__description">
-        El servidor está en mantenimiento.<br />Por favor, inténtalo más tarde.
-      </p>
+      <h1 class="maintenance__title">{{ $t('maintenance.title') }}</h1>
+      <p class="maintenance__description" v-html="$t('maintenance.description')"></p>
       <img :src="asset_maintenance_avatar_image" alt="Mantenimiento" />
     </div>
   </div>
