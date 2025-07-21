@@ -116,10 +116,10 @@ class CreateSceneController {
                     console.log(`Tile at ${col}, ${row} is not clickable.`);
                     socket.emit(RequestSocketsEnum.CHANGE_LOOK, { x: col, y: row });
                     if (import.meta.env.VITE_MAP_MAKER === "true") {
-                        gameScene.tiles[row][col - 1].bob.setTint(0xffffff);
+                        //gameScene.tiles[row][col - 1].bob.setTint(0xffffff);
                         gameScene.tiles[row][col].isClickable = 0;
                         map[row][col] = 0;
-                        gameScene.tiles[row][col].bob.tint = 0x808080; // Color gris, por ejemplo
+                        gameScene.tiles[row][col].bob.tint = 0xffffff; // Color gris, por ejemplo
                         console.log(map);
                     }
                     return;
