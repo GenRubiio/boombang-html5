@@ -24,13 +24,13 @@ class PrivateScene3Preload {
     static load(gameScene) {
         const suffix = '_private_scene_' + gameScene.sceneData.scenery.id;
         let items = [
-            { name: "item_1", x: 507, y: 226, custom_depth: 63, show_item: true, show_controller: false }, //Ok
-            { name: "item_2", x: 509, y: 374, custom_depth: 76, show_item: true, show_controller: false }, //Ok
-            { name: "item_3", x: 545, y: 246, custom_depth: 92, show_item: true, show_controller: false }, //Ok
-            { name: "item_4", x: 490, y: 398, custom_depth: 93, show_item: true, show_controller: false }, //Ok
-            { name: "item_5", x: 506, y: 656, custom_depth: 99, show_item: true, show_controller: false }, //Ok
+            { name: "item_1", x: 506, y: 226, custom_depth: 63, show_item: true, show_controller: false }, //Ok
+            { name: "item_2", x: 506, y: 374, custom_depth: 76, show_item: true, show_controller: false }, //Ok
+            { name: "item_3", x: 542, y: 247, custom_depth: 92, show_item: true, show_controller: false }, //Ok
+            { name: "item_4", x: 490, y: 399, custom_depth: 93, show_item: true, show_controller: false }, //Ok
+            { name: "item_5", x: 506, y: 657, custom_depth: 99, show_item: true, show_controller: false }, //Ok
             { name: "item_6", x: 891, y: 201, custom_depth: 165, show_item: true, show_controller: false }, //Ok
-            { name: "item_7", x: 507, y: 400, custom_depth: 150, show_item: true, show_controller: false }, //Ok
+            { name: "item_7", x: 506, y: 402, custom_depth: 150, show_item: true, show_controller: false }, //Ok
             { name: "item_8", x: 504, y: 157, custom_depth: 151, show_item: true, show_controller: false } //Ok
         ];
 
