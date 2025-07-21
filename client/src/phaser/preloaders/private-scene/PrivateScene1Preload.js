@@ -24,7 +24,7 @@ class PrivateScene1Preload {
     static load(gameScene) {
         const suffix = '_private_scene_' + gameScene.sceneData.scenery.id;
         let items = [
-            { name: "item_1", x: 506, y: 161, custom_depth: 139, show_item: true, show_controller: false }, //Ok
+            { name: "item_1", x: 506, y: 161, custom_depth: 81, show_item: true, show_controller: false }, //Ok
             { name: "item_2", x: 506, y: 657, custom_depth: 97, show_item: true, show_controller: false }, //Ok
             { name: "item_3", x: 547, y: 657, custom_depth: 98, show_item: true, show_controller: false }, //Ok
             { name: "item_4", x: 129, y: 517, custom_depth: 99, show_item: true, show_controller: false }, //Ok
