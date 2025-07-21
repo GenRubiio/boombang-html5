@@ -1,9 +1,15 @@
 <template>
   <div class="interactions-wrapper">
     <div class="container" :class="colorUser">
-      <div></div>
-      <div></div>
-      <div></div>
+      <div class="container__item">
+        <img :src="asset_kiss_image" alt="kiss" />
+      </div>
+      <div class="container__item">
+        <img :src="asset_drink_image" alt="drink" />
+      </div>
+      <div class="container__item">
+        <img :src="asset_rose_image" alt="rose" />
+      </div>
       <div></div>
       <div class="upper-container">
         <img
@@ -86,6 +92,10 @@ import asset_sandiaCoconutImage from "../../../../../../assets/game/ficha/coconu
 import asset_yunqueCoconutImage from "../../../../../../assets/game/ficha/coconuts/yunque.png";
 import asset_pianoCoconutImage from "../../../../../../assets/game/ficha/coconuts/piano.png";
 
+import asset_kiss_image from "../../../../../../assets/game/ficha/interactions/kiss.png";
+import asset_drink_image from "../../../../../../assets/game/ficha/interactions/drink.png";
+import asset_rose_image from "../../../../../../assets/game/ficha/interactions/rose.png";
+
 export default {
   props: {
     selectedUser: {
@@ -99,7 +109,10 @@ export default {
   },
   data() {
     return {
-     uppercuts: [
+      asset_kiss_image,
+      asset_drink_image,
+      asset_rose_image,
+      uppercuts: [
         asset_red_upper_image,
         asset_pink_upper_image,
         asset_orange_upper_image,
@@ -202,6 +215,11 @@ export default {
   height: 90px;
   z-index: 1;
   gap: 8px;
+  padding: 0 5px;
+}
+
+.container__item{
+
 }
 
 .container div {

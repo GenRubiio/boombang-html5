@@ -10,7 +10,7 @@ const MatchMakerInstance = require('../instances/MatchMakerInstance');
 
 module.exports = (io) => {
     const matchMakers = {
-        [MinigamesEnum.GOLDEN_RING]: new MatchMakerInstance(3),
+        [MinigamesEnum.GOLDEN_RING]: new MatchMakerInstance(8),
     }
 
     io.on('connection', (socket) => {
