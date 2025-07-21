@@ -1,0 +1,72 @@
+{
+  "login": {
+    "title": "Iniciar Sesión",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "button": "Entrar",
+    "register": "Regístrate",
+    "already_have_account": "Ya tienes cuenta?",
+    "character_name": "Nombre del Personaje",
+    "username_placeholder": "Nombre",
+    "password_placeholder": "Contraseña",
+    "forgot_password": "Has olvidado tu contraseña?",
+    "separator": "O",
+    "google_login": "Continuar con Google",
+    "play_button": "Jugar"
+  },
+  "common": {
+    "close": "X",
+    "delete": "Borrar",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "accept": "Aceptar"
+  },
+  "scene": {
+    "tooltip_shop": "Tienda",
+    "tooltip_avatars": "Avatares",
+    "tooltip_color": "Colorear",
+    "tooltip_move": "Mover",
+    "tooltip_inventory": "Inventario"
+  },
+  "maintenance": {
+    "title": "Mantenimiento",
+    "description": "El servidor está en mantenimiento.<br />Por favor, inténtalo más tarde."
+  },
+  "avatar_select": {
+    "title": "Personaje",
+    "label": "Selecciona tu personaje"
+  },
+  "register": {
+    "title": "Crea tu cuenta",
+    "character_name": "Nombre del Personaje",
+    "username_placeholder": "Nombre",
+    "password": "Contraseña",
+    "password_placeholder": "Contraseña",
+    "email": "Email",
+    "email_placeholder": "Email",
+    "terms_agree": "Acepto los",
+    "terms_and_conditions": "Términos y Condiciones",
+    "play_button": "Jugar"
+  },
+  "auth_screen": {
+    "register_title": "Crear tu Cuenta",
+    "register_text": "Registrarse y eligir Personaje",
+    "login_title": "Iniciar Sesión",
+    "login_text": "Iniciar Sesión con tu Cuenta"
+  },
+  "island_create": {
+    "choose_background": "Escoge el fondo",
+    "island_name_placeholder": "Nombre de la isla",
+    "set_island_name": "Pon un nombre a tu isla"
+  },
+  "scene_create": {
+    "choose_scene": "Escoge la escena",
+    "scene_name_placeholder": "Nombre de la sala",
+    "set_scene_name": "Pon un nombre a tu sala",
+    "error_no_scenes": "La isla no se ha encontrado o no tiene escenas."
+  },
+  "island": {
+    "locations": "Localizaciones",
+    "add_scenario": "Añadir escenario"
+  }
+}

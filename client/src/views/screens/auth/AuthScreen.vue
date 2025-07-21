@@ -21,14 +21,14 @@
         <div>
           <TopButtonComponent
             v-if="showForm == 'login'"
-            title="Crear tu Cuenta"
-            text="Registrarse y eligir Personaje"
+            :title="$t('auth_screen.register_title')"
+            :text="$t('auth_screen.register_text')"
             @click="changeForm('register')"
           />
           <TopButtonComponent
             v-if="showForm == 'register'"
-            title="Iniciar Sesión"
-            text="Iniciar Sesión con tu Cuenta"
+            :title="$t('auth_screen.login_title')"
+            :text="$t('auth_screen.login_text')"
             @click="changeForm('login')"
           />
         </div>

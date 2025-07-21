@@ -13,6 +13,7 @@ import TintManager from "./managers/TintManager"; // Gestor de tintes
 import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
 import asset_ui_shop_image from "../assets/game/scene/ui/shop.png";
 import asset_ui_avatars_image from "../assets/game/scene/ui/avatars.png";
+import i18n from "../plugins/i18n";
 
 
 export default class PublicScene extends Phaser.Scene {
@@ -162,7 +163,7 @@ export default class PublicScene extends Phaser.Scene {
             () => {
                 console.log('Botón de tienda pulsado');
             },
-            'Tienda'
+            i18n.global.t('scene.tooltip_shop')
         );
 
         /* --------------------- BOTÓN “AVATARES” --------------------- */
@@ -172,7 +173,7 @@ export default class PublicScene extends Phaser.Scene {
             () => {
                 console.log('Botón de avatares pulsado');
             },
-            'Avatares'
+            i18n.global.t('scene.tooltip_avatars')
         );
     }
 

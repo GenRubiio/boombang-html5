@@ -1,0 +1,72 @@
+{
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "button": "Enter",
+    "register": "Register",
+    "already_have_account": "Already have an account?",
+    "character_name": "Character Name",
+    "username_placeholder": "Name",
+    "password_placeholder": "Password",
+    "forgot_password": "Forgot your password?",
+    "separator": "OR",
+    "google_login": "Continue with Google",
+    "play_button": "Play"
+  },
+  "common": {
+    "close": "X",
+    "delete": "Delete",
+    "previous": "Previous",
+    "next": "Next",
+    "accept": "Accept"
+  },
+  "scene": {
+    "tooltip_shop": "Shop",
+    "tooltip_avatars": "Avatars",
+    "tooltip_color": "Colorize",
+    "tooltip_move": "Move",
+    "tooltip_inventory": "Inventory"
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "description": "The server is under maintenance.<br />Please try again later."
+  },
+  "avatar_select": {
+    "title": "Character",
+    "label": "Select your character"
+  },
+  "register": {
+    "title": "Create your account",
+    "character_name": "Character Name",
+    "username_placeholder": "Name",
+    "password": "Password",
+    "password_placeholder": "Password",
+    "email": "Email",
+    "email_placeholder": "Email",
+    "terms_agree": "I agree to these",
+    "terms_and_conditions": "Terms and Conditions",
+    "play_button": "Play"
+  },
+  "auth_screen": {
+    "register_title": "Create your Account",
+    "register_text": "Register and choose a Character",
+    "login_title": "Login",
+    "login_text": "Login with your Account"
+  },
+  "island_create": {
+    "choose_background": "Choose the background",
+    "island_name_placeholder": "Island name",
+    "set_island_name": "Name your island"
+  },
+  "scene_create": {
+    "choose_scene": "Choose the scene",
+    "scene_name_placeholder": "Room name",
+    "set_scene_name": "Name your room",
+    "error_no_scenes": "The island was not found or has no scenes."
+  },
+  "island": {
+    "locations": "Locations",
+    "add_scenario": "Add scenario"
+  }
+}

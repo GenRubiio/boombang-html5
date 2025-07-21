@@ -4,39 +4,39 @@
       <img :src="asset_warning_image" alt="warning" /> {{ usernameError }}
     </div>
     <div class="login-form__content">
-      <div class="login-form__title">Ya tienes cuenta?</div>
+      <div class="login-form__title">{{ $t('login.already_have_account') }}</div>
       <div class="login-form__input-container">
         <div class="login-form__error" v-if="showUsernameError">
           <img :src="asset_warning_image" alt="warning" />
           {{ usernameError }}
         </div>
-        <div class="login-form__label">Nombre del Personaje</div>
+        <div class="login-form__label">{{ $t('login.character_name') }}</div>
         <div class="login-form__input">
           <input
             v-model="username"
             ref="username"
             type="text"
-            placeholder="Nombre"
+            :placeholder="$t('login.username_placeholder')"
             required
           />
         </div>
       </div>
-      <div class="login-form__label">Contraseña</div>
+      <div class="login-form__label">{{ $t('login.password') }}</div>
       <div class="login-form__input">
         <input
           v-model="password"
           type="password"
-          placeholder="Contraseña"
+          :placeholder="$t('login.password_placeholder')"
           required
         />
       </div>
       <div class="login-form__link">
-        <div>Has olvidado tu contraseña?</div>
+        <div>{{ $t('login.forgot_password') }}</div>
       </div>
       <div class="login-form__google">
-        <div class="login-form__google-separator">O</div>
+        <div class="login-form__google-separator">{{ $t('login.separator') }}</div>
         <div class="login-form__google-button">
-          <img :src="asset_google_image" alt="Google" /> Continuar con Google
+          <img :src="asset_google_image" alt="Google" /> {{ $t('login.google_login') }}
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
         type="submit"
         :class="{ 'disabled-button': loading || !isSocketConnected }"
       >
-        Jugar
+        {{ $t('login.play_button') }}
       </button>
     </div>
   </form>
@@ -60,6 +60,7 @@ import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import asset_button_image from "../../../assets/game/auth/login-button-image.webp";
 import asset_google_image from "../../../assets/game/auth/google.webp";
 import asset_warning_image from "../../../assets/game/auth/warning.webp";
+import { useLanguageStore } from "../../../stores/languageStore";
 
 export default {
   data() {
@@ -75,6 +76,10 @@ export default {
       asset_warning_image,
     };
   },
+  setup() {
+    const languageStore = useLanguageStore();
+    return { languageStore };
+  },
   methods: {
     login() {
       if (this.loading || !this.isSocketConnected) return;
@@ -88,7 +93,9 @@ export default {
 
       this.$socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
       this.$socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
-        //alert(`Bienvenido, ${data.user.username}`);
+        if (data.user && data.user.lang) {
+          this.languageStore.setLocale(data.user.lang);
+        }
         this.$socket.user = data.user;
         this.$emit("loginSuccess");
       });

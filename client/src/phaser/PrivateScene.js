@@ -18,6 +18,7 @@ import asset_ui_move_item_image from "../assets/game/scene/ui/move_item.png";
 import asset_ui_shop_image from "../assets/game/scene/ui/shop.png";
 import asset_ui_avatars_image from "../assets/game/scene/ui/avatars.png";
 import asset_ui_color_scene_image from "../assets/game/scene/ui/color_scene.png";
+import i18n from "../plugins/i18n";
 
 export default class PrivateScene extends Phaser.Scene {
     constructor() {
@@ -118,7 +119,7 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnHide = false;
         
         if (this.sceneData.myScene) {
-            //this.createButtons();
+            this.createButtons();
         }
 
         this.handleSockets();
@@ -329,7 +330,7 @@ export default class PrivateScene extends Phaser.Scene {
             () => {
                 console.log('Botón de tienda pulsado');
             },
-            'Tienda'
+            i18n.global.t('scene.tooltip_shop')
         );
 
         /* --------------------- BOTÓN “AVATARES” --------------------- */
@@ -339,7 +340,7 @@ export default class PrivateScene extends Phaser.Scene {
             () => {
                 console.log('Botón de avatares pulsado');
             },
-            'Avatares'
+            i18n.global.t('scene.tooltip_avatars')
         );
 
         /* --------------------- BOTÓN “COLOREAR” --------------------- */
@@ -349,7 +350,7 @@ export default class PrivateScene extends Phaser.Scene {
             () => {
                 console.log('Boton de colorear pulsado');
             },
-            'Colorear',
+            i18n.global.t('scene.tooltip_color'),
             true
         );
 
@@ -358,7 +359,7 @@ export default class PrivateScene extends Phaser.Scene {
             START_X + (BUTTON_SIZE + BUTTON_SPACING) * 3,
             'asset_ui_move_item_image',
             () => this.toggleMoveMode(),
-            'Mover'
+            i18n.global.t('scene.tooltip_move')
         );
 
         /* ------------------ BOTÓN “INVENTARIO” ------------------ */
@@ -370,7 +371,7 @@ export default class PrivateScene extends Phaser.Scene {
                     this.inventoryContainer.setVisible(!this.inventoryContainer.visible);
                 }
             },
-            'Inventario'
+            i18n.global.t('scene.tooltip_inventory')
         );
     }
 
@@ -548,7 +549,7 @@ export default class PrivateScene extends Phaser.Scene {
         closeZone.on('pointerdown', () => this.deselectObject());
 
         const closeText = this.add.text(
-            closeZone.x + 8, closeZone.y, 'X',
+            closeZone.x + 8, closeZone.y, i18n.global.t('common.close'),
             { fontSize: '16px', color: '#000000', fontStyle: 'bold' }
         ).setOrigin(0.5, 0);
 
@@ -586,7 +587,7 @@ export default class PrivateScene extends Phaser.Scene {
         const deleteText = this.add.text(
             btnX + BTN_W / 2,
             btnY + BTN_H / 2,
-            'Borrar',
+            i18n.global.t('common.delete'),
             btnTextStyle
         ).setOrigin(0.5);
 
@@ -874,7 +875,7 @@ export default class PrivateScene extends Phaser.Scene {
         }
         this.inventoryContainer.add(this.add.image(0, 0, 'inv_bg').setOrigin(0));
 
-        const closeButton = this.add.text(INV_W - SLOT_PAD, SLOT_PAD, 'X', {
+        const closeButton = this.add.text(INV_W - SLOT_PAD, SLOT_PAD, i18n.global.t('common.close'), {
             fontSize: '16px', color: '#000000', fontStyle: 'bold'
         })
             .setOrigin(1, 0)
