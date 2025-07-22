@@ -8,7 +8,7 @@ const matchMakerSockets = require('./game/scenes/matchMakerSockets');
 const MinigamesEnum = require('../enums/MinigamesEnum');
 const MatchMakerInstance = require('../instances/MatchMakerInstance');
 
-module.exports = (io) => {
+module.exports = (io, authorizedBotTokens) => {
     const matchMakers = {
         [MinigamesEnum.GOLDEN_RING]: new MatchMakerInstance(8),
     }
@@ -16,7 +16,7 @@ module.exports = (io) => {
     io.on('connection', (socket) => {
         console.log('A player connected:', socket.id);
 
-        authSockets(socket, io);
+        authSockets(socket, io, authorizedBotTokens);
         connectionSockets(socket, io);
         publicScenesSockets(socket, io);
         scenesSockets(socket, io);

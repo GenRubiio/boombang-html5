@@ -16,6 +16,7 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     'emulator_api_token' => env('EMULATOR_API_TOKEN'),
+    'emulator_docker_url' => env('EMULATOR_DOCKER_URL'),
 
     /*
     |--------------------------------------------------------------------------
