@@ -1,5 +1,6 @@
 const { io } = require("socket.io-client");
 require('dotenv').config();
+const axios = require('axios');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
@@ -8,11 +9,37 @@ class Bot {
     constructor(username, password) {
         this.username = username;
         this.password = password;
-        this.socket = io(process.env.EMULATOR_URL);
+        this.socket = null;
         this.uppercutInterval = null;
+        this.api_url = process.env.API_DOCKER_URL;
 
+        this.authenticateAndConnect();
+    }
+
+    async authenticateAndConnect() {
+        try {
+            console.log(`Bot ${this.username}: Obteniendo token de autenticación...`);
+            const response = await axios.post(`${this.api_url}/api/internal/bots/generate-token`);
+            const { token } = response.data;
+
+            if (!token) {
+                throw new Error('No se pudo obtener el token para el bot.');
+            }
+
+            console.log(`Bot ${this.username}: Token obtenido. Conectando al servidor...`);
+            this.socket = io(process.env.EMULATOR_URL);
+            this.initializeSocketEvents(token);
+
+        } catch (error) {
+            console.error(`Error al autenticar el bot ${this.username}:`, error.message);
+            // Optional: retry logic
+        }
+    }
+
+    initializeSocketEvents(token) {
         this.socket.on("connect", () => {
-            this.login();
+            console.log(`Bot ${this.username}: Conectado. Realizando login...`);
+            this.login(token);
         });
 
         this.socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
@@ -133,8 +160,12 @@ class Bot {
         }, 10000);
     }
 
-    login() {
-        this.socket.emit(RequestSocketsEnum.LOGIN, { username: this.username, password: this.password });
+    login(token) {
+        this.socket.emit(RequestSocketsEnum.LOGIN, { 
+            username: this.username, 
+            password: this.password,
+            bot_token: token 
+        });
     }
 
     moveRandomly() {

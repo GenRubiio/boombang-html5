@@ -10,13 +10,13 @@ logger.log('Starting server...', 'success');
     const port = process.env.PORT || 3000;
     await initializer();
     // Inicializar el servidor
-    const { app, io } = server(port);
+    const { app, io, authorizedBotTokens } = server(port);
 
     // Configurar rutas (si es necesario)
     app.get('/', (req, res) => res.send('Game Server Running'));
 
     // Configurar sockets
-    sockets(io);
+    sockets(io, authorizedBotTokens);
 
     if (process.env.RUN_BOTS ? process.env.RUN_BOTS === 'true' : false) {
         BotsPackage.main();

@@ -71,3 +71,9 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         });
     });
 });
+
+Route::prefix('internal')->group(function() {
+    Route::prefix('bots')->group(function () {
+        Route::post('generate-token', [App\Http\Controllers\Internal\BotController::class, 'generateToken']);
+    });
+});

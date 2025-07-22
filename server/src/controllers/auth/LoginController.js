@@ -7,9 +7,22 @@ const UserApiService = require('../../services-api/UserApiService');
 const UserModel = require('../../models/UserModel');
 
 class LoginController {
-    static async main(socket, io, data) {
+    static async main(socket, io, data, authorizedBotTokens) {
         try {
-            const { username, password } = data;
+            const { username, password, bot_token } = data;
+
+            // --- Bot Authentication Logic ---
+            if (bot_token) {
+                if (!authorizedBotTokens || !authorizedBotTokens.has(bot_token)) {
+                    socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Invalid bot token.' });
+                    socket.disconnect(); // Disconnect invalid bots immediately
+                    return;
+                }
+                // The token is valid, consume it to prevent reuse
+                authorizedBotTokens.delete(bot_token);
+            }
+            // --- End of Bot Authentication ---
+
             const auth = await UserApiService.login(username, password);
             if (!auth.success){
                 socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Invalid credentials' });
