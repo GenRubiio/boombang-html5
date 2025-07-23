@@ -1,5 +1,10 @@
 @if($footerLegal->isNotEmpty())
     <ul class="footer__legal-list">
+        <li class="footer__legal-list-item">
+            <a id="cookies-setting" class="footer__legal-link">
+                {{ trans('cookies.button_footer') }}
+            </a>
+        </li>
         @foreach($footerLegal as $footerLegalItem)
             <li class="footer__legal-list-item">
                 <a href="{{$footerLegalItem->link}}" class="footer__legal-link">

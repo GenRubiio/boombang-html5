@@ -6,6 +6,7 @@ import SlidersController from './objects/SlidersController';
 import SearcherController from './objects/SearcherController';
 import ContactFormController from './objects/ContactFormController';
 import ScrollDownController from './objects/ScrollDownController';
+import CookiesController from './objects/CookiesController';
 
 const ViewHandler = {
     init(data) {
@@ -27,6 +28,7 @@ const ViewHandler = {
         SearcherController.init();
         ContactFormController.init();
         ScrollDownController.init();
+        CookiesController.init();
     },
 };
 

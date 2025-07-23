@@ -30,4 +30,5 @@ return [
     'preset-emails' => 'Emails predeterminados',
     'generate-sitemap' => 'Generar Sitemap.xml',
     'parametric-tables' => 'Paramétricas',
+    'cookies' => 'Cookies',
 ];

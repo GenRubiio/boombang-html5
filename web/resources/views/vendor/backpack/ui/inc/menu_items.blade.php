@@ -12,6 +12,7 @@
     <li class='nav-item'><a class='nav-link' href='{{ backpack_url('slide') }}'><i class='nav-icon lar la-images'></i> {{trans('menu-admin.slides')}}</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('social-network') }}"><i class="nav-icon las la-hashtag"></i> {{trans('menu-admin.social-networks')}}</a></li>
     <li class='nav-item'><a class='nav-link' href='{{ backpack_url('lead') }}'><i class='nav-icon lab la-mailchimp'></i> {{trans('menu-admin.leads')}}</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('cookie') }}"><i class="nav-icon la la-cookie-bite"></i> {{trans('menu-admin.cookies')}}</a></li>
 @endif
 <li class="nav-title">{{trans('menu-admin.web')}}</li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('multimedia') }}'><i class='nav-icon las la-photo-video'></i> {{trans('menu-admin.multimedia')}}</a></li>

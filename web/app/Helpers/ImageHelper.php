@@ -14,14 +14,14 @@ class ImageHelper
     {
         $image = self::resizeImage($image, config('images.mobile_max_width'));
         $filename = self::addToNameImage($filename, config('images.mobile_add_name'), getExtensionByMimetype($image->mime()));
-        return self::saveImage($disk, $destination_path . '/' . $filename, $image);
+        return self::saveImage($disk, $destination_path . '/' . $filename, $image, config('images.webp_quality'));
     }
 
     public static function generateThumbnailImage($disk, $image, $filename, $destination_path)
     {
         $image = self::resizeImage($image, config('images.thumbnail_max_width'));
         $filename = self::addToNameImage($filename, config('images.thumbnail_add_name'), getExtensionByMimetype($image->mime()));
-        return self::saveImage($disk, $destination_path . '/' . $filename, $image);
+        return self::saveImage($disk, $destination_path . '/' . $filename, $image, config('images.webp_quality'));
     }
 
     public static function addToNameImage($filename, $addToFileName, $extension)
@@ -29,9 +29,20 @@ class ImageHelper
         return str_replace($extension, $addToFileName . $extension, $filename);
     }
 
-    public static function saveImage($disk, $path, $image)
+    public static function saveImage($disk, $path, $image, $quality)
     {
-        Storage::disk($disk)->put($path, $image->stream());
+        $quality = $quality ?? config('images.webp_quality');
+        $mime = $image->mime();
+        $isRaster = in_array($mime, ['image/jpeg', 'image/jpg', 'image/png'], true);
+
+        if ($isRaster) {
+            $path = preg_replace('/\.(jpe?g|png)$/i', '.webp', $path);
+            $stream = $image->encode('webp', $quality)->stream();
+        } else {
+            $stream = $image->stream();
+        }
+
+        Storage::disk($disk)->put($path, $stream);
         return true;
     }
 
@@ -88,7 +99,7 @@ class ImageHelper
             //Optimize max size and save
             resizeImage($image, $maxWidthSize, $maxHeightSize);
             removeFile($disk, $entity->{$attribute});
-            saveImage($disk, $destination . '/' . $filename, $image);
+            saveImage($disk, $destination . '/' . $filename, $image, config('images.webp_quality'));
 
             // 3. Save the path to the database
             return $destination . '/' . $filename;

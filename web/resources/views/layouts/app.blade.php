@@ -25,9 +25,11 @@
     @include('partials.metas-seo')
 
     @include('partials.favicon')
+    @cookieconsentscripts
 </head>
 
 <body style="background-image: url('{{ asset('images/body_bg.png') }}');">
+    @include('partials.body-analytics')
     <noscript>
         <div class="noscript">
             TODO trans file y clase en sass
@@ -45,6 +47,7 @@
     </div>
 
     @include('partials.layout-includes')
+    @cookieconsentview
 </body>
 
 </html>

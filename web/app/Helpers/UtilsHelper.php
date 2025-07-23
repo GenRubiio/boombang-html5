@@ -33,18 +33,19 @@ class UtilsHelper
         return (bool)json_last_error() == JSON_ERROR_NONE;
     }
 
-    public static function getExtensionByMimetype($mime): string
+    public static function getExtensionByMimetype($mime)
     {
-        if ($mime == 'image/jpeg') {
-            $extension = '.jpg';
-        } elseif ($mime == 'image/png') {
-            $extension = '.png';
-        } elseif ($mime == 'image/gif') {
-            $extension = '.gif';
-        } else {
-            $extension = '';
+        if (in_array($mime, ['image/jpeg', 'image/jpg', 'image/png'], true)) {
+            return '.webp';
+        } elseif (in_array($mime, ['image/gif'], true)) {
+            return '.gif';
+        } elseif (in_array($mime, ['image/svg+xml'], true)) {
+            return '.svg';
         }
-        return $extension;
+        $parts = explode('/', $mime, 2);
+        $subtypeRaw = $parts[1] ?? '';
+        $subtype = explode(';', $subtypeRaw, 2)[0];
+        return '.' . ltrim($subtype, '.');
     }
 
     public static function getClassName($object)

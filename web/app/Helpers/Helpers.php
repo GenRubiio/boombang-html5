@@ -459,9 +459,9 @@ if (!function_exists('addToNameImage')) {
 }
 
 if (!function_exists('saveImage')) {
-    function saveImage($disk, $path, $image)
+    function saveImage($disk, $path, $image, $quality)
     {
-        return ImageHelper::saveImage($disk, $path, $image);
+        return ImageHelper::saveImage($disk, $path, $image, $quality ?? config('images.webp_quality'));
     }
 }
 

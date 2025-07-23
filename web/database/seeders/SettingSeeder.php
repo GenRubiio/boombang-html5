@@ -125,6 +125,28 @@ class SettingSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        DB::table('settings')->insert([
+            'key' => 'gtm_script',
+            'type' => 'text',
+            'name' => 'GTPM Script',
+            'description' => 'Script de Google Tag Manager',
+            'value' => call_user_func(function () {
+                $id = config('cookieconsent.google_analytics.gtm_id');
+                return <<<EOT
+                    <script>
+                        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                        'https://www.googletagmanager.com/gtm.js?id={$id}' + dl;f.parentNode.insertBefore(j,f);
+                        })(window,document,'script','dataLayer','{$id}');
+                    </script>
+                EOT;
+            }),
+            'field' => '{"name":"value","label":"Value","type":"text"}',
+            'active' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
 
         $this->command->info('Settings seeding successful.');
     }

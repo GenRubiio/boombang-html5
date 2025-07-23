@@ -154,4 +154,10 @@ return [
     'show_in_footer' => 'Mostrar en el footer',
     'link_text' => 'Texto del enlace',
     'slider' => 'Slider',
+    'duration_min' => 'Duration / min.',
+    'cookies' => 'Cookies',
+    'cookie' => 'Cookie',
+    'cookies_name_hint' => 'The key of the cookie.<br>Example: cookie_name',
+    'cookies_description_hint' => 'The description of the cookie.<br>Example: This cookie is used to remember your preferences.',
+    'cookies_duration_hint' => 'The duration of the cookie in minutes.<br>Example: 30 (30 minutes)',
 ];

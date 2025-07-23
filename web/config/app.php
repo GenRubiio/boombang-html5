@@ -180,6 +180,7 @@ return [
         App\Providers\FacadesServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\CookiesServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
 
     ],

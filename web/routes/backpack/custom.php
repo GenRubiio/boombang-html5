@@ -42,6 +42,7 @@ Route::group([
     Route::crud('social-network', 'SocialNetworkCrudController');
     Route::crud('gallery', 'GalleryCrudController');
     Route::crud('version', 'VersionCrudController');
+    Route::crud('cookie', 'CookieCrudController');
 
     /** Parametric tables */
     Route::crud('parametric-table', 'ParametricTableCrudController');

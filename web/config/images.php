@@ -25,4 +25,6 @@ return [
     'thumbnail_max_width' => env('IMAGE_THUMBNAIL_WIDTH', 200),
     'thumbnail_add_name' => env('IMAGE_THUMBNAIL_ADD_NAME', '-thumbnail'),
 
+    'webp_quality' => env('IMAGE_WEBP_QUALITY', 80),
+
 ];
