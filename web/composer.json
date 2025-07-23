@@ -1,66 +1,97 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "backpack/crud": "^6.8",
-        "backpack/theme-coreuiv4": "^1.1",
-        "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "php": "^8.2.0",
+        "backpack/backupmanager": "^5.0",
+        "backpack/crud": "^6.0",
+        "backpack/editable-columns": "^3.0",
+        "backpack/langfilemanager": "^5.0",
+        "backpack/logmanager": "^5.0",
+        "backpack/menucrud": "^4.0",
+        "backpack/newscrud": "^5.0",
+        "backpack/pagemanager": "^3.2",
+        "backpack/permissionmanager": "^7.0",
+        "backpack/pro": "^2.0",
+        "backpack/settings": "^3.1",
+        "backpack/theme-coreuiv2": "^1.2",
+        "backpack/theme-tabler": "^1.1",
+        "consoletvs/charts": "6.*",
+        "cviebrock/eloquent-sluggable": "^11.0",
+        "darkaonline/l5-swagger": "^8.5",
+        "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.7",
+        "laravel/framework": "^11.0",
+        "laravel/horizon": "^5.15",
+        "laravel/passport": "^12.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/telescope": "^5.0",
+        "laravel/tinker": "^2.8",
+        "laravel/ui": "^4.2",
+        "maatwebsite/excel": "^3.1",
+        "mcamara/laravel-localization": "^2.0",
+        "orangehill/iseed": "^2.3",
+        "predis/predis": "^2.1",
+        "spatie/laravel-sitemap": "^7.0",
+        "spatie/laravel-translatable": "^6.0",
+        "staudenmeir/eloquent-has-many-deep": "^1.7",
+        "ziming/json-field-for-backpack": "^1.1"
     },
     "require-dev": {
+        "backpack/devtools": "^3.1",
         "backpack/generators": "^4.0",
-        "fakerphp/faker": "^1.23",
-        "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.13",
-        "laravel/sail": "^1.41",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^11.5.3"
+        "barryvdh/laravel-debugbar": "^3.6",
+        "barryvdh/laravel-ide-helper": "^3.2",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/pint": "^1.0",
+        "laravel/sail": "^1.18",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^8.1",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/Helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.backpackforlaravel.com/"
+        }
+    ],
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
+            "@php artisan key:generate --ansi"
         ],
-        "dev": [
-            "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
-        ],
-        "test": [
-            "@php artisan config:clear --ansi",
-            "@php artisan test"
-        ]
+        "post-install-cmd": ["php artisan storage:link --quiet"]
     },
     "extra": {
         "laravel": {
@@ -71,11 +102,11 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+        "platform": {
+            "ext-pcntl": "8.0",
+            "ext-posix": "8.0"
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

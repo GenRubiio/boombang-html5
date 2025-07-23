@@ -1,0 +1,74 @@
+.app-body {
+
+    .sidebar {
+        background-color: $blue-dark !important;
+
+        .nav-item {
+
+            .nav-header {
+                color: $blue-light !important;
+                background: #1a2226 !important;
+            }
+
+            .nav-link {
+                border-left: 2px solid transparent;
+                color: $white-o-0-6;
+            }
+
+            .nav-link:hover {
+                color: $white;
+                background-color: $blue-medium !important;
+                border-left: 2px solid $purple;
+            }
+
+            .nav-name {
+                font-size: 16px;
+                color: $white;
+                border-left: 2px solid transparent !important;
+                background-color: $blue-dark !important;
+
+                display: block;
+                padding: .75rem 1rem;
+                text-decoration: none;
+
+            }
+
+            .nav-section {
+                font-size: 16px;
+                color: $blue-light;
+                border-left: 2px solid transparent !important;
+                background-color: $black-light !important;
+
+                display: block;
+                padding: .75rem 1rem;
+                text-decoration: none;
+            }
+
+            .nav-name:hover {
+                color: $white;
+                border-left: 2px solid transparent !important;
+                background-color: $blue-dark !important;
+            }
+
+            .nav-icon {
+                color: $white !important;
+            }
+
+            .active {
+                color: $white;
+                background-color: $blue-medium !important;
+                border-left: 2px solid $purple;
+            }
+
+            ul.nav-dropdown-items {
+                li {
+                    background-color: $blue-dark !important;
+                    border-bottom: 1px solid $white-o-0-2;
+                }
+            }
+
+        }
+
+    }
+
+}

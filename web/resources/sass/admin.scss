@@ -1,0 +1,19 @@
+/* purgecss start ignore */
+// variables
+@use "admin/variables";
+
+// login
+//@import "admin/login";
+
+// header
+@use "admin/header";
+
+// sidebar
+//@import "admin/sidebar";
+
+// main
+//@import "admin/main";
+
+// Rewrite backpack bundle styles
+//@import "admin/bundle";
+/* purgecss end ignore */

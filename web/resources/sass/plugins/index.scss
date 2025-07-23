@@ -1,0 +1,12 @@
+@use "sass:meta";
+// Slick Slider
+//@import "../../node_modules/slick-carousel/slick/slick.css";
+//@import "../../node_modules/slick-carousel/slick/slick-theme.css";
+
+// Swiper Slider
+@import '@node_modules/swiper/swiper.min.css';
+@import '@node_modules/swiper/swiper-bundle.css';
+@include meta.load-css("swiper");
+
+// Browser update
+@include meta.load-css("browser-update");

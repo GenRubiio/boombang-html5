@@ -27,8 +27,17 @@ class CheckIfAdmin
      */
     private function checkIfUserIsAdmin($user)
     {
-        // return ($user->is_admin == 1);
-        return true;
+        return isAdminOrSuperadmin($user);
+    }
+
+    /**
+     * Checked that the logged in user is active.
+     * @param $user
+     * @return mixed
+     */
+    private function checkIfUserIsActive($user)
+    {
+        return userIsActive($user);
     }
 
     /**
@@ -43,6 +52,7 @@ class CheckIfAdmin
             return response(trans('backpack::base.unauthorized'), 401);
         } else {
             return redirect()->guest(backpack_url('login'));
+            //return response(trans('backpack::base.unauthorized') . ' <br><a href="'.backpack_url('login').'">Login</a>', 401);
         }
     }
 
@@ -60,6 +70,10 @@ class CheckIfAdmin
         }
 
         if (! $this->checkIfUserIsAdmin(backpack_user())) {
+            return $this->respondToUnauthorizedRequest($request);
+        }
+
+        if (! $this->checkIfUserIsActive(backpack_user())) {
             return $this->respondToUnauthorizedRequest($request);
         }
 

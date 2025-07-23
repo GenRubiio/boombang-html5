@@ -1,25 +1,168 @@
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
+        Options -MultiViews
     </IfModule>
 
     RewriteEngine On
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Handle X-XSRF-Token Header
-    RewriteCond %{HTTP:x-xsrf-token} .
-    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+    #https
+    #RewriteCond %{HTTPS} off
+	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType text/x-javascript "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+    ExpiresByType application/x-font-opentype "access plus 1 year"
+    ExpiresByType application/x-font-woff "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresDefault "access plus 1 month"
+</IfModule>
+## EXPIRES CACHING ##
+
+<IfModule mod_deflate.c>
+    <FilesMatch "\.(js|css|ico|pdf|jpg|jpeg|png|gif|php|svg)$">
+      SetOutputFilter DEFLATE
+    </FilesMatch>
+  # Compress HTML, CSS, JavaScript, Text, XML and fonts
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE application/x-font
+  AddOutputFilterByType DEFLATE application/x-font-opentype
+  AddOutputFilterByType DEFLATE application/x-font-otf
+  AddOutputFilterByType DEFLATE application/x-font-truetype
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE font/opentype
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/x-icon
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/xml
+
+  AddOutputFilterByType DEFLATE application/atom+xml
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/ld+json
+  AddOutputFilterByType DEFLATE application/manifest+json
+  AddOutputFilterByType DEFLATE application/rdf+xml
+  AddOutputFilterByType DEFLATE application/schema+json
+  AddOutputFilterByType DEFLATE application/vnd.geo+json
+  AddOutputFilterByType DEFLATE application/x-web-app-manifest+json
+  AddOutputFilterByType DEFLATE font/eot
+  AddOutputFilterByType DEFLATE image/bmp
+  AddOutputFilterByType DEFLATE image/vnd.microsoft.icon
+  AddOutputFilterByType DEFLATE text/cache-manifest
+  AddOutputFilterByType DEFLATE text/vcard
+  AddOutputFilterByType DEFLATE text/vnd.rim.location.xloc
+  AddOutputFilterByType DEFLATE text/vtt
+  AddOutputFilterByType DEFLATE text/x-component
+  AddOutputFilterByType DEFLATE text/x-cross-domain-policy
+
+  # Remove browser bugs (only needed for really old browsers)
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+  Header append Vary User-Agent
+</IfModule>
+
+<IfModule mod_gzip.c>
+    mod_gzip_on Yes
+    mod_gzip_dechunk Yes
+    mod_gzip_keep_workfiles No
+    mod_gzip_can_negotiate Yes
+    mod_gzip_add_header_count Yes
+    mod_gzip_send_vary Yes
+    mod_gzip_command_version '/mod_gzip_status'
+    mod_gzip_min_http 1000
+    mod_gzip_minimum_file_size 300
+    mod_gzip_maximum_file_size 512000
+    mod_gzip_maximum_inmem_size 60000
+    mod_gzip_handle_methods GET POST
+    mod_gzip_temp_dir /tmp
+    mod_gzip_item_include file \.html$
+    mod_gzip_item_include file \.php$
+    mod_gzip_item_include file \.pl$
+    mod_gzip_item_include file \.rb$
+    mod_gzip_item_include file \.py$
+    mod_gzip_item_include file \.cgi$
+    mod_gzip_item_include file \.css$
+    mod_gzip_item_include file \.js$
+    mod_gzip_item_include mime ^application/javascript$
+    mod_gzip_item_include mime ^application/x-javascript$
+    mod_gzip_item_include mime ^text/.*
+    mod_gzip_item_include mime ^httpd/unix-directory$
+    mod_gzip_item_include handler ^cgi-script$
+    mod_gzip_item_include handler ^server-status$
+    mod_gzip_item_include handler ^server-info$
+    mod_gzip_item_include handler ^application/x-httpd-php
+    mod_gzip_item_exclude mime ^image/.*
+</IfModule>
+
+# Cros origin fonts
+<FilesMatch "\.(ttf|otf|eot|woff|woff2|svg)$">
+	Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+
+
+<IfModule mod_headers.c>
+Header set Vary "Accept-Encoding"
+Header unset ETag
+</IfModule>
+FileETag None
+
+<Files *.css>
+SetOutputFilter DEFLATE
+</Files>
+
+<Files *.js>
+SetOutputFilter DEFLATE
+</Files>
+
+# Servir contenidos de tipo text/plain o text/html usando la codificación UTF-8
+AddDefaultCharset utf-8
+
+# Forzar la codificación UTF-8 en varios tipos de archivos
+AddCharset utf-8 .atom .css .js .json .rss .vtt .xml
+
+
+# Don't allow any pages to be framed - Defends against CSRF
+Header set X-Frame-Options SAMEORIGIN
+# Turn on IE8-IE9 XSS prevention tools
+Header set X-XSS-Protection "1; mode=block"
+# prevent mime based attacks
+Header set X-Content-Type-Options "nosniff"
+# Only allow JavaScript from the same domain to be run. Don't allow inline JavaScript to run.
+# Comentado porque bloquará el js externo, por consola, sniffing...
+# Header set X-Content-Security-Policy "allow 'self';"

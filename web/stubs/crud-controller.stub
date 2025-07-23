@@ -1,0 +1,94 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Http\Requests\DummyModelClassRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+
+class DummyClassCrudController extends CrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
+
+    public function setup()
+    {
+        CRUD::setModel(\App\Models\DummyModelClass::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/dummy-class');
+        CRUD::setEntityNameStrings('dummy singular', 'dummy plural');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->removeButton('show');
+        if (!isSuperadmin()) {
+            $this->crud->removeButton('delete');
+        }
+        $this->crud->setDefaultPageLength(25);
+
+        CRUD::setColumns([
+            [
+                'name' => 'id',
+                'label' => trans('admin.id')
+            ],
+            /*
+            [
+                'name' => 'name',
+                'label' => trans('admin.name'),
+            ],
+            [
+                'name' => 'slug',
+                'label' => trans('admin.slug'),
+            ],
+            [
+                'name' => 'active',
+                'type' => 'btnToggle',
+                'label' => trans('admin.active')
+            ],
+            */
+        ]);
+    }
+
+    protected function setupCreateOperation()
+    {
+        $this->addCommonFields();
+        $this->addSeoTabFields();
+    }
+
+    protected function setupUpdateOperation()
+    {
+        $this->addCommonFields();
+        $this->addSeoTabFields();
+    }
+
+    protected function addCommonFields()
+    {
+        CRUD::setValidation(DummyClassRequest::class);
+
+        $this->crud->addFields([
+            [
+                'name' => 'name',
+                'label' => trans('backpack::pagemanager.name'),
+                'type' => 'text',
+                'tab' => trans('admin.tab'),
+            ],
+            [
+                'name' => 'slug',
+                'label' => trans('admin.slug'),
+                'type' => 'slug',
+                'hint' => trans('admin.slug_hint'),
+                'tab' => trans('admin.tab'),
+            ],
+        ]);
+    }
+
+    protected function setupReorderOperation()
+    {
+        $this->crud->set('reorder.label', 'name');
+        $this->crud->set('reorder.max_level', 1);
+    }
+}

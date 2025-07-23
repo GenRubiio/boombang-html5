@@ -1,0 +1,79 @@
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-primary: $font-family-sans-serif;
+$font-family-secondary: 'Montserrat', sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+$font-weight-base: normal;
+
+// Typography Project
+$font-size-small: 10px;
+$font-size-text: 12px;
+$font-size-title: 20px;
+$font-size-subtitle: 16px;
+
+$font-weight-extralight: 200;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-normal: 500;
+$font-weight-bold: 700;
+$font-weight-extrabold: 900;
+
+$line-height-small: 14;
+$line-height-text: 18;
+$line-height-title: 26;
+$line-height-subtitle: 22;
+
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+$black: #000000;
+$white: #ffffff;
+
+// Colors Project
+$c-primary: #3490dc;
+$c-secondary: #6574cd;
+$c-tertiary: #9561e2;
+$c-quaternary: #dddddd;
+
+// Responsive breakpoints
+$tablet: 768px;
+$desktop: 992px;
+$large-desktop: 1200px;
+
+$xxs: 400px;
+$xs: 576px;
+$sm: 768px;
+$md: 992px;
+$lg: 1200px;
+$xl: 1440px;
+$xxl: 1920px;
+
+// Utilities
+$containers-sizes: ('400': $xxs, '576': $xs, '768': $sm, '992': $md, '1200': $lg, '1440': $xl, '1920': $xxl);
+$colors: ('black': $black, 'white': $white, 'primary': $c-primary, 'secondary': $c-secondary, 'tertiary': $c-tertiary, 'quaternary': $c-quaternary);
+$text-sizes: ('small': $font-size-small, 'text': $font-size-text, 'title': $font-size-title, 'subtitle': $font-size-subtitle);
+$font-weights: ('extralight': $font-weight-extralight, 'light': $font-weight-light, 'normal': $font-weight-normal, 'regular': $font-weight-regular, 'bold': $font-weight-bold, 'extrabold': $font-weight-extrabold);
+$line-heights: ('small': $line-height-small, 'text': $line-height-text, 'title': $line-height-title, 'subtitle': $line-height-subtitle);
+
+// Layout
+$navbar-height: 80px;
+$menu-responsive-resolution: 1280px;
+$block-padding: 20px;
+$block-margin: 20px;
+$block-padding-x: 20px;
+$block-padding-y: 40px;
+$p-margin-bottom: 15px;
+$header-margin: 25px;

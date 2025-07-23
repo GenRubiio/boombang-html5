@@ -1,0 +1,25 @@
+@use "../variables";
+
+.footer__items {
+    &-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &-links-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        list-style: none;
+        gap: 10px 40px;
+    }
+
+    &-link {
+        color: variables.$black;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: normal;
+    }
+}

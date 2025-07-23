@@ -12,7 +12,7 @@ return [
     |-------------------
     */
 
-    'show_translatable_field_icon' => true,
+    'show_translatable_field_icon'     => true,
     'translatable_field_icon_position' => 'right', // left or right
 
     'locales' => [
@@ -176,7 +176,7 @@ return [
         // "fr_SN" => "French (Senegal)",
         // "fr_CH" => "French (Switzerland)",
         // "fr_TG" => "French (Togo)",
-        'fr' => 'French',
+        // 'fr' => 'French',
         // "ff_SN" => "Fulah (Senegal)",
         // "ff" => "Fulah",
         // "gl_ES" => "Galician (Spain)",
@@ -222,7 +222,7 @@ return [
         // "ga" => "Irish",
         // "it_IT" => "Italian (Italy)",
         // "it_CH" => "Italian (Switzerland)",
-        'it' => 'Italian',
+        // 'it' => 'Italian',
         // "ja_JP" => "Japanese (Japan)",
         // "ja" => "Japanese",
         // "kea_CV" => "Kabuverdianu (Cape Verde)",
@@ -327,7 +327,7 @@ return [
         // "pa" => "Punjabi",
         // "ro_MD" => "Romanian (Moldova)",
         // "ro_RO" => "Romanian (Romania)",
-        'ro' => 'Romanian',
+        // 'ro' => 'Romanian',
         // "rm_CH" => "Romansh (Switzerland)",
         // "rm" => "Romansh",
         // "rof_TZ" => "Rombo (Tanzania)",
@@ -392,7 +392,7 @@ return [
         // "es_US" => "Spanish (United States)",
         // "es_UY" => "Spanish (Uruguay)",
         // "es_VE" => "Spanish (Venezuela)",
-        // "es" => "Spanish",
+        "es" => "Spanish",
         // "sw_KE" => "Swahili (Kenya)",
         // "sw_TZ" => "Swahili (Tanzania)",
         // "sw" => "Swahili",
@@ -466,15 +466,5 @@ return [
             'crud::filters', // falls back to 'resources/views/vendor/backpack/crud/filters'
         ],
     ],
-    // the uploaders for the `withFiles` macro
-    'uploaders' => [
-        'withFiles' => [
-            'image' => \Backpack\CRUD\app\Library\Uploaders\SingleBase64Image::class,
-            'upload' => \Backpack\CRUD\app\Library\Uploaders\SingleFile::class,
-            'upload_multiple' => \Backpack\CRUD\app\Library\Uploaders\MultipleFiles::class,
-        ],
-    ],
-
-    'file_name_generator' => \Backpack\CRUD\app\Library\Uploaders\Support\FileNameGenerator::class,
 
 ];

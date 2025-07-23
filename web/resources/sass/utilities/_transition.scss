@@ -1,0 +1,6 @@
+@use "../mixins/transitions";
+
+// Content center center
+.transition-default {
+    @include transitions.transition();
+}

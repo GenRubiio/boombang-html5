@@ -1,0 +1,21 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespace_model }};
+use App\Repositories\ParametricTableValue\ParametricTableValueRepository;
+
+class {{ class }} extends ParametricTableValueRepository implements {{ class }}Interface
+{
+    protected $limit;
+    protected $defaultTtl;
+    protected $model;
+
+    public function __construct()
+    {
+        $this->model = new {{ class_model }}();
+        parent::__construct($this->model);
+        $this->defaultTtl = env('CACHE_DEFAULT_TTL', 7200);
+        $this->limit = 10;
+    }
+}

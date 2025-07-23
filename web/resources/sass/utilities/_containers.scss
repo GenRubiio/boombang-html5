@@ -1,0 +1,14 @@
+@use "../variables";
+
+// Containers
+.container-fluid {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+@each $key, $value in variables.$containers-sizes {
+    .container-#{$key} {
+        max-width: #{$value};
+        margin: 0 auto;
+    }
+}

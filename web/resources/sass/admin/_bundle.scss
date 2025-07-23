@@ -1,0 +1,90 @@
+$blue: #467fd0;
+$blue-strong: #316cbe;
+$gray: #495057;
+$white: #ffffff;
+$black: #000000;
+
+
+.btn-primary {
+    background-color: $blue;
+    border-color: $blue;
+    color: $white;
+
+    &:hover {
+        background-color: $blue-strong;
+        border-color: $blue-strong;
+    }
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .dataTables_wrapper .dataTables_paginate .paginate_button.current:not(:disabled):not(.disabled).active, .dataTables_wrapper .dataTables_paginate .paginate_button.current:not(:disabled):not(.disabled):active, .dataTables_wrapper .dataTables_paginate .show > .dropdown-toggle.paginate_button.current, .show > .btn-primary.dropdown-toggle {
+    background-color: $blue;
+    border-color: $blue;
+    color: $white;
+
+    &:hover {
+        background-color: $blue-strong;
+        border-color: $blue-strong;
+    }
+}
+
+.btn-outline-primary {
+    color: $blue;
+    border-color: $blue;
+
+    &:hover, &:active, &:not(:disabled):not(.disabled).active, &:not(:disabled):not(.disabled):active, .show > &.dropdown-toggle {
+        color: $white;
+        background-color: $blue-strong;
+        border-color: $blue-strong;
+    }
+}
+
+a, .btn-link {
+    color: $blue;
+
+    &:hover, &:active { //,&:visited,&:active,&:active
+        color: $blue-strong;
+    }
+}
+
+.sidebar.sidebar-pills {
+    & .nav-link {
+        &.active, &:hover, &.active .nav-icon, &:hover .nav-icon {
+            color: $blue !important;
+        }
+    }
+}
+
+.page-item.active .page-link {
+    background-color: $blue;
+    border-color: $blue;
+
+    &:hover {
+        background-color: $blue-strong;
+        border-color: $blue-strong;
+    }
+}
+
+.pace .pace-progress {
+    background: $blue;
+}
+
+.text-primary {
+    color: $blue !important;
+
+    &:hover {
+        color: $blue-strong !important;
+    }
+}
+
+.dataTables_wrapper .dataTables_filter input:focus, .dataTables_wrapper .dataTables_length select:focus, .form-control:focus {
+    border-color: $blue;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: $blue;
+}
+
+.custom-control-input:checked ~ .custom-control-label:before {
+    border-color: $blue !important;
+    background-color: $blue !important;
+}

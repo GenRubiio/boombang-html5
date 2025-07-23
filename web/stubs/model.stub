@@ -1,0 +1,91 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Observers\CacheClearObservantTrait;
+use App\Traits\Observers\ModelObservantTrait;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+
+class {{ class }} extends Model
+{
+    use SoftDeletes;
+    use HasTranslations;
+    use ModelObservantTrait;
+    use CacheClearObservantTrait;
+
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
+
+    // protected $table = '';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+    // protected $guarded = ['id'];
+    protected $fillable = [
+        'name',
+        'parent_id',
+        'lft',
+        'rgt',
+        'depth',
+        'active',
+        'deleted_user'
+    ];
+    // protected $hidden = [];
+    // protected $dates = [];
+    protected $translatable = [
+        'name',
+    ];
+    // protected $fakeColumns = [];
+    // protected $casts = [];
+
+    public const IMAGE_DESTINATION_PATH = "uploads/";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+    public function getTranslatable()
+    {
+        return $this->translatable;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopeActive($query)
+    {
+        return $query->where($this->table . '.active', 1);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy($this->table . '.lft', 'asc')->orderBy($this->table . '.id', 'desc');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
+}

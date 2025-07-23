@@ -1,0 +1,38 @@
+<?php
+
+namespace NameSpacePathStub;
+
+enum ClassNameStub
+{
+    case EXAMPLE;
+
+    public function key(): string
+    {
+        return match ($this) {
+            self::EXAMPLE => 'value_example',
+        };
+    }
+
+    public static function fromKey(string $key): self
+    {
+        return match ($key) {
+            'value_example' => self::EXAMPLE,
+        };
+    }
+
+    public function name(): string
+    {
+        return match ($this) {
+            self::EXAMPLE => 'Readable value example',
+        };
+    }
+
+    public static function toAssociativeArray(): array
+    {
+        $array = [];
+        foreach (self::cases() as $case) {
+            $array[$case->key()] = $case->name();
+        }
+        return $array;
+    }
+}

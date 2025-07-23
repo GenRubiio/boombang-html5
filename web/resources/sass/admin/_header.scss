@@ -1,0 +1,32 @@
+@use "variables";
+
+.app-header {
+    background-color: variables.$white !important;
+
+    button:focus {
+        outline: 0 !important;
+    }
+
+    @media (max-width: 991.98px) {
+        background-color: variables.$purple !important;
+    }
+
+    &.bg-light .navbar-brand {
+        background-color: variables.$purple;
+        opacity: 1 !important;
+        width: 200px;
+        padding: 0 1.25rem;
+        color: variables.$white;
+
+        .logo {
+            max-height: 45px;
+            vertical-align: middle;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 991.98px) {
+            padding: 0px !important;
+        }
+
+    }
+}

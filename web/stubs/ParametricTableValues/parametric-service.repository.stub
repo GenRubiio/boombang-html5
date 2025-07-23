@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespace_model }};
+use {{ namespace_repository }};
+use {{ namespace_repository_interface }};
+use App\Services\ParametricTableValueService;
+
+class {{ class }} extends ParametricTableValueService
+{
+    private ${{ var_repository }};
+
+    public function __construct()
+    {
+        $this->{{ var_repository }} = new {{ class_repository }}();
+    }
+}

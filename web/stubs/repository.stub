@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Repositories\SingularModelName;
+
+use App\Models\SingularModelName;
+use App\Repositories\Repository;
+
+class SingularModelNameRepository extends Repository implements SingularModelNameRepositoryInterface
+{
+    public function __construct()
+    {
+        $this->model = new SingularModelName();
+        parent::__construct($this->model);
+    }
+}

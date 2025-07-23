@@ -1,0 +1,23 @@
+# feat: Npm run prod
+# Git conventional commits: "Tipo de cambio: Escribe el propósito del commit."
+# <tipo>[alcance]: Descripción breve del cambio (en presente, sin punto final)
+# Opcional: Explicación más detallada del cambio
+
+# Ejemplos comunes:
+# feat: Nueva funcionalidad
+# fix: Corrección de un bug
+# docs: Cambios en documentación
+# style: Cambios de formato o estilo que no afectan la funcionalidad
+# refactor: Refactorización sin cambio en comportamiento
+# test: Agregar o modificar pruebas
+# chore: Tareas de mantenimiento
+
+# Más usados:
+# feat: Npm run prod
+
+# Nota adicional:
+# - Si hay un cambio importante que rompe la compatibilidad:
+# BREAKING CHANGE: Describe el cambio rompedor aquí.
+#
+# - Si el commit está relacionado con un issue o ticket:
+# Relates to: #1234

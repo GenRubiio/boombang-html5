@@ -1,0 +1,15 @@
+@use "../variables";
+
+// Color text
+@each $key, $value in variables.$colors {
+    .c-#{$key} {
+        color: #{$value};
+    }
+}
+
+// BG color
+@each $key, $value in variables.$colors {
+    .bg-#{$key} {
+        background-color: #{$value};
+    }
+}

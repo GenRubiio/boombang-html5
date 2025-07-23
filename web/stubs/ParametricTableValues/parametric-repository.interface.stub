@@ -1,0 +1,10 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Repositories\ParametricTableValue\ParametricTableValueRepositoryInterface;
+
+interface {{ class }}Interface extends ParametricTableValueRepositoryInterface
+{
+    //
+}

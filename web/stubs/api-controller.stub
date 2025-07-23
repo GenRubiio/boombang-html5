@@ -1,0 +1,11 @@
+<?php
+
+namespace NameSpacePathStub;
+
+use App\Http\Controllers\Controller;
+use NameSpacePathStub\Interfaces\ClassNameStubInterface;
+
+class ClassNameStub extends Controller implements ClassNameStubInterface
+{
+    //
+}

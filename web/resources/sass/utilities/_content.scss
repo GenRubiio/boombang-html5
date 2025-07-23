@@ -1,0 +1,32 @@
+@use "../mixins/transforms";
+@use "../mixins/translates";
+
+// Content center center
+.content-center-center {
+    @include transforms.translate();
+    @include translates.position();
+}
+
+// Content center center
+.content-top-center {
+    @include transforms.translate(-50%, 0);
+    @include translates.position(absolute, 0, null, null, 50%);
+}
+
+// Content bottom center
+.content-bottom-center {
+    @include transforms.translate(-50%, 0);
+    @include translates.position(absolute, null, null, 0, 50%);
+}
+
+// Content center left
+.content-center-left {
+    @include transforms.translate(0, -50%);
+    @include translates.position(absolute, 50%, null, null, 0);
+}
+
+// Content center right
+.content-center-right {
+    @include transforms.translate(0, -50%);
+    @include translates.position(absolute, 50%, 0, null, null);
+}

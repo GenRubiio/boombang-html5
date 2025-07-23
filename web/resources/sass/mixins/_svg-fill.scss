@@ -1,0 +1,13 @@
+@use "../variables";
+
+@mixin svg-fill($color: white) {
+    path, g {
+        @if $color == "black" {
+            fill: variables.$black;
+        } @else if $color == "white" {
+            fill: variables.$white;
+        } @else {
+            fill: variables.$white;
+        }
+    }
+}

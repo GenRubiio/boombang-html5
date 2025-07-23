@@ -1,0 +1,2 @@
+<!-- Analytics -->
+@yield('analytics')

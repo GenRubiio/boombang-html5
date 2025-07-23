@@ -1,0 +1,22 @@
+@use "../variables";
+
+@mixin font-family($font: variables.$font-family-primary, $weight: "normal") {
+    @if $font == variables.$font-family-primary {
+        font-family: variables.$font-family-primary;
+        @if $weight == "light" {
+            font-weight: 300;
+        } @else if $weight == "normal" {
+            font-weight: 400;
+        } @else if $weight == "regular" {
+            font-weight: 500;
+        } @else if $weight == "bold" {
+            font-weight: 700;
+        } @else if $weight == "black" {
+            font-weight: 900;
+        }
+    } @else if $font == variables.$font-family-secondary {
+        font-family: variables.$font-family-secondary;
+        font-weight: 900;
+    }
+    font-style: normal;
+}

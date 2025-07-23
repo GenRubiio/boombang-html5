@@ -1,0 +1,44 @@
+@use "../mixins/transforms";
+@use "../mixins/transitions";
+@use "../mixins/translates";
+@use "../variables";
+
+.page-scroll-to-top {
+    background-color: #ddd;
+    @include translates.position(fixed, null, 60px, 60px, null);
+    @extend .noselect !optional;
+    text-align: center;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+    @include transitions.transition();
+    visibility: hidden;
+    opacity: 0;
+    z-index: 200;
+
+    @media (max-width: variables.$md) {
+        right: 20px;
+    }
+
+    &.visible {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    img, svg {
+        @include transforms.transform(rotate(180deg));
+        margin-top: 8px;
+        height: 30px;
+        max-height: 30px;
+        min-height: 30px;
+        width: 30px;
+        max-width: 30px;
+        min-width: 30px;
+    }
+
+    svg * {
+        //stroke: #bebdbb;
+        //fill: #bebdbb;
+    }
+}

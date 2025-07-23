@@ -1,0 +1,10 @@
+{
+    "preset": "psr12",
+    "exclude": [
+        "vendor",
+        "storage",
+        "bootstrap",
+        "node_modules",
+        "stubs"
+    ]
+}

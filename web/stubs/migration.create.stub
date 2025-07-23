@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use App\Helpers\BlueprintHelper;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+    {
+        $schema = DB::connection()->getSchemaBuilder();
+
+        $schema->blueprintResolver(function ($table, $callback) {
+            return new BlueprintHelper($table, $callback);
+        });
+
+        $schema->create('{{ table }}', function ($table) {
+            $table->id();
+            $table->string('name', 255);
+            $table->defaultOrder();
+            $table->defaultActive();
+            $table->defaultTimeStamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::dropIfExists('{{ table }}');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+    }
+};

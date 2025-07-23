@@ -1,0 +1,27 @@
+@extends('layouts.app')
+
+@php
+    if (isset($items)) {
+        extract($items);
+    }
+    if (!isset($page)) {
+        $page = getPageByName('Home');
+    }
+    if (!isset($pageResource)) {
+        $pageResource = getResourcePage($page);
+    }
+@endphp
+
+{{-- Meta injections --}}
+@include('partials.page-metas', [
+    'object' => $pageResource->metas ?? $page,
+])
+
+@section('content')
+    <div class="container-fluid" id="page-home">
+        <div class="page-home">
+             @include('partials.pages.home.banner')
+             @include('partials.pages.home.content')
+        </div>
+    </div>
+@endsection

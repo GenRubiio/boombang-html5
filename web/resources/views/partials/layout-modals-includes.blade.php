@@ -1,0 +1,2 @@
+{{--Modals includes--}}
+@yield('modals')

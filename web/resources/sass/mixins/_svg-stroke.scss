@@ -1,0 +1,13 @@
+@use "../variables";
+
+@mixin svg-stroke($color: white) {
+    path, g {
+        @if $color == "black" {
+            stroke: variables.$black;
+        } @else if $color == "white" {
+            stroke: variables.$white;
+        } @else {
+            stroke: variables.$white;
+        }
+    }
+}

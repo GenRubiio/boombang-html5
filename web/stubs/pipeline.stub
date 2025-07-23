@@ -1,0 +1,31 @@
+<?php
+
+namespace NameSpacePathStub;
+
+use Exception;
+use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\DB;
+
+class ClassNameStub
+{
+    public function handle($request): array
+    {
+        try {
+            DB::beginTransaction();
+            $response = app(Pipeline::class)
+                ->send((object)$request->all())
+                ->through([
+                    //
+                ])
+                ->thenReturn();
+            DB::commit();
+            return [
+                'success' => true,
+                'message' => "Response Ok"
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+}

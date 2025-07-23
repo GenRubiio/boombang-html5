@@ -1,0 +1,44 @@
+@use "../mixins/svg-fill";
+@use "../variables";
+
+.footer__social-networks {
+    &-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        list-style: none;
+        gap: 16px;
+
+        &-item {
+            width: 36px;
+            height: 36px;
+
+            a {
+                display: grid;
+                place-items: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            svg {
+                height: 18px;
+                width: 18px;
+                @include svg-fill.svg-fill('black');
+            }
+        }
+    }
+
+    &-link {
+        color: variables.$black;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: normal;
+    }
+}

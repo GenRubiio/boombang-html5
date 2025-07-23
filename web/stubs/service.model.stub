@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Services;
+
+use App\Http\Controllers\Controller;
+
+class SingularModelNameService extends Controller
+{
+    //
+}

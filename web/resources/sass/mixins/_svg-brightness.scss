@@ -1,0 +1,9 @@
+@mixin svg-brightness($color: white) {
+    @if $color == "black" {
+        filter: brightness(0);
+    } @else if $color == "white" {
+        filter: brightness(10);
+    } @else {
+        filter: brightness(10);
+    }
+}

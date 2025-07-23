@@ -1,0 +1,25 @@
+@extends('layouts.app')
+
+@php
+	if(isset($items)){
+        extract($items);
+    }
+    if (isset($data)) {
+        extract($data);
+    }
+@endphp
+
+{{-- Meta injections --}}
+@include('partials.page-metas', [
+    'object' => $experience->seo ?? [],
+])
+
+@section('content')
+    <div class="container-1440 page-margin" id="page-PageSlug">
+        <div class="d-flex flex-wrap justify-content-center page-PageSlug">
+            <h1>
+            Object Blade created for page "PageName"!
+            </h1>
+        </div>
+    </div>
+@endsection

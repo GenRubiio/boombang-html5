@@ -56,21 +56,6 @@ return [
     // (you then need to manually define the routes in your web.php)
     'setup_password_recovery_routes' => true,
 
-    // Set this to true if you would like to enable email verification for your user model.
-    // Make sure your user model implements the MustVerifyEmail contract and your database
-    // table contains the `email_verified_at` column. Read the following before enabling:
-    // https://backpackforlaravel.com/docs/6.x/base-how-to#enable-email-verification-in-backpack-routes
-    'setup_email_verification_routes' => false,
-
-    // When email verification is enabled, automatically add the Verified middleware to Backpack routes?
-    // Set false if you want to use your own Verified middleware in `middleware_class`.
-    'setup_email_verification_middleware' => true,
-
-    // How many times in any given time period should the user be allowed to
-    // request a new verification email?
-    // Defaults to 1,10 - 1 time in 10 minutes.
-    'email_verification_throttle_access' => '3,15',
-
     /*
     |--------------------------------------------------------------------------
     | Security
@@ -114,7 +99,7 @@ return [
         App\Http\Middleware\CheckIfAdmin::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Backpack\CRUD\app\Http\Middleware\AuthenticateSession::class,
-        // \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
+        \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
     ],
 
     // Alias for that middleware
@@ -124,8 +109,8 @@ return [
     // Username column for authentication
     // The Backpack default is the same as the Laravel default (email)
     // If you need to switch to username, you also need to create that column in your db
-    'authentication_column' => 'email',
-    'authentication_column_name' => 'Email',
+    'authentication_column'      => 'email',
+    'authentication_column_name' => 'admin.email',
 
     // Backpack assumes that your "database email column" for operations like Login and Register is called "email".
     // If your database email column have a different name, you can configure it here. Eg: `user_mail`
@@ -133,7 +118,7 @@ return [
 
     // The guard that protects the Backpack admin panel.
     // If null, the config.auth.defaults.guard value will be used.
-    'guard' => 'backpack',
+    'guard' => 'web',
 
     // The password reset configuration for Backpack.
     // If null, the config.auth.defaults.passwords value will be used.
@@ -162,17 +147,6 @@ return [
     //
     // You can rename this disk here. Default: root
     'root_disk_name' => 'root',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application
-    |--------------------------------------------------------------------------
-    */
-
-    // Should we use DB transactions when executing multiple queries? For example when creating an entry and it's relationships.
-    // By wrapping in a database transaction you ensure that either all queries went ok, or if some failed the whole process
-    // is rolled back and considered failed. This is a good setting for data integrity.
-    'useDatabaseTransactions' => false,
 
     /*
     |--------------------------------------------------------------------------

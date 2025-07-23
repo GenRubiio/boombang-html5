@@ -1,0 +1,8 @@
+<?php
+
+namespace App\Repositories\SingularModelName;
+
+interface SingularModelNameRepositoryInterface
+{
+    //
+}

@@ -1,0 +1,31 @@
+@use "../variables";
+
+// Font size
+.text-size {
+    font-size: variables.$font-size-base;
+    @each $key, $value in variables.$text-sizes {
+        &--#{$key} {
+            font-size: #{$value};
+        }
+    }
+}
+
+// Line height
+.line-height {
+    line-height: variables.$line-height-base;
+    @each $key, $value in variables.$line-heights {
+        &--#{$key} {
+            line-height: $value;
+        }
+    }
+}
+
+// Font weight
+.font-weight {
+    font-weight: variables.$font-weight-base;
+    @each $key, $value in variables.$font-weights {
+        &--#{$key} {
+            font-weight: #{$value};
+        }
+    }
+}

@@ -1,0 +1,3 @@
+@function legacy-selector($main-selector, $selector) {
+    @return #{$main-selector}#{$selector};
+}

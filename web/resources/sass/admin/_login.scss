@@ -1,0 +1,47 @@
+.app {
+    font-family: "Monserrat", Helvetica, Arial, sans-serif;
+    background-color: $blue-dark;
+
+    .btn-primary {
+        color: $black !important;
+        background-color: $purple !important;
+        border: 1px solid $purple !important;
+        font-weight: normal !important;
+        min-width: 150px;
+        text-transform: uppercase;
+        border-radius: 0px !important;
+    }
+
+    .btn-primary:hover {
+        color: $black !important;
+    }
+
+    h3 {
+        color: $white;
+    }
+
+    .card {
+        background-clip: border-box;
+        border-radius: 3px;
+        background-color: $blue-medium;
+        border: 1px solid $blue-light;
+    }
+
+    .form-group {
+        label {
+            color: $white;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        input[type="search"] {
+            background-color: $blue-light;
+            color: $white !important;
+            box-shadow: inset 0 0 0 9999px $blue-light;
+        }
+    }
+
+}

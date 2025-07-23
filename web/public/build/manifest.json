@@ -1,0 +1,18 @@
+{
+  "resources/js/app.js": {
+      "file": "assets/app-D7Dl8AsF.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/sass/admin.scss": {
+    "file": "assets/admin-GWt-q7dl.css",
+    "src": "resources/sass/admin.scss",
+    "isEntry": true
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-B_j6kRlc.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  }
+}

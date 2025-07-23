@@ -1,0 +1,13 @@
+<?php
+
+namespace NameSpacePathStub;
+
+class ClassNameStub
+{
+    public function handle($request, \Closure $next)
+    {
+        //
+
+        return $next($request);
+    }
+}

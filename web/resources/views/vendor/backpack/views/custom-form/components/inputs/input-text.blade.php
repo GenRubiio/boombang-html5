@@ -1,0 +1,1 @@
+<input type="text" class="form-control" placeholder="{{ getTextTrans($currentInput['placeholder']) }}" readonly>

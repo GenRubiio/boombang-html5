@@ -1,0 +1,118 @@
+@use "../mixins/fonts";
+@use "../variables";
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    //font-synthesis: none; //Evita la simulación de estilos como negrita o cursiva si no están disponibles.
+    //-webkit-text-size-adjust: 100%; //Evita el ajuste automático del tamaño de texto en navegadores móviles.
+    //-webkit-appearance: none;
+    -webkit-border-radius: 0;
+    text-rendering: optimizeLegibility;
+    /*Figma clean fonts*/
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    @include fonts.font-family(variables.$font-family-primary, 'normal');
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.noscript {
+    color: variables.$red;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    @include fonts.font-family(variables.$font-family-secondary, 'normal');
+}
+
+p {
+    margin: 0;
+}
+
+a, a:active, a:link, a:hover, a:visited {
+    text-decoration: none;
+}
+
+main {
+    min-height: calc(100vh - #{variables.$navbar-height});
+}
+
+strong, b {
+    @include fonts.font-family(variables.$font-family-primary, "bold");
+}
+
+.main-container {
+    margin-top: variables.$navbar-height;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.mw-100 {
+    max-width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
+.page-margin {
+    margin-top: variables.$navbar-height;
+}
+
+body{
+   background-repeat: round;
+}
