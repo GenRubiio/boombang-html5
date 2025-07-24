@@ -197,7 +197,9 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // ...
+        'Btn' => App\Facades\Btn\BtnFacade::class,
+        'BgImageResponsive' => App\Facades\BgImageResponsive\BgImageResponsiveFacade::class,
+        'Picture' => App\Facades\Picture\PictureFacade::class,
     ])->toArray(),
 
 ];

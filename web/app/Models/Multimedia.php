@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\Observers\ModelObservantTrait;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\Observers\ModelObservantTrait;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -90,13 +90,13 @@ class Multimedia extends Model
     {
         // if a new file is uploaded, delete the file from the disk
         if (!is_null($value) && $value->getType() == 'file' && $this->{$attributeName} && $this->{$attributeName} != null) {
-            removeFile($disk, $this->{$attributeName});
+            removeFile($this->{$attributeName}, $disk);
             $this->attributes[$attributeName] = null;
         }
 
         // if the file input is empty, delete the file from the disk
         if (is_null($value) && $this->{$attributeName} != null) {
-            removeFile($disk, $this->{$attributeName});
+            removeFile($this->{$attributeName}, $disk);
             $this->attributes[$attributeName] = null;
         }
 

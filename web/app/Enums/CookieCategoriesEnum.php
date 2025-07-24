@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumTrait;
+
 enum CookieCategoriesEnum
 {
+    use EnumTrait;
+
     case ESSENTIALS;
     case ANALYTICS;
     case OPTIONAL;
@@ -16,6 +20,16 @@ enum CookieCategoriesEnum
             self::OPTIONAL => 'optional',
         };
     }
+
+    public static function fromKey(string $key): self
+    {
+        return match ($key) {
+            'essentials' => self::ESSENTIALS,
+            'analytics' => self::ANALYTICS,
+            'optional' => self::OPTIONAL,
+        };
+    }
+
     public function name(): string
     {
         return match ($this) {
@@ -23,14 +37,5 @@ enum CookieCategoriesEnum
             self::ANALYTICS => 'Analytics',
             self::OPTIONAL => 'Optional',
         };
-    }
-
-    public static function toAssociativeArray(): array
-    {
-        $array = [];
-        foreach (self::cases() as $case) {
-            $array[$case->key()] = $case->name();
-        }
-        return $array;
     }
 }

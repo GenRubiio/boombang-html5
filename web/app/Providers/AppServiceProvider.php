@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
         }
         */
         $this->overrideConfigValues();
+
+        $this->bladeDirectives();
     }
 
     protected function overrideConfigValues()
@@ -53,5 +56,23 @@ class AppServiceProvider extends ServiceProvider
             $config['backpack.base.show_powered_by'] = config('settings.show_powered_by') == '1';
         }
         config($config);
+    }
+
+    protected function bladeDirectives()
+    {
+        // Picture directive
+        Blade::directive('picture', function ($expression) {
+            return "<?php echo Picture::responsive($expression); ?>";
+        });
+
+        // Button directive
+        Blade::directive('btn', function ($expression) {
+            return "<?php echo Btn::render($expression); ?>";
+        });
+
+        // Background Image Responsive directive
+        Blade::directive('bgImageResponsive', function ($expression) {
+            return "<?php echo BgImageResponsive::render($expression); ?>";
+        });
     }
 }

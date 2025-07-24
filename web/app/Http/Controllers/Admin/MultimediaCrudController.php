@@ -125,7 +125,7 @@ class MultimediaCrudController extends CrudController
         $disk = "uploads";
         $this->crud->hasAccessOrFail('delete');
         $object = Multimedia::find($id);
-        removeFile($disk, $object->file);
+        removeFile($object->file, $disk);
         return $this->crud->delete($object->id);
     }
 }

@@ -169,7 +169,7 @@ class Slide extends Model
         // if the image was erased
         if ($value == null) {
             // delete the image from disk
-            removeFile($disk, $this->{$attribute_name});
+            removeFile($this->{$attribute_name}, $disk);
 
             // set null in the database column
             $return = null;
@@ -207,7 +207,7 @@ class Slide extends Model
         // if the image was erased
         if ($value == null) {
             // delete the image from disk
-            removeFile($disk, $this->{$attribute_name});
+            removeFile($this->{$attribute_name}, $disk);
 
             // set null in the database column
             $return = null;
@@ -244,7 +244,7 @@ class Slide extends Model
         // if the image was erased
         if ($value == null) {
             // delete the image from disk
-            removeFile($disk, $this->{$attribute_name});
+            removeFile($this->{$attribute_name}, $disk);
 
             // set null in the database column
             $return = null;

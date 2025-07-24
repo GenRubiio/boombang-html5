@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Observers\ModelObservantTrait;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use App\Traits\Observers\ModelObservantTrait;
 use Intervention\Image\Facades\Image;
 
 class Setting extends Model
@@ -122,7 +122,7 @@ class Setting extends Model
                 // if the image was erased
                 if ($value == null) {
                     // delete the image from disk
-                    removeFile($disk, $this->{$attributeName});
+                    removeFile($this->{$attributeName}, $disk);
 
                     // set null in the database column
                     $this->attributes[$attributeName] = null;
@@ -134,7 +134,7 @@ class Setting extends Model
                     $filename = $filename . '.svg';
                     $value = str_replace('data:image/svg+xml;base64,', '', $value);
                     $value = str_replace(' ', '+', $value);
-                    removeFile($disk, $this->{$attributeName});
+                    removeFile($this->{$attributeName}, $disk);
                     if (!File::exists($destinationPath)) {
                         mkdir($destinationPath);
                     }
@@ -149,7 +149,7 @@ class Setting extends Model
                     // 2. Store the image on disk.
                     //Optimize max size and save
                     resizeImage($image, null, null);
-                    removeFile($disk, $this->{$attributeName});
+                    removeFile($this->{$attributeName}, $disk);
                     saveImage($disk, $destinationPath . '/' . $filename, $image);
 
                     // 3. Save the path to the database

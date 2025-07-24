@@ -39,4 +39,13 @@ enum SlideTypeEnum
         }
         return $array;
     }
+
+    public static function keys(): array
+    {
+        $array = [];
+        foreach (self::cases() as $case) {
+            $array[] = $case->key();
+        }
+        return $array;
+    }
 }

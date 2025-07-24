@@ -39,10 +39,10 @@ class GalleryObserver
                                     $image = Image::make($existingGallery->$type);
                                     $extension = getExtensionByMimetype($image->mime());
                                     $pathThumbnail = addToNameImage($existingGallery->$type, '-thumbnail', $extension);
-                                    removeFile($disk, $pathThumbnail);
+                                    removeFile($pathThumbnail, $disk);
                                     $pathMobile = addToNameImage($existingGallery->$type, '-mobile', $extension);
-                                    removeFile($disk, $pathMobile);
-                                    removeFile($disk, $existingGallery->$type);
+                                    removeFile($pathMobile, $disk);
+                                    removeFile($existingGallery->$type, $disk);
                                 } else {
                                     Storage::disk($disk)->delete($existingGallery->$type);
                                 }

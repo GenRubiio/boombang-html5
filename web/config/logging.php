@@ -163,6 +163,13 @@ return [
             'level' => 'debug',
             'days' => 30,
         ],
+
+        'request_execution_time' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/request-execution-time.log'),
+            'level' => 'debug',
+            'days' => 30,
+        ],
     ],
 
 ];

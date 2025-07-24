@@ -85,65 +85,8 @@
 <script data-cookie-consent>
     {!! file_get_contents(LCC_ROOT . '/dist/script.js') !!}
 </script>
+{{--
 <style data-cookie-consent>
-    {!! file_get_contents(LCC_ROOT . '/dist/style.css') !!} #cookies-policy .cookiesBtn__link {
-        background: #000000;
-        border: 1px solid #000000;
-        border-radius: 4px;
-        color: #fff;
-        cursor: pointer;
-        display: block;
-        font: inherit;
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 1em;
-        margin: 0;
-        overflow: hidden;
-        padding: .86em 1em;
-        text-align: center;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        transition: opacity .2s ease-out;
-        white-space: nowrap;
-        width: 100%;
-    }
-
-    #cookies-policy .cookies__intro a {
-        color: #ab2609;
-        text-decoration: underline;
-        transition: color .2s ease-out;
-    }
-
-    #cookies-policy .cookies__category input:checked+.cookies__box:after {
-        background: #000000;
-        opacity: 1;
-    }
-
-    #cookies-policy .cookies__details {
-        color: #ab2609;
-        display: block;
-        font-size: .875em;
-        margin: .625em 0 .9em;
-        transition: color .2s ease-out;
-    }
-
-    #cookies-policy .cookies__intro a:focus,
-    #cookies-policy .cookies__intro a:hover {
-        color: #ab2609;
-    }
-
-    #cookies-policy .cookies__details:focus,
-    #cookies-policy .cookies__details:hover {
-        color: #ab2609;
-    }
-
-    #cookies-policy .cookies__save {
-        flex-direction: column;
-        gap: 5px
-    }
-
-    #cookies-policy .cookies__category input:disabled+.cookies__box:after {
-        background: #747272;
-        opacity: 1;
-    }
+    {!! file_get_contents(LCC_ROOT . '/dist/style.css') !!}
 </style>
+--}}

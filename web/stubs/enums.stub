@@ -2,8 +2,12 @@
 
 namespace NameSpacePathStub;
 
+use App\Traits\EnumTrait;
+
 enum ClassNameStub
 {
+    use EnumTrait;
+
     case EXAMPLE;
 
     public function key(): string
@@ -25,14 +29,5 @@ enum ClassNameStub
         return match ($this) {
             self::EXAMPLE => 'Readable value example',
         };
-    }
-
-    public static function toAssociativeArray(): array
-    {
-        $array = [];
-        foreach (self::cases() as $case) {
-            $array[$case->key()] = $case->name();
-        }
-        return $array;
     }
 }

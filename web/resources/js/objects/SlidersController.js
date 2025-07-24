@@ -1,6 +1,6 @@
 // import Swiper JS: https://swiperjs.com/swiper-api
 import Swiper from 'swiper';
-import {Navigation, Pagination, EffectFade} from 'swiper/modules';
+import {EffectFade, Navigation, Pagination} from 'swiper/modules';
 
 const SlidersController = {
     swiperSliderEl: {
@@ -25,7 +25,7 @@ const SlidersController = {
     },
 
     initHeaderSlider() {
-        new Swiper(this.swiperSliderEl.selector, {
+        this.headerSwiper = new Swiper(this.swiperSliderEl.selector, {
             modules: [Navigation, Pagination, EffectFade],
             // Optional parameters
             loop: true,

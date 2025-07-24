@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Observers\ModelObservantTrait;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Traits\Observers\ModelObservantTrait;
 use Intervention\Image\Facades\Image;
 
 class Gallery extends Model
@@ -152,7 +152,7 @@ class Gallery extends Model
         if ($value == null) {
             // delete the image from disk
             if (Storage::disk($disk)->exists($this->{$attributeName})) {
-                removeFile($disk, $this->{$attributeName});
+                removeFile($this->{$attributeName}, $disk);
             }
 
             // set null in the database column
@@ -194,7 +194,7 @@ class Gallery extends Model
             }
         } else {
             if (Storage::disk($disk)->exists($this->{$attributeName})) {
-                removeFile($disk, $this->{$attributeName});
+                removeFile($this->{$attributeName}, $disk);
             };
             $this->attributes[$attributeName] = null;
         }
@@ -218,13 +218,13 @@ class Gallery extends Model
 
         // if a new file is uploaded, delete the file from the disk
         if (!is_null($value) && $value->getType() == 'file' && $this->{$attributeName} && $this->{$attributeName} != null) {
-            removeFile($disk, $this->{$attributeName});
+            removeFile($this->{$attributeName}, $disk);
             $this->attributes[$attributeName] = null;
         }
 
         // if the file input is empty, delete the file from the disk
         if (is_null($value) && $this->{$attributeName} != null) {
-            removeFile($disk, $this->{$attributeName});
+            removeFile($this->{$attributeName}, $disk);
             $this->attributes[$attributeName] = null;
         }
 

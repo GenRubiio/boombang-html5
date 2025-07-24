@@ -29,7 +29,7 @@ class ImageHelper
         return str_replace($extension, $addToFileName . $extension, $filename);
     }
 
-    public static function saveImage($disk, $path, $image, $quality)
+    public static function saveImage($disk, $path, $image, $quality = null)
     {
         $quality = $quality ?? config('images.webp_quality');
         $mime = $image->mime();
@@ -72,7 +72,7 @@ class ImageHelper
         // if the image was erased
         if ($value == null) {
             // delete the image from disk
-            removeFile($disk, $entity->{$attribute});
+            removeFile($entity->{$attribute}, $disk);
 
             // set null in the database column
             return null;
@@ -83,7 +83,7 @@ class ImageHelper
             $filename = $filename . '.svg';
             $value = str_replace('data:image/svg+xml;base64,', '', $value);
             $value = str_replace(' ', '+', $value);
-            removeFile($disk, $entity->{$attribute});
+            removeFile($entity->{$attribute}, $disk);
             if (!File::exists($destination)) {
                 mkdir($destination);
             }
@@ -98,7 +98,7 @@ class ImageHelper
             // 2. Store the image on disk.
             //Optimize max size and save
             resizeImage($image, $maxWidthSize, $maxHeightSize);
-            removeFile($disk, $entity->{$attribute});
+            removeFile($entity->{$attribute}, $disk);
             saveImage($disk, $destination . '/' . $filename, $image, config('images.webp_quality'));
 
             // 3. Save the path to the database

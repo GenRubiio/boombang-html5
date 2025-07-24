@@ -34,13 +34,4 @@ enum FormsEnum
             self::CONTACT => 'Contact',
         };
     }
-
-    public static function toAssociativeArray(): array
-    {
-        $array = [];
-        foreach (self::cases() as $case) {
-            $array[$case->key()] = $case->name();
-        }
-        return $array;
-    }
 }

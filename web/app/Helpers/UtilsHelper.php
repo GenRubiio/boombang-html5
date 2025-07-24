@@ -6,13 +6,13 @@ use App\Models\Page;
 use App\Models\PresetEmail;
 use App\Models\Rgpd;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Exception;
 use stdClass;
 
 class UtilsHelper
@@ -156,7 +156,11 @@ class UtilsHelper
     public static function getEmailsToSendForm($form)
     {
         $forms = ['all', $form];
-        $presetEmails = PresetEmail::select('id', 'email', 'form', 'language_communication')->whereIn('form', $forms)->active()->distinct()->get();
+        $presetEmails = PresetEmail::select('id', 'email', 'form', 'language_communication')
+            ->whereIn('form', $forms)
+            ->active()
+            ->distinct()
+            ->get();
 
         $emails = $presetEmails->map(function ($item) {
             return [

@@ -1,15 +1,15 @@
 <?php
 
-use App\Helpers\VersionHelper;
 use App\Helpers\AuthHelper;
 use App\Helpers\CacheHelper;
 use App\Helpers\CrudHelper;
 use App\Helpers\ImageHelper;
-use App\Helpers\MenuHelper;
-use App\Helpers\SocialNetworksHelper;
-use App\Helpers\PageHelper;
-use App\Helpers\UtilsHelper;
 use App\Helpers\MailHelper;
+use App\Helpers\MenuHelper;
+use App\Helpers\PageHelper;
+use App\Helpers\SocialNetworksHelper;
+use App\Helpers\UtilsHelper;
+use App\Helpers\VersionHelper;
 
 /**
  * PageHelper
@@ -459,9 +459,9 @@ if (!function_exists('addToNameImage')) {
 }
 
 if (!function_exists('saveImage')) {
-    function saveImage($disk, $path, $image, $quality)
+    function saveImage($disk, $path, $image, $quality = null)
     {
-        return ImageHelper::saveImage($disk, $path, $image, $quality ?? config('images.webp_quality'));
+        return ImageHelper::saveImage($disk, $path, $image, $quality);
     }
 }
 

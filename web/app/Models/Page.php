@@ -2,22 +2,22 @@
 
 namespace App\Models;
 
+use App\Traits\Observers\CacheClearObservantTrait;
+use App\Traits\Observers\GalleryObservantTrait;
+use App\Traits\Observers\ModelObservantTrait;
 use App\Traits\Observers\PageObservantTrait;
+use App\Traits\Observers\SitemapObservantTrait;
+use App\Traits\Observers\SlugObservantTrait;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+use Backpack\PageManager\app\Models\Page as BackpackPage;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
-use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
-use Backpack\PageManager\app\Models\Page as BackpackPage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use App\Traits\Observers\ModelObservantTrait;
-use App\Traits\Observers\SitemapObservantTrait;
-use App\Traits\Observers\GalleryObservantTrait;
 use Intervention\Image\Facades\Image;
-use App\Traits\Observers\SlugObservantTrait;
-use App\Traits\Observers\CacheClearObservantTrait;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Page extends BackpackPage
@@ -433,7 +433,7 @@ class Page extends BackpackPage
         // if the image was erased
         if ($value == null) {
             // delete the image from disk
-            //removeFile($disk, $this->{$attributeName});
+            //removeFile($this->{$attributeName}, $disk);
 
             // set null in the database column
             return null;
