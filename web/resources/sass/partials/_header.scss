@@ -30,13 +30,14 @@ header {
 
         &.scrolled,
         &.open {
-            background: variables.$white;
+            background: rgb(5 6 7 / 59%);
+            color: variables.$white;
 
             #{legacy-selector.legacy-selector($header-selector, __logo-container)} {
 
                 & img,
                 & svg {
-                    @include svg-brightness.svg-brightness('black');
+                    @include svg-brightness.svg-brightness('white');
                 }
             }
         }

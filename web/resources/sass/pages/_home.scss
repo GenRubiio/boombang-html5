@@ -90,15 +90,100 @@
         }
 
         &__content {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
             background-color: #c44a1d;
             padding: 20px;
             border-left: 10px solid #fff;
             border-right: 10px solid #fff;
 
-            &-title {
-                color: white;
-                font-weight: bold;
-                font-size: 32px;
+            @media (max-width: $md) {
+                flex-wrap: wrap;
+            }
+
+            @media (max-width: $sm) {
+                border: none;
+            }
+
+            &__left {
+                width: calc(100% - 300px);
+                padding: 20px;
+
+                @media (max-width: $md) {
+                    width: 100%;
+                }
+
+                &-title {
+                    color: white;
+                    font-weight: bold;
+                    font-size: 32px;
+                }
+
+                &__news {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 20px;
+
+                    @media (max-width: $sm) {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .news-item {
+                        display: flex;
+                        gap: 10px;
+
+                        &__left {
+                            flex: 0 0 120px;
+                            height: 120px;
+                            width: 120px;
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                        }
+
+                        &__right {
+                            &-title {
+                                font-weight: bold;
+                                color: white;
+                                font-size: 18px;
+                                text-transform: uppercase;
+                            }
+
+                            &-info {
+                                color: white;
+                                font-size: 14px;
+
+                                span {
+                                    color: yellow;
+                                }
+
+                                a {
+                                    text-decoration: none;
+                                    color: white;
+                                    font-weight: bold;
+
+                                    &:hover {
+                                        text-decoration: underline;
+                                    }
+                                }
+                            }
+
+                            &-description {
+                                color: white;
+                                font-size: 14px;
+                                margin-top: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &__right {
+                width: 300px;
             }
         }
 

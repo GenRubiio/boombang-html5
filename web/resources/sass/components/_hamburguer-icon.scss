@@ -82,7 +82,7 @@ $hamburger-active-hover-filter: $hamburger-hover-filter !default;
     &::after {
         width: $hamburger-layer-width;
         height: $hamburger-layer-height;
-        background-color: $hamburger-layer-color;
+        background-color: variables.$white !important;
         border-radius: $hamburger-layer-border-radius;
         position: absolute;
         transition-property: transform;
