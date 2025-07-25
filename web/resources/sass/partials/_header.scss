@@ -46,23 +46,23 @@ header {
             left: 0;
             height: 100%;
             display: flex;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            margin-left: 50px;
+
+            @media (max-width: variables.$menu-responsive-resolution) {
+                margin-left: auto;
+            }
 
             & img,
             & svg {
                 vertical-align: bottom;
-                //height: 50px;
-                max-height: 50px;
-                //min-height: 50px;
-                width: 150px;
-                max-width: 150px;
-                min-width: 150px;
+                height: 100%;
+                object-fit: contain;
                 //@include svg-brightness();
                 @include transitions.transition();
 
                 @media (max-width: variables.$sm) {
-                    height: 50px;
-                    max-height: 50px;
-                    min-height: 50px;
                     width: auto;
                     min-width: auto;
                 }

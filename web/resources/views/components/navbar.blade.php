@@ -6,6 +6,11 @@
                 @foreach ($menu as $item)
                     <li class="navbar__menu-item">
                         <a href="{{ $item->page_link }}" class="navbar__menu-link">
+                            @if (isset($item->image) && $item->image)
+                                <span class="navbar__menu-image">
+                                    <img src="{{ $item->image }}" alt="{{ $item->name }}">
+                                </span>
+                            @endif
                             {{ $item->name }}
                         </a>
                     </li>
@@ -14,7 +19,7 @@
         @endif
     </div>
     <button class="hamburger hamburger--squeeze" type="button" tabindex="0" aria-label="Menu"
-            aria-controls="navigation">
+        aria-controls="navigation">
         <span class="hamburger-box">
             <span class="hamburger-inner"></span>
         </span>

@@ -8,6 +8,8 @@ use Backpack\MenuCRUD\app\Models\MenuItem as MenuItemOriginal;
 use App\Traits\Observers\ModelObservantTrait;
 use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class MenuItem extends MenuItemOriginal
 {
@@ -22,6 +24,7 @@ class MenuItem extends MenuItemOriginal
         'name',
         'type',
         'link',
+        'image',
         'menu_top',
         'menu_top_order',
         'menu_footer',
@@ -40,6 +43,7 @@ class MenuItem extends MenuItemOriginal
         'name',
         'link'
     ];
+    protected $upload_path = 'uploads/menu-item';
 
     /*
     |--------------------------------------------------------------------------
@@ -167,4 +171,25 @@ class MenuItem extends MenuItemOriginal
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setImageAttribute($value)
+    {
+        $attributeName = "image";
+        $disk = "uploads";
+        $destinationPath = $this->upload_path . '/' . Str::slug($this->name);
+
+        if ($value == null) {
+            removeFile($this->{$attributeName}, $disk);
+            $this->attributes[$attributeName] = null;
+        }
+        if (Str::startsWith($value, 'data:image')) {
+            $image = Image::make($value);
+            $extension = getExtensionByMimetype($image->mime());
+            $filename = Str::slug($this->name) . '-vertical' . $extension;
+            resizeImage($image, 400, 800);
+            saveImage($disk, $destinationPath . '/' . $filename, $image);
+
+            $this->attributes[$attributeName] = $destinationPath . '/' . $filename;
+        }
+    }
 }

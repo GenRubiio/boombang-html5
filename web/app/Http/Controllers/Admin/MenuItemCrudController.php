@@ -82,37 +82,21 @@ class MenuItemCrudController extends CrudController
         $this->crud->setValidation(MenuItemRequest::class);
 
         $this->crud->addFields([
-            /*
-            [
-                'name' => 'link',
-                'type' => 'hidden',
-            ],
-            [
-                'name' => 'page_id',
-                'type' => 'hidden',
-            ],
-            */
             [
                 'name' => 'name',
                 'type' => 'text',
                 'label' => trans('admin.menu_label'),
             ],
-            /*
             [
-                'label' => trans('admin.menu_parent'),
-                'type' => 'select',
-                'name' => 'parent_id',
-                'entity' => 'parent',
-                'attribute' => 'name',
-                'model' => "\App\Models\MenuItem",
-            ],
-            */
-            [
-                //'name' => ['type'],
                 'name' => 'type,link,page_id',
                 'label' => trans('admin.menu_type_link'),
                 'type' => 'page_or_link',
                 'page_model' => '\App\Models\Page',
+            ],
+            [
+                'name' => 'image',
+                'label' => trans('admin.image'),
+                'type' => 'image',
             ],
             [
                 'name' => 'menu_top',
