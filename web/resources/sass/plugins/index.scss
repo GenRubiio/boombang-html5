@@ -12,5 +12,5 @@
 @include meta.load-css("browser-update");
 
 // Cookie consent
-@include meta.load-css('@vendor/whitecube/laravel-cookie-consent/resources/scss/style');
-@include meta.load-css("cookie-consent");
+//@include meta.load-css('@vendor/whitecube/laravel-cookie-consent/resources/scss/style');
+//@include meta.load-css("cookie-consent");
