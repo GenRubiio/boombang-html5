@@ -120,10 +120,46 @@
                     font-size: 32px;
                 }
 
+                &__fixed {
+                    top: 20px;
+
+                    .item {
+                        height: 300px;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+
+                        &__container {
+                            width: 80%;
+                            position: relative;
+                            z-index: 0;
+                            height: 100%;
+
+                            &::before {
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(133deg, rgb(9 9 9 / 14%) 66%, transparent 50%);
+                                z-index: -1;
+                                pointer-events: none;
+                            }
+
+                            &-content {
+                                width: 320px;
+                                padding: 10px;
+                            }
+                        }
+                    }
+
+                }
+
                 &__news {
                     display: grid;
                     grid-template-columns: repeat(2, 1fr);
                     gap: 20px;
+                    margin-top: 20px;
 
                     @media (max-width: $sm) {
                         grid-template-columns: 1fr;
