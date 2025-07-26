@@ -7,6 +7,7 @@ import SearcherController from './objects/SearcherController';
 import ContactFormController from './objects/ContactFormController';
 import ScrollDownController from './objects/ScrollDownController';
 import CookiesController from './objects/CookiesController';
+import HomePageController from './pages/HomePageController';
 
 const ViewHandler = {
     init(data) {
@@ -29,6 +30,7 @@ const ViewHandler = {
         ContactFormController.init();
         ScrollDownController.init();
         CookiesController.init();
+        HomePageController.init();
     },
 };
 

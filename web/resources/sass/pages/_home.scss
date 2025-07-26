@@ -123,6 +123,10 @@
                 &__fixed {
                     margin-top: 20px;
 
+                    .item-link{
+                        text-decoration: none;
+                    }
+
                     .item {
                         height: 300px;
                         background-repeat: no-repeat;
