@@ -2,9 +2,15 @@
     <div class="item" style="background-image: url('https://picsum.photos/400/300');">
         <div class="item__container">
             <div class="item__container-content">
-                <div class="item__title">Título destacado</div>
-                <div class="item__description">Descripción del contenido destacado que se muestra en la parte izquierda
-                    de la página.</div>
+                <div class="item__container-content__title">Título destacado</div>
+                <div class="item__container-content__info">
+                    <em><span>{{ now()->subDays(1)->format('d M Y') }}</span></em> / <a href="#"><em>Campañas y
+                            Actividades</em></a>, <a href="#"><em>Actividades</em></a>
+                </div>
+                <div class="item__container-content__description">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
+                </div>
             </div>
         </div>
     </div>
