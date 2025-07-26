@@ -8,6 +8,7 @@ import ContactFormController from './objects/ContactFormController';
 import ScrollDownController from './objects/ScrollDownController';
 import CookiesController from './objects/CookiesController';
 import HomePageController from './pages/HomePageController';
+import PlayPageController from './pages/PlayPageController';
 
 const ViewHandler = {
     init(data) {
@@ -31,6 +32,7 @@ const ViewHandler = {
         ScrollDownController.init();
         CookiesController.init();
         HomePageController.init();
+        PlayPageController.init();
     },
 };
 

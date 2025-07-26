@@ -7,7 +7,7 @@
                 <div class="page-home__banner-content__button-avatar">
                     <img src="{{ asset('images/home/bruja-volando.webp') }}" alt="Avatar" class="img-fluid">
                 </div>
-                <a href="https://ejemplo.com" class="play-btn open-popup">
+                <a href="{{ makeUrl('Play') }}" class="play-btn open-popup">
                     Jugar
                 </a>
             </div>

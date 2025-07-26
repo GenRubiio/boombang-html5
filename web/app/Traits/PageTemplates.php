@@ -9,6 +9,7 @@ trait PageTemplates
     use Pages\AuthTemplate;
     use Pages\EntityTemplate;
     use Pages\LegalTemplate;
+    use Pages\DefaultTemplate;
 
     /* Template Partials - Protected functions */
     use Pages\Partials\BaseTemplate;

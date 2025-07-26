@@ -66,13 +66,15 @@ class ImageHelper
         $maxWidthSize = null,
         $maxHeightSize = null
     ) {
-            $maxWidthSize ?? config('images.desktop_max_width');
-            $maxHeightSize ?? config('images.desktop_max_heigth');
+        $maxWidthSize ?? config('images.desktop_max_width');
+        $maxHeightSize ?? config('images.desktop_max_heigth');
 
         // if the image was erased
         if ($value == null) {
             // delete the image from disk
-            removeFile($entity->{$attribute}, $disk);
+            if (!empty($entity->{$attribute})) {
+                removeFile($entity->{$attribute}, $disk);
+            }
 
             // set null in the database column
             return null;
