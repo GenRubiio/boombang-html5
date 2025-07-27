@@ -1,0 +1,61 @@
+@use "../variables";
+
+footer {
+    border-top: 10px solid variables.$white;
+    background-color: #253853;
+    color: variables.$white;
+
+    .footer-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        margin: auto 20px;
+
+        div:first-child {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .footer-container__left {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: auto;
+
+                &__title {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .social-links {
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    gap: 5px;
+                    margin-top: 15px;
+
+                    a {
+                        color: #fff;
+                        font-size: 20px;
+                        text-decoration: none;
+                        width: 35px;
+                        height: 35px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 3px solid;
+                        box-sizing: border-box;
+                        border-radius: 5px;
+                    }
+                }
+            }
+        }
+
+        .footer-container__bottom {
+            text-align: center;
+            padding: 10px 0;
+            color: #2b68be;
+        }
+    }
+}
