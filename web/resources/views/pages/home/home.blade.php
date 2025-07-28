@@ -20,7 +20,7 @@
 @section('content')
     <div class="container-fluid" id="page-home">
         <div class="page-home">
-             @include('partials.pages.home.banner')
+             @include('partials.pages.banner')
              @include('partials.pages.home.content')
         </div>
     </div>

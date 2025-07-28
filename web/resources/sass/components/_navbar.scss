@@ -47,6 +47,10 @@ nav {
             #{legacy-selector.legacy-selector($navbar-selector, __menu-link)} {
                 color: variables.$white;
 
+                &.active {
+                    color: #ffe000;
+                }
+
                 &::after {
                     background-color: variables.$white;
                 }
@@ -60,10 +64,18 @@ nav {
 
             #{legacy-selector.legacy-selector($navbar-selector, __language-selector-container)} {
                 color: variables.$white;
+
+                &.active {
+                    color: #ffe000;
+                }
             }
 
             .language-dropdown__current {
                 color: variables.$white;
+
+                &.active {
+                    color: #ffe000;
+                }
 
                 &:after {
                     border-color: variables.$white;
@@ -156,8 +168,8 @@ nav {
             }
 
             &-image {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
                 margin-right: 6px;
                 margin-bottom: 9px;
 
@@ -187,7 +199,9 @@ nav {
                 height: 100%;
                 font-weight: bold;
 
-
+                &.active {
+                    color: #ffe000;
+                }
 
                 @media (max-width: variables.$menu-responsive-resolution) {
                     width: 100%;
@@ -201,7 +215,7 @@ nav {
                     @include transitions.transition();
                     content: "";
                     height: 2px;
-                    background-color: variables.$white;
+                    background-color: #ffe000;
                     width: 0;
                     position: absolute;
                     left: 50%;

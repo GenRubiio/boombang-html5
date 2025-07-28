@@ -5,7 +5,14 @@
             <ul class="navbar__menu-container">
                 @foreach ($menu as $item)
                     <li class="navbar__menu-item">
-                        <a href="{{ $item->page_link }}" class="navbar__menu-link">
+                        @php
+                            $isActive = false;
+                            $pageLink = rtrim($item->page_link, '/');
+                            if ($pageLink == request()->url()) {
+                                $isActive = true;
+                            }
+                        @endphp
+                        <a href="{{ $item->page_link }}" class="navbar__menu-link {{ $isActive ? 'active' : '' }}">
                             @if (isset($item->image) && $item->image)
                                 <span class="navbar__menu-image">
                                     <img src="{{ $item->image }}" alt="{{ $item->name }}">

@@ -18,9 +18,10 @@
 ])
 
 @section('content')
-    <div class="container page-margin" id="page-news">
-        <h1>
-            News
-        </h1>
+    <div class="container" id="page-news">
+        <div class="page-news">
+            @include('partials.pages.banner')
+            @include('partials.pages.news.content')
+        </div>
     </div>
 @endsection
