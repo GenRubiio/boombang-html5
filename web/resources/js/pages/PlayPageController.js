@@ -21,6 +21,10 @@ const PlayPageController = {
         if (header) {
             header.remove();
         }
+        const footer = document.querySelector('footer');
+        if (footer) {
+            footer.remove();
+        }
     }
 };
 

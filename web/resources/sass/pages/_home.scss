@@ -28,7 +28,7 @@
                 }
 
                 &-title {
-                    color: white;
+                    color: #ffe000;
                     font-weight: bold;
                     font-size: 32px;
                 }
@@ -173,6 +173,23 @@
                                 font-size: 14px;
                                 margin-top: 5px;
                             }
+                        }
+                    }
+                }
+
+                &__show-more {
+                    width: 100%;
+                    display: flex;
+                    justify-content: end;
+
+                    a {
+                        font-weight: bold;
+                        color: white;
+                        font-size: 18px;
+                        text-transform: uppercase;
+
+                        i{
+                            color: #ffe000;
                         }
                     }
                 }

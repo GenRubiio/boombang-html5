@@ -28,9 +28,45 @@
                 }
 
                 &-title {
-                    color: white;
+                    color: #ffe000;
                     font-weight: bold;
                     font-size: 32px;
+                }
+
+                &__categories {
+                    margin-top: 10px;
+
+                    &-title {
+                        color: white;
+                        font-weight: bold;
+                        font-size: 20px;
+                    }
+
+                    &-list {
+                        margin-top: 10px;
+                    }
+
+                    &-item {
+                        font-size: 16px;
+                        background-color: #253853;
+                        border-radius: 6px;
+                        display: inline-block;
+                        margin: 0 6px 6px 0;
+                        padding: 3px 6px;
+                        cursor: pointer;
+                        border: 1px solid #2b68be;
+                        color: #2b68be;
+
+                        &:hover {
+                            background-color: #2b68be;
+                            color: #fff;
+                        }
+
+                        &.active {
+                            background-color: #2b68be;
+                            color: #fff;
+                        }
+                    }
                 }
 
                 &__news {
