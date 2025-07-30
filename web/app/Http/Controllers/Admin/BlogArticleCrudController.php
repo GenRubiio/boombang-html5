@@ -58,7 +58,7 @@ class BlogArticleCrudController extends CrudController
                 'attribute' => 'name',
                 'wrapper'   => [
                     'href' => function ($crud, $column, $entry, $related_key) {
-                        return backpack_url('blog-category/'.$related_key.'/show');
+                        return backpack_url('blog-category/' . $related_key . '/show');
                     },
                 ],
             ]);
@@ -69,7 +69,7 @@ class BlogArticleCrudController extends CrudController
                 'attribute' => 'name',
                 'wrapper'   => [
                     'href' => function ($crud, $column, $entry, $related_key) {
-                        return backpack_url('blog-tag/'.$related_key.'/show');
+                        return backpack_url('blog-tag/' . $related_key . '/show');
                     },
                 ],
             ]);
@@ -121,7 +121,7 @@ class BlogArticleCrudController extends CrudController
             $this->crud->addField([
                 'name' => 'extract',
                 'label' => trans('admin.extract'),
-                'type' => 'text',
+                'type' => 'ckeditor',
             ]);
             $this->crud->addField([
                 'name' => 'date',
@@ -137,11 +137,11 @@ class BlogArticleCrudController extends CrudController
             $this->crud->addField([
                 'name' => 'content',
                 'label' => trans('admin.content'),
-                'type' => 'custom_textarea',
-                'data' => [
-                    'removePlugins' => ['Heading', 'blockQuote'],
-                    'toolbar' => ['bold', 'italic', 'bulletedList', 'numberedList', 'link'],
-                ],
+                'type' => 'ckeditor',
+                //'data' => [
+                //    'removePlugins' => ['Heading', 'blockQuote'],
+                //    'toolbar' => ['bold', 'italic', 'bulletedList', 'numberedList', 'link'],
+                //],
                 // Example: Simple con solo bold y italic
                 //'data' => [
                 //    'removePlugins' => ['Heading', 'Link', 'CKFinder', 'bulletedList', 'numberedList', 'blockQuote'],
