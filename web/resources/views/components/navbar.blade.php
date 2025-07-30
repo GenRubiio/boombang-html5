@@ -24,6 +24,9 @@
                 @endforeach
             </ul>
         @endif
+        <div class="navbar__language-selector-container">
+            <x-language-selector :$urlTranslateds />
+        </div>
     </div>
     <button class="hamburger hamburger--squeeze" type="button" tabindex="0" aria-label="Menu"
         aria-controls="navigation">
@@ -31,12 +34,4 @@
             <span class="hamburger-inner"></span>
         </span>
     </button>
-    {{--
-    <div class="navbar__language-selector-container">
-        <x-language-selector :$urlTranslateds/>
-    </div>
-    <div class="navbar__logout-container">
-        <x-logout />
-    </div>
-    --}}
 </nav>
