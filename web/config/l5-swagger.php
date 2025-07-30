@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Basetis Backpack Base - Swagger',
+                'title' => 'BoomMania - Swagger',
             ],
 
             'routes' => [

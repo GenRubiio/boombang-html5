@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>{{env('APP_NAME')}}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="author" content="Basetis">
+    <meta name="author" content="BoomMania">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0"

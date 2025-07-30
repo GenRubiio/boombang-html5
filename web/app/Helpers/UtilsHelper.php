@@ -176,7 +176,7 @@ class UtilsHelper
         $envTo = env('MAIL_TO_ADDRESS', null);
         return [
             [
-                'email' => $envTo ?? 'francesc.romera@basetis.com',
+                'email' => $envTo ?? 'boommaniagame@gmail.com',
                 'lang' => config('app.locale'),
             ]
         ];

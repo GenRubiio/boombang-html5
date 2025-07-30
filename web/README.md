@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://basetis.com" target="_blank">
+<a href="https://boommania.com" target="_blank">
 <img src="https://www.basetis.com/wp-content/uploads/2018/11/Basetis_Logotipo.svg" width="150">
 </a>
 <br>
@@ -15,7 +15,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# Basetis Backpack Base
+# BoomMania
 
 ---
 
@@ -110,7 +110,7 @@ php artisan horizon
 ### Dashboard
 
 ```
-http://basetisbackpackbase.bst/horizon/dashboard
+http://127.0.0.1:8000/horizon/dashboard
 ```
 
 ### Other commands
@@ -136,7 +136,7 @@ More info: https://laravel.com/docs/10.x/telescope
 
 ### Dashboard
 ```
-http://basetisbackpackbase.bst/telescope
+http://127.0.0.1:8000/telescope
 ```
 
 ---
@@ -170,7 +170,7 @@ https://laravel.com/docs/10.x/passport#configuration
 
 ## SonarQube:
 
-### Locally with the basetis repository with docker:
+### Locally with the boomania repository with docker:
 #### https://git.basetis.com/devops/sonarqube
 
 ```

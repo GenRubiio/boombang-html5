@@ -9,22 +9,18 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(
- *    title="Basetis Backpack Base API",
+ *    title="BoomMania API",
  *    version="1.0.0",
- *    description="Basetis Backpack Base API - Swagger
+ *    description="BoomMania API - Swagger
  *    To be able to authorize api write in Authorize: Bearer {token}",
  * )
  * @OA\Server(
  *    description="Master server",
- *    url="https://basetisbackpackbase.com/api/"
- * ),
- * @OA\Server(
- *    description="Staging server",
- *    url="https://basetisbackpackbase.basetis.com/api/"
+ *    url="https://boommania.com/api/"
  * ),
  * @OA\Server(
  *    description="Local server - Francesc",
- *    url="http://basetisbackpackbase.bst/api/"
+ *    url="http://127.0.0.1:8000/api/"
  * ),
  */
 class Controller extends BaseController

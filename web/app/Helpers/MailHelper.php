@@ -34,9 +34,9 @@ class MailHelper
         }
 
         $blade = 'emails.' . $formType;
-        $fromAddress = $fromAddress ?? env('MAIL_FROM_ADDRESS') ?? "francesc.romera@basetis.com";
+        $fromAddress = $fromAddress ?? env('MAIL_FROM_ADDRESS') ?? "boommaniagame@gmail.com";
         $fromName = $fromName ?? env('MAIL_FROM_NAME');
-        $fromAddress = $fromAddress ?? env('MAIL_FROM_ADDRESS') ?? "francesc.romera@basetis.com";
+        $fromAddress = $fromAddress ?? env('MAIL_FROM_ADDRESS') ?? "boommaniagame@gmail.com";
         $subject = $subject ?? env('MAIL_FROM_ADDRESS');
         $bcc = $bcc ?? env('MAIL_FROM_ADDRESS');
 

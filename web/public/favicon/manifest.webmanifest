@@ -1,7 +1,7 @@
 {
-    "short_name": "Basetis",
-    "name": "Basetis",
-    "description": "Basetis",
+    "short_name": "BoomMania",
+    "name": "BoomMania",
+    "description": "BoomMania",
     "background_color": "#9839FF",
     "theme_color": "#ffffff",
     "orientation": "portrait",
@@ -47,6 +47,6 @@
         "tabs",
         "bookmarks"
     ],
-    "start_url": "https://basetis.com",
+    "start_url": "https://boommania.com",
     "display": "standalone"
 }

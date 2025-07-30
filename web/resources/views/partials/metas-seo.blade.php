@@ -9,7 +9,7 @@
         <meta name="keywords" content="@yield('meta-keywords')" />
         <meta name="author" content="@yield('meta-author', config('settings.name'))" />
         <meta name="channel" content="website"/>
-        <meta name="generator" content="Basetis" />
+        <meta name="generator" content="BoomMania" />
         <!-- ./Clasic metadata -->
         <!-- Geo Metas -->
         @if(!is_null(config('settings.geo_position')))<meta name="geo.position" content="{{config('settings.geo_position')}}" />@endif
