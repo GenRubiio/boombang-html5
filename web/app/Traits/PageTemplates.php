@@ -10,6 +10,9 @@ trait PageTemplates
     use Pages\EntityTemplate;
     use Pages\LegalTemplate;
     use Pages\DefaultTemplate;
+    use Pages\DiscoverTemplate;
+    use Pages\SecurityTemplate;
+    use Pages\ShoppingTemplate;
 
     /* Template Partials - Protected functions */
     use Pages\Partials\BaseTemplate;
