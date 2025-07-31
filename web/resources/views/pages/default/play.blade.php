@@ -19,8 +19,7 @@
 
 @section('content')
     <div class="container-fluid" id="page-play">
-        <h1>
-            Page "Play" created succesfully!
-        </h1>
+        <iframe src="{{ config('settings.client_url') }}" frameborder="0" width="100%" height="100%"
+            allowfullscreen></iframe>
     </div>
 @endsection

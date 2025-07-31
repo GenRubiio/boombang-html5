@@ -37,7 +37,7 @@ header {
 
                 & img,
                 & svg {
-                    @include svg-brightness.svg-brightness('white');
+                    //@include svg-brightness.svg-brightness('white');
                 }
             }
         }
