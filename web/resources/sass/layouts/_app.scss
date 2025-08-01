@@ -116,3 +116,17 @@ strong, b {
 body{
    background-repeat: round;
 }
+
+/* 1. Cursor “default” para todo el documento */
+html, body {
+  /* cursor-default.cur es tu imagen .cur (32×32) */
+  cursor: url('@public/images/cursors/white.cur'), default;
+}
+
+/* 2. Cursor “pointer” (mano) para enlaces, botones o clases específicas */
+a,
+button,
+.mi-clase-hand {
+  /* cursor-hand.cur es tu imagen .cur para el hand */
+  cursor: url('@public/images/cursors/gold.cur'), pointer !important;
+}
