@@ -18,11 +18,10 @@
 ])
 
 @section('content')
-    <div class="container-1440 page-margin" id="page-security">
-        <div class="d-flex flex-wrap justify-content-center page-security">
-            <h1>
-                Page "Security" created succesfully!
-            </h1>
+    <div class="container" id="page-security">
+        <div class="page-security">
+            @include('partials.pages.banner')
+            @include('partials.pages.security.content')
         </div>
     </div>
 @endsection
