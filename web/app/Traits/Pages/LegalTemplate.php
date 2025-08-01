@@ -7,14 +7,15 @@ trait LegalTemplate
     private function legal()
     {
         $this->base();
-
         $this->seo();
 
         $this->crud->addField([
-            'name' => 'content',
+            'name' => 'content_content',
             'label' => trans('backpack::pagemanager.content'),
-            'type' => 'custom_textarea',
+            'type' => 'ckeditor',
             'placeholder' => trans('backpack::pagemanager.content_placeholder'),
+            'fake' => true,
+            'store_in' => 'content',
             'tab' => $this->content_tab,
         ]);
     }

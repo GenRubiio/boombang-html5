@@ -91,6 +91,18 @@ class ImageHelper
             }
             File::put($destination . '/' . $filename, base64_decode($value));
             return $destination . '/' . $filename;
+        } elseif (Str::startsWith($value, 'data:image/webp')) {
+            $filename = $filename . '.webp';
+            $path = $destination . '/' . $filename;
+            $value = str_replace('data:image/webp;base64,', '', $value);
+            $value = str_replace(' ', '+', $value);
+
+            if (!empty($entity->{$attribute})) {
+                removeFile($entity->{$attribute}, $disk);
+            }
+
+            Storage::disk($disk)->put($path, base64_decode($value));
+            return $path;
         } elseif (Str::startsWith($value, 'data:image')) {
             // 0. Make the image
             $image = Image::make($value);
