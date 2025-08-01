@@ -18,11 +18,10 @@
 ])
 
 @section('content')
-    <div class="container-1440 page-margin" id="page-discover">
-        <div class="d-flex flex-wrap justify-content-center page-discover">
-            <h1>
-                Page "Discover" created succesfully!
-            </h1>
+    <div class="container" id="page-discover">
+        <div class="page-discover">
+            @include('partials.pages.banner')
+            @include('partials.pages.discover.content')
         </div>
     </div>
 @endsection

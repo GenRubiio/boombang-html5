@@ -1,0 +1,88 @@
+@use '../variables' as *;
+
+#page-discover {
+    .page-discover {
+        &__content {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            background-color: #c44a1d;
+            padding: 20px;
+            border-left: 10px solid #fff;
+            border-right: 10px solid #fff;
+
+            @media (max-width: $md) {
+                flex-wrap: wrap;
+            }
+
+            @media (max-width: $sm) {
+                border: none;
+            }
+
+            &__left {
+                width: calc(100% - 300px);
+                padding: 20px;
+
+                @media (max-width: $md) {
+                    width: 100%;
+                }
+
+                &-title {
+                    color: #ffe000;
+                    font-weight: bold;
+                    font-size: 32px;
+                }
+
+                &__items {
+
+                    &__item {
+                        margin-top: 20px;
+
+                        &-title {
+                            color: white;
+                            font-weight: bold;
+                            font-size: 20px;
+                        }
+
+                        &__content {
+                            display: flex;
+                            gap: 20px;
+
+                            @media (max-width: $md) {
+                                flex-direction: column;
+                            }
+
+                            &-text {
+                                font-size: 16px;
+                                color: #fff;
+                                margin-top: 10px;
+                            }
+
+                            &-image {
+                                width: 100%;
+                                max-width: 230px;
+                                height: auto;
+
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: contain;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &__right {
+                width: 300px;
+            }
+        }
+
+        .white-separator {
+            width: 100%;
+            height: 10px;
+            background-color: #fff;
+        }
+    }
+}

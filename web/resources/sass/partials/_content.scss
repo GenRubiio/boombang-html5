@@ -1,0 +1,44 @@
+@use '../variables' as *;
+
+.page__content {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    background-color: #c44a1d;
+    padding: 20px;
+    border-left: 10px solid #fff;
+    border-right: 10px solid #fff;
+
+    @media (max-width: $md) {
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: $sm) {
+        border: none;
+    }
+
+    &__left {
+        width: calc(100% - 300px);
+        padding: 20px;
+
+        @media (max-width: $md) {
+            width: 100%;
+        }
+
+        &-title {
+            color: #ffe000;
+            font-weight: bold;
+            font-size: 32px;
+        }
+    }
+
+    &__right {
+        width: 300px;
+    }
+}
+
+.white-separator {
+    width: 100%;
+    height: 10px;
+    background-color: #fff;
+}
