@@ -179,7 +179,9 @@ class MenuItem extends MenuItemOriginal
         $destinationPath = $this->upload_path . '/' . Str::slug($this->name);
 
         if ($value == null) {
-            removeFile($this->{$attributeName}, $disk);
+            if (isset($this->{$attributeName}) && $this->{$attributeName} != null) {
+                removeFile($this->{$attributeName}, $disk);
+            }
             $this->attributes[$attributeName] = null;
         }
         if (Str::startsWith($value, 'data:image')) {
