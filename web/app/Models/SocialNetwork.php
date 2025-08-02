@@ -34,6 +34,7 @@ class SocialNetwork extends Model
         'icon',
         'image',
         'parent_id',
+        'background_color',
         'lft',
         'rgt',
         'depth',

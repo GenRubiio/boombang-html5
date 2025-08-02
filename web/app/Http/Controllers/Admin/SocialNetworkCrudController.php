@@ -89,6 +89,12 @@ class SocialNetworkCrudController extends CrudController
                 'iconset' => 'fontawesome'
             ],
             [
+                'name' => 'background_color',
+                'label' => 'Background Color',
+                'type' => 'color',
+                'wrapper' => ['class' => 'form-group col-md-3'],
+            ],
+            [
                 'name' => 'image',
                 'label' => trans('admin.image'),
                 'type' => 'image',
