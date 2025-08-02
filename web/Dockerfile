@@ -3,8 +3,8 @@ FROM php:8.2-cli
 WORKDIR /var/www
 
 RUN apt-get update \
-    && apt-get install -y git unzip libzip-dev curl gnupg \
-    && docker-php-ext-install pdo_mysql zip
+    && apt-get install -y git unzip libzip-dev curl gnupg libpng-dev libjpeg-dev \
+    && docker-php-ext-install pdo_mysql zip gd
 
 # Copiar Composer desde imagen oficial
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -13,7 +13,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY . .
 
 # Instalar dependencias de Laravel
-RUN composer install --no-interaction --prefer-dist --no-dev
+RUN composer install --no-interaction --prefer-dist --no-dev --no-scripts
 
 # Instalar Node.js (para frontend)
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
