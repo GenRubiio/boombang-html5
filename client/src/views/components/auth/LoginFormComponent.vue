@@ -65,8 +65,8 @@ import { useLanguageStore } from "../../../stores/languageStore";
 export default {
   data() {
     return {
-      username: "Gen",
-      password: "test",
+      username: "",
+      password: "",
       usernameError: "",
       showUsernameError: false,
       loading: false,
