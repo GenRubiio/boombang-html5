@@ -11,7 +11,7 @@ class Bot {
         this.password = password;
         this.socket = null;
         this.uppercutInterval = null;
-        this.api_url = process.env.API_DOCKER_URL;
+        this.api_url = process.env.API_URL;
 
         this.authenticateAndConnect();
     }
