@@ -16,8 +16,8 @@ trait HomeTemplate
             'store_in' => 'content_no_translatable',
             'type' => 'image',
             'upload' => true,
-            'crop' => true, // set to true to allow cropping, false to disable
-            'aspect_ratio' => 0, // ommit or set to 0 to allow any aspect ratio
+            'crop' => true,
+            'aspect_ratio' => 0,
             'hint' => trans('admin.hint_image_or_svg'),
             'tab' => $this->content_tab,
         ]);
