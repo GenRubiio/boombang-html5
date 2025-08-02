@@ -20,7 +20,7 @@ import AlertMinigameComponent from "../../../components/game/minigames/AlertMini
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum.js";
 import MinigameAlertsEnum from "../../../../enums/MinigameAlertsEnum.js";
-import { useNpcSubscriptionStore } from "../../../../stores/npcSubscription.js";
+import { useNpcSubscriptionStore } from "../../stores/NpcSubscription.js";
 import NpcEnum from "../../../../enums/NpcEnum.js";
 
 export default {
