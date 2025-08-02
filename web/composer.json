@@ -9,6 +9,7 @@
         "backpack/backupmanager": "^5.0",
         "backpack/crud": "^6.0",
         "backpack/editable-columns": "^3.0",
+        "backpack/filemanager": "^3.0",
         "backpack/langfilemanager": "^5.0",
         "backpack/logmanager": "^5.0",
         "backpack/menucrud": "^4.0",

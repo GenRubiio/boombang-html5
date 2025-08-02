@@ -65,3 +65,5 @@
         </ul>
     </li>
 @endif
+
+<x-backpack::menu-item :title="trans('backpack::crud.file_manager')" icon="la la-files-o" :link="backpack_url('elfinder')" />
