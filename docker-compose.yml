@@ -16,6 +16,25 @@ services:
     networks:
       - boombang
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      UPLOAD_LIMIT: 300M
+      VIRTUAL_HOST: ${PMA_VIRTUAL_HOST}
+      VIRTUAL_PORT: 80
+      VIRTUAL_PROTO: http
+    expose:
+      - "80"
+    depends_on:
+      - db
+    networks:
+      - boombang
+
   proxy:
     image: jwilder/nginx-proxy:latest
     container_name: nginx-proxy
