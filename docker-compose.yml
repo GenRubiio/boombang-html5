@@ -136,9 +136,6 @@ services:
 
   client:
     build: ./client
-    volumes:
-      - ./client:/app
-      - /app/node_modules # To persist node_modules
     env_file:
       - ./client/.env
     environment:
@@ -150,7 +147,7 @@ services:
       - server
       - proxy
     expose:
-      - "5173"
+      - "80"
     labels:
       - "VIRTUAL_HOST=${CLIENT_VIRTUAL_HOST}"
     networks:
