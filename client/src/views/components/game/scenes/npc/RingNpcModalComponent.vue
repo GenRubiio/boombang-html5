@@ -103,7 +103,7 @@ import asset_upper_black_image from "../../../../../assets/game/ficha/uppercuts/
 import asset_upper_gold_image from "../../../../../assets/game/ficha/uppercuts/gold.png";
 import asset_trophies_image from "../../../../../assets/game/games/trophie_game_1.png";
 import socket from "../../../../../sockets/socket";
-import { useNpcSubscriptionStore } from "../../../../../stores/npcSubscription";
+import { useNpcSubscriptionStore } from "../../../../../stores/NpcSubscriptionTest.js";
 import RequestSocketsEnum from "../../../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../../../enums/ResponseSocketsEnum";
 
