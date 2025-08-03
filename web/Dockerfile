@@ -18,7 +18,7 @@ RUN composer install --no-interaction --prefer-dist --no-dev --no-scripts
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm install
 
 # Copiar el resto de la aplicación
