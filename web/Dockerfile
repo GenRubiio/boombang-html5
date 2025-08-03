@@ -5,7 +5,7 @@ WORKDIR /var/www/html
 # Instalar dependencias del sistema
 RUN apt-get update \
     && apt-get install -y git unzip libzip-dev curl gnupg libpng-dev libjpeg-dev \
-    && docker-php-ext-install pdo_mysql zip gd
+    && docker-php-ext-install pdo_mysql zip gd pcntl posix
 
 # Copiar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
