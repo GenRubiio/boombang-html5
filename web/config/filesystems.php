@@ -44,13 +44,6 @@ return [
             'throw' => false,
         ],
 
-        // used for Backpack/CRUD
-        'uploads' => [
-            'driver' => 'local',
-            'root' => public_path(),
-            'url' => env('APP_URL'),
-        ],
-
         // used for Backpack/BackupManager
         'backups' => [
             'driver' => 'local',
