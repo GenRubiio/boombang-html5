@@ -48,6 +48,7 @@ services:
     build: ./api
     volumes:
       - ./api:/var/www/html
+      - ./api/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
     env_file:
       - ./api/.env
     environment:
@@ -68,7 +69,7 @@ services:
       - "80"
     labels:
       - "VIRTUAL_HOST=${API_VIRTUAL_HOST}"
-    command: php -S 0.0.0.0:80 -t public
+    command: sh -c "php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
         aliases:
@@ -78,6 +79,7 @@ services:
     build: ./web
     volumes:
       - ./web:/var/www/html
+      - ./web/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
     env_file:
       - ./web/.env
     environment:
@@ -98,7 +100,7 @@ services:
       - "80"
     labels:
       - "VIRTUAL_HOST=${WEB_VIRTUAL_HOST}"
-    command: php -S 0.0.0.0:80 -t public
+    command: sh -c "php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
         aliases:
@@ -140,6 +142,9 @@ services:
 
   client:
     build: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules
     env_file:
       - ./client/.env
     environment:
