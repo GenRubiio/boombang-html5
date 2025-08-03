@@ -48,6 +48,7 @@ services:
     build: ./api
     volumes:
       - ./api:/var/www/html
+      - api_storage:/var/www/html/storage
       - ./api/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
     env_file:
       - ./api/.env
@@ -79,6 +80,7 @@ services:
     build: ./web
     volumes:
       - ./web:/var/www/html
+      - web_storage:/var/www/html/storage
       - ./web/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
     env_file:
       - ./web/.env
@@ -166,6 +168,8 @@ services:
 
 volumes:
   dbdata:
+  api_storage:
+  web_storage:
 
 networks:
   boombang:
