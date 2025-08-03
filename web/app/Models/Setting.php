@@ -144,6 +144,16 @@ class Setting extends Model
                     }
                     File::put($destinationPath . '/' . $filename, base64_decode($value));
                     $this->attributes[$attributeName] = $destinationPath . '/' . $filename;
+                } elseif (Str::startsWith($value, 'data:image/webp')) {
+                    $filename = $filename . '.webp';
+                    $path = $destinationPath . '/' . $filename;
+                    $value = str_replace('data:image/webp;base64,', '', $value);
+                    $value = str_replace(' ', '+', $value);
+                    if (!File::exists($destinationPath)) {
+                        mkdir($destinationPath);
+                    }
+                    File::put($path, base64_decode($value));
+                    $this->attributes[$attributeName] = $path;
                 } elseif (Str::startsWith($value, 'data:image')) {
                     // 0. Make the image
                     $image = Image::make($value);
