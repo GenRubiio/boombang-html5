@@ -89,6 +89,7 @@ services:
       # Excepción para node_modules y vendor, para que use los de la imagen
       - /var/www/html/node_modules
       - /var/www/html/vendor
+      - /var/www/html/public/build
     env_file:
       - ./web/.env
     environment:
