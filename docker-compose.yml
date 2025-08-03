@@ -51,6 +51,9 @@ services:
       - api_storage:/var/www/html/storage
       - api_uploads:/var/www/html/public/uploads
       - ./api/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
+      - /var/www/html/node_modules
+      - /var/www/html/vendor
+      - /var/www/html/public/build
     env_file:
       - ./api/.env
     environment:
