@@ -56,6 +56,9 @@ services:
       VIRTUAL_PROTO: ${API_VIRTUAL_PROTO}
       APP_URL: ${API_APP_URL}
       DB_HOST: ${API_DB_HOST}
+      DB_DATABASE: ${API_DB_DATABASE}
+      DB_USERNAME: ${API_DB_USERNAME}
+      DB_PASSWORD: ${API_DB_PASSWORD}
     depends_on:
       - db
       - proxy
@@ -83,6 +86,9 @@ services:
       VIRTUAL_PROTO: ${WEB_VIRTUAL_PROTO}
       APP_URL: ${WEB_APP_URL}
       DB_HOST: ${WEB_DB_HOST}
+      DB_DATABASE: ${WEB_DATABASE}
+      DB_USERNAME: ${WEB_DB_USERNAME}
+      DB_PASSWORD: ${WEB_DB_PASSWORD}
     depends_on:
       - db
       - proxy
