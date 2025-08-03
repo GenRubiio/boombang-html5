@@ -147,7 +147,7 @@ services:
       - server
       - proxy
     expose:
-      - "5173"
+      - "80"
     labels:
       - "VIRTUAL_HOST=${CLIENT_VIRTUAL_HOST}"
     networks:
