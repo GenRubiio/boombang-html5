@@ -12,6 +12,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Copiar solo los archivos de dependencias para cachearlas
 COPY composer.* ./
+COPY auth.json ./
 RUN composer install --no-interaction --prefer-dist --no-dev --no-scripts -vvv
 
 # Instalar Node.js y dependencias de frontend
