@@ -80,10 +80,15 @@ services:
   web:
     build: ./web
     volumes:
+      # Volumen para el código de la aplicación (bind mount)
       - ./web:/var/www/html
+      # Volumen persistente para storage (gestionado por Docker)
       - web_storage:/var/www/html/storage
+      # Volumen persistente para uploads (gestionado por Docker)
       - web_uploads:/var/www/html/public/uploads
-      - ./web/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
+      # Excepción para node_modules y vendor, para que use los de la imagen
+      - /var/www/html/node_modules
+      - /var/www/html/vendor
     env_file:
       - ./web/.env
     environment:
