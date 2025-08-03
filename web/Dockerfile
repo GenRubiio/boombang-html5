@@ -1,28 +1,33 @@
 FROM php:8.2-cli
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
+# Instalar dependencias del sistema
 RUN apt-get update \
     && apt-get install -y git unzip libzip-dev curl gnupg libpng-dev libjpeg-dev \
     && docker-php-ext-install pdo_mysql zip gd
 
-# Copiar Composer desde imagen oficial
+# Copiar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copiar todos los archivos del proyecto (incluye artisan y app/)
-COPY . .
-
-# Instalar dependencias de Laravel
+# Copiar solo los archivos de dependencias para cachearlas
+COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --no-dev --no-scripts
 
-# Instalar Node.js (para frontend)
+# Instalar Node.js y dependencias de frontend
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
-# Instalar dependencias frontend y compilar
-RUN npm install && npm run build
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copiar el resto de la aplicación
+COPY . .
+
+# Compilar los assets
+RUN npm run build
 
 EXPOSE 80
 
-# Iniciar servidor embebido de Laravel
+# El CMD se sobreescribe en docker-compose.yml, así que este es solo un fallback
 CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
