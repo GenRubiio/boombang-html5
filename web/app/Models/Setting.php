@@ -140,7 +140,7 @@ class Setting extends Model
                         removeFile($this->{$attributeName}, $disk);
                     }
                     if (!File::exists($destinationPath)) {
-                        mkdir($destinationPath);
+                        mkdir($destinationPath, 0755, true);
                     }
                     File::put($destinationPath . '/' . $filename, base64_decode($value));
                     $this->attributes[$attributeName] = $destinationPath . '/' . $filename;
@@ -150,7 +150,7 @@ class Setting extends Model
                     $value = str_replace('data:image/webp;base64,', '', $value);
                     $value = str_replace(' ', '+', $value);
                     if (!File::exists($destinationPath)) {
-                        mkdir($destinationPath);
+                        mkdir($destinationPath, 0755, true);
                     }
                     File::put($path, base64_decode($value));
                     $this->attributes[$attributeName] = $path;
