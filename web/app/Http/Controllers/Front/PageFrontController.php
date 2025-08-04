@@ -158,8 +158,8 @@ class PageFrontController extends Controller
             */
             case "News":
                 $object['entity'] = "blogs";
-                $object['variable'] = "blog";
-                $object['nameBlade'] = "news";
+                $object['variable'] = "article";
+                $object['nameBlade'] = "article";
                 $object['object'] = (new BlogArticleFrontController())->show($objectEntity) ?? abort(404);
                 $object['items'] = (new BlogArticleFrontController())->showItems();
                 break;

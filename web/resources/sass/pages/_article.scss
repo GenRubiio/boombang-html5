@@ -1,0 +1,119 @@
+@use '../variables' as *;
+
+#page-article {
+    .page-article {
+        &__content {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            background-color: #c44a1d;
+            padding: 20px;
+            border-left: 10px solid #fff;
+            border-right: 10px solid #fff;
+
+            @media (max-width: $md) {
+                flex-wrap: wrap;
+            }
+
+            @media (max-width: $sm) {
+                border: none;
+            }
+
+            &__left {
+                width: calc(100% - 300px);
+                padding: 20px 20px 80px 20px;
+
+                @media (max-width: $md) {
+                    width: 100%;
+                }
+
+                &-title {
+                    color: #ffe000;
+                    font-weight: bold;
+                    font-size: 32px;
+                }
+
+                &-date {
+                    color: white;
+                    font-size: 20px;
+                    margin-top: 10px;
+                }
+
+                &-image {
+                    width: 100%;
+                    height: 330px;
+                    box-shadow: 3px 3px rgba(0, 0, 0, 0.3);
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                &-content {
+                    margin-top: 20px;
+                    color: white;
+                    font-size: 16px;
+
+                    h4 {
+                        font-size: 20px;
+                        margin-bottom: 10px;
+                    }
+
+                    p {
+                        margin-bottom: 20px;
+                    }
+
+                    ul {
+                        padding-left: 20px;
+                        margin-bottom: 20px;
+
+                        li {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+
+                &__show-more {
+                    width: 100%;
+                    display: flex;
+                    justify-content: end;
+                    margin-top: 40px;
+
+                    a {
+                        font-weight: bold;
+                        color: white;
+                        font-size: 18px;
+                        text-transform: uppercase;
+
+                        i {
+                            color: #ffe000;
+                        }
+                    }
+                }
+
+            }
+
+            &__right {
+                width: 300px;
+            }
+        }
+
+        .white-separator {
+            width: 100%;
+            height: 10px;
+            background-color: #fff;
+        }
+    }
+
+    hr {
+        border: none;
+        height: 9px;
+        background-image: radial-gradient(circle, rgb(255 255 255 / 62%) 50%, transparent 50%);
+        background-repeat: round;
+        background-size: 8px 8px;
+        margin: 1.35em auto;
+        max-width: 100%;
+    }
+}

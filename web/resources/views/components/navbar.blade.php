@@ -15,7 +15,7 @@
                         <a href="{{ $item->page_link }}" class="navbar__menu-link {{ $isActive ? 'active' : '' }}">
                             @if (isset($item->image) && $item->image)
                                 <span class="navbar__menu-image">
-                                    <img src="{{ $item->image }}" alt="{{ $item->name }}">
+                                    <img src="{{ asset($item->image) }}" alt="{{ $item->name }}">
                                 </span>
                             @endif
                             {{ $item->name }}
