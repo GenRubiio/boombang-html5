@@ -9,8 +9,8 @@ while true; do
     case $opt in
         1)
             echo "Copiando archivos del Docker al repositorio..."
-            docker exec -it boombang-html5-web-1 bash -c "cd /var/www/html/public && tar czf uploads.tar.gz uploads"
-            docker cp boombang-html5-web-1:/var/www/html/public/uploads.tar.gz ./web/public/
+            sudo docker exec -it boombang-html5-web-1 bash -c "cd /var/www/html/public && tar czf uploads.tar.gz uploads"
+            sudo docker cp boombang-html5-web-1:/var/www/html/public/uploads.tar.gz ./web/public/
             cd ./web/public
             tar xzf uploads.tar.gz
             rm uploads.tar.gz
@@ -21,9 +21,9 @@ while true; do
             echo "Copiando archivos del repositorio al Docker..."
             cd ./web/public
             tar czf uploads.tar.gz uploads
-            docker cp ./uploads.tar.gz boombang-html5-web-1:/var/www/html/public/
-            docker exec -it boombang-html5-web-1 bash -c "cd /var/www/html/public && tar xzf uploads.tar.gz && rm uploads.tar.gz"
-            docker exec -it boombang-html5-web-1 bash -c "chown -R www-data:www-data /var/www/html/public/uploads && chmod -R 755 /var/www/html/public/uploads"
+            sudo docker cp ./uploads.tar.gz boombang-html5-web-1:/var/www/html/public/
+            sudo docker exec -it boombang-html5-web-1 bash -c "cd /var/www/html/public && tar xzf uploads.tar.gz && rm uploads.tar.gz"
+            sudo docker exec -it boombang-html5-web-1 bash -c "chown -R www-data:www-data /var/www/html/public/uploads && chmod -R 755 /var/www/html/public/uploads"
             rm uploads.tar.gz
             cd ../..
             echo "Copia completada."
