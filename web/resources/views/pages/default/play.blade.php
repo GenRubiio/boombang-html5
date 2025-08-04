@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.play')
 
 @php
     if (isset($items)) {
