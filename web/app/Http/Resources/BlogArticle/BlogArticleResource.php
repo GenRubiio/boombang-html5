@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources\BlogArticle;
 
-use App\Traits\Resources\DtoResourceTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Traits\Resources\DtoResourceTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BlogArticleResource extends JsonResource
@@ -30,6 +31,8 @@ class BlogArticleResource extends JsonResource
             'slug' => (string)$this->slug,
             'featured' => (bool)$this->featured,
             'date' => (string)$this->date,
+            'parsed_date' => Carbon::parse($this->date)->format('d M Y'),
+            'blogTags' => $this->blogTags,
         ];
     }
 }

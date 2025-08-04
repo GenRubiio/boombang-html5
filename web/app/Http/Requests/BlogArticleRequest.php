@@ -32,6 +32,7 @@ class BlogArticleRequest extends FormRequest
             'date' => 'required',
             'status' => 'required',
             'category_id' => 'required',
+            'image' => 'required',
         ];
     }
 

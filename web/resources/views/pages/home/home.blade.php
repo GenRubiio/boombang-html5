@@ -26,6 +26,7 @@
             ])
             @include('partials.pages.home.content', [
                 'title' => $pageResource->content->content_title ?? null,
+                'blog_featured' => $blog_featured ?? null,
             ])
         </div>
     </div>
