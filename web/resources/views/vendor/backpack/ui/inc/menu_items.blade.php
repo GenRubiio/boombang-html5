@@ -6,16 +6,16 @@
 <li class="nav-item"><a class="nav-link" href="{{ route('webapi.sitemap-generate') }}" target="_blank"><i class="las la-sitemap nav-icon"></i> {{ trans('menu-admin.generate-sitemap') }}</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('page') }}'><i class='nav-icon la la-file-o'></i> <span>{{trans('menu-admin.pages')}}</span></a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('menu-item') }}'><i class='nav-icon la la-list'></i> <span>{{trans('menu-admin.menu')}}</span></a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('preset-email') }}'><i class='nav-icon la la-envelope'></i> {{trans('menu-admin.preset-emails')}}</a></li>
+{{-- <li class='nav-item'><a class='nav-link' href='{{ backpack_url('preset-email') }}'><i class='nav-icon la la-envelope'></i> {{trans('menu-admin.preset-emails')}}</a></li> --}}
 @if (backpack_user()->hasRole('Admin') || backpack_user()->hasRole('Superadmin'))
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('language/texts') }}"><i class="nav-icon la la-language"></i> {{trans('menu-admin.static-translates')}}</a></li>
-    <li class='nav-item'><a class='nav-link' href='{{ backpack_url('slide') }}'><i class='nav-icon lar la-images'></i> {{trans('menu-admin.slides')}}</a></li>
+{{--     <li class='nav-item'><a class='nav-link' href='{{ backpack_url('slide') }}'><i class='nav-icon lar la-images'></i> {{trans('menu-admin.slides')}}</a></li> --}}
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('social-network') }}"><i class="nav-icon las la-hashtag"></i> {{trans('menu-admin.social-networks')}}</a></li>
     <li class='nav-item'><a class='nav-link' href='{{ backpack_url('lead') }}'><i class='nav-icon lab la-mailchimp'></i> {{trans('menu-admin.leads')}}</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('cookie') }}"><i class="nav-icon la la-cookie-bite"></i> {{trans('menu-admin.cookies')}}</a></li>
 @endif
 <li class="nav-title">{{trans('menu-admin.web')}}</li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('multimedia') }}'><i class='nav-icon las la-photo-video'></i> {{trans('menu-admin.multimedia')}}</a></li>
+{{-- <li class='nav-item'><a class='nav-link' href='{{ backpack_url('multimedia') }}'><i class='nav-icon las la-photo-video'></i> {{trans('menu-admin.multimedia')}}</a></li> --}}
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-newspaper-o"></i>{{trans('menu-admin.news')}}</a>
     <ul class="nav-dropdown-items">
@@ -55,7 +55,7 @@
     </ul>
 </li>
 {{-- PARAMETRIC TABLES --}}
-@if (backpack_user()->hasRole('Superadmin'))
+{{-- @if (backpack_user()->hasRole('Superadmin'))
     <li class="nav-title">{{trans('menu-admin.parametric-tables')}}</li>
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('parametric-table') }}"><i class="nav-icon la la-th-list"></i> {{trans('admin.tables')}}</a></li>
     <li class="nav-item nav-dropdown">
@@ -66,4 +66,4 @@
     </li>
 @endif
 
-<x-backpack::menu-item :title="trans('backpack::crud.file_manager')" icon="la la-files-o" :link="backpack_url('elfinder')" />
+<x-backpack::menu-item :title="trans('backpack::crud.file_manager')" icon="la la-files-o" :link="backpack_url('elfinder')" /> --}}

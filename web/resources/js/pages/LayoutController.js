@@ -13,7 +13,7 @@ const LayoutController = {
                 window.open(
                     link.href,
                     'popupWindow',
-                    'width=1012,height=657,left=100,top=100,resizable=yes,scrollbars=yes'
+                    'width=1000,height=627,left=100,top=100,resizable=yes,scrollbars=yes'
                 );
             });
         });

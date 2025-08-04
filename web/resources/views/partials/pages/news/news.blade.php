@@ -1,23 +1,27 @@
 <div class="page-news__content__left__news">
-    @for ($i = 0; $i < 5; $i++)
-        <div class="news-item">
-            <div class="news-item__left">
-                <img src="https://picsum.photos/400/300" alt="News Image {{ $i + 1 }}">
+    @if (!empty($blog_articles))
+        @foreach ($blog_articles as $post)
+            <div class="news-item">
+                <div class="news-item__left">
+                    <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+                </div>
+                <div class="news-item__right">
+                    <div class="news-item__right-title">
+                        {{ $post->title }}
+                    </div>
+                    <div class="news-item__right-info">
+                        <em><span>{{ $post->parsed_date }}</span></em> / @foreach ($post->blogTags as $tag)
+                            <a href="#"><em>{{ $tag->name }}</em></a>
+                            @if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="news-item__right-description">
+                        {!! $post->extract !!}
+                    </div>
+                </div>
             </div>
-            <div class="news-item__right">
-                <div class="news-item__right-title">
-                    Título de la noticia {{ $i + 1 }}
-                </div>
-                <div class="news-item__right-info">
-                    <em><span>{{ now()->subDays($i)->format('d M Y') }}</span></em> / <a href="#"><em>Campañas y
-                            Actividades</em></a>, <a href="#"><em>Actividades</em></a>
-                </div>
-                <div class="news-item__right-description">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua.
-                </div>
-            </div>
-        </div>
-    @endfor
+        @endforeach
+    @endif
 </div>

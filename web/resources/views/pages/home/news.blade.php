@@ -26,6 +26,8 @@
             ])
             @include('partials.pages.news.content', [
                 'title' => $pageResource->content->content_title ?? null,
+                'blog_articles' => $blogArticles ?? [],
+                'blog_tags' => $blogTags ?? [],
             ])
         </div>
     </div>

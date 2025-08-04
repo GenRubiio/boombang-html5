@@ -10,9 +10,11 @@ class BlogArticleFrontController extends Controller
 {
     public function index(): array
     {
-        $blogArticles = (new BlogArticleService())->index()->load(['blogCategory']);
+        $blogArticles = (new BlogArticleService())->index()->load(['blogCategory', 'blogTags']);
+        $blogTags = $blogArticles->pluck('blogTags')->flatten()->unique('id')->values();
         return [
-            'blogArticles' => BlogArticleResource::collectionToDTO($blogArticles)
+            'blogArticles' => BlogArticleResource::collectionToDTO($blogArticles),
+            'blogTags' => $blogTags
         ];
     }
 
