@@ -6,7 +6,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # The project root is one level up from the 'docker' directory where the script lives
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-WEB_PUBLIC_PATH="$PROJECT_ROOT/web/public"
+WEB_PUBLIC_PATH="$PROJECT_ROOT/boombang-html5/web/public"
 UPLOADS_DIR_NAME="uploads"
 UPLOADS_SOURCE_PATH="$WEB_PUBLIC_PATH/$UPLOADS_DIR_NAME"
 UPLOADS_TAR_PATH="$WEB_PUBLIC_PATH/uploads.tar.gz"
