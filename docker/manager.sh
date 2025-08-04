@@ -6,13 +6,13 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 ### Configuración WEB ###
-WEB_PUBLIC_PATH="$PROJECT_ROOT/boombang-html5/web/public"
+WEB_PUBLIC_PATH="$PROJECT_ROOT/web/public"
 WEB_UPLOADS="uploads"
 WEB_TAR="$WEB_PUBLIC_PATH/web_uploads.tar.gz"
 WEB_CONTAINER="boombang-html5-web-1"
 
 ### Configuración API ###
-API_PUBLIC_PATH="$PROJECT_ROOT/boombang-html5/api/public"
+API_PUBLIC_PATH="$PROJECT_ROOT/api/public"
 API_UPLOADS="uploads"
 API_TAR="$API_PUBLIC_PATH/api_uploads.tar.gz"
 API_CONTAINER="boombang-html5-api-1"
