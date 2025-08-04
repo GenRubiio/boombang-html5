@@ -3,7 +3,7 @@ set -e
 
 # This script is POSIX-compliant and assumes it is run from the project's root directory.
 
-WEB_PUBLIC_PATH="./web/public"
+WEB_PUBLIC_PATH="./boombang-html5/web/public"
 UPLOADS_DIR_NAME="uploads"
 UPLOADS_SOURCE_PATH="$WEB_PUBLIC_PATH/$UPLOADS_DIR_NAME"
 UPLOADS_TAR_PATH="$WEB_PUBLIC_PATH/uploads.tar.gz"
