@@ -8,6 +8,8 @@ class HomePageFrontController extends Controller
 {
     public function index(): array
     {
-        return [];
+        return [
+          
+        ];
     }
 }

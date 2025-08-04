@@ -13,33 +13,7 @@
                             Jugar
                         </a>
                     </div>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/boombanggames" target="_blank" class="social-link tooltip"
-                            style="background-color: #0076eb;">
-                            <i class="fab fa-facebook-f"></i>
-                            <span class="tooltiptext">Facebook</span>
-                        </a>
-                        <a href="https://www.instagram.com/boombanggames" target="_blank" class="social-link tooltip"
-                            style="background-color: #ff007a;">
-                            <i class="fab fa-instagram"></i>
-                            <span class="tooltiptext">Instagram</span>
-                        </a>
-                        <a href="https://www.youtube.com/@boombanggames" target="_blank" class="social-link tooltip"
-                            style="background-color: #ff0000;">
-                            <i class="fab fa-youtube"></i>
-                            <span class="tooltiptext">YouTube</span>
-                        </a>
-                        <a href="https://discord.gg/boombang" target="_blank" class="social-link tooltip"
-                            style="background-color: #5865f2;">
-                            <i class="fab fa-discord"></i>
-                            <span class="tooltiptext">Discord</span>
-                        </a>
-                        <a href="https://twitter.com/boombanggames" target="_blank" class="social-link tooltip"
-                            style="background-color: #1da1f2;">
-                            <i class="fab fa-twitter"></i>
-                            <span class="tooltiptext">Twitter</span>
-                        </a>
-                    </div>
+                    <x-header-social-networks />
                 </div>
             </div>
         </div>

@@ -24,7 +24,8 @@ class SocialNetworkResource extends JsonResource
             'id' => (int)$this->id,
             'name' => (string)$this->name,
             'link' => (string)$this->link,
-            //'icon' => (string)$this->icon,
+            'icon' => (string)$this->icon,
+            'background_color' => (string)$this->background_color,
             'image' => (string)$this->image_url,
         ];
     }
