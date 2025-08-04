@@ -1,13 +1,16 @@
 #!/bin/bash
+set -e
 
 # Get the directory of this script to build robust paths
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # The project root is one level up from the 'docker' directory where the script lives
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-WEB_PUBLIC_PATH="$PROJECT_ROOT/boombang-html5/web/public"
-UPLOADS_TAR_PATH="$WEB_PUBLIC_PATH/uploads.tar.gz"
+WEB_PUBLIC_PATH="$PROJECT_ROOT/web/public"
 UPLOADS_DIR_NAME="uploads"
+UPLOADS_SOURCE_PATH="$WEB_PUBLIC_PATH/$UPLOADS_DIR_NAME"
+UPLOADS_TAR_PATH="$WEB_PUBLIC_PATH/uploads.tar.gz"
+
 
 while true; do
     echo "Seleccione una opción:"
@@ -22,14 +25,30 @@ while true; do
             sudo docker exec -it boombang-html5-web-1 bash -c "cd /var/www/html/public && tar czf uploads.tar.gz $UPLOADS_DIR_NAME"
             # Copy the tarball from the container to the host
             sudo docker cp "boombang-html5-web-1:/var/www/html/public/uploads.tar.gz" "$WEB_PUBLIC_PATH/"
-            # On the host, extract the tarball and then remove it (using a subshell to avoid changing the script's directory)
+            # On the host, extract the tarball and then remove it
             (cd "$WEB_PUBLIC_PATH" && tar xzf "uploads.tar.gz" && rm "uploads.tar.gz")
             echo "Copia completada."
             ;;
         2)
             echo "Copiando archivos del repositorio al Docker..."
-            # On the host, create the tarball (using a subshell to avoid changing the script's directory)
-            (cd "$WEB_PUBLIC_PATH" && tar czf "uploads.tar.gz" "$UPLOADS_DIR_NAME")
+            
+            if [ ! -d "$UPLOADS_SOURCE_PATH" ] || [ -z "$(ls -A "$UPLOADS_SOURCE_PATH")" ]; then
+                echo "Error: El directorio '$UPLOADS_SOURCE_PATH' no existe o está vacío."
+                echo "No hay nada que copiar."
+                continue
+            fi
+
+            echo "Contenido a copiar:"
+            ls -la "$UPLOADS_SOURCE_PATH"
+
+            # On the host, create the tarball
+            (cd "$WEB_PUBLIC_PATH" && tar czf "$UPLOADS_TAR_PATH" "$UPLOADS_DIR_NAME")
+
+            if [ ! -f "$UPLOADS_TAR_PATH" ]; then
+                echo "Error: No se pudo crear el archivo tar '$UPLOADS_TAR_PATH'."
+                continue
+            fi
+
             # Copy the tarball from the host to the container
             sudo docker cp "$UPLOADS_TAR_PATH" "boombang-html5-web-1:/var/www/html/public/"
             # In the container, extract the tarball and then remove it
