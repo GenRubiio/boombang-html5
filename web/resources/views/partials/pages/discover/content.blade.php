@@ -5,33 +5,26 @@
                 {!! $title !!}
             </div>
             <div class="page-discover__content__left__items">
-                @for ($i = 0; $i < 6; $i++)
+                @foreach ($sections as $section)
                     <div class="page-discover__content__left__items__item">
                         <div class="page-discover__content__left__items__item-title">
-                            ¿QUÉ ES BOOMMANIA?
+                            {{ $section->title }}
                         </div>
                         <div class="page-discover__content__left__items__item__content">
                             <div class="page-discover__content__left__items__item__content-text">
-                                <p>
-                                    Una comunidad interactiva donde la creatividad fluye sin parar. Diseña y personaliza
-                                    tu
-                                    isla,
-                                    intercambia objetos curiosos y construye tu hogar ideal. Conéctate con amigos,
-                                    compite
-                                    en
-                                    mini
-                                    juegos electrizantes y, si te sientes audaz, ¡hasta puedes dar un guantazo juguetón!
-                                    Todo es
-                                    posible en BoomMania, tu espacio para jugar, crear y socializar.</p>
+                                {!! $section->text !!}
                             </div>
-                            <div class="page-discover__content__left__items__item__content-image">
-                                <img src="https://static.boombang.tv/resources/img/conoce/dj.png?1"
-                                    alt="Discover Image 1">
-                            </div>
+                            @if ($section->image)
+                                <div class="page-discover__content__left__items__item__content-image">
+                                    <img src="{{ $section->image }}" alt="{{ $section->title }}">
+                                </div>
+                            @endif
                         </div>
                     </div>
-                    <hr>
-                @endfor
+                    @if ($loop->iteration < count((array)$sections))
+                        <hr>
+                    @endif
+                @endforeach
             </div>
         </div>
         <div class="page-discover__content__right">

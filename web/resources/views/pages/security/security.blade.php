@@ -26,6 +26,7 @@
             ])
             @include('partials.pages.security.content', [
                 'title' => $pageResource->content->content_title ?? null,
+                'sections' => $pageResource->content->content_sections_repeatable ?? [],
             ])
         </div>
     </div>

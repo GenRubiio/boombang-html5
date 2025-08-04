@@ -85,7 +85,9 @@ class ImageHelper
             $filename = $filename . '.svg';
             $value = str_replace('data:image/svg+xml;base64,', '', $value);
             $value = str_replace(' ', '+', $value);
-            removeFile($entity->{$attribute}, $disk);
+            if (!empty($entity->{$attribute})) {
+                removeFile($entity->{$attribute}, $disk);
+            }
             if (!File::exists($destination)) {
                 mkdir($destination);
             }
@@ -112,7 +114,9 @@ class ImageHelper
             // 2. Store the image on disk.
             //Optimize max size and save
             resizeImage($image, $maxWidthSize, $maxHeightSize);
-            removeFile($entity->{$attribute}, $disk);
+            if (!empty($entity->{$attribute})) {
+                removeFile($entity->{$attribute}, $disk);
+            }
             saveImage($disk, $destination . '/' . $filename, $image, config('images.webp_quality'));
 
             // 3. Save the path to the database
