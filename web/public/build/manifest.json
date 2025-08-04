@@ -1,6 +1,14 @@
 {
+  "public/images/cursors/gold.cur": {
+    "file": "assets/gold-Rdltu29U.cur",
+    "src": "public/images/cursors/gold.cur"
+  },
+  "public/images/cursors/white.cur": {
+    "file": "assets/white-DMTgpfdJ.cur",
+    "src": "public/images/cursors/white.cur"
+  },
   "resources/js/app.js": {
-      "file": "assets/app-D7Dl8AsF.js",
+    "file": "assets/app-Dm5R03GT.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
@@ -11,7 +19,7 @@
     "isEntry": true
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-B_j6kRlc.css",
+    "file": "assets/app-CKaOCu_9.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   }
