@@ -4,10 +4,12 @@
             <div class="item__container">
                 <div class="item__container-content">
                     <div class="item__container-content__title">
-                        {{ $blog_featured->title }}
+                        <a href="{{ makeUrl('News', $blog_featured->slug) }}">{{ $blog_featured->title }}</a>
                     </div>
                     <div class="item__container-content__info">
-                        <em><span>{{ $blog_featured->parsed_date }}</span></em> / @foreach ($blog_featured->blogTags as $tag)
+                        <a
+                            href="{{ makeUrl('News', $blog_featured->slug) }}"><em><span>{{ $blog_featured->parsed_date }}</span></em></a>
+                        / @foreach ($blog_featured->blogTags as $tag)
                             <a href="#"><em>{{ $tag->name }}</em></a>
                             @if (!$loop->last)
                                 ,
@@ -15,7 +17,7 @@
                         @endforeach
                     </div>
                     <div class="item__container-content__description">
-                        {!! $blog_featured->extract !!}
+                        <a href="{{ makeUrl('News', $blog_featured->slug) }}">{!! $blog_featured->extract !!}</a>
                     </div>
                 </div>
             </div>
@@ -27,14 +29,17 @@
         @foreach ($blog_posts as $post)
             <div class="news-item">
                 <div class="news-item__left">
-                    <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+                    <a href="{{ makeUrl('News', $post->slug) }}"><img src="{{ asset($post->image) }}"
+                            alt="{{ $post->title }}"></a>
                 </div>
                 <div class="news-item__right">
                     <div class="news-item__right-title">
-                        {{ $post->title }}
+                        <a href="{{ makeUrl('News', $post->slug) }}">{{ $post->title }}</a>
                     </div>
                     <div class="news-item__right-info">
-                        <em><span>{{ $post->parsed_date }}</span></em> / @foreach ($post->blogTags as $tag)
+                        <a
+                            href="{{ makeUrl('News', $post->slug) }}"><em><span>{{ $post->parsed_date }}</span></em></a>
+                        / @foreach ($post->blogTags as $tag)
                             <a href="#"><em>{{ $tag->name }}</em></a>
                             @if (!$loop->last)
                                 ,
@@ -42,7 +47,7 @@
                         @endforeach
                     </div>
                     <div class="news-item__right-description">
-                        {!! $post->extract !!}
+                        <a href="{{ makeUrl('News', $post->slug) }}">{!! $post->extract !!}</a>
                     </div>
                 </div>
             </div>

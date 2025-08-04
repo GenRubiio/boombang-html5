@@ -46,6 +46,11 @@
                         background-size: cover;
                         box-shadow: 3px 3px rgba(0, 0, 0, 0.3);
 
+                        a {
+                            text-decoration: none;
+                            color: white;
+                        }
+
                         &__container {
                             width: 80%;
                             position: relative;
@@ -127,6 +132,11 @@
                     .news-item {
                         display: flex;
                         gap: 10px;
+
+                        a {
+                            text-decoration: none;
+                            color: white;
+                        }
 
                         &__left {
                             flex: 0 0 120px;
