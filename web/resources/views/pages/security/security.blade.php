@@ -20,8 +20,13 @@
 @section('content')
     <div class="container" id="page-security">
         <div class="page-security">
-            @include('partials.pages.banner')
-            @include('partials.pages.security.content')
+            @include('partials.pages.banner', [
+                'header_image' => $pageResource->content->content_header_image ?? null,
+                'button_image' => $pageResource->content->content_button_image ?? null,
+            ])
+            @include('partials.pages.security.content', [
+                'title' => $pageResource->content->content_title ?? null,
+            ])
         </div>
     </div>
 @endsection

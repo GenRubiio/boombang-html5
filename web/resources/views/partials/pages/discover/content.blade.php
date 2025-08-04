@@ -2,8 +2,7 @@
     <div class="page-discover__content">
         <div class="page-discover__content__left">
             <div class="page-discover__content__left-title">
-                BOOMMANIA: CHAT & PLAY!<br>
-                Descubre un nuevo mundo de diversión y emoción
+                {!! $title !!}
             </div>
             <div class="page-discover__content__left__items">
                 @for ($i = 0; $i < 6; $i++)

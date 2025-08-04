@@ -2,7 +2,7 @@
     <div class="page-home__content">
         <div class="page-home__content__left">
             <div class="page-home__content__left-title">
-                ÚLTIMAS NOTICIAS
+                {!! $title !!}
             </div>
             @include('partials.pages.home.news')
         </div>

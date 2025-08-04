@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\Page;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Front\Pages\HomePageFrontController;
 
 class PageFrontController extends Controller
 {
@@ -124,6 +125,9 @@ class PageFrontController extends Controller
     public function getItemsPage($pageName): array
     {
         switch ($pageName) {
+             case "Home":
+                $return = (array)(new HomePageFrontController())->index();
+                break;
             case "News":
                 $return = (array)(new BlogArticleFrontController())->index();
                 break;

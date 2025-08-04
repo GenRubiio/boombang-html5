@@ -2,8 +2,7 @@
     <div class="page-security__content">
         <div class="page-security__content__left">
             <div class="page-security__content__left-title">
-                CONSEJOS DE SEGURIDAD<br>
-                Protege tu experiencia en BoomMania
+                {!! $title !!}
             </div>
             <div class="page-security__content__left__items">
                 @for ($i = 0; $i < 6; $i++)

@@ -2,7 +2,7 @@
     <div class="page-shop__content">
         <div class="page-shop__content__left">
             <div class="page-shop__content__left-title">
-                Compra créditos y más
+                {!! $title !!}
             </div>
             <div class="page-shop__content__left__items">
                 @for ($i = 0; $i < 6; $i++)
@@ -19,8 +19,7 @@
                                     o expuesto a un peligro serio.</p>
                             </div>
                             <div class="page-shop__content__left__items__item__content-image">
-                                <img src="https://static.boombang.tv/resources/img/conoce/dj.png?1"
-                                    alt="shop Image 1">
+                                <img src="https://static.boombang.tv/resources/img/conoce/dj.png?1" alt="shop Image 1">
                             </div>
                         </div>
                     </div>

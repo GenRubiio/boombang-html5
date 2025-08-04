@@ -2,7 +2,7 @@
     <div class="page-news__content">
         <div class="page-news__content__left">
             <div class="page-news__content__left-title">
-                NOTICIAS
+                {!! $title !!}
             </div>
             @include('partials.pages.news.categories')
             @include('partials.pages.news.news')
