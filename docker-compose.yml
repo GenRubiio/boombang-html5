@@ -138,6 +138,9 @@ services:
       API_URL: ${SERVER_API_URL}
       CLIENT_URL: ${SERVER_CLIENT_URL}
       EMULATOR_URL: ${SERVER_EMULATOR_URL}
+      DB_USER: ${SERVER_DB_USER}
+      DB_PASSWORD: ${SERVER_DB_PASSWORD}
+      DB_DATABASE: ${SERVER_DB_DATABASE}
     depends_on:
       - db
       - api
