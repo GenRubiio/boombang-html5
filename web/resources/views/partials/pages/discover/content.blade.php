@@ -1,9 +1,9 @@
 <div class="container-1200">
     <div class="page-discover__content">
         <div class="page-discover__content__left">
-            <div class="page-discover__content__left-title">
+            <h1 class="page-discover__content__left-title">
                 {!! $title !!}
-            </div>
+            </h1>
             <div class="page-discover__content__left__items">
                 @foreach ($sections as $section)
                     <div class="page-discover__content__left__items__item">

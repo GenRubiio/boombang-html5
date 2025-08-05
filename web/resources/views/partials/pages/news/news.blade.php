@@ -6,9 +6,9 @@
                     <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
                 </div>
                 <div class="news-item__right">
-                    <div class="news-item__right-title">
+                    <h3 class="news-item__right-title">
                         {{ $post->title }}
-                    </div>
+                    </h3>
                     <div class="news-item__right-info">
                         <em><span>{{ $post->parsed_date }}</span></em> / @foreach ($post->blogTags as $tag)
                             <a href="#"><em>{{ $tag->name }}</em></a>

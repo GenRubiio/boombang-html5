@@ -1,9 +1,9 @@
 <div class="container-1200">
     <div class="page-article__content">
         <div class="page-article__content__left">
-            <div class="page-article__content__left-title">
+            <h1 class="page-article__content__left-title">
                 {{ $article->title }}
-            </div>
+            </h1>
             <div class="page-article__content__left-date">
                 {{ $article->parsed_date }}
             </div>

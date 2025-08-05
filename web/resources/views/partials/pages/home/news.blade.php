@@ -3,9 +3,9 @@
         <div class="item" style="background-image: url({{ asset($blog_featured->image) }});">
             <div class="item__container">
                 <div class="item__container-content">
-                    <div class="item__container-content__title">
+                    <h3 class="item__container-content__title">
                         <a href="{{ makeUrl('News', $blog_featured->slug) }}">{{ $blog_featured->title }}</a>
-                    </div>
+                    </h3>
                     <div class="item__container-content__info">
                         <a
                             href="{{ makeUrl('News', $blog_featured->slug) }}"><em><span>{{ $blog_featured->parsed_date }}</span></em></a>
@@ -33,9 +33,9 @@
                             alt="{{ $post->title }}"></a>
                 </div>
                 <div class="news-item__right">
-                    <div class="news-item__right-title">
+                    <h3 class="news-item__right-title">
                         <a href="{{ makeUrl('News', $post->slug) }}">{{ $post->title }}</a>
-                    </div>
+                    </h3>
                     <div class="news-item__right-info">
                         <a
                             href="{{ makeUrl('News', $post->slug) }}"><em><span>{{ $post->parsed_date }}</span></em></a>

@@ -1,9 +1,9 @@
 <div class="container-1200">
     <div class="page-shop__content">
         <div class="page-shop__content__left">
-            <div class="page-shop__content__left-title">
+            <h1 class="page-shop__content__left-title">
                 {!! $title !!}
-            </div>
+            </h1>
             <div class="page-shop__content__left__items">
                 @for ($i = 0; $i < 6; $i++)
                     <div class="page-shop__content__left__items__item">

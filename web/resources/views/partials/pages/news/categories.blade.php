@@ -1,7 +1,7 @@
 <div class="page-news__content__left__categories">
-    <div class="page-news__content__left__categories-title">
+    <h2 class="page-news__content__left__categories-title">
         CATEGORÍAS
-    </div>
+    </h2>
     <div class="page-news__content__left__categories-list">
         <button class="page-news__content__left__categories-item active">
             <span class="page-news__content__left__categories-item-text">Todas</span>
