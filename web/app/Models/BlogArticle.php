@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
-use Illuminate\Database\Eloquent\Model;
-use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\Observers\ModelObservantTrait;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use App\Traits\Observers\SeoObservantTrait;
 use App\Traits\Observers\SlugObservantTrait;
+use App\Traits\Observers\ModelObservantTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use App\Traits\Observers\SitemapObservantTrait;
 use App\Traits\Observers\CacheClearObservantTrait;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 
 class BlogArticle extends Model
 {
@@ -26,6 +27,7 @@ class BlogArticle extends Model
     use SlugObservantTrait;
     use SitemapObservantTrait;
     use CacheClearObservantTrait;
+    use SeoObservantTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -64,29 +66,21 @@ class BlogArticle extends Model
 
     public const FILES_DESTINATION_PATH = "uploads/blog-articles";
 
-    /**
-     * The columns of the full text index
-     */
-    /*
-    use App\Traits\Observers\FullTextSearchObservantTrait;
-    use FullTextSearchObservantTrait;
-    protected $searchable = [
-        'search_terms'
+    public $seoTitleAttr = [
+        'title'
     ];
-    const SEARCHABLE_WITH_LANGUAGES = false;
-    */
-
-    /**
-     * The columns of the fill search_terms
-     */
-    /*
-    const SEARCHABLE_FIELDS = [
-        'name',
-        'description',
-        'overview',
-        'content',
+    public $seoAttributes = [
+        'seo_title' => 'title',
+        'seo_breadcrumb' => 'title',
+        'meta_title' => 'title',
+        'meta_description' => 'title',
+        'og_title' => 'title',
+        'og_description' => 'title',
+        'og_image_url' => 'image_url',
+        'tw_title' => 'title',
+        'tw_description' => 'title',
+        'tw_image_url' => 'image_url',
     ];
-    */
 
     /**
      * Return the sluggable configuration array for this model.
@@ -108,6 +102,11 @@ class BlogArticle extends Model
     public function getTranslatable()
     {
         return $this->translatable;
+    }
+
+    public function seo()
+    {
+        return $this->morphOne(Seo::class, 'seoable');
     }
 
     /*

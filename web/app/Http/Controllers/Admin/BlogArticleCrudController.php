@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BlogArticleRequest;
-use App\Models\BlogCategory;
 use App\Models\BlogTag;
+use App\Models\BlogCategory;
+use App\Traits\Admin\Tabs\SeoTabFields;
+use App\Http\Requests\BlogArticleRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -20,6 +21,8 @@ class BlogArticleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     //use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
     use \Backpack\Pro\Http\Controllers\Operations\FetchOperation;
+
+    use SeoTabFields;
 
     public function setup()
     {
@@ -117,11 +120,13 @@ class BlogArticleCrudController extends CrudController
                 'label' => trans('admin.title'),
                 'type' => 'text',
                 'placeholder' => 'Your title here',
+                'tab' => 'Blog Article',
             ]);
             $this->crud->addField([
                 'name' => 'extract',
                 'label' => trans('admin.extract'),
                 'type' => 'ckeditor',
+                'tab' => 'Blog Article',
             ]);
             $this->crud->addField([
                 'name' => 'date',
@@ -132,6 +137,7 @@ class BlogArticleCrudController extends CrudController
                     'language' => LaravelLocalization::getCurrentLocale()
                 ],
                 'allows_null' => false,
+                'tab' => 'Blog Article',
                 //'default' => date('Y-m-d H:i:s'),
             ]);
             $this->crud->addField([
@@ -148,11 +154,13 @@ class BlogArticleCrudController extends CrudController
                 //    'toolbar' => ['bold', 'italic'],
                 //],
                 'placeholder' => 'Your textarea text here',
+                'tab' => 'Blog Article',
             ]);
             $this->crud->addField([
                 'name' => 'image',
                 'label' => trans('admin.image'),
                 'type' => 'image',
+                'tab' => 'Blog Article',
             ]);
             $this->crud->addField([
                 'label' => trans('admin.category'),
@@ -163,6 +171,7 @@ class BlogArticleCrudController extends CrudController
                 'inline_create' => true,
                 'ajax' => true,
                 'minimum_input_length' => 0,
+                'tab' => 'Blog Article',
             ]);
             $this->crud->addField([
                 'label' => trans('admin.tags'),
@@ -174,6 +183,7 @@ class BlogArticleCrudController extends CrudController
                 'inline_create' => ['entity' => 'blog-tag'],
                 'ajax' => true,
                 'minimum_input_length' => 0,
+                'tab' => 'Blog Article',
             ]);
             $this->crud->addField([
                 'name' => 'status',
@@ -181,12 +191,15 @@ class BlogArticleCrudController extends CrudController
                 'type' => 'enum',
                 'default' => 'Borrador',
                 'allows_null' => true,
+                'tab' => 'Blog Article',
             ]);
             $this->crud->addField([
                 'name' => 'featured',
                 'label' => trans('admin.featured'),
                 'type' => 'checkbox',
+                'tab' => 'Blog Article',
             ]);
+            $this->addSeoTabFields();
         });
 
         $this->crud->operation('create', function () {
@@ -196,6 +209,7 @@ class BlogArticleCrudController extends CrudController
                 'type' => 'slug',
                 'target'  => 'title',
                 'hint' => trans('admin.slug_hint'),
+                'tab' => 'Blog Article',
             ])->afterField('title');
         });
         $this->crud->operation('update', function () {
@@ -206,6 +220,7 @@ class BlogArticleCrudController extends CrudController
                 'attributes' => [
                     "required" => "required"
                 ],
+                'tab' => 'Blog Article',
             ])->afterField('title');
         });
     }
