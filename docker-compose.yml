@@ -24,8 +24,9 @@ services:
       PMA_PORT: 3306
       UPLOAD_LIMIT: 300M
       VIRTUAL_HOST: ${PMA_VIRTUAL_HOST}
-      VIRTUAL_PORT: 80
-      VIRTUAL_PROTO: http
+      VIRTUAL_PORT: ${PMA_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${PMA_VIRTUAL_PROTO}
+      CERT_NAME: boommania.com
     expose:
       - "80"
     depends_on:
