@@ -41,6 +41,8 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/letsencrypt/live/boommania.com/fullchain.pem:/etc/nginx/certs/boommania.com.crt:ro
+      - /etc/letsencrypt/live/boommania.com/privkey.pem:/etc/nginx/certs/boommania.com.key:ro
     networks:
       - boombang
 
@@ -60,6 +62,7 @@ services:
       VIRTUAL_HOST: ${API_VIRTUAL_HOST}
       VIRTUAL_PORT: ${API_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${API_VIRTUAL_PROTO}
+      CERT_NAME: boommania.com
       APP_URL: ${API_APP_URL}
       DB_HOST: ${API_DB_HOST}
       DB_DATABASE: ${API_DB_DATABASE}
@@ -99,6 +102,7 @@ services:
       VIRTUAL_HOST: ${WEB_VIRTUAL_HOST}
       VIRTUAL_PORT: ${WEB_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${WEB_VIRTUAL_PROTO}
+      CERT_NAME: boommania.com
       APP_URL: ${WEB_APP_URL}
       DB_HOST: ${WEB_DB_HOST}
       DB_DATABASE: ${WEB_DB_DATABASE}
@@ -134,6 +138,7 @@ services:
       VIRTUAL_HOST: ${SERVER_VIRTUAL_HOST}
       VIRTUAL_PORT: ${SERVER_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${SERVER_VIRTUAL_PROTO}
+      CERT_NAME: boommania.com
       DB_HOST: ${SERVER_DB_HOST}
       API_URL: ${SERVER_API_URL}
       CLIENT_URL: ${SERVER_CLIENT_URL}
@@ -167,6 +172,7 @@ services:
       VIRTUAL_HOST: ${CLIENT_VIRTUAL_HOST}
       VIRTUAL_PORT: ${CLIENT_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${CLIENT_VIRTUAL_PROTO}
+      CERT_NAME: boommania.com
       VITE_SERVER_URL: ${CLIENT_VITE_SERVER_URL}
     depends_on:
       - server
