@@ -20,6 +20,11 @@ class CookieService extends Controller
         return $this->cookieRepository->all();
     }
 
+    public function allActives(): Collection
+    {
+        return $this->cookieRepository->allActives();
+    }
+
     public function getByCategory($category): Collection
     {
         return $this->cookieRepository->getByCategory($category);

@@ -22,7 +22,7 @@ class CookiesServiceProvider extends ServiceProvider
             return;
         }
         $cookiesServices = new CookieService();
-        $cookiesAllList = $cookiesServices->getAll();
+        $cookiesAllList = $cookiesServices->allActives();
         $cookiesEssentialsList = $cookiesAllList->where('category', CookieCategoriesEnum::ESSENTIALS->key())->all();
         $cookiesOptionalList = $cookiesAllList->where('category', CookieCategoriesEnum::OPTIONAL->key())->all();
         $cookiesAnalyticsList = $cookiesAllList->where('category', CookieCategoriesEnum::ANALYTICS->key())->all();
