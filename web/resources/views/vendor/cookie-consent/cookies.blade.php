@@ -5,7 +5,7 @@
                 <h2 class="cookies__title">@lang('cookies.title')</h2>
                 <div class="cookies__intro">
                     <p>@lang('cookies.intro')</p>
-                    <p>@lang('cookies.link', ['url' => makeUrl('Cookies policy')])</p>
+                    <p>@lang('cookies.link', ['url' => makeUrl('Cookies')])</p>
                 </div>
                 <div class="cookies__actions">
                     <div style="display: none;">
