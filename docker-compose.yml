@@ -41,8 +41,8 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - /etc/letsencrypt/live/boommania.com/fullchain.pem:/etc/nginx/certs/boommania.com.crt:ro
-      - /etc/letsencrypt/live/boommania.com/privkey.pem:/etc/nginx/certs/boommania.com.key:ro
+      - /etc/letsencrypt/archive/boommania.com/fullchain2.pem:/etc/nginx/certs/boommania.com.crt:ro
+      - /etc/letsencrypt/archive/boommania.com/privkey2.pem:/etc/nginx/certs/boommania.com.key:ro
     networks:
       - boombang
 
