@@ -83,6 +83,11 @@
                         display: flex;
                         gap: 10px;
 
+                        a {
+                            text-decoration: none;
+                            color: white;
+                        }
+
                         &__left {
                             flex: 0 0 120px;
                             height: 120px;

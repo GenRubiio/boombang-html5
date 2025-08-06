@@ -43,7 +43,7 @@
             @yield('content')
         </main>
 
-        @include('partials.footer')
+        <x-footer />
     </div>
 
     @include('partials.layout-includes')
