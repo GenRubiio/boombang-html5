@@ -1,5 +1,8 @@
 <div class="bheader__banner">
     <img src="{{ asset($header_image) }}" alt="Home Banner" class="img-fluid">
+    <div class="bheader__banner-motto">
+        <img src="{{ asset('images/home/motto-water.webp') }}" alt="Play Motto">
+    </div>
     <div class="bheader__banner-content"
         style="background-image: url('{{ asset('images/home/play-background.svg') }}');">
         <div class="bheader__banner-content__button">

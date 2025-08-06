@@ -11,6 +11,22 @@
         object-fit: cover;
     }
 
+    &-motto {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin-left: 100px;
+        height: 180px;
+
+        @media (max-width: $md) {
+            display: none;
+        }
+
+        @media (min-width: $xxl) {
+            display: none;
+        }
+    }
+
     &-content {
         position: absolute;
         top: 0;
