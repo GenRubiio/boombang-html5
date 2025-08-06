@@ -1,7 +1,7 @@
 <div class="container-1200">
     <div class="page-news__content">
         <div class="page-news__content__left">
-            <h1 class="page-news__content__left-title">
+            <h1 class="page-news__content__left-title loading-text">
                 {!! $title !!}
             </h1>
             @include('partials.pages.news.categories', [

@@ -1,7 +1,7 @@
 <div class="container-1200">
     <div class="page-article__content">
         <div class="page-article__content__left">
-            <h1 class="page-article__content__left-title">
+            <h1 class="page-article__content__left-title loading-text">
                 {{ $article->title }}
             </h1>
             <div class="page-article__content__left-date">

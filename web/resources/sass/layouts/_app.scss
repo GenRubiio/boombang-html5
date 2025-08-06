@@ -34,7 +34,12 @@ body {
     font-weight: bold;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: 0;
     @include fonts.font-family(variables.$font-family-secondary, 'normal');
 }
@@ -43,7 +48,11 @@ p {
     margin: 0;
 }
 
-a, a:active, a:link, a:hover, a:visited {
+a,
+a:active,
+a:link,
+a:hover,
+a:visited {
     text-decoration: none;
 }
 
@@ -51,7 +60,8 @@ main {
     min-height: calc(100vh - #{variables.$navbar-height});
 }
 
-strong, b {
+strong,
+b {
     @include fonts.font-family(variables.$font-family-primary, "bold");
 }
 
@@ -100,11 +110,16 @@ strong, b {
 }
 
 .noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
     user-select: none;
     /* Non-prefixed version, currently supported by Chrome and Opera */
 }
@@ -113,20 +128,39 @@ strong, b {
     margin-top: variables.$navbar-height;
 }
 
-body{
-   background-repeat: round;
+body {
+    background-repeat: round;
 }
 
 /* 1. Cursor “default” para todo el documento */
-html, body {
-  /* cursor-default.cur es tu imagen .cur (32×32) */
-  cursor: url('@public/images/cursors/white.cur'), default;
+html,
+body {
+    /* cursor-default.cur es tu imagen .cur (32×32) */
+    cursor: url('@public/images/cursors/white.cur'), default;
 }
 
 /* 2. Cursor “pointer” (mano) para enlaces, botones o clases específicas */
 a,
 button,
 .mi-clase-hand {
-  /* cursor-hand.cur es tu imagen .cur para el hand */
-  cursor: url('@public/images/cursors/gold.cur'), pointer !important;
+    /* cursor-hand.cur es tu imagen .cur para el hand */
+    cursor: url('@public/images/cursors/gold.cur'), pointer !important;
+}
+
+
+h1.loading-text {
+    background: linear-gradient(90deg, #ffe000, #fff9c4, #ffe000) -100% / 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    /* <- necesario para Safari */
+    font: 900 clamp(2em, 10vw, 10em) exo, sans-serif;
+    animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: 100%;
+    }
 }

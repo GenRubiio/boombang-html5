@@ -1,7 +1,7 @@
 <div class="container-1200">
     <div class="page-security__content">
         <div class="page-security__content__left">
-            <h1 class="page-security__content__left-title">
+            <h1 class="page-security__content__left-title loading-text">
                 {!! $title !!}
             </h1>
             <div class="page-security__content__left__items">
