@@ -18,11 +18,16 @@
 ])
 
 @section('content')
-    <div class="container-1440 page-margin" id="page-policy">
-        <div class="d-flex flex-wrap justify-content-center page-policy">
-            <h1>
-                Page "Policy" created succesfully!
-            </h1>
+    <div class="container" id="page-policy">
+        <div class="page-policy">
+            @include('partials.pages.banner', [
+                'header_image' => $pageResource->content->content_header_image ?? null,
+                'button_image' => $pageResource->content->content_button_image ?? null,
+            ])
+            @include('partials.pages.policy.content', [
+                'title' => $pageResource->content->content_title ?? $page->title,
+                'content' => $pageResource->content->content_content ?? null,
+            ])
         </div>
     </div>
 @endsection
