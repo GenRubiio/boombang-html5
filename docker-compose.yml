@@ -141,6 +141,7 @@ services:
     volumes:
       - ./server:/app           # Solo útil si usas nodemon y modo desarrollo
       - /app/node_modules       # Evita sobrescribir node_modules del contenedor
+      - ./docker/ssl:/etc/nginx/certs:ro
     env_file:
       - ./server/.env
     environment:
