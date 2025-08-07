@@ -2,27 +2,36 @@ FROM php:8.2-cli
 
 WORKDIR /var/www
 
-# Instala dependencias del sistema
+# Paquetes del sistema + libs para GD con WebP/JPEG/Freetype
 RUN apt-get update \
-    && apt-get install -y git unzip libzip-dev curl gnupg \
-    && docker-php-ext-install pdo_mysql zip
+    && apt-get install -y \
+        git unzip curl gnupg \
+        libzip-dev \
+        libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev \
+    # Configurar e instalar extensiones PHP
+    && docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
+        --with-webp \
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instala Composer
+# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copia todo el proyecto (¡esto incluye artisan!)
+# Copiar el proyecto (incluye artisan)
 COPY . .
 
-# Instala dependencias PHP (Laravel)
+# Dependencias PHP (Laravel)
 RUN composer install --no-interaction --prefer-dist --no-dev
 
-# Instala Node.js
+# Node.js 18 (si tu API realmente necesita compilar assets)
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get update && apt-get install -y nodejs \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instala dependencias JavaScript y compila frontend
+# Frontend (si no usas assets en la API, puedes quitar estas dos líneas)
 RUN npm install && npm run build
 
 EXPOSE 80
-
 CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
