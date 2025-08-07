@@ -133,7 +133,7 @@ services:
       - "80"
     labels:
       - "VIRTUAL_HOST=${WEB_VIRTUAL_HOST}"
-    command: sh -c "php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
+    command: sh -c "cron && php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
         aliases:
