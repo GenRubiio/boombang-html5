@@ -105,6 +105,7 @@ services:
       - /var/www/html/node_modules
       - /var/www/html/vendor
       - /var/www/html/public/build
+      - ./web/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
     env_file:
       - ./web/.env
     environment:
