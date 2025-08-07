@@ -18,6 +18,9 @@ module.exports = (port) => {
         }, app)
         : http.createServer(app);
 
+    console.log(`Using ${useHttps ? 'HTTPS' : 'HTTP'} server.`);
+    console.log(`Server will run on port ${port}.`);
+    console.log(`CORS origin set to: ${process.env.CLIENT_URL}`);
     // Middleware to parse JSON bodies
     app.use(express.json());
 
