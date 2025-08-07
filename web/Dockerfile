@@ -8,8 +8,7 @@ RUN apt-get update \
         git unzip curl gnupg \
         libzip-dev \
         libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev \
-        cron \
-    # Configurar e instalar extensiones PHP
+        cron procps \
     && docker-php-ext-configure gd \
         --with-freetype \
         --with-jpeg \
@@ -41,7 +40,8 @@ COPY . .
 RUN npm run build
 
 # Añadir tarea al crontab para Laravel scheduler
-RUN echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" >> /etc/crontab
+RUN echo "* * * * * root cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" > /etc/cron.d/laravel \
+ && chmod 0644 /etc/cron.d/laravel
 
 # Arrancar cron + servidor PHP
 CMD cron && php -S 0.0.0.0:80 -t public
