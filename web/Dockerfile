@@ -2,12 +2,13 @@ FROM php:8.2-cli
 
 WORKDIR /var/www/html
 
-# Paquetes del sistema (añadimos libwebp-dev y freetype)
+# Paquetes del sistema + cron
 RUN apt-get update \
     && apt-get install -y \
         git unzip curl gnupg \
         libzip-dev \
         libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev \
+        cron \
     # Configurar e instalar extensiones PHP
     && docker-php-ext-configure gd \
         --with-freetype \
@@ -39,5 +40,10 @@ COPY . .
 # Build assets
 RUN npm run build
 
+# Añadir tarea al crontab para Laravel scheduler
+RUN echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" >> /etc/crontab
+
+# Arrancar cron + servidor PHP
+CMD cron && php -S 0.0.0.0:80 -t public
+
 EXPOSE 80
-CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
