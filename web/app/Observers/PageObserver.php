@@ -8,7 +8,7 @@ class PageObserver
 {
     public function created($page)
     {
-        if ($page->exists_blade) {
+        if ($page->exists_blade && app()->environment('local')) {
             $scaffolding = getDirectoryBladePath($page);
             if (!is_file(storage_path($scaffolding->pathBlade))) {
                 if (!is_dir(storage_path($scaffolding->basePath))) {

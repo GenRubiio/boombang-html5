@@ -28,9 +28,9 @@ class Page extends BackpackPage
     use HasTranslations;
     use ModelObservantTrait;
     use PageObservantTrait;
-    use SitemapObservantTrait;
+    //use SitemapObservantTrait;
     use SoftDeletes;
-    use GalleryObservantTrait;
+    //use GalleryObservantTrait;
     use SlugObservantTrait;
     use CacheClearObservantTrait;
 
