@@ -195,6 +195,7 @@ services:
       - "80"
     labels:
       - "VIRTUAL_HOST=${CLIENT_VIRTUAL_HOST}"
+    command: sh -c "vite --host 0.0.0.0 --port 80"
     networks:
       boombang:
         aliases:
