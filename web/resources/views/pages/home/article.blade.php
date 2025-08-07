@@ -14,7 +14,7 @@
 
 {{-- Meta injections --}}
 @include('partials.page-metas', [
-    'object' => $pageResource->metas ?? $page,
+    'object' => $article->seo ?? [],
 ])
 
 @section('content')
