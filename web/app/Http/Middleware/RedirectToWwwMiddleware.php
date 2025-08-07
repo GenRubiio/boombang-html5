@@ -18,9 +18,8 @@ class RedirectToWwwMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (substr($request->header('host'), 0, 4) != 'www.' && App::environment() === 'production' && env('FORCE_WWW', false)) {
-            $request->headers->set('host', 'www.' . $request->header('host'));
-
-            return Redirect::to($request->path());
+            $newHost = 'www.' . $request->header('host');
+            return Redirect::to($request->getScheme() . '://' . $newHost . $request->getRequestUri());
         }
 
         return $next($request);
