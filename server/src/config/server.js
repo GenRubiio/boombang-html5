@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const { Server } = require('socket.io');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
@@ -9,7 +10,13 @@ const authorizedBotTokens = new Set();
 
 module.exports = (port) => {
     const app = express();
-    const server = http.createServer(app);
+    const useHttps = process.env.APP_ENV === 'production';
+    const server = useHttps
+        ? https.createServer({
+            key: fs.readFileSync('/etc/nginx/certs/server.boommania.com.key'),
+            cert: fs.readFileSync('/etc/nginx/certs/server.boommania.com.crt'),
+        }, app)
+        : http.createServer(app);
 
     // Middleware to parse JSON bodies
     app.use(express.json());
