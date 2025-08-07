@@ -10,7 +10,7 @@ const authorizedBotTokens = new Set();
 
 module.exports = (port) => {
     const app = express();
-    const useHttps = process.env.APP_ENV === 'production';
+    const useHttps = process.env.APP_ENV == 'production';
     const server = useHttps
         ? https.createServer({
             key: fs.readFileSync('/etc/nginx/certs/server.boommania.com.key'),
