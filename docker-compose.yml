@@ -34,7 +34,7 @@ services:
       - boombang
 
   proxy:
-    image: jwilder/nginx-proxy:latest
+    image: nginxproxy/nginx-proxy:latest
     container_name: nginx-proxy
     ports:
       - "80:80"
