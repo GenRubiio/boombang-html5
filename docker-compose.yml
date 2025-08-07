@@ -186,8 +186,6 @@ services:
       VIRTUAL_HOST: ${CLIENT_VIRTUAL_HOST}
       VIRTUAL_PORT: ${CLIENT_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${CLIENT_VIRTUAL_PROTO}
-      VITE_APP_ENV: ${CLIENT_VITE_APP_ENV}
-      VITE_SERVER_URL: ${CLIENT_VITE_SERVER_URL}
     depends_on:
       - server
       - proxy
