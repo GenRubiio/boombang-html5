@@ -13,11 +13,10 @@ class PageCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
-        create as traitCreate;
         store as traitStore;
     }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
-        edit as traitEdit;
+        update as traitUpdate;
     }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use PageTemplates;
@@ -49,12 +48,6 @@ class PageCrudController extends CrudController
                 'name' => 'name',
                 'label' => trans('backpack::pagemanager.name'),
             ],
-            /*
-            [
-                'name' => 'auth_required',
-                'label' => trans('admin.auth_required'),
-            ],
-            */
             [
                 'name' => 'template',
                 'label' => trans('backpack::pagemanager.template'),
@@ -182,9 +175,16 @@ class PageCrudController extends CrudController
     protected function store()
     {
         $this->crud->getRequest()->merge(['name' => str_replace(' ', '', ucwords($this->crud->getRequest()->name))]);
+
         $response = $this->traitStore();
         $this->createMenuItems($this->crud->entry, $this->crud->getRequest());
         storeReplicateOtherLocales($this->crud);
+        return $response;
+    }
+
+    protected function update()
+    {
+        $response = $this->traitUpdate();
         return $response;
     }
 
