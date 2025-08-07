@@ -132,6 +132,9 @@ services:
       - "80"
     labels:
       - "VIRTUAL_HOST=${WEB_VIRTUAL_HOST}"
+      - "com.nginxproxy.proxy_read_timeout=300"
+      - "com.nginxproxy.proxy_connect_timeout=300"
+      - "com.nginxproxy.client_max_body_size=100m"
     command: sh -c "php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
