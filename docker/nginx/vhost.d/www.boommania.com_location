@@ -1,4 +1,11 @@
-location ~* \.(?:ico|css|js|gif|jpe?g|png|webp|woff2?|ttf|svg)$ {
+# Este bloque sí va a nivel de server{}
+# Cachea estáticos pero SIGUE proxy_pass al backend (no intentamos servir desde el proxy)
+location ~* \.(?:ico|css|js|gif|jpe?g|png|webp|svg|woff2?|ttf)$ {
     expires 30d;
     add_header Cache-Control "public, no-transform";
+    # Muy importante: seguir usando el mismo proxy que usa nginx-proxy para /,
+    # heredando las directivas del template (headers, timeouts, etc.)
+    # Para eso, incluimos el mismo fragmento que utiliza nginx-proxy:
+    include /etc/nginx/conf.d/proxy.conf;
+    proxy_pass http://$upstream;
 }
