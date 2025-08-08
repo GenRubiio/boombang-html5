@@ -39,7 +39,7 @@ class SitemapCommandController extends Controller
             return;
         }
         $this->generatePages();
-        //$this->generateArticles('News');
+        $this->generateArticles('News');
         $this->generateSeo([
             //'Categories' => "App\Models\Category", // Example
         ]);
