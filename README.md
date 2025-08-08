@@ -98,6 +98,7 @@ sudo docker start boombang-html5-web-1
 sudo docker exec -it boombang-html5-web-1 bash
 php artisan migrate --seed
 php artisan config:cache
+sudo docker exec -it boombang-html5-web-1 php artisan optimize:clear
 ```
 
 ## Licencia
