@@ -47,3 +47,42 @@
         <!-- Other metadata -->
         @yield('other-metas')
         <!-- ./Other metadata -->
+        @php
+            $appUrl = rtrim(config('app.url'), '/');
+            $siteName = config('settings.name', config('app.name'));
+            $logoPath = config('settings.logo') ?: 'images/og-default.jpg';
+
+            $graph = [
+                [
+                    '@type' => 'Organization',
+                    '@id' => "{$appUrl}/#org",
+                    'name' => $siteName,
+                    'url' => $appUrl,
+                    'logo' => [
+                        '@type' => 'ImageObject',
+                        'url' => asset($logoPath),
+                    ],
+                ],
+                [
+                    '@type' => 'WebSite',
+                    '@id' => "{$appUrl}/#website",
+                    'url' => $appUrl,
+                    'name' => $siteName,
+                    'publisher' => ['@id' => "{$appUrl}/#org"],
+                    'inLanguage' => LaravelLocalization::getCurrentLocaleRegional(),
+                    'potentialAction' => [
+                        '@type' => 'SearchAction',
+                        'target' => url('/search') . '?q={search_term_string}',
+                        'query-input' => 'required name=search_term_string',
+                    ],
+                ],
+            ];
+
+            $schema = [
+                '@context' => 'https://schema.org',
+                '@graph' => $graph,
+            ];
+        @endphp
+
+        <script type="application/ld+json">@json($schema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT)</script>
+        @yield('structured-data')
