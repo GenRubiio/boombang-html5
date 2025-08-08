@@ -13,7 +13,7 @@
 @endphp
 
 {{-- Meta injections --}}
-@include('partials.page-metas', [
+@include('partials.page-metas-seos', [
     'object' => $article->seo ?? [],
 ])
 

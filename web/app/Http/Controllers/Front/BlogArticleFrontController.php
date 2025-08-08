@@ -22,7 +22,8 @@ class BlogArticleFrontController extends Controller
     {
         $blogArticle = (new BlogArticleService())->show($slug)->load([
             'blogCategory',
-            'blogTags'
+            'blogTags',
+            'seo',
         ]);
         return (new BlogArticleResource($blogArticle))->toDTO();
     }

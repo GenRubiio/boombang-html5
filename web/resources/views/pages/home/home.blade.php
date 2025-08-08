@@ -11,7 +11,6 @@
         $pageResource = getResourcePage($page);
     }
 @endphp
-
 {{-- Meta injections --}}
 @include('partials.page-metas', [
     'object' => $pageResource->metas ?? $page,

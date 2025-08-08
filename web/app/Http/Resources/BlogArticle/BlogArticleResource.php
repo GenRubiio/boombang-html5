@@ -33,6 +33,7 @@ class BlogArticleResource extends JsonResource
             'date' => (string)$this->date,
             'parsed_date' => Carbon::parse($this->date)->format('d M Y'),
             'blogTags' => $this->blogTags,
+            'seo' => $this->seo,
         ];
     }
 }
