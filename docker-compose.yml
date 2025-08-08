@@ -47,6 +47,7 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./docker/ssl:/etc/nginx/certs:ro
+      - ./docker/nginx/gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
     networks:
       - boombang
 
