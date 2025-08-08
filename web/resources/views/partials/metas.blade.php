@@ -4,7 +4,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>@yield('title', config('app.name'))</title>
-<meta name="description" content="@yield('meta-description', '')">
 
 {{-- Canonical (puedes sobreescribir con @section('meta-rel-canonical')) --}}
 <link rel="canonical" href="@yield('meta-rel-canonical', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), null, [], true))" />
