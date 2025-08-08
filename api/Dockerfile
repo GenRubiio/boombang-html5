@@ -8,6 +8,7 @@ RUN apt-get update \
         git unzip curl gnupg \
         libzip-dev \
         libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev \
+        cron procps \
     # Configurar e instalar extensiones PHP
     && docker-php-ext-configure gd \
         --with-freetype \
@@ -33,5 +34,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Frontend (si no usas assets en la API, puedes quitar estas dos líneas)
 RUN npm install && npm run build
 
+# Añadir tarea al crontab para Laravel scheduler
+RUN echo '* * * * * root cd /var/www/html && /usr/local/bin/php artisan schedule:run >> /var/log/laravel-cron.log 2>&1' > /etc/cron.d/laravel \
+    && chmod 0644 /etc/cron.d/laravel \
+    && echo >> /etc/cron.d/laravel
+
+# Arrancar cron + servidor PHP
+CMD cron && php -S 0.0.0.0:80 -t public
+
 EXPOSE 80
-CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
