@@ -1,15 +1,23 @@
-<!-- Metas -->
-        <meta charset="UTF-8">
-        @foreach(LaravelLocalization::getSupportedLocales() as $locale => $language)
-            @if($locale == LaravelLocalization::getCurrentLocale())
-                <meta http-equiv="content-language" content="{{ LaravelLocalization::getCurrentLocale() }}"/>
-            @else
-                <link href="{{ $urlTranslateds[$locale] ?? "#" }}" hreflang="{{ $locale }}" rel="alternate" type="text/html"/>
-            @endif
-        @endforeach
+<!-- Metas básicas -->
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>@yield('title')</title>
+<title>@yield('title', config('app.name'))</title>
+<meta name="description" content="@yield('meta-description', '')">
 
-        <link rel="canonical" href="@yield('meta-rel-canonical', url()->current())"/>
+{{-- Canonical (puedes sobreescribir con @section('meta-rel-canonical')) --}}
+<link rel="canonical" href="@yield('meta-rel-canonical', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), null, [], true))" />
+
+{{-- Alternates (incluye el idioma actual = self-referencing) --}}
+@php
+    $supportedLocales = LaravelLocalization::getSupportedLocales();
+@endphp
+@foreach ($supportedLocales as $locale => $language)
+    <link rel="alternate" hreflang="{{ $locale }}"
+        href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}" />
+@endforeach
+
+{{-- x-default recomienda Google (apunta a tu fallback) --}}
+<link rel="alternate" hreflang="x-default"
+    href="{{ LaravelLocalization::getLocalizedURL(config('app.fallback_locale'), null, [], true) }}" />
