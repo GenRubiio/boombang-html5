@@ -25,7 +25,7 @@ class BlogArticle extends Model
     use HasTranslations;
     use ModelObservantTrait;
     use SlugObservantTrait;
-    use SitemapObservantTrait;
+    //use SitemapObservantTrait;
     use CacheClearObservantTrait;
     use SeoObservantTrait;
 
