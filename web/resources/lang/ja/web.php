@@ -1,7 +1,14 @@
 <?php
 
 return [
-    'noscript' => 'JavaScript está deshabilitado en su navegador. Por favor, habilite JavaScript para disfrutar de todas las funciones de este sitio.',
-    'breadcrumb-home' => 'Home',
-    'copyright' => 'Copyright',
+    'noscript' => 'ブラウザでJavaScriptが無効になっています。このサイトのすべての機能をお楽しみいただくには、JavaScriptを有効にしてください。',
+    'breadcrumb-home' => 'ホーム',
+    'copyright' => 'すべての権利はそれぞれの著作者に帰属します。',
+    'more_articles' => 'その他のニュース',
+    'categories' => 'カテゴリー',
+    'all' => 'すべて',
+    'play' => 'プレイ',
+    'banner_home' => 'ホームバナー',
+    'avatar' => 'アバター',
+    'follow' => 'BoomManiaをフォロー',
 ];

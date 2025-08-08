@@ -2,10 +2,10 @@
 
 return [
     'title' => 'We use cookies',
-    'intro' => 'This website uses cookies in order to enhance the overall user experience.',
-    'link' => 'Take a look at our <a href=":url" target="_blank">Cookies Policy</a> for more information.',
+    'intro' => 'This website uses cookies to improve the overall user experience.',
+    'link' => 'Check our <a href=":url" target="_blank">Cookie Policy</a> for more information.',
 
-    'essentials' => 'Only essentials',
+    'essentials' => 'Essentials only',
     'all' => 'Accept all',
     'customize' => 'Customize',
     'manage' => 'Manage cookies',
@@ -21,35 +21,35 @@ return [
     'day' => 'Day|Days',
     'hour' => 'Hour|Hours',
     'minute' => 'Minute|Minutes',
-    'button_footer' => 'Cookie Settings',
+    'button_footer' => 'Cookie settings',
 
     'categories' => [
         'essentials' => [
             'title' => 'Essential cookies',
-            'description' => 'There are some cookies that we have to include in order for certain web pages to function. For this reason, they do not require your consent.',
+            'description' => 'There are some cookies that we have to include in order for certain web pages to work. For this reason, they do not require your consent.',
         ],
         'analytics' => [
             'title' => 'Analytics cookies',
-            'description' => 'We use these for internal research on how we can improve the service we provide for all our users. These cookies assess how you interact with our website.',
+            'description' => 'We use these cookies for internal research on how we can improve the service we provide to all our users. They assess how you interact with our website.',
         ],
         'optional' => [
             'title' => 'Optional cookies',
-            'description' => 'These cookies enable features that could improve your user experience, but their absence will not impact your ability to browse our website.',
+            'description' => 'These cookies enable features that could improve your user experience, but their absence will not affect your ability to browse our website.',
         ],
     ],
 
     'analitics' => [
         'title' => 'Google Tag Manager',
-        'description' => 'It allows the management of Google Tag Manager tags to load analytics, marketing, and conversion scripts after your consent.',
+        'description' => 'Allows the management of Google Tag Manager tags to load analytics, marketing and conversion scripts with your consent.',
     ],
 
     'defaults' => [
         'consent' => 'Used to store the user\'s cookie consent preferences.',
         'session' => 'Used to identify the user\'s browsing session.',
-        'csrf' => 'Used to secure both the user and our website against cross-site request forgery attacks.',
-        '_ga' => 'Main cookie used by Google Analytics, enables a service to distinguish one visitor from another.',
-        '_ga_ID' => 'Used by Google Analytics to persist session state.',
+        'csrf' => 'Used to protect both the user and our website against cross-site request forgery (CSRF) attacks.',
+        '_ga' => 'Main cookie used by Google Analytics, allows a service to distinguish one visitor from another.',
+        '_ga_ID' => 'Used by Google Analytics to maintain session state.',
         '_gid' => 'Used by Google Analytics to identify the user.',
-        '_gat' => 'Used by Google Analytics to throttle the request rate.',
+        '_gat' => 'Used by Google Analytics to limit the request rate.',
     ],
 ];

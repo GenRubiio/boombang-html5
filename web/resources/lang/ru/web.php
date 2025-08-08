@@ -1,7 +1,14 @@
 <?php
 
 return [
-    'noscript' => 'JavaScript está deshabilitado en su navegador. Por favor, habilite JavaScript para disfrutar de todas las funciones de este sitio.',
-    'breadcrumb-home' => 'Home',
-    'copyright' => 'Copyright',
+    'noscript' => 'В вашем браузере отключен JavaScript. Пожалуйста, включите JavaScript, чтобы пользоваться всеми функциями этого сайта.',
+    'breadcrumb-home' => 'Главная',
+    'copyright' => 'Все права принадлежат их соответствующим авторам.',
+    'more_articles' => 'Больше новостей',
+    'categories' => 'Категории',
+    'all' => 'Все',
+    'play' => 'Играть',
+    'banner_home' => 'Главный баннер',
+    'avatar' => 'Аватар',
+    'follow' => 'Следите за BoomMania',
 ];
