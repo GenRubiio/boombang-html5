@@ -55,5 +55,5 @@
     </div>
 @endif
 <div class="page-home__content__left__show-more">
-    <a href="{{ makeUrl('News') }}">Más noticias <i class="fa-solid fa-angles-right"></i></a>
+    <a href="{{ makeUrl('News') }}">{{ trans('web.more_articles') }} <i class="fa-solid fa-angles-right"></i></a>
 </div>

@@ -15,7 +15,7 @@
                 {!! $article->content !!}
             </div>
             <div class="page-article__content__left__show-more">
-                <a href="{{ makeUrl('News') }}">Más noticias <i class="fa-solid fa-angles-right"></i></a>
+                <a href="{{ makeUrl('News') }}">{{ trans('web.more_articles') }} <i class="fa-solid fa-angles-right"></i></a>
             </div>
         </div>
         <div class="page-article__content__right">

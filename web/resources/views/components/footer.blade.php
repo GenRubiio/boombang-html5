@@ -4,7 +4,7 @@
             <div class="footer-container__header">
                 <div class="footer-container__left">
                     <div class="footer-container__left__title">
-                        Sigue a BoomMania
+                        {{ trans('web.follow') }}
                     </div>
                     <x-header-social-networks />
                 </div>
@@ -32,7 +32,7 @@
             </div>
             <div class="footer-container__bottom">
                 <div>
-                    © BoomMania 2025 Todos los derechos reservados a sus respectivos autores.
+                    © BoomMania 2025 - {{ date('Y') }} {{ trans('web.copyright') }}
                 </div>
             </div>
         </div>
