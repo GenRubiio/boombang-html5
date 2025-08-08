@@ -1,4 +1,4 @@
-@section('title'){{ (!is_array($object) && (isset($object->seo_title) && empty($object->seo_title)) ? $object->title . ' | ' . config('settings.name') : !is_array($object)) ? $object->seo_title : '' }}@endsection
+@section('title'){{ (!is_array($object) && (isset($object->seo_title) && empty($object->seo_title)) ? $object->title : !is_array($object)) ? $object->seo_title : '' }}@endsection
 @section('meta-title'){{ !is_array($object) && isset($object->meta_title) ? $object->meta_title : '' }}@endsection
 @section('meta-description'){{ !is_array($object) && isset($object->meta_description) ? $object->meta_description : '' }}@endsection
 @section('meta-keywords'){{ !is_array($object) && isset($object->meta_keywords) ? $object->meta_keywords : '' }}@endsection
