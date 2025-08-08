@@ -1,0 +1,4 @@
+location ~* \.(?:ico|css|js|gif|jpe?g|png|webp|woff2?|ttf|svg)$ {
+    expires 30d;
+    add_header Cache-Control "public, no-transform";
+}
