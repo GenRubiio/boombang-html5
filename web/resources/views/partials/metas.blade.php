@@ -6,7 +6,7 @@
 <title>@yield('title', config('app.name'))</title>
 
 {{-- Canonical (puedes sobreescribir con @section('meta-rel-canonical')) --}}
-<link rel="canonical" href="@yield('meta-rel-canonical', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), null, [], true))" />
+<link rel="canonical" href="@yield('meta-rel-canonical', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), null, request()->query(), true))" />
 
 {{-- Alternates (incluye el idioma actual = self-referencing) --}}
 @php
@@ -14,9 +14,9 @@
 @endphp
 @foreach ($supportedLocales as $locale => $language)
     <link rel="alternate" hreflang="{{ $locale }}"
-        href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}" />
+        href="{{ LaravelLocalization::getLocalizedURL($locale, null, request()->query(), true) }}" />
 @endforeach
 
 {{-- x-default recomienda Google (apunta a tu fallback) --}}
 <link rel="alternate" hreflang="x-default"
-    href="{{ LaravelLocalization::getLocalizedURL(config('app.fallback_locale'), null, [], true) }}" />
+    href="{{ LaravelLocalization::getLocalizedURL(config('app.fallback_locale'), null, request()->query(), true) }}" />
