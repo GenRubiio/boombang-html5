@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('prune:old-files-generated')->daily()->withoutOverlapping();
         // Comprueba que exista el demonio de la cola, async database en el env y tabla jobs
         $schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping();
-        $schedule->command('app:test-cron-command')->everyMinute()->withoutOverlapping();
+        //$schedule->command('app:test-cron-command')->everyMinute()->withoutOverlapping();
     }
 
     /**
