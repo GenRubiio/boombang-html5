@@ -47,7 +47,7 @@
         <div class="register-form__terms">
           <input id="checkbox" type="checkbox" required />
           <label for="checkbox"> {{ $t('register.terms_agree') }}</label>
-          <a>{{ $t('register.terms_and_conditions') }}</a>
+          <a :href="termsUrl" target="_blank">{{ $t('register.terms_and_conditions') }}</a>
         </div>
       </div>
     </div>
@@ -90,6 +90,7 @@ export default {
       isSocketConnected: socket.connected,
       asset_button_image,
       asset_warning_image,
+      termsUrl: import.meta.env.VITE_WEB_TERMS_URL,
     };
   },
   methods: {
