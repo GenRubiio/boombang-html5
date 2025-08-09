@@ -10,17 +10,24 @@ const NavbarController = {
     },
 
     init() {
+        if (document.querySelector('#page-play')) {
+            return; // No navbar on play page
+        }
+        console.log('NavbarController initialized');
         this.setListeners();
         this.initNavbarScrolled();
     },
 
     setListeners() {
-        document
-            .querySelector(this.navbarHeaderEl.hamburgerIconClass)
-            .addEventListener("click", ev => this.initHamburguerMenu(ev));
-        document
-            .querySelector(this.navbarHeaderEl.navbarCurtainClass)
-            .addEventListener("click", ev => this.handleClickOutsideNavbar(ev));
+        if (document.querySelector(this.navbarHeaderEl.hamburgerIconClass)
+            && document.querySelector(this.navbarHeaderEl.navbarCurtainClass)) {
+            document
+                .querySelector(this.navbarHeaderEl.hamburgerIconClass)
+                .addEventListener("click", ev => this.initHamburguerMenu(ev));
+            document
+                .querySelector(this.navbarHeaderEl.navbarCurtainClass)
+                .addEventListener("click", ev => this.handleClickOutsideNavbar(ev));
+        }
     },
 
     initHamburguerMenu(ev) {
