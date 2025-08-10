@@ -213,7 +213,8 @@ export default {
       await this.ensureRecaptchaScript();
 
       if (this.recaptchaWidgetId !== null) return; // ya renderizado
-
+console.log("Renderizando reCAPTCHA...");
+console.log("Site key:", this.siteKey);
       this.recaptchaWidgetId = window.grecaptcha.render(
         this.$refs.recaptchaEl,
         {
