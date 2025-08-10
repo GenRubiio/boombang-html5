@@ -108,7 +108,7 @@ export default {
         },
         parent: "phaser-container",
         dom: {
-          createContainer: true
+          createContainer: true,
         },
         physics: {
           default: "arcade",
@@ -171,6 +171,7 @@ export default {
   width: 1012px;
   height: 657px;
   position: relative;
+  overflow: hidden;
 }
 
 #phaser-container {
