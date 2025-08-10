@@ -46,7 +46,11 @@
     "email_placeholder": "Email",
     "terms_agree": "I agree to these",
     "terms_and_conditions": "Terms and Conditions",
-    "play_button": "Play"
+    "play_button": "Play",
+    "captcha_required": "Please complete the reCAPTCHA.",
+    "captcha_expired": "The reCAPTCHA has expired. Please try again.",
+    "captcha_error": "Error loading/verifying reCAPTCHA. Please try again.",
+    "captcha_load_error": "Could not load reCAPTCHA."
   },
   "auth_screen": {
     "register_title": "Create your Account",

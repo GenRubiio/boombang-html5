@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'recaptcha' => [
+        'secret' => env('GRECAPTCHA_PRIVATE'),
+    ],
+
 ];

@@ -37,7 +37,7 @@ export default {
     //setInterval(() => {
     //  console.log("Eventos registrados:", socket._callbacks);
     //}, 5000);
-    console.log("Server URL:", import.meta.env.VITE_SERVER_URL);
+    //console.log("Server URL:", import.meta.env.VITE_SERVER_URL);
   },
   components: {
     LoadingScreen: defineAsyncComponent(() =>
