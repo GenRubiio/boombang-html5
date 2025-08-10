@@ -164,6 +164,13 @@ return [
             'days' => 30,
         ],
 
+        'sitemap_news' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/sitemap-news.log'),
+            'level' => 'debug',
+            'days' => 30,
+        ],
+
         'request_execution_time' => [
             'driver' => 'daily',
             'path' => storage_path('logs/request-execution-time.log'),

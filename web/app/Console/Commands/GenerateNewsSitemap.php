@@ -7,6 +7,7 @@ use App\Models\BlogArticle;
 use App\Models\Page;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class GenerateNewsSitemap extends Command
 {
@@ -71,6 +72,7 @@ class GenerateNewsSitemap extends Command
         file_put_contents($filePath, $xml->asXML());
 
         $this->info("✅ Sitemap de noticias generado: {$filePath}");
+        Log::channel('sitemap_news')->info("Sitemap de noticias generado: {$filePath}");
         return Command::SUCCESS;
     }
 
