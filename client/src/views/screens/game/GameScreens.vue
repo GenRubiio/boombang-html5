@@ -164,7 +164,9 @@ export default {
       if (response.success) {
         this.onJoinMinigameScene(response.sceneType, response.data);
       } else {
-        console.log("Error al unirse a la sala.");
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log("Error al unirse a la sala.");
+        }
       }
     });
 
@@ -184,7 +186,9 @@ export default {
         let sceneryType = response.data.scenery.type;
         this.onJoinPrivateScene(sceneryType, response.data);
       } else {
-        console.log("Error al unirse a la sala privada.");
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log("Error al unirse a la sala privada.");
+        }
       }
     });
 

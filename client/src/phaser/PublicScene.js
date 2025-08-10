@@ -161,7 +161,9 @@ export default class PublicScene extends Phaser.Scene {
             START_X,
             'asset_ui_shop_image',
             () => {
-                console.log('Botón de tienda pulsado');
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    console.log('Botón de tienda pulsado');
+                }
             },
             i18n.global.t('scene.tooltip_shop')
         );
@@ -171,7 +173,9 @@ export default class PublicScene extends Phaser.Scene {
             START_X + BUTTON_SIZE + BUTTON_SPACING,
             'asset_ui_avatars_image',
             () => {
-                console.log('Botón de avatares pulsado');
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    console.log('Botón de avatares pulsado');
+                }
             },
             i18n.global.t('scene.tooltip_avatars')
         );

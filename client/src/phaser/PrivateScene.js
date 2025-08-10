@@ -37,7 +37,9 @@ export default class PrivateScene extends Phaser.Scene {
         this.avatarAnimations = {};
         this.vueComponent = data.vueComponent;
         this.selectedShadow = null;
-        console.log("PrivateScene init", this.sceneType, this.sceneData);
+        if (import.meta.env.VITE_APP_ENV === "local") {
+            console.log("PrivateScene init", this.sceneType, this.sceneData);
+        }
 
         // Datos dinámicos de inventario y objetos
         this.backpackUserItems = this.sceneData.userInventory;
@@ -137,14 +139,18 @@ export default class PrivateScene extends Phaser.Scene {
 
     handleSockets() {
         socket.on(ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY, (data) => {
-            console.log('Socket event received:', ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY);
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                console.log('Socket event received:', ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY);
+            }
             if (data.item) {
                 this.inventoryItemsList.push(data.item);
                 this.updateInventoryUI();
             }
         });
         socket.on(ResponseSocketsEnum.SCENE_REMOVE_ITEM, (data) => {
-            console.log('Socket event received:', ResponseSocketsEnum.SCENE_REMOVE_ITEM);
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                console.log('Socket event received:', ResponseSocketsEnum.SCENE_REMOVE_ITEM);
+            }
             const itemId = data.user_catalog_item_id;
             const itemToRemove = this.sceneItems.find(i => i.id === itemId);
 
@@ -161,7 +167,9 @@ export default class PrivateScene extends Phaser.Scene {
             }
         });
         socket.on(ResponseSocketsEnum.SCENE_PUT_ITEM, (data) => {
-            console.log('Socket event received:', ResponseSocketsEnum.SCENE_PUT_ITEM);
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                console.log('Socket event received:', ResponseSocketsEnum.SCENE_PUT_ITEM);
+            }
             if (data.item) {
                 const existingItem = this.sceneItems.find(i => i.id === data.item.id);
                 if (existingItem) {
@@ -203,7 +211,9 @@ export default class PrivateScene extends Phaser.Scene {
             }
         });
         socket.on(ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY, (data) => {
-            console.log('Socket event received:', ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY);
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                console.log('Socket event received:', ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY);
+            }
             const itemId = data.user_catalog_item_id;
             const itemIndex = this.inventoryItemsList.findIndex(i => i.id === itemId);
             if (itemIndex !== -1) {
@@ -328,7 +338,9 @@ export default class PrivateScene extends Phaser.Scene {
             START_X,
             'asset_ui_shop_image',
             () => {
-                console.log('Botón de tienda pulsado');
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    console.log('Botón de tienda pulsado');
+                }
             },
             i18n.global.t('scene.tooltip_shop')
         );
@@ -338,7 +350,9 @@ export default class PrivateScene extends Phaser.Scene {
             START_X + BUTTON_SIZE + BUTTON_SPACING,
             'asset_ui_avatars_image',
             () => {
-                console.log('Botón de avatares pulsado');
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    console.log('Botón de avatares pulsado');
+                }
             },
             i18n.global.t('scene.tooltip_avatars')
         );
@@ -348,7 +362,9 @@ export default class PrivateScene extends Phaser.Scene {
             START_X + (BUTTON_SIZE + BUTTON_SPACING) * 2,
             'asset_ui_color_scene_image',
             () => {
-                console.log('Boton de colorear pulsado');
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    console.log('Boton de colorear pulsado');
+                }
             },
             i18n.global.t('scene.tooltip_color'),
             true

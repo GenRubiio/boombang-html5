@@ -10,11 +10,15 @@ const socket = io(import.meta.env.VITE_SERVER_URL, {
 
 // Maneja errores globales
 socket.on('connect_error', (err) => {
-    console.error('Socket connection error:', err.message);
+    if (import.meta.env.VITE_APP_ENV === "local") {
+        console.error('Socket connection error:', err.message);
+    }
 });
 
 socket.on('disconnect', (reason) => {
-    console.log('Desconectado del servidor:', reason);
+    if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log('Desconectado del servidor:', reason);
+    }
 
     // Puedes emitir un evento global en Vue para redirigir
     window.dispatchEvent(new CustomEvent('socket-disconnected'));

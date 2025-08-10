@@ -150,13 +150,17 @@ export default {
     },
     handleSceneAction(scene) {
       if (scene) {
-        console.log("Acción para el escenario existente:", scene);
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log("Acción para el escenario existente:", scene);
+        }
         socket.emit(RequestSocketsEnum.JOIN_PRIVATE_SCENE, {
           sceneId: scene.id,
           password: null, // Aquí puedes manejar la contraseña si es necesario
         });
       } else {
-        console.log("Añadir nuevo escenario");
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log("Añadir nuevo escenario");
+        }
         this.$emit("createIslandScene", this.sceneData);
       }
     },

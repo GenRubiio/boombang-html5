@@ -116,7 +116,9 @@ export default {
           let sceneryType = response.data.scenery.type;
           this.$emit("joinPublicScene", sceneryType, response.data);
         } else {
-          console.log("Error al unirse a la sala.");
+          if (import.meta.env.VITE_APP_ENV === "local") {
+            console.log("Error al unirse a la sala.");
+          }
         }
       });
     },

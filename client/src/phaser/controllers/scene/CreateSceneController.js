@@ -113,19 +113,25 @@ class CreateSceneController {
 
                 // Si el tile no es clickeable, ignoramos el clic
                 if (!tile.isClickable) {
-                    console.log(`Tile at ${col}, ${row} is not clickable.`);
+                    if (import.meta.env.VITE_APP_ENV === "local") {
+                        console.log(`Tile at ${col}, ${row} is not clickable.`);
+                    }
                     socket.emit(RequestSocketsEnum.CHANGE_LOOK, { x: col, y: row });
                     if (import.meta.env.VITE_MAP_MAKER === "true") {
                         //gameScene.tiles[row][col - 1].bob.setTint(0xffffff);
                         gameScene.tiles[row][col].isClickable = 0;
                         map[row][col] = 0;
                         gameScene.tiles[row][col].bob.tint = 0xffffff; // Color gris, por ejemplo
-                        console.log(map);
+                        if (import.meta.env.VITE_APP_ENV === "local") {
+                            console.log(map);
+                        }
                     }
                     return;
                 }
 
-                console.log(`Clicked tile at ${col}, ${row}`);
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    console.log(`Clicked tile at ${col}, ${row}`);
+                }
                 socket.emit(RequestSocketsEnum.USER_MOVE, { x: col, y: row });
                 FloorPulseAnimation.main(gameScene, mx, my);
             }
