@@ -93,6 +93,8 @@ while true; do
   echo " 4) API: Docker → Host (Copiando uploads)"
   echo " 5) API: Host → Docker (Copiando uploads)"
   echo " 6) Desplegar cliente"
+  echo " 7) Clear cache docker"
+  echo " 8) UP Containers"
   read -p "Opción: " opt
   echo
 
@@ -119,7 +121,17 @@ while true; do
       ;;
     6)
       echo "==> Desplegando cliente..."
-      sudo docker compose build client && sudo docker compose up -d client && sudo docker builder prune -af && sudo docker image prune -af
+      sudo docker compose up -d --build client
+      ;;
+    7)
+      echo "==> Clear cache docker..."
+      sudo docker builder prune -af && sudo docker image prune -af
+      ;;
+    8)
+      echo "==> UP Containers..."
+      sudo docker start $(sudo docker ps -a -q)
+      sudo docker start boombang-html5-web-1
+      sudo docker restart boombang-html5-server-1
       ;;
     *)
       echo "Opción inválida, inténtalo de nuevo."
