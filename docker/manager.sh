@@ -87,34 +87,39 @@ function copiar_a_contenedor() {
 while true; do
   echo
   echo "Seleccione una opción:"
-  echo " 1) WEB: Docker → Host (Copiando uploads)"
-  echo " 2) WEB: Host → Docker (Copiando uploads)"
-  echo " 3) API: Docker → Host (Copiando uploads)"
-  echo " 4) API: Host → Docker (Copiando uploads)"
-  echo " 5) Salir"
+  echo " 1) Salir"
+  echo " 2) WEB: Docker → Host (Copiando uploads)"
+  echo " 3) WEB: Host → Docker (Copiando uploads)"
+  echo " 4) API: Docker → Host (Copiando uploads)"
+  echo " 5) API: Host → Docker (Copiando uploads)"
+  echo " 6) Desplegar cliente"
   read -p "Opción: " opt
   echo
 
   case $opt in
     1)
+      echo "Saliendo..."
+      break
+      ;;
+    2)
       echo "==> Copiando WEB uploads desde contenedor al host..."
       copiar_desde_contenedor "$WEB_CONTAINER" "/var/www/html/public" "$WEB_TAR" "$WEB_UPLOADS" "data"
       ;;
-    2)
+    3)
       echo "==> Copiando WEB uploads desde host al contenedor..."
       copiar_a_contenedor "$WEB_CONTAINER" "/var/www/html/public" "$WEB_TAR" "$WEB_UPLOADS"
       ;;
-    3)
+    4)
       echo "==> Copiando API uploads desde contenedor al host..."
       copiar_desde_contenedor "$API_CONTAINER" "/var/www/html/public" "$API_TAR" "$API_UPLOADS" "data"
       ;;
-    4)
+    5)
       echo "==> Copiando API uploads desde host al contenedor..."
       copiar_a_contenedor "$API_CONTAINER" "/var/www/html/public" "$API_TAR" "$API_UPLOADS"
       ;;
-    5)
-      echo "Saliendo..."
-      break
+    6)
+      echo "==> Desplegando cliente..."
+      sudo docker compose build client && sudo docker compose up -d client && sudo docker builder prune -af && sudo docker image prune -af
       ;;
     *)
       echo "Opción inválida, inténtalo de nuevo."
