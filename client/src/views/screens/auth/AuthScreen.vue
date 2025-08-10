@@ -9,11 +9,15 @@
     <div class="auth__clouds-wrapper">
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + asset_clouds_background_image + ')' }"
+        :style="{
+          backgroundImage: 'url(' + asset_clouds_background_image + ')',
+        }"
       ></div>
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + asset_clouds_background_image + ')' }"
+        :style="{
+          backgroundImage: 'url(' + asset_clouds_background_image + ')',
+        }"
       ></div>
     </div>
     <div class="auth__content">
@@ -168,5 +172,6 @@ export default {
 .auth__content {
   display: flex;
   gap: 10px;
+  margin-top: 40px;
 }
 </style>

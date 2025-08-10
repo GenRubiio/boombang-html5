@@ -9,7 +9,13 @@ const DisconnectUserController = require('../connection/DisconnectUserController
 class RegisterController {
     static async main(socket, io, data) {
         try {
-            const response = await UserApiService.register(data.username, data.email, data.password, data.avatar_id);
+            const response = await UserApiService.register(
+                data.username,
+                data.email,
+                data.password,
+                data.avatar_id,
+                data.recaptcha
+            );
             if (response.errors) {
                 socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { errors: response.errors });
                 return;
@@ -27,7 +33,7 @@ class RegisterController {
                 }
                 user.addSocket(socket);
                 ConnectedUsersCollection.add(socket.id, user);
-            
+
                 const userResource = new UserResource(user);
                 socket.emit(ResponseSocketsEnum.REGISTER_SUCCESS, { user: userResource.toObject() });
             } else {
