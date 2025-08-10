@@ -135,7 +135,9 @@ export default {
 
       this.loading = true;
 
-      console.log("Enviando solicitud de registro..." + this.recaptchaToken);
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log("Enviando solicitud de registro..." + this.recaptchaToken);
+      }
       this.$socket.emit(RequestSocketsEnum.REGISTER, {
         username: this.username,
         email: this.email,
@@ -155,7 +157,9 @@ export default {
         if (error.errors) {
           this.setErrors(error.errors);
         }
-        console.log(error);
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log(error);
+        }
         this.loading = false;
       });
     },

@@ -51,7 +51,9 @@ export default {
     },
     exitToLobbyResponse() {
       // Limpia el juego Phaser antes de salir
-      console.log("Saliendo de la sala...");
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log("Saliendo de la sala...");
+      }
       this.$emit("updateLoading", true);
       this.$emit("joinIsland", this.sceneData.scenery.island.data);
     },

@@ -85,7 +85,9 @@ export default {
     },
   },
   mounted() {
-    console.log("User data received in component:", this.selectedUser);
+    if (import.meta.env.VITE_APP_ENV === "local") {
+      console.log("User data received in component:", this.selectedUser);
+    }
   },
 };
 </script>

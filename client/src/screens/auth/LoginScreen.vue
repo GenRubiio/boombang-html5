@@ -38,7 +38,9 @@ export default {
       this.$socket.off(ResponseSocketsEnum.LOGIN_ERROR);
       this.$socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
         //this.errorMessage = error;
-        console.log(error);
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log(error);
+        }
       });
     },
   },
