@@ -73,7 +73,7 @@ export default {
       asset_background_image,
       asset_clouds_background_image,
       avatar_id: 13,
-      isSocketConnected: socket.connected,
+      isSocketConnected: true,
     };
   },
   components: {

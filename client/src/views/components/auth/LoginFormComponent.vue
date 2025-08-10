@@ -1,8 +1,5 @@
 <template>
   <form class="login-form" @submit.prevent="login">
-    <div class="login-form__error" v-if="showUsernameError">
-      <img :src="asset_warning_image" alt="warning" /> {{ usernameError }}
-    </div>
     <div class="login-form__content">
       <div class="login-form__title">{{ $t('login.already_have_account') }}</div>
       <div class="login-form__input-container">
@@ -102,8 +99,13 @@ export default {
 
       this.$socket.off(ResponseSocketsEnum.LOGIN_ERROR);
       this.$socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
+        console.error("Login error:", error);
         if (error.errors) {
           this.setErrors(error.errors);
+        }
+        else if (error.message) {
+          this.showUsernameError = true;
+          this.usernameError = error.message;
         }
         this.loading = false;
       });
