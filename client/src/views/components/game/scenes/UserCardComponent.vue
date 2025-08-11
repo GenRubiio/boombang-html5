@@ -18,6 +18,13 @@
         <FichaComponent :avatarId="selectedUser.avatar_id" />
       </div>
     </div>
+    <div class="user-card__change-ficha" v-if="selectedUser.is_selected" @click="changeFicha">
+      <img
+        :src="asset_change_ficha_icon_image"
+        alt="Change Ficha"
+        class="user-card__change-ficha__icon"
+      />
+    </div>
     <UserDataTabsComponents
       v-if="!selectedUser.is_selected"
       :selectedUser="selectedUser"
@@ -31,15 +38,19 @@
 </template>
 
 <script>
+import socket from "../../../../sockets/socket";
+import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import FichaComponent from "./user-card/FichaComponent.vue";
 import UserDataTabsComponents from "./user-card/UserDataTabsComponents.vue";
 import UserSelectedDataTabsComponent from "./user-card/UserSelectedDataTabsComponent.vue";
+import asset_change_ficha_icon_image from "../../../../assets/game/ficha/change_ficha.svg";
 
 export default {
   data() {
     return {
       selectedUser: null,
       authUser: null,
+      asset_change_ficha_icon_image,
     };
   },
   components: {
@@ -52,6 +63,11 @@ export default {
       //console.log("User data updated:", usersData);
       this.selectedUser = usersData.selectedUser;
       this.authUser = usersData.authUser;
+    },
+    changeFicha() {
+      socket.emit(RequestSocketsEnum.USER_SELECT_USER, {
+        socketId: socket.id,
+      });
     },
   },
   computed: {
@@ -164,5 +180,13 @@ export default {
   -webkit-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+
+.user-card__change-ficha {
+  position: absolute;
+  right: 5px;
+  top: 111px;
+  opacity: 0.3;
+  cursor: pointer;
 }
 </style>

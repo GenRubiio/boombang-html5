@@ -17,7 +17,6 @@
           alt="upper"
           @click="handleUpperClick"
         />
-        <span class="plus-button" @click.stop="toggleContainerUppers">+</span>
       </div>
       <div class="coco-container">
         <img
@@ -25,11 +24,16 @@
           alt="coco"
           @click="handleCocoClick"
         />
-        <span class="plus-button" @click.stop="toggleContainerCocos">+</span>
       </div>
       <div></div>
       <div></div>
     </div>
+    <span class="uppercuts__plus-button" @click.stop="toggleContainerUppers"
+      >+</span
+    >
+    <span class="coconuts__plus-button" @click.stop="toggleContainerCocos"
+      >+</span
+    >
 
     <div class="uppercuts-list-container" v-if="showContainerUppers">
       <div class="uppercuts-list-container__list">
@@ -46,7 +50,7 @@
         class="uppercuts-list-container__close"
         @click="toggleContainerUppers"
       >
-        x
+        <i class="las la-times-circle"></i>
       </div>
     </div>
     <div class="coconuts-list-container" v-if="showContainerCocos">
@@ -61,7 +65,7 @@
         </div>
       </div>
       <div class="coconuts-list-container__close" @click="toggleContainerCocos">
-        x
+        <i class="las la-times-circle"></i>
       </div>
     </div>
   </div>
@@ -218,10 +222,6 @@ export default {
   padding: 0 5px;
 }
 
-.container__item{
-
-}
-
 .container div {
   display: flex;
   justify-content: center;
@@ -251,27 +251,38 @@ export default {
   cursor: pointer;
 }
 
-.plus-button {
-  margin-left: 44px;
-  margin-top: 15px;
+.uppercuts__plus-button {
   font-weight: bold;
   font-size: 20px;
   cursor: pointer;
   user-select: none;
   position: absolute;
+  top: 60px;
+  left: 36px;
+}
+
+.coconuts__plus-button {
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+  top: 60px;
+  left: 82px;
 }
 
 .uppercuts-list-container {
   position: absolute;
-  width: 230px;
+  width: 240px;
   top: 13px;
-  left: -250px;
+  left: -260px;
   background-color: white;
   border-radius: 5px;
   display: flex;
   padding: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .uppercuts-list-container__list {
@@ -279,13 +290,16 @@ export default {
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 2px;
-  margin-right: 15px;
+  width: 210px;
+  height: 84px;
 }
 
 .uppercuts-list-container__list div {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .uppercuts-list-container__list img {
@@ -311,10 +325,11 @@ export default {
 
 .uppercuts-list-container__close {
   position: absolute;
-  top: 4px;
-  right: 6px;
+  top: -4px;
+  right: 2px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 22px;
 }
 
 .coco-container {
@@ -331,15 +346,16 @@ export default {
 
 .coconuts-list-container {
   position: absolute;
-  width: 230px;
+  width: 240px;
   top: 13px;
-  left: -250px;
+  left: -260px;
   background-color: white;
   border-radius: 5px;
   display: flex;
   padding: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .coconuts-list-container__list {
@@ -347,13 +363,16 @@ export default {
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 2px;
-  margin-right: 15px;
+  width: 210px;
+  height: 84px;
 }
 
 .coconuts-list-container__list div {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .coconuts-list-container__list img {
@@ -379,9 +398,10 @@ export default {
 
 .coconuts-list-container__close {
   position: absolute;
-  top: 4px;
-  right: 6px;
+  top: -4px;
+  right: 2px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 22px;
 }
 </style>
