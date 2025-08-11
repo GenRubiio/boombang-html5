@@ -1,21 +1,21 @@
 <template>
   <div class="container" :class="colorUser">
-    <div class="container__uppers-data">
-      <div class="container__uppers-data__title">{{ currentView.title }}</div>
+    <div class="container__userinfo-data">
+      <div class="container__userinfo-data__title">{{ currentView.title }}</div>
       <div
         v-for="stat in currentView.stats"
         :key="stat.key"
-        class="container__uppers-data__data-container"
+        class="container__userinfo-data__data-container"
       >
-        <div class="container__uppers-data__data-container__count">
+        <div class="container__userinfo-data__data-container__count">
           {{ selectedUser[stat.key] }}
         </div>
-        <div class="container__uppers-data__data-container__title">
+        <div class="container__userinfo-data__data-container__title">
           {{ stat.label }}
         </div>
       </div>
     </div>
-    <div class="container__uppers-right">
+    <div class="container__userinfo-right">
       <img :src="currentView.image" :alt="currentView.title" />
     </div>
     <button class="container__cycle-button" @click="cycleStatistic">
@@ -105,16 +105,26 @@ export default {
   display: flex;
 }
 
-.container__uppers-data {
+.container__userinfo-data {
   padding: 8px;
-  width: 120px;
+  width: 135px;
+  box-sizing: border-box;
 }
 
-.container__uppers-right {
+.container__userinfo-right {
   padding-top: 15px;
+  width: calc(100% - 135px);
+  padding-right: 2px;
+  padding-left: 2px;
+  box-sizing: border-box;
 }
 
-.container__uppers-data__title {
+.container__userinfo-right img {
+  width: 100%;
+  height: auto;
+}
+
+.container__userinfo-data__title {
   width: 100%;
   font-size: 18px;
   font-weight: bold;
@@ -125,22 +135,22 @@ export default {
   box-sizing: border-box;
 }
 
-.container.user .container__uppers-data__title {
+.container.user .container__userinfo-data__title {
   background-color: #005491;
 }
 
-.container.selected .container__uppers-data__title {
+.container.selected .container__userinfo-data__title {
   background-color: #045d03;
 }
 
-.container__uppers-data__data-container {
+.container__userinfo-data__data-container {
   width: 100%;
   margin-top: 5px;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
-.container__uppers-data__data-container__count {
+.container__userinfo-data__data-container__count {
   font-size: 11px;
   font-weight: bold;
   color: white;
@@ -151,15 +161,15 @@ export default {
   width: 33px;
 }
 
-.container.user .container__uppers-data__data-container__count {
+.container.user .container__userinfo-data__data-container__count {
   background-color: #005491;
 }
 
-.container.selected .container__uppers-data__data-container__count {
+.container.selected .container__userinfo-data__data-container__count {
   background-color: #045d03;
 }
 
-.container__uppers-data__data-container__title {
+.container__userinfo-data__data-container__title {
   font-size: 11px;
   font-weight: bold;
   color: white;
@@ -170,11 +180,11 @@ export default {
   width: 63px;
 }
 
-.container.user .container__uppers-data__data-container__title {
+.container.user .container__userinfo-data__data-container__title {
   background-color: #005491;
 }
 
-.container.selected .container__uppers-data__data-container__title {
+.container.selected .container__userinfo-data__data-container__title {
   background-color: #045d03;
 }
 

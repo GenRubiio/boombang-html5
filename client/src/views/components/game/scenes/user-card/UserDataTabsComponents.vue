@@ -78,6 +78,7 @@ export default {
   height: 21px;
   display: flex;
   gap: 3px;
+  margin-top: 8px;
 }
 
 .tabs-container__emojis {
