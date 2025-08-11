@@ -47,11 +47,37 @@ export default {
       this.$emit("exitLobby"); // Emite evento al padre
     },
     handleKeydown(event) {
-      // Solo enfocar el input si el usuario empieza a escribir (ignoramos teclas como Shift, Ctrl, Alt, etc.)
+      // Si el target o el activo es editable, no hacemos nada
+      const active = document.activeElement;
+
+      const isEditable = (el) => {
+        if (!el) return false;
+        const tag = el.tagName;
+        return (
+          el.isContentEditable ||
+          tag === "INPUT" ||
+          tag === "TEXTAREA" ||
+          tag === "SELECT" ||
+          el.getAttribute("role") === "textbox"
+        );
+      };
+
+      if (isEditable(event.target) || isEditable(active)) {
+        return; // ya está escribiendo en otro control
+      }
+
+      // Ignorar combinaciones con Ctrl/Alt/Meta y teclas de control
       if (
-        this.$refs.messageInput !== document.activeElement &&
-        event.key.length === 1
+        event.ctrlKey ||
+        event.altKey ||
+        event.metaKey ||
+        event.key.length !== 1
       ) {
+        return;
+      }
+
+      // Ahora sí, si pulsa una tecla de carácter y el input no está enfocado, enfocamos
+      if (this.$refs.messageInput !== active) {
         this.$refs.messageInput.focus();
       }
     },

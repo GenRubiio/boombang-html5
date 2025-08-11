@@ -31,6 +31,7 @@ const RequestSocketsEnum = new Enum({
     SCENE_REMOVE_ITEM: 'request:scene_remove_item',
     GET_PUBLIC_ISLANDS: 'request:get_public_islands',
     GET_MINIGAME_SUBSCRIBE_STATUS: 'request:get_minigame_subscribe_status',
+    USER_UPDATE_DESCRIPTION: 'request:user_update_description',
 });
 
 module.exports = RequestSocketsEnum;

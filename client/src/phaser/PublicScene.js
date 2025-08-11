@@ -138,8 +138,8 @@ export default class PublicScene extends Phaser.Scene {
 
             /* icono */
             const icon = this.add.image(BUTTON_SIZE / 2, BUTTON_SIZE / 2, iconKey);
-            icon.setScale(Math.min((BUTTON_SIZE - 20) / icon.width,
-                (BUTTON_SIZE - 20) / icon.height));
+            icon.setScale(Math.min((BUTTON_SIZE - 10) / icon.width,
+                (BUTTON_SIZE - 10) / icon.height));
 
             cont.add([bg, icon, zone]);
 

@@ -2,6 +2,7 @@ export default class UserModel {
     constructor(row, spriteAvatar, spriteShadow, containerUser) {
         this.socketId = row.id;
         this.username = row.username;
+        this.description = row.description;
         this.position = {
             x: row.x,
             y: row.y,

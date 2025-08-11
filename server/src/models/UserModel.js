@@ -4,6 +4,7 @@ class UserModel {
     constructor(row) {
         this.id = row.id.toString();
         this.username = row.username;
+        this.description = row.description;
         this.email = row.email;
         this.avatarId = row.avatar_id; // ID del avatar del usuario
         this.goldCoins = row.gold_coins; // Monedas de oro del usuario

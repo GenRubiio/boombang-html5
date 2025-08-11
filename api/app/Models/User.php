@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'username',
+        'description',
         'avatar',
         'gold_coins',
         'silver_coins',
