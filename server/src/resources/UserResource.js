@@ -7,6 +7,7 @@ class UserResource extends Resource {
             socket_id: data.socket.id,
             db_id: data.id,
             username: data.username,
+            description: data.description,
             is_admin: false,
             is_vip: false,
             avatar_id: data.avatarId,

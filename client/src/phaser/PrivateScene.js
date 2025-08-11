@@ -314,7 +314,7 @@ export default class PrivateScene extends Phaser.Scene {
 
             /* icono */
             const icon = this.add.image(BUTTON_SIZE / 2, BUTTON_SIZE / 2, iconKey);
-            const padding = isMiddle ? 10 : 20;
+            const padding = 10;
             icon.setScale(Math.min((BUTTON_SIZE - padding) / icon.width,
                 (BUTTON_SIZE - padding) / icon.height));
 

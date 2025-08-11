@@ -47,6 +47,18 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async updateDescription(user, newDescription) {
+        try {
+            const data = {
+                description: newDescription
+            };
+            return await ApiService.post('api/user/update-description', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar la descripción del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;

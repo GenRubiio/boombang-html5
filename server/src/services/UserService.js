@@ -114,6 +114,15 @@ class UserService {
             console.error('Error increasing rings won:', error);
         }
     }
+
+    static async updateDescription(user, newDescription) {
+        user.description = newDescription;
+        try {
+            await UserApiService.updateDescription(user, newDescription);
+        } catch (error) {
+            console.error('Error updating user description:', error);
+        }
+    }
 }
 
 module.exports = UserService;

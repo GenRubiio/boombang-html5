@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Game\Scene\RankingApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
+use App\Http\Controllers\Api\User\UpdateDescriptionApiController;
 use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 
@@ -45,6 +46,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
     Route::middleware(['auth:api'])->group(function () {
         Route::prefix('user')->group(function () {
             Route::post('increase-stats', [IncreaseStatsApiController::class, 'index']);
+            Route::post('update-description', [UpdateDescriptionApiController::class, 'index']);
         });
 
         Route::prefix('island')->group(function () {
