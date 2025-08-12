@@ -17,17 +17,22 @@ class PassportInstallCustomCommand extends Command
         // Generar las claves (forzando sobrescritura si ya existen)
         $this->call('passport:keys', [
             '--force' => true,
+            '--no-interaction' => true,
         ]);
 
         // Crear cliente personal
         $this->call('passport:client', [
             '--personal' => true,
+            '--name' => 'Personal Access Client',
             '--no-interaction' => true,
         ]);
 
         // Crear cliente password grant
         $this->call('passport:client', [
             '--password' => true,
+            '--name' => 'Password Grant Client',
+            '--redirect_uri' => config('app.url') . '/callback', // valor por defecto
+            '--provider' => 'users', // evita que pregunte [users]/[backpack]
             '--no-interaction' => true,
         ]);
     }
