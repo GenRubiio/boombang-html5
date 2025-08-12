@@ -5,6 +5,7 @@ const UserMovimentUtil = require('../utils/UserMovimentUtil');
 const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
+const PublicSceneService = require('../services/PublicSceneService');
 
 class MovementProcessorInstance {
     constructor(scene) {
@@ -153,6 +154,7 @@ class MovementProcessorInstance {
                     itemId: obj.item.id,
                     position: obj.position
                 });
+                PublicSceneService.userCatchItem(user, obj.item.id)
             }
         });
     }

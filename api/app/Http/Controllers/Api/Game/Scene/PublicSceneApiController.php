@@ -7,6 +7,7 @@ use App\Enums\MenuTypeEnum;
 use App\Models\PublicScene;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PublicSceneResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
@@ -25,6 +26,37 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
                     'scenes' => PublicSceneResource::collection($items)
                 ]
             );
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function userCatchItem(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'item_id' => 'required',
+                'scene_id' => 'required',
+            ]);
+
+            $user = Auth::user();
+            $itemId = $validated['item_id'];
+            $sceneId = $validated['scene_id'];
+            $sceneItem = PublicScene::find($sceneId)->items()->find($itemId);
+            if (!$sceneItem) {
+                throw new Exception('Item not found in the scene.');
+            }
+            if ($sceneItem->pivot->sum_points_to_user_attribute) {
+                $userAttributeName = $sceneItem->pivot->user_attribute_name;
+                if ($userAttributeName) {
+                    $user->{$userAttributeName} += $sceneItem->pivot->sum_points;
+                    $user->save();
+                } else {
+                    throw new Exception('User attribute name is not set.');
+                }
+            }
+            
+            return $this->successResponse(['message' => 'Item caught successfully.']);
         } catch (Exception $e) {
             return $this->handleException($e);
         }

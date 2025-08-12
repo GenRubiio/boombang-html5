@@ -67,6 +67,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('update-item-position', [PrivateSceneApiController::class, 'updateItemPosition']);
         });
 
+        Route::prefix('public-scene')->group(function () {
+            Route::post('user-catch-item', [PublicSceneApiController::class, 'userCatchItem']);
+        });
+
         Route::prefix('ranking')->group(function () {
             Route::post('categories', [RankingApiController::class, 'getCategories']);
             Route::post('get', [RankingApiController::class, 'get']);
