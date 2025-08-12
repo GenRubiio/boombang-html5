@@ -28,6 +28,7 @@
 import asset_stat_upper_image from "../../../../../../assets/game/ficha/statistics/uppercut.png";
 import asset_stat_coconut_image from "../../../../../../assets/game/ficha/statistics/coconut.png";
 import asset_stat_ring_image from "../../../../../../assets/game/ficha/statistics/ring.png";
+import asset_stat_coconut_caught_image from "../../../../../../assets/game/ficha/statistics/cocos_locos.png";
 
 export default {
   props: {
@@ -60,6 +61,11 @@ export default {
           title: "Rings",
           image: asset_stat_ring_image,
           stats: [{ key: "rings_won", label: "Ganados" }],
+        },
+        {
+          title: "Cocos Locos",
+          image: asset_stat_coconut_caught_image,
+          stats: [{ key: "coconuts_caught", label: "Atrapados" }],
         },
       ],
     };
@@ -114,11 +120,13 @@ export default {
   padding-right: 2px;
   padding-left: 2px;
   box-sizing: border-box;
+  max-height: 55px;
 }
 
 .container__userinfo-right img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
 }
 
 .container__userinfo-data__title {
@@ -199,7 +207,6 @@ export default {
   background-color: #420143;
 }
 
-
 .container.user .container__userinfo-data__data-container__count {
   background-color: #005491;
 }
@@ -247,5 +254,4 @@ export default {
 .container.vip .container__cycle-button {
   background-color: #420143;
 }
-
 </style>
