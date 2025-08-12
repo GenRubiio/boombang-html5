@@ -36,7 +36,19 @@ export default class OverheadChatAnimation {
         this.scene.events.on('update', this.update, this);
     }
 
-    addMessage(text, userName, playerSprite, avatarId) {
+    addMessage(text, userName, playerSprite, avatarId, chatColor) {
+        let textColor = "#000000"; // Color por defecto
+        let backgroundColor = "#ffffff"; // Color de fondo por defecto
+        switch (chatColor) {
+            case 'admin':
+                textColor = "#000000"; // Color de texto para admin
+                backgroundColor = "#ffd700"; // Fondo claro para admin
+                break;
+            case 'vip':
+                textColor = "#ffffff"; // Color de texto para VIP
+                backgroundColor = "#420143"; // Fondo claro para VIP
+                break;
+        }
         this.playerSprite = playerSprite;
         this.avatarKey = avatarId + '_cara_media';
 
@@ -53,13 +65,13 @@ export default class OverheadChatAnimation {
             fontFamily: 'Arial',
             fontSize: '14px',
             fontStyle: 'bold',
-            color: '#000000'
+            color: textColor
         }).setOrigin(0, 0);
 
         const messageText = this.scene.add.text(0, 0, text, {
             fontFamily: 'Arial',
             fontSize: '14px',
-            color: '#000000'
+            color: textColor
         }).setOrigin(0, 0); // Cambiamos el origen a (0,0) para mejor alineación
 
         // Calcular dimensiones del contenido
@@ -80,7 +92,8 @@ export default class OverheadChatAnimation {
 
         // Crear fondo del mensaje
         const bgGraphics = this.scene.add.graphics();
-        bgGraphics.fillStyle(0xffffff, 0.5);
+        const bgColor = parseInt(backgroundColor.replace(/^#/, ''), 16);
+        bgGraphics.fillStyle(bgColor, 1);
         bgGraphics.fillRoundedRect(0, 0, contentWidth, contentHeight, 5);
         const textureKey = `chatBg_${Date.now()}`;
         bgGraphics.generateTexture(textureKey, contentWidth, contentHeight);
@@ -122,8 +135,8 @@ export default class OverheadChatAnimation {
 
         // Posicionar contenedor
         chatContainer.setPosition(
-            finalX - (contentWidth / 2), // Ajuste para centrado horizontal
-            this.areaStartHeight
+            Math.round(finalX - (contentWidth / 2)), // Ajuste para centrado horizontal
+            Math.round(this.areaStartHeight)
         );
 
         // Configurar profundidad
@@ -175,8 +188,8 @@ export default class OverheadChatAnimation {
         // Posición horizontal centrada
         const sceneWidth = this.scene.game.config.width;
         chatContainer.setPosition(
-            sceneWidth / 2, // Centrado horizontal
-            this.areaStartHeight
+            Math.round(sceneWidth / 2), // Centrado horizontal
+            Math.round(this.areaStartHeight)
         );
 
         // Empujar mensajes existentes hacia arriba

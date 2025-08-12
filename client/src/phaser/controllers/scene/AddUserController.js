@@ -53,13 +53,23 @@ class AddUserController {
         spriteShadow.setInteractive({ useHandCursor: true });
         spriteShadow.playerSocketId = userData.id;
 
+        let color = 0xff6700;
+        switch (userData.shadow_color) {
+            case 'admin':
+                color = 0xffd700;
+                break;
+            case 'vip':
+                color = 0x6a006a;
+                break;
+        }
+
         //remove listener if already exists
         spriteShadow.removeAllListeners();
         spriteShadow.on('pointerdown', () => {
             if (!gameScene.selectedShadow) {
                 //change image shadow to shadow_selected
                 spriteShadow.setTexture("shadow_selected");
-                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
+                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, color);
                 gameScene.selectedShadow = spriteShadow;
             }
             else if (gameScene.selectedShadow != spriteShadow) {
@@ -70,7 +80,7 @@ class AddUserController {
                 }
                 catch (e) { }
                 spriteShadow.setTexture("shadow_selected");
-                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
+                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, color);
                 gameScene.selectedShadow = spriteShadow;
             }
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
@@ -119,10 +129,24 @@ class AddUserController {
         // Nombre del usuario
         const userName = userData.username || "Undefined";
 
+        let textColor = "#000000"; // Color por defecto
+        let backgroundColor = 0xffffff; // Color de fondo por defecto
+        let alpha = 1; // Opacidad por defecto
+        switch (userData.name_color) {
+            case 'admin':
+                textColor = "#000000"; // Color de texto para admin
+                backgroundColor = 0xffd700; // Fondo claro para admin
+                break;
+            case 'vip':
+                textColor = "#ffffff"; // Color de texto para VIP
+                backgroundColor = 0x420143; // Fondo claro para VIP
+                break;
+        }
+
         // Crear temporalmente el texto para calcular el tamaño dinámico
         const userNameText = gameScene.add.text(0, 0, userName, {
             fontSize: "10px",
-            color: "#000",
+            color: textColor,
             fontFamily: "Arial",
             padding: { x: 0, y: 0 }
         }).setOrigin(0.5, 1);
@@ -137,7 +161,7 @@ class AddUserController {
         // Solo generar la textura si no existe (evita recalcular siempre)
         if (!gameScene.textures.exists(textureKey)) {
             const graphics = gameScene.add.graphics();
-            graphics.fillStyle(0xffffff, 0.8); // Fondo blanco semitransparente
+            graphics.fillStyle(backgroundColor, alpha); // Fondo blanco semitransparente
             graphics.fillRoundedRect(0, 0, textWidth, textHeight, 8); // Rectángulo redondeado
             graphics.fillTriangle(textWidth / 2 - 5, textHeight, textWidth / 2 + 5, textHeight, textWidth / 2, textHeight + 6); // Triángulo
 

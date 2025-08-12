@@ -5,6 +5,10 @@ class UserModel {
         this.id = row.id.toString();
         this.username = row.username;
         this.description = row.description;
+        this.ficha_color = row.ficha_color; // Ficha del usuario, por defecto es 'user'
+        this.shadow_color = row.shadow_color; // Color de sombra del usuario, por defecto es 'user'
+        this.chat_color = row.chat_color; // Color del chat del usuario, por defecto es
+        this.name_color = row.name_color; // Color del nombre del usuario, por defecto es 'user'
         this.email = row.email;
         this.avatarId = row.avatar_id; // ID del avatar del usuario
         this.goldCoins = row.gold_coins; // Monedas de oro del usuario
