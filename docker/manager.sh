@@ -124,7 +124,7 @@ while true; do
       echo "==> Deploy client..."
       sudo docker stop boombang-html5-server-1
       sudo docker compose build client && sudo docker compose up -d client
-      sudo docker start boombang-html5-server-1
+      sudo docker restart boombang-html5-server-1
       ;;
     7)
       echo "==> Clear cache docker..."
@@ -143,7 +143,7 @@ while true; do
       sudo docker compose up -d api
       sudo docker exec boombang-html5-api-1 php artisan migrate --force
       sudo docker exec boombang-html5-api-1 php artisan passport:install
-      sudo docker start boombang-html5-server-1
+      sudo docker restart boombang-html5-server-1
       ;;
     *)
       echo "Opción inválida, inténtalo de nuevo."
