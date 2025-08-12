@@ -95,6 +95,7 @@ while true; do
   echo " 6) Deploy client"
   echo " 7) Clear cache docker"
   echo " 8) UP Containers"
+  echo " 9) Deploy api"
   read -p "Opción: " opt
   echo
 
@@ -134,6 +135,12 @@ while true; do
       sudo docker start $(sudo docker ps -a -q)
       sudo docker start boombang-html5-web-1
       sudo docker restart boombang-html5-server-1
+      ;;
+    9)
+      echo "==> Deploy api..."
+      sudo docker stop boombang-html5-server-1
+      sudo docker compose up -d api
+      sudo docker start boombang-html5-server-1
       ;;
     *)
       echo "Opción inválida, inténtalo de nuevo."
