@@ -139,6 +139,7 @@ while true; do
     9)
       echo "==> Deploy api..."
       sudo docker stop boombang-html5-server-1
+      sudo docker compose build api
       sudo docker compose up -d api
       sudo docker exec boombang-html5-api-1 php artisan migrate --force
       sudo docker exec boombang-html5-api-1 php passport:install --force
