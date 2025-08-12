@@ -92,7 +92,7 @@ while true; do
   echo " 3) WEB: Host → Docker (Copiando uploads)"
   echo " 4) API: Docker → Host (Copiando uploads)"
   echo " 5) API: Host → Docker (Copiando uploads)"
-  echo " 6) Desplegar cliente"
+  echo " 6) Deploy client"
   echo " 7) Clear cache docker"
   echo " 8) UP Containers"
   read -p "Opción: " opt
@@ -120,8 +120,10 @@ while true; do
       copiar_a_contenedor "$API_CONTAINER" "/var/www/html/public" "$API_TAR" "$API_UPLOADS"
       ;;
     6)
-      echo "==> Desplegando cliente..."
-      sudo docker compose up -d --build client
+      echo "==> Deploy client..."
+      sudo docker stop boombang-html5-server-1
+      sudo docker compose build client && sudo docker compose up -d client
+      sudo docker start boombang-html5-server-1
       ;;
     7)
       echo "==> Clear cache docker..."
