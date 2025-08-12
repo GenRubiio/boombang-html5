@@ -1,4 +1,5 @@
 const UppercutsEnum = require('../enums/UppercutsEnum');
+const CoconutsEnum = require('../enums/CoconutsEnum');
 const UserCatalogItemModel = require('./UserCatalogItemModel'); // Importar el modelo de UserCatalogItem
 class UserModel {
     constructor(row) {
@@ -30,7 +31,7 @@ class UserModel {
         this.uppercutLevel = this.calculateUppercutLevel(); // Nivel del uppercut
         this.uppercutSelected = this.uppercutLevel; // Indica si el usuario ha seleccionado un uppercut
 
-        this.coconutLevel = 9; // Nivel del coco
+        this.coconutLevel = this.calculateCoconutLevel(); // Nivel del coco
         this.coconutSelected = this.coconutLevel; // Indica si el usuario ha seleccionado un coco
 
         this.finalTarget = null; // Destino final del usuario
@@ -105,6 +106,31 @@ class UserModel {
             return UppercutsEnum.PINK;
         } else {
             return UppercutsEnum.RED;
+        }
+    }
+
+    calculateCoconutLevel() {
+        const coconutsCaught = this.coconutsCaught;
+        if (coconutsCaught >= 10000) {
+            return CoconutsEnum.PIANO;
+        } else if (coconutsCaught >= 6665) {
+            return CoconutsEnum.YUNQUE;
+        } else if (coconutsCaught >= 5000) {
+            return CoconutsEnum.SANDIA;
+        } else if (coconutsCaught >= 3335) {
+            return CoconutsEnum.GARBAGE;
+        } else if (coconutsCaught >= 2500) {
+            return CoconutsEnum.AVISPAS;
+        } else if (coconutsCaught >= 1665) {
+            return CoconutsEnum.MACETA;
+        } else if (coconutsCaught >= 835) {
+            return CoconutsEnum.PIE;
+        } else if (coconutsCaught >= 335) {
+            return CoconutsEnum.SHOE;
+        } else if (coconutsCaught >= 165) {
+            return CoconutsEnum.SNOWBALL;
+        } else {
+            return CoconutsEnum.COCO;
         }
     }
 
