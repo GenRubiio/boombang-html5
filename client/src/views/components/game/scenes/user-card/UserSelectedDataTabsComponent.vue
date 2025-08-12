@@ -63,13 +63,10 @@ export default {
         : StatisticsTabComponent;
     },
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
+      if (this.selectedUser.ficha_color == "user") {
+        return "selected";
       }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return "selected";
+      return this.selectedUser.ficha_color;
     },
   },
   components: {
@@ -128,6 +125,7 @@ export default {
     contrast(100%);
 }
 
+/********************************************************************* */
 .tabs-container.admin .tabs-container__interactions,
 .tabs-container.admin .tabs-container__statistics {
   background-color: #f59200;

@@ -55,13 +55,7 @@ export default {
         : StatisticsTabComponent;
     },
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
-      }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return "user";
+      return this.selectedUser.ficha_color;
     },
   },
   components: {
@@ -119,6 +113,8 @@ export default {
   filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%)
     contrast(100%);
 }
+
+/********************************************************************* */
 
 .tabs-container.user .tabs-container__emojis,
 .tabs-container.user .tabs-container__statistics {

@@ -75,13 +75,10 @@ export default {
       return this.statisticsViews[this.currentViewIndex];
     },
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
+      if (this.selectedUser.ficha_color == "user") {
+        return this.selectedUser.is_selected ? "selected" : "user";
       }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return this.selectedUser.is_selected ? "selected" : "user";
+      return this.selectedUser.ficha_color;
     },
   },
   mounted() {
@@ -135,14 +132,6 @@ export default {
   box-sizing: border-box;
 }
 
-.container.user .container__userinfo-data__title {
-  background-color: #005491;
-}
-
-.container.selected .container__userinfo-data__title {
-  background-color: #045d03;
-}
-
 .container__userinfo-data__data-container {
   width: 100%;
   margin-top: 5px;
@@ -161,14 +150,6 @@ export default {
   width: 33px;
 }
 
-.container.user .container__userinfo-data__data-container__count {
-  background-color: #005491;
-}
-
-.container.selected .container__userinfo-data__data-container__count {
-  background-color: #045d03;
-}
-
 .container__userinfo-data__data-container__title {
   font-size: 11px;
   font-weight: bold;
@@ -180,19 +161,11 @@ export default {
   width: 63px;
 }
 
-.container.user .container__userinfo-data__data-container__title {
-  background-color: #005491;
-}
-
-.container.selected .container__userinfo-data__data-container__title {
-  background-color: #045d03;
-}
-
 .container__cycle-button {
   position: absolute;
   bottom: 1px;
   right: 1px;
-  background-color: #005491;
+  background-color: white;
   color: white;
   border: none;
   border-radius: 50%;
@@ -209,7 +182,70 @@ export default {
   outline: none;
 }
 
+/********************************************************************* */
+.container.user .container__userinfo-data__title {
+  background-color: #005491;
+}
+
+.container.selected .container__userinfo-data__title {
+  background-color: #045d03;
+}
+
+.container.admin .container__userinfo-data__title {
+  background-color: #f59200;
+}
+
+.container.vip .container__userinfo-data__title {
+  background-color: #420143;
+}
+
+
+.container.user .container__userinfo-data__data-container__count {
+  background-color: #005491;
+}
+
+.container.selected .container__userinfo-data__data-container__count {
+  background-color: #045d03;
+}
+
+.container.admin .container__userinfo-data__data-container__count {
+  background-color: #f59200;
+}
+
+.container.vip .container__userinfo-data__data-container__count {
+  background-color: #420143;
+}
+
+.container.user .container__userinfo-data__data-container__title {
+  background-color: #005491;
+}
+
+.container.selected .container__userinfo-data__data-container__title {
+  background-color: #045d03;
+}
+
+.container.admin .container__userinfo-data__data-container__title {
+  background-color: #f59200;
+}
+
+.container.vip .container__userinfo-data__data-container__title {
+  background-color: #420143;
+}
+
+.container.user .container__cycle-button {
+  background-color: #005491;
+}
+
 .container.selected .container__cycle-button {
   background-color: #045d03;
 }
+
+.container.admin .container__cycle-button {
+  background-color: #f59200;
+}
+
+.container.vip .container__cycle-button {
+  background-color: #420143;
+}
+
 </style>

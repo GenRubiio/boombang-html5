@@ -87,12 +87,9 @@ export default {
       this.gamePhaser = new Phaser.Game({
         type: Phaser.WEBGL,
         powerPreference: "high-performance",
-        antialias: false, // Desactiva si no necesitas suavizado
-        roundPixels: true, // Reduce cálculos de subpíxeles
-        pixelArt: monitorScaling, // TODO: ANTES LO TENIA EN TRUE ES PARA SUAVIZAR BORDES
-        render: {
-          antialias: true, // desactívalo si quieres bordes más duros para pixel art
-        },
+        antialias: true, // Desactiva si no necesitas suavizado
+        roundPixels: false, // Reduce cálculos de subpíxeles
+        pixelArt: true, // Esencial para evitar el antialiasing que causa el blur
         width: 1012,
         height: 657,
         // Registras todas las escenas globales que vayas a usar

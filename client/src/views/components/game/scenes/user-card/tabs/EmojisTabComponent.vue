@@ -75,13 +75,10 @@ export default {
   },
   computed: {
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
+      if (this.selectedUser.ficha_color == "user") {
+        return this.selectedUser.is_selected ? "selected" : "user";
       }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return this.selectedUser.is_selected ? "selected" : "user";
+      return this.selectedUser.ficha_color;
     },
   },
 };

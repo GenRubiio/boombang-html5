@@ -174,13 +174,10 @@ export default {
   },
   computed: {
     computedClass() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
+      if (this.selectedUser.ficha_color == "user") {
+        return this.selectedUser.is_selected ? "selected" : "user";
       }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return this.selectedUser.is_selected ? "selected" : "user";
+      return this.selectedUser.ficha_color;
     },
   },
 };
@@ -207,22 +204,6 @@ export default {
   color: white;
 }
 
-.user-card.user .user-card__header {
-  background-color: #005ea3;
-}
-
-.user-card.admin .user-card__header {
-  background-color: #f59200;
-}
-
-.user-card.vip .user-card__header {
-  background-color: #420143;
-}
-
-.user-card.selected .user-card__header {
-  background-color: #045d03;
-}
-
 .user-card__avatar-container {
   display: flex;
   justify-content: space-between;
@@ -235,22 +216,6 @@ export default {
   overflow: hidden;
 }
 
-.user-card.user .user-card__avatar-container__avatar {
-  box-shadow: inset 0 0 15px #194261;
-}
-
-.user-card.admin .user-card__avatar-container__avatar {
-  box-shadow: inset 0 0 15px #b5a900;
-}
-
-.user-card.vip .user-card__avatar-container__avatar {
-  box-shadow: inset 0 0 15px #6a006a;
-}
-
-.user-card.selected .user-card__avatar-container__avatar {
-  box-shadow: inset 0 0 15px #0f3d00;
-}
-
 .user-card__avatar-container__avatar img {
   margin-top: 2px;
 }
@@ -258,22 +223,6 @@ export default {
 .user-card__avatar-container {
   position: relative;
   padding: 5px;
-}
-
-.user-card.admin {
-  background-color: #ffd700;
-}
-
-.user-card.vip {
-  background-color: #800080;
-}
-
-.user-card.user {
-  background-color: #0069b5;
-}
-
-.user-card.selected {
-  background-color: #2b8703;
 }
 
 .unselectable {
@@ -314,14 +263,6 @@ export default {
   z-index: 1;
 }
 
-.user-card.user .user-card__description {
-  color: #0069b5;
-}
-
-.user-card.selected .user-card__description {
-  color: #2b8703;
-}
-
 /* Reglas para partir palabras largas y respetar saltos de línea del usuario */
 .user-card__description__content {
   white-space: pre-wrap; /* respeta \n del usuario */
@@ -344,7 +285,7 @@ export default {
   position: absolute;
   right: 5px;
   bottom: 5px;
-  background-color: #0069b5;
+  background-color: white;
   color: white;
   border: none;
   border-radius: 3px;
@@ -365,5 +306,86 @@ export default {
   top: 84px;
   left: 102px;
   z-index: 0;
+}
+
+/********************************************************************* */
+.user-card.user .user-card__header {
+  background-color: #005ea3;
+}
+
+.user-card.admin .user-card__header {
+  background-color: #f59200;
+}
+
+.user-card.vip .user-card__header {
+  background-color: #420143;
+}
+
+.user-card.selected .user-card__header {
+  background-color: #045d03;
+}
+
+.user-card.user .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #194261;
+}
+
+.user-card.admin .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #b5a900;
+}
+
+.user-card.vip .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #6a006a;
+}
+
+.user-card.selected .user-card__avatar-container__avatar {
+  box-shadow: inset 0 0 15px #0f3d00;
+}
+
+.user-card.admin {
+  background-color: #ffd700;
+}
+
+.user-card.vip {
+  background-color: #800080;
+}
+
+.user-card.user {
+  background-color: #0069b5;
+}
+
+.user-card.selected {
+  background-color: #2b8703;
+}
+
+.user-card.user .user-card__description {
+  color: #0069b5;
+}
+
+.user-card.selected .user-card__description {
+  color: #2b8703;
+}
+
+.user-card.admin .user-card__description {
+  color: #f59200;
+}
+
+.user-card.vip .user-card__description {
+  color: #420143;
+}
+
+.user-card.user .user-card__description__edit-btn {
+  background-color: #0069b5;
+}
+
+.user-card.selected .user-card__description__edit-btn {
+  background-color: #2b8703;
+}
+
+.user-card.admin .user-card__description__edit-btn {
+  background-color: #f59200;
+}
+
+.user-card.vip .user-card__description__edit-btn {
+  background-color: #420143;
 }
 </style>
