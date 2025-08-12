@@ -252,7 +252,7 @@ export default {
 }
 
 .user-card__avatar-container__avatar img {
-  margin-top: -12px;
+  margin-top: 2px;
 }
 
 .user-card__avatar-container {
