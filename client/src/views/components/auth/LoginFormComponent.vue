@@ -1,13 +1,15 @@
 <template>
   <form class="login-form" @submit.prevent="login">
     <div class="login-form__content">
-      <div class="login-form__title">{{ $t('login.already_have_account') }}</div>
+      <div class="login-form__title">
+        {{ $t("login.already_have_account") }}
+      </div>
       <div class="login-form__input-container">
         <div class="login-form__error" v-if="showUsernameError">
           <img :src="asset_warning_image" alt="warning" />
           {{ usernameError }}
         </div>
-        <div class="login-form__label">{{ $t('login.character_name') }}</div>
+        <div class="login-form__label">{{ $t("login.character_name") }}</div>
         <div class="login-form__input">
           <input
             v-model="username"
@@ -18,7 +20,7 @@
           />
         </div>
       </div>
-      <div class="login-form__label">{{ $t('login.password') }}</div>
+      <div class="login-form__label">{{ $t("login.password") }}</div>
       <div class="login-form__input">
         <input
           v-model="password"
@@ -28,12 +30,15 @@
         />
       </div>
       <div class="login-form__link">
-        <div>{{ $t('login.forgot_password') }}</div>
+        <div>{{ $t("login.forgot_password") }}</div>
       </div>
       <div class="login-form__google">
-        <div class="login-form__google-separator">{{ $t('login.separator') }}</div>
+        <div class="login-form__google-separator">
+          {{ $t("login.separator") }}
+        </div>
         <div class="login-form__google-button">
-          <img :src="asset_google_image" alt="Google" /> {{ $t('login.google_login') }}
+          <img :src="asset_google_image" alt="Google" />
+          {{ $t("login.google_login") }}
         </div>
       </div>
     </div>
@@ -44,7 +49,7 @@
         type="submit"
         :class="{ 'disabled-button': loading || !isSocketConnected }"
       >
-        {{ $t('login.play_button') }}
+        {{ $t("login.play_button") }}
       </button>
     </div>
   </form>
@@ -102,8 +107,7 @@ export default {
         console.error("Login error:", error);
         if (error.errors) {
           this.setErrors(error.errors);
-        }
-        else if (error.message) {
+        } else if (error.message) {
           this.showUsernameError = true;
           this.usernameError = error.message;
         }
@@ -179,7 +183,6 @@ export default {
   left: -187px;
   top: 20px;
 }
-
 
 .login-form__error::after {
   content: "";
@@ -317,5 +320,4 @@ export default {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
 </style>
