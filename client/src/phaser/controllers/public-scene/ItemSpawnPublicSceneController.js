@@ -17,6 +17,7 @@ class ItemSpawnPublicSceneController {
         // Cálculo de profundidad corregido (misma lógica que usuarios)
         const depth = (gridPosition.y + gridPosition.x) * 17;
 
+        console.log(`Spawning item: ${itemConfig.file_name} at grid position: ${gridPosition.x},${gridPosition.y}`);
         // Crear sprite con offset para centrar en el tile
         const itemSprite = gameScene.add.sprite(
             isoX,
