@@ -133,7 +133,7 @@ while true; do
     8)
       echo "==> UP Containers..."
       sudo docker start $(sudo docker ps -a -q)
-      sudo docker start boombang-html5-web-1
+      sudo docker restart boombang-html5-web-1
       sudo docker restart boombang-html5-server-1
       ;;
     9)

@@ -21,6 +21,7 @@ class PublicSceneLoader {
     static async #loadItems(gameScene) {
         for (const item of gameScene.sceneData.scenery.items) {
             const { default: itemImage } = await import(`../../assets/game/items-scene/${item.file_name}.webp`);
+            console.log(`Cargando item: ${item.file_name}`);
             gameScene.load.image(item.file_name, itemImage);
         }
     }
