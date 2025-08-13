@@ -29,6 +29,7 @@
         class="user-card__change-ficha__icon"
       />
     </div>
+    <div class="triangle"></div>
     <div
       class="user-card__description"
       :class="{ 'is-editing': isEditingDescription }"
@@ -67,15 +68,18 @@
         EDITAR
       </button>
     </div>
-    <div class="triangle"></div>
     <UserDataTabsComponents
       v-if="!selectedUser.is_selected"
       :selectedUser="selectedUser"
+      @open-ring-info="$emit('open-ring-info')"
+      @open-coconuts-info="$emit('open-coconuts-info')"
     />
     <UserSelectedDataTabsComponent
       v-if="selectedUser.is_selected"
       :selectedUser="selectedUser"
       :authUser="authUser"
+      @open-ring-info="$emit('open-ring-info')"
+      @open-coconuts-info="$emit('open-coconuts-info')"
     />
   </div>
 </template>
@@ -260,7 +264,7 @@ export default {
   /* Evitar recortes horizontales y permitir scroll vertical si hace falta */
   overflow-x: hidden;
   overflow-y: auto;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* Reglas para partir palabras largas y respetar saltos de línea del usuario */

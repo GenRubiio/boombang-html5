@@ -1,6 +1,18 @@
 <template>
   <div class="game-container">
-    <UserCardComponent ref="userCard" />
+    <UserCardComponent
+      ref="userCard"
+      @open-ring-info="showRingInfoCard"
+      @open-coconuts-info="showCoconutsInfoCard"
+    />
+    <RingInfoCardComponent
+      v-if="isRingInfoCardVisible"
+      @close-ring-info="hideRingInfoCard"
+    />
+    <CoconutsInfoCardComponent
+      v-if="isCoconutsInfoCardVisible"
+      @close-coconuts-info="hideCoconutsInfoCard"
+    />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
   </div>
 </template>
@@ -8,6 +20,8 @@
 <script>
 import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
+import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardComponent.vue";
+import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
@@ -22,7 +36,10 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isRingInfoCardVisible: false,
+      isCoconutsInfoCardVisible: false,
+    };
   },
   created() {
     this.$emit("updateLoading", true);
@@ -30,6 +47,8 @@ export default {
   components: {
     UserCardComponent,
     BaseChatComponent,
+    RingInfoCardComponent,
+    CoconutsInfoCardComponent,
   },
   methods: {
     initializeGame() {
@@ -60,6 +79,20 @@ export default {
     updateUserCard(userData) {
       //console.log("Usuario seleccionado:", userData);
       this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
+    },
+    showRingInfoCard() {
+      this.isRingInfoCardVisible = true;
+      this.isCoconutsInfoCardVisible = false;
+    },
+    showCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = true;
+      this.isRingInfoCardVisible = false;
+    },
+    hideRingInfoCard() {
+      this.isRingInfoCardVisible = false;
+    },
+    hideCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = false;
     },
   },
   mounted() {

@@ -28,6 +28,8 @@
       :is="activeTabComponent"
       :selectedUser="selectedUser"
       :authUser="authUser"
+      @open-ring-info="$emit('open-ring-info')"
+      @open-coconuts-info="$emit('open-coconuts-info')"
     />
   </div>
 </template>

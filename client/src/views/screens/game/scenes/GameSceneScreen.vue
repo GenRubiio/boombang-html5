@@ -1,18 +1,28 @@
 <template>
   <div class="game-container">
-    <UserCardComponent ref="userCard" />
-    <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
-    <NpcComponent
-      v-if="showNpcModal"
-      @close="closeNpcModal"
-      :npcId="npcId"
+    <UserCardComponent
+      ref="userCard"
+      @open-ring-info="showRingInfoCard"
+      @open-coconuts-info="showCoconutsInfoCard"
     />
+    <RingInfoCardComponent
+      v-if="isRingInfoCardVisible"
+      @close-ring-info="hideRingInfoCard"
+    />
+    <CoconutsInfoCardComponent
+      v-if="isCoconutsInfoCardVisible"
+      @close-coconuts-info="hideCoconutsInfoCard"
+    />
+    <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
+    <NpcComponent v-if="showNpcModal" @close="closeNpcModal" :npcId="npcId" />
   </div>
 </template>
 
 <script>
 import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
+import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardComponent.vue";
+import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import NpcComponent from "../../../components/game/scenes/NpcComponent.vue";
@@ -31,6 +41,8 @@ export default {
     return {
       showNpcModal: false,
       npcId: null, // usa esto si quieres pasar datos al modal
+      isRingInfoCardVisible: false,
+      isCoconutsInfoCardVisible: false,
     };
   },
   created() {
@@ -40,6 +52,8 @@ export default {
     UserCardComponent,
     BaseChatComponent,
     NpcComponent,
+    RingInfoCardComponent,
+    CoconutsInfoCardComponent,
   },
   methods: {
     initializeGame() {
@@ -64,7 +78,7 @@ export default {
       if (import.meta.env.VITE_APP_ENV === "local") {
         console.log("Saliendo de la sala...");
       }
-      
+
       this.$emit("updateLoading", true);
       this.$emit("exitLobby"); // Emite un evento para cambiar la escena
     },
@@ -80,6 +94,20 @@ export default {
     },
     closeNpcModal() {
       this.showNpcModal = false;
+    },
+    showRingInfoCard() {
+      this.isRingInfoCardVisible = true;
+      this.isCoconutsInfoCardVisible = false;
+    },
+    showCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = true;
+      this.isRingInfoCardVisible = false;
+    },
+    hideRingInfoCard() {
+      this.isRingInfoCardVisible = false;
+    },
+    hideCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = false;
     },
   },
   mounted() {
