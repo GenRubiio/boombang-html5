@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN node --max-old-space-size=500 node_modules/vite/bin/vite.js build
+RUN node --max-old-space-size=200 node_modules/vite/bin/vite.js build
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
