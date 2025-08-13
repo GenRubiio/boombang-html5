@@ -22,7 +22,7 @@ class ItemSpawnPublicSceneController {
         const itemSprite = gameScene.add.sprite(
             isoX,
             isoY - 20,
-            itemConfig.file_name
+            'item_' + itemConfig.file_name
         )
             .setDepth(depth) // Orden de renderizado consistente
             .setScale(1)
