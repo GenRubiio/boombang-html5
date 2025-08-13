@@ -1,6 +1,18 @@
 <template>
   <div class="game-container">
-    <UserCardComponent ref="userCard" />
+    <UserCardComponent
+      ref="userCard"
+      @open-ring-info="showRingInfoCard"
+      @open-coconuts-info="showCoconutsInfoCard"
+    />
+    <RingInfoCardComponent
+      v-if="isRingInfoCardVisible"
+      @close-ring-info="hideRingInfoCard"
+    />
+    <CoconutsInfoCardComponent
+      v-if="isCoconutsInfoCardVisible"
+      @close-coconuts-info="hideCoconutsInfoCard"
+    />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
   </div>
 </template>
@@ -9,6 +21,8 @@
 import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
+import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardComponent.vue";
+import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
@@ -22,7 +36,10 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isRingInfoCardVisible: false,
+      isCoconutsInfoCardVisible: false,
+    };
   },
   created() {
     this.$emit("updateLoading", true);
@@ -30,8 +47,24 @@ export default {
   components: {
     UserCardComponent,
     BaseChatComponent,
+    RingInfoCardComponent,
+    CoconutsInfoCardComponent,
   },
   methods: {
+    showRingInfoCard() {
+      this.isRingInfoCardVisible = true;
+      this.isCoconutsInfoCardVisible = false;
+    },
+    showCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = true;
+      this.isRingInfoCardVisible = false;
+    },
+    hideRingInfoCard() {
+      this.isRingInfoCardVisible = false;
+    },
+    hideCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = false;
+    },
     initializeGame() {
       const gamePhaser = this.$root.gamePhaser;
 

@@ -1,7 +1,9 @@
 <template>
   <div class="container" :class="colorUser">
     <div class="container__userinfo-data">
-      <div class="container__userinfo-data__title">{{ currentView.title }}</div>
+      <div class="container__userinfo-data__title">
+        {{ currentView.title }}
+      </div>
       <div
         v-for="stat in currentView.stats"
         :key="stat.key"
@@ -14,6 +16,20 @@
           {{ stat.label }}
         </div>
       </div>
+      <button
+        v-if="currentView.id === 3"
+        @click="$emit('open-ring-info')"
+        class="info-button"
+      >
+        <i class="las la-question"></i>
+      </button>
+      <button
+        v-if="currentView.id === 4"
+        @click="$emit('open-coconuts-info')"
+        class="info-button"
+      >
+        <i class="las la-question"></i>
+      </button>
     </div>
     <div class="container__userinfo-right">
       <img :src="currentView.image" :alt="currentView.title" />
@@ -42,6 +58,7 @@ export default {
       currentViewIndex: 0,
       statisticsViews: [
         {
+          id: 1,
           title: "Uppercuts",
           image: asset_stat_upper_image,
           stats: [
@@ -50,6 +67,7 @@ export default {
           ],
         },
         {
+          id: 2,
           title: "Coconuts",
           image: asset_stat_coconut_image,
           stats: [
@@ -58,11 +76,13 @@ export default {
           ],
         },
         {
+          id: 3,
           title: "Rings",
           image: asset_stat_ring_image,
           stats: [{ key: "rings_won", label: "Ganados" }],
         },
         {
+          id: 4,
           title: "Cocos Locos",
           image: asset_stat_coconut_caught_image,
           stats: [{ key: "coconuts_caught", label: "Atrapados" }],
@@ -138,6 +158,27 @@ export default {
   border-radius: 5px;
   text-align: start;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info-button {
+  border: none;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 0 5px;
+  border-radius: 5px;
+  background: #005491;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  margin-left: 88px;
+  height: 17px;
+  width: 30px;
+  font-size: 11px;
 }
 
 .container__userinfo-data__data-container {
@@ -253,5 +294,21 @@ export default {
 
 .container.vip .container__cycle-button {
   background-color: #420143;
+}
+
+.container.user .info-button {
+  background: #005491;
+}
+
+.container.selected .info-button {
+  background: #045d03;
+}
+
+.container.admin .info-button {
+  background: #f59200;
+}
+
+.container.vip .info-button {
+  background: #420143;
 }
 </style>

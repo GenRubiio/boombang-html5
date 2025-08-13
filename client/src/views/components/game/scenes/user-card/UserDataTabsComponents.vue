@@ -24,7 +24,12 @@
         />
       </div>
     </div>
-    <component :is="activeTabComponent" :selectedUser="selectedUser" />
+    <component
+      :is="activeTabComponent"
+      :selectedUser="selectedUser"
+      @open-ring-info="$emit('open-ring-info')"
+      @open-coconuts-info="$emit('open-coconuts-info')"
+    />
   </div>
 </template>
 
