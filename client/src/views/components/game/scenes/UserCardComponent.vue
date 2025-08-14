@@ -68,6 +68,13 @@
         EDITAR
       </button>
     </div>
+    <div class="user-card__customization" @click="toggleCustomization">
+      <i class="las la-cog"></i>
+    </div>
+    <UserCustomizationComponent
+      v-if="isCustomizationOpen"
+      @close-customization="toggleCustomization"
+    />
     <UserDataTabsComponents
       v-if="!selectedUser.is_selected"
       :selectedUser="selectedUser"
@@ -90,6 +97,7 @@ import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import FichaComponent from "./user-card/FichaComponent.vue";
 import UserDataTabsComponents from "./user-card/UserDataTabsComponents.vue";
 import UserSelectedDataTabsComponent from "./user-card/UserSelectedDataTabsComponent.vue";
+import UserCustomizationComponent from "./UserCustomizationComponent.vue";
 import asset_change_ficha_icon_image from "../../../../assets/game/ficha/change_ficha.svg";
 
 export default {
@@ -101,14 +109,19 @@ export default {
       isEditingDescription: false,
       hoveringDesc: false,
       descriptionText: "",
+      isCustomizationOpen: false,
     };
   },
   components: {
     FichaComponent,
     UserDataTabsComponents,
     UserSelectedDataTabsComponent,
+    UserCustomizationComponent,
   },
   methods: {
+    toggleCustomization() {
+      this.isCustomizationOpen = !this.isCustomizationOpen;
+    },
     updateData(usersData) {
       this.selectedUser = usersData.selectedUser;
       this.authUser = usersData.authUser;
@@ -312,6 +325,21 @@ export default {
   z-index: 0;
 }
 
+.user-card__customization {
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #005ea3;
+  border-radius: 5px;
+  top: 122px;
+  color: white;
+  box-shadow: 1px 1px #0000004d;
+  cursor: pointer;
+}
+
 /********************************************************************* */
 .user-card.user .user-card__header {
   background-color: #005ea3;
@@ -390,6 +418,22 @@ export default {
 }
 
 .user-card.vip .user-card__description__edit-btn {
+  background-color: #420143;
+}
+
+.user-card.user .user-card__customization {
+  background-color: #005ea3;
+}
+
+.user-card.selected .user-card__customization {
+  background-color: #2b8703;
+}
+
+.user-card.admin .user-card__customization {
+  background-color: #f59200;
+}
+
+.user-card.vip .user-card__customization {
   background-color: #420143;
 }
 </style>
