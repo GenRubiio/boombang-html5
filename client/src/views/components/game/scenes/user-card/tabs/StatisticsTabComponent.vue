@@ -32,7 +32,7 @@
       </button>
     </div>
     <div class="container__userinfo-right">
-      <img :src="currentView.image" :alt="currentView.title" />
+      <img :src="currentImage" :alt="currentView.title" />
     </div>
     <button class="container__cycle-button" @click="cycleStatistic">
       <i class="la la-chevron-right"></i>
@@ -41,10 +41,30 @@
 </template>
 
 <script>
-import asset_stat_upper_image from "../../../../../../assets/game/ficha/statistics/uppercut.png";
-import asset_stat_coconut_image from "../../../../../../assets/game/ficha/statistics/coconut.png";
 import asset_stat_ring_image from "../../../../../../assets/game/ficha/statistics/ring.png";
 import asset_stat_coconut_caught_image from "../../../../../../assets/game/ficha/statistics/cocos_locos.png";
+
+import asset_red_upper_image from "../../../../../../assets/game/ficha/uppercuts/red.png";
+import asset_pink_upper_image from "../../../../../../assets/game/ficha/uppercuts/pink.png";
+import asset_orange_upper_image from "../../../../../../assets/game/ficha/uppercuts/orange.png";
+import asset_green_upper_image from "../../../../../../assets/game/ficha/uppercuts/green.png";
+import asset_blue_upper_image from "../../../../../../assets/game/ficha/uppercuts/blue.png";
+import asset_white_upper_image from "../../../../../../assets/game/ficha/uppercuts/white.png";
+import asset_purple_upper_image from "../../../../../../assets/game/ficha/uppercuts/purple.png";
+import asset_brown_upper_image from "../../../../../../assets/game/ficha/uppercuts/brown.png";
+import asset_black_upper_image from "../../../../../../assets/game/ficha/uppercuts/black.png";
+import asset_gold_upper_image from "../../../../../../assets/game/ficha/uppercuts/gold.png";
+
+import asset_cocoCoconutImage from "../../../../../../assets/game/ficha/coconuts/coco.png";
+import asset_snowballCoconutImage from "../../../../../../assets/game/ficha/coconuts/snowball.png";
+import asset_shoeCoconutImage from "../../../../../../assets/game/ficha/coconuts/shoe.png";
+import asset_pieCoconutImage from "../../../../../../assets/game/ficha/coconuts/pie.png";
+import asset_macetaCoconutImage from "../../../../../../assets/game/ficha/coconuts/maceta.png";
+import asset_avispasCoconutImage from "../../../../../../assets/game/ficha/coconuts/avispas.png";
+import asset_garbageCoconutImage from "../../../../../../assets/game/ficha/coconuts/garbage.png";
+import asset_sandiaCoconutImage from "../../../../../../assets/game/ficha/coconuts/sandia.png";
+import asset_yunqueCoconutImage from "../../../../../../assets/game/ficha/coconuts/yunque.png";
+import asset_pianoCoconutImage from "../../../../../../assets/game/ficha/coconuts/piano.png";
 
 export default {
   props: {
@@ -55,12 +75,35 @@ export default {
   },
   data() {
     return {
+      uppercuts: [
+        asset_red_upper_image,
+        asset_pink_upper_image,
+        asset_orange_upper_image,
+        asset_green_upper_image,
+        asset_blue_upper_image,
+        asset_white_upper_image,
+        asset_purple_upper_image,
+        asset_brown_upper_image,
+        asset_black_upper_image,
+        asset_gold_upper_image,
+      ],
+      coconuts: [
+        asset_cocoCoconutImage,
+        asset_snowballCoconutImage,
+        asset_shoeCoconutImage,
+        asset_pieCoconutImage,
+        asset_macetaCoconutImage,
+        asset_avispasCoconutImage,
+        asset_garbageCoconutImage,
+        asset_sandiaCoconutImage,
+        asset_yunqueCoconutImage,
+        asset_pianoCoconutImage,
+      ],
       currentViewIndex: 0,
       statisticsViews: [
         {
           id: 1,
           title: "Uppercuts",
-          image: asset_stat_upper_image,
           stats: [
             { key: "uppercuts_send", label: "Enviados" },
             { key: "uppercuts_received", label: "Recibidos" },
@@ -69,7 +112,6 @@ export default {
         {
           id: 2,
           title: "Coconuts",
-          image: asset_stat_coconut_image,
           stats: [
             { key: "coconuts_sent", label: "Enviados" },
             { key: "coconuts_received", label: "Recibidos" },
@@ -99,6 +141,16 @@ export default {
   computed: {
     currentView() {
       return this.statisticsViews[this.currentViewIndex];
+    },
+    currentImage() {
+      const view = this.currentView;
+      if (view.id === 1) {
+        return this.uppercuts[this.selectedUser.uppercut_level];
+      }
+      if (view.id === 2) {
+        return this.coconuts[this.selectedUser.coconut_level];
+      }
+      return view.image;
     },
     colorUser() {
       if (this.selectedUser.ficha_color == "user") {
