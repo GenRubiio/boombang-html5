@@ -65,13 +65,13 @@ export default class OverheadChatAnimation {
             fontFamily: 'Arial',
             fontSize: '14px',
             fontStyle: 'bold',
-            color: textColor
+            color: textColor,
         }).setOrigin(0, 0);
 
         const messageText = this.scene.add.text(0, 0, text, {
             fontFamily: 'Arial',
             fontSize: '14px',
-            color: textColor
+            color: textColor,
         }).setOrigin(0, 0); // Cambiamos el origen a (0,0) para mejor alineación
 
         // Calcular dimensiones del contenido

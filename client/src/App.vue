@@ -82,13 +82,12 @@ export default {
       const { default: PublicScene } = await import("./phaser/PublicScene");
       const { default: PrivateScene } = await import("./phaser/PrivateScene");
       const { default: MinigameScene } = await import("./phaser/MinigameScene");
-      const monitorScaling = window.devicePixelRatio === 1 ? false : true; // Ajusta según tu lógica de escalado
       // Solo creas la instancia la primera vez.
       this.gamePhaser = new Phaser.Game({
         type: Phaser.WEBGL,
         powerPreference: "high-performance",
-        antialias: true, // Desactiva si no necesitas suavizado
-        roundPixels: false, // Reduce cálculos de subpíxeles
+        antialias: false, // Desactiva si no necesitas suavizado
+        roundPixels: true, // Reduce cálculos de subpíxeles
         pixelArt: true, // Esencial para evitar el antialiasing que causa el blur
         width: 1012,
         height: 657,
@@ -103,6 +102,7 @@ export default {
             },
           ],
         },
+        resolution: window.devicePixelRatio || 1,
         parent: "phaser-container",
         dom: {
           createContainer: true,
@@ -120,6 +120,9 @@ export default {
           postBoot: function (game) {
             game.events.off("hidden", game.renderer.onHidden, game.renderer);
             game.events.off("visible", game.renderer.onVisible, game.renderer);
+            game.scene.getScenes(true).forEach((s) => {
+              if (s.cameras?.main) s.cameras.main.roundPixels = true;
+            });
           },
         },
       });
