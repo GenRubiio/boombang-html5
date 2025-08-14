@@ -1,5 +1,6 @@
 <template>
   <div class="base-chat" @pointerdown.stop @mousedown.stop @touchstart.stop>
+    <EmojisPickerComponent v-if="showEmojiPicker" @emoji-clicked="addEmoji" @close="showEmojiPicker = false" />
     <div class="base-chat__container">
       <div class="base-chat__container__chat">
         <img :src="asset_base_image" alt="Base" />
@@ -10,6 +11,16 @@
           placeholder="Escribe un mensaje..."
           @keyup.enter="sendMessage"
         />
+        <div
+          class="base-chat__container__emoji-button"
+          @click="toggleEmojiPicker"
+        >
+          <div class="base">
+            <div class="dorado">
+              <i class="lar la-smile"></i>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="base-chat__container__brujula" @click="exitToLobby">
         <img :src="asset_brujula_image" alt="Brujula" />
@@ -21,13 +32,18 @@
 <script>
 import asset_base_image from "../../../../assets/game/basechat/base.webp";
 import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
+import EmojisPickerComponent from "./EmojisPickerComponent.vue";
 
 export default {
+  components: {
+    EmojisPickerComponent,
+  },
   data() {
     return {
       asset_base_image,
       asset_brujula_image,
-      message: "", // Variable para almacenar el mensaje
+      message: "",
+      showEmojiPicker: false,
     };
   },
   mounted() {
@@ -37,19 +53,25 @@ export default {
     document.removeEventListener("keydown", this.handleKeydown);
   },
   methods: {
+    toggleEmojiPicker() {
+      this.showEmojiPicker = !this.showEmojiPicker;
+    },
+    addEmoji(emoji) {
+      this.message += emoji;
+      this.$refs.messageInput.focus();
+    },
     sendMessage() {
       if (this.message.trim() !== "") {
-        this.$emit("sendMessage", this.message); // Emite el mensaje al padre
-        this.message = ""; // Limpia el input después de enviar
+        this.$emit("sendMessage", this.message);
+        this.message = "";
+        this.showEmojiPicker = false;
       }
     },
     exitToLobby() {
-      this.$emit("exitLobby"); // Emite evento al padre
+      this.$emit("exitLobby");
     },
     handleKeydown(event) {
-      // Si el target o el activo es editable, no hacemos nada
       const active = document.activeElement;
-
       const isEditable = (el) => {
         if (!el) return false;
         const tag = el.tagName;
@@ -63,10 +85,9 @@ export default {
       };
 
       if (isEditable(event.target) || isEditable(active)) {
-        return; // ya está escribiendo en otro control
+        return;
       }
 
-      // Ignorar combinaciones con Ctrl/Alt/Meta y teclas de control
       if (
         event.ctrlKey ||
         event.altKey ||
@@ -76,7 +97,6 @@ export default {
         return;
       }
 
-      // Ahora sí, si pulsa una tecla de carácter y el input no está enfocado, enfocamos
       if (this.$refs.messageInput !== active) {
         this.$refs.messageInput.focus();
       }
@@ -125,5 +145,41 @@ export default {
   right: 12px;
   top: -3px;
   cursor: pointer;
+}
+
+.base-chat__container__emoji-button {
+  position: absolute;
+  right: 293px;
+  top: 36px;
+  cursor: pointer;
+  font-size: 24px;
+  color: white;
+}
+
+.base {
+  width: 35px;
+  height: 35px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -2px;
+  font-size: 30px;
+  color: #d96b35;
+}
+
+.dorado {
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle at top left, #ffdf70, #d4a017);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -2px;
 }
 </style>
