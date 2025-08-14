@@ -88,6 +88,7 @@ export default {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  box-shadow: 3px 3px #0000004d;
 }
 
 .close-button {
