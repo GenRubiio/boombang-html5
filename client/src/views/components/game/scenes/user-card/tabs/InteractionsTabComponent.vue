@@ -28,10 +28,16 @@
       <div></div>
       <div></div>
     </div>
-    <span class="uppercuts__plus-button" @click.stop="toggleContainerUppers"
+    <span
+      class="uppercuts__plus-button"
+      :class="colorUser"
+      @click.stop="toggleContainerUppers"
       >+</span
     >
-    <span class="coconuts__plus-button" @click.stop="toggleContainerCocos"
+    <span
+      class="coconuts__plus-button"
+      :class="colorUser"
+      @click.stop="toggleContainerCocos"
       >+</span
     >
 
@@ -260,6 +266,7 @@ export default {
   position: absolute;
   top: 60px;
   left: 36px;
+  color: black;
 }
 
 .coconuts__plus-button {
@@ -270,6 +277,7 @@ export default {
   position: absolute;
   top: 60px;
   left: 82px;
+  color: black;
 }
 
 .uppercuts-list-container {
@@ -331,6 +339,7 @@ export default {
   cursor: pointer;
   font-weight: bold;
   font-size: 22px;
+  color: black;
 }
 
 .coco-container {
@@ -404,5 +413,22 @@ export default {
   cursor: pointer;
   font-weight: bold;
   font-size: 22px;
+  color: black;
+}
+
+/********************************************************************* */
+.uppercuts__plus-button.selected,
+.coconuts__plus-button.selected {
+  color: #045d03;
+}
+
+.uppercuts__plus-button.admin,
+.coconuts__plus-button.admin {
+  color: #f59200;
+}
+
+.uppercuts__plus-button.vip,
+.coconuts__plus-button.vip {
+  color: #420143;
 }
 </style>

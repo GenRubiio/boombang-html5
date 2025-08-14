@@ -9,17 +9,13 @@
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_coco_image" alt="Coco" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Coco<br />0 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Coco<br />0 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_avispas_image" alt="Panal" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Panal<br />2.500 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Panal<br />2.500 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
@@ -33,57 +29,43 @@
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_garbage_image" alt="Basura" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Basura<br />3.335 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Basura<br />3.335 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_shoe_image" alt="Zapato" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Zapato<br />335 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Zapato<br />335 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_sandia_image" alt="Sandía" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Sandía<br />5.000 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Sandía<br />5.000 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_pie_image" alt="Tarta" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Tarta<br />835 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Tarta<br />835 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_yunque_image" alt="Yunque" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Yunque<br />6.665 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Yunque<br />6.665 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_maceta_image" alt="Maceta" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Maceta<br />1665 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Maceta<br />1665 Cocos</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
           <img :src="asset_coco_piano_image" alt="Piano" />
         </div>
-        <div class="coconut-info__grid-item-name">
-          Piano<br />10.000 Cocos
-        </div>
+        <div class="coconut-info__grid-item-name">Piano<br />10.000 Cocos</div>
       </div>
     </div>
   </div>
@@ -143,7 +125,7 @@ export default {
   color: black;
 }
 .coconut-info {
-  width: 300px;
+  width: 320px;
   background-color: #ffffffd9;
   padding: 20px;
   border-radius: 5px;
