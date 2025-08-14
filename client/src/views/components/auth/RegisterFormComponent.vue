@@ -148,6 +148,9 @@ export default {
 
       this.$socket.off(ResponseSocketsEnum.REGISTER_SUCCESS);
       this.$socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, (data) => {
+        if (data.user && data.user.lang) {
+          this.languageStore.setLocale(data.user.lang);
+        }
         this.$socket.user = data.user;
         this.$emit("loginSuccess");
       });
@@ -204,7 +207,8 @@ export default {
         script.defer = true;
 
         window.___recaptchaOnload = () => resolve();
-        script.onerror = () => reject(new Error(this.$t("register.captcha_load_error")));
+        script.onerror = () =>
+          reject(new Error(this.$t("register.captcha_load_error")));
         document.head.appendChild(script);
       });
     },
