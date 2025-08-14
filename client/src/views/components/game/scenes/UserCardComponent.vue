@@ -426,7 +426,7 @@ export default {
 }
 
 .user-card.selected .user-card__customization {
-  background-color: #2b8703;
+  background-color: #045d03;
 }
 
 .user-card.admin .user-card__customization {
