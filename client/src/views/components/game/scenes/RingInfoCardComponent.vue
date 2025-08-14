@@ -127,7 +127,7 @@ export default {
   color: black;
 }
 .ring-info {
-  width: 300px;
+  width: 320px;
   background-color: #ffffffd9;
   padding: 20px;
   border-radius: 5px;

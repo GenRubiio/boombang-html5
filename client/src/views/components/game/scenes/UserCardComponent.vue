@@ -173,9 +173,17 @@ export default {
           sel.removeAllRanges();
           sel.addRange(range);
         }
+        document.addEventListener("mousedown", this.handleClickOutside);
       });
     },
+    handleClickOutside(event) {
+      const el = this.$refs.descEditable;
+      if (el && !el.contains(event.target)) {
+        this.saveDescription();
+      }
+    },
     saveDescription() {
+      document.removeEventListener("mousedown", this.handleClickOutside);
       const el = this.$refs.descEditable;
       if (el) {
         this.descriptionText = el.innerText.trim();
@@ -188,6 +196,9 @@ export default {
         description: this.descriptionText,
       });
     },
+  },
+  beforeUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
   },
   computed: {
     computedClass() {
