@@ -109,8 +109,8 @@ enum AvatarEnum
     public static function registerAvatarPermited(): array
     {
         return [
-            self::GATA->key() => self::GATA->name(),
-            self::RASTA->key() => self::RASTA->name(),
+            self::GATA->key(),
+            self::RASTA->key(),
         ];
     }
 }
