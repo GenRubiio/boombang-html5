@@ -6,10 +6,10 @@
         <div class="select-avatar__label">{{ $t('avatar_select.label') }}</div>
         <div class="select-avatar__slider">
           <div class="slider">
-            <div id="slide-0" data-avatar="5">
+            <div id="slide-0" :data-avatar="AvatarEnum.GATA">
               <img :src="asset_gata_redbull_image" />
             </div>
-            <div id="slide-1" data-avatar="13">
+            <div id="slide-1" :data-avatar="AvatarEnum.RASTA">
               <img :src="asset_rasta_redbull_image" />
             </div>
           </div>
@@ -22,6 +22,7 @@
 <script>
 import asset_gata_redbull_image from "../../../assets/game/auth/gata-redbull.webp";
 import asset_rasta_redbull_image from "../../../assets/game/auth/rasta-redbull.webp";
+import AvatarEnum from "../../../enums/AvatarEnum";
 
 import $ from "jquery";
 import "slick-carousel";
@@ -31,6 +32,7 @@ export default {
     return {
       asset_gata_redbull_image,
       asset_rasta_redbull_image,
+      AvatarEnum
     };
   },
   methods: {},
