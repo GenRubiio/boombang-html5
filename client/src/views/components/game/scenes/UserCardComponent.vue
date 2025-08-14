@@ -68,7 +68,11 @@
         EDITAR
       </button>
     </div>
-    <div class="user-card__customization" @click="toggleCustomization">
+    <div
+      v-if="!selectedUser.is_selected"
+      class="user-card__customization"
+      @click="toggleCustomization"
+    >
       <i class="las la-cog"></i>
     </div>
     <UserCustomizationComponent

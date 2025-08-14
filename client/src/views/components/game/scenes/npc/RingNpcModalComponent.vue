@@ -14,7 +14,7 @@
         {{ isSubscribed ? "Cancelar..." : "Inscribirme" }}
       </button>
     </div>
-    <p>********************************************************</p>
+    <p>**************************************************************</p>
     <p>Gana puntos compitiendo y desbloquea los siguentes guantes:</p>
     <div class="modal-info__grid">
       <div class="modal-info__grid-item">
@@ -78,7 +78,7 @@
         <div class="modal-info__grid-item-name">Dorado<br />30.000 Victorias</div>
       </div>
     </div>
-    <p>********************************************************</p>
+    <p>**************************************************************</p>
     <p>
       Los que más puntos ganen cada semana, conseguirán estos trofeos únicos:
     </p>

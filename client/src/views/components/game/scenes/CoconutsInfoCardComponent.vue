@@ -134,6 +134,7 @@ export default {
   top: 10px;
   z-index: 2;
   pointer-events: auto;
+  box-shadow: 3px 3px #0000004d;
 }
 
 .coconut-info__title {
