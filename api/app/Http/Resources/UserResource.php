@@ -20,7 +20,7 @@ class UserResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        return [
+        $return = [
             'id' => (int)$this->id,
             'username' => $this->username,
             'description' => $this->description,
@@ -38,6 +38,12 @@ class UserResource extends JsonResource
             'uppercuts_received' => (int)$this->uppercuts_received,
             'coconuts_sent' => (int)$this->coconuts_sent,
             'coconuts_received' => (int)$this->coconuts_received,
+            /**
+             * User customizations
+             */
+            'fichas' => $this->enabledFichas(),
         ];
+
+        return $return;
     }
 }

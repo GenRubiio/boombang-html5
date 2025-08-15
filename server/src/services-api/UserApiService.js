@@ -59,6 +59,18 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async changeFicha(user, newFicha) {
+        try {
+            const data = {
+                ficha_color: newFicha
+            };
+            return await ApiService.post('api/user/change-ficha', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al cambiar la ficha del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,9 @@ class RegisterApiController extends Controller
                 'token' => $tokenResult->accessToken,
             ]);
         } catch (Exception $e) {
+            Log::error('Registration error: ' . $e->getMessage(), [
+                'request' => $request->all(),
+            ]);
             return $this->handleException($e);
         }
     }

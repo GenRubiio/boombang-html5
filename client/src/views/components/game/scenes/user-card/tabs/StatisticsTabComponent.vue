@@ -176,7 +176,7 @@ export default {
   box-sizing: border-box;
   height: 90px;
   position: relative;
-  z-index: 0;
+  z-index: 1;
   display: flex;
 }
 
@@ -300,6 +300,10 @@ export default {
   background-color: #420143;
 }
 
+.container.beta .container__userinfo-data__title {
+  background-color: #08d1d1;
+}
+
 .container.user .container__userinfo-data__data-container__count {
   background-color: #005491;
 }
@@ -314,6 +318,10 @@ export default {
 
 .container.vip .container__userinfo-data__data-container__count {
   background-color: #420143;
+}
+
+.container.beta .container__userinfo-data__data-container__count {
+  background-color: #08d1d1;
 }
 
 .container.user .container__userinfo-data__data-container__title {
@@ -332,6 +340,10 @@ export default {
   background-color: #420143;
 }
 
+.container.beta .container__userinfo-data__data-container__title {
+  background-color: #08d1d1;
+}
+
 .container.user .container__cycle-button {
   background-color: #005491;
 }
@@ -348,6 +360,10 @@ export default {
   background-color: #420143;
 }
 
+.container.beta .container__cycle-button {
+  background-color: #08d1d1;
+}
+
 .container.user .info-button {
   background: #005491;
 }
@@ -362,5 +378,9 @@ export default {
 
 .container.vip .info-button {
   background: #420143;
+}
+
+.container.beta .info-button {
+  background: #08d1d1;
 }
 </style>

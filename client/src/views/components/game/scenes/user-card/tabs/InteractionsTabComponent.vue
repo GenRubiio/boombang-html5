@@ -431,4 +431,9 @@ export default {
 .coconuts__plus-button.vip {
   color: #420143;
 }
+
+.uppercuts__plus-button.beta,
+.coconuts__plus-button.beta {
+  color: #08d1d1;
+}
 </style>

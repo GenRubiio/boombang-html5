@@ -33,6 +33,8 @@ class RemovePhaserSocketsUtil {
             RequestSocketsEnum.JOIN_PRIVATE_SCENE,
             RequestSocketsEnum.GET_PUBLIC_ISLANDS,
             RequestSocketsEnum.GET_MINIGAME_SUBSCRIBE_STATUS,
+            RequestSocketsEnum.USER_UPDATE_DESCRIPTION,
+            RequestSocketsEnum.USER_CHANGE_FICHA
         ];
 
         // Remover solo eventos que no están en las listas de exclusión
