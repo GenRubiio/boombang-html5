@@ -96,6 +96,7 @@ while true; do
   echo " 7) Clear cache docker"
   echo " 8) UP Containers"
   echo " 9) Deploy api"
+  echo " 10) Deploy web"
   read -p "Opción: " opt
   echo
 
@@ -144,6 +145,11 @@ while true; do
       sudo docker exec boombang-html5-api-1 php artisan migrate --force
       sudo docker exec boombang-html5-api-1 php artisan passport:install
       sudo docker restart boombang-html5-server-1
+      ;;
+    10)
+      echo "==> Deploy web..."
+      sudo docker compose build web
+      sudo docker compose up -d web
       ;;
     *)
       echo "Opción inválida, inténtalo de nuevo."
