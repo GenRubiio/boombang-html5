@@ -40,26 +40,91 @@
         </div>
         <div class="user-customization__grid" :class="gridClass">
           <div
+            v-if="activeTab === 'ficha'"
             class="user-customization__grid-item"
-            v-for="n in 20"
-            :key="n"
-          ></div>
+            v-for="(ficha, index) in paddedFichaColors"
+            :key="index"
+            @click="onSelectFicha(ficha.key)"
+            :class="{
+              selected: isFichaSelected(ficha.key),
+              disabled: !isFichaEnabled(ficha.key),
+              'empty-item': !ficha.key,
+            }"
+          >
+            <img v-if="ficha.image" :src="ficha.image" />
+            <div
+              v-if="ficha.description"
+              class="info-icon"
+              @mouseover="showTooltip($event, ficha)"
+              @mouseleave="hideTooltip"
+            >
+              ?
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <div
+      v-if="tooltip.visible"
+      class="tooltip"
+      :style="{ top: tooltip.y + 'px', left: tooltip.x + 'px' }"
+      v-html="tooltip.content"
+    ></div>
   </div>
 </template>
 
 <script>
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import fichaColors from "@/assets/game/data/ficha_colors.json";
+
 export default {
+  props: {
+    authUser: {
+      type: Object,
+      required: true,
+    },
+  },
   name: "UserCustomizationComponent",
-  emits: ["close-customization"],
+  emits: ["close-customization", "on-select-ficha"],
   data() {
     return {
       activeTab: "ficha",
+      fichaColors: fichaColors,
+      chatColors: [],
+      nameColors: [],
+      shadowColors: [],
+      tooltip: {
+        visible: false,
+        content: "",
+        x: 0,
+        y: 0,
+      },
     };
   },
   computed: {
+    paddedFichaColors() {
+      const totalItems = 8;
+
+      const enabledFichas = [];
+      const disabledFichas = [];
+
+      for (const ficha of this.fichaColors) {
+        if (this.isFichaEnabled(ficha.key)) {
+          enabledFichas.push(ficha);
+        } else {
+          disabledFichas.push(ficha);
+        }
+      }
+
+      const sortedFichas = [...enabledFichas, ...disabledFichas];
+
+      const padded = [...sortedFichas];
+      while (padded.length < totalItems) {
+        padded.push({});
+      }
+      return padded;
+    },
     gridClass() {
       if (this.activeTab === "ficha") {
         return "ficha-grid";
@@ -68,6 +133,38 @@ export default {
         return "chat-grid";
       }
       return "nombre-sombra-grid";
+    },
+  },
+  methods: {
+    showTooltip(event, ficha) {
+      if (ficha && ficha.description) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        this.tooltip.content = ficha.description;
+        this.tooltip.visible = true;
+        this.tooltip.x = rect.left + window.scrollX - rect.width / 2 - 20;
+        this.tooltip.y = rect.bottom + window.scrollY + 5;
+      }
+    },
+    hideTooltip() {
+      this.tooltip.visible = false;
+    },
+    onSelectFicha(ficha) {
+      if (
+        !ficha ||
+        this.isFichaSelected(ficha) ||
+        !this.isFichaEnabled(ficha)
+      ) {
+        return;
+      }
+      socket.emit(RequestSocketsEnum.USER_CHANGE_FICHA, {
+        ficha: ficha,
+      });
+    },
+    isFichaEnabled(ficha) {
+      return this.authUser.fichas.includes(ficha);
+    },
+    isFichaSelected(ficha) {
+      return this.authUser.ficha_color === ficha;
     },
   },
 };
@@ -89,6 +186,30 @@ export default {
   flex-direction: column;
   box-sizing: border-box;
   box-shadow: 3px 3px #0000004d;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.805);
+  color: white;
+  padding: 4px;
+  border-radius: 5px;
+  z-index: 102;
+  pointer-events: none;
+  white-space: pre-wrap;
+  font-size: 12px;
+  text-align: start;
+  width: 125px;
+}
+
+.tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
 }
 
 .close-button {
@@ -181,15 +302,56 @@ export default {
 .user-customization__grid-item {
   background-color: #e0e0e0;
   border-radius: 5px;
+  position: relative;
+}
+
+.info-icon {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 1px 1px #0000004d;
 }
 
 .chat-grid .user-customization__grid-item {
   height: 45px;
-  border: 1px solid;
+  border: 1px solid white;
 }
 
 .ficha-grid .user-customization__grid-item {
   height: 190px;
-  border: 1px solid;
+  border: 1px solid white;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.ficha-grid .user-customization__grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ficha-grid .user-customization__grid-item.selected {
+  border: 2px solid #d96b35;
+  box-shadow: 0 0 10px #d96b35;
+}
+
+.ficha-grid .user-customization__grid-item.disabled {
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+}
+
+.ficha-grid .user-customization__grid-item.empty-item {
+  background-color: #f0f0f0;
+  cursor: default;
 }
 </style>

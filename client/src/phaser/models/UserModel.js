@@ -7,6 +7,7 @@ export default class UserModel {
         this.shadow_color = row.shadow_color;
         this.chat_color = row.chat_color;
         this.name_color = row.name_color;
+        this.fichas = row.fichas || [];
         this.position = {
             x: row.x,
             y: row.y,

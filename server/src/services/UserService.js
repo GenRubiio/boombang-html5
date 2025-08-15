@@ -123,6 +123,15 @@ class UserService {
             console.error('Error updating user description:', error);
         }
     }
+
+    static async changeFicha(user, newFicha) {
+        user.ficha_color = newFicha;
+        try {
+            await UserApiService.changeFicha(user, newFicha);
+        } catch (error) {
+            console.error('Error updating user ficha color:', error);
+        }
+    }
 }
 
 module.exports = UserService;

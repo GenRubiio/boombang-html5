@@ -24,3 +24,5 @@
 <x-backpack::menu-item title="Ranking categories" icon="la la-question" :link="backpack_url('ranking-category')" />
 <x-backpack::menu-item title="Rankings" icon="la la-question" :link="backpack_url('ranking')" />
 <x-backpack::menu-item title="V ranking summaries" icon="la la-question" :link="backpack_url('v-ranking-summary')" />
+
+<x-backpack::menu-item title="User fichas" icon="la la-question" :link="backpack_url('user-ficha')" />

@@ -96,7 +96,7 @@ export default {
   box-sizing: border-box;
   height: 90px;
   position: relative;
-  z-index: 0;
+  z-index: 1;
 }
 
 .container div {

@@ -20,6 +20,8 @@ class UserModel {
         this.uppercutsReceived = row.uppercuts_received; // Uppercuts recibidos por el usuario
         this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
+        
+        this.fichas = row.fichas || []; // Fichas del usuario, por defecto es un array vacío
 
         this.socket = null; // Socket del usuario
         this.authJwt = null; // JWT de autenticación del usuario

@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use App\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
     use CrudTrait;
@@ -59,6 +62,11 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
+    public function enabledFichas(): array
+    {
+        return $this->fichas()->get()->pluck('ficha_color')->toArray();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -73,6 +81,11 @@ class User extends Authenticatable
     public function catalogItems()
     {
         return $this->hasMany(UserCatalogItem::class)->where('private_scene_id', null);
+    }
+
+    public function fichas()
+    {
+        return $this->hasMany(UserFicha::class, 'user_id', 'id');
     }
 
     /*

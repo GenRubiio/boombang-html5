@@ -78,6 +78,8 @@ export default {
   display: flex;
   gap: 3px;
   margin-top: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .tabs-container__emojis {
@@ -139,5 +141,10 @@ export default {
 .tabs-container__emojis.active,
 .tabs-container__statistics.active {
   background-color: white !important;
+}
+
+.tabs-container.beta .tabs-container__emojis,
+.tabs-container.beta .tabs-container__statistics {
+  background-color: #01a7a7;
 }
 </style>

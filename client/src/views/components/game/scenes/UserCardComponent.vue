@@ -78,6 +78,7 @@
     <UserCustomizationComponent
       v-if="isCustomizationOpen"
       @close-customization="toggleCustomization"
+      :authUser="authUser"
     />
     <UserDataTabsComponents
       v-if="!selectedUser.is_selected"
@@ -234,6 +235,8 @@ export default {
   font-size: 23px;
   font-weight: bold;
   color: white;
+  position: relative;
+  z-index: 1;
 }
 
 .user-card__avatar-container {
@@ -246,6 +249,8 @@ export default {
   height: 90px;
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .user-card__avatar-container__avatar img {
@@ -292,7 +297,7 @@ export default {
   /* Evitar recortes horizontales y permitir scroll vertical si hace falta */
   overflow-x: hidden;
   overflow-y: auto;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* Reglas para partir palabras largas y respetar saltos de línea del usuario */
@@ -337,7 +342,7 @@ export default {
   position: absolute;
   top: 84px;
   left: 102px;
-  z-index: 0;
+  z-index: 1;
 }
 
 .user-card__customization {
@@ -353,6 +358,7 @@ export default {
   color: white;
   box-shadow: 1px 1px #0000004d;
   cursor: pointer;
+  z-index: 1;
 }
 
 /********************************************************************* */
@@ -372,6 +378,11 @@ export default {
   background-color: #045d03;
 }
 
+.user-card.beta .user-card__header {
+  background: linear-gradient(135deg, #08d1d1 0%, #00a1a1 100%);
+  border: 1px solid #e1e1e1;
+}
+
 .user-card.user .user-card__avatar-container__avatar {
   box-shadow: inset 0 0 15px #194261;
 }
@@ -386,6 +397,11 @@ export default {
 
 .user-card.selected .user-card__avatar-container__avatar {
   box-shadow: inset 0 0 15px #0f3d00;
+}
+
+.user-card.beta .user-card__avatar-container__avatar {
+  background-color:  #08d1d1;
+  box-shadow: inset 0 0 15px white;
 }
 
 .user-card.admin {
@@ -404,6 +420,17 @@ export default {
   background-color: #2b8703;
 }
 
+.user-card.beta {
+  top: 10px;
+  right: 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  padding: 10px;
+  width: 180px;
+  pointer-events: auto;
+  background: #08d1d1; /* o el que uses */
+}
+
 .user-card.user .user-card__description {
   color: #0069b5;
 }
@@ -418,6 +445,10 @@ export default {
 
 .user-card.vip .user-card__description {
   color: #420143;
+}
+
+.user-card.beta .user-card__description {
+  color: #08d1d1;
 }
 
 .user-card.user .user-card__description__edit-btn {
@@ -436,6 +467,10 @@ export default {
   background-color: #420143;
 }
 
+.user-card.beta .user-card__description__edit-btn {
+  background-color: #08d1d1;
+}
+
 .user-card.user .user-card__customization {
   background-color: #005ea3;
 }
@@ -450,5 +485,116 @@ export default {
 
 .user-card.vip .user-card__customization {
   background-color: #420143;
+}
+
+.user-card.beta .user-card__customization {
+  background-color: #01a7a7;
+}
+
+/** Mega custom */
+
+/* Capas de partículas */
+.user-card.beta::before,
+.user-card.beta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: background-position, opacity, filter, transform;
+}
+
+/* Capa 1 */
+.user-card.beta::before {
+  --p1: rgba(255, 255, 255, 0.85);
+  --p2: rgba(255, 255, 255, 0.55);
+  --p3: rgba(255, 255, 255, 0.35);
+
+  background: radial-gradient(circle, var(--p1) 0 2px, transparent 3px) 0 0 /
+      40px 40px,
+    radial-gradient(circle, var(--p2) 0 1.5px, transparent 2.5px) 0 0 / 30px
+      30px,
+    radial-gradient(circle, var(--p3) 0 1px, transparent 2px) 0 0 / 20px 20px;
+
+  animation: beta-drift-1 28s linear infinite,
+    beta-twinkle 3.8s steps(20) infinite;
+  opacity: 0.85;
+}
+
+/* Capa 2 */
+.user-card.beta::after {
+  --p1: rgba(255, 255, 255, 0.75);
+  --p2: rgba(255, 255, 255, 0.45);
+  --p3: rgba(255, 255, 255, 0.25);
+
+  background: radial-gradient(circle, var(--p1) 0 2px, transparent 3px) 20px
+      15px / 40px 40px,
+    radial-gradient(circle, var(--p2) 0 1.5px, transparent 2.5px) 10px 6px /
+      30px 30px,
+    radial-gradient(circle, var(--p3) 0 1px, transparent 2px) 5px 18px / 20px
+      20px;
+
+  animation: beta-drift-2 36s linear infinite,
+    beta-twinkle 5.2s steps(24) infinite;
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+/* Animaciones de desplazamiento */
+@keyframes beta-drift-1 {
+  from {
+    background-position: 0px 0px, 0px 0px, 0px 0px;
+  }
+  to {
+    background-position: 220px 0px, -160px -80px, 80px 160px;
+  }
+}
+
+@keyframes beta-drift-2 {
+  from {
+    background-position: 20px 15px, 10px 6px, 5px 18px;
+  }
+  to {
+    background-position: -180px 60px, 200px -40px, -120px -140px;
+  }
+}
+
+/* Parpadeo sutil */
+@keyframes beta-twinkle {
+  0% {
+    filter: brightness(1) saturate(1);
+    opacity: 0.85;
+  }
+  10% {
+    filter: brightness(1.2) saturate(1.1);
+    opacity: 0.95;
+  }
+  20% {
+    filter: brightness(1) saturate(1);
+    opacity: 0.8;
+  }
+  35% {
+    filter: brightness(1.3) saturate(1.15);
+    opacity: 0.95;
+  }
+  50% {
+    filter: brightness(1) saturate(1);
+    opacity: 0.85;
+  }
+  70% {
+    filter: brightness(1.25) saturate(1.1);
+    opacity: 0.92;
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+    opacity: 0.85;
+  }
+}
+
+/* Accesibilidad: reducir animación si el usuario lo pide */
+@media (prefers-reduced-motion: reduce) {
+  .user-card.beta::before,
+  .user-card.beta::after {
+    animation: none;
+  }
 }
 </style>
