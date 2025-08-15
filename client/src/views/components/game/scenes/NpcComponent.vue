@@ -38,6 +38,8 @@ export default {
   align-items: center;
   margin: 0;
   pointer-events: auto;
+  position: relative;
+  z-index: 101;
 }
 .modal-content {
   width: 360px;
