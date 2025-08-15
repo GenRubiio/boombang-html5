@@ -86,6 +86,8 @@ export default {
   display: flex;
   gap: 3px;
   margin-top: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .tabs-container__interactions {
@@ -141,6 +143,11 @@ export default {
 .tabs-container.selected .tabs-container__interactions,
 .tabs-container.selected .tabs-container__statistics {
   background-color: #045d03;
+}
+
+.tabs-container.beta .tabs-container__interactions,
+.tabs-container.beta .tabs-container__statistics {
+  background-color: rgb(1, 167, 167);
 }
 
 .tabs-container__interactions.active,
