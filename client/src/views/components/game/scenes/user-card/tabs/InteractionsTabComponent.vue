@@ -280,6 +280,7 @@ export default {
   top: 60px;
   left: 82px;
   color: black;
+  z-index: 1;
 }
 
 .uppercuts-list-container {
