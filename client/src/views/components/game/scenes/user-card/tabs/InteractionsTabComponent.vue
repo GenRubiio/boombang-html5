@@ -224,6 +224,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   height: 90px;
+  position: relative;
   z-index: 1;
   gap: 8px;
   padding: 0 5px;
@@ -267,6 +268,7 @@ export default {
   top: 60px;
   left: 36px;
   color: black;
+  z-index: 1;
 }
 
 .coconuts__plus-button {

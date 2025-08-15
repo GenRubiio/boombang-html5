@@ -276,6 +276,7 @@ export default {
   top: 111px;
   opacity: 0.3;
   cursor: pointer;
+  z-index: 1;
 }
 
 .user-card__description {
