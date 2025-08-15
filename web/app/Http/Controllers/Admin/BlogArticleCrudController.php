@@ -144,15 +144,7 @@ class BlogArticleCrudController extends CrudController
                 'name' => 'content',
                 'label' => trans('admin.content'),
                 'type' => 'ckeditor',
-                //'data' => [
-                //    'removePlugins' => ['Heading', 'blockQuote'],
-                //    'toolbar' => ['bold', 'italic', 'bulletedList', 'numberedList', 'link'],
-                //],
-                // Example: Simple con solo bold y italic
-                //'data' => [
-                //    'removePlugins' => ['Heading', 'Link', 'CKFinder', 'bulletedList', 'numberedList', 'blockQuote'],
-                //    'toolbar' => ['bold', 'italic'],
-                //],
+                'elfinderOptions' => true,
                 'placeholder' => 'Your textarea text here',
                 'tab' => 'Blog Article',
             ]);
