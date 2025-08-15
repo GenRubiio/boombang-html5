@@ -32,7 +32,7 @@ class RegisterApiRegisterRequest extends FormRequest
             'avatar_id' => [
                 'required',
                 'integer',
-                'in:' . implode(',', array_keys(AvatarEnum::toAssociativeArray())),
+                'in:' . implode(',', array_values(AvatarEnum::registerAvatarPermited())),
             ],
             'recaptcha' => ['required', 'string', new RecaptchaV2()],
         ];
