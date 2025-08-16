@@ -7,15 +7,16 @@
             <div class="page-article__content__left-date">
                 {{ $article->parsed_date }}
             </div>
-            <hr>
             <div class="page-article__content__left-image">
                 <img src="{{ asset($article->image) }}" alt="{{ $article->title }}">
             </div>
+            <hr>
             <div class="page-article__content__left-content">
                 {!! $article->content !!}
             </div>
             <div class="page-article__content__left__show-more">
-                <a href="{{ makeUrl('News') }}">{{ trans('web.more_articles') }} <i class="fa-solid fa-angles-right"></i></a>
+                <a href="{{ makeUrl('News') }}">{{ trans('web.more_articles') }} <i
+                        class="fa-solid fa-angles-right"></i></a>
             </div>
         </div>
         <div class="page-article__content__right">
