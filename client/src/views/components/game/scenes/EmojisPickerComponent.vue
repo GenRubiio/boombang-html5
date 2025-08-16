@@ -102,7 +102,10 @@ export default {
   display: flex;
   border-bottom: 1px solid #c7c7c7;
   margin-top: 30px;
-  padding-bottom: 5px;
+  padding-bottom: 0;
+  border-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .emojis-picker__tab {
@@ -115,6 +118,9 @@ export default {
   color: #333;
   transition: background-color 0.2s;
   outline: none;
+    border-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .emojis-picker__tab:hover {
@@ -124,6 +130,7 @@ export default {
 .emojis-picker__tab--active {
   background-color: #d1d1d1;
   font-weight: bold;
+  border-radius: 0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
@@ -142,7 +149,9 @@ export default {
   cursor: pointer;
   font-size: 24px;
   padding: 2px;
-  border-radius: 4px;
+  border-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   transition: background-color 0.2s;
 }
 

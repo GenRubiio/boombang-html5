@@ -119,7 +119,7 @@ export default class PrivateScene extends Phaser.Scene {
         this.events.on('destroy', this.destroy, this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
-        
+
         if (this.sceneData.myScene) {
             this.createButtons();
         }
@@ -399,15 +399,20 @@ export default class PrivateScene extends Phaser.Scene {
         if (this.tileBlitter) {
             this.tileBlitter.clear();
         }
+
         // Restaurar clickable del piso según el mapa original
         const gameMap = this.sceneData.scenery.game_map;
         if (gameMap && this.tiles) {
             for (let row = 0; row < gameMap.length; row++) {
                 for (let col = 0; col < gameMap[row].length; col++) {
-                    this.tiles[row][col].isClickable = (gameMap[row][col] === 0);
+                    const t = this.tiles[row]?.[col];
+                    if (t) {
+                        t.isClickable = (gameMap[row][col] === 0);
+                    }
                 }
             }
         }
+
         this.initializeTileGrid();
 
         const tileWidth = 65;
@@ -415,21 +420,27 @@ export default class PrivateScene extends Phaser.Scene {
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
+
         this.tileBlitter.setDepth(100);
+
         this.sceneItems.forEach(item => {
             item.occupied_tiles.forEach(([col, row]) => {
                 const x = (col - row) * halfTileWidth + centerX - halfTileWidth;
                 const y = (col + row) * halfTileHeight - halfTileHeight;
+
                 const bob = this.tileBlitter.create(x, y);
                 bob.alpha = 1;
+
                 if (row < this.tileGrid.length && col < this.tileGrid[row].length) {
                     this.tileGrid[row][col].occupied = true;
                     this.tileGrid[row][col].objectId = item.id;
                     this.tileGrid[row][col].isClickable = false;
                     this.tileGrid[row][col].bob = bob;
-                    // Bloquear clic en el suelo para los tiles ocupados por objetos
-                    if (this.tiles[row] && this.tiles[row][col]) {
-                        this.tiles[row][col].isClickable = false;
+
+                    // Bloquear clic también en tiles visibles (si existen en this.tiles)
+                    const t = this.tiles[row]?.[col];
+                    if (t) {
+                        t.isClickable = false;
                     }
                 }
             });

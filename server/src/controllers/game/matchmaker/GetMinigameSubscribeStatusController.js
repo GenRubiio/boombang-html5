@@ -23,7 +23,7 @@ class GetMinigameSubscribeStatusController {
                 return;
             }
 
-            const isSubscribed = matchmaker.isUserInQueue(user.id);
+            const isSubscribed = matchmaker.isUserInQueue(socket.id, sceneType);
 
             socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS, {
                 success: true,

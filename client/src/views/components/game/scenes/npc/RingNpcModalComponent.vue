@@ -284,7 +284,7 @@ export default {
   cursor: pointer;
   border: 1px solid #0072c6;
   box-shadow: 0 5px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
+  border-radius: 5px;
   background: linear-gradient(to bottom, #6bd0fa 0%, #008ed6 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transition: opacity 0.2s, transform 0.2s;
