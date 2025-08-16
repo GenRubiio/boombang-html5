@@ -3,7 +3,8 @@
 namespace App\Observers;
 
 use App\Models\User;
-use App\Enums\FichaEnum;
+use App\Enums\ColorChatEnum;
+use App\Enums\ColorFichaEnum;
 
 class UserObserver
 {
@@ -13,10 +14,14 @@ class UserObserver
     public function created(User $user): void
     {
         $user->fichas()->create([
-            'ficha_color' => FichaEnum::USER->key(),
+            'ficha_color' => ColorFichaEnum::USER->key(),
         ]);
         $user->fichas()->create([
-            'ficha_color' => FichaEnum::BETA->key(),
+            'ficha_color' => ColorFichaEnum::BETA->key(),
+        ]);
+
+        $user->chats()->create([
+            'chat_color' => ColorChatEnum::USER->key(),
         ]);
     }
 

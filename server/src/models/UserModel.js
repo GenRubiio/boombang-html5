@@ -22,6 +22,7 @@ class UserModel {
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
         
         this.fichas = row.fichas || []; // Fichas del usuario, por defecto es un array vacío
+        this.chats = row.chats || []; // Colores del chat del usuario, por defecto es un array vacío
 
         this.socket = null; // Socket del usuario
         this.authJwt = null; // JWT de autenticación del usuario

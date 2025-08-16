@@ -29,7 +29,8 @@ const RequestSocketsEnum = new Enum({
     GET_MINIGAME_SUBSCRIBE_STATUS: 'request:get_minigame_subscribe_status',
     USER_UPDATE_DESCRIPTION: 'request:user_update_description',
     USER_CATCH_ITEM: 'request:user_catch_item',
-    USER_CHANGE_FICHA: 'request:user_change_ficha'
+    USER_CHANGE_FICHA: 'request:user_change_ficha',
+    USER_CHANGE_CHAT: 'request:user_change_chat'
 });
 
 export default RequestSocketsEnum;

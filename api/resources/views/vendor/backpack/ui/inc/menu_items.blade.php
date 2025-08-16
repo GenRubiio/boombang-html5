@@ -26,3 +26,4 @@
 <x-backpack::menu-item title="V ranking summaries" icon="la la-question" :link="backpack_url('v-ranking-summary')" />
 
 <x-backpack::menu-item title="User fichas" icon="la la-question" :link="backpack_url('user-ficha')" />
+<x-backpack::menu-item title="User chats" icon="la la-question" :link="backpack_url('user-chat')" />

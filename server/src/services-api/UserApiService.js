@@ -71,6 +71,18 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async changeChat(user, newChat) {
+        try {
+            const data = {
+                chat_color: newChat
+            };
+            return await ApiService.post('api/user/change-chat', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al cambiar el chat del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;

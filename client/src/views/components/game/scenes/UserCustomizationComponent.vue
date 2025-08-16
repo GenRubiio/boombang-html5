@@ -40,7 +40,7 @@
         </div>
         <div class="user-customization__grid" :class="gridClass">
           <div
-            v-if="activeTab === 'ficha'"
+            v-if="activeTab == 'ficha'"
             class="user-customization__grid-item"
             v-for="(ficha, index) in paddedFichaColors"
             :key="index"
@@ -56,6 +56,28 @@
               v-if="ficha.description"
               class="info-icon"
               @mouseover="showTooltip($event, ficha)"
+              @mouseleave="hideTooltip"
+            >
+              ?
+            </div>
+          </div>
+          <div
+            v-if="activeTab === 'chat'"
+            class="user-customization__grid-item"
+            v-for="(chat, index) in paddedChatColors"
+            :key="index"
+            @click="onSelectChat(chat.key)"
+            :class="{
+              selected: isChatSelected(chat.key),
+              disabled: !isChatEnabled(chat.key),
+              'empty-item': !chat.key,
+            }"
+          >
+            <ChatComponent v-if="chat.key" :chat="chat" />
+            <div
+              v-if="chat.description"
+              class="info-icon"
+              @mouseover="showTooltip($event, chat)"
               @mouseleave="hideTooltip"
             >
               ?
@@ -77,6 +99,8 @@
 import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import fichaColors from "@/assets/game/data/ficha_colors.json";
+import chatColors from "@/assets/game/data/chat_colors.json";
+import ChatComponent from "./user-card/ChatComponent.vue";
 
 export default {
   props: {
@@ -87,11 +111,14 @@ export default {
   },
   name: "UserCustomizationComponent",
   emits: ["close-customization", "on-select-ficha"],
+  components: {
+    ChatComponent,
+  },
   data() {
     return {
       activeTab: "ficha",
       fichaColors: fichaColors,
-      chatColors: [],
+      chatColors: chatColors,
       nameColors: [],
       shadowColors: [],
       tooltip: {
@@ -125,6 +152,28 @@ export default {
       }
       return padded;
     },
+    paddedChatColors() {
+      const totalItems = 14;
+
+      const enabledChats = [];
+      const disabledChats = [];
+
+      for (const chat of this.chatColors) {
+        if (this.isChatEnabled(chat.key)) {
+          enabledChats.push(chat);
+        } else {
+          disabledChats.push(chat);
+        }
+      }
+
+      const sortedChats = [...enabledChats, ...disabledChats];
+
+      const padded = [...sortedChats];
+      while (padded.length < totalItems) {
+        padded.push({});
+      }
+      return padded;
+    },
     gridClass() {
       if (this.activeTab === "ficha") {
         return "ficha-grid";
@@ -136,10 +185,10 @@ export default {
     },
   },
   methods: {
-    showTooltip(event, ficha) {
-      if (ficha && ficha.description) {
+    showTooltip(event, item) {
+      if (item && item.description) {
         const rect = event.currentTarget.getBoundingClientRect();
-        this.tooltip.content = ficha.description;
+        this.tooltip.content = item.description;
         this.tooltip.visible = true;
         this.tooltip.x = rect.left + window.scrollX - rect.width / 2 - 20;
         this.tooltip.y = rect.bottom + window.scrollY + 5;
@@ -165,6 +214,20 @@ export default {
     },
     isFichaSelected(ficha) {
       return this.authUser.ficha_color === ficha;
+    },
+    onSelectChat(chat) {
+      if (!chat || this.isChatSelected(chat) || !this.isChatEnabled(chat)) {
+        return;
+      }
+      socket.emit(RequestSocketsEnum.USER_CHANGE_CHAT, {
+        chat: chat,
+      });
+    },
+    isChatEnabled(chat) {
+      return this.authUser.chats.includes(chat);
+    },
+    isChatSelected(chat) {
+      return this.authUser.chat_color === chat;
     },
   },
 };
@@ -261,10 +324,11 @@ export default {
 }
 
 .user-customization__content {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
+  width: 610px;
 }
 
 .user-customization__title {
@@ -282,13 +346,13 @@ export default {
   display: grid;
   gap: 10px;
   margin-top: 10px;
-  flex-grow: 1;
   overflow-y: auto;
   padding-right: 10px;
 }
 
 .chat-grid {
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(7, 1fr);
 }
 
 .ficha-grid {
@@ -303,6 +367,11 @@ export default {
   background-color: #e0e0e0;
   border-radius: 5px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .info-icon {
@@ -325,6 +394,22 @@ export default {
 .chat-grid .user-customization__grid-item {
   height: 45px;
   border: 1px solid white;
+  cursor: pointer;
+}
+
+.chat-grid .user-customization__grid-item.selected {
+  border: 2px solid #d96b35;
+  box-shadow: 0 0 10px #d96b35;
+}
+
+.chat-grid .user-customization__grid-item.disabled {
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+}
+
+.chat-grid .user-customization__grid-item.empty-item {
+  background-color: #f0f0f0;
+  cursor: default;
 }
 
 .ficha-grid .user-customization__grid-item {

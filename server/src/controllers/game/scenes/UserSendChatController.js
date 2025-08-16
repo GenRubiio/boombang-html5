@@ -20,6 +20,9 @@ class UserSendChatController {
                 user.currentArea.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
                     'user_socket': user.socket.id,
                     'message': data.message,
+                    'username': user.username,
+                    'avatarId': user.avatarId,
+                    'chat_color': user.chat_color,
                     'animation': !user.isActionBlocked(animation) ? animation : null,
                 });
             }
