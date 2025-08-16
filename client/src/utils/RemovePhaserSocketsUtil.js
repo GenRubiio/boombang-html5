@@ -18,6 +18,7 @@ class RemovePhaserSocketsUtil {
             ResponseSocketsEnum.JOIN_PRIVATE_SCENE,
             ResponseSocketsEnum.JOIN_PRIVATE_SCENE_ERROR,
             ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS,
+            ResponseSocketsEnum.MINIGAME_SUBSCRIBE,
             ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
         ];
 

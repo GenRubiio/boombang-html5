@@ -1,6 +1,10 @@
 <template>
   <div class="base-chat" @pointerdown.stop @mousedown.stop @touchstart.stop>
-    <EmojisPickerComponent v-if="showEmojiPicker" @emoji-clicked="addEmoji" @close="showEmojiPicker = false" />
+    <EmojisPickerComponent
+      v-if="showEmojiPicker"
+      @emoji-clicked="addEmoji"
+      @close="showEmojiPicker = false"
+    />
     <div class="base-chat__container">
       <div class="base-chat__container__chat">
         <img :src="asset_base_image" alt="Base" />
@@ -16,9 +20,7 @@
           @click="toggleEmojiPicker"
         >
           <div class="base">
-            <div class="dorado">
-              <i class="lar la-smile"></i>
-            </div>
+            <div class="dorado">🤩</div>
           </div>
         </div>
       </div>
@@ -173,13 +175,13 @@ export default {
 .dorado {
   width: 32px;
   height: 32px;
-  background: radial-gradient(circle at top left, #ffdf70, #d4a017);
+  /* background: radial-gradient(circle at top left, #ffdf70, #d4a017); */
   border-radius: 50%;
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  /* box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.2); */
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -2px;
+  margin-top: -7px;
+  font-size: 32px;
 }
 </style>

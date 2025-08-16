@@ -10,16 +10,26 @@ const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const MinigameInstancesCollection = require('../collections/MinigameInstancesCollection');
 
 class MatchMakerInstance {
-    constructor(requiredPlayers) {
+    constructor(requiredPlayers, io) {
         this.requiredPlayers = requiredPlayers;
+        this.io = io;
         // Map<type, Array<socket>>
         this.waitingLists = new Map();
         // Map<roomId, GameRoom>
         this.rooms = new Map();
         this.notifiedUsers = new Map();
+
+        setInterval(() => {
+            for (const [sceneType, queue] of this.waitingLists.entries()) {
+                if (queue.length >= this.requiredPlayers) {
+                    const players = queue.splice(0, this.requiredPlayers);
+                    this.createMinigame(sceneType, players, this.io);
+                }
+            }
+        }, 5000); // Check every 5 seconds
     }
 
-    register(socket, sceneType, onMatchFound) {
+    register(socket, sceneType) {
         const notifiedSet = this.notifiedUsers.get(sceneType);
         if (notifiedSet?.has(socket.id)) {
             return;
@@ -45,12 +55,14 @@ class MatchMakerInstance {
         socket.emit(ResponseSocketsEnum.MINIGAME_SUBSCRIBE, {
             success: true,
         });
+    }
 
-        // Si ya hay suficientes, extraer y llamar callback
-        if (queue.length >= this.requiredPlayers) {
-            const players = queue.splice(0, this.requiredPlayers);
-            onMatchFound(players, sceneType);
+    isUserInQueue(socketId, sceneType) {
+        const queue = this.waitingLists.get(sceneType);
+        if (!queue) {
+            return false;
         }
+        return queue.some(s => s.id === socketId);
     }
 
     createMinigame(sceneType, players, io) {
