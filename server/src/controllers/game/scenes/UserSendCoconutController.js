@@ -19,7 +19,7 @@ class UserSendCoconutController {
                 return;
             }
 
-            if (targetUser.movementBlocked) {
+            if (targetUser.movementBlocked || targetUser.currentArea.movementBlocked) {
                 return; // No se puede hacer coconut si el usuario está bloqueado
             }
 
