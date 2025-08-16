@@ -67,6 +67,11 @@ class User extends Authenticatable
         return $this->fichas()->get()->pluck('ficha_color')->toArray();
     }
 
+    public function enabledChats(): array
+    {
+        return $this->chats()->get()->pluck('chat_color')->toArray();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -86,6 +91,11 @@ class User extends Authenticatable
     public function fichas()
     {
         return $this->hasMany(UserFicha::class, 'user_id', 'id');
+    }
+
+    public function chats()
+    {
+        return $this->hasMany(UserChat::class, 'user_id', 'id');
     }
 
     /*

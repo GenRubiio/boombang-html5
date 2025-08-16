@@ -132,6 +132,15 @@ class UserService {
             console.error('Error updating user ficha color:', error);
         }
     }
+
+    static async changeChat(user, newChat) {
+        user.chat_color = newChat;
+        try {
+            await UserApiService.changeChat(user, newChat);
+        } catch (error) {
+            console.error('Error updating user chat:', error);
+        }
+    }
 }
 
 module.exports = UserService;

@@ -42,6 +42,7 @@ class UserResource extends JsonResource
              * User customizations
              */
             'fichas' => $this->enabledFichas(),
+            'chats' => $this->enabledChats(),
         ];
 
         return $return;

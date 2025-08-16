@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\Enums\ColorFichaEnum;
+use App\Enums\ColorChatEnum;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,20 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_fichas', function (Blueprint $table) {
+        Schema::create('user_chats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('ficha_color')->default(ColorFichaEnum::USER->key())->comment('User ficha, default is "user" ficha is avatar frame');
+            $table->string('chat_color')->default(ColorChatEnum::USER->key())->comment('User chat, default is "user" chat color');
             $table->timestamps();
         });
 
         $users = User::all();
         foreach ($users as $user) {
-            $user->fichas()->create([
-                'ficha_color' => ColorFichaEnum::USER->key(),
-            ]);
-            $user->fichas()->create([
-                'ficha_color' => ColorFichaEnum::BETA->key(),
+            $user->chats()->create([
+                'chat_color' => ColorChatEnum::USER->key(),
             ]);
         }
     }
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_fichas');
+        Schema::dropIfExists('user_chats');
     }
 };

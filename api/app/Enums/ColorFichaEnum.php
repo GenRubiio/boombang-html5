@@ -5,7 +5,7 @@ namespace App\Enums;
 use InvalidArgumentException;
 use App\Enums\Traits\EnumTrait;
 
-enum FichaEnum
+enum ColorFichaEnum
 {
     use EnumTrait;
 
