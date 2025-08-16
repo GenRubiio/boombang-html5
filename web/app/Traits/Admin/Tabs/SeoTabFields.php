@@ -154,7 +154,7 @@ trait SeoTabFields
             'upload' => true,
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 0, // ommit or set to 0 to allow any aspect ratio
-            'value' => $model && $model->seo && !empty($model->seo->og_image) ? url($model->seo->og_image) : null,
+            'value' => $model && $model->seo && !empty($model->seo->og_image) ? $model->seo->og_image : null, 
             'tab' => trans('admin.tab_seo'),
         ]);
         /*Twitter Cards*/
@@ -187,7 +187,7 @@ trait SeoTabFields
             'upload' => true,
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 0, // ommit or set to 0 to allow any aspect ratio
-            'value' => $model && $model->seo && !empty($model->seo->tw_image) ? url($model->seo->tw_image) : null,
+            'value' => $model && $model->seo && !empty($model->seo->tw_image) ? $model->seo->tw_image : null,
             'tab' => trans('admin.tab_seo'),
         ]);
     }
