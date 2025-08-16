@@ -129,7 +129,7 @@ export default {
     },
     updateData(usersData) {
       this.selectedUser = usersData.selectedUser;
-      this.authUser = usersData.authUser;
+      this.authUser = usersData.authUser || this.selectedUser;
       this.descriptionText = (this.selectedUser?.description ?? "").toString();
     },
     changeFicha() {
