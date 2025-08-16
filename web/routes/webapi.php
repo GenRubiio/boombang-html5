@@ -27,4 +27,8 @@ Route::group([
         Route::post('contact', [FormContactWebapiController::class, 'handle'])
             ->name('form-contact');
     });
+
+    Route::get('chat-color', function () {
+        return view('chat-color');
+    });
 });
