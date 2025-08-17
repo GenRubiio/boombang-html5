@@ -13,7 +13,9 @@ use App\Http\Controllers\Api\User\UserChangeFichaApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 use App\Http\Controllers\Api\User\UpdateDescriptionApiController;
 use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
+use App\Http\Controllers\Api\User\UserChangeShadowColorController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
+use App\Http\Controllers\Api\User\UserChangeColornameApiController;
 
 Route::prefix('test')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -51,6 +53,8 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('update-description', [UpdateDescriptionApiController::class, 'index']);
             Route::post('change-ficha', [UserChangeFichaApiController::class, 'index']);
             Route::post('change-chat', [UserChangeChatApiController::class, 'index']);
+            Route::post('change-colorname', [UserChangeColornameApiController::class, 'index']);
+            Route::post('change-shadowcolor', [UserChangeShadowColorController::class, 'index']);
         });
 
         Route::prefix('island')->group(function () {

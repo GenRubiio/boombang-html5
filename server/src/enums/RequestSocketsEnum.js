@@ -33,7 +33,9 @@ const RequestSocketsEnum = new Enum({
     GET_MINIGAME_SUBSCRIBE_STATUS: 'request:get_minigame_subscribe_status',
     USER_UPDATE_DESCRIPTION: 'request:user_update_description',
     USER_CHANGE_FICHA: 'request:user_change_ficha',
-    USER_CHANGE_CHAT: 'request:user_change_chat'
+    USER_CHANGE_CHAT: 'request:user_change_chat',
+    USER_CHANGE_NAME_COLOR: 'request:user_change_name_color',
+    USER_CHANGE_SHADOW_COLOR: 'request:user_change_shadow_color'
 });
 
 module.exports = RequestSocketsEnum;

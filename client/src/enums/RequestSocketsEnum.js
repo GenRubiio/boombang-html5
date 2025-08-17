@@ -30,7 +30,9 @@ const RequestSocketsEnum = new Enum({
     USER_UPDATE_DESCRIPTION: 'request:user_update_description',
     USER_CATCH_ITEM: 'request:user_catch_item',
     USER_CHANGE_FICHA: 'request:user_change_ficha',
-    USER_CHANGE_CHAT: 'request:user_change_chat'
+    USER_CHANGE_CHAT: 'request:user_change_chat',
+    USER_CHANGE_NAME_COLOR: 'request:user_change_name_color',
+    USER_CHANGE_SHADOW_COLOR: 'request:user_change_shadow_color'
 });
 
 export default RequestSocketsEnum;

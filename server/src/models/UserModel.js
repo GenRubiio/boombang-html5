@@ -23,6 +23,8 @@ class UserModel {
         
         this.fichas = row.fichas || []; // Fichas del usuario, por defecto es un array vacío
         this.chats = row.chats || []; // Colores del chat del usuario, por defecto es un array vacío
+        this.shadows = row.shadows || []; // Colores de sombra del usuario, por defecto es un array vacío
+        this.colornames = row.colornames || []; // Colores de nombre del usuario, por defecto es un array vacío
 
         this.socket = null; // Socket del usuario
         this.authJwt = null; // JWT de autenticación del usuario

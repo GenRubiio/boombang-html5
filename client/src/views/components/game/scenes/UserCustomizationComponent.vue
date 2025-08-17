@@ -83,6 +83,50 @@
               ?
             </div>
           </div>
+          <div
+            v-if="activeTab === 'nombre'"
+            class="user-customization__grid-item"
+            v-for="(name, index) in paddedNameColors"
+            :key="index"
+            @click="onSelectName(name.key)"
+            :class="{
+              selected: isNameSelected(name.key),
+              disabled: !isNameEnabled(name.key),
+              'empty-item': !name.key,
+            }"
+          >
+            <NameComponent v-if="name.key" :colorname="name" />
+            <div
+              v-if="name.description"
+              class="info-icon"
+              @mouseover="showTooltip($event, name)"
+              @mouseleave="hideTooltip"
+            >
+              ?
+            </div>
+          </div>
+          <div
+            v-if="activeTab === 'sombra'"
+            class="user-customization__grid-item"
+            v-for="(shadow, index) in paddedShadowColors"
+            :key="index"
+            @click="onSelectShadow(shadow.key)"
+            :class="{
+              selected: isShadowSelected(shadow.key),
+              disabled: !isShadowEnabled(shadow.key),
+              'empty-item': !shadow.key,
+            }"
+          >
+            <ShadowComponent v-if="shadow.key" :shadow="shadow" />
+            <div
+              v-if="shadow.description"
+              class="info-icon"
+              @mouseover="showTooltip($event, shadow)"
+              @mouseleave="hideTooltip"
+            >
+              ?
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -100,7 +144,12 @@ import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import fichaColors from "@/assets/game/data/ficha_colors.json";
 import chatColors from "@/assets/game/data/chat_colors.json";
-import ChatComponent from "./user-card/ChatComponent.vue";
+import nameColors from "@/assets/game/data/name_colors.json";
+import shadowColors from "@/assets/game/data/shadow_colors.json";
+
+import ChatComponent from "./user-customization/ChatComponent.vue";
+import NameComponent from "./user-customization/NameComponent.vue";
+import ShadowComponent from "./user-customization/ShadowComponent.vue";
 
 export default {
   props: {
@@ -113,14 +162,16 @@ export default {
   emits: ["close-customization", "on-select-ficha"],
   components: {
     ChatComponent,
+    NameComponent,
+    ShadowComponent,
   },
   data() {
     return {
       activeTab: "ficha",
       fichaColors: fichaColors,
       chatColors: chatColors,
-      nameColors: [],
-      shadowColors: [],
+      nameColors: nameColors,
+      shadowColors: shadowColors,
       tooltip: {
         visible: false,
         content: "",
@@ -174,6 +225,50 @@ export default {
       }
       return padded;
     },
+    paddedNameColors() {
+      const totalItems = 20;
+
+      const enabledNames = [];
+      const disabledNames = [];
+
+      for (const name of this.nameColors) {
+        if (this.isNameEnabled(name.key)) {
+          enabledNames.push(name);
+        } else {
+          disabledNames.push(name);
+        }
+      }
+
+      const sortedNames = [...enabledNames, ...disabledNames];
+
+      const padded = [...sortedNames];
+      while (padded.length < totalItems) {
+        padded.push({});
+      }
+      return padded;
+    },
+    paddedShadowColors() {
+      const totalItems = 20;
+
+      const enabledShadows = [];
+      const disabledShadows = [];
+
+      for (const shadow of this.shadowColors) {
+        if (this.isShadowEnabled(shadow.key)) {
+          enabledShadows.push(shadow);
+        } else {
+          disabledShadows.push(shadow);
+        }
+      }
+
+      const sortedShadows = [...enabledShadows, ...disabledShadows];
+
+      const padded = [...sortedShadows];
+      while (padded.length < totalItems) {
+        padded.push({});
+      }
+      return padded;
+    },
     gridClass() {
       if (this.activeTab === "ficha") {
         return "ficha-grid";
@@ -181,7 +276,9 @@ export default {
       if (this.activeTab === "chat") {
         return "chat-grid";
       }
-      return "nombre-sombra-grid";
+      if (this.activeTab === "nombre" || this.activeTab === "sombra") {
+        return "nombre-sombra-grid";
+      }
     },
   },
   methods: {
@@ -228,6 +325,38 @@ export default {
     },
     isChatSelected(chat) {
       return this.authUser.chat_color === chat;
+    },
+    onSelectName(name) {
+      if (!name || this.isNameSelected(name) || !this.isNameEnabled(name)) {
+        return;
+      }
+      socket.emit(RequestSocketsEnum.USER_CHANGE_NAME_COLOR, {
+        colorname: name,
+      });
+    },
+    isNameEnabled(name) {
+      return this.authUser.colornames.includes(name);
+    },
+    isNameSelected(name) {
+      return this.authUser.name_color === name;
+    },
+    onSelectShadow(shadow) {
+      if (
+        !shadow ||
+        this.isShadowSelected(shadow) ||
+        !this.isShadowEnabled(shadow)
+      ) {
+        return;
+      }
+      socket.emit(RequestSocketsEnum.USER_CHANGE_SHADOW_COLOR, {
+        shadow: shadow,
+      });
+    },
+    isShadowEnabled(shadow) {
+      return this.authUser.shadows.includes(shadow);
+    },
+    isShadowSelected(shadow) {
+      return this.authUser.shadow_color === shadow;
     },
   },
 };
@@ -436,6 +565,30 @@ export default {
 }
 
 .ficha-grid .user-customization__grid-item.empty-item {
+  background-color: #f0f0f0;
+  cursor: default;
+}
+
+.nombre-sombra-grid .user-customization__grid-item {
+  height: 85px;
+  padding: 0 10px;
+  border: 1px solid white;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.nombre-sombra-grid .user-customization__grid-item.selected {
+  border: 2px solid #d96b35;
+  box-shadow: 0 0 10px #d96b35;
+}
+
+.nombre-sombra-grid .user-customization__grid-item.disabled {
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+}
+
+.nombre-sombra-grid .user-customization__grid-item.empty-item {
   background-color: #f0f0f0;
   cursor: default;
 }
