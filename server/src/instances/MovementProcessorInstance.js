@@ -52,9 +52,9 @@ class MovementProcessorInstance {
             }
 
             const navigationMap = this.scene.getNavigationMapWithPlayers(user.id);
+            const path = await this.#findPath(startPos, target, navigationMap);
 
-            if (navigationMap[target.y][target.x] === 1) {
-                //this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
+            if (!path || path.length <= 1) {
                 this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
                     id: user.socket.id,
                     path: [],
@@ -64,20 +64,27 @@ class MovementProcessorInstance {
                 return;
             }
 
-            const path = await this.#findPath(startPos, target, navigationMap);
+            const nextStep = path[1];
 
-            if (!path || path.length <= 1) {
-                 this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
-                    id: user.socket.id,
-                    path: [],
-                    isLastStep: true
-                });
-                user.finalTarget = null;
-                //this.scene.emit(ResponseSocketsEnum.USER_MOVE_DENIED, { id: user.socket.id });
-                return;
+            // Si estamos a un paso del destino final
+            if (path.length === 2) {
+                const isOccupied = this.scene.users.some(
+                    otherUser => otherUser.id !== user.id &&
+                        otherUser.currentAreaPosition.x === nextStep.x &&
+                        otherUser.currentAreaPosition.y === nextStep.y
+                );
+
+                if (isOccupied) {
+                    user.finalTarget = null; // Detenerse aquí
+                    this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
+                        id: user.socket.id,
+                        path: [],
+                        isLastStep: true
+                    });
+                    return;
+                }
             }
 
-            const nextStep = path[1];
             const key = `${nextStep.x},${nextStep.y}`;
 
             if (this.scene.reservedTiles[key] && this.scene.reservedTiles[key] !== user.id) {

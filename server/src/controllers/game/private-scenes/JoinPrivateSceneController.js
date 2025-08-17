@@ -48,6 +48,7 @@ class JoinPrivateSceneController {
                 data: {
                     players: sceneUsers,
                     scenery: await new PrivateSceneResource(scene).toObject(),
+                    authUser: await new UserResource(user).toObject(),
                     userInventory: user.inventory,
                     myScene: scene.user_id == user.id,
                 }

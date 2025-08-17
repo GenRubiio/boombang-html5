@@ -150,6 +150,7 @@ class MatchMakerInstance {
                     sceneType: miniGameInstance.minigameScene.type,
                     data: {
                         players: sceneUsers,
+                        authUser: await new UserResource(user).toObject(),
                         scenery: {
                             type: miniGameInstance.minigameScene.type,
                             map_rows: miniGameInstance.map_width,
