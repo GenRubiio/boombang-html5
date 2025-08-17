@@ -72,6 +72,16 @@ class User extends Authenticatable
         return $this->chats()->get()->pluck('chat_color')->toArray();
     }
 
+    public function enabledColorNames(): array
+    {
+        return $this->colornames()->get()->pluck('name_color')->toArray();
+    }
+
+    public function enabledShadows(): array
+    {
+        return $this->shadows()->get()->pluck('shadow_color')->toArray();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -96,6 +106,16 @@ class User extends Authenticatable
     public function chats()
     {
         return $this->hasMany(UserChat::class, 'user_id', 'id');
+    }
+
+    public function colornames()
+    {
+        return $this->hasMany(UserColorname::class, 'user_id', 'id');
+    }
+
+    public function shadows()
+    {
+        return $this->hasMany(UserShadow::class, 'user_id', 'id');
     }
 
     /*

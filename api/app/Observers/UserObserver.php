@@ -4,7 +4,9 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Enums\ColorChatEnum;
+use App\Enums\ColorNameEnum;
 use App\Enums\ColorFichaEnum;
+use App\Enums\ColorShadowEnum;
 
 class UserObserver
 {
@@ -22,6 +24,12 @@ class UserObserver
 
         $user->chats()->create([
             'chat_color' => ColorChatEnum::USER->key(),
+        ]);
+        $user->colornames()->create([
+            'name_color' => ColorNameEnum::USER->key(),
+        ]);
+        $user->shadows()->create([
+            'shadow_color' => ColorShadowEnum::USER->key(),
         ]);
     }
 

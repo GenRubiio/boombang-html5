@@ -24,7 +24,11 @@ class LoginApiController extends Controller implements LoginApiControllerInterfa
                 $user = Auth::user();
                 $user->tokens()->delete();
                 $tokenResult = $user->createToken('Personal Access Token');
-                $user->load('fichas', 'chats'); // Load fichas and chats relationships
+                $user->load(
+                    'fichas',
+                    'chats',
+                    'colornames'
+                ); // Load fichas, chats, and colornames relationships
                 return $this->successResponse([
                     'user' => (new UserResource($user))->toDTO(),
                     'token' => $tokenResult->accessToken,
