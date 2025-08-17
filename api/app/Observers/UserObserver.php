@@ -21,15 +21,29 @@ class UserObserver
         $user->fichas()->create([
             'ficha_color' => ColorFichaEnum::BETA->key(),
         ]);
+        $user->fichas()->create([
+            'ficha_color' => ColorFichaEnum::VIP->key(),
+        ]);
 
         $user->chats()->create([
             'chat_color' => ColorChatEnum::USER->key(),
         ]);
+        $user->chats()->create([
+            'chat_color' => ColorChatEnum::VIP->key(),
+        ]);
+
         $user->colornames()->create([
             'name_color' => ColorNameEnum::USER->key(),
         ]);
+        $user->colornames()->create([
+            'name_color' => ColorNameEnum::VIP->key(),
+        ]);
+
         $user->shadows()->create([
             'shadow_color' => ColorShadowEnum::USER->key(),
+        ]);
+        $user->shadows()->create([
+            'shadow_color' => ColorShadowEnum::VIP->key(),
         ]);
     }
 
