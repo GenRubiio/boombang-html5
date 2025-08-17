@@ -214,8 +214,9 @@ class MinigameRingSceneInstance {
 
         this.coconutCounts.delete(user.id);
 
-        // Si después de que un usuario se va, queda solo uno, ese es el ganador.
-        if (this.users.length <= 1 && this.gameStarted) {
+        // Si solo queda un jugador no descalificado, es el ganador
+        const activePlayers = this.users.filter(u => !this.disqualifiedUsers.includes(u));
+        if (activePlayers.length <= 1 && this.gameStarted) {
             this.endGame();
         }
     }
