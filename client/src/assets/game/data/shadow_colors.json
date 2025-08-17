@@ -1,0 +1,17 @@
+[
+    {
+        "key": "user",
+        "image": "assets/game/customization/shadows/user.png",
+        "description": "<b>Standard</b>"
+    },
+    {
+        "key": "vip",
+        "image": "assets/game/customization/shadows/vip.png",
+        "description": "<b>VIP</b><br>Sombra obtenida por<br>suscripción"
+    },
+    {
+        "key": "admin",
+        "image": "assets/game/customization/shadows/admin.png",
+        "description": "<b>?</b>"
+    }
+]

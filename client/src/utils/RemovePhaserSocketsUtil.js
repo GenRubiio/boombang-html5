@@ -37,7 +37,9 @@ class RemovePhaserSocketsUtil {
             RequestSocketsEnum.USER_UPDATE_DESCRIPTION,
             RequestSocketsEnum.USER_CATCH_ITEM,
             RequestSocketsEnum.USER_CHANGE_FICHA,
-            RequestSocketsEnum.USER_CHANGE_CHAT
+            RequestSocketsEnum.USER_CHANGE_CHAT,
+            RequestSocketsEnum.USER_CHANGE_NAME_COLOR,
+            RequestSocketsEnum.USER_CHANGE_SHADOW_COLOR
         ];
 
         // Remover solo eventos que no están en las listas de exclusión

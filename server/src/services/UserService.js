@@ -141,6 +141,24 @@ class UserService {
             console.error('Error updating user chat:', error);
         }
     }
+
+    static async changeNameColor(user, newNameColor) {
+        user.name_color = newNameColor;
+        try {
+            await UserApiService.changeNameColor(user, newNameColor);
+        } catch (error) {
+            console.error('Error updating user name color:', error);
+        }
+    }
+
+    static async changeShadowColor(user, newShadowColor) {
+        user.shadow_color = newShadowColor;
+        try {
+            await UserApiService.changeShadowColor(user, newShadowColor);
+        } catch (error) {
+            console.error('Error updating user shadow color:', error);
+        }
+    }
 }
 
 module.exports = UserService;

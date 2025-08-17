@@ -13,7 +13,7 @@ app.whenReady().then(() => {
   });
 
   // Cargar la URL donde está el frontend de Vue
-  const vueURL = "http://play.boombang.com"; // Cambia esto si tu Vue está en otro servidor
+  const vueURL = "http://localhost:5173/"; // Cambia esto si tu Vue está en otro servidor
   mainWindow.loadURL(vueURL);
 
   // Registrar atajo de teclado F5 para recargar la página

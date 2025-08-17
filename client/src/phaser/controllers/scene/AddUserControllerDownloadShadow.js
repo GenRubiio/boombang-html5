@@ -57,7 +57,7 @@ function setupNameTagCleanup(scene) {
     });
 }
 
-class AddUserController {
+class AddUserControllerDownloadShadow {
     static async main(gameScene, userData) {
         if (gameScene.users[userData.id]) return;
 
@@ -115,30 +115,44 @@ class AddUserController {
 
         // remove listener if already exists
         spriteShadow.removeAllListeners();
-        spriteShadow.on("pointerdown", () => {
+        spriteShadow.on("pointerdown", async () => {
+            // gestión de selección visual
             if (!gameScene.selectedShadow) {
-                // change image shadow to shadow_selected
-                spriteShadow.setTexture("shadow_selected");
+                spriteShadow.setTexture("shadow_selected").setDisplaySize(54, 20);
                 gameScene.tintMgr.replaceColor(spriteShadow, "shadow", 0x000000, color);
                 gameScene.selectedShadow = spriteShadow;
             } else if (gameScene.selectedShadow !== spriteShadow) {
                 try {
-                    // console.log("Desmarcando sombra: ");
                     gameScene.tintMgr.clearPart(gameScene.selectedShadow, "shadow");
-                    gameScene.selectedShadow.setTexture("shadow");
-                } catch (e) { }
-                spriteShadow.setTexture("shadow_selected");
+                    gameScene.selectedShadow.setTexture("shadow").setDisplaySize(54, 20);
+                } catch (e) { /* noop */ }
+                spriteShadow.setTexture("shadow_selected").setDisplaySize(54, 20);
                 gameScene.tintMgr.replaceColor(spriteShadow, "shadow", 0x000000, color);
                 gameScene.selectedShadow = spriteShadow;
+            } else {
+                // ya era el seleccionado → asegura textura/tinte
+                spriteShadow.setTexture("shadow_selected").setDisplaySize(54, 20);
+                gameScene.tintMgr.replaceColor(spriteShadow, "shadow", 0x000000, color);
             }
+
+            // Emit select user
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
             if (clickedPlayer) {
-                // console.log("Jugador clickeado: ", clickedPlayer);
                 socket.emit(RequestSocketsEnum.USER_SELECT_USER, {
                     socketId: spriteShadow.playerSocketId
                 });
             }
+
+            // === DESCARGA RESPETANDO rexColorReplace (sin cámaras) ===
+            try {
+                const fileName = `shadow_${spriteShadow.playerSocketId}.png`;
+                await AddUserController.exportShadowByCPUReplace(gameScene, spriteShadow, 0x000000, color, 18, `shadow_${spriteShadow.playerSocketId}.png`);
+
+            } catch (err) {
+                // console.warn("No se pudo descargar la sombra:", err);
+            }
         });
+
         return spriteShadow;
     }
 
@@ -146,16 +160,12 @@ class AddUserController {
         const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + userData.id);
         spriteAvatar._avatarId = userData.avatar_id;
         spriteAvatar._z = userData.z;
-        // UserIdleAnimation.main( spriteAvatar, 1, userData.avatar_id );
         UserIdleAnimation.main(
             spriteAvatar,
             userData.z,
             userData.avatar_id
         );
-        // UserWalkAnimation.playWalk( spriteAvatar, 2, userData.avatar_id );
-        // UserUppercutAnimation.main( spriteAvatar, 'left', true, userData.avatar_id );
         spriteAvatar.setDepth(1);
-        // gameScene.tintMgr.replaceColor(spriteAvatar, 'pelo', 0xff9900, 0x36c5bf);
         gameScene.tintMgr.changeUppercutColor(spriteAvatar, userData.uppercut_selected);
         return spriteAvatar;
     }
@@ -215,6 +225,154 @@ class AddUserController {
             name: userNameText
         };
     }
+
+    /**
+     * Exporta un PNG aplicando EXACTAMENTE rexColorReplace, usando RenderTexture.
+     * - Clona el sprite, aplica replaceColor en el clon.
+     * - Dibuja el clon en un RT a coordenadas seguras (w*originX, h*originY).
+     * - snapshot del RT (incluye pipeline).
+     */
+    static exportWithColorReplaceRT(scene, sourceSprite, color, fileName = "sprite.png") {
+        const w = Math.max(1, Math.ceil(sourceSprite.displayWidth));
+        const h = Math.max(1, Math.ceil(sourceSprite.displayHeight));
+
+        // Clon temporal con mismo frame/origen/tamaño
+        const texKey = sourceSprite.texture.key;
+        const frameName = sourceSprite.frame && sourceSprite.frame.name !== "__BASE" ? sourceSprite.frame.name : null;
+        const clone = scene.add.image(0, 0, texKey, frameName);
+        clone.setOrigin(sourceSprite.originX, sourceSprite.originY);
+        clone.setDisplaySize(w, h);
+
+        // Aplica EXACTAMENTE tu reemplazo
+        scene.tintMgr.replaceColor(clone, "shadow", 0x000000, color);
+
+        // RT temporal (no añadido a la escena)
+        const rt = scene.make.renderTexture({ x: 0, y: 0, width: w, height: h, add: false });
+
+        // Dibuja el clon dentro del RT respetando el origen (para no recortar)
+        const drawX = w * clone.originX;
+        const drawY = h * clone.originY;
+        rt.draw(clone, drawX, drawY);
+
+        return new Promise((resolve, reject) => {
+            try {
+                rt.snapshot((img) => {
+                    try {
+                        const a = document.createElement("a");
+                        a.href = img.src;
+                        a.download = fileName;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        // limpiar
+                        clone.destroy();
+                        rt.destroy();
+                        resolve();
+                    } catch (e) {
+                        clone.destroy();
+                        rt.destroy();
+                        reject(e);
+                    }
+                });
+            } catch (e) {
+                clone.destroy();
+                rt.destroy();
+                reject(e);
+            }
+        });
+    }
+
+    /**
+   * Exporta la sombra reemplazando color en CPU (Canvas 2D), sin pipelines WebGL.
+   * - fromColor: color origen (ej: 0x000000)
+   * - toColor: color destino (ej: 0xff6700)
+   * - tolerance: 0..255 (distancia máxima por canal para considerar "match")
+   * - fileName: nombre del archivo a descargar
+   */
+    static exportShadowByCPUReplace(scene, sprite, fromColor, toColor, tolerance = 12, fileName = "shadow.png") {
+        const tex = sprite.texture;
+        const frame = sprite.frame; // Phaser.Textures.Frame
+        if (!tex || !frame) return Promise.reject(new Error("Sprite sin textura o frame"));
+
+        // 1) Obtener el source image del frame (respetando recortes)
+        const source = frame.source.image; // HTMLImageElement | HTMLCanvasElement | WebGLTexture (si estaba en GPU)
+        if (!source || !(source instanceof HTMLImageElement || source instanceof HTMLCanvasElement)) {
+            // Si es WebGLTexture, intentamos acceder al canvas de la textura base
+            const base = tex.getSourceImage();
+            if (!base || !(base instanceof HTMLImageElement || base instanceof HTMLCanvasElement)) {
+                return Promise.reject(new Error("No se puede leer la imagen fuente de la textura"));
+            }
+        }
+
+        const sx = frame.cutX;
+        const sy = frame.cutY;
+        const sw = frame.cutWidth;
+        const sh = frame.cutHeight;
+
+        // 2) Canvas de trabajo con el frame "crudo"
+        const work = document.createElement("canvas");
+        work.width = sw;
+        work.height = sh;
+        const wctx = work.getContext("2d");
+        wctx.drawImage(frame.source.image, sx, sy, sw, sh, 0, 0, sw, sh);
+
+        // 3) Reemplazo de color por tolerancia
+        const fromR = (fromColor >> 16) & 0xff;
+        const fromG = (fromColor >> 8) & 0xff;
+        const fromB = fromColor & 0xff;
+
+        const toR = (toColor >> 16) & 0xff;
+        const toG = (toColor >> 8) & 0xff;
+        const toB = toColor & 0xff;
+
+        const imgData = wctx.getImageData(0, 0, sw, sh);
+        const data = imgData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+            // Saltar píxeles totalmente transparentes
+            if (a === 0) continue;
+
+            // Match por tolerancia por canal (rápido y suficiente para sombras)
+            if (Math.abs(r - fromR) <= tolerance &&
+                Math.abs(g - fromG) <= tolerance &&
+                Math.abs(b - fromB) <= tolerance) {
+                data[i] = toR;
+                data[i + 1] = toG;
+                data[i + 2] = toB;
+                // alpha se conserva
+            }
+        }
+        wctx.putImageData(imgData, 0, 0);
+
+        // 4) Escalar al tamaño visual del sprite para que el PNG tenga el mismo tamaño en pantalla
+        const outW = Math.max(1, Math.round(sprite.displayWidth));
+        const outH = Math.max(1, Math.round(sprite.displayHeight));
+        const out = document.createElement("canvas");
+        out.width = outW;
+        out.height = outH;
+        const octx = out.getContext("2d");
+        // Desactivar suavizado si quieres pixel-perfect
+        // octx.imageSmoothingEnabled = false;
+        octx.clearRect(0, 0, outW, outH);
+        octx.drawImage(work, 0, 0, sw, sh, 0, 0, outW, outH);
+
+        // 5) Descargar
+        return new Promise((resolve) => {
+            out.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+                resolve();
+            }, "image/png");
+        });
+    }
+
 }
 
-export default AddUserController;
+export default AddUserControllerDownloadShadow;

@@ -83,6 +83,30 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async changeNameColor(user, newNameColor) {
+        try {
+            const data = {
+                name_color: newNameColor
+            };
+            return await ApiService.post('api/user/change-colorname', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al cambiar el color del nombre del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async changeShadowColor(user, newShadowColor) {
+        try {
+            const data = {
+                shadow_color: newShadowColor
+            };
+            return await ApiService.post('api/user/change-shadowcolor', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al cambiar el color de la sombra del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;

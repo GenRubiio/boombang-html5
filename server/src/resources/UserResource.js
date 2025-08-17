@@ -14,6 +14,8 @@ class UserResource extends Resource {
             name_color: data.name_color,
             fichas: data.fichas || [],
             chats: data.chats || [],
+            shadows: data.shadows || [],
+            colornames: data.colornames || [],
             is_admin: false,
             is_vip: false,
             avatar_id: data.avatarId,
