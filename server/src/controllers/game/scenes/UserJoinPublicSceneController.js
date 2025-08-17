@@ -39,7 +39,8 @@ class UserJoinPublicSceneController {
                 success: true,
                 data: {
                     players: sceneUsers,
-                    scenery: await new PublicSceneResource(scene).toObject()
+                    scenery: await new PublicSceneResource(scene).toObject(),
+                    authUser: await new UserResource(user).toObject()
                 }
             });
             scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {

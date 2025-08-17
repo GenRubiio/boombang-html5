@@ -88,12 +88,12 @@ class UserService {
         }
     }
 
-    static async increaseCoconutsSend(user) {
-        user.coconutsSend += 1;
+    static async increaseCoconutsSent(user) {
+        user.coconutsSent += 1;
         try {
             await UserApiService.increaseStats(user, 'coconuts_sent');
         } catch (error) {
-            console.error('Error increasing coconut send:', error);
+            console.error('Error increasing coconut sent:', error);
         }
     }
 

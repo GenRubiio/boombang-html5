@@ -5,6 +5,8 @@ const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 const CocoEffectEnum = require('../../../enums/CocoEffectEnum');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const UserService = require('../../../services/UserService');
+const SceneTypesEnum = require('../../../enums/SceneTypesEnum');
 
 class UserSendCoconutController {
     static async main(socket, io) {
@@ -19,7 +21,11 @@ class UserSendCoconutController {
                 return;
             }
 
-            if (targetUser.movementBlocked || targetUser.currentArea.movementBlocked) {
+            if (
+                targetUser.movementBlocked
+                || targetUser.currentArea.movementBlocked
+                || user.movementBlocked
+            ) {
                 return; // No se puede hacer coconut si el usuario está bloqueado
             }
 
@@ -32,6 +38,11 @@ class UserSendCoconutController {
                 });
 
                 UserBlockActionsTask.blockByCoconutReceive(targetUser, user.coconutSelected);
+
+                if (user.currentArea.scene_type != SceneTypesEnum.MINIGAME_RING) {
+                    UserService.increaseCoconutsSent(user);
+                    UserService.increaseCoconutsReceived(targetUser);
+                }
 
                 let effect = CocoEffectEnum.COCO;
 
