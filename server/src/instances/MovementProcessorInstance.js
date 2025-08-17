@@ -3,6 +3,7 @@ const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
 const UserMovimentUtil = require('../utils/UserMovimentUtil');
 const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
+const AnimationEnum = require('../enums/AnimationEnum');
 const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const PublicSceneService = require('../services/PublicSceneService');
@@ -16,7 +17,7 @@ class MovementProcessorInstance {
     startProcessing() {
         this.processing = true;
         const processMovement = async () => {
-            if (!this.processing) return; // Si se detuvo, no continuar
+            if (!this.processing) return;
             const movers = this.scene.users.filter(user => user.finalTarget);
             await Promise.all(movers.map(user => this.processUserMovement(user)));
             setTimeout(processMovement, AnimationBlockTimerEnum.WALK);
@@ -26,11 +27,14 @@ class MovementProcessorInstance {
 
     async processUserMovement(user) {
         try {
+            if (user.isActionBlocked(AnimationEnum.WALK)) return;
+
+            if (user.lastReservedTile) {
+                delete this.scene.reservedTiles[user.lastReservedTile];
+                user.lastReservedTile = null;
+            }
+
             if (!user.finalTarget) {
-                if (user.lastReservedTile) {
-                    delete this.scene.reservedTiles[user.lastReservedTile];
-                    user.lastReservedTile = null;
-                }
                 return;
             }
 
@@ -38,90 +42,62 @@ class MovementProcessorInstance {
             const target = user.finalTarget;
 
             if (startPos.x === target.x && startPos.y === target.y) {
-                if (user.lastReservedTile) {
-                    delete this.scene.reservedTiles[user.lastReservedTile];
-                    user.lastReservedTile = null;
-                }
                 user.finalTarget = null;
                 return;
-            }
-
-            if (user.lastReservedTile) {
-                delete this.scene.reservedTiles[user.lastReservedTile];
-                user.lastReservedTile = null;
             }
 
             const navigationMap = this.scene.getNavigationMapWithPlayers(user.id);
             const path = await this.#findPath(startPos, target, navigationMap);
 
             if (!path || path.length <= 1) {
-                this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
-                    id: user.socket.id,
-                    path: [],
-                    isLastStep: true
-                });
+                this.scene.emit(ResponseSocketsEnum.USER_MOVE, { id: user.socket.id, path: [], isLastStep: true });
                 user.finalTarget = null;
                 return;
             }
 
             const nextStep = path[1];
+            const isFinalStep = path.length === 2;
 
-            // Si estamos a un paso del destino final
-            if (path.length === 2) {
-                const isOccupied = this.scene.users.some(
-                    otherUser => otherUser.id !== user.id &&
-                        otherUser.currentAreaPosition.x === nextStep.x &&
-                        otherUser.currentAreaPosition.y === nextStep.y
-                );
+            const isOccupied = this.scene.users.some(
+                otherUser => otherUser.id !== user.id &&
+                otherUser.currentAreaPosition.x === nextStep.x &&
+                otherUser.currentAreaPosition.y === nextStep.y
+            );
 
-                if (isOccupied) {
-                    user.finalTarget = null; // Detenerse aquí
-                    this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
-                        id: user.socket.id,
-                        path: [],
-                        isLastStep: true
-                    });
-                    return;
+            if (isOccupied) {
+                if (isFinalStep) {
+                    user.finalTarget = null;
                 }
-            }
-
-            const key = `${nextStep.x},${nextStep.y}`;
-
-            if (this.scene.reservedTiles[key] && this.scene.reservedTiles[key] !== user.id) {
-                this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
-                    id: user.socket.id,
-                    path: [],
-                    isLastStep: true
-                });
+                this.scene.emit(ResponseSocketsEnum.USER_MOVE, { id: user.socket.id, path: [], isLastStep: true });
                 return;
             }
 
-            this.scene.reservedTiles[key] = user.id;
-            user.lastReservedTile = key;
+            const key = `${nextStep.x},${nextStep.y}`;
+            if (!isFinalStep) {
+                if (this.scene.reservedTiles[key] && this.scene.reservedTiles[key] !== user.id) {
+                    this.scene.emit(ResponseSocketsEnum.USER_MOVE, { id: user.socket.id, path: [], isLastStep: true });
+                    return;
+                }
+                this.scene.reservedTiles[key] = user.id;
+                user.lastReservedTile = key;
+            }
 
             const deltaX = nextStep.x - startPos.x;
             const deltaY = nextStep.y - startPos.y;
             const direction = UserMovimentUtil.getDirection(deltaX, deltaY);
 
             user.currentAreaPosition = { x: nextStep.x, y: nextStep.y, z: direction };
-
             this.#validateUserOnSpawnedObject(user, nextStep);
 
             const movementData = {
                 id: user.socket.id,
-                path: [{
-                    x: nextStep.x,
-                    y: nextStep.y,
-                    z: direction
-                }],
-                isLastStep: path.length === 2
+                path: [{ x: nextStep.x, y: nextStep.y, z: direction }],
+                isLastStep: isFinalStep
             };
             UserBlockActionsTask.blockByWalk(user);
             this.scene.emit(ResponseSocketsEnum.USER_MOVE, movementData);
 
-            if (path.length === 2) {
-                delete this.scene.reservedTiles[key];
-                user.lastReservedTile = null;
+            if (isFinalStep) {
                 user.finalTarget = null;
             }
         } catch (err) {
