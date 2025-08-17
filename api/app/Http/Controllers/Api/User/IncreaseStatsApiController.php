@@ -28,6 +28,12 @@ class IncreaseStatsApiController extends Controller
                 case 'uppercuts_received':
                     $user->update(['uppercuts_received' => DB::raw('uppercuts_received + 1')]);
                     break;
+                case 'coconuts_sent':
+                    $user->update(['coconuts_sent' => DB::raw('coconuts_sent + 1')]);
+                    break;
+                case 'coconuts_received':
+                    $user->update(['coconuts_received' => DB::raw('coconuts_received + 1')]);
+                    break;
                 case 'rings_won':
                     $user->update(['rings_won' => DB::raw('rings_won + 1')]);
                     Ranking::create([

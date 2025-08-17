@@ -10,9 +10,10 @@ class CreateSceneController {
     static async main(gameScene, data) {
         const usersData = data.players;
         const sceneryData = data.scenery;
+        const authUserData = data.authUser;
 
         this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
-        this.createUsers(gameScene, usersData);
+        this.createUsers(gameScene, usersData, authUserData);
     }
 
     static createTile(gameScene, map, rows, cols) {
@@ -147,14 +148,14 @@ class CreateSceneController {
     }
 
 
-    static createUsers(gameScene, usersData) {
+    static createUsers(gameScene, usersData, authUserData) {
         // Crear los jugadores iniciales
         (async () => {
             for (const userData of usersData) {
                 await AddUserController.main(gameScene, userData);
             }
             //console.log("Players loaded", gameScene.users);
-            SetUserCardController.main(gameScene, socket.user, socket.user);
+            SetUserCardController.main(gameScene, authUserData, authUserData);
         })();
     }
 }
