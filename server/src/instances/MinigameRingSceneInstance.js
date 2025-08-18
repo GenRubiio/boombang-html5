@@ -122,7 +122,7 @@ class MinigameRingSceneInstance {
             this.usersUpdateCounter(countdown);
             if (countdown <= 0) {
                 clearInterval(finalCountdownTimer);
- 
+
                 // Expulsar a todos los usuarios de forma segura
                 // Hacemos una copia del array porque RemoveUserFromSceneTask lo modifica
                 const usersToRemove = [...this.users];
@@ -187,6 +187,15 @@ class MinigameRingSceneInstance {
         user.finalTarget = null;
         this.users.push(user);
         this.coconutCounts.set(user.id, 0);
+        this.#refreshUsersChatList();
+    }
+
+    #refreshUsersChatList() {
+        const players = this.users.map(user => ({
+            uuid: user.socket.id,
+            username: user.username
+        }));
+        this.emit(ResponseSocketsEnum.REFRESH_USERS_SCENE_CHAT_LIST, { players });
     }
 
     getUsers() {
@@ -219,6 +228,8 @@ class MinigameRingSceneInstance {
         if (activePlayers.length <= 1 && this.gameStarted) {
             this.endGame();
         }
+
+        this.#refreshUsersChatList();
     }
 
     canSendCoconut(user) {

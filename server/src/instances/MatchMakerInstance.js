@@ -78,8 +78,8 @@ class MatchMakerInstance {
                 throw new Error(`Tipo de sala desconocido: ${sceneType}`);
         }
         this.sendNotificationToUsers(players, sceneType);
-        setTimeout(() => {
-            this.callUsers(miniGameInstance, players, io);
+        setTimeout(async () => {
+            await this.callUsers(miniGameInstance, players, io);
             miniGameInstance.startMinigame();
             MinigameInstancesCollection.add(id, miniGameInstance);
         }, 1000);//time to wait before starting the minigame

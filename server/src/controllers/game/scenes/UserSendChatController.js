@@ -17,14 +17,41 @@ class UserSendChatController {
 
             if (!user.isActionBlocked(AnimationEnum.CHAT)) {
                 const animation = this.getTalkAnimation(user.currentAreaPosition.z);
-                user.currentArea.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
-                    'user_socket': user.socket.id,
-                    'message': data.message,
-                    'username': user.username,
-                    'avatarId': user.avatarId,
-                    'chat_color': user.chat_color,
-                    'animation': !user.isActionBlocked(animation) ? animation : null,
-                });
+                if (data.recipient) {
+                    const recipient = ConnectedUsersCollection.getBySocketId(data.recipient);
+                    if (
+                        !recipient
+                        || !recipient.currentArea
+                        || recipient.currentArea.id !== user.currentArea.id
+                    ) {
+                        return;
+                    }
+                    socket.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
+                        'user_socket': user.socket.id,
+                        'message': data.message,
+                        'username': user.username,
+                        'avatarId': user.avatarId,
+                        'chat_color': 'private',
+                        'animation': !user.isActionBlocked(animation) ? animation : null,
+                    });
+                    recipient.socket.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
+                        'user_socket': user.socket.id,
+                        'message': data.message,
+                        'username': user.username,
+                        'avatarId': user.avatarId,
+                        'chat_color': 'private',
+                        'animation': !user.isActionBlocked(animation) ? animation : null,
+                    });
+                } else {
+                    user.currentArea.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
+                        'user_socket': user.socket.id,
+                        'message': data.message,
+                        'username': user.username,
+                        'avatarId': user.avatarId,
+                        'chat_color': user.chat_color,
+                        'animation': !user.isActionBlocked(animation) ? animation : null,
+                    });
+                }
             }
 
         } catch (err) {

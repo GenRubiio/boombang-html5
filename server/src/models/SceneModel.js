@@ -48,6 +48,7 @@ class SceneModel {
         // Propiedad para recordar la casilla reservada previamente
         user.lastReservedTile = null;
         this.users.push(user);
+        this.#refreshUsersChatList();
     }
 
     // Método para devolver la lista de usuarios
@@ -74,6 +75,15 @@ class SceneModel {
             // Si no quedan usuarios, eliminamos la escena
             PrivateScenesCollection.remove(this.id);
         }
+        this.#refreshUsersChatList();
+    }
+
+    #refreshUsersChatList() {
+        const players = this.users.map(user => ({
+            uuid: user.socket.id,
+            username: user.username
+        }));
+        this.emit(ResponseSocketsEnum.REFRESH_USERS_SCENE_CHAT_LIST, { players });
     }
 
     // Método para emitir un evento a todos los usuarios del área
