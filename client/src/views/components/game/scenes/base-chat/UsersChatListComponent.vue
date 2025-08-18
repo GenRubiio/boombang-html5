@@ -64,9 +64,9 @@ export default {
   },
   computed: {
     selectedLabel() {
-      if (this.selectedUser == null) return 'Público';
+      if (this.selectedUser == null) return "Público";
       const u = this.users.find((x) => x.uuid === this.selectedUser);
-      return u ? u.username : 'Público';
+      return u ? u.username : "Público";
     },
   },
   watch: {
@@ -138,7 +138,7 @@ export default {
 .user-select-dropup {
   position: absolute;
   z-index: 1;
-  left: 160px;
+  left: 161px;
   bottom: 20px;
   width: 120px;
   font-family: Arial, sans-serif;
@@ -149,11 +149,27 @@ export default {
   width: 100%;
   text-align: left;
   padding: 2px 20px 2px 5px;
-  border: 1px solid #ccc;
-  background: #fff;
-  border-radius: 6px;
+  background: linear-gradient(to bottom, #e4d094, #ceb06c);
+  border-radius: 5px;
   cursor: pointer;
   position: relative;
+  outline: none !important;
+  border: none !important;
+  color: #a98d4e;
+  font-weight: bold;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.select-trigger:focus {
+  outline: none;
+  border: none;
+}
+/*hover border none*/
+.select-trigger:hover {
+  border: none;
 }
 
 /* Triangulito/chevron (texto, no pseudo-elemento para simplicidad) */
@@ -181,7 +197,10 @@ export default {
   list-style: none;
   margin: 0;
   padding: 4px 0;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  background: #e4d094;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 /* Opciones */
@@ -191,6 +210,15 @@ export default {
   white-space: nowrap;
   text-align: start;
   font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 3px;
+  color: #a98d4e;
+  background-color: #ceb06c;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.2s ease;
 }
 
 .select-option[aria-selected="true"] {
@@ -204,7 +232,7 @@ export default {
 
 /* Estado abierto (por si quieres estilos adicionales) */
 .user-select-dropup.open .select-trigger {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 </style>

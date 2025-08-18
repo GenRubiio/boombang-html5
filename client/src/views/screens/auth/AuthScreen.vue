@@ -58,7 +58,8 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import socket from "../../../sockets/socket";
+import { useSocketStore } from "../../../stores/socketStore";
+import { mapState } from "pinia";
 import asset_background_image from "../../../assets/game/auth/background.webp";
 import asset_clouds_background_image from "../../../assets/game/auth/clouds-background.webp";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
@@ -74,7 +75,6 @@ export default {
       asset_background_image,
       asset_clouds_background_image,
       avatar_id: AvatarEnum.GATA,
-      isSocketConnected: true,
     };
   },
   components: {
@@ -86,6 +86,12 @@ export default {
     ),
     AvatarSelectComponent,
   },
+  computed: {
+    ...mapState(useSocketStore, ["isConnected"]),
+    isSocketConnected() {
+      return this.isConnected;
+    },
+  },
   methods: {
     changeForm(form) {
       this.showForm = form;
@@ -93,14 +99,6 @@ export default {
     onChangeAvatar(avatar_id) {
       this.avatar_id = avatar_id;
     },
-  },
-  mounted() {
-    socket.on("connect", () => {
-      this.isSocketConnected = true;
-    });
-    socket.on("disconnect", () => {
-      this.isSocketConnected = false;
-    });
   },
 };
 </script>
