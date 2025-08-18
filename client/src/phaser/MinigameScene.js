@@ -33,6 +33,9 @@ export default class MinigameScene extends Phaser.Scene {
     }
 
     create() {
+        if (!this.plugins.get('rexColorReplacePipeline')) {
+            this.plugins.start('rexColorReplacePipeline');
+        }
         this.tintMgr = new TintManager(this);
         this.input.enabled = true;
         this.input.topOnly = false; // Permitir que objetos en capas más bajas reciban eventos
@@ -59,6 +62,10 @@ export default class MinigameScene extends Phaser.Scene {
         if (this.chatManager) {
             this.chatManager.destroy();
             this.chatManager = null;
+        }
+        const p = this.plugins.get('rexColorReplacePipeline');
+        if (p) {
+            this.plugins.stop('rexColorReplacePipeline');
         }
     }
 

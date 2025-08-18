@@ -98,7 +98,7 @@ export default {
             {
               key: "rexColorReplacePipeline",
               plugin: ColorReplacePipelinePlugin,
-              start: true,
+              start: false,
             },
           ],
         },

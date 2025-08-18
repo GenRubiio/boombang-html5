@@ -43,6 +43,10 @@ export default class PublicScene extends Phaser.Scene {
     }
 
     create() {
+        if (!this.plugins.get('rexColorReplacePipeline')) {
+            this.plugins.start('rexColorReplacePipeline');
+        }
+
         this.tintMgr = new TintManager(this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
@@ -63,7 +67,7 @@ export default class PublicScene extends Phaser.Scene {
         this.events.on('destroy', this.destroy, this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
-        
+
         this.createButtons();
     }
 
@@ -189,6 +193,11 @@ export default class PublicScene extends Phaser.Scene {
         if (this.chatManager) {
             this.chatManager.destroy();
             this.chatManager = null;
+        }
+
+        const p = this.plugins.get('rexColorReplacePipeline');
+        if (p) {
+            this.plugins.stop('rexColorReplacePipeline');
         }
     }
 
