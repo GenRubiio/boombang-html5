@@ -10,7 +10,7 @@
         <div class="register-form__label">
           {{ $t("register.character_name") }}
         </div>
-        <div class="register-form__input">
+        <div class="register-form__input" @dragover.prevent @drop.prevent>
           <input
             v-model="username"
             ref="username"
@@ -26,7 +26,7 @@
           {{ passwordError }}
         </div>
         <div class="register-form__label">{{ $t("register.password") }}</div>
-        <div class="register-form__input">
+        <div class="register-form__input" @dragover.prevent @drop.prevent>
           <input
             v-model="password"
             type="password"
@@ -41,7 +41,7 @@
           {{ emailError }}
         </div>
         <div class="register-form__label">{{ $t("register.email") }}</div>
-        <div class="register-form__input">
+        <div class="register-form__input" @dragover.prevent @drop.prevent>
           <input
             v-model="email"
             type="email"

@@ -1,4 +1,5 @@
 import { io } from 'socket.io-client';
+import { useSocketStore } from '../stores/socketStore';
 
 // Configura la conexión con el servidor de Socket.io
 const socket = io(import.meta.env.VITE_SERVER_URL, {
@@ -8,14 +9,23 @@ const socket = io(import.meta.env.VITE_SERVER_URL, {
     reconnectionDelay: 1000, // Espera 1 segundo entre intentos
 });
 
+socket.on('connect', () => {
+    const socketStore = useSocketStore();
+    socketStore.setConnected(true);
+});
+
 // Maneja errores globales
 socket.on('connect_error', (err) => {
+    const socketStore = useSocketStore();
+    socketStore.setConnected(false);
     if (import.meta.env.VITE_APP_ENV === "local") {
         console.error('Socket connection error:', err.message);
     }
 });
 
 socket.on('disconnect', (reason) => {
+    const socketStore = useSocketStore();
+    socketStore.setConnected(false);
     if (import.meta.env.VITE_APP_ENV === "local") {
         console.log('Desconectado del servidor:', reason);
     }

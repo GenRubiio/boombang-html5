@@ -6,7 +6,7 @@
       @close="showEmojiPicker = false"
     />
     <div class="base-chat__container">
-      <div class="base-chat__container__chat">
+      <div class="base-chat__container__chat" @dragover.prevent @drop.prevent>
         <img :src="asset_base_image" alt="Base" />
         <UsersChatListComponent @user-selected="handleUserSelected" />
         <input

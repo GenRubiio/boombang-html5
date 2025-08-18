@@ -10,7 +10,7 @@
           {{ usernameError }}
         </div>
         <div class="login-form__label">{{ $t("login.character_name") }}</div>
-        <div class="login-form__input">
+        <div class="login-form__input" @dragover.prevent @drop.prevent>
           <input
             v-model="username"
             ref="username"
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="login-form__label">{{ $t("login.password") }}</div>
-      <div class="login-form__input">
+      <div class="login-form__input" @dragover.prevent @drop.prevent>
         <input
           v-model="password"
           type="password"
