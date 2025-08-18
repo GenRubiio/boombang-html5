@@ -84,9 +84,10 @@ export default {
       store.toggle(NpcEnum.WISE_RING);
       socket.emit(RequestSocketsEnum.USER_LEAVE_SCENE); // Enviar evento para salir de la sala
     },
-    sendMessage(message) {
+    sendMessage(data) {
       socket.emit(RequestSocketsEnum.SEND_CHAT, {
-        message: message,
+        message: data.message,
+        recipient: data.recipient,
       });
     },
     exitToLobbyResponse() {

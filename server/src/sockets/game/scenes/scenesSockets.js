@@ -14,6 +14,7 @@ const UserChangeFichaController = require('../../../controllers/game/scenes/User
 const UserChangeChatController = require('../../../controllers/game/scenes/UserChangeChatController');
 const UserChangeColornameController = require('../../../controllers/game/scenes/UserChangeColornameController');
 const UserChangeShadowColorController = require('../../../controllers/game/scenes/UserChangeShadowColorController');
+const RefreshUsersSceneChatListController = require('../../../controllers/game/scenes/RefreshUsersSceneChatListController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
@@ -61,5 +62,8 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.USER_CHANGE_SHADOW_COLOR, (data) => {
         UserChangeShadowColorController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.REFRESH_USERS_SCENE_CHAT_LIST, (data) => {
+        RefreshUsersSceneChatListController.main(socket, io, data);
     });
 };

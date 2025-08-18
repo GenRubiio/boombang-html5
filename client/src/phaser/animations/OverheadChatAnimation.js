@@ -1,3 +1,4 @@
+import ChatColorsEnum from '@/enums/ChatColorsEnum';
 export default class OverheadChatAnimation {
     /**
      * @param {Phaser.Scene} scene - Escena de Phaser.
@@ -40,13 +41,17 @@ export default class OverheadChatAnimation {
         let textColor = "#000000"; // Color por defecto
         let backgroundColor = "#ffffff"; // Color de fondo por defecto
         switch (chatColor) {
-            case 'admin':
+            case ChatColorsEnum.ADMIN:
                 textColor = "#000000"; // Color de texto para admin
                 backgroundColor = "#ffd700"; // Fondo claro para admin
                 break;
-            case 'vip':
+            case ChatColorsEnum.VIP:
                 textColor = "#ffffff"; // Color de texto para VIP
                 backgroundColor = "#420143"; // Fondo claro para VIP
+                break;
+            case ChatColorsEnum.PRIVATE:
+                textColor = "#ffffff"; // Color de texto para mensajes privados
+                backgroundColor = "#323435"; // Fondo oscuro para mensajes privados
                 break;
         }
         this.playerSprite = playerSprite;

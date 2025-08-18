@@ -8,6 +8,7 @@
     <div class="base-chat__container">
       <div class="base-chat__container__chat">
         <img :src="asset_base_image" alt="Base" />
+        <UsersChatListComponent @user-selected="handleUserSelected" />
         <input
           ref="messageInput"
           v-model="message"
@@ -32,13 +33,15 @@
 </template>
 
 <script>
-import asset_base_image from "../../../../assets/game/basechat/base.webp";
-import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
-import EmojisPickerComponent from "./EmojisPickerComponent.vue";
+import asset_base_image from "@/assets/game/basechat/base.webp";
+import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
+import EmojisPickerComponent from "./base-chat/EmojisPickerComponent.vue";
+import UsersChatListComponent from "./base-chat/UsersChatListComponent.vue";
 
 export default {
   components: {
     EmojisPickerComponent,
+    UsersChatListComponent,
   },
   data() {
     return {
@@ -46,6 +49,7 @@ export default {
       asset_brujula_image,
       message: "",
       showEmojiPicker: false,
+      selectedUser: null,
     };
   },
   mounted() {
@@ -55,6 +59,9 @@ export default {
     document.removeEventListener("keydown", this.handleKeydown);
   },
   methods: {
+    handleUserSelected(user) {
+      this.selectedUser = user;
+    },
     toggleEmojiPicker() {
       this.showEmojiPicker = !this.showEmojiPicker;
     },
@@ -64,7 +71,10 @@ export default {
     },
     sendMessage() {
       if (this.message.trim() !== "") {
-        this.$emit("sendMessage", this.message);
+        this.$emit("sendMessage", {
+          message: this.message,
+          recipient: this.selectedUser,
+        });
         this.message = "";
         this.showEmojiPicker = false;
       }
@@ -128,9 +138,9 @@ export default {
 
 .base-chat__container__chat input {
   position: absolute;
-  left: 170px;
+  left: 282px;
   top: 45px;
-  width: 495px;
+  width: 386px;
   background: transparent;
   border: none;
   font-size: 18px;
