@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import asset_background_image from "../../../../assets/game/lobby/background.webp";
-import asset_flor_image from "../../../../assets/game/lobby/flor.webp";
-import asset_foreground_image from "../../../../assets/game/lobby/foreground.webp";
-import asset_marikita_image from "../../../../assets/game/lobby/marikita.webp";
+import asset_background_image from "@/assets/game/lobby/background.webp";
+import asset_flor_image from "@/assets/game/lobby/flor.png";
+import asset_foreground_image from "@/assets/game/lobby/foreground.webp";
+import asset_marikita_image from "@/assets/game/lobby/marikita.png";
 
 export default {
   data() {
@@ -60,15 +60,15 @@ export default {
 
 .lobby__flor img {
   position: absolute;
-  top: 0px;
-  left: 35px;
+  bottom: -53px;
+  left: 39px;
   z-index: 0;
 }
 
 .lobby__marikita img {
   position: absolute;
-  top: 395px;
-  left: -222px;
+  bottom: -196px;
+  left: -119px;
   z-index: 0;
 }
 
