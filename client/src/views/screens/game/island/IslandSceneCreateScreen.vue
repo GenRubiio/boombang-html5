@@ -77,15 +77,15 @@
 </template>
 
 <script>
-import socket from "../../../../sockets/socket";
-import islandsData from "../../../../assets/game/islands/data.json";
-import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
-import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
+import socket from "@/sockets/socket";
+import islandsData from "@/assets/game/islands/data.json";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
 
 // Importar todas las imágenes de escena
 const sceneImageModules = import.meta.glob(
-  "/src/assets/game/islands/**/scene*.png",
+  "/src/assets/game/islands/**/scene*.webp",
   { eager: true, import: "default" }
 );
 

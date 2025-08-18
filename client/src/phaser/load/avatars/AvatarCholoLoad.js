@@ -1,8 +1,8 @@
-import asset_spritesheet0_image from '../../../assets/game/avatars/cholo/animations/spritesheet-0.webp';
-import asset_spritesheet1_image from '../../../assets/game/avatars/cholo/animations/spritesheet-1.webp';
-import asset_atlas_json from '../../../assets/game/avatars/cholo/animations/atlas.json';
-import asset_cara_peque_image from '../../../assets/game/avatars/cholo/cara_peque.svg';
-import asset_cara_media_image from '../../../assets/game/avatars/cholo/cara_media.svg';
+import asset_spritesheet0_image from '@/assets/game/avatars/cholo/animations/spritesheet-0.webp';
+import asset_spritesheet1_image from '@/assets/game/avatars/cholo/animations/spritesheet-1.webp';
+import asset_atlas_json from '@/assets/game/avatars/cholo/animations/atlas.json';
+import asset_cara_peque_image from '@/assets/game/avatars/cholo/cara_peque.svg';
+import asset_cara_media_image from '@/assets/game/avatars/cholo/cara_media.svg';
 
 class AvatarCholoLoad {
     static main(gameScene, avatarId) {

@@ -1,12 +1,12 @@
-import asset_background_image from "../../../assets/game/scenarios/100/background.webp";
-import asset_npc_image from "../../../assets/game/npc/wise_ring.webp";
-import SceneUtils from "../../../utils/SceneUtils";
-import NpcEnum from "../../../enums/NpcEnum";
-import asset_item1_image from "../../../assets/game/scenarios/100/5.png";
-import asset_item2_image from "../../../assets/game/scenarios/100/8.png";
-import asset_item3_image from "../../../assets/game/scenarios/100/11.png";
-import asset_item4_image from "../../../assets/game/scenarios/100/14.png";
-import asset_item5_image from "../../../assets/game/scenarios/100/17.png";
+import asset_background_image from "@/assets/game/scenarios/100/background.webp";
+import asset_npc_image from "@/assets/game/npc/wise_ring.webp";
+import SceneUtils from "@/utils/SceneUtils";
+import NpcEnum from "@/enums/NpcEnum";
+import asset_item1_image from "@/assets/game/scenarios/100/5.webp";
+import asset_item2_image from "@/assets/game/scenarios/100/8.webp";
+import asset_item3_image from "@/assets/game/scenarios/100/11.webp";
+import asset_item4_image from "@/assets/game/scenarios/100/14.webp";
+import asset_item5_image from "@/assets/game/scenarios/100/17.webp";
 
 class RingScenePreload {
     static preload(gameScene) {

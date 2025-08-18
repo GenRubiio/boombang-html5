@@ -74,16 +74,16 @@
 </template>
 
 <script>
-import asset_upper_red_image from "../../../../assets/game/ficha/uppercuts/red.png";
-import asset_upper_pink_image from "../../../../assets/game/ficha/uppercuts/pink.png";
-import asset_upper_orange_image from "../../../../assets/game/ficha/uppercuts/orange.png";
-import asset_upper_green_image from "../../../../assets/game/ficha/uppercuts/green.png";
-import asset_upper_blue_image from "../../../../assets/game/ficha/uppercuts/blue.png";
-import asset_upper_white_image from "../../../../assets/game/ficha/uppercuts/white.png";
-import asset_upper_purple_image from "../../../../assets/game/ficha/uppercuts/purple.png";
-import asset_upper_brown_image from "../../../../assets/game/ficha/uppercuts/brown.png";
-import asset_upper_black_image from "../../../../assets/game/ficha/uppercuts/black.png";
-import asset_upper_gold_image from "../../../../assets/game/ficha/uppercuts/gold.png";
+import asset_upper_red_image from "@/assets/game/ficha/uppercuts/red.webp";
+import asset_upper_pink_image from "@/assets/game/ficha/uppercuts/pink.webp";
+import asset_upper_orange_image from "@/assets/game/ficha/uppercuts/orange.webp";
+import asset_upper_green_image from "@/assets/game/ficha/uppercuts/green.webp";
+import asset_upper_blue_image from "@/assets/game/ficha/uppercuts/blue.webp";
+import asset_upper_white_image from "@/assets/game/ficha/uppercuts/white.webp";
+import asset_upper_purple_image from "@/assets/game/ficha/uppercuts/purple.webp";
+import asset_upper_brown_image from "@/assets/game/ficha/uppercuts/brown.webp";
+import asset_upper_black_image from "@/assets/game/ficha/uppercuts/black.webp";
+import asset_upper_gold_image from "@/assets/game/ficha/uppercuts/gold.webp";
 
 export default {
   data() {

@@ -97,13 +97,13 @@
 </template>
 
 <script>
-import socket from "../../../../sockets/socket";
-import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import FichaComponent from "./user-card/FichaComponent.vue";
 import UserDataTabsComponents from "./user-card/UserDataTabsComponents.vue";
 import UserSelectedDataTabsComponent from "./user-card/UserSelectedDataTabsComponent.vue";
 import UserCustomizationComponent from "./UserCustomizationComponent.vue";
-import asset_change_ficha_icon_image from "../../../../assets/game/ficha/change_ficha.svg";
+import asset_change_ficha_icon_image from "@/assets/game/ficha/change_ficha.svg";
 
 export default {
   data() {

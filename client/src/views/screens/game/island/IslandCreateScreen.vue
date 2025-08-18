@@ -71,15 +71,15 @@
 </template>
 
 <script>
-import socket from "../../../../sockets/socket";
-import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
-import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
-import asset_island1_image from "../../../../assets/game/islands/isla1.png";
-import asset_island2_image from "../../../../assets/game/islands/isla2.png";
-//import asset_island3_image from "../../../../assets/game/islands/isla3.png";
-//import asset_island4_image from "../../../../assets/game/islands/isla4.png";
-//import asset_island5_image from "../../../../assets/game/islands/isla5.png";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
+import asset_island1_image from "@/assets/game/islands/isla1.webp";
+import asset_island2_image from "@/assets/game/islands/isla2.webp";
+//import asset_island3_image from "@/assets/game/islands/isla3.webp";
+//import asset_island4_image from "@/assets/game/islands/isla4.webp";
+//import asset_island5_image from "@/assets/game/islands/isla5.webp";
 
 export default {
   data() {

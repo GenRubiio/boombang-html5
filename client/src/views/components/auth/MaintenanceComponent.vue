@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import asset_maintenance_avatar_image from "../../../assets/game/auth/maintenance-avatar.webp";
+import asset_maintenance_avatar_image from "@/assets/game/auth/maintenance-avatar.webp";
 
 export default {
   data() {

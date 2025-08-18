@@ -91,9 +91,9 @@
 </template>
 
 <script>
-import socket from "../../../../sockets/socket.js";
-import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
-import asset_brujula_image from "../../../../assets/game/basechat/brujula.webp";
+import socket from "@/sockets/socket.js";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
+import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
 
 export default {
   props: {
@@ -116,7 +116,7 @@ export default {
         return "";
       }
       return new URL(
-        `../../../../assets/game/islands/isla${this.sceneData.type}.png`,
+        `../../../../assets/game/islands/isla${this.sceneData.type}.webp`,
         import.meta.url
       ).href;
     },

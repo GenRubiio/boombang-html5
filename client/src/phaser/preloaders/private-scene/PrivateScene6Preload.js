@@ -1,14 +1,14 @@
-import asset_item1_image from "../../../assets/game/private-scenes/6/white/2.png";
-import asset_item2_image from "../../../assets/game/private-scenes/6/white/5.png";
-import asset_item3_image from "../../../assets/game/private-scenes/6/white/8.png";
-import asset_item4_image from "../../../assets/game/private-scenes/6/white/11.png";
-import asset_item5_image from "../../../assets/game/private-scenes/6/white/14.png";
-import asset_item6_image from "../../../assets/game/private-scenes/6/white/17.png";
-import asset_item7_image from "../../../assets/game/private-scenes/6/white/20.png";
-import asset_item8_image from "../../../assets/game/private-scenes/6/white/23.png";
-import asset_item9_image from "../../../assets/game/private-scenes/6/26.png";
-import asset_item10_image from "../../../assets/game/private-scenes/6/white/29.png";
-import SceneUtils from "../../../utils/SceneUtils";
+import asset_item1_image from "@/assets/game/private-scenes/6/white/2.webp";
+import asset_item2_image from "@/assets/game/private-scenes/6/white/5.webp";
+import asset_item3_image from "@/assets/game/private-scenes/6/white/8.webp";
+import asset_item4_image from "@/assets/game/private-scenes/6/white/11.webp";
+import asset_item5_image from "@/assets/game/private-scenes/6/white/14.webp";
+import asset_item6_image from "@/assets/game/private-scenes/6/white/17.webp";
+import asset_item7_image from "@/assets/game/private-scenes/6/white/20.webp";
+import asset_item8_image from "@/assets/game/private-scenes/6/white/23.webp";
+import asset_item9_image from "@/assets/game/private-scenes/6/26.webp";
+import asset_item10_image from "@/assets/game/private-scenes/6/white/29.webp";
+import SceneUtils from "@/utils/SceneUtils";
 
 class PrivateScene6Preload {
     static preload(gameScene) {

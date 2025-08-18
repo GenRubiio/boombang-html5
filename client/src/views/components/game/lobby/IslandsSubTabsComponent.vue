@@ -47,10 +47,10 @@
 </template>
 
 <script>
-import asset_nav_islands_image from "../../../../assets/game/lobby/nav/islands.png";
-import asset_nav_favorites_image from "../../../../assets/game/lobby/nav/favorite_islands.png";
-import asset_nav_my_islands_image from "../../../../assets/game/lobby/nav/my_islands.png";
-import asset_create_island_image from "../../../../assets/game/lobby/nav/create_island.png";
+import asset_nav_islands_image from "@/assets/game/lobby/nav/islands.webp";
+import asset_nav_favorites_image from "@/assets/game/lobby/nav/favorite_islands.webp";
+import asset_nav_my_islands_image from "@/assets/game/lobby/nav/my_islands.webp";
+import asset_create_island_image from "@/assets/game/lobby/nav/create_island.webp";
 
 export default {
   props: {

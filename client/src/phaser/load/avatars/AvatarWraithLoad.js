@@ -1,7 +1,7 @@
-import asset_spritesheet0_image from '../../../assets/game/avatars/wraith/animations/spritesheet-0.webp';
-import asset_atlas_json from '../../../assets/game/avatars/wraith/animations/atlas.json';
-import asset_cara_peque_image from '../../../assets/game/avatars/wraith/cara_peque.svg';
-import asset_cara_media_image from '../../../assets/game/avatars/wraith/cara_media.svg';
+import asset_spritesheet0_image from '@/assets/game/avatars/wraith/animations/spritesheet-0.webp';
+import asset_atlas_json from '@/assets/game/avatars/wraith/animations/atlas.json';
+import asset_cara_peque_image from '@/assets/game/avatars/wraith/cara_peque.svg';
+import asset_cara_media_image from '@/assets/game/avatars/wraith/cara_media.svg';
 
 class AvatarWraithLoad {
     static main(gameScene, avatarId) {
