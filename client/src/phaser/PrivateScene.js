@@ -85,6 +85,9 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     create() {
+        if (!this.plugins.get('rexColorReplacePipeline')) {
+            this.plugins.start('rexColorReplacePipeline');
+        }
         this.cameras.main.setBackgroundColor('#2ecc71');
         this.tintMgr = new TintManager(this);
         this.scene.pauseOnBlur = false;
@@ -865,6 +868,11 @@ export default class PrivateScene extends Phaser.Scene {
         if (this.chatManager) {
             this.chatManager.destroy();
             this.chatManager = null;
+        }
+
+        const p = this.plugins.get('rexColorReplacePipeline');
+        if (p) {
+            this.plugins.stop('rexColorReplacePipeline');
         }
     }
 
