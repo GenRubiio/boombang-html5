@@ -86,11 +86,11 @@
 </template>
 
 <script>
-import socket from "../../../sockets/socket";
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_button_image from "../../../assets/game/auth/login-button-image.webp";
-import asset_warning_image from "../../../assets/game/auth/warning.webp";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import asset_button_image from "@/assets/game/auth/login-button-image.webp";
+import asset_warning_image from "@/assets/game/auth/warning.webp";
 
 export default {
   props: {

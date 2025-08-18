@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import asset_emojis_tab_icon_image from "../../../../../assets/game/ficha/tab-cons/user.svg";
-import asset_statistics_tab_icon_image from "../../../../../assets/game/ficha/tab-cons/statistics.svg";
+import asset_emojis_tab_icon_image from "@/assets/game/ficha/tab-cons/user.svg";
+import asset_statistics_tab_icon_image from "@/assets/game/ficha/tab-cons/statistics.svg";
 import InteractionsTabComponent from "./tabs/InteractionsTabComponent.vue";
 import StatisticsTabComponent from "./tabs/StatisticsTabComponent.vue";
 

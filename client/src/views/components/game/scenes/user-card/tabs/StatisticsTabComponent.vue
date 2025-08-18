@@ -41,30 +41,30 @@
 </template>
 
 <script>
-import asset_stat_ring_image from "../../../../../../assets/game/ficha/statistics/ring.png";
-import asset_stat_coconut_caught_image from "../../../../../../assets/game/ficha/statistics/cocos_locos.png";
+import asset_stat_ring_image from "@/assets/game/ficha/statistics/ring.webp";
+import asset_stat_coconut_caught_image from "@/assets/game/ficha/statistics/cocos_locos.webp";
 
-import asset_red_upper_image from "../../../../../../assets/game/ficha/uppercuts/red.png";
-import asset_pink_upper_image from "../../../../../../assets/game/ficha/uppercuts/pink.png";
-import asset_orange_upper_image from "../../../../../../assets/game/ficha/uppercuts/orange.png";
-import asset_green_upper_image from "../../../../../../assets/game/ficha/uppercuts/green.png";
-import asset_blue_upper_image from "../../../../../../assets/game/ficha/uppercuts/blue.png";
-import asset_white_upper_image from "../../../../../../assets/game/ficha/uppercuts/white.png";
-import asset_purple_upper_image from "../../../../../../assets/game/ficha/uppercuts/purple.png";
-import asset_brown_upper_image from "../../../../../../assets/game/ficha/uppercuts/brown.png";
-import asset_black_upper_image from "../../../../../../assets/game/ficha/uppercuts/black.png";
-import asset_gold_upper_image from "../../../../../../assets/game/ficha/uppercuts/gold.png";
+import asset_red_upper_image from "@/assets/game/ficha/uppercuts/red.webp";
+import asset_pink_upper_image from "@/assets/game/ficha/uppercuts/pink.webp";
+import asset_orange_upper_image from "@/assets/game/ficha/uppercuts/orange.webp";
+import asset_green_upper_image from "@/assets/game/ficha/uppercuts/green.webp";
+import asset_blue_upper_image from "@/assets/game/ficha/uppercuts/blue.webp";
+import asset_white_upper_image from "@/assets/game/ficha/uppercuts/white.webp";
+import asset_purple_upper_image from "@/assets/game/ficha/uppercuts/purple.webp";
+import asset_brown_upper_image from "@/assets/game/ficha/uppercuts/brown.webp";
+import asset_black_upper_image from "@/assets/game/ficha/uppercuts/black.webp";
+import asset_gold_upper_image from "@/assets/game/ficha/uppercuts/gold.webp";
 
-import asset_cocoCoconutImage from "../../../../../../assets/game/ficha/coconuts/coco.png";
-import asset_snowballCoconutImage from "../../../../../../assets/game/ficha/coconuts/snowball.png";
-import asset_shoeCoconutImage from "../../../../../../assets/game/ficha/coconuts/shoe.png";
-import asset_pieCoconutImage from "../../../../../../assets/game/ficha/coconuts/pie.png";
-import asset_macetaCoconutImage from "../../../../../../assets/game/ficha/coconuts/maceta.png";
-import asset_avispasCoconutImage from "../../../../../../assets/game/ficha/coconuts/avispas.png";
-import asset_garbageCoconutImage from "../../../../../../assets/game/ficha/coconuts/garbage.png";
-import asset_sandiaCoconutImage from "../../../../../../assets/game/ficha/coconuts/sandia.png";
-import asset_yunqueCoconutImage from "../../../../../../assets/game/ficha/coconuts/yunque.png";
-import asset_pianoCoconutImage from "../../../../../../assets/game/ficha/coconuts/piano.png";
+import asset_cocoCoconutImage from "@/assets/game/ficha/coconuts/coco.webp";
+import asset_snowballCoconutImage from "@/assets/game/ficha/coconuts/snowball.webp";
+import asset_shoeCoconutImage from "@/assets/game/ficha/coconuts/shoe.webp";
+import asset_pieCoconutImage from "@/assets/game/ficha/coconuts/pie.webp";
+import asset_macetaCoconutImage from "@/assets/game/ficha/coconuts/maceta.webp";
+import asset_avispasCoconutImage from "@/assets/game/ficha/coconuts/avispas.webp";
+import asset_garbageCoconutImage from "@/assets/game/ficha/coconuts/garbage.webp";
+import asset_sandiaCoconutImage from "@/assets/game/ficha/coconuts/sandia.webp";
+import asset_yunqueCoconutImage from "@/assets/game/ficha/coconuts/yunque.webp";
+import asset_pianoCoconutImage from "@/assets/game/ficha/coconuts/piano.webp";
 
 export default {
   props: {

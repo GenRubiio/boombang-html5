@@ -56,13 +56,13 @@
 </template>
 
 <script>
-import socket from "../../../sockets/socket";
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_button_image from "../../../assets/game/auth/login-button-image.webp";
-import asset_google_image from "../../../assets/game/auth/google.webp";
-import asset_warning_image from "../../../assets/game/auth/warning.webp";
-import { useLanguageStore } from "../../../stores/languageStore";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import asset_button_image from "@/assets/game/auth/login-button-image.webp";
+import asset_google_image from "@/assets/game/auth/google.webp";
+import asset_warning_image from "@/assets/game/auth/warning.webp";
+import { useLanguageStore } from "@/stores/languageStore";
 
 export default {
   data() {

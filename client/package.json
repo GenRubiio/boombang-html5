@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "sharp": "^0.34.3",
     "vite": "^6.0.1",
     "vue-svg-loader": "^0.16.0"
   }

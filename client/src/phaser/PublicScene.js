@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import socket from "../sockets/socket"; // Conexión Socket.io
-import asset_shadow_image from "../assets/game/avatar/shadow.png"; // Imagen de la sombra
-import asset_shadow_selected_image from "../assets/game/avatar/shadow_selected.webp"; // Imagen de la sombra seleccionada
-import asset_tile_image from "../assets/game/scene/tile.png"; // Imagen del suelo
+import asset_shadow_image from "@/assets/game/avatar/shadow.webp"; // Imagen de la sombra
+import asset_shadow_selected_image from "@/assets/game/avatar/shadow_selected.webp"; // Imagen de la sombra seleccionada
+import asset_tile_image from "@/assets/game/scene/tile.webp"; // Imagen del suelo
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
@@ -11,8 +11,8 @@ import CreateSceneController from "./controllers/scene/CreateSceneController"; /
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 import TintManager from "./managers/TintManager"; // Gestor de tintes
 import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
-import asset_ui_shop_image from "../assets/game/scene/ui/shop.png";
-import asset_ui_avatars_image from "../assets/game/scene/ui/avatars.png";
+import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
+import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
 import i18n from "../plugins/i18n";
 
 

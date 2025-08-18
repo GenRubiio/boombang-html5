@@ -36,16 +36,16 @@
 </template>
 
 <script>
-import socket from "../../../../../../sockets/socket";
-import RequestSocketsEnum from "../../../../../../enums/RequestSocketsEnum";
-import asset_laughter_1_image from "../../../../../../assets/game/ficha/emojis/laughter_1.png";
-import asset_laughter_2_image from "../../../../../../assets/game/ficha/emojis/laughter_2.png";
-import asset_cry_image from "../../../../../../assets/game/ficha/emojis/cry.png";
-import asset_love_image from "../../../../../../assets/game/ficha/emojis/love.png";
-import asset_spit_image from "../../../../../../assets/game/ficha/emojis/spit.png";
-import asset_fart_image from "../../../../../../assets/game/ficha/emojis/fart.png";
-import asset_provoke_image from "../../../../../../assets/game/ficha/emojis/provoke.png";
-import asset_fly_image from "../../../../../../assets/game/ficha/emojis/fly.png";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import asset_laughter_1_image from "@/assets/game/ficha/emojis/laughter_1.webp";
+import asset_laughter_2_image from "@/assets/game/ficha/emojis/laughter_2.webp";
+import asset_cry_image from "@/assets/game/ficha/emojis/cry.webp";
+import asset_love_image from "@/assets/game/ficha/emojis/love.webp";
+import asset_spit_image from "@/assets/game/ficha/emojis/spit.webp";
+import asset_fart_image from "@/assets/game/ficha/emojis/fart.webp";
+import asset_provoke_image from "@/assets/game/ficha/emojis/provoke.webp";
+import asset_fly_image from "@/assets/game/ficha/emojis/fly.webp";
 
 export default {
   props: {

@@ -72,16 +72,16 @@
 </template>
 
 <script>
-import asset_coco_coco_image from "../../../../assets/game/ficha/coconuts/coco.png";
-import asset_coco_snowball_image from "../../../../assets/game/ficha/coconuts/snowball.png";
-import asset_coco_shoe_image from "../../../../assets/game/ficha/coconuts/shoe.png";
-import asset_coco_pie_image from "../../../../assets/game/ficha/coconuts/pie.png";
-import asset_coco_maceta_image from "../../../../assets/game/ficha/coconuts/maceta.png";
-import asset_coco_avispas_image from "../../../../assets/game/ficha/coconuts/avispas.png";
-import asset_coco_garbage_image from "../../../../assets/game/ficha/coconuts/garbage.png";
-import asset_coco_sandia_image from "../../../../assets/game/ficha/coconuts/sandia.png";
-import asset_coco_yunque_image from "../../../../assets/game/ficha/coconuts/yunque.png";
-import asset_coco_piano_image from "../../../../assets/game/ficha/coconuts/piano.png";
+import asset_coco_coco_image from "@/assets/game/ficha/coconuts/coco.webp";
+import asset_coco_snowball_image from "@/assets/game/ficha/coconuts/snowball.webp";
+import asset_coco_shoe_image from "@/assets/game/ficha/coconuts/shoe.webp";
+import asset_coco_pie_image from "@/assets/game/ficha/coconuts/pie.webp";
+import asset_coco_maceta_image from "@/assets/game/ficha/coconuts/maceta.webp";
+import asset_coco_avispas_image from "@/assets/game/ficha/coconuts/avispas.webp";
+import asset_coco_garbage_image from "@/assets/game/ficha/coconuts/garbage.webp";
+import asset_coco_sandia_image from "@/assets/game/ficha/coconuts/sandia.webp";
+import asset_coco_yunque_image from "@/assets/game/ficha/coconuts/yunque.webp";
+import asset_coco_piano_image from "@/assets/game/ficha/coconuts/piano.webp";
 
 export default {
   data() {

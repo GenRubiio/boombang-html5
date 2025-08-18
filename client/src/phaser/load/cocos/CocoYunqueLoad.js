@@ -1,5 +1,5 @@
-import asset_spritesheet0_image from '../../../assets/game/scene/cocos/coco_yunque/spritesheet-0.webp';
-import asset_atlas_json from '../../../assets/game/scene/cocos/coco_yunque/atlas.json';
+import asset_spritesheet0_image from '@/assets/game/scene/cocos/coco_yunque/spritesheet-0.webp';
+import asset_atlas_json from '@/assets/game/scene/cocos/coco_yunque/atlas.json';
 
 class CocoYunqueLoad {
     static main(gameScene) {

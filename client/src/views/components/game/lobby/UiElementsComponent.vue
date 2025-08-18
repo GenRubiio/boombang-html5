@@ -20,9 +20,9 @@
 
 <script>
 import asset_background_image from "@/assets/game/lobby/background.webp";
-import asset_flor_image from "@/assets/game/lobby/flor.png";
+import asset_flor_image from "@/assets/game/lobby/flor.webp";
 import asset_foreground_image from "@/assets/game/lobby/foreground.webp";
-import asset_marikita_image from "@/assets/game/lobby/marikita.png";
+import asset_marikita_image from "@/assets/game/lobby/marikita.webp";
 
 export default {
   data() {

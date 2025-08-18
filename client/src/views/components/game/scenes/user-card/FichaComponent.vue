@@ -3,23 +3,23 @@
 </template>
 
 <script>
-import asset_boomer_ficha_image from "../../../../../assets/game/avatars/boomer/ficha.svg";
-import asset_brujita_ficha_image from "../../../../../assets/game/avatars/brujita/ficha.svg";
-import asset_cholo_ficha_image from "../../../../../assets/game/avatars/cholo/ficha.svg";
-import asset_empollon_ficha_image from "../../../../../assets/game/avatars/empollon/ficha.svg";
-import asset_gata_ficha_image from "../../../../../assets/game/avatars/gata/ficha.svg";
-import asset_ghost_ficha_image from "../../../../../assets/game/avatars/ghost/ficha.svg";
-import asset_india_ficha_image from "../../../../../assets/game/avatars/india/ficha.svg";
-import asset_lilian_ficha_image from "../../../../../assets/game/avatars/lilian/ficha.svg";
-import asset_marsu_ficha_image from "../../../../../assets/game/avatars/marsu/ficha.svg";
-import asset_modern_ficha_image from "../../../../../assets/game/avatars/modern/ficha.svg";
-import asset_ninja_ficha_image from "../../../../../assets/game/avatars/ninja/ficha.svg";
-import asset_rasta_ficha_image from "../../../../../assets/game/avatars/rasta/ficha.svg";
-import asset_skeleton_ficha_image from "../../../../../assets/game/avatars/skeleton/ficha.svg";
-import asset_werewolf_ficha_image from "../../../../../assets/game/avatars/werewolf/ficha.svg";
-import asset_wraith_ficha_image from "../../../../../assets/game/avatars/wraith/ficha.svg";
-import asset_yayo_ficha_image from "../../../../../assets/game/avatars/yayo/ficha.svg";
-import asset_zombie_ficha_image from "../../../../../assets/game/avatars/zombie/ficha.svg";
+import asset_boomer_ficha_image from "@/assets/game/avatars/boomer/ficha.svg";
+import asset_brujita_ficha_image from "@/assets/game/avatars/brujita/ficha.svg";
+import asset_cholo_ficha_image from "@/assets/game/avatars/cholo/ficha.svg";
+import asset_empollon_ficha_image from "@/assets/game/avatars/empollon/ficha.svg";
+import asset_gata_ficha_image from "@/assets/game/avatars/gata/ficha.svg";
+import asset_ghost_ficha_image from "@/assets/game/avatars/ghost/ficha.svg";
+import asset_india_ficha_image from "@/assets/game/avatars/india/ficha.svg";
+import asset_lilian_ficha_image from "@/assets/game/avatars/lilian/ficha.svg";
+import asset_marsu_ficha_image from "@/assets/game/avatars/marsu/ficha.svg";
+import asset_modern_ficha_image from "@/assets/game/avatars/modern/ficha.svg";
+import asset_ninja_ficha_image from "@/assets/game/avatars/ninja/ficha.svg";
+import asset_rasta_ficha_image from "@/assets/game/avatars/rasta/ficha.svg";
+import asset_skeleton_ficha_image from "@/assets/game/avatars/skeleton/ficha.svg";
+import asset_werewolf_ficha_image from "@/assets/game/avatars/werewolf/ficha.svg";
+import asset_wraith_ficha_image from "@/assets/game/avatars/wraith/ficha.svg";
+import asset_yayo_ficha_image from "@/assets/game/avatars/yayo/ficha.svg";
+import asset_zombie_ficha_image from "@/assets/game/avatars/zombie/ficha.svg";
 
 export default {
   props: {

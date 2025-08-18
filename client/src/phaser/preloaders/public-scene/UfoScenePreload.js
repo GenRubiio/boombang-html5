@@ -1,6 +1,6 @@
-import asset_background_image from "../../../assets/game/scenarios/1/background.webp";
-import asset_item1_image from "../../../assets/game/scenarios/1/item_1.webp";
-import asset_item2_image from "../../../assets/game/scenarios/1/item_2.webp";
+import asset_background_image from "@/assets/game/scenarios/1/background.webp";
+import asset_item1_image from "@/assets/game/scenarios/1/item_1.webp";
+import asset_item2_image from "@/assets/game/scenarios/1/item_2.webp";
 
 class UfoScenePreload {
     static preload(gameScene) {

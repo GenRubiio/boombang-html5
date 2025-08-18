@@ -1,5 +1,5 @@
-import asset_spritesheet0_image from '../../../assets/game/scene/cocos/coco_avispas/spritesheet-0.webp';
-import asset_atlas_json from '../../../assets/game/scene/cocos/coco_avispas/atlas.json';
+import asset_spritesheet0_image from '@/assets/game/scene/cocos/coco_avispas/spritesheet-0.webp';
+import asset_atlas_json from '@/assets/game/scene/cocos/coco_avispas/atlas.json';
 
 class CocoAvispasLoad {
     static main(gameScene) {

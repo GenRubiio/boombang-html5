@@ -1,5 +1,5 @@
-import asset_spritesheet0_image from '../../../assets/game/scene/cocos/coco_shoe/spritesheet-0.webp';
-import asset_atlas_json from '../../../assets/game/scene/cocos/coco_shoe/atlas.json';
+import asset_spritesheet0_image from '@/assets/game/scene/cocos/coco_shoe/spritesheet-0.webp';
+import asset_atlas_json from '@/assets/game/scene/cocos/coco_shoe/atlas.json';
 
 class CocoShoeLoad {
     static main(gameScene) {

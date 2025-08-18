@@ -1,9 +1,9 @@
-import asset_spritesheet0_image from '../../../assets/game/avatars/boomer/animations/spritesheet-0.webp';
-import asset_spritesheet1_image from '../../../assets/game/avatars/boomer/animations/spritesheet-1.webp';
-import asset_spritesheet2_image from '../../../assets/game/avatars/boomer/animations/spritesheet-2.webp';
-import asset_atlas_json from '../../../assets/game/avatars/boomer/animations/atlas.json';
-import asset_cara_peque_image from '../../../assets/game/avatars/boomer/cara_peque.svg';
-import asset_cara_media_image from '../../../assets/game/avatars/boomer/cara_media.svg';
+import asset_spritesheet0_image from '@/assets/game/avatars/boomer/animations/spritesheet-0.webp';
+import asset_spritesheet1_image from '@/assets/game/avatars/boomer/animations/spritesheet-1.webp';
+import asset_spritesheet2_image from '@/assets/game/avatars/boomer/animations/spritesheet-2.webp';
+import asset_atlas_json from '@/assets/game/avatars/boomer/animations/atlas.json';
+import asset_cara_peque_image from '@/assets/game/avatars/boomer/cara_peque.svg';
+import asset_cara_media_image from '@/assets/game/avatars/boomer/cara_media.svg';
 
 class AvatarBoomerLoad {
     static main(gameScene, avatarId) {

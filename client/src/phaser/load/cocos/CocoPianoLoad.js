@@ -1,7 +1,7 @@
-import asset_spritesheet0_image from '../../../assets/game/scene/cocos/coco_piano/spritesheet-0.webp';
-import asset_spritesheet1_image from '../../../assets/game/scene/cocos/coco_piano/spritesheet-1.webp';
-import asset_spritesheet2_image from '../../../assets/game/scene/cocos/coco_piano/spritesheet-2.webp';
-import asset_atlas_json from '../../../assets/game/scene/cocos/coco_piano/atlas.json';
+import asset_spritesheet0_image from '@/assets/game/scene/cocos/coco_piano/spritesheet-0.webp';
+import asset_spritesheet1_image from '@/assets/game/scene/cocos/coco_piano/spritesheet-1.webp';
+import asset_spritesheet2_image from '@/assets/game/scene/cocos/coco_piano/spritesheet-2.webp';
+import asset_atlas_json from '@/assets/game/scene/cocos/coco_piano/atlas.json';
 
 class CocoPianoLoad {
     static main(gameScene) {

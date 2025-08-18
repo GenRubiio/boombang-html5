@@ -58,15 +58,15 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import { useSocketStore } from "../../../stores/socketStore";
+import { useSocketStore } from "@/stores/socketStore";
 import { mapState } from "pinia";
-import asset_background_image from "../../../assets/game/auth/background.webp";
-import asset_clouds_background_image from "../../../assets/game/auth/clouds-background.webp";
+import asset_background_image from "@/assets/game/auth/background.webp";
+import asset_clouds_background_image from "@/assets/game/auth/clouds-background.webp";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
 import RegisterFormComponent from "../../components/auth/RegisterFormComponent.vue";
 import TopButtonComponent from "../../components/auth/TopButtonComponent.vue";
 import AvatarSelectComponent from "../../components/auth/AvatarSelectComponent.vue";
-import AvatarEnum from "../../../enums/AvatarEnum";
+import AvatarEnum from "@/enums/AvatarEnum";
 
 export default {
   data() {

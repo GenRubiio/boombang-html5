@@ -1,10 +1,10 @@
-import asset_item1_image from "../../../assets/game/private-scenes/4/white/2.png";
-import asset_item2_image from "../../../assets/game/private-scenes/4/white/5.png";
-import asset_item3_image from "../../../assets/game/private-scenes/4/white/8.png";
-import asset_item4_image from "../../../assets/game/private-scenes/4/white/11.png";
-import asset_item5_image from "../../../assets/game/private-scenes/4/14.png";
-import asset_item6_image from "../../../assets/game/private-scenes/4/17.png";
-import SceneUtils from "../../../utils/SceneUtils";
+import asset_item1_image from "@/assets/game/private-scenes/4/white/2.webp";
+import asset_item2_image from "@/assets/game/private-scenes/4/white/5.webp";
+import asset_item3_image from "@/assets/game/private-scenes/4/white/8.webp";
+import asset_item4_image from "@/assets/game/private-scenes/4/white/11.webp";
+import asset_item5_image from "@/assets/game/private-scenes/4/14.webp";
+import asset_item6_image from "@/assets/game/private-scenes/4/17.webp";
+import SceneUtils from "@/utils/SceneUtils";
 
 class PrivateScene4Preload {
     static preload(gameScene) {

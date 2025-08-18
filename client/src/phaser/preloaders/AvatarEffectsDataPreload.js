@@ -1,4 +1,4 @@
-import asset_avatar_effects_json from "../../assets/game/scene/cocos/config.json";
+import asset_avatar_effects_json from "@/assets/game/scene/cocos/config.json";
 
 class AvatarEffectsDataPreload {
     static main() {

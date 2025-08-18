@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import asset_gata_redbull_image from "../../../assets/game/auth/gata-redbull.webp";
-import asset_rasta_redbull_image from "../../../assets/game/auth/rasta-redbull.webp";
-import AvatarEnum from "../../../enums/AvatarEnum";
+import asset_gata_redbull_image from "@/assets/game/auth/gata-redbull.webp";
+import asset_rasta_redbull_image from "@/assets/game/auth/rasta-redbull.webp";
+import AvatarEnum from "@/enums/AvatarEnum";
 
 import $ from "jquery";
 import "slick-carousel";
