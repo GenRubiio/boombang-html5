@@ -24,6 +24,6 @@
 @section('content')
     <div class="container-fluid" id="page-play">
         <iframe src="{{ config('settings.client_url') }}" frameborder="0" width="100%" height="100%"
-            allow="identity-credentials-get" allowfullscreen></iframe>
+            allow="fullscreen; payment; autoplay; camera; microphone; geolocation; display-capture; identity-credentials-get" allowfullscreen></iframe>
     </div>
 @endsection
