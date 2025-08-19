@@ -52,6 +52,9 @@ export default {
   display: inline-flex;
   align-items: center;
   transition: background-color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .lobby__scenes-list button:hover {

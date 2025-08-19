@@ -247,6 +247,9 @@ export default {
   font-size: 26px;
   font-weight: bold;
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .island__info-description {
@@ -311,7 +314,7 @@ export default {
   border: none;
   border-radius: 5px;
   padding: 5px;
-  width: 100%;
+  width: 185px;
   text-align: left;
   font-size: 15px;
   height: 35px;
