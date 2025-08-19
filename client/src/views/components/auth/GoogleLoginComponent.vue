@@ -1,10 +1,11 @@
 <template>
-  <div 
+  <div
     class="login-form__google-button"
+    :class="{ 'button-disabled': isLoading }"
     @click="handleLogin"
   >
     <img :src="asset_google_image" alt="Google" class="google-icon" />
-    {{ $t("login.google_login") }}
+    {{ isLoading ? 'Loading...' : $t("login.google_login") }}
   </div>
 </template>
 
@@ -20,6 +21,7 @@ export default {
   data() {
     return {
       asset_google_image,
+      isLoading: false,
     };
   },
   mounted() {
@@ -29,14 +31,26 @@ export default {
       if (idToken) {
         this.$emit('token-received', idToken);
       }
+      this.isLoading = false; // Stop loading when token is received or flow fails
     };
 
     initGoogle(GOOGLE_CLIENT_ID, handleToken);
   },
   methods: {
     handleLogin() {
+      if (this.isLoading) {
+        return; // Prevent multiple clicks
+      }
+
       if (window.google?.accounts?.id) {
-        window.google.accounts.id.prompt();
+        this.isLoading = true;
+        window.google.accounts.id.prompt((notification) => {
+          // This callback is triggered when the prompt UI is displayed or fails to display
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            this.isLoading = false; // Stop loading if prompt is not shown
+          }
+          console.log('Google Prompt Notification:', notification.getNotDisplayedReason(), notification.getSkippedReason());
+        });
       } else {
         console.error("Google Sign-In not initialized.");
       }
@@ -68,5 +82,10 @@ export default {
 .google-icon {
   width: 20px;
   height: 20px;
+}
+
+.button-disabled {
+  cursor: not-allowed;
+  background-color: #5a8aa8;
 }
 </style>
