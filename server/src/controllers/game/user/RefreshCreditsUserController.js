@@ -4,7 +4,7 @@ const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCol
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const Log = require('../../../utils/Log');
 
-class RefreshUsersSceneChatListController {
+class RefreshCreditsUserController {
     static async main(socket, io, data) {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
@@ -13,24 +13,17 @@ class RefreshUsersSceneChatListController {
             }
             if (!user.currentArea) return;
 
-            const scene = user.currentArea;
-            let players = [];
-            for (const user of scene.users) {
-                players.push({
-                    uuid: user.socket.id,
-                    username: user.username
-                });
-            }
-            socket.emit(ResponseSocketsEnum.REFRESH_USERS_SCENE_CHAT_LIST, {
-                players: players
+            socket.emit(ResponseSocketsEnum.REFRESH_USER_CREDITS, {
+                gold: user.goldCoins,
+                silver: user.silverCoins
             });
         } catch (err) {
             console.log(err);
-            Log.error('Error in RefreshUsersSceneChatListController: ' + err);
+            Log.error('Error in RefreshCreditsUserController: ' + err);
             DisconnectUserController.main(socket, io);
             socket.emit('error_critical');
         }
     }
 }
 
-module.exports = RefreshUsersSceneChatListController;
+module.exports = RefreshCreditsUserController;

@@ -40,7 +40,8 @@ const ResponseSocketsEnum = new Enum({
     REMOVE_ITEM_FROM_INVENTORY: 'response:remove_item_from_inventory',
     UPDATE_PUBLIC_ISLANDS: 'response:update_public_islands',
     MINIGAME_SUBSCRIBE_STATUS: 'response:minigame_subscribe_status',
-    REFRESH_USERS_SCENE_CHAT_LIST: 'response:refresh_users_scene_chat_list'
+    REFRESH_USERS_SCENE_CHAT_LIST: 'response:refresh_users_scene_chat_list',
+    REFRESH_USER_CREDITS: 'response:refresh_user_credits'
 });
 
 export default ResponseSocketsEnum;

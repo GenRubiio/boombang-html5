@@ -20,6 +20,7 @@ class RemovePhaserSocketsUtil {
             ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS,
             ResponseSocketsEnum.MINIGAME_SUBSCRIBE,
             ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
+            ResponseSocketsEnum.REFRESH_USER_CREDITS
         ];
 
         const excludedRequestEvents = [
@@ -39,7 +40,8 @@ class RemovePhaserSocketsUtil {
             RequestSocketsEnum.USER_CHANGE_FICHA,
             RequestSocketsEnum.USER_CHANGE_CHAT,
             RequestSocketsEnum.USER_CHANGE_NAME_COLOR,
-            RequestSocketsEnum.USER_CHANGE_SHADOW_COLOR
+            RequestSocketsEnum.USER_CHANGE_SHADOW_COLOR,
+            RequestSocketsEnum.REFRESH_USER_CREDITS
         ];
 
         // Remover solo eventos que no están en las listas de exclusión
