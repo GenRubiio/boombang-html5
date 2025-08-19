@@ -32,14 +32,20 @@ export function useGoogleSignIn() {
             }
         };
 
-        google.accounts.id.initialize({
+        const config = {
             client_id: clientId,
             callback: handleCredentialResponse,
             auto_select: false,
             context: "signin",
             use_fedcm_for_prompt: true,
-            allowed_parent_origin: ["https://www.boommania.com"]
-        });
+        };
+
+        const isIframe = window.self !== window.top;
+        if (isIframe) {
+            config.allowed_parent_origin = ["https://www.boommania.com"];
+        }
+
+        google.accounts.id.initialize(config);
     };
 
     return { initGoogle };
