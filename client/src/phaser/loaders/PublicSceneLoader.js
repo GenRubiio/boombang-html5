@@ -21,6 +21,9 @@ class PublicSceneLoader {
     static async #loadItems(gameScene) {
         for (const item of gameScene.sceneData.scenery.items) {
             gameScene.load.image('item_' + item.file_name, `assets/game/items-scene/${item.file_name}.webp`);
+            if (item.catch_file_name) {
+                gameScene.load.image('item_' + item.catch_file_name, `assets/game/items-scene/${item.catch_file_name}.webp`);
+            }
         }
     }
 }

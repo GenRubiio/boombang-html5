@@ -135,7 +135,10 @@ class MovementProcessorInstance {
                     userName: user.username,
                     itemName: obj.item.name,
                     itemId: obj.item.id,
-                    position: obj.position
+                    position: obj.position,
+                    catchFileName: obj.item.catch_file_name,
+                    text: obj.item.text,
+                    points: obj.item.points
                 });
                 PublicSceneService.userCatchItem(user, obj.item.id)
             }

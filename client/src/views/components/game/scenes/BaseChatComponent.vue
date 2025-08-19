@@ -9,6 +9,7 @@
       <div class="base-chat__container__chat" @dragover.prevent @drop.prevent>
         <img :src="asset_base_image" alt="Base" />
         <UsersChatListComponent @user-selected="handleUserSelected" />
+        <CreditsComponent />
         <input
           ref="messageInput"
           v-model="message"
@@ -37,11 +38,13 @@ import asset_base_image from "@/assets/game/basechat/base.webp";
 import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
 import EmojisPickerComponent from "./base-chat/EmojisPickerComponent.vue";
 import UsersChatListComponent from "./base-chat/UsersChatListComponent.vue";
+import CreditsComponent from "./base-chat/CreditsComponent.vue";
 
 export default {
   components: {
     EmojisPickerComponent,
     UsersChatListComponent,
+    CreditsComponent,
   },
   data() {
     return {

@@ -24,6 +24,8 @@ class SceneItem extends Model
     protected $fillable = [
         'name',
         'file_name',
+        'catch_file_name',
+        'text',
         'active',
     ];
     // protected $hidden = [];

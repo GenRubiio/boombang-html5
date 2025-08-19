@@ -5,6 +5,7 @@ const privateScenesSockets = require('./game/scenes/privateScenesSockets');
 const scenesSockets = require('./game/scenes/scenesSockets');
 const islandSockets = require('./game/scenes/islandSockets');
 const matchMakerSockets = require('./game/scenes/matchMakerSockets');
+const userSockets = require('./game/userSockets');
 const MinigamesEnum = require('../enums/MinigamesEnum');
 const MatchMakerInstance = require('../instances/MatchMakerInstance');
 
@@ -23,5 +24,6 @@ module.exports = (io, authorizedBotTokens) => {
         islandSockets(socket, io);
         privateScenesSockets(socket, io);
         matchMakerSockets(socket, io, matchMakers);
+        userSockets(socket, io);
     });
 };
