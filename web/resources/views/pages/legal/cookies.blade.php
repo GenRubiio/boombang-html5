@@ -17,6 +17,10 @@
     'object' => $pageResource->metas ?? $page,
 ])
 
+@push('schemas')
+  {!! $pageResource->schema !!}
+@endpush
+
 @section('content')
     <div class="container" id="page-cookies">
         <div class="page-cookies">

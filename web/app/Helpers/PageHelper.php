@@ -2,12 +2,13 @@
 
 namespace App\Helpers;
 
-use App\Enums\SocialNetworksEnum;
-use App\Http\Resources\Page\PageResource;
-use App\Models\BlogArticle;
-use App\Models\BlogCategory;
 use App\Models\Page;
+use App\Models\BlogArticle;
 use Illuminate\Support\Str;
+use App\Models\BlogCategory;
+use App\Enums\SocialNetworksEnum;
+use App\Services\External\SchemaService;
+use App\Http\Resources\Page\PageResource;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class PageHelper
@@ -213,5 +214,10 @@ class PageHelper
     public static function getSocialNetworkIcon($name): string
     {
         return SocialNetworksEnum::getIcon($name);
+    }
+
+    public static function businessSchema(): string
+    {
+        return app(SchemaService::class)->generateLocalBusinessSchema();
     }
 }

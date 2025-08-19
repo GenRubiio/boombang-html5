@@ -17,6 +17,10 @@
     'object' => $pageResource->metas ?? $page,
 ])
 
+@push('schemas')
+    {!! $pageResource->schema !!}
+@endpush
+
 @section('content')
     <div class="container" id="page-contact">
         <div class="d-flex flex-wrap justify-content-center page-margin">
@@ -35,7 +39,7 @@
                         <div>
                             <label for="name">{{ trans('form.name-label') }}</label>
                             <input type="text" name="name" id="name"
-                                   placeholder="{{ trans('form.name-placeholder') }}" required>
+                                placeholder="{{ trans('form.name-placeholder') }}" required>
                         </div>
                     </div>
                     <div class="contact-form__form-input-block-errors">
@@ -47,7 +51,7 @@
                         <div>
                             <label for="email">{{ trans('form.email-label') }}</label>
                             <input type="text" name="email" id="email"
-                                   placeholder="{{ trans('form.email-placeholder') }}" required>
+                                placeholder="{{ trans('form.email-placeholder') }}" required>
                         </div>
                     </div>
                     <div class="contact-form__form-input-block-errors">
@@ -69,9 +73,10 @@
                     <div class="contact-form__form-input-block">
                         <div>
                             <label class="contact-form__form-input-checkbox">
-                                <input type="checkbox" id="accept_terms" name="accept_terms"  />
+                                <input type="checkbox" id="accept_terms" name="accept_terms" />
                                 {{ trans('form.policy_text') }}
-                                <a href="{{ makeUrl('Política de privacidad') }}" target="_blank">{{ trans('form.policy_link') }}</a>
+                                <a href="{{ makeUrl('Política de privacidad') }}"
+                                    target="_blank">{{ trans('form.policy_link') }}</a>
                             </label>
                         </div>
                     </div>

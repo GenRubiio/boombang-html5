@@ -9,6 +9,8 @@
 
     @include('partials.metas')
 
+    @include('partials.shemas')
+
     @include('partials.scripts')
 
     <script defer type="text/javascript">

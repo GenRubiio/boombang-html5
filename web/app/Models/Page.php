@@ -2,23 +2,24 @@
 
 namespace App\Models;
 
-use App\Traits\Observers\CacheClearObservantTrait;
-use App\Traits\Observers\GalleryObservantTrait;
-use App\Traits\Observers\ModelObservantTrait;
-use App\Traits\Observers\PageObservantTrait;
-use App\Traits\Observers\SitemapObservantTrait;
-use App\Traits\Observers\SlugObservantTrait;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
-use Backpack\PageManager\app\Models\Page as BackpackPage;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use App\Services\External\SchemaService;
+use Illuminate\Database\Eloquent\Builder;
+use Cviebrock\EloquentSluggable\Sluggable;
+use App\Traits\Observers\PageObservantTrait;
+use App\Traits\Observers\SlugObservantTrait;
+use App\Traits\Observers\ModelObservantTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Traits\Observers\GalleryObservantTrait;
+use App\Traits\Observers\SitemapObservantTrait;
+use App\Traits\Observers\CacheClearObservantTrait;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Backpack\PageManager\app\Models\Page as BackpackPage;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 
 class Page extends BackpackPage
 {
@@ -140,6 +141,11 @@ class Page extends BackpackPage
         $parents = array_reverse($parents);
         $parents[] = $this;
         return $parents;
+    }
+
+    public function schema()
+    {
+        return app(SchemaService::class)->generatePageSchema($this);
     }
 
     /*

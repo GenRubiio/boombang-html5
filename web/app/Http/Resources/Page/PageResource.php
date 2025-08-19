@@ -37,6 +37,7 @@ class PageResource extends JsonResource
                 'sitemap_changefreq' => (string)optional($extrasNoTranslatable)->sitemap_changefreq,
             ],
             'content' => (array)$fullContent,
+            'schema' => $this->schema()
         ];
 
         if (debug_backtrace()[1]['function'] == "toDTO") {

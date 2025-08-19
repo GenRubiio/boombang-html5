@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\External\SchemaService;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Traits\Observers\SeoObservantTrait;
 use App\Traits\Observers\SlugObservantTrait;
@@ -107,6 +108,21 @@ class BlogArticle extends Model
     public function seo()
     {
         return $this->morphOne(Seo::class, 'seoable');
+    }
+
+    public function schema()
+    {
+        $homePage = Page::where('name', 'Home')->first();
+        $blogPage = Page::where('name', 'News')->first();
+        $parts = [
+            app(SchemaService::class)->generateBlogArticleSchema($this),
+            app(SchemaService::class)->generateBreadcrumbSchema([
+                ['name' => $homePage->title, 'url' => makeUrl($homePage->slug)],
+                ['name' => $blogPage->title, 'url' => makeUrl($blogPage->slug)],
+                ['name' => $this->title, 'url' => url()->current()],
+            ]),
+        ];
+        return implode("\n", array_filter($parts));
     }
 
     /*

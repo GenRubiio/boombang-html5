@@ -16,6 +16,10 @@
     'object' => $pageResource->metas ?? $page,
 ])
 
+@push('schemas')
+  {!! $pageResource->schema !!}
+@endpush
+
 @section('content')
     <div class="container-fluid" id="page-home">
         <div class="page-home">

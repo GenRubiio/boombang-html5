@@ -607,3 +607,10 @@ if (!function_exists('currentVersionObject')) {
         return VersionHelper::currentVersionObject();
     }
 }
+
+if (!function_exists('businessSchema')) {
+    function businessSchema(): string
+    {
+        return PageHelper::businessSchema();
+    }
+}
