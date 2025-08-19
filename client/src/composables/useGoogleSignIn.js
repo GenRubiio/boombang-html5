@@ -21,6 +21,8 @@ export function useGoogleSignIn() {
                 callback: handleCredentialResponse,
                 auto_select: false,
                 context: "signin",
+                use_fedcm_for_prompt: true,
+                allowed_parent_origin: ["https://www.boommania.com"]
             });
         });
     };
