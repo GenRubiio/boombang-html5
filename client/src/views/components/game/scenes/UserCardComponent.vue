@@ -237,6 +237,9 @@ export default {
   color: white;
   position: relative;
   z-index: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-card__avatar-container {
@@ -401,7 +404,7 @@ export default {
 }
 
 .user-card.beta .user-card__avatar-container__avatar {
-  background-color:  #08d1d1;
+  background-color: #08d1d1;
   box-shadow: inset 0 0 15px white;
 }
 
