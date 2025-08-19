@@ -5,7 +5,7 @@ const GetMinigameSubscribeStatusController = require('../../../controllers/game/
 
 module.exports =  (socket, io, matchMakers) => {
     socket.on(RequestSocketsEnum.MINIGAME_SUBSCRIBE, (data) => {
-        //MinigameSuscribeController.main(socket, io, matchMakers, data);
+        MinigameSuscribeController.main(socket, io, matchMakers, data);
     });
 
     socket.on(RequestSocketsEnum.GET_MINIGAME_SUBSCRIBE_STATUS, (data) => {
