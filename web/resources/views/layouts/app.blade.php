@@ -9,7 +9,7 @@
 
     @include('partials.metas')
 
-    @include('partials.shemas')
+    @include('partials.schemas')
 
     @include('partials.scripts')
 

@@ -36,10 +36,7 @@
         <div class="login-form__google-separator">
           {{ $t("login.separator") }}
         </div>
-        <div class="login-form__google-button">
-          <img :src="asset_google_image" alt="Google" />
-          {{ $t("login.google_login") }}
-        </div>
+        <GoogleLoginComponent @token-received="handleTokenReceived" />
       </div>
     </div>
     <div class="login-form__button-container">
@@ -60,9 +57,9 @@ import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import asset_button_image from "@/assets/game/auth/login-button-image.webp";
-import asset_google_image from "@/assets/game/auth/google.webp";
 import asset_warning_image from "@/assets/game/auth/warning.webp";
 import { useLanguageStore } from "@/stores/languageStore";
+import GoogleLoginComponent from "./GoogleLoginComponent.vue";
 
 export default {
   data() {
@@ -74,9 +71,11 @@ export default {
       loading: false,
       isSocketConnected: socket.connected,
       asset_button_image,
-      asset_google_image,
       asset_warning_image,
     };
+  },
+  components: {
+    GoogleLoginComponent,
   },
   setup() {
     const languageStore = useLanguageStore();
@@ -88,30 +87,9 @@ export default {
       this.resetErrors();
       this.loading = true;
 
-      this.$socket.emit(RequestSocketsEnum.LOGIN, {
+      socket.emit(RequestSocketsEnum.LOGIN, {
         username: this.username,
         password: this.password,
-      });
-
-      this.$socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
-      this.$socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
-        if (data.user && data.user.lang) {
-          this.languageStore.setLocale(data.user.lang);
-        }
-        this.$socket.user = data.user;
-        this.$emit("loginSuccess");
-      });
-
-      this.$socket.off(ResponseSocketsEnum.LOGIN_ERROR);
-      this.$socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
-        console.error("Login error:", error);
-        if (error.errors) {
-          this.setErrors(error.errors);
-        } else if (error.message) {
-          this.showUsernameError = true;
-          this.usernameError = error.message;
-        }
-        this.loading = false;
       });
     },
     resetErrors() {
@@ -124,9 +102,33 @@ export default {
         this.usernameError = errors.email[0];
       }
     },
+    handleTokenReceived(idToken) {
+      socket.emit(RequestSocketsEnum.LOGIN_OAUTH, { authToken: idToken });
+    },
   },
   mounted() {
     this.$refs.username.focus();
+
+    socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
+    socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
+      if (data.user && data.user.lang) {
+        this.languageStore.setLocale(data.user.lang);
+      }
+      socket.user = data.user;
+      this.$emit("loginSuccess");
+    });
+
+    socket.off(ResponseSocketsEnum.LOGIN_ERROR);
+    socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
+      console.error("Login error:", error);
+      if (error.errors) {
+        this.setErrors(error.errors);
+      } else if (error.message) {
+        this.showUsernameError = true;
+        this.usernameError = error.message;
+      }
+      this.loading = false;
+    });
 
     socket.on("connect", () => {
       this.isSocketConnected = true;
@@ -264,25 +266,6 @@ export default {
   top: -26px;
   right: 87px;
   z-index: 1;
-}
-
-.login-form__google-button {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  background-color: #003d6c;
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  transition: background-color 0.3s;
-}
-
-.login-form__google-button:hover {
-  background-color: #0d97f1;
 }
 
 .login-form__google-separator {

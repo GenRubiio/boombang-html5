@@ -10,9 +10,13 @@
 @endphp
 
 {{-- Meta injections --}}
-@include('partials.page-metas', [
+@include('partials.page-metas-seos', [
     'object' => $experience->seo ?? [],
 ])
+
+@push('schemas')
+    {!! $article->schema !!}
+@endpush
 
 @section('content')
     <div class="container-1440 page-margin" id="page-PageSlug">

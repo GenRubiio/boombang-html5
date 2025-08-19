@@ -41,7 +41,8 @@ const ResponseSocketsEnum = new Enum({
     UPDATE_PUBLIC_ISLANDS: 'response:update_public_islands',
     MINIGAME_SUBSCRIBE_STATUS: 'response:minigame_subscribe_status',
     REFRESH_USERS_SCENE_CHAT_LIST: 'response:refresh_users_scene_chat_list',
-    REFRESH_USER_CREDITS: 'response:refresh_user_credits'
+    REFRESH_USER_CREDITS: 'response:refresh_user_credits',
+    LOGIN_OAUTH: 'response:login_oauth'
 });
 
 export default ResponseSocketsEnum;

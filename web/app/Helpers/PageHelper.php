@@ -216,7 +216,7 @@ class PageHelper
         return SocialNetworksEnum::getIcon($name);
     }
 
-    public static function businessSchema(): string
+    public static function localBusinessSchema(): string
     {
         return app(SchemaService::class)->generateLocalBusinessSchema();
     }

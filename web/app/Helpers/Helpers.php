@@ -124,6 +124,13 @@ if (!function_exists('getResourcePage')) {
     }
 }
 
+if (!function_exists('localBusinessSchema')) {
+    function localBusinessSchema(): string
+    {
+        return PageHelper::localBusinessSchema();
+    }
+}
+
 
 /**
  * CrudHelper
@@ -605,12 +612,5 @@ if (!function_exists('currentVersionObject')) {
     function currentVersionObject()
     {
         return VersionHelper::currentVersionObject();
-    }
-}
-
-if (!function_exists('businessSchema')) {
-    function businessSchema(): string
-    {
-        return PageHelper::businessSchema();
     }
 }

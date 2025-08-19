@@ -1,0 +1,2 @@
+ {!! localBusinessSchema() !!}
+@stack('schemas')

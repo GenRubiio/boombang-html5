@@ -18,10 +18,8 @@
 ])
 
 @push('schemas')
-    {!! $pageResource->schema !!}
     {!! $article->schema !!}
 @endpush
-
 
 @section('content')
     <div class="container-fluid" id="page-article">

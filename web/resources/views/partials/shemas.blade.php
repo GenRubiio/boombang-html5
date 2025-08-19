@@ -1,2 +1,0 @@
- {!! businessSchema() !!}
-@stack('schemas')

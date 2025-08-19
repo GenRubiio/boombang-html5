@@ -17,6 +17,10 @@
     'object' => $pageResource->metas ?? $page,
 ])
 
+@push('schemas')
+  {!! $pageResource->schema !!}
+@endpush
+
 @section('content')
     <div class="container-1440 page-margin" id="page-PageSlug">
         <div class="d-flex flex-wrap justify-content-center page-PageSlug">

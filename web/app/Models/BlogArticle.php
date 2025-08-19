@@ -115,10 +115,11 @@ class BlogArticle extends Model
         $homePage = Page::where('name', 'Home')->first();
         $blogPage = Page::where('name', 'News')->first();
         $parts = [
+            app(SchemaService::class)->generateObjectSchema($this),
             app(SchemaService::class)->generateBlogArticleSchema($this),
             app(SchemaService::class)->generateBreadcrumbSchema([
-                ['name' => $homePage->title, 'url' => makeUrl($homePage->slug)],
-                ['name' => $blogPage->title, 'url' => makeUrl($blogPage->slug)],
+                ['name' => $homePage->title, 'url' => url('/')],
+                ['name' => $blogPage->title, 'url' => url($blogPage->slug)],
                 ['name' => $this->title, 'url' => url()->current()],
             ]),
         ];
