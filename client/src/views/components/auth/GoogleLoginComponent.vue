@@ -20,24 +20,23 @@ export default {
   data() {
     return {
       asset_google_image,
-      googleInstance: null,
     };
   },
   mounted() {
     const { initGoogle } = useGoogleSignIn();
 
-    initGoogle(GOOGLE_CLIENT_ID).then(idToken => {
+    const handleToken = (idToken) => {
       if (idToken) {
         this.$emit('token-received', idToken);
       }
-    });
+    };
 
-    this.googleInstance = window.google?.accounts?.id;
+    initGoogle(GOOGLE_CLIENT_ID, handleToken);
   },
   methods: {
     handleLogin() {
-      if (this.googleInstance) {
-        this.googleInstance.prompt();
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.prompt();
       } else {
         console.error("Google Sign-In not initialized.");
       }
