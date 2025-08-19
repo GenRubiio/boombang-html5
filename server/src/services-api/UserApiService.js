@@ -17,6 +17,21 @@ class UserApiService {
         }
     }
 
+    static async loginWithGoogle(authToken) {
+        try {
+            const data = {
+                auth_token: authToken
+            };
+            return await ApiService.post('api/auth/google', data);
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                return error.response.data;
+            }
+            console.error('Error en el login con Google:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
     static async register(username, email, password, avatar, recaptcha) {
         try {
             const data = {
