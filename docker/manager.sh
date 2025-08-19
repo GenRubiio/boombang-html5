@@ -150,6 +150,7 @@ while true; do
       echo "==> Deploy web..."
       sudo docker compose build web
       sudo docker compose up -d web
+      sudo docker compose exec web composer install --no-dev --prefer-dist -n
       ;;
     *)
       echo "Opción inválida, inténtalo de nuevo."
