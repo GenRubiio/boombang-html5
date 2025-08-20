@@ -16,6 +16,7 @@
           type="text"
           placeholder="Escribe un mensaje..."
           @keyup.enter="sendMessage"
+          maxlength="60"
         />
         <div
           class="base-chat__container__emoji-button"
@@ -69,13 +70,15 @@ export default {
       this.showEmojiPicker = !this.showEmojiPicker;
     },
     addEmoji(emoji) {
-      this.message += emoji;
+      const maxLength = 60;
+      this.message = (this.message + emoji).slice(0, maxLength);
       this.$refs.messageInput.focus();
     },
     sendMessage() {
       if (this.message.trim() !== "") {
+        const maxLength = 60;
         this.$emit("sendMessage", {
-          message: this.message,
+          message: this.message.slice(0, maxLength),
           recipient: this.selectedUser,
         });
         this.message = "";

@@ -17,6 +17,7 @@
             type="text"
             :placeholder="$t('login.username_placeholder')"
             required
+            :disabled="loading"
           />
         </div>
       </div>
@@ -27,6 +28,7 @@
           type="password"
           :placeholder="$t('login.password_placeholder')"
           required
+          :disabled="loading"
         />
       </div>
       <div class="login-form__link">
