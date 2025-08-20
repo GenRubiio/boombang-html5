@@ -6,6 +6,7 @@ use App\Models\BlogTag;
 use App\Models\BlogCategory;
 use App\Traits\Admin\Tabs\SeoTabFields;
 use App\Http\Requests\BlogArticleRequest;
+use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -191,6 +192,12 @@ class BlogArticleCrudController extends CrudController
                 'type' => 'checkbox',
                 'tab' => 'Blog Article',
             ]);
+            $this->crud->addField([
+                'name' => 'ai_translate',
+                'label' => 'AI Translate',
+                'type' => 'checkbox',
+                'tab' => 'Blog Article',
+            ]);
             $this->addSeoTabFields();
         });
 
@@ -225,6 +232,12 @@ class BlogArticleCrudController extends CrudController
 
         $response = $this->traitStore();
         storeReplicateOtherLocales($this->crud);
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
+        if ($this->crud->getRequest()->get('seo_ai_generate_translate')) {
+            app(GeminiAiService::class)->seoGenerateAndTranslate($this->crud->entry);
+        }
         return $response;
     }
 
@@ -235,6 +248,12 @@ class BlogArticleCrudController extends CrudController
         }
 
         $response = $this->traitUpdate();
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
+        if ($this->crud->getRequest()->get('seo_ai_generate_translate')) {
+            app(GeminiAiService::class)->seoGenerateAndTranslate($this->crud->entry);
+        }
         return $response;
     }
 

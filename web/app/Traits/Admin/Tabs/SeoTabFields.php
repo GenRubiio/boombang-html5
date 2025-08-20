@@ -105,7 +105,7 @@ trait SeoTabFields
             'default' => 80,
             'value' => $model && $model->seo ? $model->seo->sitemap_priority : 80,
             'tab' => trans('admin.tab_seo'),
-        ], );
+        ],);
         /*Sitemap frequency update*/
         $this->crud->addField([
             'name' => 'sitemap_frequency',
@@ -154,7 +154,7 @@ trait SeoTabFields
             'upload' => true,
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 0, // ommit or set to 0 to allow any aspect ratio
-            'value' => $model && $model->seo && !empty($model->seo->og_image) ? $model->seo->og_image : null, 
+            'value' => $model && $model->seo && !empty($model->seo->og_image) ? $model->seo->og_image : null,
             'tab' => trans('admin.tab_seo'),
         ]);
         /*Twitter Cards*/
@@ -188,6 +188,13 @@ trait SeoTabFields
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 0, // ommit or set to 0 to allow any aspect ratio
             'value' => $model && $model->seo && !empty($model->seo->tw_image) ? $model->seo->tw_image : null,
+            'tab' => trans('admin.tab_seo'),
+        ]);
+
+        $this->crud->addField([
+            'name' => 'seo_ai_generate_translate',
+            'label' => 'AI Generate and Translate',
+            'type' => 'checkbox',
             'tab' => trans('admin.tab_seo'),
         ]);
     }
