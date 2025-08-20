@@ -31,24 +31,11 @@ export function useGoogleSignIn() {
             auto_select: false,
             context: "signin",
             use_fedcm_for_prompt: true,
-            // 👇 SOLO orígenes, sin rutas (NO pongas /play)
             allowed_parent_origin: parentOrigins,
         });
 
         gisInitialized = true;
         return true;
-    };
-
-    const promptGoogle = () => {
-        if (!window.google?.accounts?.id) return;
-        window.google.accounts.id.prompt((notification) => {
-            if (notification.isNotDisplayed()) {
-                console.warn("GIS prompt NO mostrado:", notification.getNotDisplayedReason());
-            }
-            if (notification.isSkippedMoment()) {
-                console.warn("GIS prompt saltado:", notification.getSkippedReason());
-            }
-        });
     };
 
     const renderGoogleButton = (elementId = "google-btn") => {
@@ -62,5 +49,5 @@ export function useGoogleSignIn() {
         });
     };
 
-    return { initGoogle, promptGoogle, renderGoogleButton };
+    return { initGoogle, renderGoogleButton };
 }

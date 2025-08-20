@@ -1,28 +1,25 @@
 <template>
-  <div
-    class="login-form__google-button"
-    :class="{ 'button-disabled': isLoading }"
-    @click="handleLogin"
-  >
-    <img :src="asset_google_image" alt="Google" class="google-icon" />
-    {{ isLoading ? "Loading..." : $t("login.google_login") }}
+  <div class="google-login-container">
+    <!-- Botón personalizado visible -->
+    <button type="button" class="google-login-btn">
+      <img :src="asset_google_image" alt="Google" class="google-icon" />
+      {{ $t("login.google_login") }}
+    </button>
+    <!-- Contenedor para el botón real de Google (invisible) -->
+    <div id="google-btn-real"></div>
   </div>
-
-  <!-- Fallback: botón nativo de Google -->
-  <div id="google-btn" style="margin-top: 10px"></div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import asset_google_image from "@/assets/game/auth/google.webp";
 import { useGoogleSignIn } from "@/composables/useGoogleSignIn.js";
+import asset_google_image from "@/assets/game/auth/google.webp";
 
 const emit = defineEmits(["token-received"]);
 const isLoading = ref(false);
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-console.log("Google Client ID:", GOOGLE_CLIENT_ID);
-const { initGoogle, promptGoogle, renderGoogleButton } = useGoogleSignIn();
+const { initGoogle, renderGoogleButton } = useGoogleSignIn();
 
 const onCredential = (idToken) => {
   emit("token-received", idToken);
@@ -36,29 +33,24 @@ onMounted(() => {
     return;
   }
 
-  // Importante: SOLO orígenes, sin rutas (nada de /play)
   const ok = initGoogle(GOOGLE_CLIENT_ID, onCredential, [
     "https://www.boommania.com",
     "https://boommania.com",
   ]);
   if (!ok) return;
 
-  renderGoogleButton("google-btn");
+  // Renderiza el botón real de Google en el contenedor invisible
+  renderGoogleButton("google-btn-real");
 });
-
-function handleLogin() {
-  if (isLoading.value) return;
-  if (!window.google?.accounts?.id) {
-    console.error("Google Sign-In no está inicializado.");
-    return;
-  }
-  isLoading.value = true;
-  promptGoogle(); // mostrará FedCM/One Tap si es elegible; el token llegará a onCredential()
-}
 </script>
 
 <style scoped>
-.login-form__google-button {
+.google-login-container {
+  position: relative;
+  margin-top: 10px;
+}
+
+.google-login-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,16 +63,29 @@ function handleLogin() {
   cursor: pointer;
   margin: 10px 0;
   transition: background-color 0.3s;
+  width: 100%;
 }
-.login-form__google-button:hover {
+
+.google-login-btn:hover {
   background-color: #0d97f1;
 }
+
 .google-icon {
   width: 20px;
   height: 20px;
 }
-.button-disabled {
-  cursor: not-allowed;
-  background-color: #5a8aa8;
+
+/*
+  Estilos para el contenedor del botón real de Google.
+  Lo posiciona sobre el botón personalizado y lo hace transparente.
+*/
+#google-btn-real {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 </style>
