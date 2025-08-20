@@ -6,6 +6,7 @@ class UserResource extends Resource {
             id: data.socket.id,
             socket_id: data.socket.id,
             db_id: data.id,
+            authJwt: data.authJwt,
             username: data.username,
             description: data.description,
             ficha_color: data.ficha_color,
