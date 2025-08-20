@@ -39,7 +39,7 @@ export default class OverheadChatAnimation {
 
     addMessage(text, userName, playerSprite, avatarId, chatColor) {
         this.playerSprite = playerSprite;
-        this.avatarKey = avatarId + '_cara_media';
+        this.avatarKey = null;
 
         let textColor = "#000000";
         let backgroundColor = "#ffffff";
@@ -56,7 +56,15 @@ export default class OverheadChatAnimation {
                 backgroundColor = "#323435";
                 break;
         }
-
+        switch(avatarId){
+            case 5:
+                this.avatarKey = 'gata';
+                break;
+            case 12:
+                this.avatarKey = 'rasta';
+                break;
+        }
+        let avatarImage = `src/assets/game/avatars/${this.avatarKey}/cara_media.svg`;
         const containerHTML = `
             <div style="
                 background-color: ${backgroundColor};
@@ -68,7 +76,7 @@ export default class OverheadChatAnimation {
                 font-family: Arial;
                 font-size: 14px;
             ">
-                <img src="assets/game/customization/chats/${this.avatarKey}.png" style="width: 20px; height: 20px; margin-right: 4px;">
+                <img src="${avatarImage}" style="width: 20px; height: 20px; margin-right: 4px;">
                 <span style="font-weight: bold;">${userName}:</span>
                 <span style="margin-left: 4px;">${text}</span>
             </div>
