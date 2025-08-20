@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyEmulatorToken;
 use App\Http\Controllers\Api\Auth\LoginApiController;
+use App\Http\Controllers\Api\Auth\LogoutApiController;
 use App\Http\Controllers\Api\Auth\RegisterApiController;
 use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
 use App\Http\Controllers\Api\Game\Scene\IslandApiController;
@@ -50,6 +51,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
      * Game API Routes
      */
     Route::middleware(['auth:api'])->group(function () {
+        Route::prefix('auth')->group(function () {
+            Route::post('jwt-auto-login', [LoginApiController::class, 'jwtAutoLogin']);
+            Route::post('logout', [LogoutApiController::class, 'index']);
+        });
         Route::prefix('user')->group(function () {
             Route::post('increase-stats', [IncreaseStatsApiController::class, 'index']);
             Route::post('update-description', [UpdateDescriptionApiController::class, 'index']);

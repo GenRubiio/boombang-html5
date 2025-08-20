@@ -125,6 +125,7 @@ while true; do
       echo "==> Deploy client..."
       sudo docker stop boombang-html5-server-1
       sudo docker compose build client && sudo docker compose up -d client
+      sudo docker exec boombang-html5-api-1 php artisan passport:clear-tokens
       sudo docker restart boombang-html5-server-1
       ;;
     7)
@@ -144,6 +145,7 @@ while true; do
       sudo docker compose up -d api
       sudo docker exec boombang-html5-api-1 php artisan migrate --force
       sudo docker exec boombang-html5-api-1 php artisan passport:install
+      sudo docker exec boombang-html5-api-1 php artisan passport:clear-tokens
       sudo docker restart boombang-html5-server-1
       ;;
     10)

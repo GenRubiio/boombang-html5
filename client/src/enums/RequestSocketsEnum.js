@@ -35,7 +35,9 @@ const RequestSocketsEnum = new Enum({
     USER_CHANGE_SHADOW_COLOR: 'request:user_change_shadow_color',
     REFRESH_USERS_SCENE_CHAT_LIST: 'request:refresh_users_scene_chat_list',
     REFRESH_USER_CREDITS: 'request:refresh_user_credits',
-    LOGIN_OAUTH: 'request:login_oauth'
+    LOGIN_OAUTH: 'request:login_oauth',
+    JWT_AUTO_LOGIN: 'request:jwt_auto_login',
+    LOGOUT: 'request:logout',
 });
 
 export default RequestSocketsEnum;

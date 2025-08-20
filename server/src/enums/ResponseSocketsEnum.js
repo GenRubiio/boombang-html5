@@ -43,7 +43,10 @@ const ResponseSocketsEnum = new Enum({
     MINIGAME_SUBSCRIBE_STATUS: 'response:minigame_subscribe_status',
     REFRESH_USERS_SCENE_CHAT_LIST: 'response:refresh_users_scene_chat_list',
     REFRESH_USER_CREDITS: 'response:refresh_user_credits',
-    LOGIN_OAUTH: 'response:login_oauth'
+    LOGIN_OAUTH: 'response:login_oauth',
+    JWT_AUTO_LOGIN_SUCCESS: 'response:jwt_auto_login_success',
+    JWT_AUTO_LOGIN_INVALID: 'response:jwt_auto_login_invalid',
+    LOGOUT: 'response:logout',
 });
 
 module.exports = ResponseSocketsEnum;
