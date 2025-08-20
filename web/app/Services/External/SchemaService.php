@@ -44,7 +44,7 @@ class SchemaService
     public function generateObjectSchema(Model $model): string
     {
         $modelCamel = Str::camel(class_basename($model));
-        return cache()->remember("schema:object:{$modelCamel}:" . '.' . __FUNCTION__ . '.' . LaravelLocalization::getCurrentLocale(), env('CACHE_DEFAULT_TTL', 7200), function () use ($model) {
+        return cache()->remember("schema:object:{$modelCamel}:{$model->id}" . '.' . __FUNCTION__ . '.' . LaravelLocalization::getCurrentLocale(), env('CACHE_DEFAULT_TTL', 7200), function () use ($model) {
             $schema = Schema::webPage();
             $seo = $model->seo ?? null;
             if (!empty($model->title)) {
