@@ -17,6 +17,9 @@ class UserSendChatController {
 
             if (!user.isActionBlocked(AnimationEnum.CHAT)) {
                 const animation = this.getTalkAnimation(user.currentAreaPosition.z);
+                if (data.message.length > 60) {
+                    data.message = data.message.slice(0, 60);
+                }
                 if (data.recipient) {
                     const recipient = ConnectedUsersCollection.getBySocketId(data.recipient);
                     if (
