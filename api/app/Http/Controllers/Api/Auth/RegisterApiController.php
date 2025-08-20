@@ -21,7 +21,7 @@ class RegisterApiController extends Controller
     public function register(RegisterApiRegisterRequest $request): JsonResource
     {
         try {
-            $user = User::create([
+            User::create([
                 'name' => $request->username,
                 'username' => $request->username,
                 'description' => 'BoomMania 😍',
@@ -29,7 +29,13 @@ class RegisterApiController extends Controller
                 'password' => Hash::make($request->password),
                 'avatar' => $request->avatar_id,
             ]);
+            $user = User::where('email', $request->email)->first();
             $tokenResult = $user->createToken('Personal Access Token');
+            $user->load(
+                'fichas',
+                'chats',
+                'colornames'
+            );
             return $this->successResponse([
                 'user' => (new UserResource($user))->toDTO(),
                 'token' => $tokenResult->accessToken,
