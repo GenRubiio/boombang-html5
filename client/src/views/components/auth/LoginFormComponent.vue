@@ -108,11 +108,19 @@ export default {
   },
   mounted() {
     this.$refs.username.focus();
+    const token = localStorage.getItem("app_jwt");
+    if (token) {
+      this.loading = true;
+      socket.emit(RequestSocketsEnum.JWT_AUTO_LOGIN, { authJwt: token });
+    }
 
     socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
     socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
       if (data.user && data.user.lang) {
         this.languageStore.setLocale(data.user.lang);
+      }
+      if (data.user?.authJwt) {
+        localStorage.setItem("app_jwt", data.user.authJwt);
       }
       socket.user = data.user;
       this.$emit("loginSuccess");
@@ -130,12 +138,20 @@ export default {
       this.loading = false;
     });
 
+    socket.off(ResponseSocketsEnum.JWT_AUTO_LOGIN_INVALID);
+    socket.on(ResponseSocketsEnum.JWT_AUTO_LOGIN_INVALID, () => {
+      localStorage.removeItem("app_jwt");
+      this.loading = false;
+    });
+
     socket.on("connect", () => {
       this.isSocketConnected = true;
     });
     socket.on("disconnect", () => {
       this.isSocketConnected = false;
     });
+
+    //this.autoLoginIfPossible();
   },
 };
 </script>

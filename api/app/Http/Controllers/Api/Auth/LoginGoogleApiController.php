@@ -32,7 +32,7 @@ class LoginGoogleApiController extends Controller
                 $googleUser = Socialite::driver('google')->userFromToken($token);
             } else {
                 $googleUser = Socialite::driver('google')->setHttpClient(new \GuzzleHttp\Client([
-                    'verify' => false, // ⚠️ inseguro, temporal
+                    'verify' => false,
                 ]))->userFromToken($token);
             }
 

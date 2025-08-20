@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -36,6 +37,24 @@ class LoginApiController extends Controller implements LoginApiControllerInterfa
             } else {
                 throw new Exception('Unauthorized', 401);
             }
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function jwtAutoLogin(Request $request): JsonResource
+    {
+        try {
+            $user = Auth::user();
+            $user->load(
+                'fichas',
+                'chats',
+                'colornames'
+            );
+            return $this->successResponse([
+                'user' => (new UserResource($user))->toDTO(),
+                'token' => $request->auth_token
+            ]);
         } catch (Exception $e) {
             return $this->handleException($e);
         }

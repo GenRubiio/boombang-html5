@@ -15,14 +15,21 @@
     <div class="lobby__avatar">
       <img :src="asset_avatarImage" alt="avatar" />
     </div>
+    <div class="lobby__logout">
+      <img :src="asset_logout_image" alt="logout" @click="logout" />
+    </div>
   </div>
 </template>
 
 <script>
+import socket from "@/sockets/socket";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import asset_background_image from "@/assets/game/lobby/background.webp";
 import asset_flor_image from "@/assets/game/lobby/flor.webp";
 import asset_foreground_image from "@/assets/game/lobby/foreground.webp";
 import asset_marikita_image from "@/assets/game/lobby/marikita.webp";
+import asset_logout_image from "@/assets/game/lobby/logout.webp";
 
 export default {
   data() {
@@ -32,6 +39,8 @@ export default {
       asset_foreground_image,
       asset_marikita_image,
       asset_avatarImage: null,
+      asset_logout_image,
+      isLogoutButtonClicked: false,
     };
   },
   async created() {
@@ -46,7 +55,18 @@ export default {
     }
   },
   components: {},
-  methods: {},
+  methods: {
+    logout() {
+      if (this.isLogoutButtonClicked) return;
+      this.isLogoutButtonClicked = true;
+      socket.off(ResponseSocketsEnum.LOGOUT);
+      socket.on(ResponseSocketsEnum.LOGOUT, () => {
+        localStorage.removeItem("app_jwt");
+        location.reload();
+      });
+      socket.emit(RequestSocketsEnum.LOGOUT);
+    },
+  },
 };
 </script>
 
@@ -77,6 +97,17 @@ export default {
   top: 227px;
   left: 0px;
   z-index: 0;
+}
+
+.lobby__logout img {
+  position: absolute;
+  bottom: 13px;
+  right: -10px;
+  z-index: 1;
+  width: 155px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .lobby__rooms {

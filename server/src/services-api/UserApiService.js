@@ -122,6 +122,27 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async jwtAutoLogin(authJwt) {
+        try {
+            const data = {
+                auth_token: authJwt
+            };
+            return await ApiService.post('api/auth/jwt-auto-login', data, authJwt);
+        } catch (error) {
+            console.error('Error en el inicio de sesión automático con JWT:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async logout(user) {
+        try {
+            return await ApiService.post('api/auth/logout', {}, user.authJwt);
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;
