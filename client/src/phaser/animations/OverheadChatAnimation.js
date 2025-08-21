@@ -33,8 +33,8 @@ export default class OverheadChatAnimation {
         //    loop: true
         //});
 
-        // Registrar el método update para que se llame en cada frame
-        this.scene.events.on('update', this.update, this);
+        // No registrar update al inicio, solo cuando haya mensajes
+        this.updateRegistered = false;
     }
 
     addMessage(text, userName, playerSprite, avatarId, chatColor) {
@@ -106,6 +106,12 @@ export default class OverheadChatAnimation {
 
         this.messages.push(domElement);
         this.lastMessageTime = this.scene.time.now;
+
+        // Si el update estaba desregistrado, volver a registrarlo
+        if (!this.updateRegistered) {
+            this.scene.events.on('update', this.update, this);
+            this.updateRegistered = true;
+        }
     }
 
     addSystemAlert(text) {
@@ -113,7 +119,7 @@ export default class OverheadChatAnimation {
             <div style="
                 background-color: #f7c004;
                 color: #000000;
-                padding: 1px 10px 1px 1px;
+                padding: 1px 10px 1px 10px;
                 border-radius: 5px;
                 display: flex;
                 align-items: center;
@@ -142,6 +148,12 @@ export default class OverheadChatAnimation {
 
         this.messages.push(domElement);
         this.lastMessageTime = this.scene.time.now;
+
+        // Si el update estaba desregistrado, volver a registrarlo
+        if (!this.updateRegistered) {
+            this.scene.events.on('update', this.update, this);
+            this.updateRegistered = true;
+        }
     }
 
     /**
@@ -162,6 +174,11 @@ export default class OverheadChatAnimation {
      * del área visible y así destruirlo para liberar recursos.
      */
     update() {
+        // Solo procesar si hay mensajes activos
+        if (this.messages.length === 0) {
+            return;
+        }
+        
         this.messages = this.messages.filter(chatContainer => {
             if (chatContainer.y + chatContainer.height < 0) {
                 chatContainer.destroy();
@@ -169,6 +186,12 @@ export default class OverheadChatAnimation {
             }
             return true;
         });
+        
+        // Si no quedan mensajes, desregistrar el update temporalmente
+        if (this.messages.length === 0) {
+            this.scene.events.off('update', this.update, this);
+            this.updateRegistered = false;
+        }
     }
 
     destroy() {

@@ -4,7 +4,6 @@ class UserSendChatController {
         const userEmiter = gameScene.users[data.user_socket];
         if (!userEmiter) return;
         UserChatAnimation.main(userEmiter, data.animation);
-        console.log(data)
         gameScene.chatManager.addMessage(
             data.message,
             data.username,

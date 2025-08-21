@@ -77,6 +77,25 @@ class UserBlockActionsTask {
         }
     }
 
+    static blockByUpdateDescription(user) {
+        try {
+            user.blockAction(AnimationEnum.UPDATE_DESCRIPTION, 2000);
+        } catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by update description: ${err.message}`, 'error');
+        }
+    }
+
+    static blockByChat(user) {
+        try {
+            user.blockAction(AnimationEnum.CHAT, 1200);
+        }
+        catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by chat: ${err.message}`, 'error');
+        }
+    }
+
     static blockByCoconutReceive(user, coconutId) {
         try {
             const actionData = CoconutsBlockActionsMap.get(coconutId);

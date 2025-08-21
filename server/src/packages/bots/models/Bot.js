@@ -139,12 +139,12 @@ class Bot {
 
         const sendMessage = () => {
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            this.socket.emit(RequestSocketsEnum.USER_SEND_CHAT, { message: randomMessage });
+            this.socket.emit(RequestSocketsEnum.USER_SEND_CHAT, { message: randomMessage, recipient: null, });
 
             // Generar un tiempo aleatorio entre 5 y 20 segundos
             const randomTime = Math.floor(Math.random() * (20000 - 5000 + 1)) + 5000;
 
-            setTimeout(sendMessage, randomTime);
+            setTimeout(sendMessage, 1000);
         };
 
         sendMessage();
