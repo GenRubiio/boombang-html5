@@ -140,7 +140,12 @@ class MovementProcessorInstance {
                     text: obj.item.text,
                     points: obj.item.points
                 });
-                PublicSceneService.userCatchItem(user, obj.item.id)
+                PublicSceneService.userCatchItem(
+                    user,
+                    obj.item.id,
+                    obj.item.file_name,
+                    obj.item.points
+                );
             }
         });
     }
