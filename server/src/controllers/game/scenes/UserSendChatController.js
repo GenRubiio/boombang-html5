@@ -4,6 +4,7 @@ const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 const DirectionEnum = require('../../../enums/DirectionEnum');
+const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
 
 class UserSendChatController {
     static async main(socket, io, data) {
@@ -16,6 +17,7 @@ class UserSendChatController {
             }
 
             if (!user.isActionBlocked(AnimationEnum.CHAT)) {
+                UserBlockActionsTask.blockByChat(user);
                 const animation = this.getTalkAnimation(user.currentAreaPosition.z);
                 if (data.message.length > 60) {
                     data.message = data.message.slice(0, 60);
