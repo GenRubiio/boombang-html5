@@ -1,4 +1,9 @@
 import i18n from "@/plugins/i18n";
+import shopIcon from "@/assets/game/scene/ui/shop.webp";
+import avatarsIcon from "@/assets/game/scene/ui/avatars.webp";
+import colorSceneIcon from "@/assets/game/scene/ui/color_scene.webp";
+import moveItemIcon from "@/assets/game/scene/ui/move_item.webp";
+import backpackIcon from "@/assets/game/scene/ui/backpack.webp";
 
 class ButtonsPrivateSceneHtml {
     static load() {
@@ -25,7 +30,7 @@ class ButtonsPrivateSceneHtml {
                     cursor: pointer;
                     position: relative;
                 ">
-                    <img src="src/assets/game/scene/ui/shop.webp" style="max-width: 37px;">
+                    <img src="${shopIcon}" style="max-width: 37px;">
                     <div class="tooltip" style="
                         position: absolute;
                         top: 50%;
@@ -68,7 +73,7 @@ class ButtonsPrivateSceneHtml {
                     cursor: pointer;
                     position: relative;
                 ">
-                    <img src="src/assets/game/scene/ui/avatars.webp" style="max-width: 37px;">
+                    <img src="${avatarsIcon}" style="max-width: 37px;">
                     <div class="tooltip" style="
                         position: absolute;
                         top: 50%;
@@ -111,7 +116,7 @@ class ButtonsPrivateSceneHtml {
                     cursor: pointer;
                     position: relative;
                 ">
-                    <img src="src/assets/game/scene/ui/color_scene.webp" style="max-width: 37px;">
+                    <img src="${colorSceneIcon}" style="max-width: 37px;">
                     <div class="tooltip" style="
                         position: absolute;
                         top: 50%;
@@ -154,7 +159,7 @@ class ButtonsPrivateSceneHtml {
                     cursor: pointer;
                     position: relative;
                 ">
-                    <img src="src/assets/game/scene/ui/move_item.webp" style="max-width: 37px;">
+                    <img src="${moveItemIcon}" style="max-width: 37px;">
                     <div class="tooltip" style="
                         position: absolute;
                         top: 50%;
@@ -197,7 +202,7 @@ class ButtonsPrivateSceneHtml {
                     cursor: pointer;
                     position: relative;
                 ">
-                    <img src="src/assets/game/scene/ui/backpack.webp" style="max-width: 37px;">
+                    <img src="${backpackIcon}" style="max-width: 37px;">
                     <div class="tooltip" style="
                         position: absolute;
                         top: 50%;

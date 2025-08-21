@@ -1,4 +1,6 @@
 import i18n from "@/plugins/i18n";
+import shopIcon from "@/assets/game/scene/ui/shop.webp";
+import avatarsIcon from "@/assets/game/scene/ui/avatars.webp";
 
 class ButtonsPublicSceneHtml {
     static load() {
@@ -25,7 +27,7 @@ class ButtonsPublicSceneHtml {
                     cursor: pointer;
                     position: relative;
                 ">
-                    <img src="src/assets/game/scene/ui/shop.webp" style="max-width: 37px;">
+                    <img src="${shopIcon}" style="max-width: 37px;">
                     <div class="tooltip" style="
                         position: absolute;
                         top: 50%;
@@ -68,7 +70,7 @@ class ButtonsPublicSceneHtml {
                     cursor: pointer;
                     position: relative;
                 ">
-                    <img src="src/assets/game/scene/ui/avatars.webp" style="max-width: 37px;">
+                    <img src="${avatarsIcon}" style="max-width: 37px;">
                     <div class="tooltip" style="
                         position: absolute;
                         top: 50%;
