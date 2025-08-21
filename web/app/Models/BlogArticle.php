@@ -64,6 +64,12 @@ class BlogArticle extends Model
         'content',
         'slug'
     ];
+    public $ai = [
+        'title',
+        'extract',
+        'content',
+        'slug'
+    ];
 
     public const FILES_DESTINATION_PATH = "uploads/blog-articles";
 
