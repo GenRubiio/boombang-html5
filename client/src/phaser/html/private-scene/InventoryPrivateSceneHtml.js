@@ -220,7 +220,7 @@ class InventoryPrivateSceneHtml {
         this.draggedItem = slotData;
         
         // Setup shadow image
-        dragShadowImg.src = `assets/game/objects/${slotData.group.sprite_name}.webp`;
+        dragShadowImg.src = `/assets/game/objects/${slotData.group.sprite_name}.webp`;
         dragShadow.style.display = 'block';
         dragShadow.style.left = e.clientX + 'px';
         dragShadow.style.top = e.clientY + 'px';
@@ -437,7 +437,7 @@ class InventoryPrivateSceneHtml {
             if (group) {
                 this.inventorySlots[index] = { group };
                 
-                icon.src = `assets/game/objects/${group.sprite_name}.webp`;
+                icon.src = `/assets/game/objects/${group.sprite_name}.webp`;
                 icon.style.display = 'block';
                 
                 if (group.count > 1) {

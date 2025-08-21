@@ -138,7 +138,7 @@ class DetailPanelPrivateSceneHtml {
         if (container && nameElement && iconElement) {
             // Update content
             nameElement.textContent = item.display_name;
-            iconElement.src = `assets/game/objects/${item.sprite_name}.webp`;
+            iconElement.src = `/assets/game/objects/${item.sprite_name}.webp`;
             
             // Show panel
             container.style.display = 'block';
