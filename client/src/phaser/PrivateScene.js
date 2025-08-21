@@ -18,6 +18,9 @@ import asset_ui_move_item_image from "@/assets/game/scene/ui/move_item.webp";
 import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
 import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
 import asset_ui_color_scene_image from "@/assets/game/scene/ui/color_scene.webp";
+import ButtonsPrivateSceneHtml from "@/phaser/html/private-scene/ButtonsPrivateSceneHtml";
+import InventoryPrivateSceneHtml from "@/phaser/html/private-scene/InventoryPrivateSceneHtml";
+import DetailPanelPrivateSceneHtml from "@/phaser/html/private-scene/DetailPanelPrivateSceneHtml";
 import i18n from "../plugins/i18n";
 
 export default class PrivateScene extends Phaser.Scene {
@@ -113,7 +116,8 @@ export default class PrivateScene extends Phaser.Scene {
         this.vueComponent.$emit("updateLoading", false);
 
         if (this.sceneData.myScene) {
-            this.createInventory();
+            this.createHTMLInventory();
+            this.createHTMLDetailPanel(); // Initialize the detail panel
         }
 
         this.chatManager = new OverheadChatAnimation(this);
@@ -124,7 +128,7 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnHide = false;
 
         if (this.sceneData.myScene) {
-            this.createButtons();
+            this.createHTMLButtons();
         }
 
         this.handleSockets();
@@ -147,7 +151,7 @@ export default class PrivateScene extends Phaser.Scene {
             }
             if (data.item) {
                 this.inventoryItemsList.push(data.item);
-                this.updateInventoryUI();
+                this.updateHTMLInventoryUI();
             }
         });
         socket.on(ResponseSocketsEnum.SCENE_REMOVE_ITEM, (data) => {
@@ -221,7 +225,7 @@ export default class PrivateScene extends Phaser.Scene {
             const itemIndex = this.inventoryItemsList.findIndex(i => i.id === itemId);
             if (itemIndex !== -1) {
                 this.inventoryItemsList.splice(itemIndex, 1);
-                this.updateInventoryUI();
+                this.updateHTMLInventoryUI();
             }
         });
     }
@@ -245,154 +249,84 @@ export default class PrivateScene extends Phaser.Scene {
         }
     }
 
-    // ================ NUEVOS MÉTODOS ================ //
-    createButtons() {
-        const BUTTON_SIZE = 50;
-        const BUTTON_SPACING = 15;
-        const START_X = 30;
-        const Y = 10;
+    createHTMLButtons() {
+        // Crear contenedor HTML para los botones
+        const buttonsHTML = ButtonsPrivateSceneHtml.load();
 
-        /* ---------- TEXTURAS COMPARTIDAS (una sola vez) ---------- */
-        if (!this.textures.exists('btn_bg')) {
-            const g = this.add.graphics();
-            g.fillStyle(0xffffff, 0.8)
-                .fillRoundedRect(0, 0, BUTTON_SIZE, BUTTON_SIZE, 5)
-                .lineStyle(1, 0xcccccc, 1)
-                .strokeRoundedRect(0, 0, BUTTON_SIZE, BUTTON_SIZE, 5);
-            g.generateTexture('btn_bg', BUTTON_SIZE, BUTTON_SIZE);
-            g.destroy();
-        }
+        // Crear elemento DOM y añadirlo a la escena
+        this.buttonsContainer = this.add.dom(0, 0).createFromHTML(buttonsHTML);
+        this.buttonsContainer.setOrigin(0, 0);
+        this.buttonsContainer.setScrollFactor(0);
+        this.buttonsContainer.setDepth(10000);
 
-        if (!this.textures.exists('tooltip_bg')) {
-            const W = 100, H = 25, A = 8;
-            const g = this.add.graphics();
-            g.fillStyle(0x000000, 0.8);
-            g.fillRoundedRect(0, A, W, H, 5);
-            g.beginPath();
-            g.moveTo(W / 2, 0);
-            g.lineTo(W / 2 - 8, A);
-            g.lineTo(W / 2 + 8, A);
-            g.closePath();
-            g.fill();
-            g.generateTexture('tooltip_bg', W, H + A);
-            g.destroy();
-        }
+        // Configurar event listeners para los botones
+        this.setupButtonEvents();
+    }
 
-        /* ------------------ TOOLTIP REUTILIZABLE ------------------ */
-        const tooltip = this.add.container(0, 0)
-            .setDepth(10002)
-            .setScrollFactor(0)
-            .setVisible(false);
+    setupButtonEvents() {
+        const buttonsElement = this.buttonsContainer.node.querySelector('#scene-buttons');
 
-        const tooltipBg = this.add.image(0, 0, 'tooltip_bg').setOrigin(0);
-        const tooltipText = this.add.text(50, 20.5, '', {
-            fontSize: '12px',
-            color: '#ffffff',
-            align: 'center',
-            wordWrap: { width: 90, useAdvancedWrap: true }
-        }).setOrigin(0.5, 0.5);
+        // Event listeners para clicks de botones
+        buttonsElement.addEventListener('click', (event) => {
+            const button = event.target.closest('.scene-button');
+            if (!button) return;
 
-        tooltip.add([tooltipBg, tooltipText]);
+            const action = button.getAttribute('data-action');
+            this.handleButtonClick(action);
+        });
 
-        const showTooltip = (btn, txt) => {
-            tooltipText.setText(txt);
-            tooltip.setPosition(btn.x + BUTTON_SIZE / 2 - 50, btn.y + BUTTON_SIZE + 5);
-            tooltip.setVisible(true);
-        };
-        const hideTooltip = () => tooltip.setVisible(false);
+        // Event listeners para tooltips
+        const buttons = buttonsElement.querySelectorAll('.scene-button');
+        buttons.forEach(button => {
+            const tooltip = button.querySelector('.tooltip');
 
-        /* ------------------ FÁBRICA DE BOTONES ------------------- */
-        const makeButton = (x, iconKey, cb, tip, isMiddle = false) => {
-            const cont = this.add.container(x, Y)
-                .setScrollFactor(0)
-                .setDepth(10000);
+            button.addEventListener('mouseenter', () => {
+                tooltip.style.opacity = '1';
+            });
 
-            /* fondo visible */
-            const bg = this.add.image(0, 0, 'btn_bg').setOrigin(0);
+            button.addEventListener('mouseleave', () => {
+                tooltip.style.opacity = '0';
+            });
+        });
+    }
 
-            /* zona invisible de input que cubre TODO el cuadrado */
-            const zone = this.add.zone(0, 0, BUTTON_SIZE, BUTTON_SIZE)
-                .setOrigin(0)
-                .setInteractive();
-
-            /* icono */
-            const icon = this.add.image(BUTTON_SIZE / 2, BUTTON_SIZE / 2, iconKey);
-            const padding = 10;
-            icon.setScale(Math.min((BUTTON_SIZE - padding) / icon.width,
-                (BUTTON_SIZE - padding) / icon.height));
-
-            cont.add([bg, icon, zone]);
-
-            zone.on('pointerdown', cb)
-                .on('pointerover', () => {
-                    this.input.setDefaultCursor('pointer');
-                    showTooltip(cont, tip);
-                })
-                .on('pointerout', () => {
-                    this.input.setDefaultCursor('default');
-                    hideTooltip();
-                });
-
-            return cont;
-        };
-
-        /* --------------------- BOTÓN “TIENDA” --------------------- */
-        this.shopButton = makeButton(
-            START_X,
-            'asset_ui_shop_image',
-            () => {
+    handleButtonClick(action) {
+        switch (action) {
+            case 'shop':
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     console.log('Botón de tienda pulsado');
                 }
-            },
-            i18n.global.t('scene.tooltip_shop')
-        );
+                break;
 
-        /* --------------------- BOTÓN “AVATARES” --------------------- */
-        this.avatarsButton = makeButton(
-            START_X + BUTTON_SIZE + BUTTON_SPACING,
-            'asset_ui_avatars_image',
-            () => {
+            case 'avatars':
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     console.log('Botón de avatares pulsado');
                 }
-            },
-            i18n.global.t('scene.tooltip_avatars')
-        );
+                break;
 
-        /* --------------------- BOTÓN “COLOREAR” --------------------- */
-        this.colorButton = makeButton(
-            START_X + (BUTTON_SIZE + BUTTON_SPACING) * 2,
-            'asset_ui_color_scene_image',
-            () => {
+            case 'color':
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     console.log('Boton de colorear pulsado');
                 }
-            },
-            i18n.global.t('scene.tooltip_color'),
-            true
-        );
+                break;
 
-        /* --------------------- BOTÓN “MOVER” --------------------- */
-        this.moveButton = makeButton(
-            START_X + (BUTTON_SIZE + BUTTON_SPACING) * 3,
-            'asset_ui_move_item_image',
-            () => this.toggleMoveMode(),
-            i18n.global.t('scene.tooltip_move')
-        );
+            case 'move':
+                this.toggleMoveMode();
+                break;
 
-        /* ------------------ BOTÓN “INVENTARIO” ------------------ */
-        this.inventoryButton = makeButton(
-            START_X + (BUTTON_SIZE + BUTTON_SPACING) * 4,
-            'asset_ui_backpack_image',
-            () => {
-                if (this.inventoryContainer) {
-                    this.inventoryContainer.setVisible(!this.inventoryContainer.visible);
+            case 'inventory':
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    console.log('Botón de inventario pulsado', this.htmlInventory);
                 }
-            },
-            i18n.global.t('scene.tooltip_inventory')
-        );
+                if (this.htmlInventory) {
+                    this.htmlInventory.toggle();
+                } else {
+                    console.error('htmlInventory no está inicializado');
+                }
+                break;
+        }
     }
+
 
     /**
      * Marcar y renderizar overlays de tiles ocupados por objetos existentes
@@ -432,7 +366,7 @@ export default class PrivateScene extends Phaser.Scene {
                 const y = (col + row) * halfTileHeight - halfTileHeight;
 
                 const bob = this.tileBlitter.create(x, y);
-                bob.alpha = 1;
+                bob.alpha = import.meta.env.VITE_APP_ENV === "local" ? 1 : 0;
 
                 if (row < this.tileGrid.length && col < this.tileGrid[row].length) {
                     this.tileGrid[row][col].occupied = true;
@@ -471,21 +405,39 @@ export default class PrivateScene extends Phaser.Scene {
             this.tween.stop();
             this.tween.remove();
         }
-        this.tween = this.tweens.add({
-            targets: this.moveButton,
-            alpha: 0.3,
-            duration: 500,
-            yoyo: true,
-            repeat: -1
-        });
+
+        const moveButton = this.buttonsContainer.node.querySelector('#move-button');
+        if (moveButton) {
+            // Crear animación CSS para el parpadeo
+            moveButton.style.animation = 'blink 1s infinite';
+
+            // Añadir keyframes CSS si no existen
+            if (!document.querySelector('#blink-keyframes')) {
+                const style = document.createElement('style');
+                style.id = 'blink-keyframes';
+                style.textContent = `
+                    @keyframes blink {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.3; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
     }
 
+
     stopButtonBlink() {
+        const moveButton = this.buttonsContainer.node.querySelector('#move-button');
+        if (moveButton) {
+            moveButton.style.animation = '';
+            moveButton.style.opacity = '1';
+        }
+
         if (this.tween) {
             this.tween.stop();
             this.tween.remove();
             this.tween = null;
-            this.moveButton.alpha = 1;
         }
     }
 
@@ -503,150 +455,41 @@ export default class PrivateScene extends Phaser.Scene {
 
             // Nuevo evento de selección
             item.sprite.on('pointerdown', () => {
-                if (this.moveModeActive) {
-                    this.selectObject(item);
-                }
+                this.selectObject(item);
             });
         });
     }
 
 
     selectObject(item) {
+        if (this.selectedObject === item) return; // No re-seleccionar el mismo objeto
+
         if (this.selectedObject) {
             this.deselectObject();
         }
 
         this.selectedObject = item;
-        this.originalPositions[item.id] = {
-            x: item.sprite.x,
-            y: item.sprite.y,
-            occupied_tiles: [...item.occupied_tiles]
-        };
 
-        // Mostrar panel de detalles en esquina fija
-        this.createDetailPanel(item);
-
-        // CORRECCIÓN: Marcar como draggable correctamente
-        this.input.setDraggable(item.sprite);
-
-        this.setupDragEvents(item);
-    }
-
-    /**
-     * Mostrar panel de detalles del objeto seleccionado en esquina fija.
-     */
-    createDetailPanel(item) {
-        if (this.detailPanel) this.detailPanel.destroy();
-        if (this.inventoryContainer) this.inventoryContainer.setVisible(false);
-
-        /* ---------- CONSTANTES ---------- */
-        const PAD = 10;
-        const ICON_SIZE = 100;
-        const SLOT_SIZE = 60;
-        const SLOT_PAD = 5;
-        const INV_NAV_H = 30;
-        const PANEL_W = SLOT_SIZE * 3 + SLOT_PAD * 4;
-        const PANEL_H = SLOT_SIZE * 3 + SLOT_PAD * 4 + INV_NAV_H + SLOT_PAD;
-        const BTN_W = 60;
-        const BTN_H = 25;
-
-        const nameStyle = { fontSize: '14px', color: '#000000' };
-        const btnTextStyle = { fontSize: '12px', color: '#ffffff' };
-
-        /* ---------- POSICIÓN PANEL ---------- */
-        const x = this.scale.width - PANEL_W - PAD;
-        const y = this.scale.height - PANEL_H - 100;
-
-        /* ---------- CONTENEDOR PRINCIPAL ---------- */
-        this.detailPanel = this.add.container(x, y)
-            .setDepth(10000)
-            .setScrollFactor(0);
-
-        /* ---------- TEXTURA DE FONDO (solo se crea 1ª vez) ---------- */
-        if (!this.textures.exists('detail_panel_bg')) {
-            const g = this.add.graphics();
-            g.fillStyle(0xffffff, 0.8)
-                .fillRoundedRect(0, 0, PANEL_W, PANEL_H, 5);
-            g.generateTexture('detail_panel_bg', PANEL_W, PANEL_H);
-            g.destroy();
-        }
-        this.detailPanel.add(this.add.image(0, 0, 'detail_panel_bg').setOrigin(0));
-
-        /* ---------- BOTÓN CERRAR ---------- */
-        const closeZone = this.add.zone(PANEL_W - PAD - 16, PAD, 16, 16)
-            .setOrigin(0)
-            .setInteractive({ useHandCursor: true });
-        closeZone.on('pointerdown', () => this.deselectObject());
-
-        const closeText = this.add.text(
-            closeZone.x + 8, closeZone.y, i18n.global.t('common.close'),
-            { fontSize: '16px', color: '#000000', fontStyle: 'bold' }
-        ).setOrigin(0.5, 0);
-
-        this.detailPanel.add([closeText, closeZone]);
-
-        /* ---------- NOMBRE DEL OBJETO ---------- */
-        const nameText = this.add.text(PAD, PAD, item.display_name, nameStyle)
-            .setOrigin(0, 0);
-        this.detailPanel.add(nameText);
-
-        /* ---------- ICONO DEL OBJETO ---------- */
-        const icon = this.add.image(
-            PANEL_W / 2,
-            nameText.y + nameText.height + PAD + ICON_SIZE / 2,
-            item.sprite_name
-        ).setOrigin(0.5);
-        icon.setScale(Math.min(ICON_SIZE / icon.width, ICON_SIZE / icon.height));
-        this.detailPanel.add(icon);
-
-        /* ---------- BOTÓN “BORRAR” ---------- */
-
-        /* textura roja compartida */
-        if (!this.textures.exists('btn_red_bg')) {
-            const g = this.add.graphics();
-            g.fillStyle(0xff0000, 1)
-                .fillRoundedRect(0, 0, BTN_W, BTN_H, 4);
-            g.generateTexture('btn_red_bg', BTN_W, BTN_H);
-            g.destroy();
+        // Mostrar el panel de detalles HTML
+        if (this.htmlDetailPanel) {
+            this.htmlDetailPanel.show(item);
         }
 
-        const btnX = PAD;
-        const btnY = icon.y + ICON_SIZE / 2 + PAD;
-
-        const deleteBg = this.add.image(btnX, btnY, 'btn_red_bg').setOrigin(0);
-        const deleteText = this.add.text(
-            btnX + BTN_W / 2,
-            btnY + BTN_H / 2,
-            i18n.global.t('common.delete'),
-            btnTextStyle
-        ).setOrigin(0.5);
-
-        const deleteZone = this.add.zone(btnX, btnY, BTN_W, BTN_H)
-            .setOrigin(0)
-            .setInteractive({ useHandCursor: true });
-        deleteZone.on('pointerdown', () => this.removeSelectedObject());
-
-        this.detailPanel.add([deleteBg, deleteText, deleteZone]);
+        // Si el modo mover está activo, hacer el objeto arrastrable
+        if (this.moveModeActive) {
+            this.originalPositions[item.id] = {
+                x: item.sprite.x,
+                y: item.sprite.y,
+                occupied_tiles: [...item.occupied_tiles]
+            };
+            this.setObjectDraggable(item);
+        }
     }
 
-
-    /**
-     * Eliminar el objeto seleccionado y añadirlo al inventario.
-     */
-    removeSelectedObject() {
-        if (!this.selectedObject) return;
-
-        // Emitir el evento por socket para que el servidor gestione la eliminación
-        socket.emit(RequestSocketsEnum.SCENE_REMOVE_ITEM, {
-            user_catalog_item_id: this.selectedObject.id
-        });
-
-        // Deseleccionar el objeto en la UI para dar feedback inmediato
-        this.deselectObject();
-    }
-
-    setupDragEvents(item) {
+    setObjectDraggable(item) {
         const sprite = item.sprite;
+        this.input.setDraggable(sprite, true);
+
         const tileWidth = 65;
         const tileHeight = 33;
         const halfTileWidth = tileWidth / 2;
@@ -658,8 +501,6 @@ export default class PrivateScene extends Phaser.Scene {
         sprite.off('dragend');
 
         sprite.on('drag', (pointer) => {
-            // Forzar el origen del sprite (su base) a seguir la posición del cursor.
-            // Esto anula el desfase del clic inicial y centra el arrastre en la base.
             sprite.x = pointer.worldX;
             sprite.y = pointer.worldY;
         });
@@ -677,7 +518,6 @@ export default class PrivateScene extends Phaser.Scene {
             );
 
             if (this.isPositionValid(newTiles, item.id)) {
-                // Emit socket event instead of updating locally
                 socket.emit(RequestSocketsEnum.SCENE_PUT_ITEM, {
                     user_catalog_item_id: item.id,
                     occupied_tiles: newTiles,
@@ -808,19 +648,16 @@ export default class PrivateScene extends Phaser.Scene {
     deselectObject() {
         if (!this.selectedObject) return;
 
-        this.selectedObject.isDragging = false;
-        // CORRECCIÓN: Desactivar el arrastre
-        this.input.setDraggable(this.selectedObject.sprite, false);
+        if (this.moveModeActive) {
+            this.input.setDraggable(this.selectedObject.sprite, false);
+        }
         this.selectedObject = null;
 
-        if (this.detailPanel) {
-            this.detailPanel.destroy();
-            this.detailPanel = null;
+        if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
+            this.htmlDetailPanel.hide();
         }
 
-        if (this.inventoryContainer) {
-
-        }
+        // HTML inventory remains visible when deselecting objects
     }
 
     /**
@@ -870,6 +707,11 @@ export default class PrivateScene extends Phaser.Scene {
             this.chatManager = null;
         }
 
+        if (this.htmlInventory) {
+            this.htmlInventory.destroy();
+            this.htmlInventory = null;
+        }
+
         const p = this.plugins.get('rexColorReplacePipeline');
         if (p) {
             this.plugins.stop('rexColorReplacePipeline');
@@ -881,113 +723,28 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     /**
-     * Crear panel de inventario reutilizable para optimizar rendimiento.
-     * Los slots se crean una vez y solo se actualiza su contenido.
+     * Crear inventario HTML que reemplaza el sistema Phaser
      */
-    createInventory() {
-        const PAD = 10;
-        const SLOT_SIZE = 60;
-        const SLOT_PAD = 5;
-        const NAV_H = 30;
-        const INV_W = SLOT_SIZE * 3 + SLOT_PAD * 4;
-        const INV_H = SLOT_SIZE * 3 + SLOT_PAD * 4 + NAV_H + SLOT_PAD;
-        const x = this.scale.width - INV_W - PAD;
-        const y = this.scale.height - INV_H - 100;
+    createHTMLInventory() {
+        this.htmlInventory = new InventoryPrivateSceneHtml(this);
+        this.htmlInventory.create();
+    }
 
-        if (this.inventoryContainer) this.inventoryContainer.destroy();
+    /**
+     * Crear panel de detalles HTML
+     */
+    createHTMLDetailPanel() {
+        this.htmlDetailPanel = new DetailPanelPrivateSceneHtml(this);
+        this.htmlDetailPanel.create();
+    }
 
-        this.inventoryContainer = this.add.container(x, y)
-            .setDepth(10000)
-            .setScrollFactor(0)
-            .setVisible(false);
-
-        if (!this.textures.exists('inv_bg')) {
-            const g = this.add.graphics();
-            g.fillStyle(0xffffff, 0.8);
-            g.fillRoundedRect(0, 0, INV_W, INV_H, 5);
-            g.generateTexture('inv_bg', INV_W, INV_H);
-            g.destroy();
+    /**
+     * Actualizar UI del inventario HTML
+     */
+    updateHTMLInventoryUI() {
+        if (this.htmlInventory) {
+            this.htmlInventory.updateInventoryUI();
         }
-        this.inventoryContainer.add(this.add.image(0, 0, 'inv_bg').setOrigin(0));
-
-        const closeButton = this.add.text(INV_W - SLOT_PAD, SLOT_PAD, i18n.global.t('common.close'), {
-            fontSize: '16px', color: '#000000', fontStyle: 'bold'
-        })
-            .setOrigin(1, 0)
-            .setInteractive({ useHandCursor: true });
-        closeButton.on('pointerdown', () => this.inventoryContainer.setVisible(false));
-        this.inventoryContainer.add(closeButton);
-
-        /* ---------- PAGINACIÓN (ARRIBA) ---------- */
-        const btnStyle = { fontSize: '18px', color: '#000000' };
-        const navY = SLOT_PAD + 5;
-        const prevBtn = this.add.text(SLOT_PAD + 10, navY, '<', btnStyle)
-            .setInteractive({ useHandCursor: true });
-        const nextBtn = this.add.text(INV_W - SLOT_PAD - 28, navY, '>', btnStyle)
-            .setInteractive({ useHandCursor: true });
-        this.pageText = this.add.text(INV_W / 2, navY, '', {
-            fontSize: '14px', color: '#000000'
-        }).setOrigin(0.5, 0);
-
-        prevBtn.on('pointerdown', () => {
-            this.inventoryPage = Math.max(0, this.inventoryPage - 1);
-            this.updateInventoryUI();
-        });
-        nextBtn.on('pointerdown', () => {
-            this.inventoryPage = Math.min(this.totalPages - 1, this.inventoryPage + 1);
-            this.updateInventoryUI();
-        });
-        this.inventoryContainer.add([prevBtn, nextBtn, this.pageText]);
-
-        /* ---------- TOTAL DE OBJETOS ---------- */
-        this.totalItemsText = this.add.text(INV_W / 2, INV_H - NAV_H + 5, '', {
-            fontSize: '12px', color: '#000000'
-        }).setOrigin(0.5, 0);
-        this.inventoryContainer.add(this.totalItemsText);
-
-        /* ---------- CREACIÓN DE SLOTS Y REJILLA DE FONDO ---------- */
-        this.inventorySlots = [];
-        const slotsY = navY + NAV_H;
-
-        if (!this.textures.exists('slot_grid_bg')) {
-            const gridGraphics = this.add.graphics();
-            gridGraphics.lineStyle(1, 0x000000, 0.2);
-            for (let i = 0; i < 9; i++) {
-                const col = i % 3;
-                const row = Math.floor(i / 3);
-                const slotX = SLOT_PAD + col * (SLOT_SIZE + SLOT_PAD);
-                const slotY = slotsY + row * (SLOT_SIZE + SLOT_PAD);
-                gridGraphics.strokeRect(slotX, slotY, SLOT_SIZE, SLOT_SIZE);
-            }
-            gridGraphics.generateTexture('slot_grid_bg', INV_W, INV_H);
-            gridGraphics.destroy();
-        }
-        this.inventoryContainer.add(this.add.image(0, 0, 'slot_grid_bg').setOrigin(0));
-
-
-        for (let i = 0; i < 9; i++) {
-            const col = i % 3;
-            const row = Math.floor(i / 3);
-            const slotX = SLOT_PAD + col * (SLOT_SIZE + SLOT_PAD);
-            const slotY = slotsY + row * (SLOT_SIZE + SLOT_PAD);
-
-            const slotContainer = this.add.container(slotX, slotY).setVisible(false);
-
-            const icon = this.add.image(SLOT_SIZE / 2, SLOT_SIZE / 2, '__DEFAULT')
-                .setOrigin(0.5)
-                .setInteractive({ useHandCursor: true });
-
-            const countText = this.add.text(SLOT_SIZE - 5, SLOT_SIZE - 5, '', {
-                fontSize: '14px', color: '#000000'
-            }).setOrigin(1);
-
-            slotContainer.add([icon, countText]);
-            this.inventoryContainer.add(slotContainer);
-
-            this.inventorySlots.push({ container: slotContainer, icon, countText, group: null });
-        }
-
-        this.updateInventoryUI();
     }
 
     updateInventoryUI() {
