@@ -16,7 +16,6 @@ export default class OverheadChatAnimation {
         this.leftBound = 0;
         this.textDepth = 9999;
         this.playerSprite = null;
-        this.avatarKey = null;
         this.areaStartHeight = 140;
 
         // Array para almacenar los contenedores de mensajes
@@ -39,7 +38,6 @@ export default class OverheadChatAnimation {
 
     addMessage(text, userName, playerSprite, avatarId, chatColor) {
         this.playerSprite = playerSprite;
-        this.avatarKey = null;
 
         let textColor = "#000000";
         let backgroundColor = "#ffffff";
@@ -56,15 +54,7 @@ export default class OverheadChatAnimation {
                 backgroundColor = "#323435";
                 break;
         }
-        switch (avatarId) {
-            case 5:
-                this.avatarKey = 'gata';
-                break;
-            case 12:
-                this.avatarKey = 'rasta';
-                break;
-        }
-        let avatarImage = `src/assets/game/avatars/${this.avatarKey}/cara_media.svg`;
+        let avatarImage = `/assets/game/chat/avatars/${avatarId}.svg`;
         const containerHTML = `
             <div style="
                 background-color: ${backgroundColor};
