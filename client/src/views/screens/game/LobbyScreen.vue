@@ -36,16 +36,16 @@
 </template>
 
 <script>
-import socket from "../../../sockets/socket";
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import UiElementsComponent from "../../components/game/lobby/UiElementsComponent.vue";
 import LobbyTabs from "../../components/game/lobby/LobbyTabsComponent.vue";
 import AreasTab from "../../components/game/lobby/AreasTabComponent.vue";
 import GamesTab from "../../components/game/lobby/GamesTabComponent.vue";
 import IslandsTab from "../../components/game/lobby/IslandsTabComponent.vue";
 import SearchTab from "../../components/game/lobby/SearchTabComponent.vue";
-import { useLobbyStore } from "../../../stores/LobbyStore";
+import { useLobbyStore } from "@/stores/LobbyStore";
 import { mapActions, mapState } from "pinia";
 
 export default {

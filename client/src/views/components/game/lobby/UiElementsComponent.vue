@@ -18,6 +18,13 @@
     <div class="lobby__logout">
       <img :src="asset_logout_image" alt="logout" @click="logout" />
     </div>
+    <div class="lobby__gachapon">
+      <GachaponMachineComponent
+        :title-text="'がんばれ!'"
+        :price-text="'100円'"
+        :speed="1"
+      />
+    </div>
   </div>
 </template>
 
@@ -30,6 +37,7 @@ import asset_flor_image from "@/assets/game/lobby/flor.webp";
 import asset_foreground_image from "@/assets/game/lobby/foreground.webp";
 import asset_marikita_image from "@/assets/game/lobby/marikita.webp";
 import asset_logout_image from "@/assets/game/lobby/logout.webp";
+import GachaponMachineComponent from "./GachaponMachineComponent.vue";
 
 export default {
   data() {
@@ -54,7 +62,9 @@ export default {
       console.error("Error cargando el avatar:", error);
     }
   },
-  components: {},
+  components: {
+    GachaponMachineComponent,
+  },
   methods: {
     logout() {
       if (this.isLogoutButtonClicked) return;
@@ -71,6 +81,13 @@ export default {
 </script>
 
 <style scoped>
+.lobby__gachapon {
+  position: absolute;
+  bottom: -133px;
+  right: 45%;
+  width: 45%;
+  z-index: 1;
+}
 .lobby__background img {
   position: absolute;
   top: -22px;
