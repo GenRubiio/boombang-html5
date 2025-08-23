@@ -18,13 +18,26 @@
     <div class="lobby__logout">
       <img :src="asset_logout_image" alt="logout" @click="logout" />
     </div>
+    <div class="lobby__label logout">
+      <span>Logout</span>
+    </div>
     <div class="lobby__gachapon">
       <GachaponMachineComponent
+        ref="gachaponMachine"
         :title-text="'がんばれ!'"
         :price-text="'100円'"
         :speed="1"
+        @request-purchase="showGachaAlert"
       />
     </div>
+    <div class="lobby__label gachapon">
+      <span>Gachapon</span>
+    </div>
+    <AlertWishGachaComponent
+      :visible="isGachaAlertVisible"
+      @confirm="handleGachaConfirm"
+      @cancel="handleGachaCancel"
+    />
   </div>
 </template>
 
@@ -38,10 +51,12 @@ import asset_foreground_image from "@/assets/game/lobby/foreground.webp";
 import asset_marikita_image from "@/assets/game/lobby/marikita.webp";
 import asset_logout_image from "@/assets/game/lobby/logout.webp";
 import GachaponMachineComponent from "./GachaponMachineComponent.vue";
+import AlertWishGachaComponent from "./gachapon/AlertWishGachaComponent.vue";
 
 export default {
   data() {
     return {
+      isGachaAlertVisible: false,
       asset_background_image,
       asset_flor_image,
       asset_foreground_image,
@@ -51,7 +66,7 @@ export default {
       isLogoutButtonClicked: false,
     };
   },
-  async created() {
+  async mounted() {
     try {
       const avatarUrl = new URL(
         `../../../../assets/game/lobby/avatars/${this.$socket.user.avatar_id}.svg`,
@@ -62,8 +77,10 @@ export default {
       console.error("Error cargando el avatar:", error);
     }
   },
+  beforeUnmount() {},
   components: {
     GachaponMachineComponent,
+    AlertWishGachaComponent,
   },
   methods: {
     logout() {
@@ -76,6 +93,25 @@ export default {
       });
       socket.emit(RequestSocketsEnum.LOGOUT);
     },
+    showGachaAlert() {
+      this.isGachaAlertVisible = true;
+    },
+    handleGachaConfirm() {
+      this.isGachaAlertVisible = false;
+      //socket.off("response-gacha-start");
+      //socket.on("response-gacha-start", (data) => {
+      //  console.log("Gacha started:", data);
+      //  // Assuming the response indicates success, trigger the animation.
+      //  // You might want to add a check here based on the `data` content.
+      //  this.$refs.gachaponMachine.triggerAnimation();
+      //});
+      //socket.emit("request-gacha-start"); // Placeholder for actual socket event
+      this.$refs.gachaponMachine.triggerAnimation();
+    },
+    handleGachaCancel() {
+      this.isGachaAlertVisible = false;
+      this.$refs.gachaponMachine.enableHandle();
+    },
   },
 };
 </script>
@@ -83,7 +119,7 @@ export default {
 <style scoped>
 .lobby__gachapon {
   position: absolute;
-  bottom: -133px;
+  bottom: -157px;
   right: 45%;
   width: 45%;
   z-index: 1;
@@ -192,5 +228,32 @@ export default {
   100% {
     transform: translateY(0);
   }
+}
+
+.lobby__label {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  z-index: 1;
+  width: 127px;
+  display: flex;
+  justify-content: center;
+  border: 5px solid white;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #019a02;
+  color: white;
+  font-weight: bold;
+}
+
+.lobby__label.logout {
+  right: 10px;
+  width: 127px;
+}
+
+.lobby__label.gachapon {
+  left: 254px;
+  width: 150px;
 }
 </style>

@@ -16,30 +16,10 @@
           </div>
         </div>
 
-        <!-- Capa UI -->
-        <div class="ui-layer">
-          <div class="title-container">
-            <div ref="titleUI" class="title">
-              <h2 class="wiggle">Tap to get a prize!</h2>
-            </div>
-          </div>
-          <div class="prize-container">
-            <div ref="prizeBallContainer" class="prize-ball-container"></div>
-            <div class="prize-reward-container">
-              <div class="shine">
-                <img :src="shineSrc" alt="shine" />
-              </div>
-              <div class="prize">
-                <img class="wiggle" :src="currentPrize.image" alt="prize" />
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- confetti container se inyecta dinámicamente -->
     </div>
-    <div id="confetti-container"></div>
   </div>
 </template>
 
@@ -49,6 +29,7 @@
  * - Convierte tu HTML/CSS/JS a un componente Vue.
  * - Usa GSAP 3 para animaciones (incluye RoughEase).
  */
+import socket from "@/sockets/socket";
 import { gsap } from "gsap";
 import { RoughEase } from "gsap/EasePack";
 
@@ -56,6 +37,7 @@ gsap.registerPlugin(RoughEase);
 
 export default {
   name: "GachaMachine",
+  emits: ['request-purchase'],
 
   props: {
     titleText: {
@@ -91,25 +73,6 @@ export default {
       jitters: [],
       started: false,
       prizeBall: null,
-      currentPrize: { image: "", title: "" },
-      prizesPool: [
-        {
-          image: "https://assets.codepen.io/2509128/prize1.png",
-          title: "Bunny",
-        },
-        {
-          image: "https://assets.codepen.io/2509128/prize2.png",
-          title: "Teddy Bear",
-        },
-        {
-          image: "https://assets.codepen.io/2509128/prize3.png",
-          title: "Polar Bear",
-        },
-        {
-          image: "https://assets.codepen.io/2509128/prize4.png",
-          title: "Polar Bear Bride",
-        },
-      ],
       // refs de gsap timelines/raf
       timelines: [],
       rafId: null,
@@ -133,8 +96,10 @@ export default {
     // quitar listeners si alguno quedó
     if (this.$refs.handle)
       this.$refs.handle.replaceWith(this.$refs.handle.cloneNode(true));
-    if (this.prizeBall?.dom)
-      this.prizeBall.dom.replaceWith(this.prizeBall.dom.cloneNode(true));
+    if (this.prizeBall?.dom) {
+        const newElement = this.prizeBall.dom.cloneNode(true);
+        this.prizeBall.dom.parentNode.replaceChild(newElement, this.prizeBall.dom);
+    }
   },
 
   methods: {
@@ -151,10 +116,6 @@ export default {
     },
 
     async bootstrap() {
-      // set prize al inicio
-      this.currentPrize =
-        this.prizesPool[Math.floor(Math.random() * this.prizesPool.length)];
-
       const app = this.$refs.app;
       app.classList.add("gotcha");
 
@@ -164,10 +125,6 @@ export default {
         .map((ch) => `<span>${ch}</span>`)
         .join("");
       machineEl.querySelector(".price").innerText = this.priceText;
-
-      // estados iniciales gsap (de vmin a px)
-      gsap.set(this.$refs.titleUI, { y: this.vmin(120) }); // 120vmin -> 645px
-      gsap.set(".prize-reward-container", { opacity: 0 });
 
       // crear bolas
       this.createBalls();
@@ -197,7 +154,13 @@ export default {
       });
     },
 
-    async start() {
+    calledEmulator() {
+      console.log("Emulador llamado");
+      //socket.emit("request-gacha-start");
+      this.resetMachine();
+    },
+
+    async triggerAnimation() {
       this.started = true;
 
       // girar manija y vibrar
@@ -283,153 +246,22 @@ export default {
 
       const onPick = () => {
         this.prizeBall.dom.style.cursor = "default";
-        this.pickup();
+        this.calledEmulator();
       };
       this.prizeBall.dom.addEventListener("click", onPick, { once: true });
     },
 
-    pickup() {
-      const rect = this.prizeBall.dom.getBoundingClientRect();
-      // Antes se convertía a vmin. Ahora mantenemos la lógica y pasamos a px:
-      const xPx = (rect.x / window.innerHeight) * 100 * 5.375;
-      const yPx = (rect.y / window.innerHeight) * 100 * 5.375;
 
-      this.$refs.prizeBallContainer.appendChild(this.prizeBall.dom);
-      const rotate = this.prizeBall.rotate;
-      this.prizeBall.x = 0;
-      this.prizeBall.y = 0;
-      this.prizeBall.rotate = 0;
 
-      this.addAnimClass(".game-layer", "dim");
 
-      this.prizeBall.dom.style.left = 0;
-      this.prizeBall.dom.style.top = 0;
-
-      gsap.set(this.prizeBall.dom, {
-        x: xPx,
-        y: yPx,
-        rotate,
-        duration: 1,
-      });
-      gsap.to(this.$refs.prizeBallContainer, {
-        x: -this.vmin(4), // -21.5px
-        y: -this.vmin(4),
-        duration: 1,
-      });
-
-      const tl = gsap.timeline();
-      this.timelines.push(tl);
-
-      tl.to(this.prizeBall.dom, {
-        x: this.vw(50), // "50vw" → px
-        y: this.vmin(50), // "50vmin" → 268.75px
-        scale: 2,
-        rotate: -180,
-        duration: 1,
-      })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          scaleX: 2.1,
-          ease: "power1.inOut",
-          scaleY: 1.9,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.inOut",
-          scaleX: 1.9,
-          scaleY: 2.1,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.inOut",
-          scaleX: 2.1,
-          scaleY: 1.9,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.inOut",
-          scaleX: 1.9,
-          scaleY: 2.1,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.inOut",
-          scaleX: 2.1,
-          scaleY: 1.9,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.inOut",
-          scaleX: 1.9,
-          scaleY: 2.1,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.5,
-          ease: "power1.out",
-          scaleX: 2.6,
-          scaleY: 1.6,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.out",
-          scaleX: 1.6,
-          scaleY: 2.4,
-          onComplete: this.pop,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.out",
-          scaleX: 2.1,
-          scaleY: 1.9,
-        })
-        .to(this.prizeBall.dom, {
-          duration: 0.1,
-          ease: "power1.out",
-          scaleX: 2,
-          scaleY: 2,
-        });
-    },
-
-    pop() {
-      this.makeConfetti(this.$refs.app, {
-        speedY: -0.5,
-        speedRandY: 1,
-        speedRandX: 0.75,
-        gravity: 0.02,
-        y: 50,
-        randX: 6,
-        randY: 6,
-        size: 8,
-        sizeRand: 4,
-        count: 128,
-      });
-
-      gsap.set(".prize-reward-container .prize", { scale: 0 });
-      gsap.to(".prize-reward-container", { opacity: 1, duration: 0.3 });
-      gsap.to(".prize-reward-container .prize", {
-        scale: 1,
-        duration: 0.5,
-        ease: "back.out",
-      });
-      gsap.to(this.prizeBall.dom, { opacity: 0 });
-
-      gsap.set(this.$refs.titleUI, { y: -this.vmin(50) }); // -268.75px
-      this.$refs.titleUI.children[0].innerHTML = `You got a<br>${this.currentPrize.title}`;
-      gsap.to(this.$refs.titleUI, { delay: 1, y: this.vmin(5), duration: 0.6 }); // 26.875px
-
-      const prizeContainer = document.querySelector(".prize-container");
-      prizeContainer.style.pointerEvents = "all";
-      prizeContainer.addEventListener("click", this.reset, { once: true });
-    },
-
-    reset() {
-      // Limpiar para re-jugar
-      const prizeContainer = document.querySelector(".prize-container");
-      prizeContainer.style.pointerEvents = "none";
-
-      // Ocultar premio y título
-      gsap.to(".prize-reward-container", { opacity: 0, duration: 0.3 });
-      gsap.to(this.$refs.titleUI, { y: this.vmin(120), duration: 0.6 }); // 645px
+    resetMachine() {
+      // Detener todas las animaciones
+      try {
+        this.jitters.forEach((tl) => tl && tl.pause && tl.pause());
+        this.timelines.forEach((tl) => tl && tl.kill && tl.kill());
+      } catch (_) {}
+      this.jitters = [];
+      this.timelines = [];
 
       // Resetear estado del juego
       this.started = false;
@@ -439,29 +271,20 @@ export default {
       this.balls = [];
       this.createBalls();
 
-      // Quitar clase 'dim'
-      this.removeAnimClass(".game-layer", "dim");
-
       // Preparar para la siguiente ronda
       this.prepare();
-
-      // Asignar nuevo premio
-      this.currentPrize =
-        this.prizesPool[Math.floor(Math.random() * this.prizesPool.length)];
     },
 
     enableHandle() {
       const handle = this.$refs.handle;
       if (!handle) return;
 
-      const onceStart = () => {
-        handle.style.cursor = "default";
-        this.start();
-        handle.removeEventListener("click", onceStart);
+      const onRequest = () => {
+        this.$emit('request-purchase');
       };
 
       handle.style.cursor = "pointer";
-      handle.addEventListener("click", onceStart, { once: true });
+      handle.addEventListener("click", onRequest, { once: true });
     },
 
     createBalls() {
@@ -611,70 +434,6 @@ export default {
       }
     },
 
-    makeConfetti($parent, cfg = {}) {
-      const {
-        count = 100,
-        x = 50,
-        y = 50,
-        randX = 10,
-        randY = 10,
-        speedX = 0,
-        speedY = -2,
-        speedRandX = 0.5,
-        speedRandY = 0.5,
-        gravity = 0.01,
-        size = 10,
-        sizeRand = 5,
-      } = cfg;
-
-      const container = document.createElement("div");
-      container.classList.add("confetti");
-      $parent.insertAdjacentElement("beforeend", container);
-
-      const particles = [];
-      for (let i = 0; i < count; i++) {
-        const span = document.createElement("span");
-        const settings = {
-          dom: span,
-          x: x + Math.random() * randX * 2 - randX,
-          y: y + Math.random() * randY * 2 - randY,
-          speedX: speedX + Math.random() * speedRandX * 2 - speedRandX,
-          speedY: speedY + Math.random() * speedRandY * 2 - speedRandY,
-          size: size + Math.random() * sizeRand * 2 - sizeRand,
-        };
-        span.style.backgroundColor = `hsl(${Math.random() * 360}deg, 80%, 60%)`;
-        span.style.setProperty("--rx", Math.random() * 2 - 1);
-        span.style.setProperty("--ry", Math.random() * 2 - 1);
-        span.style.setProperty("--rz", Math.random() * 2 - 1);
-        span.style.setProperty("--rs", Math.random() * 2 + 0.5);
-        particles.push(settings);
-        container.appendChild(span);
-      }
-
-      const update = () => {
-        particles.forEach((p, i) => {
-          if (p.y > 100) {
-            particles.splice(i, 1);
-            p.dom.remove();
-            return;
-          }
-          p.dom.style.setProperty("--size", p.size);
-          p.dom.style.left = p.x + "%";
-          p.dom.style.top = p.y + "%";
-          p.x += p.speedX;
-          p.y += p.speedY;
-          p.speedY += gravity;
-        });
-
-        if (particles.length) {
-          this.rafId = requestAnimationFrame(update);
-        } else {
-          container.remove();
-        }
-      };
-
-      update();
-    },
   },
 };
 </script>
@@ -762,38 +521,6 @@ html {
   transition: 0.5s linear;
 }
 
-/* ====== Confetti ====== */
-#confetti-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 100;
-}
-
-.confetti {
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  pointer-events: none;
-  perspective: 100vmin;
-
-  span {
-    --size: 5;
-    display: block;
-    position: absolute;
-    width: calc(var(--size) * 1px);
-    height: calc(var(--size) * 1px);
-    background-color: blue;
-    animation: rotate linear calc(var(--rs) * 1s) infinite both;
-  }
-}
 
 #gotcha.gotcha {
   --gachapon-scale: 0.65;
@@ -913,88 +640,6 @@ html {
       }
     }
 
-    .ui-layer {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      pointer-events: none;
-
-      .title-container {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10;
-
-        .title {
-          h2 {
-            --stroke-color: #f06e5b;
-            text-align: center;
-            @extend %stroke;
-            font-size: 26.875px; // 5vmin
-          }
-        }
-      }
-
-      .prize-container {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        .prize-ball-container {
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-
-        .prize-reward-container {
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 1;
-
-          & > * {
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .prize {
-            img {
-              height: 268.75px; // 50vmin
-            }
-          }
-
-          .shine {
-            img {
-              height: 537.5px; // 100vmin
-              animation: spin linear 5s infinite forwards;
-            }
-          }
-        }
-      }
-    }
 
     .ball {
       --size: 43px; // 8vmin
@@ -1076,12 +721,4 @@ html {
   }
 }
 
-@keyframes rotate {
-  from {
-    transform: rotate3d(var(--rx), var(--ry), var(--rz), 0turn);
-  }
-  to {
-    transform: rotate3d(var(--rx), var(--ry), var(--rz), 1turn);
-  }
-}
 </style>
