@@ -55,6 +55,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('jwt-auto-login', [LoginApiController::class, 'jwtAutoLogin']);
             Route::post('logout', [LogoutApiController::class, 'index']);
         });
+
         Route::prefix('user')->group(function () {
             Route::post('increase-stats', [IncreaseStatsApiController::class, 'index']);
             Route::post('update-description', [UpdateDescriptionApiController::class, 'index']);
@@ -89,6 +90,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::prefix('ranking')->group(function () {
             Route::post('categories', [RankingApiController::class, 'getCategories']);
             Route::post('get', [RankingApiController::class, 'get']);
+        });
+
+        Route::prefix('catalog')->group(function () {
+            Route::post('lobby-gachapon', [GachaponApiController::class, 'get']);
         });
     });
 });
