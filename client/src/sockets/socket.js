@@ -7,6 +7,8 @@ const socket = io(import.meta.env.VITE_SERVER_URL, {
     reconnection: true, // Intenta reconectar automáticamente
     reconnectionAttempts: 5, // Número de intentos antes de fallar
     reconnectionDelay: 1000, // Espera 1 segundo entre intentos
+    //upgrade: false,              // quita intento de upgrade
+    //perMessageDeflate: false,    // menos CPU (a costa de más ancho de banda)
 });
 
 socket.on('connect', () => {

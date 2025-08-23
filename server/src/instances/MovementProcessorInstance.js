@@ -12,6 +12,7 @@ class MovementProcessorInstance {
     constructor(scene) {
         this.scene = scene;
         this.processing = false;
+        this.#startReservationCleanup();
     }
 
     startProcessing() {
@@ -29,10 +30,8 @@ class MovementProcessorInstance {
         try {
             if (user.isActionBlocked(AnimationEnum.WALK)) return;
 
-            if (user.lastReservedTile) {
-                delete this.scene.reservedTiles[user.lastReservedTile];
-                user.lastReservedTile = null;
-            }
+            // Limpiar reserva anterior
+            this.#clearUserReservation(user);
 
             if (!user.finalTarget) {
                 return;
@@ -52,6 +51,8 @@ class MovementProcessorInstance {
             if (!path || path.length <= 1) {
                 this.scene.emit(ResponseSocketsEnum.USER_MOVE, { id: user.socket.id, path: [], isLastStep: true });
                 user.finalTarget = null;
+                // Asegurar limpieza de reservas cuando no hay path válido
+                this.#clearUserReservation(user);
                 return;
             }
 
@@ -69,6 +70,8 @@ class MovementProcessorInstance {
                     user.finalTarget = null;
                 }
                 this.scene.emit(ResponseSocketsEnum.USER_MOVE, { id: user.socket.id, path: [], isLastStep: true });
+                // Limpiar reservas cuando la posición está ocupada
+                this.#clearUserReservation(user);
                 return;
             }
 
@@ -76,6 +79,8 @@ class MovementProcessorInstance {
             if (!isFinalStep) {
                 if (this.scene.reservedTiles[key] && this.scene.reservedTiles[key] !== user.id) {
                     this.scene.emit(ResponseSocketsEnum.USER_MOVE, { id: user.socket.id, path: [], isLastStep: true });
+                    // Limpiar reservas cuando hay conflicto de reservas
+                    this.#clearUserReservation(user);
                     return;
                 }
                 this.scene.reservedTiles[key] = user.id;
@@ -152,6 +157,49 @@ class MovementProcessorInstance {
 
     stopProcessing() {
         this.processing = false;
+    }
+
+    #clearUserReservation(user) {
+        if (user.lastReservedTile) {
+            delete this.scene.reservedTiles[user.lastReservedTile];
+            user.lastReservedTile = null;
+        }
+    }
+
+    #startReservationCleanup() {
+        // Limpiar reservas huérfanas cada 5 segundos
+        this.cleanupInterval = setInterval(() => {
+            this.#cleanOrphanedReservations();
+        }, 5000);
+    }
+
+    #cleanOrphanedReservations() {
+        const activeUserIds = new Set(this.scene.users.map(user => user.id));
+        
+        // Eliminar reservas de usuarios que ya no están en la escena
+        for (let key in this.scene.reservedTiles) {
+            const userId = this.scene.reservedTiles[key];
+            if (!activeUserIds.has(userId)) {
+                delete this.scene.reservedTiles[key];
+                logger.log(`Cleaned orphaned reservation at ${key} for user ${userId}`, 'info');
+            }
+        }
+
+        // Limpiar reservas de usuarios que no tienen finalTarget
+        this.scene.users.forEach(user => {
+            if (user.lastReservedTile && !user.finalTarget) {
+                delete this.scene.reservedTiles[user.lastReservedTile];
+                user.lastReservedTile = null;
+                logger.log(`Cleaned stale reservation for user ${user.username}`, 'info');
+            }
+        });
+    }
+
+    stopProcessing() {
+        this.processing = false;
+        if (this.cleanupInterval) {
+            clearInterval(this.cleanupInterval);
+        }
     }
 }
 
