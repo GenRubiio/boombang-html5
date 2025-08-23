@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="gachapon-root">
     <div ref="app" id="gotcha" class="gotcha">
       <div class="container">
         <!-- Capa del juego -->
@@ -15,7 +15,6 @@
             <img ref="handle" class="handle" :src="handleSrc" alt="handle" />
           </div>
         </div>
-
       </div>
 
       <!-- confetti container se inyecta dinámicamente -->
@@ -37,7 +36,7 @@ gsap.registerPlugin(RoughEase);
 
 export default {
   name: "GachaMachine",
-  emits: ['request-purchase'],
+  emits: ["request-purchase"],
 
   props: {
     titleText: {
@@ -97,8 +96,11 @@ export default {
     if (this.$refs.handle)
       this.$refs.handle.replaceWith(this.$refs.handle.cloneNode(true));
     if (this.prizeBall?.dom) {
-        const newElement = this.prizeBall.dom.cloneNode(true);
-        this.prizeBall.dom.parentNode.replaceChild(newElement, this.prizeBall.dom);
+      const newElement = this.prizeBall.dom.cloneNode(true);
+      this.prizeBall.dom.parentNode.replaceChild(
+        newElement,
+        this.prizeBall.dom
+      );
     }
   },
 
@@ -251,9 +253,6 @@ export default {
       this.prizeBall.dom.addEventListener("click", onPick, { once: true });
     },
 
-
-
-
     resetMachine() {
       // Detener todas las animaciones
       try {
@@ -280,7 +279,7 @@ export default {
       if (!handle) return;
 
       const onRequest = () => {
-        this.$emit('request-purchase');
+        this.$emit("request-purchase");
       };
 
       handle.style.cursor = "pointer";
@@ -433,96 +432,106 @@ export default {
         apply(elOrSelector);
       }
     },
-
   },
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap");
 
-/* ====== SCSS util stroke ====== */
-%stroke {
-  text-shadow: 0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white),
-    0px 0px 2px var(--stroke-color, white);
-  filter: drop-shadow(0px 2px 0px rgba(0, 0, 0, 0.2));
-}
-
-/* ====== Reset mínimo ====== */
-*,
-*::before,
-*::after {
+/* ====== Reset y base SOLO dentro del componente ====== */
+.gachapon-root,
+.gachapon-root *,
+.gachapon-root *::before,
+.gachapon-root *::after {
   box-sizing: border-box;
-  font-family: inherit;
   padding: 0;
   margin: 0;
+  font-family: inherit;
 }
 
-html {
-  font-size: 62.5%;
-  height: 100%;
+.gachapon-root {
+  font-size: 10px; /* root local: 1em ≈ 10px */
   color: white;
   font-family: "M PLUS Rounded 1c", "Trebuchet MS", Arial, sans-serif;
-
-  body {
-    font-size: 1.6rem;
-    overflow: hidden;
-    height: 100%;
-    position: relative;
-    user-select: none;
-  }
+  width: 100%;
+  height: 100%;
+  position: relative;
+  user-select: none;
+  overflow: hidden;
 }
 
-.dim[data-animate] {
+.gachapon-root .dim[data-animate] {
   filter: brightness(0.6) saturate(0.8);
   transition: 0.5s linear;
 }
 
+/* ====== keyframes únicos ====== */
+@keyframes gacha-blink {
+  0% {
+    color: #ffc7e5;
+  }
+  20% {
+    color: #fcff33;
+  }
+  100% {
+    color: #ffc7e5;
+  }
+}
 
-#gotcha.gotcha {
+@keyframes gacha-wiggle {
+  0% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes gacha-click {
+  0% {
+    transform: rotate(-30deg) translateY(0vmin);
+  }
+  80% {
+    transform: rotate(-30deg) translateY(5vmin);
+  }
+  100% {
+    transform: rotate(-30deg) translateY(0vmin);
+  }
+}
+
+@keyframes gacha-spin {
+  from {
+    transform: rotate(1turn);
+  }
+  to {
+    transform: rotate(0turn);
+  }
+}
+
+/* ====== util stroke ====== */
+%gacha-stroke {
+  text-shadow: 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white), 0 0 2px var(--stroke-color, white),
+    0 0 2px var(--stroke-color, white);
+  filter: drop-shadow(0px 2px 0px rgba(0, 0, 0, 0.2));
+}
+
+/* ====== estructura del componente ====== */
+.gachapon-root #gotcha.gotcha {
   --gachapon-scale: 0.65;
   width: 100%;
   height: 100%;
@@ -573,44 +582,9 @@ html {
           top: 10%;
           width: 100%;
           text-align: center;
-          @extend %stroke;
+          @extend %gacha-stroke;
           font-size: 26.875px; // 5vmin
           z-index: 3;
-
-          span {
-            animation: blink 0.8s linear both infinite;
-
-            &:nth-child(1) {
-              animation-delay: 0.12s;
-            }
-            &:nth-child(2) {
-              animation-delay: 0.24s;
-            }
-            &:nth-child(3) {
-              animation-delay: 0.36s;
-            }
-            &:nth-child(4) {
-              animation-delay: 0.48s;
-            }
-            &:nth-child(5) {
-              animation-delay: 0.6s;
-            }
-            &:nth-child(6) {
-              animation-delay: 0.72s;
-            }
-            &:nth-child(7) {
-              animation-delay: 0.84s;
-            }
-            &:nth-child(8) {
-              animation-delay: 0.96s;
-            }
-            &:nth-child(9) {
-              animation-delay: 1.08s;
-            }
-            &:nth-child(10) {
-              animation-delay: 1.2s;
-            }
-          }
         }
 
         .price {
@@ -639,86 +613,76 @@ html {
         }
       }
     }
-
-
-    .ball {
-      --size: 43px; // 8vmin
-      --outline: #4c3fc2;
-      --color1: #2facff;
-      --color2: #ff8ff6;
-
-      width: var(--size);
-      height: var(--size);
-      border-radius: 100%;
-      background-color: var(--color1);
-      border: solid 4px var(--outline);
-      position: absolute;
-      overflow: hidden;
-
-      &::after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 50%;
-        height: 200%;
-        width: 200%;
-        background-color: var(--color2);
-        border-radius: 100%;
-        border: inherit;
-        transform: translate(-25%, -5%);
-      }
-    }
-  }
-
-  .wiggle {
-    animation: wiggle 2s ease-in-out infinite both;
   }
 }
 
-/* ====== keyframes ====== */
-@keyframes blink {
-  0% {
-    color: #ffc7e5;
-  }
-  20% {
-    color: #fcff33;
-  }
-  100% {
-    color: #ffc7e5;
+/* ====== letras animadas en el título (spans generados) ====== */
+.gachapon-root :deep(.title span) {
+  animation: gacha-blink 0.8s linear both infinite;
+}
+
+.gachapon-root :deep(.title span:nth-child(1)) {
+  animation-delay: 0.12s;
+}
+.gachapon-root :deep(.title span:nth-child(2)) {
+  animation-delay: 0.24s;
+}
+.gachapon-root :deep(.title span:nth-child(3)) {
+  animation-delay: 0.36s;
+}
+.gachapon-root :deep(.title span:nth-child(4)) {
+  animation-delay: 0.48s;
+}
+.gachapon-root :deep(.title span:nth-child(5)) {
+  animation-delay: 0.6s;
+}
+.gachapon-root :deep(.title span:nth-child(6)) {
+  animation-delay: 0.72s;
+}
+.gachapon-root :deep(.title span:nth-child(7)) {
+  animation-delay: 0.84s;
+}
+.gachapon-root :deep(.title span:nth-child(8)) {
+  animation-delay: 0.96s;
+}
+.gachapon-root :deep(.title span:nth-child(9)) {
+  animation-delay: 1.08s;
+}
+.gachapon-root :deep(.title span:nth-child(10)) {
+  animation-delay: 1.2s;
+}
+
+/* ====== bolas creadas dinámicamente ====== */
+.gachapon-root :deep(.ball) {
+  --size: 43px; // 8vmin
+  --outline: #4c3fc2;
+  --color1: #2facff;
+  --color2: #ff8ff6;
+
+  width: var(--size);
+  height: var(--size);
+  border-radius: 100%;
+  background-color: var(--color1);
+  border: solid 4px var(--outline);
+  position: absolute;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    height: 200%;
+    width: 200%;
+    background-color: var(--color2);
+    border-radius: 100%;
+    border: inherit;
+    transform: translate(-25%, -5%);
   }
 }
 
-@keyframes wiggle {
-  0% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
-  100% {
-    transform: rotate(-5deg);
-  }
+/* ====== clases añadidas por JS ====== */
+.gachapon-root :deep(.wiggle) {
+  animation: gacha-wiggle 2s ease-in-out infinite both;
 }
-
-@keyframes click {
-  0% {
-    transform: rotate(-30deg) translateY(0vmin);
-  }
-  80% {
-    transform: rotate(-30deg) translateY(5vmin);
-  }
-  100% {
-    transform: rotate(-30deg) translateY(0vmin);
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(1turn);
-  }
-  to {
-    transform: rotate(0turn);
-  }
-}
-
 </style>
