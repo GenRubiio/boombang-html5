@@ -24,9 +24,17 @@ class CatalogItemRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            // 'name' => 'required|min:5|max:255'
+        $rules = [
+            'name' => 'required',
+            'description' => 'required',
+            'sprite_name' => 'required|unique:catalog_items,sprite_name,' . $this->route('id') . ',id',
+            'image' => 'required',
+            'atlas' => 'nullable|json',
+            'price' => 'required|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0|max:100',
         ];
+
+        return $rules;
     }
 
     /**

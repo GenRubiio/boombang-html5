@@ -13,11 +13,6 @@ import TintManager from "./managers/TintManager";
 import PrivateSceneUpdateColorsService from "./services/PrivateScene/PrivateSceneUpdateColorsService";
 import RequestSocketsEnum from "../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
-import asset_ui_backpack_image from "@/assets/game/scene/ui/backpack.webp";
-import asset_ui_move_item_image from "@/assets/game/scene/ui/move_item.webp";
-import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
-import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
-import asset_ui_color_scene_image from "@/assets/game/scene/ui/color_scene.webp";
 import ButtonsPrivateSceneHtml from "@/phaser/html/private-scene/ButtonsPrivateSceneHtml";
 import InventoryPrivateSceneHtml from "@/phaser/html/private-scene/InventoryPrivateSceneHtml";
 import DetailPanelPrivateSceneHtml from "@/phaser/html/private-scene/DetailPanelPrivateSceneHtml";
@@ -60,29 +55,25 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.setCORS('anonymous');
         PrivateSceneLoader.main(this, this.sceneType, true);
         this.load.image("tile", asset_tile_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
 
         if (this.sceneData.myScene) {
-            // Cargar assets de UI
-            this.load.image("asset_ui_backpack_image", asset_ui_backpack_image);
-            this.load.image("asset_ui_move_item_image", asset_ui_move_item_image);
-            this.load.image("asset_ui_color_scene_image", asset_ui_color_scene_image);
-            this.load.image("asset_ui_shop_image", asset_ui_shop_image);
-            this.load.image("asset_ui_avatars_image", asset_ui_avatars_image);
-
             // Cargar dinámicamente los assets de inventario
             this.backpackUserItems.forEach(item => {
-                this.load.image(item.sprite_name, 'assets/game/objects/' + item.sprite_name + '.webp');
+                let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+                this.load.image(item.sprite_name, imageSrc);
             });
         }
 
         // Cargar objetos de escena existentes
         this.sceneItems.forEach(item => {
             if (!this.textures.exists(item.sprite_name)) {
-                this.load.image(item.sprite_name, 'assets/game/objects/' + item.sprite_name + '.webp');
+                let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+                this.load.image(item.sprite_name, imageSrc);
             }
         });
     }
@@ -201,7 +192,8 @@ export default class PrivateScene extends Phaser.Scene {
                         }
                     } else {
                         // Texture doesn't exist, load it first
-                        this.load.image(textureName, 'assets/game/objects/' + textureName + '.webp');
+                        let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+                        this.load.image(textureName, imageSrc);
 
                         this.load.once(`filecomplete-image-${textureName}`, () => {
                             this.sceneItems.push(item);
