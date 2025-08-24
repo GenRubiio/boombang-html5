@@ -4,72 +4,183 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CatalogItemRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
-/**
- * Class CatalogItemCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class CatalogItemCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
-     */
     public function setup()
     {
-        CRUD::setModel(\App\Models\CatalogItem::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/catalog-item');
-        CRUD::setEntityNameStrings('catalog item', 'catalog items');
+        $this->crud->setModel(\App\Models\CatalogItem::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/catalog-item');
+        $this->crud->setEntityNameStrings('artículo de catálogo', 'artículos de catálogo');
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        $this->crud->addColumn([
+            'name' => 'id',
+            'label' => 'ID',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'image',
+            'label' => 'Imagen',
+            'type' => 'image',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'category_id',
+            'label' => 'Categoría',
+            'type' => 'select',
+            'entity' => 'category',
+            'attribute' => 'name',
+            'model' => "App\Models\CatalogCategory",
+        ]);
+        $this->crud->addColumn([
+            'name' => 'price',
+            'label' => 'Precio',
+            'type' => 'number',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'is_active',
+            'label' => 'Activo',
+            'type' => 'btnToggle',
+        ]);
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CatalogItemRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        $this->crud->setValidation(CatalogItemRequest::class);
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $this->crud->addFields([
+            [
+                'name' => 'name',
+                'label' => 'Nombre',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'description',
+                'label' => 'Descripción',
+                'type' => 'textarea',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'category_id',
+                'label' => 'Categoría',
+                'type' => 'select2',
+                'entity' => 'category',
+                'attribute' => 'name',
+                'model' => "App\Models\CatalogCategory",
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'sprite_name',
+                'label' => 'Nombre del Sprite',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'image',
+                'label' => 'Imagen',
+                'type' => 'image',
+                'disk'  => 'uploads',
+                'upload' => true,
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'spreadsheet',
+                'label' => 'Phaser Spreadsheet',
+                'type' => 'upload',
+                'upload' => true,
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'atlas',
+                'label' => 'Phaser Atlas',
+                'type' => 'upload',
+                'upload' => true,
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'price',
+                'label' => 'Precio',
+                'type' => 'number',
+                'tab' => 'Precios'
+            ],
+            [
+                'name' => 'price_type',
+                'label' => 'Tipo de Precio',
+                'type' => 'select_from_array',
+                'options' => [
+                    'golden_coins' => 'Monedas Doradas',
+                    'silver_coins' => 'Monedas Plateadas',
+                ],
+                'tab' => 'Precios'
+            ],
+            [
+                'name' => 'discount',
+                'label' => 'Descuento',
+                'type' => 'number',
+                'tab' => 'Precios'
+            ],
+            [
+                'name' => 'stars',
+                'label' => 'Estrellas',
+                'type' => 'select_from_array',
+                'options' => [
+                    1 => '1 Estrella',
+                    2 => '2 Estrellas',
+                    3 => '3 Estrellas',
+                    4 => '4 Estrellas',
+                    5 => '5 Estrellas',
+                ],
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'map_size',
+                'label' => 'Tamaño del Mapa',
+                'type' => 'text',
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'in_lobby_gacha',
+                'label' => 'En Lobby Gacha',
+                'type' => 'checkbox',
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'show_in_inventory',
+                'label' => 'Mostrar en Inventario',
+                'type' => 'checkbox',
+                'default' => true,
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'is_purchasable',
+                'label' => 'Comprable',
+                'type' => 'checkbox',
+                'default' => true,
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'is_active',
+                'label' => 'Activo',
+                'type' => 'checkbox',
+                'default' => true,
+                'tab' => 'Configuración'
+            ]
+        ]);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

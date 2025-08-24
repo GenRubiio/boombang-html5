@@ -29,6 +29,9 @@
         :speed="1"
         @request-purchase="showGachaAlert"
       />
+      <div class="help-button" @click="isHelpCardVisible = true">
+        <i class="las la-question"></i>
+      </div>
     </div>
     <div class="lobby__label gachapon">
       <span>Gachapon</span>
@@ -37,6 +40,10 @@
       :visible="isGachaAlertVisible"
       @confirm="handleGachaConfirm"
       @cancel="handleGachaCancel"
+    />
+    <HelpCardGachaComponent
+      v-if="isHelpCardVisible"
+      @close="isHelpCardVisible = false"
     />
   </div>
 </template>
@@ -52,11 +59,13 @@ import asset_marikita_image from "@/assets/game/lobby/marikita.webp";
 import asset_logout_image from "@/assets/game/lobby/logout.webp";
 import GachaponMachineComponent from "./GachaponMachineComponent.vue";
 import AlertWishGachaComponent from "./gachapon/AlertWishGachaComponent.vue";
+import HelpCardGachaComponent from "./gachapon/HelpCardGachaComponent.vue";
 
 export default {
   data() {
     return {
       isGachaAlertVisible: false,
+      isHelpCardVisible: false,
       asset_background_image,
       asset_flor_image,
       asset_foreground_image,
@@ -81,6 +90,7 @@ export default {
   components: {
     GachaponMachineComponent,
     AlertWishGachaComponent,
+    HelpCardGachaComponent,
   },
   methods: {
     logout() {
@@ -255,5 +265,24 @@ export default {
 .lobby__label.gachapon {
   left: 254px;
   width: 150px;
+}
+
+.help-button {
+  position: absolute;
+  top: 45px;
+  right: 159px;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 </style>
