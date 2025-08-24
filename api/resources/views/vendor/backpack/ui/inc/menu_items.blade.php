@@ -29,3 +29,5 @@
 <x-backpack::menu-item title="User chats" icon="la la-question" :link="backpack_url('user-chat')" />
 <x-backpack::menu-item title="User colornames" icon="la la-question" :link="backpack_url('user-colorname')" />
 <x-backpack::menu-item title="User shadows" icon="la la-question" :link="backpack_url('user-shadow')" /> --}}
+
+<x-backpack::menu-item :title="trans('backpack::crud.file_manager')" icon="la la-files-o" :link="backpack_url('elfinder')" />
