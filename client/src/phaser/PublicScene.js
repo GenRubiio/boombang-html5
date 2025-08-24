@@ -83,11 +83,17 @@ export default class PublicScene extends Phaser.Scene {
 
         // Add event listeners for buttons
         const buttonsElement = this.buttonsContainer.node;
+
+        // Detener la propagación de eventos para que no interfieran con la escena de Phaser
+        const stopPropagation = (event) => event.stopPropagation();
+        buttonsElement.addEventListener('pointerdown', stopPropagation);
+        buttonsElement.addEventListener('mousedown', stopPropagation);
+        buttonsElement.addEventListener('touchstart', stopPropagation);
         
         // Shop button
         const shopButton = buttonsElement.querySelector('[data-action="shop"]');
         if (shopButton) {
-            shopButton.addEventListener('click', () => {
+            shopButton.addEventListener('click', (event) => {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     console.log('Botón de tienda pulsado');
                 }
@@ -106,7 +112,7 @@ export default class PublicScene extends Phaser.Scene {
         // Avatars button
         const avatarsButton = buttonsElement.querySelector('[data-action="avatars"]');
         if (avatarsButton) {
-            avatarsButton.addEventListener('click', () => {
+            avatarsButton.addEventListener('click', (event) => {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     console.log('Botón de avatares pulsado');
                 }

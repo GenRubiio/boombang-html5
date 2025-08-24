@@ -166,6 +166,12 @@ class InventoryPrivateSceneHtml {
     setupEventListeners() {
         const container = this.inventoryContainer.node;
 
+        // Detener la propagación de eventos para que no interfieran con la escena de Phaser
+        const stopPropagation = (event) => event.stopPropagation();
+        container.addEventListener('pointerdown', stopPropagation);
+        container.addEventListener('mousedown', stopPropagation);
+        container.addEventListener('touchstart', stopPropagation);
+
         // Close button
         const closeBtn = container.querySelector('#inventory-close');
         closeBtn.addEventListener('click', () => this.hide());
