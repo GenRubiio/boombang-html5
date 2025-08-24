@@ -258,10 +258,18 @@ export default class PrivateScene extends Phaser.Scene {
     setupButtonEvents() {
         const buttonsElement = this.buttonsContainer.node.querySelector('#scene-buttons');
 
+        // Detener la propagación de eventos para que no interfieran con la escena de Phaser
+        const stopPropagation = (event) => event.stopPropagation();
+        buttonsElement.addEventListener('pointerdown', stopPropagation);
+        buttonsElement.addEventListener('mousedown', stopPropagation);
+        buttonsElement.addEventListener('touchstart', stopPropagation);
+
         // Event listeners para clicks de botones
         buttonsElement.addEventListener('click', (event) => {
             const button = event.target.closest('.scene-button');
             if (!button) return;
+
+            event.stopPropagation();
 
             const action = button.getAttribute('data-action');
             this.handleButtonClick(action);
