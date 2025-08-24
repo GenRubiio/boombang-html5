@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "backpack/filemanager": "^3.0",
         "backpack/permissionmanager": "*",
         "backpack/pro": "^2.2",
         "backpack/theme-coreuiv4": "^1.1",
