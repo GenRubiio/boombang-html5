@@ -2,6 +2,9 @@ const SceneModel = require('./SceneModel');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const IslandModel = require('./IslandModel');
 const UserCatalogItemModel = require('./UserCatalogItemModel'); // Importar el modelo de UserCatalogItem
+const UserResource = require('../resources/UserResource');
+const PrivateSceneResource = require('../resources/PrivateSceneResource');
+const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 
 class PrivateSceneModel extends SceneModel {
     constructor(uuid, row) {
@@ -17,7 +20,7 @@ class PrivateSceneModel extends SceneModel {
         this.island = new IslandModel(row.island); // Isla asociada a la escena
         this.user_id = row.user_id; // ID del usuario propietario de la escena
     }
-    
+
     /**
      * @override
      */
@@ -40,6 +43,29 @@ class PrivateSceneModel extends SceneModel {
         }
 
         return navigationMap;
+    }
+
+    async userJoin(user, userInventoryItems) {
+        user.setArea(this);
+        user.setInventory(userInventoryItems || []);
+        this.addUser(user);
+        let sceneUsers = [];
+        for (const user of this.users) {
+            sceneUsers.push(await new UserResource(user).toObject());
+        }
+        user.socket.emit(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, {
+            success: true,
+            data: {
+                players: sceneUsers,
+                scenery: await new PrivateSceneResource(this).toObject(),
+                authUser: await new UserResource(user).toObject(),
+                userInventory: user.inventory,
+                myScene: this.user_id == user.id,
+            }
+        });
+        this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
+            user: await new UserResource(user).toObject(),
+        }, user);
     }
 }
 

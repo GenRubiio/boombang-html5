@@ -3,6 +3,7 @@
     <!-- Imagen de la brújula -->
     <img
       class="brujula"
+      :class="{ disabled: isCreating }"
       :src="asset_brujula_image"
       alt="Brújula"
       @load="handleImageLoad"
@@ -57,7 +58,7 @@
             />
           </div>
           <div>
-            <button class="accept-btn" @click="createIsland">
+            <button class="accept-btn" @click="createIsland" :disabled="isCreating">
               {{ $t("common.accept") }}
             </button>
           </div>
@@ -100,6 +101,7 @@ export default {
       islandName: "",
       errorCreateIsland: false,
       errorMessage: "",
+      isCreating: false,
     };
   },
   computed: {
@@ -119,6 +121,8 @@ export default {
       this.step = step;
     },
     createIsland() {
+      if (this.isCreating) return;
+      this.isCreating = true;
       this.errorCreateIsland = false;
       socket.emit(RequestSocketsEnum.ISLAND_CREATE, {
         name: this.islandName,
@@ -129,6 +133,7 @@ export default {
         let message = response.message;
         this.errorCreateIsland = true;
         this.errorMessage = message;
+        this.isCreating = false;
       });
     },
     handleImageLoad() {
@@ -152,6 +157,7 @@ export default {
       });
     },
     goBackToLobby() {
+      if (this.isCreating) return;
       this.$emit("updateLoading", true);
       this.$emit("exitLobby");
     },
@@ -224,6 +230,11 @@ export default {
   bottom: 20px;
 }
 
+.brujula.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .island-preview {
   position: absolute;
 }
@@ -266,6 +277,12 @@ export default {
 .control-btn:hover,
 .accept-btn:hover {
   background-color: #3a4b54c9;
+}
+
+.accept-btn:disabled {
+  background-color: #2a3a46;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .label {
