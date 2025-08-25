@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
 use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\Game\Scene\RankingApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
+use App\Http\Controllers\Api\Game\Lobby\GachaponApiController;
 use App\Http\Controllers\Api\User\UserChangeChatApiController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeFichaApiController;
@@ -65,6 +66,13 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('change-shadowcolor', [UserChangeShadowColorController::class, 'index']);
         });
 
+        Route::prefix('lobby')->group(function () {
+            Route::prefix('gachapon')->group(function () {
+                Route::post('spin', [GachaponApiController::class, 'spin']);
+                Route::post('get', [GachaponApiController::class, 'get']);
+            });
+        });
+
         Route::prefix('island')->group(function () {
             Route::post('/', [IslandApiController::class, 'index']);
             Route::post('create', [IslandApiController::class, 'create']);
@@ -98,7 +106,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
     });
 });
 
-Route::prefix('internal')->group(function() {
+Route::prefix('internal')->group(function () {
     Route::prefix('bots')->group(function () {
         Route::post('generate-token', [App\Http\Controllers\Internal\BotController::class, 'generateToken']);
     });

@@ -72,6 +72,12 @@ class CatalogItem extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function scopeInLobbyGacha($query)
+    {
+        return $query->where('in_lobby_gacha', true)
+            ->where('is_active', true);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
