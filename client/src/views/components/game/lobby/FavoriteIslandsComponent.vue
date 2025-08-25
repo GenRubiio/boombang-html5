@@ -1,7 +1,7 @@
 <template>
   <div class="lobby__scenes-list">
     <div v-for="island in islands" :key="island.id">
-      <button @click="$emit('join-island', island.id)">
+      <button @click="handleClick(island.id)" :disabled="isJoining">
         {{ island.name }}
         <span>{{ island.visitors }}</span>
       </button>
@@ -16,6 +16,18 @@
 export default {
   props: {
     islands: Array,
+  },
+  data() {
+    return {
+      isJoining: false,
+    };
+  },
+  methods: {
+    handleClick(islandId) {
+      if (this.isJoining) return;
+      this.isJoining = true;
+      this.$emit("join-island", islandId);
+    },
   },
 };
 </script>
@@ -47,6 +59,12 @@ export default {
 .lobby__scenes-list button:hover {
   background-color: #1c2c35ad;
   cursor: pointer;
+}
+
+.lobby__scenes-list button:disabled {
+  background-color: #2a3a46;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .lobby__scenes-list button span {

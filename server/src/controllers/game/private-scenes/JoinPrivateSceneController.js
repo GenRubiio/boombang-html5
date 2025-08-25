@@ -1,12 +1,9 @@
 const Log = require('../../../utils/Log');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PrivateSceneApiService = require('../../../services-api/PrivateSceneApiService');
-const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const PrivateScenesCollection = require('../../../collections/PrivateScenesCollection');
 const PrivateSceneModel = require('../../../models/PrivateSceneModel');
-const UserResource = require('../../../resources/UserResource');
-const PrivateSceneResource = require('../../../resources/PrivateSceneResource');
 
 class JoinPrivateSceneController {
     static async main(socket, io, data) {
@@ -36,27 +33,7 @@ class JoinPrivateSceneController {
                 return;
             }
 
-            user.setArea(scene);
-            user.setInventory(response.user_inventory_items || []);
-            scene.addUser(user);
-            let sceneUsers = [];
-            for (const user of scene.users) {
-                sceneUsers.push(await new UserResource(user).toObject());
-            }
-            socket.emit(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, {
-                success: true,
-                data: {
-                    players: sceneUsers,
-                    scenery: await new PrivateSceneResource(scene).toObject(),
-                    authUser: await new UserResource(user).toObject(),
-                    userInventory: user.inventory,
-                    myScene: scene.user_id == user.id,
-                }
-            });
-            scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
-                user: await new UserResource(user).toObject(),
-            }, user);
-
+            await scene.userJoin(user, response.user_inventory_items || []);
         } catch (err) {
             console.error('Error in JoinPrivateSceneController:', err);
             Log.error('Error in JoinPrivateSceneController: ' + err);
