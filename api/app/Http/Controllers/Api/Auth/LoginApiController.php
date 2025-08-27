@@ -42,11 +42,6 @@ class LoginApiController extends Controller implements LoginApiControllerInterfa
     {
         try {
             $user = Auth::user();
-            $user->load(
-                'fichas',
-                'chats',
-                'colornames'
-            );
             return $this->successResponse([
                 'user' => (new UserResource($user))->toDTO(),
                 'token' => $request->auth_token
