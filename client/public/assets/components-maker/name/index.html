@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Name Item Export</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    .name-item-wrap {
+      display: inline-block;         /* el canvas medirá todo el bloque */
+      cursor: pointer;
+      margin: 20px;
+    }
+
+    .name-item {
+      background-color: var(--bg);
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      border-radius: 5px;
+      position: relative;
+      padding: 4px 5px;
+      box-sizing: border-box;
+    }
+
+    /* Flecha como hermano debajo (no absoluta) */
+    .triangle {
+      width: 0;
+      height: 0;
+      margin: 0 auto;               /* centrado */
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid transparent; /* color vía JS */
+    }
+
+    .name-item__text {
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: normal;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="name-list"></div>
+
+  <script>
+    const exampleName = {
+      text: "God",
+      background_color: "#4caf50",
+      color: "#ffffff"
+    };
+
+    function createNameItem(colorname) {
+      // contenedor que incluye tarjetita + flecha
+      const wrap = document.createElement("div");
+      wrap.className = "name-item-wrap";
+
+      const box = document.createElement("div");
+      box.className = "name-item";
+      box.style.setProperty("--bg", colorname.background_color);
+      box.style.setProperty("--fg", colorname.color);
+
+      const textEl = document.createElement("div");
+      textEl.className = "name-item__text";
+      textEl.textContent = colorname.text;
+
+      const triangle = document.createElement("div");
+      triangle.className = "triangle";
+      triangle.style.borderTopColor = colorname.background_color; // mismo color que fondo
+
+      box.appendChild(textEl);
+      wrap.appendChild(box);
+      wrap.appendChild(triangle);
+
+      // Click en TODO el bloque => exporta bloque completo (incluida flecha)
+      wrap.addEventListener("click", async () => {
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        const canvas = await html2canvas(wrap, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true
+        });
+        const a = document.createElement("a");
+        a.download = `${colorname.text}_name.webp`;
+        a.href = canvas.toDataURL("image/webp", 1.0);
+        a.click();
+      });
+
+      return wrap;
+    }
+
+    const list = document.getElementById("name-list");
+    list.appendChild(createNameItem(exampleName));
+  </script>
+</body>
+</html>
