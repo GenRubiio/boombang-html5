@@ -39,94 +39,98 @@
           PERSONALIZACIÓN DE {{ activeTab }}
         </div>
         <div class="user-customization__grid" :class="gridClass">
-          <div
-            v-if="activeTab == 'ficha'"
-            class="user-customization__grid-item"
-            v-for="(ficha, index) in paddedFichaColors"
-            :key="index"
-            @click="onSelectFicha(ficha.key)"
-            :class="{
-              selected: isFichaSelected(ficha.key),
-              disabled: !isFichaEnabled(ficha.key),
-              'empty-item': !ficha.key,
-            }"
-          >
-            <img v-if="ficha.image" :src="ficha.image" />
+          <template v-if="activeTab == 'ficha'">
             <div
-              v-if="ficha.description"
-              class="info-icon"
-              @mouseover="showTooltip($event, ficha)"
-              @mouseleave="hideTooltip"
+              class="user-customization__grid-item"
+              v-for="(ficha, index) in paddedFichaColors"
+              :key="index"
+              @click="onSelectFicha(ficha.key)"
+              :class="{
+                selected: isFichaSelected(ficha.key),
+                disabled: !isFichaEnabled(ficha.key),
+                'empty-item': !ficha.key,
+              }"
             >
-              ?
+              <img v-if="ficha.image" :src="ficha.image" />
+              <div
+                v-if="ficha.description"
+                class="info-icon"
+                @mouseover="showTooltip($event, ficha)"
+                @mouseleave="hideTooltip"
+              >
+                ?
+              </div>
             </div>
-          </div>
-          <div
-            v-if="activeTab === 'chat'"
-            class="user-customization__grid-item"
-            v-for="(chat, index) in paddedChatColors"
-            :key="index"
-            @click="onSelectChat(chat.key)"
-            :class="{
-              selected: isChatSelected(chat.key),
-              disabled: !isChatEnabled(chat.key),
-              'empty-item': !chat.key,
-            }"
-          >
-            <ChatComponent v-if="chat.key" :chat="chat" />
+          </template>
+          <template v-if="activeTab === 'chat'">
             <div
-              v-if="chat.description"
-              class="info-icon"
-              @mouseover="showTooltip($event, chat)"
-              @mouseleave="hideTooltip"
+              class="user-customization__grid-item"
+              v-for="(chat, index) in paddedChatColors"
+              :key="index"
+              @click="onSelectChat(chat.key)"
+              :class="{
+                selected: isChatSelected(chat.key),
+                disabled: !isChatEnabled(chat.key),
+                'empty-item': !chat.key,
+              }"
             >
-              ?
+              <img v-if="chat.image" :src="chat.image" />
+              <div
+                v-if="chat.description"
+                class="info-icon"
+                @mouseover="showTooltip($event, chat)"
+                @mouseleave="hideTooltip"
+              >
+                ?
+              </div>
             </div>
-          </div>
-          <div
-            v-if="activeTab === 'nombre'"
-            class="user-customization__grid-item"
-            v-for="(name, index) in paddedNameColors"
-            :key="index"
-            @click="onSelectName(name.key)"
-            :class="{
-              selected: isNameSelected(name.key),
-              disabled: !isNameEnabled(name.key),
-              'empty-item': !name.key,
-            }"
-          >
-            <NameComponent v-if="name.key" :colorname="name" />
+          </template>
+          <template v-if="activeTab === 'nombre'">
             <div
-              v-if="name.description"
-              class="info-icon"
-              @mouseover="showTooltip($event, name)"
-              @mouseleave="hideTooltip"
+              class="user-customization__grid-item"
+              v-for="(name, index) in paddedNameColors"
+              :key="index"
+              @click="onSelectName(name.key)"
+              :class="{
+                selected: isNameSelected(name.key),
+                disabled: !isNameEnabled(name.key),
+                'empty-item': !name.key,
+              }"
             >
-              ?
+              <img v-if="name.image" :src="name.image" />
+              <div
+                v-if="name.description"
+                class="info-icon"
+                @mouseover="showTooltip($event, name)"
+                @mouseleave="hideTooltip"
+              >
+                ?
+              </div>
             </div>
-          </div>
-          <div
-            v-if="activeTab === 'sombra'"
-            class="user-customization__grid-item"
-            v-for="(shadow, index) in paddedShadowColors"
-            :key="index"
-            @click="onSelectShadow(shadow.key)"
-            :class="{
-              selected: isShadowSelected(shadow.key),
-              disabled: !isShadowEnabled(shadow.key),
-              'empty-item': !shadow.key,
-            }"
-          >
-            <ShadowComponent v-if="shadow.key" :shadow="shadow" />
+          </template>
+          <template v-if="activeTab === 'sombra'">
             <div
-              v-if="shadow.description"
-              class="info-icon"
-              @mouseover="showTooltip($event, shadow)"
-              @mouseleave="hideTooltip"
+              class="user-customization__grid-item"
+              v-for="(shadow, index) in paddedShadowColors"
+              :key="index"
+              @click="onSelectShadow(shadow.key)"
+              :class="{
+                selected: isShadowSelected(shadow.key),
+                disabled: !isShadowEnabled(shadow.key),
+                'empty-item': !shadow.key,
+              }"
             >
-              ?
+              <img v-if="shadow.image" :src="shadow.image" />
+              <div
+                v-if="shadow.description"
+                class="info-icon"
+                @mouseover="showTooltip($event, shadow)"
+                @mouseleave="hideTooltip"
+              >
+                ?
+              </div>
             </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -142,14 +146,7 @@
 <script>
 import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
-import fichaColors from "@/assets/game/data/ficha_colors.json";
-import chatColors from "@/assets/game/data/chat_colors.json";
-import nameColors from "@/assets/game/data/name_colors.json";
-import shadowColors from "@/assets/game/data/shadow_colors.json";
-
-import ChatComponent from "./user-customization/ChatComponent.vue";
-import NameComponent from "./user-customization/NameComponent.vue";
-import ShadowComponent from "./user-customization/ShadowComponent.vue";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 
 export default {
   props: {
@@ -160,18 +157,14 @@ export default {
   },
   name: "UserCustomizationComponent",
   emits: ["close-customization", "on-select-ficha"],
-  components: {
-    ChatComponent,
-    NameComponent,
-    ShadowComponent,
-  },
   data() {
     return {
       activeTab: "ficha",
-      fichaColors: fichaColors,
-      chatColors: chatColors,
-      nameColors: nameColors,
-      shadowColors: shadowColors,
+      fichaColors: [],
+      chatColors: [],
+      nameColors: [],
+      shadowColors: [],
+      decorationsLoaded: false,
       tooltip: {
         visible: false,
         content: "",
@@ -183,21 +176,7 @@ export default {
   computed: {
     paddedFichaColors() {
       const totalItems = 8;
-
-      const enabledFichas = [];
-      const disabledFichas = [];
-
-      for (const ficha of this.fichaColors) {
-        if (this.isFichaEnabled(ficha.key)) {
-          enabledFichas.push(ficha);
-        } else {
-          disabledFichas.push(ficha);
-        }
-      }
-
-      const sortedFichas = [...enabledFichas, ...disabledFichas];
-
-      const padded = [...sortedFichas];
+      const padded = [...this.fichaColors];
       while (padded.length < totalItems) {
         padded.push({});
       }
@@ -205,21 +184,7 @@ export default {
     },
     paddedChatColors() {
       const totalItems = 14;
-
-      const enabledChats = [];
-      const disabledChats = [];
-
-      for (const chat of this.chatColors) {
-        if (this.isChatEnabled(chat.key)) {
-          enabledChats.push(chat);
-        } else {
-          disabledChats.push(chat);
-        }
-      }
-
-      const sortedChats = [...enabledChats, ...disabledChats];
-
-      const padded = [...sortedChats];
+      const padded = [...this.chatColors];
       while (padded.length < totalItems) {
         padded.push({});
       }
@@ -227,21 +192,7 @@ export default {
     },
     paddedNameColors() {
       const totalItems = 20;
-
-      const enabledNames = [];
-      const disabledNames = [];
-
-      for (const name of this.nameColors) {
-        if (this.isNameEnabled(name.key)) {
-          enabledNames.push(name);
-        } else {
-          disabledNames.push(name);
-        }
-      }
-
-      const sortedNames = [...enabledNames, ...disabledNames];
-
-      const padded = [...sortedNames];
+      const padded = [...this.nameColors];
       while (padded.length < totalItems) {
         padded.push({});
       }
@@ -249,21 +200,7 @@ export default {
     },
     paddedShadowColors() {
       const totalItems = 20;
-
-      const enabledShadows = [];
-      const disabledShadows = [];
-
-      for (const shadow of this.shadowColors) {
-        if (this.isShadowEnabled(shadow.key)) {
-          enabledShadows.push(shadow);
-        } else {
-          disabledShadows.push(shadow);
-        }
-      }
-
-      const sortedShadows = [...enabledShadows, ...disabledShadows];
-
-      const padded = [...sortedShadows];
+      const padded = [...this.shadowColors];
       while (padded.length < totalItems) {
         padded.push({});
       }
@@ -307,7 +244,7 @@ export default {
       });
     },
     isFichaEnabled(ficha) {
-      return this.authUser.fichas.includes(ficha);
+      return this.authUser.fichas ? this.authUser.fichas.includes(ficha) : true;
     },
     isFichaSelected(ficha) {
       return this.authUser.ficha_color === ficha;
@@ -321,7 +258,7 @@ export default {
       });
     },
     isChatEnabled(chat) {
-      return this.authUser.chats.includes(chat);
+      return this.authUser.chats ? this.authUser.chats.includes(chat) : true;
     },
     isChatSelected(chat) {
       return this.authUser.chat_color === chat;
@@ -335,7 +272,7 @@ export default {
       });
     },
     isNameEnabled(name) {
-      return this.authUser.colornames.includes(name);
+      return this.authUser.colornames ? this.authUser.colornames.includes(name) : true;
     },
     isNameSelected(name) {
       return this.authUser.name_color === name;
@@ -353,11 +290,32 @@ export default {
       });
     },
     isShadowEnabled(shadow) {
-      return this.authUser.shadows.includes(shadow);
+      return this.authUser.shadows ? this.authUser.shadows.includes(shadow) : true;
     },
     isShadowSelected(shadow) {
       return this.authUser.shadow_color === shadow;
     },
+  },
+  mounted() {
+    socket.emit(RequestSocketsEnum.GET_USER_DECORATIONS);
+    socket.off(ResponseSocketsEnum.GET_USER_DECORATIONS);
+    socket.on(ResponseSocketsEnum.GET_USER_DECORATIONS, (data) => {
+      if (data && (data.decorations || data.ficha !== undefined)) {
+        const decorations = data.decorations || data;
+
+        this.fichaColors = decorations.ficha || [];
+        this.chatColors = decorations.chat || [];
+        this.nameColors = decorations.name || [];
+        this.shadowColors = decorations.shadow || [];
+        this.decorationsLoaded = true;
+
+        this.$forceUpdate();
+
+        this.$nextTick(() => {});
+      } else {
+        console.log('No data or no decorations in response');
+      }
+    });
   },
 };
 </script>
@@ -543,8 +501,6 @@ export default {
 
 .ficha-grid .user-customization__grid-item {
   height: 190px;
-  border: 1px solid white;
-  background-color: transparent;
   cursor: pointer;
 }
 

@@ -28,14 +28,11 @@ class GachaponApiController extends Controller
 
             // Probabilidades (suman 100)
             $probabilities = [
-                ['type' => 'item', 'stars' => 1, 'chance' => 45],
-                ['type' => 'item', 'stars' => 2, 'chance' => 22],
+                ['type' => 'item', 'stars' => 1, 'chance' => 55],
+                ['type' => 'item', 'stars' => 2, 'chance' => 25],
                 ['type' => 'item', 'stars' => 3, 'chance' => 10],
-                ['type' => 'item', 'stars' => 4, 'chance' => 4],
-                ['type' => 'item', 'stars' => 5, 'chance' => 1],
-                ['type' => 'decoration', 'stars' => 2, 'chance' => 8, 'comp' => 1],
-                ['type' => 'decoration', 'stars' => 3, 'chance' => 6, 'comp' => 2],
-                ['type' => 'decoration', 'stars' => 4, 'chance' => 3, 'comp' => 5],
+                ['type' => 'item', 'stars' => 4, 'chance' => 7],
+                ['type' => 'item', 'stars' => 5, 'chance' => 2],
                 ['type' => 'decoration', 'stars' => 5, 'chance' => 1, 'comp' => 10],
             ];
 
@@ -78,15 +75,43 @@ class GachaponApiController extends Controller
                 // Dar item al usuario
                 $user->catalogItems()->create([
                     'catalog_item_id' => $item->id,
+                    'show_in_inventory' => $result['type'] != CatalogItemTypesEnum::USER_DECORATION->key()
                 ]);
             }
+            return $this->successResponse([
+                'item' => [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'image' => url($item->image),
+                ],
+                'user' => Auth::user()
+            ]);
         } catch (Exception $e) {
             return $this->handleException($e);
         }
     }
 
-    public function get(Request $request)
+    public function prizes()
     {
-        // Implement the get logic here
+        try {
+            $prizes = CatalogItem::inLobbyGacha()
+                ->orderBy('stars', 'asc')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'imageUrl' => url($item->image),
+                        'rarity' => $item->stars,
+                        'type' => $item->type == CatalogItemTypesEnum::USER_DECORATION->key() ? 'decoration' : 'normal',
+                    ];
+                });
+
+            return $this->successResponse([
+                'prizes' => $prizes
+            ]);
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
     }
 }

@@ -24,10 +24,11 @@
     <div class="lobby__gachapon">
       <GachaponMachineComponent
         ref="gachaponMachine"
-        :title-text="'がんばれ!'"
+        :title-text="'BoomMania'"
         :price-text="'100円'"
         :speed="1"
         @request-purchase="showGachaAlert"
+        @show-prize="showGachaResult"
       />
       <div class="help-button" @click="isHelpCardVisible = true">
         <i class="las la-question"></i>
@@ -35,6 +36,10 @@
     </div>
     <div class="lobby__label gachapon">
       <span>Gachapon</span>
+    </div>
+    <CreditsComponent />
+    <div class="lobby__label credits">
+      <span>Monedas</span>
     </div>
     <AlertWishGachaComponent
       :visible="isGachaAlertVisible"
@@ -44,6 +49,16 @@
     <HelpCardGachaComponent
       v-if="isHelpCardVisible"
       @close="isHelpCardVisible = false"
+    />
+    <GachaResultPopup
+      :visible="isGachaResultVisible"
+      :item="gachaponItem"
+      @close="handleGachaResultClose"
+    />
+    <ErrorPopup
+      :visible="isErrorPopupVisible"
+      :message="errorMessage"
+      @close="handleErrorPopupClose"
     />
   </div>
 </template>
@@ -60,12 +75,18 @@ import asset_logout_image from "@/assets/game/lobby/logout.webp";
 import GachaponMachineComponent from "./GachaponMachineComponent.vue";
 import AlertWishGachaComponent from "./gachapon/AlertWishGachaComponent.vue";
 import HelpCardGachaComponent from "./gachapon/HelpCardGachaComponent.vue";
+import GachaResultPopup from "./gachapon/GachaResultPopup.vue";
+import ErrorPopup from "./gachapon/ErrorPopup.vue";
+import CreditsComponent from "./CreditsComponent.vue";
 
 export default {
   data() {
     return {
       isGachaAlertVisible: false,
       isHelpCardVisible: false,
+      isGachaResultVisible: false,
+      isErrorPopupVisible: false,
+      errorMessage: "",
       asset_background_image,
       asset_flor_image,
       asset_foreground_image,
@@ -73,6 +94,10 @@ export default {
       asset_avatarImage: null,
       asset_logout_image,
       isLogoutButtonClicked: false,
+      gachaponItem: {
+        name: null,
+        image: null,
+      },
     };
   },
   async mounted() {
@@ -91,6 +116,9 @@ export default {
     GachaponMachineComponent,
     AlertWishGachaComponent,
     HelpCardGachaComponent,
+    GachaResultPopup,
+    ErrorPopup,
+    CreditsComponent,
   },
   methods: {
     logout() {
@@ -108,19 +136,33 @@ export default {
     },
     handleGachaConfirm() {
       this.isGachaAlertVisible = false;
-      //socket.off("response-gacha-start");
-      //socket.on("response-gacha-start", (data) => {
-      //  console.log("Gacha started:", data);
-      //  // Assuming the response indicates success, trigger the animation.
-      //  // You might want to add a check here based on the `data` content.
-      //  this.$refs.gachaponMachine.triggerAnimation();
-      //});
-      //socket.emit("request-gacha-start"); // Placeholder for actual socket event
-      this.$refs.gachaponMachine.triggerAnimation();
+      socket.off(ResponseSocketsEnum.LOBBY_GACHA_SPIN);
+      socket.on(ResponseSocketsEnum.LOBBY_GACHA_SPIN, (data) => {
+        if (data.success) {
+          this.$refs.gachaponMachine.triggerAnimation();
+          this.gachaponItem.name = data.item.name;
+          this.gachaponItem.image = data.item.image;
+        } else {
+          this.errorMessage = data.message;
+          this.isErrorPopupVisible = true;
+          this.$refs.gachaponMachine.enableHandle();
+        }
+      });
+      socket.emit(RequestSocketsEnum.LOBBY_GACHA_SPIN);
     },
     handleGachaCancel() {
       this.isGachaAlertVisible = false;
       this.$refs.gachaponMachine.enableHandle();
+    },
+    handleGachaResultClose() {
+      this.isGachaResultVisible = false;
+      this.$refs.gachaponMachine.enableHandle();
+    },
+    handleErrorPopupClose() {
+      this.isErrorPopupVisible = false;
+    },
+    showGachaResult() {
+      this.isGachaResultVisible = true;
     },
   },
 };
@@ -130,7 +172,7 @@ export default {
 .lobby__gachapon {
   position: absolute;
   bottom: -157px;
-  right: 45%;
+  right: 449px;
   width: 45%;
   z-index: 1;
 }
@@ -265,6 +307,11 @@ export default {
 .lobby__label.gachapon {
   left: 254px;
   width: 150px;
+}
+
+.lobby__label.credits {
+  left: 27px;
+  width: 124px;
 }
 
 .help-button {

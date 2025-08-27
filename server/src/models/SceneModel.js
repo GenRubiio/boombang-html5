@@ -49,6 +49,7 @@ class SceneModel {
         user.lastReservedTile = null;
         this.users.push(user);
         this.#refreshUsersChatList();
+        this.#refreshUsers();
     }
 
     // Método para devolver la lista de usuarios
@@ -76,6 +77,7 @@ class SceneModel {
             PrivateScenesCollection.remove(this.id);
         }
         this.#refreshUsersChatList();
+        this.#refreshUsers();
     }
 
     #refreshUsersChatList() {
@@ -84,6 +86,14 @@ class SceneModel {
             username: user.username
         }));
         this.emit(ResponseSocketsEnum.REFRESH_USERS_SCENE_CHAT_LIST, { players });
+    }
+
+    #refreshUsers() {
+        this.users.forEach(user => {
+            if (user.currentArea != this) {
+                this.removeUser(user);
+            }
+        });
     }
 
     // Método para emitir un evento a todos los usuarios del área

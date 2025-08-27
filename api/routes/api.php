@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeShadowColorController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeColornameApiController;
+use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
 
 Route::prefix('test')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -69,7 +70,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::prefix('lobby')->group(function () {
             Route::prefix('gachapon')->group(function () {
                 Route::post('spin', [GachaponApiController::class, 'spin']);
-                Route::post('get', [GachaponApiController::class, 'get']);
+                Route::post('prizes', [GachaponApiController::class, 'prizes']);
             });
         });
 
@@ -93,6 +94,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
         Route::prefix('public-scene')->group(function () {
             Route::post('user-catch-item', [PublicSceneApiController::class, 'userCatchItem']);
+        });
+
+        Route::prefix('scene')->group(function (){
+            Route::post('user-decorations', [SceneUserDecorationsApiController::class, 'index']);
         });
 
         Route::prefix('ranking')->group(function () {

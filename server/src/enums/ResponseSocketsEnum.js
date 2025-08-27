@@ -47,6 +47,9 @@ const ResponseSocketsEnum = new Enum({
     JWT_AUTO_LOGIN_SUCCESS: 'response:jwt_auto_login_success',
     JWT_AUTO_LOGIN_INVALID: 'response:jwt_auto_login_invalid',
     LOGOUT: 'response:logout',
+    LOBBY_GACHA_SPIN: 'response:lobby_gacha_spin',
+    GET_GACHA_PRIZES: 'response:get_gacha_prizes',
+    GET_USER_DECORATIONS: 'response:get_user_decorations'
 });
 
 module.exports = ResponseSocketsEnum;
