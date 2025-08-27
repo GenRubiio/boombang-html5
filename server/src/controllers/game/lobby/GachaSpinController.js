@@ -20,7 +20,7 @@ class GachaSpinController {
                 return;
             }
 
-            await LobbyService.gachaponSpin(user);
+            await LobbyService.gachaponSpin(socket, user);
         } catch (err) {
             socket.emit(ResponseSocketsEnum.LOBBY_GACHA_SPIN, {
                 success: false,

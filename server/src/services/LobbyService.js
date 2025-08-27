@@ -1,17 +1,22 @@
 const LobbyApiService = require('../services-api/LobbyApiService');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 class LobbyService {
-    static async gachaponSpin(user) {
+    static async gachaponSpin(socket, user) {
         try {
             let responseData = await LobbyApiService.gachaponSpin(user);
-            //user = responseData.user;
+            user.goldCoins = responseData.user.gold_coins;
+            user.silverCoins = responseData.user.silver_coins;
+            user.fichas = responseData.user.fichas;
+            user.chats = responseData.user.chats;
+            user.shadows = responseData.user.shadows;
+            user.colornames = responseData.user.colornames;
 
-            user.socket.emit(ResponseSocketsEnum.REFRESH_USER_CREDITS, {
+            socket.emit(ResponseSocketsEnum.REFRESH_USER_CREDITS, {
                 gold: user.goldCoins,
                 silver: user.silverCoins
             });
 
-            user.socket.emit(ResponseSocketsEnum.LOBBY_GACHA_SPIN, {
+            socket.emit(ResponseSocketsEnum.LOBBY_GACHA_SPIN, {
                 success: true,
                 item: responseData.item
             });

@@ -55,12 +55,7 @@ class LoginGoogleApiController extends Controller
 
             $user->tokens()->delete();
             $tokenResult = $user->createToken('Personal Access Token');
-            $user->load(
-                'fichas',
-                'chats',
-                'colornames'
-            );
-
+            
             return $this->successResponse([
                 'user' => (new UserResource($user))->toDTO(),
                 'token' => $tokenResult->accessToken,

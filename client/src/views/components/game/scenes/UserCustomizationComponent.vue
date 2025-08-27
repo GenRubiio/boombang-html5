@@ -461,6 +461,12 @@ export default {
   box-sizing: border-box;
 }
 
+.user-customization__grid-item img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .info-icon {
   position: absolute;
   top: 3px;
