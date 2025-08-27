@@ -38,6 +38,9 @@ const RequestSocketsEnum = new Enum({
     LOGIN_OAUTH: 'request:login_oauth',
     JWT_AUTO_LOGIN: 'request:jwt_auto_login',
     LOGOUT: 'request:logout',
+    LOBBY_GACHA_SPIN: 'request:lobby_gacha_spin',
+    GET_GACHA_PRIZES: 'request:get_gacha_prizes',
+    GET_USER_DECORATIONS: 'request:get_user_decorations'
 });
 
 export default RequestSocketsEnum;

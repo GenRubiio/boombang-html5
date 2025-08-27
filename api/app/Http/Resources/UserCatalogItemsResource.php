@@ -27,6 +27,12 @@ class UserCatalogItemsResource extends JsonResource
             'sprite_name' => $this->catalogItem->sprite_name,
             'map_size' => $this->catalogItem->map_size,
             'occupied_tiles' => $this->occupied_tiles,
+            'image' => $this->catalogItem->image,
+            'image_url' => url($this->catalogItem->image),
+            'spreadsheet' => $this->catalogItem->spreadsheet,
+            'spreadsheet_url' => url($this->catalogItem->spreadsheet),
+            'atlas' => $this->catalogItem->atlas,
+            'atlas_url' => !empty($this->catalogItem->atlas) ? url($this->catalogItem->atlas) : null,
         ];
     }
 }

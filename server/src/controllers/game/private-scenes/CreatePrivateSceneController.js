@@ -1,11 +1,8 @@
-const Log = require('../../../utils/Log');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const PrivateSceneApiService = require('../../../services-api/PrivateSceneApiService');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const PrivateSceneModel = require('../../../models/PrivateSceneModel');
 const PrivateScenesCollection = require('../../../collections/PrivateScenesCollection');
-const UserResource = require('../../../resources/UserResource');
-const PrivateSceneResource = require('../../../resources/PrivateSceneResource');
 
 class CreatePrivateSceneController {
     static async main(socket, io, data) {
@@ -29,25 +26,7 @@ class CreatePrivateSceneController {
             let scene = new PrivateSceneModel(response.scene.id, response.scene);
             PrivateScenesCollection.add(scene.id, scene);
 
-            user.setArea(scene);
-            user.setInventory(response.user_inventory_items || []);
-            scene.addUser(user);
-            let sceneUsers = [];
-            for (const user of scene.users) {
-                sceneUsers.push(await new UserResource(user).toObject());
-            }
-            socket.emit(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, {
-                success: true,
-                data: {
-                    players: sceneUsers,
-                    scenery: await new PrivateSceneResource(scene).toObject(),
-                    userInventory: user.inventory
-                }
-            });
-            scene.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
-                user: await new UserResource(user).toObject(),
-            }, user);
-
+            await scene.userJoin(user, response.user_inventory_items || []);
         } catch (error) {
             //console.error('Error in CreateIslandController:', error);
             //Log.error('Error in CreateIslandController: ' + error);

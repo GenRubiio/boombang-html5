@@ -3,6 +3,7 @@
     <!-- Imagen de la brújula -->
     <img
       class="brujula"
+      :class="{ disabled: isCreating }"
       :src="asset_brujula_image"
       alt="Brújula"
       @load="handleImageLoad"
@@ -58,7 +59,7 @@
               />
             </div>
             <div>
-              <button class="accept-btn" @click="createScene">
+              <button class="accept-btn" @click="createScene" :disabled="isCreating">
                 {{ $t("common.accept") }}
               </button>
             </div>
@@ -109,6 +110,7 @@ export default {
       sceneName: "",
       errorCreateScene: false,
       errorMessage: "",
+      isCreating: false,
     };
   },
   computed: {
@@ -128,6 +130,8 @@ export default {
       this.step = step;
     },
     createScene() {
+      if (this.isCreating) return;
+      this.isCreating = true;
       this.errorCreateScene = false;
       socket.emit(RequestSocketsEnum.PRIVATE_SCENE_CREATE, {
         island_id: this.sceneData.id,
@@ -138,6 +142,7 @@ export default {
       socket.on(ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR, (response) => {
         this.errorCreateScene = true;
         this.errorMessage = response.message;
+        this.isCreating = false;
       });
     },
     handleImageLoad() {
@@ -166,6 +171,7 @@ export default {
       });
     },
     goBackToIsland() {
+      if (this.isCreating) return;
       this.$emit("updateLoading", true);
       this.$emit("joinIsland", this.sceneData);
     },
@@ -258,6 +264,11 @@ export default {
   bottom: 20px;
 }
 
+.brujula.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .island-preview {
   position: absolute;
 }
@@ -300,6 +311,12 @@ export default {
 .control-btn:hover,
 .accept-btn:hover {
   background-color: #3a4b54c9;
+}
+
+.accept-btn:disabled {
+  background-color: #2a3a46;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .label {

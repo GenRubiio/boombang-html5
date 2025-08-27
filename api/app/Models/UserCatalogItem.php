@@ -25,7 +25,9 @@ class UserCatalogItem extends Model
         'user_id',
         'catalog_item_id',
         'private_scene_id',
-        'occupied_tiles'
+        'occupied_tiles',
+        'show_in_inventory',
+        'expires_at'
     ];
     // protected $hidden = [];
 
