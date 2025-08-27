@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\Game\Lobby;
 
 use Exception;
 use App\Models\CatalogItem;
-use Illuminate\Http\Request;
 use App\Enums\CatalogItemTypesEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 
@@ -78,13 +78,14 @@ class GachaponApiController extends Controller
                     'show_in_inventory' => $result['type'] != CatalogItemTypesEnum::USER_DECORATION->key()
                 ]);
             }
+
             return $this->successResponse([
                 'item' => [
                     'id' => $item->id,
                     'name' => $item->name,
                     'image' => url($item->image),
                 ],
-                'user' => Auth::user()
+                'user' => (new UserResource($user))->toDTO()
             ]);
         } catch (Exception $e) {
             return $this->handleException($e);
