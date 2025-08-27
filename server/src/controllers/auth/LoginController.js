@@ -24,6 +24,7 @@ class LoginController {
             // --- End of Bot Authentication ---
 
             const auth = await UserApiService.login(username, password);
+
             if (!auth.success){
                 socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Invalid credentials' });
                 return;

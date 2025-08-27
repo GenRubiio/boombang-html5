@@ -166,6 +166,12 @@ class InventoryPrivateSceneHtml {
     setupEventListeners() {
         const container = this.inventoryContainer.node;
 
+        // Detener la propagación de eventos para que no interfieran con la escena de Phaser
+        const stopPropagation = (event) => event.stopPropagation();
+        container.addEventListener('pointerdown', stopPropagation);
+        container.addEventListener('mousedown', stopPropagation);
+        container.addEventListener('touchstart', stopPropagation);
+
         // Close button
         const closeBtn = container.querySelector('#inventory-close');
         closeBtn.addEventListener('click', () => this.hide());
@@ -197,11 +203,11 @@ class InventoryPrivateSceneHtml {
 
         slots.forEach((slot, index) => {
             const icon = slot.querySelector('.slot-icon');
-            
+
             // Make slot draggable when it has an item
             slot.addEventListener('mousedown', (e) => {
                 if (!icon.style.display || icon.style.display === 'none') return;
-                
+
                 const slotData = this.inventorySlots[index];
                 if (!slotData || !slotData.group) return;
 
@@ -216,28 +222,29 @@ class InventoryPrivateSceneHtml {
 
     startDrag(e, slotData, slot, dragShadow, dragShadowImg) {
         e.preventDefault();
-        
+
         this.draggedItem = slotData;
-        
+
         // Setup shadow image
-        dragShadowImg.src = `/assets/game/objects/${slotData.group.sprite_name}.webp`;
+        let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? slotData.group.spreadsheet : slotData.group.spreadsheet_url;
+        dragShadowImg.src = imageSrc;
         dragShadow.style.display = 'block';
         dragShadow.style.left = e.clientX + 'px';
         dragShadow.style.top = e.clientY + 'px';
-        
+
         // Hide original slot temporarily
         slot.style.opacity = '0.3';
-        
+
         // Add visual feedback
         document.body.style.cursor = 'grabbing';
     }
 
     handleDragMove(e, dragShadow) {
         if (!this.draggedItem || !dragShadow.style.display || dragShadow.style.display === 'none') return;
-        
+
         dragShadow.style.left = e.clientX + 'px';
         dragShadow.style.top = e.clientY + 'px';
-        
+
         // Create visual shadow on Phaser scene
         this.updatePhaserShadow(e.clientX, e.clientY);
     }
@@ -304,7 +311,7 @@ class InventoryPrivateSceneHtml {
             shadowTile.fillRect(0, 0, TILE_WIDTH, TILE_HEIGHT);
             shadowTile.setPosition(x, y);
             shadowTile.setDepth(1000);
-            
+
             this.shadowTiles.push(shadowTile);
         });
     }
@@ -325,10 +332,10 @@ class InventoryPrivateSceneHtml {
         // Check if dropped on Phaser scene
         const phaserCanvas = this.scene.sys.canvas;
         const rect = phaserCanvas.getBoundingClientRect();
-        
-        if (e.clientX >= rect.left && e.clientX <= rect.right && 
+
+        if (e.clientX >= rect.left && e.clientX <= rect.right &&
             e.clientY >= rect.top && e.clientY <= rect.bottom) {
-            
+
             this.handleDropOnScene(e, rect);
         }
 
@@ -362,7 +369,7 @@ class InventoryPrivateSceneHtml {
             const itemInstance = this.scene.inventoryItemsList.find(
                 i => i.sprite_name === this.draggedItem.group.sprite_name
             );
-            
+
             if (itemInstance) {
                 socket.emit(RequestSocketsEnum.SCENE_PUT_ITEM, {
                     user_catalog_item_id: itemInstance.id,
@@ -413,13 +420,13 @@ class InventoryPrivateSceneHtml {
         const container = this.inventoryContainer.node;
         const grouped = this.getGroupedItems();
         const totalPages = Math.max(1, Math.ceil(grouped.length / 9));
-        
+
         this.scene.inventoryPage = Phaser.Math.Clamp(this.scene.inventoryPage, 0, totalPages - 1);
-        
+
         // Update navigation
         const pageText = container.querySelector('#inventory-page');
         const totalText = container.querySelector('#inventory-total');
-        
+
         pageText.textContent = `${this.scene.inventoryPage + 1} / ${totalPages}`;
         totalText.textContent = `Total: ${this.scene.inventoryItemsList.length}`;
 
@@ -436,17 +443,17 @@ class InventoryPrivateSceneHtml {
 
             if (group) {
                 this.inventorySlots[index] = { group };
-                
-                icon.src = `/assets/game/objects/${group.sprite_name}.webp`;
+                let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? group.spreadsheet : group.spreadsheet_url;
+                icon.src = imageSrc;
                 icon.style.display = 'block';
-                
+
                 if (group.count > 1) {
                     count.textContent = group.count;
                     count.style.display = 'block';
                 } else {
                     count.style.display = 'none';
                 }
-                
+
                 slot.style.cursor = 'grab';
             } else {
                 this.inventorySlots[index] = null;
@@ -483,7 +490,7 @@ class InventoryPrivateSceneHtml {
         const dragShadowImg = document.createElement('img');
         dragShadowImg.id = 'drag-shadow-img';
         dragShadowImg.style.objectFit = 'contain';
-        
+
         dragShadowDiv.appendChild(dragShadowImg);
         document.body.appendChild(dragShadowDiv);
     }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
 use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\Game\Scene\RankingApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
+use App\Http\Controllers\Api\Game\Lobby\GachaponApiController;
 use App\Http\Controllers\Api\User\UserChangeChatApiController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeFichaApiController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeShadowColorController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeColornameApiController;
+use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
 
 Route::prefix('test')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -55,6 +57,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('jwt-auto-login', [LoginApiController::class, 'jwtAutoLogin']);
             Route::post('logout', [LogoutApiController::class, 'index']);
         });
+
         Route::prefix('user')->group(function () {
             Route::post('increase-stats', [IncreaseStatsApiController::class, 'index']);
             Route::post('update-description', [UpdateDescriptionApiController::class, 'index']);
@@ -62,6 +65,13 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('change-chat', [UserChangeChatApiController::class, 'index']);
             Route::post('change-colorname', [UserChangeColornameApiController::class, 'index']);
             Route::post('change-shadowcolor', [UserChangeShadowColorController::class, 'index']);
+        });
+
+        Route::prefix('lobby')->group(function () {
+            Route::prefix('gachapon')->group(function () {
+                Route::post('spin', [GachaponApiController::class, 'spin']);
+                Route::post('prizes', [GachaponApiController::class, 'prizes']);
+            });
         });
 
         Route::prefix('island')->group(function () {
@@ -86,14 +96,22 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('user-catch-item', [PublicSceneApiController::class, 'userCatchItem']);
         });
 
+        Route::prefix('scene')->group(function (){
+            Route::post('user-decorations', [SceneUserDecorationsApiController::class, 'index']);
+        });
+
         Route::prefix('ranking')->group(function () {
             Route::post('categories', [RankingApiController::class, 'getCategories']);
             Route::post('get', [RankingApiController::class, 'get']);
         });
+
+        Route::prefix('catalog')->group(function () {
+            Route::post('lobby-gachapon', [GachaponApiController::class, 'get']);
+        });
     });
 });
 
-Route::prefix('internal')->group(function() {
+Route::prefix('internal')->group(function () {
     Route::prefix('bots')->group(function () {
         Route::post('generate-token', [App\Http\Controllers\Internal\BotController::class, 'generateToken']);
     });

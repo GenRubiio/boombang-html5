@@ -110,6 +110,12 @@ class DetailPanelPrivateSceneHtml {
     setupEventListeners() {
         const container = this.detailContainer.node;
 
+        // Detener la propagación de eventos para que no interfieran con la escena de Phaser
+        const stopPropagation = (event) => event.stopPropagation();
+        container.addEventListener('pointerdown', stopPropagation);
+        container.addEventListener('mousedown', stopPropagation);
+        container.addEventListener('touchstart', stopPropagation);
+
         // Close button
         const closeBtn = container.querySelector('#detail-close');
         closeBtn.addEventListener('click', () => this.hide());
@@ -138,8 +144,9 @@ class DetailPanelPrivateSceneHtml {
         if (container && nameElement && iconElement) {
             // Update content
             nameElement.textContent = item.display_name;
-            iconElement.src = `/assets/game/objects/${item.sprite_name}.webp`;
-            
+            let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+            iconElement.src = imageSrc;
+
             // Show panel
             container.style.display = 'block';
             this.isVisible = true;

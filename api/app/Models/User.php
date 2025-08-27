@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 use App\Observers\UserObserver;
+use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
@@ -64,22 +65,58 @@ class User extends Authenticatable
 
     public function enabledFichas(): array
     {
-        return $this->fichas()->get()->pluck('ficha_color')->toArray();
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'ficha')
+            ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
     }
 
     public function enabledChats(): array
     {
-        return $this->chats()->get()->pluck('chat_color')->toArray();
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'chat')
+            ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
     }
 
     public function enabledColorNames(): array
     {
-        return $this->colornames()->get()->pluck('name_color')->toArray();
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'name')
+            ->get()
+            ->pluck('ci.user_decoration_value')
+            ->toArray();
     }
 
     public function enabledShadows(): array
     {
-        return $this->shadows()->get()->pluck('shadow_color')->toArray();
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'shadow')
+            ->get()
+            ->pluck('ci.user_decoration_value')
+            ->toArray();
     }
 
     /*
@@ -98,24 +135,10 @@ class User extends Authenticatable
         return $this->hasMany(UserCatalogItem::class)->where('private_scene_id', null);
     }
 
-    public function fichas()
+    public function catalogShowItems()
     {
-        return $this->hasMany(UserFicha::class, 'user_id', 'id');
-    }
-
-    public function chats()
-    {
-        return $this->hasMany(UserChat::class, 'user_id', 'id');
-    }
-
-    public function colornames()
-    {
-        return $this->hasMany(UserColorname::class, 'user_id', 'id');
-    }
-
-    public function shadows()
-    {
-        return $this->hasMany(UserShadow::class, 'user_id', 'id');
+        return $this->hasMany(UserCatalogItem::class)->where('private_scene_id', null)
+            ->where('show_in_inventory', true);
     }
 
     /*

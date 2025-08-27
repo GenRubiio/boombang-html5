@@ -2,7 +2,7 @@
   <div class="lobby__scenes-tab">
     <div class="lobby__scenes-list">
       <div v-for="gameScene in gameScenes" :key="gameScene.uuid">
-        <button @click="joinScene(gameScene.uuid, MenuTypeEnum.GAME_SCENE)">
+        <button @click="handleClick(gameScene.uuid, MenuTypeEnum.GAME_SCENE)" :disabled="isJoining">
           {{ gameScene.name }}
           <span>{{ gameScene.total_users_in }}</span>
         </button>
@@ -20,6 +20,7 @@ export default {
   data() {
     return {
       MenuTypeEnum,
+      isJoining: false,
       gameScenes: [],
     };
   },
@@ -27,7 +28,9 @@ export default {
     this.loadGames();
   },
   methods: {
-    joinScene(sceneUuid, menuType) {
+    handleClick(sceneUuid, menuType) {
+      if (this.isJoining) return;
+      this.isJoining = true;
       this.$emit("join-scene", sceneUuid, menuType);
     },
     loadGames() {
@@ -68,6 +71,12 @@ export default {
 .lobby__scenes-list button:hover {
   background-color: #1c2c35ad;
   cursor: pointer;
+}
+
+.lobby__scenes-list button:disabled {
+  background-color: #2a3a46;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .lobby__scenes-list button span {

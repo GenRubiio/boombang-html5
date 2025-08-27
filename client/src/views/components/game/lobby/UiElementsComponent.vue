@@ -18,6 +18,48 @@
     <div class="lobby__logout">
       <img :src="asset_logout_image" alt="logout" @click="logout" />
     </div>
+    <div class="lobby__label logout">
+      <span>Logout</span>
+    </div>
+    <div class="lobby__gachapon">
+      <GachaponMachineComponent
+        ref="gachaponMachine"
+        :title-text="'BoomMania'"
+        :price-text="'100円'"
+        :speed="1"
+        @request-purchase="showGachaAlert"
+        @show-prize="showGachaResult"
+      />
+      <div class="help-button" @click="isHelpCardVisible = true">
+        <i class="las la-question"></i>
+      </div>
+    </div>
+    <div class="lobby__label gachapon">
+      <span>Gachapon</span>
+    </div>
+    <CreditsComponent />
+    <div class="lobby__label credits">
+      <span>Monedas</span>
+    </div>
+    <AlertWishGachaComponent
+      :visible="isGachaAlertVisible"
+      @confirm="handleGachaConfirm"
+      @cancel="handleGachaCancel"
+    />
+    <HelpCardGachaComponent
+      v-if="isHelpCardVisible"
+      @close="isHelpCardVisible = false"
+    />
+    <GachaResultPopup
+      :visible="isGachaResultVisible"
+      :item="gachaponItem"
+      @close="handleGachaResultClose"
+    />
+    <ErrorPopup
+      :visible="isErrorPopupVisible"
+      :message="errorMessage"
+      @close="handleErrorPopupClose"
+    />
   </div>
 </template>
 
@@ -30,10 +72,21 @@ import asset_flor_image from "@/assets/game/lobby/flor.webp";
 import asset_foreground_image from "@/assets/game/lobby/foreground.webp";
 import asset_marikita_image from "@/assets/game/lobby/marikita.webp";
 import asset_logout_image from "@/assets/game/lobby/logout.webp";
+import GachaponMachineComponent from "./GachaponMachineComponent.vue";
+import AlertWishGachaComponent from "./gachapon/AlertWishGachaComponent.vue";
+import HelpCardGachaComponent from "./gachapon/HelpCardGachaComponent.vue";
+import GachaResultPopup from "./gachapon/GachaResultPopup.vue";
+import ErrorPopup from "./gachapon/ErrorPopup.vue";
+import CreditsComponent from "./CreditsComponent.vue";
 
 export default {
   data() {
     return {
+      isGachaAlertVisible: false,
+      isHelpCardVisible: false,
+      isGachaResultVisible: false,
+      isErrorPopupVisible: false,
+      errorMessage: "",
       asset_background_image,
       asset_flor_image,
       asset_foreground_image,
@@ -41,9 +94,13 @@ export default {
       asset_avatarImage: null,
       asset_logout_image,
       isLogoutButtonClicked: false,
+      gachaponItem: {
+        name: null,
+        image: null,
+      },
     };
   },
-  async created() {
+  async mounted() {
     try {
       const avatarUrl = new URL(
         `../../../../assets/game/lobby/avatars/${this.$socket.user.avatar_id}.svg`,
@@ -54,7 +111,15 @@ export default {
       console.error("Error cargando el avatar:", error);
     }
   },
-  components: {},
+  beforeUnmount() {},
+  components: {
+    GachaponMachineComponent,
+    AlertWishGachaComponent,
+    HelpCardGachaComponent,
+    GachaResultPopup,
+    ErrorPopup,
+    CreditsComponent,
+  },
   methods: {
     logout() {
       if (this.isLogoutButtonClicked) return;
@@ -66,11 +131,51 @@ export default {
       });
       socket.emit(RequestSocketsEnum.LOGOUT);
     },
+    showGachaAlert() {
+      this.isGachaAlertVisible = true;
+    },
+    handleGachaConfirm() {
+      this.isGachaAlertVisible = false;
+      socket.off(ResponseSocketsEnum.LOBBY_GACHA_SPIN);
+      socket.on(ResponseSocketsEnum.LOBBY_GACHA_SPIN, (data) => {
+        if (data.success) {
+          this.$refs.gachaponMachine.triggerAnimation();
+          this.gachaponItem.name = data.item.name;
+          this.gachaponItem.image = data.item.image;
+        } else {
+          this.errorMessage = data.message;
+          this.isErrorPopupVisible = true;
+          this.$refs.gachaponMachine.enableHandle();
+        }
+      });
+      socket.emit(RequestSocketsEnum.LOBBY_GACHA_SPIN);
+    },
+    handleGachaCancel() {
+      this.isGachaAlertVisible = false;
+      this.$refs.gachaponMachine.enableHandle();
+    },
+    handleGachaResultClose() {
+      this.isGachaResultVisible = false;
+      this.$refs.gachaponMachine.enableHandle();
+    },
+    handleErrorPopupClose() {
+      this.isErrorPopupVisible = false;
+    },
+    showGachaResult() {
+      this.isGachaResultVisible = true;
+    },
   },
 };
 </script>
 
 <style scoped>
+.lobby__gachapon {
+  position: absolute;
+  bottom: -157px;
+  right: 449px;
+  width: 45%;
+  z-index: 1;
+}
 .lobby__background img {
   position: absolute;
   top: -22px;
@@ -175,5 +280,56 @@ export default {
   100% {
     transform: translateY(0);
   }
+}
+
+.lobby__label {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  z-index: 1;
+  width: 127px;
+  display: flex;
+  justify-content: center;
+  border: 5px solid white;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #019a02;
+  color: white;
+  font-weight: bold;
+}
+
+.lobby__label.logout {
+  right: 10px;
+  width: 127px;
+}
+
+.lobby__label.gachapon {
+  left: 254px;
+  width: 150px;
+}
+
+.lobby__label.credits {
+  left: 27px;
+  width: 124px;
+}
+
+.help-button {
+  position: absolute;
+  top: 45px;
+  right: 159px;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="lobby__scenes-tab">
     <div class="lobby__scenes-list">
       <div v-for="publicScene in publicScenes" :key="publicScene.uuid">
-        <button @click="joinScene(publicScene.uuid, MenuTypeEnum.PUBLIC_SCENE)">
+        <button @click="handleClick(publicScene.uuid, MenuTypeEnum.PUBLIC_SCENE)" :disabled="isJoining">
           {{ publicScene.name }}
           <span>{{ publicScene.total_users_in }}</span>
         </button>
@@ -20,10 +20,13 @@ export default {
   data() {
     return {
       MenuTypeEnum,
+      isJoining: false,
     };
   },
   methods: {
-    joinScene(sceneUuid, menuType) {
+    handleClick(sceneUuid, menuType) {
+      if (this.isJoining) return;
+      this.isJoining = true;
       this.$emit("join-scene", sceneUuid, menuType);
     },
   },
@@ -60,6 +63,12 @@ export default {
 .lobby__scenes-list button:hover {
   background-color: #1c2c35ad;
   cursor: pointer;
+}
+
+.lobby__scenes-list button:disabled {
+  background-color: #2a3a46;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .lobby__scenes-list button span {

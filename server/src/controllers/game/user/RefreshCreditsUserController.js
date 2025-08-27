@@ -11,8 +11,7 @@ class RefreshCreditsUserController {
             if (!user) {
                 throw new Error('User not found');
             }
-            if (!user.currentArea) return;
-
+            
             socket.emit(ResponseSocketsEnum.REFRESH_USER_CREDITS, {
                 gold: user.goldCoins,
                 silver: user.silverCoins

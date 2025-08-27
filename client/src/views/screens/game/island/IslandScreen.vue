@@ -27,6 +27,7 @@
                 :key="scene.id"
                 class="scenario-button"
                 @click="handleSceneAction(scene)"
+                :disabled="isJoining"
               >
                 {{ scene.name }}
               </button>
@@ -53,6 +54,7 @@
                   :key="'add-' + n"
                   class="scenario-button scenario-button--add"
                   @click="handleSceneAction(null)"
+                  :disabled="isJoining"
                 >
                   {{ $t('island.add_scenario') }}
                 </button>
@@ -108,6 +110,7 @@ export default {
       imagesToLoad: 2, // 1 isla + 1 brújula
       loadedImages: 0,
       imagesLoaded: false,
+      isJoining: false,
     };
   },
   computed: {
@@ -149,6 +152,8 @@ export default {
       this.$emit("exitLobby");
     },
     handleSceneAction(scene) {
+      if (this.isJoining) return;
+      this.isJoining = true;
       if (scene) {
         if (import.meta.env.VITE_APP_ENV === "local") {
           console.log("Acción para el escenario existente:", scene);
@@ -333,6 +338,12 @@ export default {
 .scenario-button:hover {
   background-color: #1c2c35ad;
   cursor: pointer;
+}
+
+.scenario-button:disabled {
+  background-color: #2a3a46;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .brujiula {
