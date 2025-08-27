@@ -24,10 +24,6 @@
 {{-- <x-backpack::menu-item title="Ranking categories" icon="la la-question" :link="backpack_url('ranking-category')" />
 <x-backpack::menu-item title="Rankings" icon="la la-question" :link="backpack_url('ranking')" />
 <x-backpack::menu-item title="V ranking summaries" icon="la la-question" :link="backpack_url('v-ranking-summary')" />
-
-<x-backpack::menu-item title="User fichas" icon="la la-question" :link="backpack_url('user-ficha')" />
-<x-backpack::menu-item title="User chats" icon="la la-question" :link="backpack_url('user-chat')" />
-<x-backpack::menu-item title="User colornames" icon="la la-question" :link="backpack_url('user-colorname')" />
-<x-backpack::menu-item title="User shadows" icon="la la-question" :link="backpack_url('user-shadow')" /> --}}
+--}}
 
 <x-backpack::menu-item :title="trans('backpack::crud.file_manager')" icon="la la-files-o" :link="backpack_url('elfinder')" />

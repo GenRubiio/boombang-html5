@@ -141,26 +141,6 @@ class User extends Authenticatable
             ->where('show_in_inventory', true);
     }
 
-    public function fichas()
-    {
-        return $this->hasMany(UserFicha::class, 'user_id', 'id');
-    }
-
-    public function chats()
-    {
-        return $this->hasMany(UserChat::class, 'user_id', 'id');
-    }
-
-    public function colornames()
-    {
-        return $this->hasMany(UserColorname::class, 'user_id', 'id');
-    }
-
-    public function shadows()
-    {
-        return $this->hasMany(UserShadow::class, 'user_id', 'id');
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES

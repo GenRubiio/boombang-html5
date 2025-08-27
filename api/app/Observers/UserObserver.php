@@ -59,26 +59,42 @@ class UserObserver
             'show_in_inventory' => false
         ]);
 
-        //$user->chats()->create([
-        //    'chat_color' => ColorChatEnum::USER->key(),
-        //]);
-        //$user->chats()->create([
-        //    'chat_color' => ColorChatEnum::VIP->key(),
-        //]);
-        //
-        //$user->colornames()->create([
-        //    'name_color' => ColorNameEnum::USER->key(),
-        //]);
-        //$user->colornames()->create([
-        //    'name_color' => ColorNameEnum::VIP->key(),
-        //]);
-        //
-        //$user->shadows()->create([
-        //    'shadow_color' => ColorShadowEnum::USER->key(),
-        //]);
-        //$user->shadows()->create([
-        //    'shadow_color' => ColorShadowEnum::VIP->key(),
-        //]);
+        /**
+         * Create catalog items for chat decorations.
+         */
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'chat')
+                ->where('user_decoration_value', ColorChatEnum::USER->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
+        ]);
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'chat')
+                ->where('user_decoration_value', ColorChatEnum::VIP->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
+        ]);
+
+        /**
+         * Create catalog items for name decorations.
+         */
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'name')
+                ->where('user_decoration_value', ColorNameEnum::USER->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
+        ]);
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'name')
+                ->where('user_decoration_value', ColorNameEnum::VIP->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
+        ]);
+
     }
 
     /**
