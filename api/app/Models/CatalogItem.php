@@ -34,10 +34,13 @@ class CatalogItem extends Model
         'atlas',
         'description',
         'price',
+        'type',
         'price_type',
         'discount',
         'stars',
         'map_size',
+        'user_decoration_type',
+        'user_decoration_value',
         'in_lobby_gacha',
         'show_in_inventory',
         'is_purchasable',
@@ -95,7 +98,7 @@ class CatalogItem extends Model
         $attribute = 'image';
         $disk = 'uploads'; // Debe existir en config/filesystems.php
         $folder = Str::slug($this->name ?? 'catalog');
-        $destinationPath = "catalog/{$folder}"; // ¡Ojo! sin 'uploads/' delante
+        $destinationPath = "uploads/catalog/{$folder}"; // ¡Ojo! sin 'uploads/' delante
 
         // Borrar imagen (cuando el campo se limpia en Backpack)
         if ($value === null) {

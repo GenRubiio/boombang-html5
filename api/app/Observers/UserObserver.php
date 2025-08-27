@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Models\CatalogItem;
 use App\Enums\ColorChatEnum;
 use App\Enums\ColorNameEnum;
 use App\Enums\ColorFichaEnum;
@@ -15,36 +16,69 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $user->fichas()->create([
-            'ficha_color' => ColorFichaEnum::USER->key(),
+        /**
+         * Create catalog items for ficha decorations.
+         */
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'ficha')
+                ->where('user_decoration_value', ColorFichaEnum::USER->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
         ]);
-        $user->fichas()->create([
-            'ficha_color' => ColorFichaEnum::BETA->key(),
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'beta')
+                ->where('user_decoration_value', ColorFichaEnum::VIP->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
         ]);
-        $user->fichas()->create([
-            'ficha_color' => ColorFichaEnum::VIP->key(),
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'beta')
+                ->where('user_decoration_value', ColorFichaEnum::BETA->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
         ]);
 
-        $user->chats()->create([
-            'chat_color' => ColorChatEnum::USER->key(),
+        /**
+         * Create catalog items for shadow decorations.
+         */
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'shadow')
+                ->where('user_decoration_value', ColorShadowEnum::USER->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
         ]);
-        $user->chats()->create([
-            'chat_color' => ColorChatEnum::VIP->key(),
+        $user->catalogItems()->create([
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'shadow')
+                ->where('user_decoration_value', ColorShadowEnum::VIP->key())
+                ->first()
+                ->id,
+            'show_in_inventory' => false
         ]);
 
-        $user->colornames()->create([
-            'name_color' => ColorNameEnum::USER->key(),
-        ]);
-        $user->colornames()->create([
-            'name_color' => ColorNameEnum::VIP->key(),
-        ]);
-
-        $user->shadows()->create([
-            'shadow_color' => ColorShadowEnum::USER->key(),
-        ]);
-        $user->shadows()->create([
-            'shadow_color' => ColorShadowEnum::VIP->key(),
-        ]);
+        //$user->chats()->create([
+        //    'chat_color' => ColorChatEnum::USER->key(),
+        //]);
+        //$user->chats()->create([
+        //    'chat_color' => ColorChatEnum::VIP->key(),
+        //]);
+        //
+        //$user->colornames()->create([
+        //    'name_color' => ColorNameEnum::USER->key(),
+        //]);
+        //$user->colornames()->create([
+        //    'name_color' => ColorNameEnum::VIP->key(),
+        //]);
+        //
+        //$user->shadows()->create([
+        //    'shadow_color' => ColorShadowEnum::USER->key(),
+        //]);
+        //$user->shadows()->create([
+        //    'shadow_color' => ColorShadowEnum::VIP->key(),
+        //]);
     }
 
     /**

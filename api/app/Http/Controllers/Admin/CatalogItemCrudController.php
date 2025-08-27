@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\CatalogItemTypesEnum;
 use App\Http\Requests\CatalogItemRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
@@ -70,7 +71,7 @@ class CatalogItemCrudController extends CrudController
             [
                 'name' => 'description',
                 'label' => 'Descripción',
-                'type' => 'textarea',
+                'type' => 'ckeditor',
                 'tab' => 'General'
             ],
             [
@@ -114,6 +115,7 @@ class CatalogItemCrudController extends CrudController
                 'name' => 'price',
                 'label' => 'Precio',
                 'type' => 'number',
+                'default' => 0,
                 'tab' => 'Precios'
             ],
             [
@@ -130,7 +132,15 @@ class CatalogItemCrudController extends CrudController
                 'name' => 'discount',
                 'label' => 'Descuento',
                 'type' => 'number',
+                'default' => 0,
                 'tab' => 'Precios'
+            ],
+            [
+                'name' => 'type',
+                'label' => 'Tipo',
+                'type' => 'select_from_array',
+                'options' => CatalogItemTypesEnum::toAssociativeArray(),
+                'tab' => 'Configuración'
             ],
             [
                 'name' => 'stars',
@@ -148,6 +158,24 @@ class CatalogItemCrudController extends CrudController
             [
                 'name' => 'map_size',
                 'label' => 'Tamaño del Mapa',
+                'type' => 'text',
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'user_decoration_type',
+                'label' => 'Tipo de Decoración de Usuario',
+                'type' => 'select_from_array',
+                'options' => [
+                    'ficha' => 'Ficha',
+                    'chat' => 'Chat',
+                    'name' => 'Name',
+                    'shadow' => 'Shadow',
+                ],
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'user_decoration_value',
+                'label' => 'Valor de Decoración de Usuario',
                 'type' => 'text',
                 'tab' => 'Configuración'
             ],

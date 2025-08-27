@@ -1,19 +1,17 @@
 <template>
-  <div v-if="visible" class="gacha-popup-overlay" @click.self="$emit('cancel')">
+  <div v-if="visible" class="gacha-popup-overlay" @click.self="onClose">
     <div class="gacha-popup-content">
-      <button class="gacha-popup-close" @click="$emit('cancel')">
+      <button class="gacha-popup-close" @click="onClose">
         <i class="las la-times"></i>
       </button>
-      <h2 class="gacha-popup-title">Confirmar tirada</h2>
-      <p class="gacha-popup-text">
-        ¿Deseas gastar 100 de plata para una tirada?
-      </p>
+      <h2 class="gacha-popup-title">¡Has obtenido un objeto!</h2>
+      <div class="item-display">
+        <img :src="item.image" :alt="item.name" class="item-image" />
+        <p class="item-name">{{ item.name }}</p>
+      </div>
       <div class="gacha-popup-buttons">
-        <button @click="$emit('confirm')" class="gacha-popup-button confirm">
-          Sí
-        </button>
-        <button @click="$emit('cancel')" class="gacha-popup-button cancel">
-          No
+        <button @click="onClose" class="gacha-popup-button confirm">
+          ¡Genial!
         </button>
       </div>
     </div>
@@ -22,20 +20,21 @@
 
 <script>
 export default {
-  name: "AlertWishGachaComponent",
+  name: "GachaResultPopup",
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
-  },
-  emits: ["confirm", "cancel"],
-  methods: {
-    onConfirm() {
-      this.$emit("confirm");
+    item: {
+      type: Object,
+      default: () => ({ name: "", image: "" }),
     },
-    onCancel() {
-      this.$emit("cancel");
+  },
+  emits: ["close"],
+  methods: {
+    onClose() {
+      this.$emit("close");
     },
   },
 };
@@ -79,48 +78,52 @@ export default {
   text-shadow: 1px 1px #0000004d;
 }
 
-.gacha-popup-text {
+.item-display {
+  margin-bottom: 20px;
+}
+
+.item-image {
+  max-width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background-color: #eee;
+}
+
+.item-name {
+  font-size: 18px;
+  font-weight: bold;
   color: #d96b35;
-  font-size: 16px;
-  margin-bottom: 25px;
 }
 
 .gacha-popup-buttons {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   gap: 15px;
 }
 
 .gacha-popup-button {
-  padding: 12px 25px;
-  cursor: pointer;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: white;
   font-weight: bold;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 3px #0000004d;
+  transition: all 0.2s ease;
+}
+
+.gacha-popup-button:active {
+  box-shadow: none;
+  transform: translateY(3px);
 }
 
 .gacha-popup-button.confirm {
   background-color: #fd9a03;
   color: white;
 }
-
-.gacha-popup-button.confirm:hover {
-  background-color: #ff9900;
-  transform: translateY(-2px);
-}
-
-.gacha-popup-button.cancel {
-  background-color: #dc3545;
-  color: white;
-}
-
-.gacha-popup-button.cancel:hover {
-  background-color: #c82333;
-  transform: translateY(-2px);
-}
-
 .gacha-popup-close {
   position: absolute;
   top: 5px;

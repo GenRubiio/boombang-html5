@@ -23,12 +23,6 @@
 </template>
 
 <script>
-/**
- * GachaMachine.vue (Option API)
- * - Convierte tu HTML/CSS/JS a un componente Vue.
- * - Usa GSAP 3 para animaciones (incluye RoughEase).
- */
-import socket from "@/sockets/socket";
 import { gsap } from "gsap";
 import { RoughEase } from "gsap/EasePack";
 
@@ -36,7 +30,7 @@ gsap.registerPlugin(RoughEase);
 
 export default {
   name: "GachaMachine",
-  emits: ["request-purchase"],
+  emits: ["request-purchase", "show-prize"],
 
   props: {
     titleText: {
@@ -53,15 +47,11 @@ export default {
     },
     machineSrc: {
       type: String,
-      default: "https://assets.codepen.io/2509128/gotcha.svg",
+      default: "assets/game/lobby/gacha/gotcha.svg",
     },
     handleSrc: {
       type: String,
-      default: "https://assets.codepen.io/2509128/handle.svg",
-    },
-    shineSrc: {
-      type: String,
-      default: "https://assets.codepen.io/2509128/shine.png",
+      default: "assets/game/lobby/gacha/handle.svg",
     },
   },
 
@@ -156,9 +146,8 @@ export default {
       });
     },
 
-    calledEmulator() {
-      console.log("Emulador llamado");
-      //socket.emit("request-gacha-start");
+    showPrize() {
+      this.$emit("show-prize");
       this.resetMachine();
     },
 
@@ -248,7 +237,7 @@ export default {
 
       const onPick = () => {
         this.prizeBall.dom.style.cursor = "default";
-        this.calledEmulator();
+        this.showPrize();
       };
       this.prizeBall.dom.addEventListener("click", onPick, { once: true });
     },
@@ -437,8 +426,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap");
-
 /* ====== Reset y base SOLO dentro del componente ====== */
 .gachapon-root,
 .gachapon-root *,
