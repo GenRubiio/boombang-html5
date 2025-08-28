@@ -83,7 +83,7 @@ class GachaponApiController extends Controller
                 'item' => [
                     'id' => $item->id,
                     'name' => $item->name,
-                    'image' => url($item->image),
+                    'image' => urlDocker($item->image),
                 ],
                 'user' => (new UserResource($user))->toDTO()
             ]);
@@ -102,7 +102,7 @@ class GachaponApiController extends Controller
                     return [
                         'id' => $item->id,
                         'name' => $item->name,
-                        'imageUrl' => url($item->image),
+                        'imageUrl' => urlDocker($item->image),
                         'rarity' => $item->stars,
                         'type' => $item->type == CatalogItemTypesEnum::USER_DECORATION->key() ? 'decoration' : 'normal',
                     ];
