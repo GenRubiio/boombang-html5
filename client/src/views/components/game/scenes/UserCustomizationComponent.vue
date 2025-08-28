@@ -302,8 +302,6 @@ export default {
     socket.on(ResponseSocketsEnum.GET_USER_DECORATIONS, (data) => {
       if (data && (data.decorations || data.ficha !== undefined)) {
         const decorations = data.decorations || data;
-        console.log('User decorations received:', decorations);
-        console.log('User:', this.authUser);
         this.fichaColors = decorations.ficha || [];
         this.chatColors = decorations.chat || [];
         this.nameColors = decorations.name || [];

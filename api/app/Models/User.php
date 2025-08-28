@@ -101,8 +101,10 @@ class User extends Authenticatable
             ->whereNull('uci.private_scene_id')
             ->whereNotNull('ci.user_decoration_type')
             ->where('ci.user_decoration_type', 'name')
-            ->get()
             ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
             ->toArray();
     }
 
@@ -114,8 +116,10 @@ class User extends Authenticatable
             ->whereNull('uci.private_scene_id')
             ->whereNotNull('ci.user_decoration_type')
             ->where('ci.user_decoration_type', 'shadow')
-            ->get()
             ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
             ->toArray();
     }
 
