@@ -141,12 +141,30 @@ while true; do
     9)
       echo "==> Deploy api..."
       sudo docker stop boombang-html5-server-1
+      
+      # Backup uploads before deployment
+      echo "==> Backing up uploads..."
+      ./docker/backup-uploads.sh backup
+      
+      # Stop API container but keep volumes
+      sudo docker compose stop api
+      # Build new API image
       sudo docker compose build api
+      # Start API with existing volumes (this preserves uploads)
       sudo docker compose up -d api
+      
+      # Wait for container to be ready
+      sleep 5
+      
+      # Restore uploads if needed
+      echo "==> Restoring uploads..."
+      ./docker/backup-uploads.sh restore
+      
       sudo docker exec boombang-html5-api-1 php artisan migrate --force
       sudo docker exec boombang-html5-api-1 php artisan passport:install
       sudo docker exec boombang-html5-api-1 php artisan passport:clear-tokens
       sudo docker restart boombang-html5-server-1
+      echo "==> API deployment completed. Upload files preserved."
       ;;
     10)
       echo "==> Deploy web..."
