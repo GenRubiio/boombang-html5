@@ -32,7 +32,7 @@ class SceneUserDecorationsApiController extends Controller
             foreach ($items as $item) {
                 $decorationData = [
                     'key' => $item->user_decoration_value,
-                    'image' => url($item->image), // All decoration types now use images
+                    'image' => urlDocker($item->image), // All decoration types now use images
                     'description' => $item->description
                 ];
 
