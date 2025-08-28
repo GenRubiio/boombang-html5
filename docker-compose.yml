@@ -50,6 +50,7 @@ services:
       - ./docker/nginx/gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
       - ./docker/nginx/www.boommania.com:/etc/nginx/vhost.d/www.boommania.com:ro
       - ./docker/nginx/boommania.com:/etc/nginx/vhost.d/boommania.com:ro
+      - ./docker/nginx/api-cors.conf:/etc/nginx/vhost.d/api.boommania.com_location:ro
     networks:
       - boombang
 
