@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 # Paquetes del sistema + libs para GD con WebP/JPEG/Freetype
 RUN apt-get update \
