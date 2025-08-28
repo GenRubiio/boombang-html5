@@ -28,11 +28,11 @@ class UserCatalogItemsResource extends JsonResource
             'map_size' => $this->catalogItem->map_size,
             'occupied_tiles' => $this->occupied_tiles,
             'image' => $this->catalogItem->image,
-            'image_url' => url($this->catalogItem->image),
+            'image_url' => urlDocker($this->catalogItem->image),
             'spreadsheet' => $this->catalogItem->spreadsheet,
-            'spreadsheet_url' => url($this->catalogItem->spreadsheet),
+            'spreadsheet_url' => urlDocker($this->catalogItem->spreadsheet),
             'atlas' => $this->catalogItem->atlas,
-            'atlas_url' => !empty($this->catalogItem->atlas) ? url($this->catalogItem->atlas) : null,
+            'atlas_url' => !empty($this->catalogItem->atlas) ? urlDocker($this->catalogItem->atlas) : null,
         ];
     }
 }
