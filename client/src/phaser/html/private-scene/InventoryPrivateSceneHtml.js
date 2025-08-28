@@ -383,21 +383,17 @@ class InventoryPrivateSceneHtml {
         if (this.scene.htmlDetailPanel && this.scene.htmlDetailPanel.isVisible) {
             this.scene.htmlDetailPanel.hide();
         }
-        console.log('Show inventory called');
         const container = this.inventoryContainer.node.querySelector('#html-inventory');
-        console.log('Container found:', container);
         if (container) {
             container.style.display = 'block';
             this.isVisible = true;
             this.updateInventoryUI();
-            console.log('Inventory should now be visible');
         } else {
             console.error('HTML inventory container not found');
         }
     }
 
     hide() {
-        console.log('Hide inventory called');
         const container = this.inventoryContainer.node.querySelector('#html-inventory');
         if (container) {
             container.style.display = 'none';
@@ -406,7 +402,6 @@ class InventoryPrivateSceneHtml {
     }
 
     toggle() {
-        console.log('Toggle inventory called, isVisible:', this.isVisible);
         if (this.isVisible) {
             this.hide();
         } else {
