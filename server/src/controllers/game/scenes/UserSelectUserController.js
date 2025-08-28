@@ -1,5 +1,4 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const DisconnectUserController = require('../../connection/DisconnectUserController');
 const Log = require('../../../utils/Log');
 const UserMovimentUtil = require('../../../utils/UserMovimentUtil');
 const UserResource = require('../../../resources/UserResource');

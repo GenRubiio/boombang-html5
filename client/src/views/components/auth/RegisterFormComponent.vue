@@ -138,7 +138,7 @@ export default {
       if (import.meta.env.VITE_APP_ENV === "local") {
         console.log("Enviando solicitud de registro..." + this.recaptchaToken);
       }
-      this.$socket.emit(RequestSocketsEnum.REGISTER, {
+      socket.emit(RequestSocketsEnum.REGISTER, {
         username: this.username,
         email: this.email,
         password: this.password,
@@ -146,17 +146,20 @@ export default {
         recaptcha: this.recaptchaToken,
       });
 
-      this.$socket.off(ResponseSocketsEnum.REGISTER_SUCCESS);
-      this.$socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, (data) => {
+      socket.off(ResponseSocketsEnum.REGISTER_SUCCESS);
+      socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, (data) => {
         if (data.user && data.user.lang) {
           this.languageStore.setLocale(data.user.lang);
         }
-        this.$socket.user = data.user;
+        if (data.user?.authJwt) {
+          localStorage.setItem("app_jwt", data.user.authJwt);
+        }
+        socket.user = data.user;
         this.$emit("loginSuccess");
       });
 
-      this.$socket.off(ResponseSocketsEnum.REGISTER_ERROR);
-      this.$socket.on(ResponseSocketsEnum.REGISTER_ERROR, (error) => {
+      socket.off(ResponseSocketsEnum.REGISTER_ERROR);
+      socket.on(ResponseSocketsEnum.REGISTER_ERROR, (error) => {
         if (error.errors) {
           this.setErrors(error.errors);
         }
