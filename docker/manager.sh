@@ -144,7 +144,7 @@ while true; do
       
       # Backup uploads before deployment
       echo "==> Backing up uploads..."
-      ./docker/backup-uploads.sh sudo backup
+      chmod +x docker/backup-uploads.sh && ./docker/backup-uploads.sh sudo backup
       
       # Stop API container but keep volumes
       sudo docker compose stop api
