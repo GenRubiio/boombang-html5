@@ -297,3 +297,10 @@ if (!function_exists('injectPictureTag')) {
     }
 }
 
+if (!function_exists('urlDocker')) {
+    function urlDocker($path = ''): string
+    {
+        return UtilsHelper::urlDocker($path);
+    }
+}
+

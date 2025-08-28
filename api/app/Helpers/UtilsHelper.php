@@ -348,4 +348,13 @@ class UtilsHelper
         array_pop($path);
         return implode('/', $path);
     }
+
+    public static function urlDocker($path = ''): string
+    {
+        $urlBase = config('app.url');
+        if (substr($urlBase, -1) != '/') {
+            $urlBase .= '/';
+        }
+        return $urlBase . $path;
+    }
 }
