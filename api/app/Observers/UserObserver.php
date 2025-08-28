@@ -27,14 +27,14 @@ class UserObserver
             'show_in_inventory' => false
         ]);
         $user->catalogItems()->create([
-            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'beta')
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'ficha')
                 ->where('user_decoration_value', ColorFichaEnum::VIP->key())
                 ->first()
                 ->id,
             'show_in_inventory' => false
         ]);
         $user->catalogItems()->create([
-            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'beta')
+            'catalog_item_id' => CatalogItem::where('user_decoration_type', 'ficha')
                 ->where('user_decoration_value', ColorFichaEnum::BETA->key())
                 ->first()
                 ->id,
