@@ -132,9 +132,6 @@ class DetailPanelPrivateSceneHtml {
         if (this.scene.htmlInventory && this.scene.htmlInventory.isVisible) {
             this.scene.htmlInventory.hide();
         }
-        if (import.meta.env.VITE_APP_ENV === "local") {
-            console.log('Show detail panel called for item:', item);
-        }
         this.currentItem = item;
         
         const container = this.detailContainer.node.querySelector('#html-detail-panel');
@@ -150,19 +147,12 @@ class DetailPanelPrivateSceneHtml {
             // Show panel
             container.style.display = 'block';
             this.isVisible = true;
-
-            if (import.meta.env.VITE_APP_ENV === "local") {
-                console.log('Detail panel should now be visible');
-            }
         } else {
             console.error('HTML detail panel elements not found');
         }
     }
 
     hide() {
-        if (import.meta.env.VITE_APP_ENV === "local") {
-            console.log('Hide detail panel called');
-        }
         const container = this.detailContainer.node.querySelector('#html-detail-panel');
         if (container) {
             container.style.display = 'none';
