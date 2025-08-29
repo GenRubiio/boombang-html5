@@ -432,6 +432,8 @@ export default class PrivateScene extends Phaser.Scene {
             this.stopButtonBlink();
             // Deseleccionar cualquier objeto seleccionado
             this.deselectObject();
+            // Quitar interactividad de los objetos
+            this.removeObjectInteractivity();
         }
     }
 
@@ -492,6 +494,14 @@ export default class PrivateScene extends Phaser.Scene {
             item.sprite.on('pointerdown', () => {
                 this.selectObject(item);
             });
+        });
+    }
+
+    removeObjectInteractivity() {
+        this.sceneItems.forEach(item => {
+            if (item.sprite && item.sprite.input) {
+                item.sprite.off('pointerdown');
+            }
         });
     }
 
@@ -683,16 +693,18 @@ export default class PrivateScene extends Phaser.Scene {
     deselectObject() {
         if (!this.selectedObject) return;
 
-        if (this.moveModeActive) {
-            this.input.setDraggable(this.selectedObject.sprite, false);
+        const sprite = this.selectedObject.sprite;
+        if (sprite && sprite.input && sprite.input.draggable) {
+            this.input.setDraggable(sprite, false);
+            sprite.off('drag');
+            sprite.off('dragend');
         }
+
         this.selectedObject = null;
 
         if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
             this.htmlDetailPanel.hide();
         }
-
-        // HTML inventory remains visible when deselecting objects
     }
 
     /**

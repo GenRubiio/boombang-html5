@@ -116,14 +116,23 @@ class CreateSceneController {
 
             // Determina clickeable desde el mapa (no dependas de gameScene.tiles)
             const isClickable = map[row][col] === 0;
+            
+            // Verificar también si el tile está ocupado por objetos (si existe tileGrid)
+            const isTileOccupied = gameScene.tileGrid && 
+                                   gameScene.tileGrid[row] && 
+                                   gameScene.tileGrid[row][col] && 
+                                   gameScene.tileGrid[row][col].occupied;
 
-            if (!isClickable) {
+            if (!isClickable || isTileOccupied) {
                 if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log(`Tile at ${col}, ${row} is not clickable.`);
+                    console.log(`Tile at ${col}, ${row} is not clickable. Reason: ${!isClickable ? 'floor not walkable' : 'occupied by object'}`);
                 }
+                
+                // Emitir CHANGE_LOOK tanto para tiles no clickeables como para tiles ocupados por objetos
                 socket.emit(RequestSocketsEnum.CHANGE_LOOK, { x: col, y: row });
 
-                if (import.meta.env.VITE_MAP_MAKER === "true") {
+                // Solo actualizar el mapa si es por razones de piso no transitable y está en modo editor
+                if (!isClickable && import.meta.env.VITE_MAP_MAKER === "true") {
                     // Actualiza el mapa (aunque no exista bob)
                     map[row][col] = 0;
 
@@ -136,7 +145,8 @@ class CreateSceneController {
                     }
                     if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
                 }
-                return;
+                
+                return; // Bloquear completamente cualquier acción adicional
             }
 
             if (import.meta.env.VITE_APP_ENV === "local") {
