@@ -145,6 +145,11 @@ class User extends Authenticatable
             ->where('show_in_inventory', true);
     }
 
+    public function userCatalogItems()
+    {
+        return $this->hasMany(UserCatalogItem::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

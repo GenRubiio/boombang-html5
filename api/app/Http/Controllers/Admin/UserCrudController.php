@@ -13,7 +13,6 @@ class UserCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setup()
     {
@@ -24,6 +23,8 @@ class UserCrudController extends CrudController
 
     public function setupListOperation()
     {
+        $this->crud->addButtonFromView('line', 'user_catalog_items', 'user_catalog_items', 'beginning');
+
         $this->crud->addColumns([
             [
                 'name'  => 'id',
