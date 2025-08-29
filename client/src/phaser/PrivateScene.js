@@ -183,6 +183,11 @@ export default class PrivateScene extends Phaser.Scene {
                 this.markOccupiedTiles();
                 this.renderSceneObjects();
             }
+
+            // Re-enable detail panel buttons after server response
+            if (this.htmlDetailPanel) {
+                this.htmlDetailPanel.enableButtons();
+            }
         });
         socket.on(ResponseSocketsEnum.SCENE_PUT_ITEM, (data) => {
             if (import.meta.env.VITE_APP_ENV === "local") {
@@ -253,6 +258,27 @@ export default class PrivateScene extends Phaser.Scene {
             if (itemIndex !== -1) {
                 this.inventoryItemsList.splice(itemIndex, 1);
                 this.updateHTMLInventoryUI();
+            }
+        });
+        socket.on(ResponseSocketsEnum.ROTATE_OBJECT, (data) => {
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                console.log('Socket event received:', ResponseSocketsEnum.ROTATE_OBJECT);
+            }
+            if (data.item) {
+                const existingItem = this.sceneItems.find(i => i.id === data.item.id);
+                if (existingItem && existingItem.sprite) {
+                    // Rotate the sprite visually (flip horizontally)
+                    existingItem.sprite.setFlipX(!existingItem.sprite.flipX);
+                    // If move mode is active, refresh interactivity
+                    if (this.moveModeActive) {
+                        this.prepareObjectsForMoving();
+                    }
+                }
+            }
+
+            // Re-enable detail panel buttons after server response
+            if (this.htmlDetailPanel) {
+                this.htmlDetailPanel.enableButtons();
             }
         });
     }
@@ -740,17 +766,17 @@ export default class PrivateScene extends Phaser.Scene {
                 // Determinar si es video o imagen
                 const assetSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
                 const isVideo = this.isVideoFile(assetSrc);
-                
+
                 if (isVideo && this.cache.video.exists(item.sprite_name)) {
                     // Crear video sprite
                     item.sprite = this.add.video(avgX, y, item.sprite_name)
                         .setOrigin(0.5, 0.90)
                         .setDepth(y);
-                    
+
                     // Configurar el video para que se reproduzca en bucle
                     item.sprite.setLoop(true);
                     item.sprite.play();
-                    
+
                     // Marcar como video para futuras referencias
                     item.isVideo = true;
                 } else if (this.textures.exists(item.sprite_name)) {
@@ -758,7 +784,7 @@ export default class PrivateScene extends Phaser.Scene {
                     item.sprite = this.add.image(avgX, y, item.sprite_name)
                         .setOrigin(0.5, 0.90)
                         .setDepth(y);
-                    
+
                     item.isVideo = false;
                 }
 
@@ -766,21 +792,26 @@ export default class PrivateScene extends Phaser.Scene {
                 if (item.sprite && (item.width != null || item.height != null)) {
                     const originalWidth = item.sprite.width;
                     const originalHeight = item.sprite.height;
-                    
+
                     let targetWidth = item.width || originalWidth;
                     let targetHeight = item.height || originalHeight;
-                    
+
                     // Calcular escala para mantener aspect ratio (contain)
                     const scaleX = targetWidth / originalWidth;
                     const scaleY = targetHeight / originalHeight;
                     const scale = Math.min(scaleX, scaleY);
-                    
+
                     item.sprite.setScale(scale);
+                }
+
+                // Aplicar rotación si el atributo rotated es true
+                if (item.sprite && item.rotated == true) {
+                    item.sprite.setFlipX(true);
                 }
             } else {
                 item.sprite.setPosition(avgX, y);
                 item.sprite.setDepth(y);
-                
+
                 // Si es un video y no está reproduciéndose, iniciarlo
                 if (item.isVideo && item.sprite.isPaused) {
                     item.sprite.play();

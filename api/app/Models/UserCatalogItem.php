@@ -27,7 +27,10 @@ class UserCatalogItem extends Model
         'private_scene_id',
         'occupied_tiles',
         'show_in_inventory',
-        'expires_at'
+        'expires_at',
+        'rotated',
+        'resize_enabled',
+        'resized',
     ];
     // protected $hidden = [];
 
