@@ -52,6 +52,11 @@ class PublicScene extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
     public function items()
     {
         return $this->belongsToMany(SceneItem::class, 'public_scene_items', 'public_scenes_id', 'scene_item_id')

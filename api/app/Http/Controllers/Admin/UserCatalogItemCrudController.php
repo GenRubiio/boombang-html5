@@ -128,7 +128,8 @@ class UserCatalogItemCrudController extends CrudController
             [
                 'name' => 'show_in_inventory',
                 'label' => 'Show in inventory',
-                'type' => 'boolean',
+                'type' => 'checkbox',
+                'default' => true,
             ],
             [
                 'name' => 'expires_at',
