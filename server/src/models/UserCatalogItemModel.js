@@ -14,6 +14,9 @@ class UserCatalogItemModel {
         this.atlas_url = row.atlas_url;
         this.width = row.width;
         this.height = row.height;
+        this.rotated = row.rotated;
+        this.resize_enabled = row.resize_enabled;
+        this.resized = row.resized;
     }
 }
 

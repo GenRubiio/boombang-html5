@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 use App\Http\Controllers\Api\User\UpdateDescriptionApiController;
 use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeShadowColorController;
+use App\Http\Controllers\Api\Game\Object\RotateObjectApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeColornameApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
@@ -74,6 +75,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             });
         });
 
+        Route::prefix('object')->group(function () {
+            Route::post('rotate', [RotateObjectApiController::class, 'index']);
+        });
+
         Route::prefix('island')->group(function () {
             Route::post('/', [IslandApiController::class, 'index']);
             Route::post('create', [IslandApiController::class, 'create']);
@@ -96,7 +101,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('user-catch-item', [PublicSceneApiController::class, 'userCatchItem']);
         });
 
-        Route::prefix('scene')->group(function (){
+        Route::prefix('scene')->group(function () {
             Route::post('user-decorations', [SceneUserDecorationsApiController::class, 'index']);
         });
 

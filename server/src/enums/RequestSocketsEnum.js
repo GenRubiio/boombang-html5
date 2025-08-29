@@ -43,7 +43,8 @@ const RequestSocketsEnum = new Enum({
     LOGOUT: 'request:logout',
     LOBBY_GACHA_SPIN: 'request:lobby_gacha_spin',
     GET_GACHA_PRIZES: 'request:get_gacha_prizes',
-    GET_USER_DECORATIONS: 'request:get_user_decorations'
+    GET_USER_DECORATIONS: 'request:get_user_decorations',
+    ROTATE_OBJECT: 'request:rotate_object'
 });
 
 module.exports = RequestSocketsEnum;

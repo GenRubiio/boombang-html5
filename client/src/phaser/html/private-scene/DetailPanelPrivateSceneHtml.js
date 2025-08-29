@@ -77,22 +77,40 @@ class DetailPanelPrivateSceneHtml {
                     ">
                 </div>
 
-                <!-- Delete button -->
+                <!-- Action buttons -->
                 <div style="
                     display: flex;
                     justify-content: flex-start;
+                    gap: 8px;
                 ">
                     <button id="detail-delete-btn" style="
-                        background: #ff0000;
+                        background: #ff4444;
                         border: none;
                         border-radius: 4px;
                         color: white;
                         cursor: pointer;
-                        font-size: 12px;
-                        padding: 4px 8px;
+                        font-size: 16px;
+                        padding: 4px;
                         width: ${BTN_W}px;
                         height: ${BTN_H}px;
-                    ">${i18n.global.t('common.delete')}</button>
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    ">🗑️</button>
+                    <button id="detail-rotate-btn" style="
+                        background: #4CAF50;
+                        border: none;
+                        border-radius: 4px;
+                        color: white;
+                        cursor: pointer;
+                        font-size: 16px;
+                        padding: 4px;
+                        width: ${BTN_W}px;
+                        height: ${BTN_H}px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    ">🔄</button>
                 </div>
             </div>
         `;
@@ -126,7 +144,18 @@ class DetailPanelPrivateSceneHtml {
         const deleteBtn = container.querySelector('#detail-delete-btn');
         deleteBtn.addEventListener('click', (event) => {
             event.preventDefault();
-            this.removeSelectedObject();
+            if (!deleteBtn.disabled) {
+                this.removeSelectedObject();
+            }
+        });
+
+        // Rotate button
+        const rotateBtn = container.querySelector('#detail-rotate-btn');
+        rotateBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (!rotateBtn.disabled) {
+                this.rotateSelectedObject();
+            }
         });
     }
 
@@ -166,8 +195,45 @@ class DetailPanelPrivateSceneHtml {
         this.scene.deselectObject();
     }
 
+    disableButtons() {
+        const container = this.detailContainer.node;
+        const deleteBtn = container.querySelector('#detail-delete-btn');
+        const rotateBtn = container.querySelector('#detail-rotate-btn');
+        
+        if (deleteBtn) {
+            deleteBtn.disabled = true;
+            deleteBtn.style.opacity = '0.5';
+            deleteBtn.style.cursor = 'not-allowed';
+        }
+        if (rotateBtn) {
+            rotateBtn.disabled = true;
+            rotateBtn.style.opacity = '0.5';
+            rotateBtn.style.cursor = 'not-allowed';
+        }
+    }
+
+    enableButtons() {
+        const container = this.detailContainer.node;
+        const deleteBtn = container.querySelector('#detail-delete-btn');
+        const rotateBtn = container.querySelector('#detail-rotate-btn');
+        
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.style.opacity = '1';
+            deleteBtn.style.cursor = 'pointer';
+        }
+        if (rotateBtn) {
+            rotateBtn.disabled = false;
+            rotateBtn.style.opacity = '1';
+            rotateBtn.style.cursor = 'pointer';
+        }
+    }
+
     removeSelectedObject() {
         if (!this.currentItem || !this.scene.selectedObject) return;
+
+        // Disable buttons to prevent spam
+        this.disableButtons();
 
         // Emit socket event to remove the object
         socket.emit(RequestSocketsEnum.SCENE_REMOVE_ITEM, {
@@ -176,6 +242,22 @@ class DetailPanelPrivateSceneHtml {
 
         // Hide the panel
         this.hide();
+    }
+
+    rotateSelectedObject() {
+        if (!this.currentItem || !this.scene.selectedObject) return;
+
+        // Disable buttons to prevent spam
+        this.disableButtons();
+
+        // Emit socket event to rotate the object
+        socket.emit(RequestSocketsEnum.ROTATE_OBJECT, {
+            user_catalog_item_id: this.currentItem.id
+        });
+
+        // Don't hide the panel, wait for server response
+        // The object will rotate when server confirms via socket response
+        // Buttons will be re-enabled when server response arrives
     }
 
     destroy() {
