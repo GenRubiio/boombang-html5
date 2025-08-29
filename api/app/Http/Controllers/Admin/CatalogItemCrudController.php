@@ -112,6 +112,22 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'General'
             ],
             [
+                'name' => 'width',
+                'label' => 'Ancho',
+                'type' => 'number',
+                'default' => null,
+                'suffix' => 'px',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'height',
+                'label' => 'Alto',
+                'type' => 'number',
+                'default' => null,
+                'suffix' => 'px',
+                'tab' => 'General'
+            ],
+            [
                 'name' => 'price',
                 'label' => 'Precio',
                 'type' => 'number',

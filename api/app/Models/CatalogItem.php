@@ -32,6 +32,8 @@ class CatalogItem extends Model
         'image',
         'spreadsheet',
         'atlas',
+        'width',
+        'height',
         'description',
         'price',
         'type',

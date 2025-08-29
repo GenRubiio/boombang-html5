@@ -33,6 +33,8 @@ class UserCatalogItemsResource extends JsonResource
             'spreadsheet_url' => urlDocker($this->catalogItem->spreadsheet),
             'atlas' => $this->catalogItem->atlas,
             'atlas_url' => !empty($this->catalogItem->atlas) ? urlDocker($this->catalogItem->atlas) : null,
+            'width' => $this->catalogItem->width,
+            'height' => $this->catalogItem->height,
         ];
     }
 }

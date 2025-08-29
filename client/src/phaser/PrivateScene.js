@@ -54,6 +54,16 @@ export default class PrivateScene extends Phaser.Scene {
         this.inventoryPage = 0;
     }
 
+    /**
+     * Detectar si un archivo es un video por su extensión
+     */
+    isVideoFile(src) {
+        if (!src) return false;
+        const videoExtensions = ['.webm', '.mp4', '.ogg', '.mov'];
+        const extension = src.toLowerCase().substring(src.lastIndexOf('.'));
+        return videoExtensions.includes(extension);
+    }
+
     preload() {
         this.load.setCORS('anonymous');
         PrivateSceneLoader.main(this, this.sceneType, true);
@@ -64,16 +74,26 @@ export default class PrivateScene extends Phaser.Scene {
         if (this.sceneData.myScene) {
             // Cargar dinámicamente los assets de inventario
             this.backpackUserItems.forEach(item => {
-                let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
-                this.load.image(item.sprite_name, imageSrc);
+                let assetSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+                // Detectar si es un video por la extensión
+                if (this.isVideoFile(assetSrc)) {
+                    this.load.video(item.sprite_name, assetSrc);
+                } else {
+                    this.load.image(item.sprite_name, assetSrc);
+                }
             });
         }
 
         // Cargar objetos de escena existentes
         this.sceneItems.forEach(item => {
-            if (!this.textures.exists(item.sprite_name)) {
-                let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
-                this.load.image(item.sprite_name, imageSrc);
+            if (!this.textures.exists(item.sprite_name) && !this.cache.video.exists(item.sprite_name)) {
+                let assetSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+                // Detectar si es un video por la extensión
+                if (this.isVideoFile(assetSrc)) {
+                    this.load.video(item.sprite_name, assetSrc);
+                } else {
+                    this.load.image(item.sprite_name, assetSrc);
+                }
             }
         });
     }
@@ -182,8 +202,13 @@ export default class PrivateScene extends Phaser.Scene {
                     // It's a new item from inventory
                     const item = data.item;
                     const textureName = item.sprite_name;
+                    const assetSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+                    const isVideo = this.isVideoFile(assetSrc);
 
-                    if (this.textures.exists(textureName)) {
+                    // Check if asset already exists (image or video)
+                    const assetExists = isVideo ? this.cache.video.exists(textureName) : this.textures.exists(textureName);
+
+                    if (assetExists) {
                         this.sceneItems.push(item);
                         this.markOccupiedTiles();
                         this.renderSceneObjects();
@@ -191,18 +216,28 @@ export default class PrivateScene extends Phaser.Scene {
                             this.prepareObjectsForMoving();
                         }
                     } else {
-                        // Texture doesn't exist, load it first
-                        let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
-                        this.load.image(textureName, imageSrc);
-
-                        this.load.once(`filecomplete-image-${textureName}`, () => {
-                            this.sceneItems.push(item);
-                            this.markOccupiedTiles();
-                            this.renderSceneObjects();
-                            if (this.moveModeActive) {
-                                this.prepareObjectsForMoving();
-                            }
-                        });
+                        // Asset doesn't exist, load it first
+                        if (isVideo) {
+                            this.load.video(textureName, assetSrc);
+                            this.load.once(`filecomplete-video-${textureName}`, () => {
+                                this.sceneItems.push(item);
+                                this.markOccupiedTiles();
+                                this.renderSceneObjects();
+                                if (this.moveModeActive) {
+                                    this.prepareObjectsForMoving();
+                                }
+                            });
+                        } else {
+                            this.load.image(textureName, assetSrc);
+                            this.load.once(`filecomplete-image-${textureName}`, () => {
+                                this.sceneItems.push(item);
+                                this.markOccupiedTiles();
+                                this.renderSceneObjects();
+                                if (this.moveModeActive) {
+                                    this.prepareObjectsForMoving();
+                                }
+                            });
+                        }
 
                         this.load.start();
                     }
@@ -690,12 +725,54 @@ export default class PrivateScene extends Phaser.Scene {
 
             // Crear o actualizar sprite
             if (!item.sprite) {
-                item.sprite = this.add.image(avgX, y, item.sprite_name)
-                    .setOrigin(0.5, 0.90)
-                    .setDepth(y);
+                // Determinar si es video o imagen
+                const assetSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+                const isVideo = this.isVideoFile(assetSrc);
+                
+                if (isVideo && this.cache.video.exists(item.sprite_name)) {
+                    // Crear video sprite
+                    item.sprite = this.add.video(avgX, y, item.sprite_name)
+                        .setOrigin(0.5, 0.90)
+                        .setDepth(y);
+                    
+                    // Configurar el video para que se reproduzca en bucle
+                    item.sprite.setLoop(true);
+                    item.sprite.play();
+                    
+                    // Marcar como video para futuras referencias
+                    item.isVideo = true;
+                } else if (this.textures.exists(item.sprite_name)) {
+                    // Crear imagen sprite
+                    item.sprite = this.add.image(avgX, y, item.sprite_name)
+                        .setOrigin(0.5, 0.90)
+                        .setDepth(y);
+                    
+                    item.isVideo = false;
+                }
+
+                // Aplicar dimensiones personalizadas si están definidas (manteniendo aspect ratio)
+                if (item.sprite && (item.width != null || item.height != null)) {
+                    const originalWidth = item.sprite.width;
+                    const originalHeight = item.sprite.height;
+                    
+                    let targetWidth = item.width || originalWidth;
+                    let targetHeight = item.height || originalHeight;
+                    
+                    // Calcular escala para mantener aspect ratio (contain)
+                    const scaleX = targetWidth / originalWidth;
+                    const scaleY = targetHeight / originalHeight;
+                    const scale = Math.min(scaleX, scaleY);
+                    
+                    item.sprite.setScale(scale);
+                }
             } else {
                 item.sprite.setPosition(avgX, y);
                 item.sprite.setDepth(y);
+                
+                // Si es un video y no está reproduciéndose, iniciarlo
+                if (item.isVideo && item.sprite.isPaused) {
+                    item.sprite.play();
+                }
             }
         });
     }

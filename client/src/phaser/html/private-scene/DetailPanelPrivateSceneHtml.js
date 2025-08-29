@@ -141,7 +141,7 @@ class DetailPanelPrivateSceneHtml {
         if (container && nameElement && iconElement) {
             // Update content
             nameElement.textContent = item.display_name;
-            let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.spreadsheet : item.spreadsheet_url;
+            let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.image : item.image_url;
             iconElement.src = imageSrc;
 
             // Show panel
