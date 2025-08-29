@@ -2,12 +2,12 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-home nav-icon"></i>
         {{ trans('backpack::base.dashboard') }}</a></li>
 
-{{-- <x-backpack::menu-dropdown title="Scenes" icon="la la-puzzle-piece">
+<x-backpack::menu-dropdown title="Scenes" icon="la la-puzzle-piece">
     <x-backpack::menu-item title="Public scenes" icon="la la-question" :link="backpack_url('public-scene')" />
-    <x-backpack::menu-item title="Private scenes" icon="la la-question" :link="backpack_url('private-scene')" />
-    <x-backpack::menu-item title="Minigame scenes" icon="la la-question" :link="backpack_url('minigame-scene')" />
+{{--     <x-backpack::menu-item title="Private scenes" icon="la la-question" :link="backpack_url('private-scene')" />
+    <x-backpack::menu-item title="Minigame scenes" icon="la la-question" :link="backpack_url('minigame-scene')" /> --}}
 </x-backpack::menu-dropdown>
-<x-backpack::menu-item title="Scene items" icon="la la-question" :link="backpack_url('scene-item')" /> --}}
+<x-backpack::menu-item title="Scene items" icon="la la-question" :link="backpack_url('scene-item')" />
 {{-- <x-backpack::menu-item title="Islands" icon="la la-question" :link="backpack_url('island')" />
 <x-backpack::menu-item title="Private scene configs" icon="la la-question" :link="backpack_url('private-scene-config')" /> --}}
 <x-backpack::menu-dropdown title="Catalog" icon="la la-puzzle-piece">

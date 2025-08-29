@@ -17,7 +17,6 @@ class UserCatalogItemCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -29,6 +28,22 @@ class UserCatalogItemCrudController extends CrudController
         CRUD::setModel(\App\Models\UserCatalogItem::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user-catalog-item');
         CRUD::setEntityNameStrings('user catalog item', 'user catalog items');
+
+        if (request()->has('user_id')) {
+            $userId = request('user_id');
+            $user = \App\Models\User::find($userId);
+            $this->crud->addClause('where', 'user_id', '=', $userId);
+
+            $this->data['breadcrumbs'] = [
+                trans('backpack::crud.admin') => backpack_url('dashboard'),
+                trans('backpack::permissionmanager.users') => backpack_url('user'),
+                'Items' => false,
+            ];
+
+            if ($user) {
+                $this->crud->setHeading('Items for ' . $user->name);
+            }
+        }
     }
 
     /**
@@ -39,12 +54,47 @@ class UserCatalogItemCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        $this->crud->addFilter([
+            'name'  => 'user_id',
+            'type'  => 'select2',
+            'label' => 'User',
+        ], function () {
+            return \App\Models\User::all()->pluck('name', 'id')->toArray();
+        }, function ($value) {
+            $this->crud->addClause('where', 'user_id', $value);
+        });
 
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        $this->crud->addColumn([
+            'name' => 'id',
+            'label' => 'ID',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'user_id',
+            'label' => 'User',
+            'type' => 'select',
+            'entity' => 'user',
+            'attribute' => 'name',
+            'model' => "App\Models\User",
+        ]);
+        $this->crud->addColumn([
+            'name' => 'catalog_item_id',
+            'label' => 'Catalog Item',
+            'type' => 'select',
+            'entity' => 'catalogItem',
+            'attribute' => 'name',
+            'model' => "App\Models\CatalogItem",
+        ]);
+        $this->crud->addColumn([
+            'name' => 'show_in_inventory',
+            'label' => 'Show in inventory',
+            'type' => 'boolean',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'expires_at',
+            'label' => 'Expires at',
+            'type' => 'datetime',
+        ]);
     }
 
     /**
@@ -56,12 +106,36 @@ class UserCatalogItemCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(UserCatalogItemRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $this->crud->addFields([
+            [
+                'name' => 'user_id',
+                'label' => 'User',
+                'type' => 'select2',
+                'entity' => 'user',
+                'attribute' => 'name',
+                'model' => "App\\Models\\User",
+                'defaultValue' => request('user_id')
+            ],
+            [
+                'name' => 'catalog_item_id',
+                'label' => 'Catalog Item',
+                'type' => 'select2',
+                'entity' => 'catalogItem',
+                'attribute' => 'name',
+                'model' => "App\\Models\\CatalogItem",
+            ],
+            [
+                'name' => 'show_in_inventory',
+                'label' => 'Show in inventory',
+                'type' => 'boolean',
+            ],
+            [
+                'name' => 'expires_at',
+                'label' => 'Expires at',
+                'type' => 'datetime'
+            ]
+        ]);
     }
 
     /**
