@@ -2,74 +2,118 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\MenuTypeEnum;
 use App\Http\Requests\PublicSceneRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
-/**
- * Class PublicSceneCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class PublicSceneCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
-     */
     public function setup()
     {
-        CRUD::setModel(\App\Models\PublicScene::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/public-scene');
-        CRUD::setEntityNameStrings('public scene', 'public scenes');
+        $this->crud->setModel(\App\Models\PublicScene::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/public-scene');
+        $this->crud->setEntityNameStrings('escena pública', 'escenas públicas');
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        $this->crud->addColumn(['name' => 'id', 'label' => 'ID']);
+        $this->crud->addColumn(['name' => 'name', 'label' => 'Nombre']);
+        $this->crud->addColumn(['name' => 'type', 'label' => 'Tipo']);
+        $this->crud->addColumn([
+            'name' => 'menu_type', 
+            'label' => 'Tipo de menú',
+            'type' => 'select_from_array',
+            'options' => MenuTypeEnum::toAssociativeArray(),
+        ]);
+        $this->crud->addColumn([
+            'name' => 'active',
+            'label' => 'Activo',
+            'type' => 'check',
+        ]);
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(PublicSceneRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        $this->crud->setValidation(PublicSceneRequest::class);
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $this->crud->addFields([
+            [
+                'name' => 'name',
+                'label' => 'Nombre',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'type',
+                'label' => 'Tipo',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'max_users',
+                'label' => 'Máximo de usuarios',
+                'type' => 'number',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'menu_type',
+                'label' => 'Tipo de Menú',
+                'type' => 'select_from_array',
+                'options' => MenuTypeEnum::toAssociativeArray(),
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'active',
+                'label' => 'Activo',
+                'type' => 'checkbox',
+                'default' => true,
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'map',
+                'label' => 'Mapa',
+                'type' => 'textarea',
+                'tab' => 'Mapa'
+            ],
+            [
+                'name' => 'map_width',
+                'label' => 'Ancho del mapa',
+                'type' => 'number',
+                'tab' => 'Mapa'
+            ],
+            [
+                'name' => 'map_height',
+                'label' => 'Alto del mapa',
+                'type' => 'number',
+                'tab' => 'Mapa'
+            ],
+            [
+                'name' => 'start_x',
+                'label' => 'Posición inicial X',
+                'type' => 'number',
+                'tab' => 'Mapa'
+            ],
+            [
+                'name' => 'start_y',
+                'label' => 'Posición inicial Y',
+                'type' => 'number',
+                'tab' => 'Mapa'
+            ],
+            [
+                'name' => 'start_z',
+                'label' => 'Posición inicial Z',
+                'type' => 'number',
+                'tab' => 'Mapa'
+            ]
+        ]);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

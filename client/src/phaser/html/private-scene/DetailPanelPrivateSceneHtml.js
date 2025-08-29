@@ -67,10 +67,12 @@ class DetailPanelPrivateSceneHtml {
                     display: flex;
                     justify-content: center;
                     margin-bottom: ${PAD}px;
+                    width: 180px;
+                    height: 190px;
                 ">
                     <img id="detail-item-icon" style="
-                        max-width: ${ICON_SIZE}px;
-                        max-height: ${ICON_SIZE}px;
+                        width: 100%;
+                        height: 100%;
                         object-fit: contain;
                     ">
                 </div>
