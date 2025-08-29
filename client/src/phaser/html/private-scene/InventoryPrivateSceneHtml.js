@@ -226,8 +226,38 @@ class InventoryPrivateSceneHtml {
         this.draggedItem = slotData;
 
         // Setup shadow image
-        let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? slotData.group.spreadsheet : slotData.group.spreadsheet_url;
+        let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? slotData.group.image : slotData.group.image_url;
         dragShadowImg.src = imageSrc;
+        
+        // Aplicar dimensiones personalizadas al drag shadow si están definidas
+        if (slotData.group.width != null || slotData.group.height != null) {
+            const tempImg = new Image();
+            tempImg.onload = () => {
+                const originalWidth = tempImg.naturalWidth;
+                const originalHeight = tempImg.naturalHeight;
+                
+                let targetWidth = slotData.group.width || originalWidth;
+                let targetHeight = slotData.group.height || originalHeight;
+                
+                // Calcular escala para mantener aspect ratio (contain)
+                const scaleX = targetWidth / originalWidth;
+                const scaleY = targetHeight / originalHeight;
+                const scale = Math.min(scaleX, scaleY);
+                
+                // Aplicar las dimensiones escaladas al drag shadow
+                const finalWidth = originalWidth * scale;
+                const finalHeight = originalHeight * scale;
+                
+                dragShadowImg.style.width = finalWidth + 'px';
+                dragShadowImg.style.height = finalHeight + 'px';
+            };
+            tempImg.src = imageSrc;
+        } else {
+            // Resetear estilos por defecto
+            dragShadowImg.style.width = '';
+            dragShadowImg.style.height = '';
+        }
+        
         dragShadow.style.display = 'block';
         dragShadow.style.left = e.clientX + 'px';
         dragShadow.style.top = e.clientY + 'px';
@@ -438,9 +468,47 @@ class InventoryPrivateSceneHtml {
 
             if (group) {
                 this.inventorySlots[index] = { group };
-                let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? group.spreadsheet : group.spreadsheet_url;
+                let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? group.image : group.image_url;
                 icon.src = imageSrc;
                 icon.style.display = 'block';
+
+                // Aplicar dimensiones personalizadas si están definidas
+                if (group.width != null || group.height != null) {
+                    // Crear una imagen temporal para obtener las dimensiones originales
+                    const tempImg = new Image();
+                    tempImg.onload = () => {
+                        const originalWidth = tempImg.naturalWidth;
+                        const originalHeight = tempImg.naturalHeight;
+                        
+                        let targetWidth = group.width || originalWidth;
+                        let targetHeight = group.height || originalHeight;
+                        
+                        // Calcular escala para mantener aspect ratio (contain)
+                        const scaleX = targetWidth / originalWidth;
+                        const scaleY = targetHeight / originalHeight;
+                        const scale = Math.min(scaleX, scaleY);
+                        
+                        // Aplicar las dimensiones escaladas
+                        const finalWidth = originalWidth * scale;
+                        const finalHeight = originalHeight * scale;
+                        
+                        // Asegurar que no exceda el tamaño del slot
+                        const maxSize = 50; // SLOT_SIZE - 10
+                        const finalScale = Math.min(maxSize / finalWidth, maxSize / finalHeight, 1);
+                        
+                        icon.style.width = (finalWidth * finalScale) + 'px';
+                        icon.style.height = (finalHeight * finalScale) + 'px';
+                        icon.style.maxWidth = 'none';
+                        icon.style.maxHeight = 'none';
+                    };
+                    tempImg.src = imageSrc;
+                } else {
+                    // Resetear estilos por defecto si no hay dimensiones personalizadas
+                    icon.style.width = '';
+                    icon.style.height = '';
+                    icon.style.maxWidth = '50px';
+                    icon.style.maxHeight = '50px';
+                }
 
                 if (group.count > 1) {
                     count.textContent = group.count;

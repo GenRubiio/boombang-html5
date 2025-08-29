@@ -31,6 +31,8 @@ class CatalogItemResource extends JsonResource
             'spreadsheet_url' => urlDocker($this->spreadsheet),
             'atlas' => $this->atlas,
             'atlas_url' => !empty($this->atlas) ? urlDocker($this->atlas) : null,
+            'width' => $this->width,
+            'height' => $this->height,
             'description' => $this->description,
             'price' => $this->price,
             'price_type' => $this->price_type,

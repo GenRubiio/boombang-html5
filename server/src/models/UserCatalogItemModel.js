@@ -12,6 +12,8 @@ class UserCatalogItemModel {
         this.spreadsheet_url = row.spreadsheet_url;
         this.atlas = row.atlas;
         this.atlas_url = row.atlas_url;
+        this.width = row.width;
+        this.height = row.height;
     }
 }
 
