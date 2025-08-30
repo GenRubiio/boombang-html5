@@ -370,5 +370,8 @@
       "credits": "积分",
       "avatar_error": "加载用户头像时出错"
     }
+  },
+  "loading": {
+    "title": "加载中..."
   }
 }
