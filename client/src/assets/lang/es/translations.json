@@ -370,5 +370,8 @@
       "credits": "Créditos",
       "avatar_error": "Error al cargar el avatar del usuario"
     }
+  },
+  "loading": {
+    "title": "Cargando..."
   }
 }

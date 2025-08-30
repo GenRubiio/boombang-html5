@@ -14,7 +14,7 @@
       </div>
       <div class="loading-screen__container-text">
         <div class="spinner"></div>
-        <div class="loading-text">Cargando...</div>
+        <div class="loading-text">{{ $t("loading.title") }}</div>
       </div>
     </div>
   </div>
