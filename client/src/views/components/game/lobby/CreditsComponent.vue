@@ -1,11 +1,11 @@
 <template>
   <div class="credits-component">
     <div class="credits-component__item">
-      <img :src="asset_golden_coins_image" alt="Golden Coins" />
+      <img :src="asset_golden_coins_image" :alt="$t('lobby.golden_coins_alt')" />
       <span class="gold">{{ gold }}</span>
     </div>
     <div class="credits-component__item">
-      <img :src="asset_silver_coins_image" alt="Silver Coins" />
+      <img :src="asset_silver_coins_image" :alt="$t('lobby.silver_coins_alt')" />
       <span class="silver">{{ silver }}</span>
     </div>
   </div>

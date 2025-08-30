@@ -4,11 +4,11 @@
       <button class="gacha-popup-close" @click="$emit('close')">
         <i class="las la-times"></i>
       </button>
-      <h2 class="gacha-popup-title">Error</h2>
+      <h2 class="gacha-popup-title">{{ $t('gacha.error.title') }}</h2>
       <p class="gacha-popup-text">{{ message }}</p>
       <div class="gacha-popup-buttons">
         <button @click="$emit('close')" class="gacha-popup-button confirm">
-          Cerrar
+          {{ $t('gacha.error.close') }}
         </button>
       </div>
     </div>
@@ -25,7 +25,9 @@ export default {
     },
     message: {
       type: String,
-      default: "Ha ocurrido un error inesperado.",
+      default() {
+        return this.$t('gacha.error.default_message');
+      },
     },
   },
   emits: ["close"],

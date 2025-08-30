@@ -1,7 +1,7 @@
 <template>
   <div class="lobby__scenes-tab">
     <div class="lobby__scenes-list">
-      <p>Función de búsqueda aún no implementada.</p>
+      <p>{{ $t('lobby.search.not_implemented') }}</p>
     </div>
   </div>
 </template>

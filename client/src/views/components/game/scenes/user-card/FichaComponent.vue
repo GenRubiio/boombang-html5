@@ -1,5 +1,5 @@
 <template>
-  <img :src="avatarImage" alt="Avatar" />
+  <img :src="avatarImage" :alt="$t('user_card.avatar_alt')" />
 </template>
 
 <script>

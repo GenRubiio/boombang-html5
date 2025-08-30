@@ -4,14 +4,14 @@
       <button class="gacha-popup-close" @click="onClose">
         <i class="las la-times"></i>
       </button>
-      <h2 class="gacha-popup-title">¡Has obtenido un objeto!</h2>
+      <h2 class="gacha-popup-title">{{ $t('gacha.result.title') }}</h2>
       <div class="item-display">
         <img :src="item.image" :alt="item.name" class="item-image" />
         <p class="item-name">{{ item.name }}</p>
       </div>
       <div class="gacha-popup-buttons">
         <button @click="onClose" class="gacha-popup-button confirm">
-          ¡Genial!
+          {{ $t('gacha.result.confirm') }}
         </button>
       </div>
     </div>

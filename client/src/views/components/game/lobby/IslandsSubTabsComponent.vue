@@ -7,9 +7,9 @@
           :class="{ selected: activeIslandTab === 'public' }"
           @click="$emit('update:activeIslandTab', 'public')"
         >
-          <img :src="asset_nav_islands_image" alt="Public Islands" />
+          <img :src="asset_nav_islands_image" :alt="$t('lobby.islands.public_alt')" />
         </div>
-        <span class="tooltip-text">Islas</span>
+        <span class="tooltip-text">{{ $t('lobby.islands.public') }}</span>
       </div>
       <div class="tooltip-container">
         <div
@@ -17,9 +17,9 @@
           :class="{ selected: activeIslandTab === 'favorites' }"
           @click="$emit('update:activeIslandTab', 'favorites')"
         >
-          <img :src="asset_nav_favorites_image" alt="Favorite Islands" />
+          <img :src="asset_nav_favorites_image" :alt="$t('lobby.islands.favorites_alt')" />
         </div>
-        <span class="tooltip-text">Favoritas</span>
+        <span class="tooltip-text">{{ $t('lobby.islands.favorites') }}</span>
       </div>
       <div class="tooltip-container">
         <div
@@ -27,9 +27,9 @@
           :class="{ selected: activeIslandTab === 'myIslands' }"
           @click="$emit('update:activeIslandTab', 'myIslands')"
         >
-          <img :src="asset_nav_my_islands_image" alt="My Islands" />
+          <img :src="asset_nav_my_islands_image" :alt="$t('lobby.islands.my_islands_alt')" />
         </div>
-        <span class="tooltip-text">Mis Islas</span>
+        <span class="tooltip-text">{{ $t('lobby.islands.my_islands') }}</span>
       </div>
     </div>
     <div class="tooltip-container">
@@ -37,9 +37,9 @@
         class="lobby__islands-subtabs-tab create-button"
         @click="$emit('create-island')"
       >
-        <div class="create-island-text">Crear Isla</div>
+        <div class="create-island-text">{{ $t('lobby.islands.create_island') }}</div>
         <div class="create-island-image">
-          <img :src="asset_create_island_image" alt="Create Island" />
+          <img :src="asset_create_island_image" :alt="$t('lobby.islands.create_island_alt')" />
         </div>
       </button>
     </div>

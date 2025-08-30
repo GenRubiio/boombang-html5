@@ -6,7 +6,7 @@
       </div>
       <div class="login-form__input-container">
         <div class="login-form__error" v-if="showUsernameError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('login.warning_alt')" />
           {{ usernameError }}
         </div>
         <div class="login-form__label">{{ $t("login.character_name") }}</div>
@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="login-form__button-container">
-      <img :src="asset_button_image" alt="Jugar" />
+      <img :src="asset_button_image" :alt="$t('login.play_alt')" />
       <button
         class="login-form__button-container-button"
         type="submit"
@@ -241,6 +241,7 @@ export default {
 }
 
 .login-form__button-container-button {
+  min-width: 112px;
   font-size: 26px;
   display: inline-block;
   padding: 10px 20px;

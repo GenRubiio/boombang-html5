@@ -8,11 +8,11 @@
             <div class="backboard"></div>
             <div ref="balls" class="balls"></div>
 
-            <img class="machine" :src="machineSrc" alt="machine" />
+            <img class="machine" :src="machineSrc" :alt="$t('lobby.gacha.machine_alt')" />
             <div class="title"></div>
             <div class="price"></div>
 
-            <img ref="handle" class="handle" :src="handleSrc" alt="handle" />
+            <img ref="handle" class="handle" :src="handleSrc" :alt="$t('lobby.gacha.handle_alt')" />
           </div>
         </div>
       </div>
@@ -35,11 +35,15 @@ export default {
   props: {
     titleText: {
       type: String,
-      default: "がんばれ!",
+      default() {
+        return this.$t('lobby.gacha.title_default');
+      },
     },
     priceText: {
       type: String,
-      default: "100円",
+      default() {
+        return this.$t('lobby.gacha.price_default');
+      },
     },
     speed: {
       type: Number,

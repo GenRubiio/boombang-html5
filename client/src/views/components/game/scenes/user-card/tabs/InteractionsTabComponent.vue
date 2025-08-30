@@ -2,26 +2,26 @@
   <div class="interactions-wrapper">
     <div class="container" :class="colorUser">
       <div class="container__item">
-        <img :src="asset_kiss_image" alt="kiss" />
+        <img :src="asset_kiss_image" :alt="$t('user_card.interactions.kiss')" />
       </div>
       <div class="container__item">
-        <img :src="asset_drink_image" alt="drink" />
+        <img :src="asset_drink_image" :alt="$t('user_card.interactions.drink')" />
       </div>
       <div class="container__item">
-        <img :src="asset_rose_image" alt="rose" />
+        <img :src="asset_rose_image" :alt="$t('user_card.interactions.rose')" />
       </div>
       <div></div>
       <div class="upper-container">
         <img
           :src="uppercuts[selectedUpperIndex]"
-          alt="upper"
+          :alt="$t('user_card.interactions.upper')"
           @click="handleUpperClick"
         />
       </div>
       <div class="coco-container">
         <img
           :src="coconuts[selectedCocoIndex]"
-          alt="coco"
+          :alt="$t('user_card.interactions.coco')"
           @click="handleCocoClick"
         />
       </div>
@@ -49,7 +49,7 @@
           :class="{ active: index < activeUpperCount }"
           @click="handleUpperItemClick(index)"
         >
-          <img :src="img" alt="upper-item" />
+          <img :src="img" :alt="$t('user_card.interactions.upper_item')" />
         </div>
       </div>
       <div
@@ -67,7 +67,7 @@
           :class="{ active: index < activeCocoCount }"
           @click="handleCocoItemClick(index)"
         >
-          <img :src="img" alt="coco-item" />
+          <img :src="img" :alt="$t('user_card.interactions.coco_item')" />
         </div>
       </div>
       <div class="coconuts-list-container__close" @click="toggleContainerCocos">

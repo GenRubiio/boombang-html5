@@ -27,7 +27,7 @@
           :aria-selected="selectedUser == null ? 'true' : 'false'"
           @click="selectValue(null)"
         >
-          Público
+          {{ $t('chat.public') }}
         </li>
 
         <!-- Usuarios -->
@@ -64,9 +64,9 @@ export default {
   },
   computed: {
     selectedLabel() {
-      if (this.selectedUser == null) return "Público";
+      if (this.selectedUser == null) return this.$t('chat.public');
       const u = this.users.find((x) => x.uuid === this.selectedUser);
-      return u ? u.username : "Público";
+      return u ? u.username : this.$t('chat.public');
     },
   },
   watch: {

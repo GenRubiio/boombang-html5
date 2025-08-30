@@ -4,16 +4,16 @@
       <button class="gacha-popup-close" @click="$emit('cancel')">
         <i class="las la-times"></i>
       </button>
-      <h2 class="gacha-popup-title">Confirmar tirada</h2>
+      <h2 class="gacha-popup-title">{{ $t('gacha.alert.title') }}</h2>
       <p class="gacha-popup-text">
-        ¿Deseas gastar 100 de plata para una tirada?
+        {{ $t('gacha.alert.text') }}
       </p>
       <div class="gacha-popup-buttons">
         <button @click="$emit('confirm')" class="gacha-popup-button confirm">
-          Sí
+          {{ $t('gacha.alert.confirm') }}
         </button>
         <button @click="$emit('cancel')" class="gacha-popup-button cancel">
-          No
+          {{ $t('gacha.alert.cancel') }}
         </button>
       </div>
     </div>

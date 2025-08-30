@@ -10,33 +10,33 @@
           :class="{ active: activeTab === 'ficha' }"
           @click="activeTab = 'ficha'"
         >
-          Ficha
+          {{ $t("customization.tabs.ficha") }}
         </div>
         <div
           class="user-customization__tab"
           :class="{ active: activeTab === 'chat' }"
           @click="activeTab = 'chat'"
         >
-          Chat
+          {{ $t("customization.tabs.chat") }}
         </div>
         <div
           class="user-customization__tab"
           :class="{ active: activeTab === 'nombre' }"
           @click="activeTab = 'nombre'"
         >
-          Nombre
+          {{ $t("customization.tabs.nombre") }}
         </div>
         <div
           class="user-customization__tab"
           :class="{ active: activeTab === 'sombra' }"
           @click="activeTab = 'sombra'"
         >
-          Sombra
+          {{ $t("customization.tabs.sombra") }}
         </div>
       </div>
       <div class="user-customization__content">
         <div class="user-customization__title">
-          PERSONALIZACIÓN DE {{ activeTab }}
+          {{ title }}
         </div>
         <div class="user-customization__grid" :class="gridClass">
           <template v-if="activeTab == 'ficha'">
@@ -206,6 +206,12 @@ export default {
       }
       return padded;
     },
+    title() {
+      const tabKey = this.activeTab.toLowerCase();
+      return this.$t("customization.title", {
+        tab: this.$t(`customization.tabs.${tabKey}`),
+      });
+    },
     gridClass() {
       if (this.activeTab === "ficha") {
         return "ficha-grid";
@@ -222,7 +228,11 @@ export default {
     showTooltip(event, item) {
       if (item && item.description) {
         const rect = event.currentTarget.getBoundingClientRect();
-        this.tooltip.content = item.description;
+        if (item.description.startsWith("customization.")) {
+          this.tooltip.content = this.$t(item.description);
+        } else {
+          this.tooltip.content = item.description;
+        }
         this.tooltip.visible = true;
         this.tooltip.x = rect.left + window.scrollX - rect.width / 2 - 20;
         this.tooltip.y = rect.bottom + window.scrollY + 5;

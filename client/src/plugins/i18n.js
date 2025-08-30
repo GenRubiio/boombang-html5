@@ -10,8 +10,8 @@ const loadLocaleMessages = async (locale) => {
 // Creamos la instancia de i18n
 const i18n = createI18n({
   legacy: false, // Usamos el modo Composition API
-  locale: "es", // Establecemos el idioma inicial
-  fallbackLocale: "es", // Idioma de respaldo
+  locale: "en", // Establecemos el idioma inicial
+  fallbackLocale: "en", // Idioma de respaldo
   messages: {}, // Empezamos sin mensajes cargados
 });
 

@@ -3,34 +3,34 @@
     <div>
       <img
         :src="asset_laughter_1_image"
-        alt="Laughter 1"
+        :alt="$t('user_card.emojis.laughter_1')"
         @click="sendEmoji(1)"
       />
     </div>
     <div>
       <img
         :src="asset_laughter_2_image"
-        alt="Laughter 2"
+        :alt="$t('user_card.emojis.laughter_2')"
         @click="sendEmoji(2)"
       />
     </div>
     <div>
-      <img :src="asset_cry_image" alt="Cry" @click="sendEmoji(3)" />
+      <img :src="asset_cry_image" :alt="$t('user_card.emojis.cry')" @click="sendEmoji(3)" />
     </div>
     <div>
-      <img :src="asset_love_image" alt="Love" @click="sendEmoji(4)" />
+      <img :src="asset_love_image" :alt="$t('user_card.emojis.love')" @click="sendEmoji(4)" />
     </div>
     <div>
-      <img :src="asset_spit_image" alt="Spit" @click="sendEmoji(5)" />
+      <img :src="asset_spit_image" :alt="$t('user_card.emojis.spit')" @click="sendEmoji(5)" />
     </div>
     <div>
-      <img :src="asset_fart_image" alt="Fart" @click="sendEmoji(6)" />
+      <img :src="asset_fart_image" :alt="$t('user_card.emojis.fart')" @click="sendEmoji(6)" />
     </div>
     <div>
-      <img :src="asset_provoke_image" alt="Provoke" @click="sendEmoji(7)" />
+      <img :src="asset_provoke_image" :alt="$t('user_card.emojis.provoke')" @click="sendEmoji(7)" />
     </div>
     <div>
-      <img :src="asset_fly_image" alt="Fly" @click="sendEmoji(8)" />
+      <img :src="asset_fly_image" :alt="$t('user_card.emojis.fly')" @click="sendEmoji(8)" />
     </div>
   </div>
 </template>

@@ -1,4 +1,8 @@
 {
+  "auth": {
+    "rasta_alt": "Rasta",
+    "lilian_alt": "Lilian"
+  },
   "login": {
     "title": "Login",
     "username": "Username",
@@ -10,9 +14,12 @@
     "username_placeholder": "Name",
     "password_placeholder": "Password",
     "forgot_password": "Forgot your password?",
-    "separator": "OR",
+    "separator": "Or",
     "google_login": "Continue with Google",
-    "play_button": "Play"
+    "play_button": "Play",
+    "warning_alt": "Warning",
+    "play_alt": "Play",
+    "google_alt": "Google"
   },
   "common": {
     "close": "X",
@@ -24,13 +31,14 @@
   "scene": {
     "tooltip_shop": "Shop",
     "tooltip_avatars": "Avatars",
-    "tooltip_color": "Colorize",
+    "tooltip_color": "Color",
     "tooltip_move": "Move",
     "tooltip_inventory": "Inventory"
   },
   "maintenance": {
     "title": "Maintenance",
-    "description": "The server is under maintenance.<br />Please try again later."
+    "description": "The server is under maintenance.<br />Please try again later.",
+    "alt": "Maintenance"
   },
   "avatar_select": {
     "title": "Character",
@@ -44,13 +52,15 @@
     "password_placeholder": "Password",
     "email": "Email",
     "email_placeholder": "Email",
-    "terms_agree": "I agree to these",
+    "terms_agree": "I accept the",
     "terms_and_conditions": "Terms and Conditions",
     "play_button": "Play",
     "captcha_required": "Please complete the reCAPTCHA.",
-    "captcha_expired": "The reCAPTCHA has expired. Please try again.",
-    "captcha_error": "Error loading/verifying reCAPTCHA. Please try again.",
-    "captcha_load_error": "Could not load reCAPTCHA."
+    "captcha_expired": "The reCAPTCHA has expired. Please check it again.",
+    "captcha_error": "Error loading/verifying reCAPTCHA. Try again.",
+    "captcha_load_error": "Could not load reCAPTCHA.",
+    "warning_alt": "Warning",
+    "play_alt": "Play"
   },
   "auth_screen": {
     "register_title": "Create your Account",
@@ -61,16 +71,304 @@
   "island_create": {
     "choose_background": "Choose the background",
     "island_name_placeholder": "Island name",
-    "set_island_name": "Name your island"
+    "set_island_name": "Set a name for your island"
   },
   "scene_create": {
     "choose_scene": "Choose the scene",
     "scene_name_placeholder": "Room name",
-    "set_scene_name": "Name your room",
+    "set_scene_name": "Set a name for your room",
     "error_no_scenes": "The island was not found or has no scenes."
   },
   "island": {
     "locations": "Locations",
     "add_scenario": "Add scenario"
+  },
+  "user_card": {
+    "change_ficha_alt": "Change card",
+    "edit_button": "EDIT",
+    "avatar_alt": "User avatar",
+    "tabs": {
+      "emojis": "Emojis",
+      "statistics": "Statistics",
+      "interactions": "Interactions"
+    },
+    "emojis": {
+      "laughter_1": "Laughter 1",
+      "laughter_2": "Laughter 2",
+      "laughter_3": "Laughter 3",
+      "love": "Love",
+      "sad": "Sad",
+      "angry": "Angry",
+      "wink": "Wink",
+      "kiss": "Kiss",
+      "surprise": "Surprise",
+      "sleep": "Sleep",
+      "cool": "Cool",
+      "confused": "Confused",
+      "cry": "Cry",
+      "spit": "Spit",
+      "fart": "Fart",
+      "provoke": "Provoke",
+      "fly": "Fly"
+    },
+    "interactions": {
+      "kick": "Kick",
+      "bomb": "Bomb",
+      "spit": "Spit",
+      "tomato": "Tomato",
+      "poop": "Poop",
+      "flower": "Flower",
+      "heart": "Heart",
+      "kiss": "Kiss",
+      "gift": "Gift",
+      "question": "Question",
+      "exclamation": "Exclamation",
+      "net": "Net",
+      "drink": "Drink",
+      "rose": "Rose",
+      "upper": "Uppercut",
+      "coco": "Coconut",
+      "upper_item": "Uppercut Item",
+      "coco_item": "Coconut Item"
+    },
+    "statistics": {
+      "title": "Interaction Statistics",
+      "sent": "Sent",
+      "received": "Received",
+      "kicks_sent": "Kicks sent",
+      "kicks_received": "Kicks received",
+      "bombs_sent": "Bombs sent",
+      "bombs_received": "Bombs received",
+      "spits_sent": "Spits sent",
+      "spits_received": "Spits received",
+      "tomatoes_sent": "Tomatoes sent",
+      "tomatoes_received": "Tomatoes received",
+      "poops_sent": "Poops sent",
+      "poops_received": "Poops received",
+      "flowers_sent": "Flowers sent",
+      "flowers_received": "Flowers received",
+      "kisses_sent": "Kisses sent",
+      "kisses_received": "Kisses received",
+      "hearts_sent": "Hearts sent",
+      "hearts_received": "Hearts received",
+      "gifts_sent": "Gifts sent",
+      "gifts_received": "Gifts received",
+      "questions_sent": "Questions sent",
+      "questions_received": "Questions received",
+      "exclamations_sent": "Exclamations sent",
+      "exclamations_received": "Exclamations received",
+      "nets_sent": "Nets sent",
+      "nets_received": "Nets received",
+      "rings": {
+        "title": "Ring",
+        "red": "Red Glove",
+        "white": "White Glove",
+        "pink": "Pink Glove",
+        "purple": "Purple Glove",
+        "orange": "Orange Glove",
+        "brown": "Brown Glove",
+        "green": "Green Glove",
+        "black": "Black Glove",
+        "blue": "Blue Glove",
+        "gold": "Gold Glove",
+        "won": "Won"
+      },
+      "uppercuts": {
+        "title": "Uppercuts"
+      },
+      "coconuts": {
+        "title": "Coconuts"
+      },
+      "coconuts_locos": {
+        "title": "Crazy Coconuts",
+        "caught": "Caught"
+      }
+    }
+  },
+  "ring_npc": {
+    "title": "Ring Sage",
+    "description": "Collect all the gloves and show your power!",
+    "victories": "{count} victories",
+    "gloves": {
+      "bronze": "Bronze Glove",
+      "silver": "Silver Glove",
+      "gold": "Gold Glove",
+      "diamond": "Diamond Glove",
+      "special": "Special Glove"
+    }
+  },
+  "chat": {
+    "base_alt": "Chat base",
+    "placeholder": "Write a message...",
+    "brujula_alt": "Exit to the lobby",
+    "public": "Public"
+  },
+  "customization": {
+    "tabs": {
+      "ficha": "Card",
+      "chat": "Chat",
+      "nombre": "Name",
+      "sombra": "Shadow"
+    },
+    "title": "CUSTOMIZATION OF {tab}"
+  },
+  "npc": {
+    "ring": {
+      "welcome": "Welcome to the Ring",
+      "description": "Subscribe to compete against other users and win rewards!",
+      "searching": "Searching for an opponent...",
+      "cancel": "Cancel Search",
+      "subscribe": "Find Opponent",
+      "unlock_gloves": "Unlock gloves by winning victories",
+      "weekly_trophies": "Weekly Trophies",
+      "trophies_alt": "Ring Trophies",
+      "gloves": {
+        "red": "{victories} Victories",
+        "white": "{victories} Victories",
+        "pink": "{victories} Victories",
+        "purple": "{victories} Victories",
+        "orange": "{victories} Victories",
+        "brown": "{victories} Victories",
+        "green": "{victories} Victories",
+        "black": "{victories} Victories",
+        "blue": "{victories} Victories",
+        "gold": "{victories} Victories",
+        "alt": {
+          "red": "Red Glove",
+          "white": "White Glove",
+          "pink": "Pink Glove",
+          "purple": "Purple Glove",
+          "orange": "Orange Glove",
+          "brown": "Brown Glove",
+          "green": "Green Glove",
+          "black": "Black Glove",
+          "blue": "Blue Glove",
+          "gold": "Gold Glove"
+        }
+      }
+    }
+  },
+  "scenes": {
+    "ring_info": {
+      "title": "RING INFO",
+      "victories": "{count} Victories",
+      "red": "Red Glove",
+      "white": "White Glove",
+      "pink": "Pink Glove",
+      "purple": "Purple Glove",
+      "orange": "Orange Glove",
+      "brown": "Brown Glove",
+      "green": "Green Glove",
+      "black": "Black Glove",
+      "blue": "Blue Glove",
+      "gold": "Gold Glove",
+      "red_glove_alt": "Red Glove",
+      "white_glove_alt": "White Glove",
+      "pink_glove_alt": "Pink Glove",
+      "purple_glove_alt": "Purple Glove",
+      "orange_glove_alt": "Orange Glove",
+      "brown_glove_alt": "Brown Glove",
+      "green_glove_alt": "Green Glove",
+      "black_glove_alt": "Black Glove",
+      "blue_glove_alt": "Blue Glove",
+      "gold_glove_alt": "Gold Glove"
+    },
+    "coconuts_info": {
+      "title": "COCONUTS INFO",
+      "coco_cost": "{count} Coconuts",
+      "coco_alt": "Coconut",
+      "coco_name": "Coconut",
+      "honeycomb_alt": "Beehive",
+      "honeycomb_name": "Beehive",
+      "snowball_alt": "Snowball",
+      "snowball_name": "Snowball",
+      "garbage_alt": "Garbage",
+      "garbage_name": "Garbage",
+      "shoe_alt": "Shoe",
+      "shoe_name": "Shoe",
+      "watermelon_alt": "Watermelon",
+      "watermelon_name": "Watermelon",
+      "pie_alt": "Pie",
+      "pie_name": "Pie",
+      "anvil_alt": "Anvil",
+      "anvil_name": "Anvil",
+      "pot_alt": "Pot",
+      "pot_name": "Pot",
+      "piano_alt": "Piano",
+      "piano_name": "Piano"
+    }
+  },
+  "gacha": {
+    "help": {
+      "main_title": "Gachapon Help",
+      "items_title": "Available Prizes",
+      "rarity": "Rarity",
+      "appearance": "Appearance",
+      "decorations_title": "Decoration Prizes",
+      "compensation": "Compensation",
+      "comp_silver": "{amount} silver coins",
+      "comp_gold": "{amount} gold coins"
+    },
+    "result": {
+      "title": "You won a prize!",
+      "confirm": "Accept"
+    },
+    "error": {
+      "title": "Error",
+      "close": "Close",
+      "default_message": "An unexpected error occurred."
+    },
+    "alert": {
+      "title": "Do you want to play?",
+      "text": "The cost is 100 credits. Do you want to continue?",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  },
+  "lobby": {
+    "golden_coins_alt": "Gold coins",
+    "silver_coins_alt": "Silver coins",
+    "islands": {
+      "public_alt": "Public islands",
+      "public": "Public",
+      "favorites_alt": "Favorite islands",
+      "favorites": "Favorites",
+      "my_islands_alt": "My islands",
+      "my_islands": "My Islands",
+      "create_island": "Create Island",
+      "create_island_alt": "Create a new island"
+    },
+    "no_favorite_islands": "You have no favorite islands.",
+    "gacha": {
+      "machine_alt": "Gachapon Machine",
+      "handle_alt": "Gachapon Handle",
+      "title_default": "Gachapon",
+      "price_default": "Price",
+      "title": "Gachapon",
+      "price": "100 Credits"
+    },
+    "tabs": {
+      "areas": "Areas",
+      "games": "Games",
+      "islands": "Islands"
+    },
+    "my_islands": {
+      "no_islands": "You have no created islands."
+    },
+    "search": {
+      "not_implemented": "Search is not yet implemented."
+    },
+    "ui": {
+      "background_alt": "Lobby background",
+      "flor_alt": "Decorative plant",
+      "foreground_alt": "Lobby foreground",
+      "marikita_alt": "Decorative ladybug",
+      "avatar_alt": "User avatar",
+      "logout_alt": "Log out",
+      "logout": "Exit",
+      "gachapon": "Gachapon",
+      "credits": "Credits",
+      "avatar_error": "Error loading user avatar"
+    }
   }
 }

@@ -4,10 +4,10 @@
       <button class="close-button" @click="$emit('close')">
         <i class="las la-times"></i>
       </button>
-      <h2 class="main-title">Gacha de Decoraciones (100 plata por tirada)</h2>
+      <h2 class="main-title">{{ $t('gacha.help.main_title') }}</h2>
 
       <div class="section">
-        <h3>Objetos</h3>
+        <h3>{{ $t('gacha.help.items_title') }}</h3>
         <div v-if="isLoading" class="loading-container">
           <div class="spinner"></div>
         </div>
@@ -19,9 +19,9 @@
           >
             <div class="rarity-header normal-items">
               <span
-                >Rareza: <span class="star">{{ "★".repeat(rarity) }}</span></span
+                >{{ $t('gacha.help.rarity') }}: <span class="star">{{ "★".repeat(rarity) }}</span></span
               >
-              <span>Aparición: {{ group.percentage }}%</span>
+              <span>{{ $t('gacha.help.appearance') }}: {{ group.percentage }}%</span>
             </div>
             <div class="item-grid">
               <div v-for="item in group.items" :key="item.id" class="item-cell" :title="item.name">
@@ -33,7 +33,7 @@
       </div>
 
       <div class="section">
-        <h3>Decoraciones de personaje</h3>
+        <h3>{{ $t('gacha.help.decorations_title') }}</h3>
         <div v-if="isLoading" class="loading-container">
           <div class="spinner"></div>
         </div>
@@ -45,10 +45,10 @@
           >
             <div class="rarity-header">
               <span
-                >Rareza: <span class="star">{{ "★".repeat(rarity) }}</span></span
+                >{{ $t('gacha.help.rarity') }}: <span class="star">{{ "★".repeat(rarity) }}</span></span
               >
-              <span>Aparición: {{ group.percentage }}%</span>
-              <span>Compensación: {{ group.compensation }}</span>
+              <span>{{ $t('gacha.help.appearance') }}: {{ group.percentage }}%</span>
+              <span>{{ $t('gacha.help.compensation') }}: {{ group.compensation }}</span>
             </div>
             <div class="item-grid">
               <div v-for="item in group.items" :key="item.id" class="item-cell" :title="item.name">
@@ -72,17 +72,14 @@ export default {
   data() {
     return {
       isLoading: true,
-      normalItems: {
-        1: { percentage: 55, compensation: "+5 plata", items: [] },
-        2: { percentage: 25, compensation: "+15 plata", items: [] },
-        3: { percentage: 10, compensation: "+40 plata", items: [] },
-        4: { percentage: 7, compensation: "+120 plata", items: [] },
-        5: { percentage: 2, compensation: "+300 plata", items: [] },
-      },
-      decorationItems: {
-        5: { percentage: 1, compensation: "+10 oro", items: [] },
-      },
+      normalItems: {},
+
+      decorationItems: {},
+
     };
+  },
+  created() {
+    this.initializeItems();
   },
   mounted() {
     socket.off(ResponseSocketsEnum.GET_GACHA_PRIZES);
@@ -90,6 +87,18 @@ export default {
     socket.emit(RequestSocketsEnum.GET_GACHA_PRIZES);
   },
   methods: {
+    initializeItems() {
+      this.normalItems = {
+        1: { percentage: 55, compensation: this.$t('gacha.help.comp_silver', { amount: 5 }), items: [] },
+        2: { percentage: 25, compensation: this.$t('gacha.help.comp_silver', { amount: 15 }), items: [] },
+        3: { percentage: 10, compensation: this.$t('gacha.help.comp_silver', { amount: 40 }), items: [] },
+        4: { percentage: 7, compensation: this.$t('gacha.help.comp_silver', { amount: 120 }), items: [] },
+        5: { percentage: 2, compensation: this.$t('gacha.help.comp_silver', { amount: 300 }), items: [] },
+      };
+      this.decorationItems = {
+        5: { percentage: 1, compensation: this.$t('gacha.help.comp_gold', { amount: 10 }), items: [] },
+      };
+    },
     handleGachaPrizes(data) {
       if (data.success) {
         data.data.forEach((item) => {

@@ -7,7 +7,7 @@
       </button>
     </div>
     <div v-if="islands.length === 0" class="empty-message">
-      No tienes islas favoritas
+      {{ $t('lobby.no_favorite_islands') }}
     </div>
   </div>
 </template>
