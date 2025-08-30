@@ -2,7 +2,7 @@
   <div class="google-login-container">
     <!-- Botón personalizado visible -->
     <button type="button" class="google-login-btn">
-      <img :src="asset_google_image" alt="Google" class="google-icon" />
+      <img :src="asset_google_image" :alt="$t('login.google_alt')" class="google-icon" />
       {{ $t("login.google_login") }}
     </button>
     <!-- Contenedor para el botón real de Google (invisible) -->

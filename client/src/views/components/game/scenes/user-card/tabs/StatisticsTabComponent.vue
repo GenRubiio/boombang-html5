@@ -100,36 +100,6 @@ export default {
         asset_pianoCoconutImage,
       ],
       currentViewIndex: 0,
-      statisticsViews: [
-        {
-          id: 1,
-          title: "Uppercuts",
-          stats: [
-            { key: "uppercuts_send", label: "Enviados" },
-            { key: "uppercuts_received", label: "Recibidos" },
-          ],
-        },
-        {
-          id: 2,
-          title: "Coconuts",
-          stats: [
-            { key: "coconuts_sent", label: "Enviados" },
-            { key: "coconuts_received", label: "Recibidos" },
-          ],
-        },
-        {
-          id: 3,
-          title: "Rings",
-          image: asset_stat_ring_image,
-          stats: [{ key: "rings_won", label: "Ganados" }],
-        },
-        {
-          id: 4,
-          title: "Cocos Locos",
-          image: asset_stat_coconut_caught_image,
-          stats: [{ key: "coconuts_caught", label: "Atrapados" }],
-        },
-      ],
     };
   },
   methods: {
@@ -139,6 +109,60 @@ export default {
     },
   },
   computed: {
+    statisticsViews() {
+      return [
+        {
+          id: 1,
+          title: this.$t("user_card.statistics.uppercuts.title"),
+          stats: [
+            {
+              key: "uppercuts_send",
+              label: this.$t("user_card.statistics.sent"),
+            },
+            {
+              key: "uppercuts_received",
+              label: this.$t("user_card.statistics.received"),
+            },
+          ],
+        },
+        {
+          id: 2,
+          title: this.$t("user_card.statistics.coconuts.title"),
+          stats: [
+            {
+              key: "coconuts_sent",
+              label: this.$t("user_card.statistics.sent"),
+            },
+            {
+              key: "coconuts_received",
+              label: this.$t("user_card.statistics.received"),
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: this.$t("user_card.statistics.rings.title"),
+          image: asset_stat_ring_image,
+          stats: [
+            {
+              key: "rings_won",
+              label: this.$t("user_card.statistics.rings.won"),
+            },
+          ],
+        },
+        {
+          id: 4,
+          title: this.$t("user_card.statistics.coconuts_locos.title"),
+          image: asset_stat_coconut_caught_image,
+          stats: [
+            {
+              key: "coconuts_caught",
+              label: this.$t("user_card.statistics.coconuts_locos.caught"),
+            },
+          ],
+        },
+      ];
+    },
     currentView() {
       return this.statisticsViews[this.currentViewIndex];
     },
@@ -213,6 +237,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .info-button {
@@ -260,6 +287,9 @@ export default {
   text-align: start;
   height: 17px;
   width: 63px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .container__cycle-button {

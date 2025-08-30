@@ -5,21 +5,21 @@
       :class="{ selected: activeTab === 'areas' }"
       @click="$emit('update:activeTab', 'areas')"
     >
-      Areas
+      {{ $t('lobby.tabs.areas') }}
     </div>
     <div
       class="lobby__scenes-container__tabs-tab fixed-width"
       :class="{ selected: activeTab === 'games' }"
       @click="$emit('update:activeTab', 'games')"
     >
-      Juegos
+      {{ $t('lobby.tabs.games') }}
     </div>
     <div
       class="lobby__scenes-container__tabs-tab fixed-width"
       :class="{ selected: activeTab === 'islands' }"
       @click="$emit('update:activeTab', 'islands')"
     >
-      Islas
+      {{ $t('lobby.tabs.islands') }}
     </div>
     <div
       class="lobby__scenes-container__tabs-tab"

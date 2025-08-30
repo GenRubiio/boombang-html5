@@ -7,14 +7,14 @@
     />
     <div class="base-chat__container">
       <div class="base-chat__container__chat" @dragover.prevent @drop.prevent>
-        <img :src="asset_base_image" alt="Base" />
+        <img :src="asset_base_image" :alt="$t('chat.base_alt')" />
         <UsersChatListComponent @user-selected="handleUserSelected" />
         <CreditsComponent />
         <input
           ref="messageInput"
           v-model="message"
           type="text"
-          placeholder="Escribe un mensaje..."
+          :placeholder="$t('chat.placeholder')"
           @keyup.enter="sendMessage"
           maxlength="60"
         />
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="base-chat__container__brujula" @click="exitToLobby">
-        <img :src="asset_brujula_image" alt="Brujula" />
+        <img :src="asset_brujula_image" :alt="$t('chat.brujula_alt')" />
       </div>
     </div>
   </div>

@@ -1,31 +1,31 @@
 <template>
   <div>
     <div class="lobby__background">
-      <img :src="asset_background_image" alt="background" />
+      <img :src="asset_background_image" :alt="$t('lobby.ui.background_alt')" />
     </div>
     <div class="lobby__flor">
-      <img :src="asset_flor_image" alt="flor" />
+      <img :src="asset_flor_image" :alt="$t('lobby.ui.flor_alt')" />
     </div>
     <div class="lobby__foreground">
-      <img :src="asset_foreground_image" alt="foreground" />
+      <img :src="asset_foreground_image" :alt="$t('lobby.ui.foreground_alt')" />
     </div>
     <div class="lobby__marikita">
-      <img :src="asset_marikita_image" alt="marikita" />
+      <img :src="asset_marikita_image" :alt="$t('lobby.ui.marikita_alt')" />
     </div>
     <div class="lobby__avatar">
-      <img :src="asset_avatarImage" alt="avatar" />
+      <img :src="asset_avatarImage" :alt="$t('lobby.ui.avatar_alt')" />
     </div>
     <div class="lobby__logout">
-      <img :src="asset_logout_image" alt="logout" @click="logout" />
+      <img :src="asset_logout_image" :alt="$t('lobby.ui.logout_alt')" @click="logout" />
     </div>
     <div class="lobby__label logout">
-      <span>Logout</span>
+      <span>{{ $t('lobby.ui.logout') }}</span>
     </div>
     <div class="lobby__gachapon">
       <GachaponMachineComponent
         ref="gachaponMachine"
-        :title-text="'BoomMania'"
-        :price-text="'100円'"
+        :title-text="$t('lobby.gacha.title')"
+        :price-text="$t('lobby.gacha.price')"
         :speed="1"
         @request-purchase="showGachaAlert"
         @show-prize="showGachaResult"
@@ -35,11 +35,11 @@
       </div>
     </div>
     <div class="lobby__label gachapon">
-      <span>Gachapon</span>
+      <span>{{ $t('lobby.ui.gachapon') }}</span>
     </div>
     <CreditsComponent />
     <div class="lobby__label credits">
-      <span>Monedas</span>
+      <span>{{ $t('lobby.ui.credits') }}</span>
     </div>
     <AlertWishGachaComponent
       :visible="isGachaAlertVisible"
@@ -108,7 +108,7 @@ export default {
       ).href;
       this.asset_avatarImage = avatarUrl;
     } catch (error) {
-      console.error("Error cargando el avatar:", error);
+      console.error(this.$t('lobby.ui.avatar_error'), error);
     }
   },
   beforeUnmount() {},

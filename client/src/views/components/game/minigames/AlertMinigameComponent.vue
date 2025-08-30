@@ -1,16 +1,16 @@
 <template>
   <div class="alert">
     <div v-if="alertType === MinigameAlertsEnum.WIN">
-      <h1>El vencedor es {{ winnerName }}</h1>
-      <p>Ha ganado el ring y obtiene 100 créditos de oro y una victoria.</p>
+      <h1>{{ $t('minigame.alert.winner', { winnerName }) }}</h1>
+      <p>{{ $t('minigame.alert.winner_details') }}</p>
     </div>
     <div v-else-if="alertType === MinigameAlertsEnum.NO_MIN_USERS">
-      <h1>¡No hay suficientes jugadores!</h1>
-      <p>Se necesitan al menos 2 jugadores para iniciar el juego.</p>
+      <h1>{{ $t('minigame.alert.no_min_users_title') }}</h1>
+      <p>{{ $t('minigame.alert.no_min_users_details') }}</p>
     </div>
     <div v-else-if="alertType === MinigameAlertsEnum.TIMEOUT">
-      <h1>¡Tiempo agotado!</h1>
-      <p>El juego ha terminado por falta de tiempo.</p>
+      <h1>{{ $t('minigame.alert.timeout_title') }}</h1>
+      <p>{{ $t('minigame.alert.timeout_details') }}</p>
     </div>
   </div>
 </template>

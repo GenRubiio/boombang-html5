@@ -1,0 +1,374 @@
+{
+  "auth": {
+    "rasta_alt": "ラスタ",
+    "lilian_alt": "リリアン"
+  },
+  "login": {
+    "title": "ログイン",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "button": "入力",
+    "register": "登録する",
+    "already_have_account": "すでにアカウントをお持ちですか？",
+    "character_name": "キャラクター名",
+    "username_placeholder": "名前",
+    "password_placeholder": "パスワード",
+    "forgot_password": "パスワードをお忘れですか？",
+    "separator": "または",
+    "google_login": "Googleで続行",
+    "play_button": "遊ぶ",
+    "warning_alt": "警告",
+    "play_alt": "遊ぶ",
+    "google_alt": "Google"
+  },
+  "common": {
+    "close": "閉じる",
+    "delete": "削除",
+    "previous": "前へ",
+    "next": "次へ",
+    "accept": "承認"
+  },
+  "scene": {
+    "tooltip_shop": "ショップ",
+    "tooltip_avatars": "アバター",
+    "tooltip_color": "色付け",
+    "tooltip_move": "移動",
+    "tooltip_inventory": "インベントリ"
+  },
+  "maintenance": {
+    "title": "メンテナンス",
+    "description": "サーバーはメンテナンス中です。<br />後でもう一度お試しください。",
+    "alt": "メンテナンス"
+  },
+  "avatar_select": {
+    "title": "キャラクター",
+    "label": "キャラクターを選択してください"
+  },
+  "register": {
+    "title": "アカウントを作成する",
+    "character_name": "キャラクター名",
+    "username_placeholder": "名前",
+    "password": "パスワード",
+    "password_placeholder": "パスワード",
+    "email": "Eメール",
+    "email_placeholder": "Eメール",
+    "terms_agree": "私は同意します",
+    "terms_and_conditions": "利用規約",
+    "play_button": "遊ぶ",
+    "captcha_required": "reCAPTCHAを完了してください。",
+    "captcha_expired": "reCAPTCHAの有効期限が切れました。もう一度チェックしてください。",
+    "captcha_error": "reCAPTCHAの読み込み/確認中にエラーが発生しました。もう一度お試しください。",
+    "captcha_load_error": "reCAPTCHAを読み込めませんでした。",
+    "warning_alt": "警告",
+    "play_alt": "遊ぶ"
+  },
+  "auth_screen": {
+    "register_title": "アカウントを作成する",
+    "register_text": "登録してキャラクターを選択",
+    "login_title": "ログイン",
+    "login_text": "アカウントでログイン"
+  },
+  "island_create": {
+    "choose_background": "背景を選択",
+    "island_name_placeholder": "島の名前",
+    "set_island_name": "島に名前を付ける"
+  },
+  "scene_create": {
+    "choose_scene": "シーンを選択",
+    "scene_name_placeholder": "部屋の名前",
+    "set_scene_name": "部屋に名前を付ける",
+    "error_no_scenes": "島が見つからないか、シーンがありません。"
+  },
+  "island": {
+    "locations": "場所",
+    "add_scenario": "シナリオを追加"
+  },
+  "user_card": {
+    "change_ficha_alt": "カードを変更",
+    "edit_button": "編集",
+    "avatar_alt": "ユーザーアバター",
+    "tabs": {
+      "emojis": "絵文字",
+      "statistics": "統計",
+      "interactions": "インタラクション"
+    },
+    "emojis": {
+      "laughter_1": "笑い1",
+      "laughter_2": "笑い2",
+      "laughter_3": "笑い3",
+      "love": "愛",
+      "sad": "悲しい",
+      "angry": "怒り",
+      "wink": "ウィンク",
+      "kiss": "キス",
+      "surprise": "驚き",
+      "sleep": "睡眠",
+      "cool": "クール",
+      "confused": "混乱",
+      "cry": "泣く",
+      "spit": "吐く",
+      "fart": "おなら",
+      "provoke": "挑発",
+      "fly": "飛ぶ"
+    },
+    "interactions": {
+      "kick": "キック",
+      "bomb": "爆弾",
+      "spit": "唾吐き",
+      "tomato": "トマト",
+      "poop": "うんち",
+      "flower": "花",
+      "heart": "ハート",
+      "kiss": "キス",
+      "gift": "ギフト",
+      "question": "質問",
+      "exclamation": "感嘆符",
+      "net": "ネット",
+      "drink": "飲む",
+      "rose": "バラ",
+      "upper": "アッパーカット",
+      "coco": "ココナッツ",
+      "upper_item": "アッパーカットアイテム",
+      "coco_item": "ココナッツアイテム"
+    },
+    "statistics": {
+      "title": "インタラクション統計",
+      "sent": "送信済み",
+      "received": "受信済み",
+      "kicks_sent": "送信されたキック",
+      "kicks_received": "受信されたキック",
+      "bombs_sent": "送信された爆弾",
+      "bombs_received": "受信された爆弾",
+      "spits_sent": "送信された唾吐き",
+      "spits_received": "受信された唾吐き",
+      "tomatoes_sent": "送信されたトマト",
+      "tomatoes_received": "受信されたトマト",
+      "poops_sent": "送信されたうんち",
+      "poops_received": "受信されたうんち",
+      "flowers_sent": "送信された花",
+      "flowers_received": "受信された花",
+      "kisses_sent": "送信されたキス",
+      "kisses_received": "受信されたキス",
+      "hearts_sent": "送信されたハート",
+      "hearts_received": "受信されたハート",
+      "gifts_sent": "送信されたギフト",
+      "gifts_received": "受信されたギフト",
+      "questions_sent": "送信された質問",
+      "questions_received": "受信された質問",
+      "exclamations_sent": "送信された感嘆符",
+      "exclamations_received": "受信された感嘆符",
+      "nets_sent": "送信されたネット",
+      "nets_received": "受信されたネット",
+      "rings": {
+        "title": "リング",
+        "red": "赤い手袋",
+        "white": "白い手袋",
+        "pink": "ピンクの手袋",
+        "purple": "紫の手袋",
+        "orange": "オレンジの手袋",
+        "brown": "茶色の手袋",
+        "green": "緑の手袋",
+        "black": "黒い手袋",
+        "blue": "青い手袋",
+        "gold": "金の手袋",
+        "won": "勝利"
+      },
+      "uppercuts": {
+        "title": "アッパーカット"
+      },
+      "coconuts": {
+        "title": "ココナッツ"
+      },
+      "coconuts_locos": {
+        "title": "狂ったココナッツ",
+        "caught": "捕獲"
+      }
+    }
+  },
+  "ring_npc": {
+    "title": "リングの賢者",
+    "description": "すべての手袋を集めてあなたの力を証明してください！",
+    "victories": "{count} 勝利",
+    "gloves": {
+      "bronze": "ブロンズグローブ",
+      "silver": "シルバーグローブ",
+      "gold": "ゴールドグローブ",
+      "diamond": "ダイヤモンドグローブ",
+      "special": "スペシャルグローブ"
+    }
+  },
+  "chat": {
+    "base_alt": "チャットベース",
+    "placeholder": "メッセージを入力...",
+    "brujula_alt": "ロビーに出る",
+    "public": "公開"
+  },
+  "customization": {
+    "tabs": {
+      "ficha": "カード",
+      "chat": "チャット",
+      "nombre": "名前",
+      "sombra": "影"
+    },
+    "title": "{tab}のカスタマイズ"
+  },
+  "npc": {
+    "ring": {
+      "welcome": "リングへようこそ",
+      "description": "他のユーザーと競争して報酬を獲得するために購読してください！",
+      "searching": "対戦相手を探しています...",
+      "cancel": "検索をキャンセル",
+      "subscribe": "対戦相手を探す",
+      "unlock_gloves": "勝利を収めて手袋のロックを解除する",
+      "weekly_trophies": "週間トロフィー",
+      "trophies_alt": "リングトロフィー",
+      "gloves": {
+        "red": "{victories} 勝利",
+        "white": "{victories} 勝利",
+        "pink": "{victories} 勝利",
+        "purple": "{victories} 勝利",
+        "orange": "{victories} 勝利",
+        "brown": "{victories} 勝利",
+        "green": "{victories} 勝利",
+        "black": "{victories} 勝利",
+        "blue": "{victories} 勝利",
+        "gold": "{victories} 勝利",
+        "alt": {
+          "red": "赤い手袋",
+          "white": "白い手袋",
+          "pink": "ピンクの手袋",
+          "purple": "紫の手袋",
+          "orange": "オレンジの手袋",
+          "brown": "茶色の手袋",
+          "green": "緑の手袋",
+          "black": "黒い手袋",
+          "blue": "青い手袋",
+          "gold": "金の手袋"
+        }
+      }
+    }
+  },
+  "scenes": {
+    "ring_info": {
+      "title": "リング情報",
+      "victories": "{count} 勝利",
+      "red": "赤い手袋",
+      "white": "白い手袋",
+      "pink": "ピンクの手袋",
+      "purple": "紫の手袋",
+      "orange": "オレンジの手袋",
+      "brown": "茶色の手袋",
+      "green": "緑の手袋",
+      "black": "黒い手袋",
+      "blue": "青い手袋",
+      "gold": "金の手袋",
+      "red_glove_alt": "赤い手袋",
+      "white_glove_alt": "白い手袋",
+      "pink_glove_alt": "ピンクの手袋",
+      "purple_glove_alt": "紫の手袋",
+      "orange_glove_alt": "オレンジの手袋",
+      "brown_glove_alt": "茶色の手袋",
+      "green_glove_alt": "緑の手袋",
+      "black_glove_alt": "黒い手袋",
+      "blue_glove_alt": "青い手袋",
+      "gold_glove_alt": "金の手袋"
+    },
+    "coconuts_info": {
+      "title": "ココナッツ情報",
+      "coco_cost": "{count} ココナッツ",
+      "coco_alt": "ココナッツ",
+      "coco_name": "ココナッツ",
+      "honeycomb_alt": "ハニカム",
+      "honeycomb_name": "ハニカム",
+      "snowball_alt": "雪玉",
+      "snowball_name": "雪玉",
+      "garbage_alt": "ゴミ",
+      "garbage_name": "ゴミ",
+      "shoe_alt": "靴",
+      "shoe_name": "靴",
+      "watermelon_alt": "スイカ",
+      "watermelon_name": "スイカ",
+      "pie_alt": "パイ",
+      "pie_name": "パイ",
+      "anvil_alt": "金床",
+      "anvil_name": "金床",
+      "pot_alt": "植木鉢",
+      "pot_name": "植木鉢",
+      "piano_alt": "ピアノ",
+      "piano_name": "ピアノ"
+    }
+  },
+  "gacha": {
+    "help": {
+      "main_title": "ガチャポンヘルプ",
+      "items_title": "利用可能な賞品",
+      "rarity": "レアリティ",
+      "appearance": "出現",
+      "decorations_title": "デコレーション賞品",
+      "compensation": "補償",
+      "comp_silver": "銀貨 {amount} 枚",
+      "comp_gold": "金貨 {amount} 枚"
+    },
+    "result": {
+      "title": "賞品を獲得しました！",
+      "confirm": "承認"
+    },
+    "error": {
+      "title": "エラー",
+      "close": "閉じる",
+      "default_message": "予期せぬエラーが発生しました。"
+    },
+    "alert": {
+      "title": "プレイしますか？",
+      "text": "費用は100クレジットです。続行しますか？",
+      "confirm": "確認",
+      "cancel": "キャンセル"
+    }
+  },
+  "lobby": {
+    "golden_coins_alt": "金貨",
+    "silver_coins_alt": "銀貨",
+    "islands": {
+      "public_alt": "公開島",
+      "public": "公開",
+      "favorites_alt": "お気に入りの島",
+      "favorites": "お気に入り",
+      "my_islands_alt": "私の島",
+      "my_islands": "私の島",
+      "create_island": "島を作成",
+      "create_island_alt": "新しい島を作成"
+    },
+    "no_favorite_islands": "お気に入りの島はありません。",
+    "gacha": {
+      "machine_alt": "ガチャポンマシン",
+      "handle_alt": "ガチャポンハンドル",
+      "title_default": "ガチャポン",
+      "price_default": "価格",
+      "title": "ガチャポン",
+      "price": "100クレジット"
+    },
+    "tabs": {
+      "areas": "エリア",
+      "games": "ゲーム",
+      "islands": "島"
+    },
+    "my_islands": {
+      "no_islands": "作成した島はありません。"
+    },
+    "search": {
+      "not_implemented": "検索はまだ実装されていません。"
+    },
+    "ui": {
+      "background_alt": "ロビーの背景",
+      "flor_alt": "装飾植物",
+      "foreground_alt": "ロビーの前景",
+      "marikita_alt": "装飾てんとう虫",
+      "avatar_alt": "ユーザーアバター",
+      "logout_alt": "ログアウト",
+      "logout": "終了",
+      "gachapon": "ガチャポン",
+      "credits": "クレジット",
+      "avatar_error": "ユーザーアバターの読み込み中にエラーが発生しました"
+    }
+  }
+}

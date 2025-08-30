@@ -4,7 +4,7 @@
       <div class="register-form__title">{{ $t("register.title") }}</div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showUsernameError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
           {{ usernameError }}
         </div>
         <div class="register-form__label">
@@ -22,7 +22,7 @@
       </div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showPasswordError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
           {{ passwordError }}
         </div>
         <div class="register-form__label">{{ $t("register.password") }}</div>
@@ -37,7 +37,7 @@
       </div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showEmailError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
           {{ emailError }}
         </div>
         <div class="register-form__label">{{ $t("register.email") }}</div>
@@ -62,7 +62,7 @@
       <!-- Error de captcha -->
       <div class="register-form__input-container" v-if="showCaptchaError">
         <div class="register-form__error">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
           {{ captchaError }}
         </div>
       </div>
@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="register-form__button-container">
-      <img :src="asset_button_image" alt="Jugar" />
+      <img :src="asset_button_image" :alt="$t('register.play_alt')" />
       <button
         class="register-form__button-container-button"
         type="submit"
@@ -327,6 +327,7 @@ export default {
 }
 
 .register-form__button-container-button {
+  min-width: 112px;
   font-size: 26px;
   display: inline-block;
   padding: 10px 20px;

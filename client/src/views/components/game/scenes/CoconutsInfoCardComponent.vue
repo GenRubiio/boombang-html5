@@ -3,69 +3,69 @@
     <button class="close-button" @click="$emit('close-coconuts-info')">
       <i class="las la-times"></i>
     </button>
-    <div class="coconut-info__title">Información de los Cocos</div>
+    <div class="coconut-info__title">{{ $t('scenes.coconuts_info.title') }}</div>
     <div class="coconut-info__grid">
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_coco_image" alt="Coco" />
+          <img :src="asset_coco_coco_image" :alt="$t('scenes.coconuts_info.coco_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Coco<br />0 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.coco_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: 0 }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_avispas_image" alt="Panal" />
+          <img :src="asset_coco_avispas_image" :alt="$t('scenes.coconuts_info.honeycomb_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Panal<br />2.500 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.honeycomb_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: '2.500' }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_snowball_image" alt="Bola de Nieve" />
+          <img :src="asset_coco_snowball_image" :alt="$t('scenes.coconuts_info.snowball_alt')" />
         </div>
         <div class="coconut-info__grid-item-name">
-          Bola de Nieve<br />165 Cocos
+          {{ $t('scenes.coconuts_info.snowball_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: 165 }) }}
         </div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_garbage_image" alt="Basura" />
+          <img :src="asset_coco_garbage_image" :alt="$t('scenes.coconuts_info.garbage_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Basura<br />3.335 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.garbage_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: '3.335' }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_shoe_image" alt="Zapato" />
+          <img :src="asset_coco_shoe_image" :alt="$t('scenes.coconuts_info.shoe_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Zapato<br />335 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.shoe_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: 335 }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_sandia_image" alt="Sandía" />
+          <img :src="asset_coco_sandia_image" :alt="$t('scenes.coconuts_info.watermelon_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Sandía<br />5.000 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.watermelon_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: '5.000' }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_pie_image" alt="Tarta" />
+          <img :src="asset_coco_pie_image" :alt="$t('scenes.coconuts_info.pie_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Tarta<br />835 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.pie_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: 835 }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_yunque_image" alt="Yunque" />
+          <img :src="asset_coco_yunque_image" :alt="$t('scenes.coconuts_info.anvil_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Yunque<br />6.665 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.anvil_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: '6.665' }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_maceta_image" alt="Maceta" />
+          <img :src="asset_coco_maceta_image" :alt="$t('scenes.coconuts_info.pot_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Maceta<br />1665 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.pot_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: 1665 }) }}</div>
       </div>
       <div class="coconut-info__grid-item">
         <div class="coconut-info__grid-item-image">
-          <img :src="asset_coco_piano_image" alt="Piano" />
+          <img :src="asset_coco_piano_image" :alt="$t('scenes.coconuts_info.piano_alt')" />
         </div>
-        <div class="coconut-info__grid-item-name">Piano<br />10.000 Cocos</div>
+        <div class="coconut-info__grid-item-name">{{ $t('scenes.coconuts_info.piano_name') }}<br />{{ $t('scenes.coconuts_info.coco_cost', { count: '10.000' }) }}</div>
       </div>
     </div>
   </div>

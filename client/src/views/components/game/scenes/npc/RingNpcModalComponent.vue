@@ -1,90 +1,37 @@
 <template>
   <div class="modal-info">
-    <h2>¡Bienvenido al Ring!</h2>
-    <p>
-      Aquí podrás participar en emocionantes combates y demostrar tus
-      habilidades. ¡Prepárate para la acción!
+        <h2>{{ $t("npc.ring.welcome") }}</h2>
+    <p>{{ $t("npc.ring.description") }}</p>
+    <p class="alert-search" v-if="isSubscribed">
+      {{ $t("npc.ring.searching") }}
     </p>
-    <p class="alert-search" v-if="isSubscribed">Emparejamiento en curso...</p>
     <div class="modal-info__buttons">
       <button
         @click="onToggle"
         :class="['btn-subscribe', { unsub: isSubscribed }]"
       >
-        {{ isSubscribed ? "Cancelar..." : "Inscribirme" }}
+        {{ isSubscribed ? $t("npc.ring.cancel") : $t("npc.ring.subscribe") }}
       </button>
     </div>
     <p>**************************************************************</p>
-    <p>Gana puntos compitiendo y desbloquea los siguentes guantes:</p>
+    <p>{{ $t("npc.ring.unlock_gloves") }}</p>
     <div class="modal-info__grid">
-      <div class="modal-info__grid-item">
+      <div
+        class="modal-info__grid-item"
+        v-for="(glove, index) in gloves"
+        :key="index"
+      >
         <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_red_image" alt="Guante Rojo" />
+          <img :src="glove.image" :alt="glove.alt" />
         </div>
-        <div class="modal-info__grid-item-name">Rojo<br />0 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_white_image" alt="Guante Blanco" />
-        </div>
-        <div class="modal-info__grid-item-name">Blanco<br />1.000 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_pink_image" alt="Guante Rosa" />
-        </div>
-        <div class="modal-info__grid-item-name">Rosa<br />10 Victoria</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_purple_image" alt="Guante Púrpura" />
-        </div>
-        <div class="modal-info__grid-item-name">Púrpura<br />2.000 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_orange_image" alt="Guante Naranja" />
-        </div>
-        <div class="modal-info__grid-item-name">Naranja<br />100 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_brown_image" alt="Guante Marrón" />
-        </div>
-        <div class="modal-info__grid-item-name">Marrón<br />5.000 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_green_image" alt="Guante Verde" />
-        </div>
-        <div class="modal-info__grid-item-name">Verde<br />250 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_black_image" alt="Guante Negro" />
-        </div>
-        <div class="modal-info__grid-item-name">Negro<br />10.000 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_blue_image" alt="Guante Azul" />
-        </div>
-        <div class="modal-info__grid-item-name">Azul<br />500 Victorias</div>
-      </div>
-      <div class="modal-info__grid-item">
-        <div class="modal-info__grid-item-image">
-          <img :src="asset_upper_gold_image" alt="Guante Dorado" />
-        </div>
-        <div class="modal-info__grid-item-name">Dorado<br />30.000 Victorias</div>
+        <div class="modal-info__grid-item-name" v-html="glove.name"></div>
       </div>
     </div>
     <p>**************************************************************</p>
-    <p>
-      Los que más puntos ganen cada semana, conseguirán estos trofeos únicos:
-    </p>
+    <p>{{ $t("npc.ring.weekly_trophies") }}</p>
     <div class="modal-info__footer">
       <div class="modal-info__footer-image">
-        <img :src="asset_trophies_image" alt="Trofeos" />
+        <img :src="asset_trophies_image" :alt="$t('npc.ring.trophies_alt')" />
       </div>
     </div>
   </div>
@@ -130,6 +77,60 @@ export default {
     };
   },
   computed: {
+    gloves() {
+      return [
+        {
+          name: this.$t("npc.ring.gloves.red", { victories: 0 }),
+          image: asset_upper_red_image,
+          alt: this.$t("npc.ring.gloves.alt.red"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.white", { victories: "1.000" }),
+          image: asset_upper_white_image,
+          alt: this.$t("npc.ring.gloves.alt.white"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.pink", { victories: 10 }),
+          image: asset_upper_pink_image,
+          alt: this.$t("npc.ring.gloves.alt.pink"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.purple", { victories: "2.000" }),
+          image: asset_upper_purple_image,
+          alt: this.$t("npc.ring.gloves.alt.purple"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.orange", { victories: 100 }),
+          image: asset_upper_orange_image,
+          alt: this.$t("npc.ring.gloves.alt.orange"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.brown", { victories: "5.000" }),
+          image: asset_upper_brown_image,
+          alt: this.$t("npc.ring.gloves.alt.brown"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.green", { victories: 250 }),
+          image: asset_upper_green_image,
+          alt: this.$t("npc.ring.gloves.alt.green"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.black", { victories: "10.000" }),
+          image: asset_upper_black_image,
+          alt: this.$t("npc.ring.gloves.alt.black"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.blue", { victories: 500 }),
+          image: asset_upper_blue_image,
+          alt: this.$t("npc.ring.gloves.alt.blue"),
+        },
+        {
+          name: this.$t("npc.ring.gloves.gold", { victories: "30.000" }),
+          image: asset_upper_gold_image,
+          alt: this.$t("npc.ring.gloves.alt.gold"),
+        },
+      ];
+    },
     isSubscribed() {
       const store = useNpcSubscriptionStore();
       return store.isSubscribed(this.npcId);
@@ -199,8 +200,6 @@ export default {
   display: flex;
 }
 
-.modal-info__grid-item-image {
-}
 
 .modal-info__grid-item-image img {
   width: 100%;

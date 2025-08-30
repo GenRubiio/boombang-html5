@@ -7,7 +7,7 @@
       </button>
     </div>
     <div v-if="islands.length === 0" class="empty-message">
-      Aún no has creado islas
+      {{ $t('lobby.my_islands.no_islands') }}
     </div>
   </div>
 </template>

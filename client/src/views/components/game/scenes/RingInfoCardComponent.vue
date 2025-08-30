@@ -3,70 +3,70 @@
     <button class="close-button" @click="$emit('close-ring-info')">
       <i class="las la-times"></i>
     </button>
-    <div class="ring-info__title">Información de los Guantes</div>
+    <div class="ring-info__title">{{ $t('scenes.ring_info.title') }}</div>
     <div class="ring-info__grid">
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_red_image" alt="Guante Rojo" />
+          <img :src="asset_upper_red_image" :alt="$t('scenes.ring_info.red_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Rojo<br />0 Victorias</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.red') }}<br />{{ $t('scenes.ring_info.victories', { count: 0 }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_white_image" alt="Guante Blanco" />
+          <img :src="asset_upper_white_image" :alt="$t('scenes.ring_info.white_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Blanco<br />1.000 Victorias</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.white') }}<br />{{ $t('scenes.ring_info.victories', { count: '1.000' }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_pink_image" alt="Guante Rosa" />
+          <img :src="asset_upper_pink_image" :alt="$t('scenes.ring_info.pink_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Rosa<br />10 Victoria</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.pink') }}<br />{{ $t('scenes.ring_info.victories', { count: 10 }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_purple_image" alt="Guante Púrpura" />
+          <img :src="asset_upper_purple_image" :alt="$t('scenes.ring_info.purple_glove_alt')" />
         </div>
         <div class="ring-info__grid-item-name">
-          Púrpura<br />2.000 Victorias
+          {{ $t('scenes.ring_info.purple') }}<br />{{ $t('scenes.ring_info.victories', { count: '2.000' }) }}
         </div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_orange_image" alt="Guante Naranja" />
+          <img :src="asset_upper_orange_image" :alt="$t('scenes.ring_info.orange_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Naranja<br />100 Victorias</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.orange') }}<br />{{ $t('scenes.ring_info.victories', { count: 100 }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_brown_image" alt="Guante Marrón" />
+          <img :src="asset_upper_brown_image" :alt="$t('scenes.ring_info.brown_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Marrón<br />5.000 Victorias</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.brown') }}<br />{{ $t('scenes.ring_info.victories', { count: '5.000' }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_green_image" alt="Guante Verde" />
+          <img :src="asset_upper_green_image" :alt="$t('scenes.ring_info.green_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Verde<br />250 Victorias</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.green') }}<br />{{ $t('scenes.ring_info.victories', { count: 250 }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_black_image" alt="Guante Negro" />
+          <img :src="asset_upper_black_image" :alt="$t('scenes.ring_info.black_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Negro<br />10.000 Victorias</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.black') }}<br />{{ $t('scenes.ring_info.victories', { count: '10.000' }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_blue_image" alt="Guante Azul" />
+          <img :src="asset_upper_blue_image" :alt="$t('scenes.ring_info.blue_glove_alt')" />
         </div>
-        <div class="ring-info__grid-item-name">Azul<br />500 Victorias</div>
+        <div class="ring-info__grid-item-name">{{ $t('scenes.ring_info.blue') }}<br />{{ $t('scenes.ring_info.victories', { count: 500 }) }}</div>
       </div>
       <div class="ring-info__grid-item">
         <div class="ring-info__grid-item-image">
-          <img :src="asset_upper_gold_image" alt="Guante Dorado" />
+          <img :src="asset_upper_gold_image" :alt="$t('scenes.ring_info.gold_glove_alt')" />
         </div>
         <div class="ring-info__grid-item-name">
-          Dorado<br />30.000 Victorias
+          {{ $t('scenes.ring_info.gold') }}<br />{{ $t('scenes.ring_info.victories', { count: '30.000' }) }}
         </div>
       </div>
     </div>

@@ -25,7 +25,7 @@
     >
       <img
         :src="asset_change_ficha_icon_image"
-        alt="Change Ficha"
+        :alt="$t('user_card.change_ficha_alt')"
         class="user-card__change-ficha__icon"
       />
     </div>
@@ -65,7 +65,7 @@
         class="user-card__description__edit-btn"
         @click.stop="startEditing"
       >
-        EDITAR
+        {{ $t('user_card.edit_button') }}
       </button>
     </div>
     <div
