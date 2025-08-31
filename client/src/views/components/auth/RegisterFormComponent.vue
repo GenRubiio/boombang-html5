@@ -91,6 +91,7 @@ import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import asset_button_image from "@/assets/game/auth/login-button-image.webp";
 import asset_warning_image from "@/assets/game/auth/warning.webp";
+import { useLanguageStore } from "@/stores/languageStore";
 
 export default {
   props: {
@@ -149,9 +150,9 @@ export default {
       });
 
       socket.off(ResponseSocketsEnum.REGISTER_SUCCESS);
-      socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, (data) => {
+      socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, async (data) => {
         if (data.user && data.user.lang) {
-          this.languageStore.setLocale(data.user.lang);
+          await this.languageStore.setLocale(data.user.lang);
         }
         if (data.user?.authJwt) {
           localStorage.setItem("app_jwt", data.user.authJwt);
@@ -258,6 +259,11 @@ export default {
         window.grecaptcha.reset(this.recaptchaWidgetId);
       }
       this.recaptchaToken = "";
+    },
+  },
+  computed: {
+    languageStore() {
+      return useLanguageStore();
     },
   },
   mounted() {

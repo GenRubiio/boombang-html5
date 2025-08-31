@@ -17,9 +17,11 @@ const i18n = createI18n({
 
 // Función para establecer el idioma en la instancia de i18n
 export const setI18nLanguage = async (locale) => {
-  i18n.global.locale.value = locale;
+  // Cargar mensajes primero
   const messages = await loadLocaleMessages(locale);
   i18n.global.setLocaleMessage(locale, messages);
+  // Cambiar locale después de cargar los mensajes
+  i18n.global.locale.value = locale;
 };
 
 // Sincronizar el locale de Pinia con i18n
