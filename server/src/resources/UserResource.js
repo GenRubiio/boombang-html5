@@ -38,6 +38,14 @@ class UserResource extends Resource {
             uppercut_selected: data.uppercutSelected,
             coconut_level: data.coconutLevel,
             coconut_selected: data.coconutSelected,
+
+            phaser_rendering_type: data.phaser_rendering_type,
+            phaser_antialias: data.phaser_antialias,
+            phaser_antialias_gl: data.phaser_antialias_gl,
+            phaser_pixel_art: data.phaser_pixel_art,
+            phaser_round_pixels: data.phaser_round_pixels,
+            phaser_power_preference: data.phaser_power_preference,
+
             animations: [],
         };
     }

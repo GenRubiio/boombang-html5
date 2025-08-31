@@ -39,6 +39,14 @@ class UserResource extends JsonResource
             'uppercuts_received' => (int)$this->uppercuts_received,
             'coconuts_sent' => (int)$this->coconuts_sent,
             'coconuts_received' => (int)$this->coconuts_received,
+
+            'phaser_rendering_type' => $this->phaser_rendering_type,
+            'phaser_antialias' => $this->phaser_antialias,
+            'phaser_antialias_gl' => $this->phaser_antialias_gl,
+            'phaser_pixel_art' => $this->phaser_pixel_art,
+            'phaser_round_pixels' => $this->phaser_round_pixels,
+            'phaser_power_preference' => $this->phaser_power_preference,
+            
             /**
              * User customizations
              */
