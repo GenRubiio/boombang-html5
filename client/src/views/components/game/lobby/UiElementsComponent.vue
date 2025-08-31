@@ -36,6 +36,16 @@
     <div class="lobby__label credits">
       <span>{{ $t("lobby.ui.credits") }}</span>
     </div>
+    <div class="lobby__settings">
+      <img
+        :src="asset_settings_image"
+        :alt="$t('lobby.ui.settings_alt')"
+        @click="openSettings"
+      />
+    </div>
+    <div class="lobby__label settings">
+      <span>{{ $t("lobby.ui.settings") }}</span>
+    </div>
     <AlertWishGachaComponent
       :visible="isGachaAlertVisible"
       @confirm="handleGachaConfirm"
@@ -55,6 +65,10 @@
       :message="errorMessage"
       @close="handleErrorPopupClose"
     />
+    <SettingsPopup
+      v-if="isSettingsVisible"
+      @close="isSettingsVisible = false"
+    />
   </div>
 </template>
 
@@ -64,12 +78,14 @@ import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import asset_background_image from "@/assets/game/lobby/background.webp";
 import asset_logout_image from "@/assets/game/lobby/logout.webp";
+import asset_settings_image from "@/assets/game/lobby/settings.webp";
 import GachaponMachineComponent from "./GachaponMachineComponent.vue";
 import AlertWishGachaComponent from "./gachapon/AlertWishGachaComponent.vue";
 import HelpCardGachaComponent from "./gachapon/HelpCardGachaComponent.vue";
 import GachaResultPopup from "./gachapon/GachaResultPopup.vue";
 import ErrorPopup from "./gachapon/ErrorPopup.vue";
 import CreditsComponent from "./CreditsComponent.vue";
+import SettingsPopup from "./SettingsPopup.vue";
 
 export default {
   data() {
@@ -78,10 +94,12 @@ export default {
       isHelpCardVisible: false,
       isGachaResultVisible: false,
       isErrorPopupVisible: false,
+      isSettingsVisible: false,
       errorMessage: "",
       asset_background_image,
       asset_avatarImage: null,
       asset_logout_image,
+      asset_settings_image,
       isLogoutButtonClicked: false,
       gachaponItem: {
         name: null,
@@ -108,6 +126,7 @@ export default {
     GachaResultPopup,
     ErrorPopup,
     CreditsComponent,
+    SettingsPopup,
   },
   methods: {
     logout() {
@@ -153,6 +172,9 @@ export default {
     showGachaResult() {
       this.isGachaResultVisible = true;
     },
+    openSettings() {
+      this.isSettingsVisible = true;
+    },
   },
 };
 </script>
@@ -161,7 +183,7 @@ export default {
 .lobby__gachapon {
   position: absolute;
   bottom: -157px;
-  right: 449px;
+  right: 515px;
   width: 45%;
   z-index: 1;
 }
@@ -300,13 +322,30 @@ export default {
 }
 
 .lobby__label.gachapon {
-  left: 254px;
+  left: 190px;
   width: 150px;
 }
 
 .lobby__label.credits {
   left: 27px;
   width: 124px;
+}
+
+.lobby__settings img {
+  position: absolute;
+  bottom: 20px;
+  right: 165px;
+  z-index: 1;
+  width: 75px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.lobby__label.settings {
+  bottom: 0px;
+  right: 151px;
+  width: 100px;
 }
 
 .help-button {
