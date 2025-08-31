@@ -77,7 +77,7 @@ export default {
       asset_background_image,
       asset_clouds_background_image,
       avatar_id: AvatarEnum.GATA,
-      lang: 'es',
+      lang: 'en',
     };
   },
   components: {

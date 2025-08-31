@@ -117,9 +117,9 @@ export default {
     }
 
     socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
-    socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
+    socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, async (data) => {
       if (data.user && data.user.lang) {
-        this.languageStore.setLocale(data.user.lang);
+        await this.languageStore.setLocale(data.user.lang);
       }
       if (data.user?.authJwt) {
         localStorage.setItem("app_jwt", data.user.authJwt);
