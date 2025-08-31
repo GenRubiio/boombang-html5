@@ -3,23 +3,18 @@
     <div class="lobby__background">
       <img :src="asset_background_image" :alt="$t('lobby.ui.background_alt')" />
     </div>
-    <div class="lobby__flor">
-      <img :src="asset_flor_image" :alt="$t('lobby.ui.flor_alt')" />
-    </div>
-    <div class="lobby__foreground">
-      <img :src="asset_foreground_image" :alt="$t('lobby.ui.foreground_alt')" />
-    </div>
-    <div class="lobby__marikita">
-      <img :src="asset_marikita_image" :alt="$t('lobby.ui.marikita_alt')" />
-    </div>
     <div class="lobby__avatar">
       <img :src="asset_avatarImage" :alt="$t('lobby.ui.avatar_alt')" />
     </div>
     <div class="lobby__logout">
-      <img :src="asset_logout_image" :alt="$t('lobby.ui.logout_alt')" @click="logout" />
+      <img
+        :src="asset_logout_image"
+        :alt="$t('lobby.ui.logout_alt')"
+        @click="logout"
+      />
     </div>
     <div class="lobby__label logout">
-      <span>{{ $t('lobby.ui.logout') }}</span>
+      <span>{{ $t("lobby.ui.logout") }}</span>
     </div>
     <div class="lobby__gachapon">
       <GachaponMachineComponent
@@ -35,11 +30,11 @@
       </div>
     </div>
     <div class="lobby__label gachapon">
-      <span>{{ $t('lobby.ui.gachapon') }}</span>
+      <span>{{ $t("lobby.ui.gachapon") }}</span>
     </div>
     <CreditsComponent />
     <div class="lobby__label credits">
-      <span>{{ $t('lobby.ui.credits') }}</span>
+      <span>{{ $t("lobby.ui.credits") }}</span>
     </div>
     <AlertWishGachaComponent
       :visible="isGachaAlertVisible"
@@ -68,9 +63,6 @@ import socket from "@/sockets/socket";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import asset_background_image from "@/assets/game/lobby/background.webp";
-import asset_flor_image from "@/assets/game/lobby/flor.webp";
-import asset_foreground_image from "@/assets/game/lobby/foreground.webp";
-import asset_marikita_image from "@/assets/game/lobby/marikita.webp";
 import asset_logout_image from "@/assets/game/lobby/logout.webp";
 import GachaponMachineComponent from "./GachaponMachineComponent.vue";
 import AlertWishGachaComponent from "./gachapon/AlertWishGachaComponent.vue";
@@ -88,9 +80,6 @@ export default {
       isErrorPopupVisible: false,
       errorMessage: "",
       asset_background_image,
-      asset_flor_image,
-      asset_foreground_image,
-      asset_marikita_image,
       asset_avatarImage: null,
       asset_logout_image,
       isLogoutButtonClicked: false,
@@ -108,7 +97,7 @@ export default {
       ).href;
       this.asset_avatarImage = avatarUrl;
     } catch (error) {
-      console.error(this.$t('lobby.ui.avatar_error'), error);
+      console.error(this.$t("lobby.ui.avatar_error"), error);
     }
   },
   beforeUnmount() {},
@@ -176,11 +165,17 @@ export default {
   width: 45%;
   z-index: 1;
 }
-.lobby__background img {
+
+.lobby__background {
   position: absolute;
-  top: -22px;
   left: 0;
   z-index: 0;
+}
+
+.lobby__background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .lobby__flor img {
