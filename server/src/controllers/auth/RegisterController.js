@@ -14,7 +14,8 @@ class RegisterController {
                 data.email,
                 data.password,
                 data.avatar_id,
-                data.recaptcha
+                data.recaptcha,
+                data.lang
             );
             if (response.errors) {
                 socket.emit(ResponseSocketsEnum.REGISTER_ERROR, { errors: response.errors });

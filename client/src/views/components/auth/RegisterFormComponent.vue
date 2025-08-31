@@ -95,6 +95,7 @@ import asset_warning_image from "@/assets/game/auth/warning.webp";
 export default {
   props: {
     avatar_id: Number,
+    lang: String,
   },
   data() {
     return {
@@ -143,6 +144,7 @@ export default {
         email: this.email,
         password: this.password,
         avatar_id: this.avatar_id,
+        lang: this.lang,
         recaptcha: this.recaptchaToken,
       });
 

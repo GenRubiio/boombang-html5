@@ -23,6 +23,7 @@ class UserResource extends JsonResource
         $return = [
             'id' => (int)$this->id,
             'username' => $this->username,
+            'lang' => $this->lang,
             'description' => $this->description,
             'ficha_color' => $this->ficha_color,
             'shadow_color' => $this->shadow_color,

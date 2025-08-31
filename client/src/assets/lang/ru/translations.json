@@ -60,7 +60,8 @@
     "captcha_error": "Ошибка при загрузке/проверке reCAPTCHA. Попробуйте еще раз.",
     "captcha_load_error": "Не удалось загрузить reCAPTCHA.",
     "warning_alt": "Предупреждение",
-    "play_alt": "Играть"
+    "play_alt": "Играть",
+    "language": "Язык"
   },
   "auth_screen": {
     "register_title": "Создать аккаунт",

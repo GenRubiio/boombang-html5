@@ -35,6 +35,7 @@ class RegisterApiRegisterRequest extends FormRequest
                 'in:' . implode(',', array_values(AvatarEnum::registerAvatarPermited())),
             ],
             'recaptcha' => ['required', 'string', new RecaptchaV2()],
+            'lang' => ['required', 'string', 'in:' . implode(',', array_keys(config('backpack.crud.locales')))],
         ];
     }
 

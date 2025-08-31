@@ -60,7 +60,8 @@
     "captcha_error": "Error al cargar/verificar reCAPTCHA. Intenta de nuevo.",
     "captcha_load_error": "No se pudo cargar reCAPTCHA.",
     "warning_alt": "Advertencia",
-    "play_alt": "Jugar"
+    "play_alt": "Jugar",
+    "language": "Idioma"
   },
   "auth_screen": {
     "register_title": "Crear tu Cuenta",

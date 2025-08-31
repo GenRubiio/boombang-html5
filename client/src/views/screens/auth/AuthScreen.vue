@@ -44,6 +44,7 @@
           <RegisterFormComponent
             v-if="showForm == 'register'"
             :avatar_id="avatar_id"
+            :lang="lang"
             @loginSuccess="$emit('loginSuccess')"
           />
         </div>
@@ -51,6 +52,7 @@
       <AvatarSelectComponent
         v-if="showForm == 'register'"
         @changeAvatar="onChangeAvatar"
+        @changeLang="onChangeLang"
       />
     </div>
   </div>
@@ -75,6 +77,7 @@ export default {
       asset_background_image,
       asset_clouds_background_image,
       avatar_id: AvatarEnum.GATA,
+      lang: 'es',
     };
   },
   components: {
@@ -98,6 +101,9 @@ export default {
     },
     onChangeAvatar(avatar_id) {
       this.avatar_id = avatar_id;
+    },
+    onChangeLang(lang) {
+      this.lang = lang;
     },
   },
 };

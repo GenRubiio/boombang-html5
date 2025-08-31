@@ -60,7 +60,8 @@
     "captcha_error": "加载/验证 reCAPTCHA 时出错。请再试一次。",
     "captcha_load_error": "无法加载 reCAPTCHA。",
     "warning_alt": "警告",
-    "play_alt": "玩"
+    "play_alt": "玩",
+    "language": "语言"
   },
   "auth_screen": {
     "register_title": "创建您的帐户",
