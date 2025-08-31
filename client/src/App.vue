@@ -83,12 +83,24 @@ export default {
       const { default: PrivateScene } = await import("./phaser/PrivateScene");
       const { default: MinigameScene } = await import("./phaser/MinigameScene");
       // Solo creas la instancia la primera vez.
+      let phaserType = Phaser.AUTO;
+      switch (socket.user.phaser_rendering_type) {
+        case "webgl":
+          phaserType = Phaser.WEBGL;
+          break;
+        case "canvas":
+          phaserType = Phaser.CANVAS;
+          break;
+        default:
+          phaserType = Phaser.AUTO;
+      }
       this.gamePhaser = new Phaser.Game({
-        type: Phaser.WEBGL,
-        powerPreference: "high-performance",
-        antialias: false, // Desactiva si no necesitas suavizado
-        roundPixels: true, // Reduce cálculos de subpíxeles
-        pixelArt: true, // Esencial para evitar el antialiasing que causa el blur
+        type: phaserType,
+        powerPreference: socket.user.phaser_power_preference || "default", // "high-performance", "low-power", "default"
+        antialias: socket.user.phaser_antialias ? true : false, // Desactiva si no necesitas suavizado
+        antialiasGL: socket.user.phaser_antialias_gl ? true : false, // Desactiva si no necesitas suavizado en WebGL
+        roundPixels: socket.user.phaser_round_pixels ? true : false, // Reduce cálculos de subpíxeles
+        pixelArt: socket.user.phaser_pixel_art ? true : false, // Esencial para evitar el antialiasing que causa el blur
         width: 1012,
         height: 657,
         // Registras todas las escenas globales que vayas a usar

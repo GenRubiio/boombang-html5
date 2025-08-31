@@ -21,7 +21,14 @@ class UserModel {
         this.uppercutsReceived = row.uppercuts_received; // Uppercuts recibidos por el usuario
         this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
-        
+
+        this.phaser_rendering_type = row.phaser_rendering_type;
+        this.phaser_antialias = row.phaser_antialias;
+        this.phaser_antialias_gl = row.phaser_antialias_gl;
+        this.phaser_pixel_art = row.phaser_pixel_art;
+        this.phaser_round_pixels = row.phaser_round_pixels;
+        this.phaser_power_preference = row.phaser_power_preference;
+
         this.fichas = row.fichas || []; // Fichas del usuario, por defecto es un array vacío
         this.chats = row.chats || []; // Colores del chat del usuario, por defecto es un array vacío
         this.shadows = row.shadows || []; // Colores de sombra del usuario, por defecto es un array vacío

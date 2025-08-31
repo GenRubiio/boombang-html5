@@ -41,6 +41,13 @@ class User extends Authenticatable
         'uppercuts_received',
         'coconuts_sent',
         'coconuts_received',
+        'last_update_username_at',
+        'phaser_rendering_type',
+        'phaser_antialias',
+        'phaser_antialias_gl',
+        'phaser_pixel_art',
+        'phaser_round_pixels',
+        'phaser_power_preference',
         'is_bot',
         'active',
     ];
