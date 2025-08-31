@@ -2,17 +2,6 @@
 <mask id="mask0_134_78" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="109" y="0" width="310" height="177">
 <rect x="109" width="310" height="177" fill="#C4C4C4"/>
 </mask>
-<g mask="url(#mask0_134_78)">
-<circle cx="263" cy="177" r="110" stroke="#AD8BD6" stroke-width="10"/>
-<circle cx="263" cy="177" r="120" stroke="#86DBFE" stroke-width="10"/>
-<circle cx="263" cy="177" r="130" stroke="#51F1D2" stroke-width="10"/>
-<circle cx="263" cy="167" r="130" stroke="#FDFAD4" stroke-width="10"/>
-<circle cx="263" cy="167" r="140" stroke="#FB91C9" stroke-width="10"/>
-<circle cx="263" cy="167" r="150" stroke="#AD8BD6" stroke-width="10"/>
-<path d="M365.791 35.1155L366.795 21.1976C367.068 17.4224 362.841 15.0178 359.735 17.1809L348.284 25.1553L335.358 19.8991C331.852 18.4733 328.259 21.7498 329.356 25.3722L333.402 38.727L324.408 49.3963C321.969 52.2904 323.975 56.7199 327.759 56.7957L341.71 57.0749L349.078 68.9252C351.077 72.1395 355.909 71.6007 357.151 68.025L361.728 54.8429L375.275 51.4974C378.949 50.5899 379.93 45.8274 376.913 43.5417L365.791 35.1155Z" fill="#FEFACC" stroke="#AD8BD6" stroke-width="6"/>
-<circle cx="280" cy="15" r="10" fill="white" stroke="#AD8BD6" stroke-width="6"/>
-<circle cx="216" cy="78" r="9" fill="white" stroke="#AD8BD6" stroke-width="6"/>
-</g>
 <mask id="path-11-inside-1_134_78" fill="white">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0 753C0 719.311 27.3106 692 61 692H259H463.88C498.74 692 527 720.26 527 755.12V1069.88C527 1104.74 498.74 1133 463.88 1133H259H61C27.3106 1133 0 1105.69 0 1072V753ZM470 952V915.5C470 859.443 424.557 814 368.5 814C312.443 814 267 859.443 267 915.5V952C267 966.912 279.088 979 294 979H443C457.912 979 470 966.912 470 952Z"/>
 </mask>

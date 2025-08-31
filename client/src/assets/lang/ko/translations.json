@@ -372,6 +372,41 @@
       "avatar_error": "사용자 아바타를 로드하는 중 오류가 발생했습니다."
     }
   },
+  "settings": {
+    "main_title": "Settings",
+    "save": "Save",
+    "tabs": {
+      "profile": "Profile",
+      "graphics": "Graphics"
+    },
+    "profile": {
+      "username": "Username",
+      "username_placeholder": "Enter your username",
+      "username_desc": "You can change your username once every 30 days.",
+      "language": "Language",
+      "language_desc": "Choose your preferred language."
+    },
+    "graphics": {
+      "render_type": "Render Type",
+      "render_type_desc": "Select render engine: WEBGL (faster, advanced effects) or CANVAS (compatibility). AUTO tries WebGL and falls back to Canvas if it fails.",
+      "antialias": "Antialias",
+      "antialias_desc": "Smooths textures when scaling/rotating. false leaves sharp pixels.",
+      "antialias_gl": "Antialias GL",
+      "antialias_gl_desc": "Activates MSAA (canvas edge smoothing) when creating WebGL. Doesn't change textures. ⚠️ Changing this requires restarting the game.",
+      "pixel_art": "Pixel Art",
+      "pixel_art_desc": "\"Preset\" that activates antialias=false and roundPixels=true. Everything looks sharper.",
+      "round_pixels": "Round Pixels",
+      "round_pixels_desc": "Rounds positions to the nearest pixel (prevents sprite blurring).",
+      "power_preference": "Power Preference",
+      "power_preference_desc": "Suggests to browser which GPU to use: high-performance → forces dedicated GPU (more consumption). low-power → battery saving."
+    },
+    "confirm": {
+      "title": "Confirm Changes",
+      "message": "Applying these changes will restart the game. Do you want to continue?",
+      "ok": "OK",
+      "cancel": "Cancel"
+    }
+  },
   "loading": {
     "title": "로딩 중..."
   }

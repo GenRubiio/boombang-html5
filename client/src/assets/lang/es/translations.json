@@ -369,7 +369,44 @@
       "logout": "Salir",
       "gachapon": "Gachapón",
       "credits": "Créditos",
+      "settings": "Ajustes",
+      "settings_alt": "Configuración",
       "avatar_error": "Error al cargar el avatar del usuario"
+    }
+  },
+  "settings": {
+    "main_title": "Configuración",
+    "save": "Guardar",
+    "tabs": {
+      "profile": "Perfil",
+      "graphics": "Gráficos"
+    },
+    "profile": {
+      "username": "Nombre de usuario",
+      "username_placeholder": "Ingresa tu nombre de usuario",
+      "username_desc": "Puedes cambiar tu nombre de usuario una vez cada 30 días.",
+      "language": "Idioma",
+      "language_desc": "Elige tu idioma de preferencia."
+    },
+    "graphics": {
+      "render_type": "Tipo de Renderizado",
+      "render_type_desc": "Selecciona el motor de render: WEBGL (más rápido, efectos avanzados) o CANVAS (compatibilidad). AUTO intenta WebGL y cae a Canvas si falla.",
+      "antialias": "Antialias",
+      "antialias_desc": "Suaviza texturas al escalar/rotar. false deja píxeles nítidos.",
+      "antialias_gl": "Antialias GL",
+      "antialias_gl_desc": "Activa MSAA (suavizado de bordes del lienzo) al crear WebGL. No cambia texturas. ⚠️ Cambiarlo requiere reiniciar el juego.",
+      "pixel_art": "Pixel Art",
+      "pixel_art_desc": "\"Preset\" que activa antialias=false y roundPixels=true. Todo queda más nítido.",
+      "round_pixels": "Round Pixels",
+      "round_pixels_desc": "Redondea posiciones al píxel más cercano (evita desenfoques en sprites).",
+      "power_preference": "Preferencia de Energía",
+      "power_preference_desc": "Sugiere al navegador qué GPU usar: high-performance → fuerza GPU dedicada (más consumo). low-power → ahorro batería."
+    },
+    "confirm": {
+      "title": "Confirmar Cambios",
+      "message": "Al aplicar estos cambios el juego se reiniciará. ¿Deseas continuar?",
+      "ok": "Aceptar",
+      "cancel": "Cancelar"
     }
   },
   "loading": {
