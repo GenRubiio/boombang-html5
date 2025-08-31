@@ -30,6 +30,7 @@ class RegisterApiController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'avatar' => $request->avatar_id,
+                'lang' => $request->lang,
             ]);
 
             $user = User::where('email', $request->email)->first();

@@ -60,7 +60,8 @@
     "captcha_error": "reCAPTCHA 로드/확인 중 오류가 발생했습니다. 다시 시도해주세요.",
     "captcha_load_error": "reCAPTCHA를 로드할 수 없습니다.",
     "warning_alt": "경고",
-    "play_alt": "플레이"
+    "play_alt": "플레이",
+    "language": "언어"
   },
   "auth_screen": {
     "register_title": "계정 만들기",

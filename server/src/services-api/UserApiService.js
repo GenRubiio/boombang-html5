@@ -32,14 +32,15 @@ class UserApiService {
         }
     }
 
-    static async register(username, email, password, avatar, recaptcha) {
+    static async register(username, email, password, avatar, recaptcha, lang) {
         try {
             const data = {
                 username: username,
                 email: email,
                 password: password,
                 avatar_id: avatar,
-                recaptcha: recaptcha
+                recaptcha: recaptcha,
+                lang: lang
             };
             return await ApiService.post('api/auth/register', data);
         } catch (error) {
