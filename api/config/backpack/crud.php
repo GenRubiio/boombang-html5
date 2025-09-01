@@ -392,7 +392,7 @@ return [
         // "es_US" => "Spanish (United States)",
         // "es_UY" => "Spanish (Uruguay)",
         // "es_VE" => "Spanish (Venezuela)",
-        // "es" => "Spanish",
+        "es" => "Spanish",
         // "sw_KE" => "Swahili (Kenya)",
         // "sw_TZ" => "Swahili (Tanzania)",
         // "sw" => "Swahili",
