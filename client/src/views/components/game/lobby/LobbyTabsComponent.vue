@@ -5,21 +5,21 @@
       :class="{ selected: activeTab === 'areas' }"
       @click="$emit('update:activeTab', 'areas')"
     >
-      {{ $t('lobby.tabs.areas') }}
+      <span class="fit_label">{{ $t("lobby.tabs.areas") }}</span>
     </div>
     <div
       class="lobby__scenes-container__tabs-tab fixed-width"
       :class="{ selected: activeTab === 'games' }"
       @click="$emit('update:activeTab', 'games')"
     >
-      {{ $t('lobby.tabs.games') }}
+      <span class="fit_label">{{ $t("lobby.tabs.games") }}</span>
     </div>
     <div
       class="lobby__scenes-container__tabs-tab fixed-width"
       :class="{ selected: activeTab === 'islands' }"
       @click="$emit('update:activeTab', 'islands')"
     >
-      {{ $t('lobby.tabs.islands') }}
+      <span class="fit_label">{{ $t("lobby.tabs.islands") }}</span>
     </div>
     <div
       class="lobby__scenes-container__tabs-tab"
@@ -32,9 +32,39 @@
 </template>
 
 <script>
+import { useTextFitting } from '@/composables/useTextFitting'
+
 export default {
   props: {
     activeTab: String,
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.fitAllLabels();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => this.fitAllLabels());
+      }
+    });
+    window.addEventListener("resize", this.fitAllLabels, { passive: true });
+  },
+  methods: {
+    fitAllLabels() {
+      const { fitAllLabels } = useTextFitting()
+      fitAllLabels(
+        this.$el,
+        '.lobby__scenes-container__tabs-tab.fixed-width',
+        '.fit_label'
+      )
+    },
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.fitAllLabels);
+  },
+  watch: {
+    // Si cambias de idioma en caliente, recalcula
+    "$i18n.locale"() {
+      this.$nextTick(this.fitAllLabels);
+    },
   },
 };
 </script>
@@ -55,6 +85,7 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-align: center;
+  justify-content: center;
 }
 
 .lobby__scenes-container__tabs-tab.selected {
@@ -62,7 +93,15 @@ export default {
 }
 
 .fixed-width {
-  width: 100px;
+  width: 50px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.fit_label {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
 }
 </style>
