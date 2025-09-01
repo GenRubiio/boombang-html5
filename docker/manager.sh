@@ -143,6 +143,7 @@ while true; do
       sudo docker stop boombang-html5-server-1
       sudo docker compose build api
       sudo docker compose up -d api
+      sudo docker compose exec api composer install --no-dev --prefer-dist -n
       sudo docker exec boombang-html5-api-1 php artisan migrate --force
       sudo docker exec boombang-html5-api-1 php artisan passport:install
       sudo docker exec boombang-html5-api-1 php artisan passport:clear-tokens
