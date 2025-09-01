@@ -43,6 +43,9 @@ class MenuItem extends MenuItemOriginal
         'name',
         'link'
     ];
+    public $ai = [
+        'name'
+    ];
     protected $upload_path = 'uploads/menu-item';
 
     /*

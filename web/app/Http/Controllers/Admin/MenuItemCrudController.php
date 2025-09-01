@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\Operations\ReorderMenuFooterOperation;
-use App\Http\Controllers\Admin\Operations\ReorderMenuLegalOperation;
-use App\Http\Controllers\Admin\Operations\ReorderMenuTopOperation;
 use App\Http\Requests\MenuItemRequest;
+use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Operations\ReorderMenuTopOperation;
+use App\Http\Controllers\Admin\Operations\ReorderMenuLegalOperation;
+use App\Http\Controllers\Admin\Operations\ReorderMenuFooterOperation;
 
 class MenuItemCrudController extends CrudController
 {
@@ -14,7 +15,9 @@ class MenuItemCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
     }
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
+        update as traitUpdate;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
     use ReorderMenuTopOperation;
@@ -24,7 +27,7 @@ class MenuItemCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel("App\Models\MenuItem");
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/menu-item');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/menu-item');
         $this->crud->setEntityNameStrings('menu item', 'menu items');
 
         $this->crud->enableReorder('name', 2);
@@ -142,6 +145,11 @@ class MenuItemCrudController extends CrudController
                 'default' => 0,
                 'inline' => true,
             ],
+            [
+                'name' => 'ai_translate',
+                'label' => 'AI Translate',
+                'type' => 'checkbox',
+            ],
         ]);
     }
 
@@ -149,6 +157,18 @@ class MenuItemCrudController extends CrudController
     {
         $response = $this->traitStore();
         storeReplicateOtherLocales($this->crud);
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
+        return $response;
+    }
+
+    protected function update()
+    {
+        $response = $this->traitUpdate();
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
         return $response;
     }
 
