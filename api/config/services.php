@@ -45,4 +45,8 @@ return [
         'redirect' => '',
     ],
 
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+    ],
+
 ];
