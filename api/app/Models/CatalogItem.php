@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 
 class CatalogItem extends Model
 {
     use CrudTrait;
     use HasFactory;
+    use HasTranslations;
 
     /*
     |--------------------------------------------------------------------------
@@ -52,6 +54,11 @@ class CatalogItem extends Model
         'rgt',
         'depth'
     ];
+
+    public $translatable = [
+        'name',
+        'description'
+    ];
     // protected $hidden = [];
 
     /*
@@ -59,6 +66,11 @@ class CatalogItem extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getTranslatable()
+    {
+        return $this->translatable;
+    }
 
     /*
     |--------------------------------------------------------------------------

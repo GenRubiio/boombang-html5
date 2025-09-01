@@ -4,13 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\CatalogItemTypesEnum;
 use App\Http\Requests\CatalogItemRequest;
+use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class CatalogItemCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
+        store as traitStore;
+    }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
+        update as traitUpdate;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     public function setup()
@@ -216,6 +221,12 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'Configuración'
             ],
             [
+                'name' => 'ai_translate',
+                'label' => 'AI Translate',
+                'type' => 'checkbox',
+                'tab' => 'General'
+            ],
+            [
                 'name' => 'is_active',
                 'label' => 'Activo',
                 'type' => 'checkbox',
@@ -228,5 +239,24 @@ class CatalogItemCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function store()
+    {
+        $response = $this->traitStore();
+        storeReplicateOtherLocales($this->crud);
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
+        return $response;
+    }
+
+    protected function update()
+    {
+        $response = $this->traitUpdate();
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
+        return $response;
     }
 }

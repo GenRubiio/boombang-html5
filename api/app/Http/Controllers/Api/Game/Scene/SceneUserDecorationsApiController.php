@@ -16,6 +16,9 @@ class SceneUserDecorationsApiController extends Controller
     public function index(): JsonResource
     {
         try {
+            $lang = auth()->user()->lang ?? app()->getLocale();
+            app()->setLocale($lang);
+
             $items = CatalogItem::where('is_active', true)
                 ->whereNotNull('user_decoration_type')
                 ->whereIn('user_decoration_type', ['ficha', 'chat', 'name', 'shadow'])
