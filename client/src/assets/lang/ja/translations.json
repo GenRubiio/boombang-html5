@@ -91,7 +91,33 @@
     "tabs": {
       "emojis": "絵文字",
       "statistics": "統計",
-      "interactions": "インタラクション"
+      "interactions": "インタラクション",
+      "settings": "設定"
+    },
+    "settings": {
+      "title": "設定",
+      "username": "ユーザー名",
+      "language": "言語",
+      "graphics": "グラフィック",
+      "renderer": "レンダラー",
+      "antialias": "アンチエイリアス",
+      "antialias_gl": "アンチエイリアス GL",
+      "pixel_art": "ピクセルアート",
+      "round_pixels": "ピクセルを丸める",
+      "power_preference": "電力設定",
+      "save": "保存",
+      "success": "設定が正常に保存されました。ゲームが再起動します。",
+      "error": "設定の保存に失敗しました。",
+      "render_mode": {
+        "auto": "自動",
+        "webgl": "WebGL",
+        "canvas": "キャンバス"
+      },
+      "power_preference_mode": {
+        "default": "デフォルト",
+        "high_performance": "ハイパフォーマンス",
+        "low_power": "低電力"
+      }
     },
     "emojis": {
       "laughter_1": "笑い1",
@@ -369,42 +395,44 @@
       "logout": "終了",
       "gachapon": "ガチャポン",
       "credits": "クレジット",
-      "avatar_error": "ユーザーアバターの読み込み中にエラーが発生しました"
+      "avatar_error": "ユーザーアバターの読み込み中にエラーが発生しました",
+      "settings": "設定",
+      "settings_alt": "構成"
     }
   },
   "settings": {
-    "main_title": "Settings",
-    "save": "Save",
+    "main_title": "設定",
+    "save": "保存",
     "tabs": {
-      "profile": "Profile",
-      "graphics": "Graphics"
+      "profile": "プロフィール",
+      "graphics": "グラフィック"
     },
     "profile": {
-      "username": "Username",
-      "username_placeholder": "Enter your username",
-      "username_desc": "You can change your username once every 30 days.",
-      "language": "Language",
-      "language_desc": "Choose your preferred language."
+      "username": "ユーザー名",
+      "username_placeholder": "ユーザー名を入力してください",
+      "username_desc": "ユーザー名は30日ごとに1回変更できます。",
+      "language": "言語",
+      "language_desc": "ご希望の言語を選択してください。"
     },
     "graphics": {
-      "render_type": "Render Type",
-      "render_type_desc": "Select render engine: WEBGL (faster, advanced effects) or CANVAS (compatibility). AUTO tries WebGL and falls back to Canvas if it fails.",
-      "antialias": "Antialias",
-      "antialias_desc": "Smooths textures when scaling/rotating. false leaves sharp pixels.",
-      "antialias_gl": "Antialias GL",
-      "antialias_gl_desc": "Activates MSAA (canvas edge smoothing) when creating WebGL. Doesn't change textures. ⚠️ Changing this requires restarting the game.",
-      "pixel_art": "Pixel Art",
-      "pixel_art_desc": "\"Preset\" that activates antialias=false and roundPixels=true. Everything looks sharper.",
-      "round_pixels": "Round Pixels",
-      "round_pixels_desc": "Rounds positions to the nearest pixel (prevents sprite blurring).",
-      "power_preference": "Power Preference",
-      "power_preference_desc": "Suggests to browser which GPU to use: high-performance → forces dedicated GPU (more consumption). low-power → battery saving."
+      "render_type": "レンダータイプ",
+      "render_type_desc": "レンダーエンジンを選択してください: WEBGL (高速、高度なエフェクト) または CANVAS (互換性)。AUTOはWebGLを試し、失敗した場合はCanvasにフォールバックします。",
+      "antialias": "アンチエイリアス",
+      "antialias_desc": "スケーリング/回転時にテクスチャを滑らかにします。falseはシャープなピクセルを残します。",
+      "antialias_gl": "アンチエイリアス GL",
+      "antialias_gl_desc": "WebGL作成時にMSAA (キャンバスエッジのスムージング) を有効にします。テクスチャは変更されません。⚠️これを変更するにはゲームの再起動が必要です。",
+      "pixel_art": "ピクセルアート",
+      "pixel_art_desc": "アンチエイリアス=falseとroundPixels=trueを有効にする「プリセット」。すべてがよりシャープに見えます。",
+      "round_pixels": "ピクセルを丸める",
+      "round_pixels_desc": "位置を最も近いピクセルに丸めます (スプライトのぼやけを防ぎます)。",
+      "power_preference": "電力設定",
+      "power_preference_desc": "使用するGPUをブラウザに提案します: high-performance → 専用GPUを強制 (消費電力増)。low-power → バッテリー節約。"
     },
     "confirm": {
-      "title": "Confirm Changes",
-      "message": "Applying these changes will restart the game. Do you want to continue?",
+      "title": "変更を確認",
+      "message": "これらの変更を適用するとゲームが再起動します。続行しますか？",
       "ok": "OK",
-      "cancel": "Cancel"
+      "cancel": "キャンセル"
     }
   },
   "loading": {

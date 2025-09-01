@@ -22,6 +22,7 @@ class UserModel {
         this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
 
+        this.last_update_username_at = row.last_update_username_at;
         this.phaser_rendering_type = row.phaser_rendering_type;
         this.phaser_antialias = row.phaser_antialias;
         this.phaser_antialias_gl = row.phaser_antialias_gl;

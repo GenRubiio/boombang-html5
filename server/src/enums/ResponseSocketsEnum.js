@@ -50,7 +50,10 @@ const ResponseSocketsEnum = new Enum({
     LOBBY_GACHA_SPIN: 'response:lobby_gacha_spin',
     GET_GACHA_PRIZES: 'response:get_gacha_prizes',
     GET_USER_DECORATIONS: 'response:get_user_decorations',
-    ROTATE_OBJECT: 'response:rotate_object'
+    ROTATE_OBJECT: 'response:rotate_object',
+    SETTINGS_UPDATE_NAME: 'response:settings_update_name',
+    SETTINGS_UPDATE_GRAPHICS: 'response:settings_update_graphics',
+    SETTINGS_UPDATE_LANG: 'response:settings_update_lang'
 });
 
 module.exports = ResponseSocketsEnum;

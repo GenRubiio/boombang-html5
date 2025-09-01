@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\User\UserChangeShadowColorController;
 use App\Http\Controllers\Api\Game\Object\RotateObjectApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeColornameApiController;
+use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
 
 Route::prefix('test')->group(function () {
@@ -72,6 +73,11 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::prefix('gachapon')->group(function () {
                 Route::post('spin', [GachaponApiController::class, 'spin']);
                 Route::post('prizes', [GachaponApiController::class, 'prizes']);
+            });
+            Route::prefix('settings')->group(function () {
+                Route::post('update-name', [SettingsUpdateApiController::class, 'updateName']);
+                Route::post('update-lang', [SettingsUpdateApiController::class, 'updateLang']);
+                Route::post('update-graphics', [SettingsUpdateApiController::class, 'updateGraphics']);
             });
         });
 
