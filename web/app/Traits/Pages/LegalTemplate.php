@@ -9,7 +9,7 @@ trait LegalTemplate
         $this->base();
         $this->seo();
 
-        $this->crud->addField([
+         $this->crud->addField([
             'name' => 'content_header_image',
             'label' => 'Header Image',
             'fake' => true,
@@ -42,38 +42,6 @@ trait LegalTemplate
             'name' => 'content_content',
             'label' => trans('backpack::pagemanager.content'),
             'type' => 'ckeditor',
-            'options' => [
-                'toolbar' => [
-                    'heading',
-                    'bold',
-                    'italic',
-                    'link',
-                    'bulletedList',
-                    'numberedList',
-                    '|',
-                    'blockQuote',
-                    'codeBlock',
-                    'insertTable',
-                    'undo',
-                    'redo',
-                    '|',
-                    'htmlEmbed',
-                    'sourceEditing' // <-- botones clave
-                ],
-                // General HTML Support: permitir “todo” (ajústalo a tus necesidades)
-                'htmlSupport' => [
-                    'allow' => [[
-                        'name' => '.*',          // cualquier etiqueta
-                        'attributes' => true,    // cualquier atributo
-                        'classes' => true,       // cualquier clase
-                        'styles' => true         // cualquier estilo inline
-                    ]]
-                ],
-                // Config extra de HtmlEmbed si quieres
-                'htmlEmbed' => [
-                    'showPreviews' => true // vista previa del HTML embebido
-                ],
-            ],
             'placeholder' => trans('backpack::pagemanager.content_placeholder'),
             'fake' => true,
             'store_in' => 'content',
