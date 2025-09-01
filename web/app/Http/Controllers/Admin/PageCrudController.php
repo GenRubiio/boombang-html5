@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\PageRequest;
 use App\Models\MenuItem;
+use Illuminate\Support\Str;
 use App\Traits\PageTemplates;
 // VALIDATION: change the requests to match your own file names if you need form validation
+use App\Http\Requests\PageRequest;
+use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Illuminate\Support\Str;
 
 class PageCrudController extends CrudController
 {
@@ -119,6 +120,12 @@ class PageCrudController extends CrudController
             ],
             'tab' => $this->base_tab,
         ]);
+        $this->crud->addField([
+            'name' => 'ai_translate',
+            'label' => 'AI Translate',
+            'type' => 'checkbox',
+            'tab' => $this->base_tab,
+        ]);
     }
 
     /**
@@ -179,12 +186,18 @@ class PageCrudController extends CrudController
         $response = $this->traitStore();
         $this->createMenuItems($this->crud->entry, $this->crud->getRequest());
         storeReplicateOtherLocales($this->crud);
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
         return $response;
     }
 
     protected function update()
     {
         $response = $this->traitUpdate();
+        if ($this->crud->getRequest()->get('ai_translate')) {
+            app(GeminiAiService::class)->translate($this->crud->entry);
+        }
         return $response;
     }
 

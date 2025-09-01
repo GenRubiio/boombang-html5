@@ -72,6 +72,20 @@ class Page extends BackpackPage
         'slug',
         'extras'
     ];
+    public $ai = [
+        'title',
+        'slug',
+        'content.content_title',
+        'content.content_content',
+        'extras.page_title',
+        'extras.meta_title',
+        'extras.meta_description',
+        'extras.meta_keywords',
+        'extras.og_title',
+        'extras.og_description',
+        'extras.tw_title',
+        'extras.tw_description'
+    ];
 
     // protected $hidden = [];
     // protected $dates = [];

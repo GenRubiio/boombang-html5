@@ -31,7 +31,7 @@ class GeminiAiService
         // Get the original attributes to be translated from the current language
         $attributesToTranslate = [];
         foreach ($model->ai as $field) {
-            $attributesToTranslate[$field] = $model->getTranslation($field, $originalLocale);
+            $attributesToTranslate[$field] = $this->getNestedAttribute($model, $field, $originalLocale);
         }
 
         $languageNames = implode(', ', array_values($locales));
@@ -65,7 +65,7 @@ class GeminiAiService
         ]);
 
         $responseBody = json_decode($response->body(), true);
-
+        
         if (isset($responseBody['candidates'][0]['content']['parts'][0]['text'])) {
             // Clean the response to get only the JSON part, removing markdown backticks if present
             $responseText = $responseBody['candidates'][0]['content']['parts'][0]['text'];
@@ -78,7 +78,7 @@ class GeminiAiService
                         // Use setTranslations for cleaner update
                         foreach ($translations[$locale] as $key => $value) {
                             if (in_array($key, $model->ai)) {
-                                $model->setTranslation($key, $locale, $value);
+                                $this->setNestedAttribute($model, $key, $locale, $value);
                             }
                         }
                     }
@@ -100,7 +100,7 @@ class GeminiAiService
 
         $relevantAttributes = [];
         foreach ($model->ai as $field) {
-            $relevantAttributes[$field] = $model->getTranslation($field, $originalLocale);
+            $relevantAttributes[$field] = $this->getNestedAttribute($model, $field, $originalLocale);
         }
 
         $languageNames = implode(', ', array_values($locales));
@@ -168,5 +168,70 @@ class GeminiAiService
         App::setLocale($originalLocale);
 
         return $model;
+    }
+
+    /**
+     * Get nested attribute value using dot notation
+     * Supports both simple fields and nested JSON fields like 'extras.meta_title'
+     */
+    private function getNestedAttribute(Model $model, string $field, string $locale): ?string
+    {
+        if (!str_contains($field, '.')) {
+            // Simple field, use regular translation method
+            return $model->getTranslation($field, $locale);
+        }
+
+        // Handle nested field like 'extras.meta_title'
+        [$parentField, $nestedKey] = explode('.', $field, 2);
+        
+        // Get parent data for this locale
+        $parentData = $model->getTranslation($parentField, $locale);
+        
+        // If it's a string (JSON), decode it
+        if (is_string($parentData)) {
+            $parentData = json_decode($parentData, true);
+        }
+        
+        // If it's not an array, return null
+        if (!is_array($parentData)) {
+            return null;
+        }
+        
+        return $parentData[$nestedKey] ?? null;
+    }
+
+    /**
+     * Set nested attribute value using dot notation
+     * Supports both simple fields and nested JSON fields like 'extras.meta_title'
+     */
+    private function setNestedAttribute(Model $model, string $field, string $locale, ?string $value): void
+    {
+        if (!str_contains($field, '.')) {
+            // Simple field, use regular translation method
+            $model->setTranslation($field, $locale, $value);
+            return;
+        }
+
+        // Handle nested field like 'extras.meta_title'
+        [$parentField, $nestedKey] = explode('.', $field, 2);
+        
+        // Get current parent data for this locale
+        $parentData = $model->getTranslation($parentField, $locale);
+        
+        // If it's a string (JSON), decode it
+        if (is_string($parentData)) {
+            $parentData = json_decode($parentData, true);
+        }
+        
+        // If it's null or not an array, initialize as empty array
+        if (!is_array($parentData)) {
+            $parentData = [];
+        }
+        
+        // Set the nested value
+        $parentData[$nestedKey] = $value;
+        
+        // Save back as array (Laravel will handle JSON encoding)
+        $model->setTranslation($parentField, $locale, $parentData);
     }
 }
