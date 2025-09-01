@@ -2,7 +2,7 @@
   <div class="container" :class="colorUser">
     <div class="container__userinfo-data">
       <div class="container__userinfo-data__title">
-        {{ currentView.title }}
+        <span class="fit_label">{{ currentView.title }}</span>
       </div>
       <div
         v-for="stat in currentView.stats"
@@ -13,7 +13,7 @@
           {{ selectedUser[stat.key] }}
         </div>
         <div class="container__userinfo-data__data-container__title">
-          {{ stat.label }}
+          <span class="fit_label">{{ stat.label }}</span>
         </div>
       </div>
       <button
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { useTextFitting } from "@/composables/useTextFitting";
 import asset_stat_ring_image from "@/assets/game/ficha/statistics/ring.webp";
 import asset_stat_coconut_caught_image from "@/assets/game/ficha/statistics/cocos_locos.webp";
 
@@ -106,6 +107,15 @@ export default {
     cycleStatistic() {
       this.currentViewIndex =
         (this.currentViewIndex + 1) % this.statisticsViews.length;
+    },
+    fitLabels() {
+      const { fitAllLabels } = useTextFitting();
+      fitAllLabels(this.$el, ".container__userinfo-data__title", ".fit_label");
+      fitAllLabels(
+        this.$el,
+        ".container__userinfo-data__data-container__title",
+        ".fit_label"
+      );
     },
   },
   computed: {
@@ -184,14 +194,39 @@ export default {
     },
   },
   mounted() {
+    this.$nextTick(() => {
+      this.fitLabels();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(this.fitLabels);
+      }
+    });
+    window.addEventListener("resize", this.fitLabels, { passive: true });
     if (import.meta.env.VITE_APP_ENV === "local") {
       console.log("User data received in component:", this.selectedUser);
     }
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.fitLabels);
+  },
+  watch: {
+    "$i18n.locale"() {
+      this.$nextTick(this.fitLabels);
+    },
+    currentViewIndex() {
+      this.$nextTick(this.fitLabels);
+    },
   },
 };
 </script>
 
 <style scoped>
+.fit_label {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  transform-origin: left !important;
+}
+
 .container {
   background-color: white;
   border-radius: 0 8px 8px 8px;
@@ -236,10 +271,7 @@ export default {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  justify-content: start;
 }
 
 .info-button {
