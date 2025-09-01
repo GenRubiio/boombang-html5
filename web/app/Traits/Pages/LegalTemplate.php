@@ -9,7 +9,7 @@ trait LegalTemplate
         $this->base();
         $this->seo();
 
-         $this->crud->addField([
+        $this->crud->addField([
             'name' => 'content_header_image',
             'label' => 'Header Image',
             'fake' => true,
@@ -42,6 +42,14 @@ trait LegalTemplate
             'name' => 'content_content',
             'label' => trans('backpack::pagemanager.content'),
             'type' => 'ckeditor',
+            'htmlSupport' => [
+                'allow' => [[
+                    'name' => '/.*/',           // cualquier etiqueta
+                    'attributes' => true,       // cualquier atributo
+                    'classes' => true,          // cualquier clase
+                    'styles' => true            // cualquier estilo inline
+                ]]
+            ],
             'placeholder' => trans('backpack::pagemanager.content_placeholder'),
             'fake' => true,
             'store_in' => 'content',
