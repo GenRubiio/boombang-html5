@@ -144,6 +144,7 @@ export default {
     socket.on(ResponseSocketsEnum.JWT_AUTO_LOGIN_INVALID, () => {
       localStorage.removeItem("app_jwt");
       this.loading = false;
+      window.location.reload(true);
     });
 
     socket.on("connect", () => {
