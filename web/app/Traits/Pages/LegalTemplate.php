@@ -43,156 +43,35 @@ trait LegalTemplate
             'label' => trans('backpack::pagemanager.content'),
             'type' => 'ckeditor',
             'options' => [
-                // --- BARRA COMPLETA (puedes ajustar el orden) ---
                 'toolbar' => [
+                    'heading',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'blockQuote',
+                    'codeBlock',
+                    'insertTable',
                     'undo',
                     'redo',
                     '|',
-                    'sourceEditing',
-                    '|',
-                    'selectAll',
-                    'findAndReplace',
-                    '|',
-                    'heading',
-                    'style',
-                    'fontSize',
-                    'fontFamily',
-                    'fontColor',
-                    'fontBackgroundColor',
-                    '|',
-                    'bold',
-                    'italic',
-                    'underline',
-                    'strikethrough',
-                    'removeFormat',
-                    'subscript',
-                    'superscript',
-                    'highlight',
-                    'code',
-                    '|',
-                    'link',
-                    'autoLink',
-                    'blockQuote',
-                    'codeBlock',
                     'htmlEmbed',
-                    'mediaEmbed',
-                    '|',
-                    'bulletedList',
-                    'numberedList',
-                    'todoList',
-                    'outdent',
-                    'indent',
-                    'alignment',
-                    '|',
-                    'insertTable',
-                    'tableColumn',
-                    'tableRow',
-                    'mergeTableCells',
-                    'tableProperties',
-                    'tableCellProperties',
-                    '|',
-                    'horizontalLine',
-                    'pageBreak',
-                    'specialCharacters'
+                    'sourceEditing' // <-- botones clave
                 ],
-
-                // --- PERMITIR CUALQUIER HTML/ATRIBUTO/CLASE/ESTILO ---
+                // General HTML Support: permitir “todo” (ajústalo a tus necesidades)
                 'htmlSupport' => [
                     'allow' => [[
-                        'name' => '/.*/',        // cualquier etiqueta
+                        'name' => '.*',          // cualquier etiqueta
                         'attributes' => true,    // cualquier atributo
                         'classes' => true,       // cualquier clase
                         'styles' => true         // cualquier estilo inline
                     ]]
                 ],
-
-                // Incrustar HTML con previsualización
+                // Config extra de HtmlEmbed si quieres
                 'htmlEmbed' => [
-                    'showPreviews' => true,
-                ],
-
-                // Enlaces: permitir protocolos “no estándar” si los usas
-                'link' => [
-                    'addTargetToExternalLinks' => true,
-                    'defaultProtocol' => 'https://',
-                    'decorators' => [
-                        'toggleDownloadable' => [
-                            'mode' => 'manual',
-                            'label' => 'Descargable',
-                            'attributes' => ['download' => 'file'],
-                        ],
-                    ],
-                ],
-
-                // Listas
-                'list' => [
-                    'properties' => [
-                        'styles' => true,
-                        'startIndex' => true,
-                        'reversed' => true,
-                    ]
-                ],
-
-                // Tablas avanzadas
-                'table' => [
-                    'contentToolbar' => [
-                        'tableColumn',
-                        'tableRow',
-                        'mergeTableCells',
-                        'tableProperties',
-                        'tableCellProperties'
-                    ],
-                    'tableProperties' => [
-                        'borderColors' => ['#000', '#eee', '#f00', '#0f0', '#00f'],
-                        'backgroundColors' => ['#fff', '#f7f7f7', '#fffae6']
-                    ],
-                    'tableCellProperties' => [
-                        'borderColors' => ['#000', '#eee', '#f00', '#0f0', '#00f'],
-                        'backgroundColors' => ['#fff', '#f7f7f7', '#fffae6']
-                    ],
-                ],
-
-                // Alineación de párrafos
-                'alignment' => [
-                    'options' => ['left', 'center', 'right', 'justify']
-                ],
-                // Bloques de código con lenguaje (si tu build lo soporta)
-                'codeBlock' => [
-                    'languages' => [
-                        ['language' => 'plaintext', 'label' => 'Texto plano'],
-                        ['language' => 'php',       'label' => 'PHP'],
-                        ['language' => 'javascript', 'label' => 'JavaScript'],
-                        ['language' => 'css',       'label' => 'CSS'],
-                        ['language' => 'html',      'label' => 'HTML'],
-                        ['language' => 'json',      'label' => 'JSON'],
-                        ['language' => 'sql',       'label' => 'SQL'],
-                        ['language' => 'bash',      'label' => 'Bash'],
-                    ]
-                ],
-
-                // Quitar plugins de colaboración del super-build que no uses
-                'removePlugins' => [
-                    'RealTimeCollaborativeComments',
-                    'RealTimeCollaborativeTrackChanges',
-                    'RealTimeCollaborativeRevisionHistory',
-                    'PresenceList',
-                    'Comments',
-                    'TrackChanges',
-                    'TrackChangesData',
-                    'Pagination',
-                    'WProofreader',
-                    'SlashCommand',
-                    'Template',
-                    'DocumentOutline',
-                    'FormatPainter',
-                    'AIAssistant' // si aparece en tu build y no lo usas
-                ],
-
-                // (Opcional) limitar conversión a etiquetas si quieres preservar tags “raras”
-                'typing' => [
-                    'transformations' => [
-                        'remove' => ['quotes', 'typography'] // evita autocambios “inteligentes”
-                    ]
+                    'showPreviews' => true // vista previa del HTML embebido
                 ],
             ],
             'placeholder' => trans('backpack::pagemanager.content_placeholder'),
