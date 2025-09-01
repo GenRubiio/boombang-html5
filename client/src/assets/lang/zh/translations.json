@@ -369,42 +369,44 @@
       "logout": "退出",
       "gachapon": "扭蛋机",
       "credits": "积分",
-      "avatar_error": "加载用户头像时出错"
+      "avatar_error": "加载用户头像时出错",
+      "settings": "设置",
+      "settings_alt": "配置"
     }
   },
   "settings": {
-    "main_title": "Settings",
-    "save": "Save",
+    "main_title": "设置",
+    "save": "保存",
     "tabs": {
-      "profile": "Profile",
-      "graphics": "Graphics"
+      "profile": "个人资料",
+      "graphics": "图像"
     },
     "profile": {
-      "username": "Username",
-      "username_placeholder": "Enter your username",
-      "username_desc": "You can change your username once every 30 days.",
-      "language": "Language",
-      "language_desc": "Choose your preferred language."
+      "username": "用户名",
+      "username_placeholder": "输入你的用户名",
+      "username_desc": "您每30天可以更改一次用户名。",
+      "language": "语言",
+      "language_desc": "选择您喜欢的语言。"
     },
     "graphics": {
-      "render_type": "Render Type",
-      "render_type_desc": "Select render engine: WEBGL (faster, advanced effects) or CANVAS (compatibility). AUTO tries WebGL and falls back to Canvas if it fails.",
-      "antialias": "Antialias",
-      "antialias_desc": "Smooths textures when scaling/rotating. false leaves sharp pixels.",
-      "antialias_gl": "Antialias GL",
-      "antialias_gl_desc": "Activates MSAA (canvas edge smoothing) when creating WebGL. Doesn't change textures. ⚠️ Changing this requires restarting the game.",
-      "pixel_art": "Pixel Art",
-      "pixel_art_desc": "\"Preset\" that activates antialias=false and roundPixels=true. Everything looks sharper.",
-      "round_pixels": "Round Pixels",
-      "round_pixels_desc": "Rounds positions to the nearest pixel (prevents sprite blurring).",
-      "power_preference": "Power Preference",
-      "power_preference_desc": "Suggests to browser which GPU to use: high-performance → forces dedicated GPU (more consumption). low-power → battery saving."
+      "render_type": "渲染类型",
+      "render_type_desc": "选择渲染引擎：WEBGL（速度更快，效果更佳）或CANVAS（兼容性好）。AUTO会尝试使用WebGL，如果失败则回退到Canvas。",
+      "antialias": "抗锯齿",
+      "antialias_desc": "在缩放/旋转时平滑纹理。false会保留锐利的像素。",
+      "antialias_gl": "抗锯齿GL",
+      "antialias_gl_desc": "在创建WebGL时激活MSAA（画布边缘平滑）。不会改变纹理。⚠️更改此项需要重启游戏。",
+      "pixel_art": "像素艺术",
+      "pixel_art_desc": "激活antialias=false和roundPixels=true的“预设”。一切看起来都更清晰。",
+      "round_pixels": "圆整像素",
+      "round_pixels_desc": "将位置四舍五入到最近的像素（防止精灵模糊）。",
+      "power_preference": "电源偏好",
+      "power_preference_desc": "向浏览器建议使用哪个GPU：high-performance → 强制使用独立GPU（功耗更高）。low-power → 节省电池。"
     },
     "confirm": {
-      "title": "Confirm Changes",
-      "message": "Applying these changes will restart the game. Do you want to continue?",
-      "ok": "OK",
-      "cancel": "Cancel"
+      "title": "确认更改",
+      "message": "应用这些更改将重新启动游戏。您想继续吗？",
+      "ok": "确定",
+      "cancel": "取消"
     }
   },
   "loading": {

@@ -18,6 +18,33 @@ class LobbyApiService {
             throw error;
         }
     }
+
+    static updateSettingsName(user, data) {
+        try {
+            return ApiService.post('api/lobby/settings/update-name', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar el nombre de usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static updateSettingsLang(user, data) {
+        try {
+            return ApiService.post('api/lobby/settings/update-lang', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar el idioma:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static updateSettingsGraphics(user, data) {
+        try {
+            return ApiService.post('api/lobby/settings/update-graphics', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar la configuración gráfica:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = LobbyApiService;

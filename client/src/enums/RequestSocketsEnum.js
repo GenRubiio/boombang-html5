@@ -41,7 +41,10 @@ const RequestSocketsEnum = new Enum({
     LOBBY_GACHA_SPIN: 'request:lobby_gacha_spin',
     GET_GACHA_PRIZES: 'request:get_gacha_prizes',
     GET_USER_DECORATIONS: 'request:get_user_decorations',
-    ROTATE_OBJECT: 'request:rotate_object'
+    ROTATE_OBJECT: 'request:rotate_object',
+    SETTINGS_UPDATE_NAME: 'request:settings_update_name',
+    SETTINGS_UPDATE_GRAPHICS: 'request:settings_update_graphics',
+    SETTINGS_UPDATE_LANG: 'request:settings_update_lang'
 });
 
 export default RequestSocketsEnum;

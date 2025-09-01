@@ -369,42 +369,44 @@
       "logout": "나가기",
       "gachapon": "가챠폰",
       "credits": "크레딧",
-      "avatar_error": "사용자 아바타를 로드하는 중 오류가 발생했습니다."
+      "avatar_error": "사용자 아바타를 불러오는 중 오류 발생",
+      "settings": "설정",
+      "settings_alt": "구성"
     }
   },
   "settings": {
-    "main_title": "Settings",
-    "save": "Save",
+    "main_title": "설정",
+    "save": "저장",
     "tabs": {
-      "profile": "Profile",
-      "graphics": "Graphics"
+      "profile": "프로필",
+      "graphics": "그래픽"
     },
     "profile": {
-      "username": "Username",
-      "username_placeholder": "Enter your username",
-      "username_desc": "You can change your username once every 30 days.",
-      "language": "Language",
-      "language_desc": "Choose your preferred language."
+      "username": "사용자 이름",
+      "username_placeholder": "사용자 이름을 입력하세요",
+      "username_desc": "30일마다 한 번씩 사용자 이름을 변경할 수 있습니다.",
+      "language": "언어",
+      "language_desc": "선호하는 언어를 선택하세요."
     },
     "graphics": {
-      "render_type": "Render Type",
-      "render_type_desc": "Select render engine: WEBGL (faster, advanced effects) or CANVAS (compatibility). AUTO tries WebGL and falls back to Canvas if it fails.",
-      "antialias": "Antialias",
-      "antialias_desc": "Smooths textures when scaling/rotating. false leaves sharp pixels.",
-      "antialias_gl": "Antialias GL",
-      "antialias_gl_desc": "Activates MSAA (canvas edge smoothing) when creating WebGL. Doesn't change textures. ⚠️ Changing this requires restarting the game.",
-      "pixel_art": "Pixel Art",
-      "pixel_art_desc": "\"Preset\" that activates antialias=false and roundPixels=true. Everything looks sharper.",
-      "round_pixels": "Round Pixels",
-      "round_pixels_desc": "Rounds positions to the nearest pixel (prevents sprite blurring).",
-      "power_preference": "Power Preference",
-      "power_preference_desc": "Suggests to browser which GPU to use: high-performance → forces dedicated GPU (more consumption). low-power → battery saving."
+      "render_type": "렌더링 유형",
+      "render_type_desc": "렌더링 엔진 선택: WEBGL (더 빠름, 고급 효과) 또는 CANVAS (호환성). AUTO는 WebGL을 시도하고 실패하면 Canvas로 대체합니다.",
+      "antialias": "안티앨리어싱",
+      "antialias_desc": "크기 조정/회전 시 텍스처를 부드럽게 합니다. false는 날카로운 픽셀을 남깁니다.",
+      "antialias_gl": "안티앨리어싱 GL",
+      "antialias_gl_desc": "WebGL 생성 시 MSAA(캔버스 가장자리 스무딩)를 활성화합니다. 텍스처는 변경되지 않습니다. ⚠️ 이 설정을 변경하려면 게임을 다시 시작해야 합니다.",
+      "pixel_art": "픽셀 아트",
+      "pixel_art_desc": "안티앨리어싱=false 및 roundPixels=true를 활성화하는 '프리셋'. 모든 것이 더 선명하게 보입니다.",
+      "round_pixels": "픽셀 반올림",
+      "round_pixels_desc": "위치를 가장 가까운 픽셀로 반올림합니다(스프라이트 흐림 방지).",
+      "power_preference": "전원 기본 설정",
+      "power_preference_desc": "사용할 GPU를 브라우저에 제안합니다: high-performance → 전용 GPU 강제 사용(소비 전력 증가). low-power → 배터리 절약."
     },
     "confirm": {
-      "title": "Confirm Changes",
-      "message": "Applying these changes will restart the game. Do you want to continue?",
-      "ok": "OK",
-      "cancel": "Cancel"
+      "title": "변경 확인",
+      "message": "이 변경 사항을 적용하면 게임이 다시 시작됩니다. 계속하시겠습니까?",
+      "ok": "확인",
+      "cancel": "취소"
     }
   },
   "loading": {
