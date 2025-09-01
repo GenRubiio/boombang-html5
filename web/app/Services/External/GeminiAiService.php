@@ -28,64 +28,14 @@ class GeminiAiService
         $originalLocale = App::getLocale();
         $locales = array_diff_key($locales, [$originalLocale => $locales[$originalLocale]]);
 
-        // Get the original attributes to be translated from the current language
-        $attributesToTranslate = [];
-        foreach ($model->ai as $field) {
-            $attributesToTranslate[$field] = $this->getNestedAttribute($model, $field, $originalLocale);
+        // Group attributes by their dot-separated prefixes
+        $attributeGroups = $this->groupAttributesByPrefix($model->ai);
+
+        foreach ($attributeGroups as $groupName => $attributes) {
+            $this->translateAttributeGroup($model, $attributes, $locales, $originalLocale);
         }
 
-        $languageNames = implode(', ', array_values($locales));
-        $languageCodes = implode(', ', array_keys($locales));
-
-        $prompt = "Translate the values of the following JSON object into these languages: {$languageNames} ({$languageCodes}).\n";
-        $prompt .= "Return a single JSON object where each key is the language code (e.g., 'en', 'es'). The value for each language code should be another JSON object containing the translated key-value pairs.\n";
-        $prompt .= "Do not add any explanations, comments, or introductory text. Only provide the raw JSON object in your response.\n\n";
-        $prompt .= "JSON to translate:\n";
-        $prompt .= json_encode($attributesToTranslate, JSON_UNESCAPED_UNICODE);
-
-        $request = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ]);
-
-        if (App::environment('local')) {
-            $request->withoutVerifying();
-        }
-
-        $response = $request->post($this->apiUrl . '?key=' . $this->apiKey, [
-            'contents' => [
-                [
-                    'role' => 'user',
-                    'parts' => [
-                        [
-                            'text' => $prompt,
-                        ],
-                    ],
-                ]
-            ],
-        ]);
-
-        $responseBody = json_decode($response->body(), true);
-        
-        if (isset($responseBody['candidates'][0]['content']['parts'][0]['text'])) {
-            // Clean the response to get only the JSON part, removing markdown backticks if present
-            $responseText = $responseBody['candidates'][0]['content']['parts'][0]['text'];
-            $jsonText = preg_replace('/^```json\s*|\s*```$/', '', $responseText);
-            $translations = json_decode($jsonText, true);
-
-            if (json_last_error() === JSON_ERROR_NONE) {
-                foreach ($locales as $locale => $name) {
-                    if (isset($translations[$locale])) {
-                        // Use setTranslations for cleaner update
-                        foreach ($translations[$locale] as $key => $value) {
-                            if (in_array($key, $model->ai)) {
-                                $this->setNestedAttribute($model, $key, $locale, $value);
-                            }
-                        }
-                    }
-                }
-                $model->save();
-            }
-        }
+        $model->save();
 
         // Restore original locale
         App::setLocale($originalLocale);
@@ -233,5 +183,94 @@ class GeminiAiService
         
         // Save back as array (Laravel will handle JSON encoding)
         $model->setTranslation($parentField, $locale, $parentData);
+    }
+
+    /**
+     * Group attributes by their dot-separated prefixes
+     * Example: ['title', 'description', 'extra.title', 'extra.description', 'content.title', 'content.description']
+     * Returns: ['root' => ['title', 'description'], 'extra' => ['extra.title', 'extra.description'], 'content' => ['content.title', 'content.description']]
+     */
+    private function groupAttributesByPrefix(array $attributes): array
+    {
+        $groups = [];
+        
+        foreach ($attributes as $attribute) {
+            if (str_contains($attribute, '.')) {
+                $prefix = explode('.', $attribute)[0];
+                $groups[$prefix][] = $attribute;
+            } else {
+                $groups['root'][] = $attribute;
+            }
+        }
+        
+        return $groups;
+    }
+
+    /**
+     * Translate a specific group of attributes
+     */
+    private function translateAttributeGroup(Model $model, array $attributes, array $locales, string $originalLocale): void
+    {
+        // Get the original attributes to be translated from the current language
+        $attributesToTranslate = [];
+        foreach ($attributes as $field) {
+            $attributesToTranslate[$field] = $this->getNestedAttribute($model, $field, $originalLocale);
+        }
+
+        // Skip empty groups
+        if (empty(array_filter($attributesToTranslate))) {
+            return;
+        }
+
+        $languageNames = implode(', ', array_values($locales));
+        $languageCodes = implode(', ', array_keys($locales));
+
+        $prompt = "Translate the values of the following JSON object into these languages: {$languageNames} ({$languageCodes}).\n";
+        $prompt .= "Return a single JSON object where each key is the language code (e.g., 'en', 'es'). The value for each language code should be another JSON object containing the translated key-value pairs.\n";
+        $prompt .= "Do not add any explanations, comments, or introductory text. Only provide the raw JSON object in your response.\n\n";
+        $prompt .= "JSON to translate:\n";
+        $prompt .= json_encode($attributesToTranslate, JSON_UNESCAPED_UNICODE);
+
+        $request = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ]);
+
+        if (App::environment('local')) {
+            $request->withoutVerifying();
+        }
+
+        $response = $request->post($this->apiUrl . '?key=' . $this->apiKey, [
+            'contents' => [
+                [
+                    'role' => 'user',
+                    'parts' => [
+                        [
+                            'text' => $prompt,
+                        ],
+                    ],
+                ]
+            ],
+        ]);
+
+        $responseBody = json_decode($response->body(), true);
+        
+        if (isset($responseBody['candidates'][0]['content']['parts'][0]['text'])) {
+            // Clean the response to get only the JSON part, removing markdown backticks if present
+            $responseText = $responseBody['candidates'][0]['content']['parts'][0]['text'];
+            $jsonText = preg_replace('/^```json\s*|\s*```$/', '', $responseText);
+            $translations = json_decode($jsonText, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                foreach ($locales as $locale => $name) {
+                    if (isset($translations[$locale])) {
+                        foreach ($translations[$locale] as $key => $value) {
+                            if (in_array($key, $attributes)) {
+                                $this->setNestedAttribute($model, $key, $locale, $value);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
