@@ -76,7 +76,7 @@ class Page extends BackpackPage
         'title',
         'slug',
         'content.content_title',
-        'content.content_content',
+        //'content.content_content',
         'extras.page_title',
         'extras.meta_title',
         'extras.meta_description',
