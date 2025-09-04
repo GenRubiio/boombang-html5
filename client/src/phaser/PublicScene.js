@@ -14,9 +14,11 @@ import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de
 import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
 import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
 import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
-import asset_kiss_image from "@/assets/game/ficha/interactions/kiss.webp";
-import asset_drink_image from "@/assets/game/ficha/interactions/drink.webp";
-import asset_rose_image from "@/assets/game/ficha/interactions/rose.webp";
+import asset_kiss_image from "@/assets/game/scene/interactions/kiss.webp";
+import asset_drink_image from "@/assets/game/scene/interactions/drink.webp";
+import asset_rose_image from "@/assets/game/scene/interactions/rose.webp";
+import asset_accept_image from "@/assets/game/scene/interactions/accept.png";
+import asset_reject_image from "@/assets/game/scene/interactions/reject.png";
 import i18n from "../plugins/i18n";
 import ButtonsPublicSceneHtml from "./html/public-scene/ButtonsPublicSceneHtml";
 
@@ -49,6 +51,8 @@ export default class PublicScene extends Phaser.Scene {
         this.load.image("asset_kiss_image", asset_kiss_image);
         this.load.image("asset_drink_image", asset_drink_image);
         this.load.image("asset_rose_image", asset_rose_image);
+        this.load.image("asset_accept_image", asset_accept_image);
+        this.load.image("asset_reject_image", asset_reject_image);
     }
 
     create() {

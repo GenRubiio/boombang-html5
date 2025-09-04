@@ -17,9 +17,11 @@ import ButtonsPrivateSceneHtml from "@/phaser/html/private-scene/ButtonsPrivateS
 import InventoryPrivateSceneHtml from "@/phaser/html/private-scene/InventoryPrivateSceneHtml";
 import DetailPanelPrivateSceneHtml from "@/phaser/html/private-scene/DetailPanelPrivateSceneHtml";
 import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
-import asset_kiss_image from "@/assets/game/ficha/interactions/kiss.webp";
-import asset_drink_image from "@/assets/game/ficha/interactions/drink.webp";
-import asset_rose_image from "@/assets/game/ficha/interactions/rose.webp";
+import asset_kiss_image from "@/assets/game/scene/interactions/kiss.webp";
+import asset_drink_image from "@/assets/game/scene/interactions/drink.webp";
+import asset_rose_image from "@/assets/game/scene/interactions/rose.webp";
+import asset_accept_image from "@/assets/game/scene/interactions/accept.png";
+import asset_reject_image from "@/assets/game/scene/interactions/reject.png";
 import i18n from "../plugins/i18n";
 
 export default class PrivateScene extends Phaser.Scene {
@@ -78,6 +80,8 @@ export default class PrivateScene extends Phaser.Scene {
         this.load.image("asset_kiss_image", asset_kiss_image);
         this.load.image("asset_drink_image", asset_drink_image);
         this.load.image("asset_rose_image", asset_rose_image);
+        this.load.image("asset_accept_image", asset_accept_image);
+        this.load.image("asset_reject_image", asset_reject_image);
 
         if (this.sceneData.myScene) {
             // Cargar dinámicamente los assets de inventario

@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="pending-right">
-        <span class="username">{{ selectedUser.username }}</span>
+        <span class="username">Esperando respuesta</span>
         <button class="cancel-button" @click="cancelInteraction">
           {{ $t("user_card.interactions.cancel") }}
         </button>
@@ -499,27 +499,6 @@ export default {
   color: black;
 }
 
-/********************************************************************* */
-.uppercuts__plus-button.selected,
-.coconuts__plus-button.selected {
-  color: #045d03;
-}
-
-.uppercuts__plus-button.admin,
-.coconuts__plus-button.admin {
-  color: #f59200;
-}
-
-.uppercuts__plus-button.vip,
-.coconuts__plus-button.vip {
-  color: #420143;
-}
-
-.uppercuts__plus-button.beta,
-.coconuts__plus-button.beta {
-  color: #08d1d1;
-}
-
 /* Pending interaction styles */
 .pending-container {
   background-color: white;
@@ -532,7 +511,7 @@ export default {
   height: 90px;
   position: relative;
   z-index: 1;
-  padding: 0 15px;
+  padding: 0 10px;
 }
 
 .pending-left {
@@ -571,12 +550,20 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   flex: 1;
+  background-color: white;
+  overflow: hidden;
+  padding: 4px;
+  border-radius: 5px;
+  height: 70px;
 }
 
 .username {
   font-weight: bold;
   margin-bottom: 8px;
-  color: #333;
+  color: white;
+  line-height: 14px;
+  text-align: start;
+  font-size: 15px;
 }
 
 .cancel-button {
@@ -594,6 +581,10 @@ export default {
   background-color: #c0392b;
 }
 
+.container__item img {
+  cursor: pointer;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -601,5 +592,45 @@ export default {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/********************************************************************* */
+.uppercuts__plus-button.selected,
+.coconuts__plus-button.selected {
+  color: #045d03;
+}
+
+.uppercuts__plus-button.admin,
+.coconuts__plus-button.admin {
+  color: #f59200;
+}
+
+.uppercuts__plus-button.vip,
+.coconuts__plus-button.vip {
+  color: #420143;
+}
+
+.uppercuts__plus-button.beta,
+.coconuts__plus-button.beta {
+  color: #08d1d1;
+}
+
+.pending-container.selected .spinner {
+  border-top: 3px solid #2b8703;
+}
+.pending-container.selected .pending-right {
+  background-color: #2b8703;
+}
+
+.pending-container.admin .spinner {
+  border-top: 3px solid #f59200;
+}
+
+.pending-container.vip .spinner {
+  border-top: 3px solid #420143;
+}
+
+.pending-container.beta .spinner {
+  border-top: 3px solid #08d1d1;
 }
 </style>
