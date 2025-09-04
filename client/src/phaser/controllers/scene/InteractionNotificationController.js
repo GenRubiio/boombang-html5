@@ -67,7 +67,8 @@ class InteractionNotificationController {
         });
 
         acceptButton.on('pointerdown', () => {
-            this.acceptInteraction(senderSocketId, gameScene);
+            gameScene.input.setDefaultCursor('default');
+            this.acceptInteraction(senderSocketId);
         });
 
         // Create Reject button using image asset
@@ -89,7 +90,8 @@ class InteractionNotificationController {
         });
 
         rejectButton.on('pointerdown', () => {
-            this.rejectInteraction(senderSocketId, gameScene);
+            gameScene.input.setDefaultCursor('default');
+            this.rejectInteraction(senderSocketId);
         });
 
         // Add all elements to container
@@ -120,15 +122,13 @@ class InteractionNotificationController {
     }
 
 
-    static acceptInteraction(senderSocketId, gameScene) {
-        gameScene.input.setDefaultCursor('default');
+    static acceptInteraction(senderSocketId) {
         socket.emit(RequestSocketsEnum.USER_ACCEPT_INTERACTION, {
             fromUser: senderSocketId
         });
     }
 
-    static rejectInteraction(senderSocketId, gameScene) {
-        gameScene.input.setDefaultCursor('default');
+    static rejectInteraction(senderSocketId) {
         socket.emit(RequestSocketsEnum.USER_REJECT_INTERACTION, {
             fromUser: senderSocketId
         });

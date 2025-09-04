@@ -1,5 +1,6 @@
 import MoveUserToTileController from "./MoveUserToTileController.js";
 //import MovementControlsController from "./MovementControlsController.js";
+import AnimationEditorController from "./AnimationEditorController.js";
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserModel from "../../models/UserModel.js";
 import socket from "@/sockets/socket.js"; // Conexión Socket.io
@@ -71,6 +72,12 @@ class AddUserController {
 
         // Almacenar jugador
         gameScene.users[userData.id] = user;
+        
+        // Create animation editor for this user's sprite
+        if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "true") {
+            AnimationEditorController.create(gameScene, user.spriteAvatar, user);
+        }
+        
         // UserChatAnimation.main(user, "leftup_talk");
         // UserEmojiAnimation.main(user, 8);
     }
@@ -92,7 +99,7 @@ class AddUserController {
         ]);
         containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
-        //MovementControlsController.createMovementControls(gameScene, spriteAvatar, "5_rightdown_flor");
+        //MovementControlsController.createMovementControls(gameScene, spriteAvatar, userData.avatar_id + "_" + "down_beber");
         // AvatarOriginSpriteModal.main(gameScene, spriteAvatar);
         // AvatarPositionSpriteModal.main(gameScene, spriteAvatar);
         return { containerUser, spriteAvatar, spriteShadow };

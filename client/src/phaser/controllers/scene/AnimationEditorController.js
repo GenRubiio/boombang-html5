@@ -1,0 +1,497 @@
+import avatarConfig from "@/assets/game/avatars/rasta/config.json";
+
+class AnimationEditorController {
+    static editorInstance = null;
+    static animationData = {};
+    static currentSprite = null;
+    static currentAnimation = null;
+    static dropdownOpen = false;
+
+    static create(gameScene, spriteAvatar, user) {
+        // Prevent multiple instances
+        if (this.editorInstance) {
+            return this.editorInstance;
+        }
+
+        // Create a deep copy of the animation data to avoid modifying the original
+        this.animationData = JSON.parse(JSON.stringify(avatarConfig));
+        this.currentSprite = spriteAvatar;
+        this.currentUser = user;
+
+        // Create the dropdown UI container
+        const editorContainer = gameScene.add.container(0, 0);
+        
+        // Create dropdown button
+        const dropdownButton = this.createDropdownButton(gameScene);
+        
+        // Create dropdown list (initially hidden)
+        const dropdownList = this.createDropdownList(gameScene);
+        dropdownList.setVisible(false);
+        
+        // Create position controls (initially hidden)
+        const positionControls = this.createPositionControls(gameScene);
+        positionControls.container.setVisible(false);
+        
+        // Create action buttons (initially hidden)
+        const actionButtons = this.createActionButtons(gameScene);
+        actionButtons.container.setVisible(false);
+
+        // Add all elements to main container
+        editorContainer.add([
+            dropdownButton.container,
+            dropdownList,
+            positionControls.container,
+            actionButtons.container
+        ]);
+
+        // Position the editor in the top-left corner with 50px margin
+        editorContainer.x = 70;
+        editorContainer.y = 20;
+        editorContainer.setDepth(9999);
+        editorContainer.setScrollFactor(0);
+
+        this.editorInstance = {
+            container: editorContainer,
+            dropdownButton: dropdownButton,
+            dropdownList: dropdownList,
+            positionControls: positionControls,
+            actionButtons: actionButtons,
+            gameScene: gameScene
+        };
+
+        return this.editorInstance;
+    }
+
+    static createDropdownButton(gameScene) {
+        const container = gameScene.add.container(0, 0);
+        
+        // Simplified button background - no rounded corners for better performance
+        const buttonBg = gameScene.add.graphics();
+        buttonBg.fillStyle(0x333333, 1);
+        buttonBg.fillRect(0, 0, 180, 25);
+        buttonBg.setInteractive(new Phaser.Geom.Rectangle(0, 0, 180, 25), Phaser.Geom.Rectangle.Contains);
+        buttonBg.setScrollFactor(0);
+
+        // Button text
+        const buttonText = gameScene.add.text(5, 12, 'Select Animation', {
+            fontSize: '11px',
+            color: '#ffffff',
+            fontFamily: 'Arial'
+        }).setOrigin(0, 0.5).setScrollFactor(0);
+
+        // Arrow indicator
+        const arrow = gameScene.add.text(165, 12, '▼', {
+            fontSize: '10px',
+            color: '#ffffff',
+            fontFamily: 'Arial'
+        }).setOrigin(0.5, 0.5).setScrollFactor(0);
+
+        // Simplified button interactions - no hover effects for performance
+        buttonBg.on('pointerdown', () => {
+            this.toggleDropdown();
+        });
+
+        container.add([buttonBg, buttonText, arrow]);
+        return { container: container, text: buttonText, arrow: arrow };
+    }
+
+    static createDropdownList(gameScene) {
+        const container = gameScene.add.container(0, 30);
+        container.setScrollFactor(0);
+
+        // Show all animations from the JSON
+        const animationKeys = Object.keys(this.animationData);
+        
+        // Split animations into two columns
+        const halfLength = Math.ceil(animationKeys.length / 2);
+        const leftColumnKeys = animationKeys.slice(0, halfLength);
+        const rightColumnKeys = animationKeys.slice(halfLength);
+        
+        // Create two side-by-side lists
+        const listHeight = 300;
+        const columnWidth = 170;
+        
+        // Left column background
+        const leftBg = gameScene.add.graphics();
+        leftBg.fillStyle(0x222222, 0.9);
+        leftBg.fillRect(0, 0, columnWidth, listHeight);
+        leftBg.setScrollFactor(0);
+        
+        // Right column background
+        const rightBg = gameScene.add.graphics();
+        rightBg.fillStyle(0x222222, 0.9);
+        rightBg.fillRect(columnWidth + 10, 0, columnWidth, listHeight);
+        rightBg.setScrollFactor(0);
+
+        container.add([leftBg, rightBg]);
+
+        // Create left column animations
+        let yOffset = 2;
+        leftColumnKeys.forEach((key, index) => {
+            const animButton = gameScene.add.graphics();
+            animButton.fillStyle(0x444444, 1);
+            animButton.fillRect(2, yOffset, columnWidth - 4, 18);
+            animButton.setInteractive(new Phaser.Geom.Rectangle(2, yOffset, columnWidth - 4, 18), Phaser.Geom.Rectangle.Contains);
+            animButton.setScrollFactor(0);
+
+            const animText = gameScene.add.text(5, yOffset + 2, key, {
+                fontSize: '8px',
+                color: '#ffffff',
+                fontFamily: 'Arial',
+                stroke: '#000000',
+                strokeThickness: 1
+            }).setOrigin(0, 0).setScrollFactor(0);
+
+            animButton.on('pointerdown', () => {
+                this.selectAnimation(key);
+                this.toggleDropdown();
+            });
+
+            container.add([animButton, animText]);
+            yOffset += 20;
+        });
+
+        // Create right column animations
+        yOffset = 2;
+        rightColumnKeys.forEach((key, index) => {
+            const animButton = gameScene.add.graphics();
+            animButton.fillStyle(0x444444, 1);
+            animButton.fillRect(columnWidth + 12, yOffset, columnWidth - 4, 18);
+            animButton.setInteractive(new Phaser.Geom.Rectangle(columnWidth + 12, yOffset, columnWidth - 4, 18), Phaser.Geom.Rectangle.Contains);
+            animButton.setScrollFactor(0);
+
+            const animText = gameScene.add.text(columnWidth + 15, yOffset + 2, key, {
+                fontSize: '8px',
+                color: '#ffffff',
+                fontFamily: 'Arial',
+                stroke: '#000000',
+                strokeThickness: 1
+            }).setOrigin(0, 0).setScrollFactor(0);
+
+            animButton.on('pointerdown', () => {
+                this.selectAnimation(key);
+                this.toggleDropdown();
+            });
+
+            container.add([animButton, animText]);
+            yOffset += 20;
+        });
+
+        return container;
+    }
+
+    static toggleDropdown() {
+        if (!this.editorInstance) return;
+
+        this.dropdownOpen = !this.dropdownOpen;
+        
+        // Toggle dropdown list visibility
+        this.editorInstance.dropdownList.setVisible(this.dropdownOpen);
+        
+        // Update arrow direction
+        this.editorInstance.dropdownButton.arrow.setText(this.dropdownOpen ? '▲' : '▼');
+        
+        // Show/hide controls when dropdown is open
+        if (this.dropdownOpen) {
+            this.editorInstance.positionControls.container.setVisible(false);
+            this.editorInstance.actionButtons.container.setVisible(false);
+        }
+    }
+
+    static createPositionControls(gameScene) {
+        const container = gameScene.add.container(0, 160);
+        container.setScrollFactor(0);
+
+        // Simplified background
+        const controlsBg = gameScene.add.graphics();
+        controlsBg.fillStyle(0x222222, 0.9);
+        controlsBg.fillRect(0, 0, 180, 100);
+        controlsBg.setScrollFactor(0);
+
+        // Title
+        const title = gameScene.add.text(5, 5, 'Position:', {
+            fontSize: '10px',
+            color: '#ffffff',
+            fontFamily: 'Arial'
+        }).setOrigin(0, 0).setScrollFactor(0);
+
+        // Position values display
+        const xValue = gameScene.add.text(90, 15, '0', {
+            fontSize: '10px',
+            color: '#ffff00',
+            fontFamily: 'Arial'
+        }).setOrigin(0.5, 0.5).setScrollFactor(0);
+
+        const yValue = gameScene.add.text(90, 50, '0', {
+            fontSize: '10px',
+            color: '#ffff00',
+            fontFamily: 'Arial'
+        }).setOrigin(0.5, 0.5).setScrollFactor(0);
+
+        // Flip value display
+        const flipValue = gameScene.add.text(90, 85, 'false', {
+            fontSize: '10px',
+            color: '#ffff00',
+            fontFamily: 'Arial'
+        }).setOrigin(0.5, 0.5).setScrollFactor(0);
+
+        // Cross formation arrow buttons
+        // Up arrow (Y-)
+        const upBtn = this.createArrowButton(gameScene, 90, 30, '▲', () => {
+            this.adjustPosition('y', -1);
+        });
+
+        // Down arrow (Y+)
+        const downBtn = this.createArrowButton(gameScene, 90, 65, '▼', () => {
+            this.adjustPosition('y', 1);
+        });
+
+        // Left arrow (X-)
+        const leftBtn = this.createArrowButton(gameScene, 70, 47, '◄', () => {
+            this.adjustPosition('x', -1);
+        });
+
+        // Right arrow (X+)
+        const rightBtn = this.createArrowButton(gameScene, 110, 47, '►', () => {
+            this.adjustPosition('x', 1);
+        });
+
+        // Flip toggle button
+        const flipBtn = this.createArrowButton(gameScene, 130, 85, '⟷', () => {
+            this.toggleFlip();
+        });
+
+        container.add([controlsBg, title, xValue, yValue, flipValue, upBtn, downBtn, leftBtn, rightBtn, flipBtn]);
+
+        return {
+            container: container,
+            xValue: xValue,
+            yValue: yValue,
+            flipValue: flipValue
+        };
+    }
+
+    static createArrowButton(gameScene, x, y, arrow, callback) {
+        const button = gameScene.add.graphics();
+        button.fillStyle(0x444444, 1);
+        button.fillRect(x - 10, y - 8, 20, 16);
+        button.setInteractive(new Phaser.Geom.Rectangle(x - 10, y - 8, 20, 16), Phaser.Geom.Rectangle.Contains);
+        button.setScrollFactor(0);
+
+        const buttonText = gameScene.add.text(x, y, arrow, {
+            fontSize: '12px',
+            color: '#ffffff',
+            fontFamily: 'Arial'
+        }).setOrigin(0.5, 0.5).setScrollFactor(0);
+
+        // No hover effects for performance
+        button.on('pointerdown', () => {
+            callback();
+        });
+
+        return button;
+    }
+
+    static createActionButtons(gameScene) {
+        const container = gameScene.add.container(0, 270);
+        container.setScrollFactor(0);
+
+        // Simplified background
+        const actionsBg = gameScene.add.graphics();
+        actionsBg.fillStyle(0x222222, 0.9);
+        actionsBg.fillRect(0, 0, 180, 50);
+        actionsBg.setScrollFactor(0);
+
+        // Stop Animation Button
+        const stopBtn = this.createActionButton(gameScene, 5, 5, 'Stop', () => {
+            this.stopCurrentAnimation();
+        });
+
+        // Download Button
+        const downloadBtn = this.createActionButton(gameScene, 95, 5, 'Save', () => {
+            this.downloadModifiedConfig();
+        });
+
+        // Close Button
+        const closeBtn = this.createActionButton(gameScene, 50, 25, 'Close', () => {
+            this.close();
+        });
+
+        container.add([actionsBg, stopBtn.graphics, stopBtn.text, downloadBtn.graphics, downloadBtn.text, closeBtn.graphics, closeBtn.text]);
+
+        return { container: container };
+    }
+
+    static createActionButton(gameScene, x, y, text, callback) {
+        const button = gameScene.add.graphics();
+        button.fillStyle(0x006600, 1);
+        button.fillRect(x, y, 70, 18);
+        button.setInteractive(new Phaser.Geom.Rectangle(x, y, 70, 18), Phaser.Geom.Rectangle.Contains);
+        button.setScrollFactor(0);
+
+        const buttonText = gameScene.add.text(x + 35, y + 9, text, {
+            fontSize: '9px',
+            color: '#ffffff',
+            fontFamily: 'Arial'
+        }).setOrigin(0.5, 0.5).setScrollFactor(0);
+
+        // No hover effects for performance
+        button.on('pointerdown', () => {
+            callback();
+        });
+
+        return { graphics: button, text: buttonText };
+    }
+
+    static selectAnimation(animationKey) {
+        this.currentAnimation = animationKey;
+        console.log(`Selected animation: ${animationKey}`);
+        
+        // Update dropdown button text
+        if (this.editorInstance) {
+            this.editorInstance.dropdownButton.text.setText(animationKey);
+            
+            // Show position controls and action buttons
+            this.editorInstance.positionControls.container.setVisible(true);
+            this.editorInstance.actionButtons.container.setVisible(true);
+            
+            // Update position controls with current animation data
+            if (this.animationData[animationKey]) {
+                const animData = this.animationData[animationKey];
+                this.editorInstance.positionControls.xValue.setText(animData.positionX.toString());
+                this.editorInstance.positionControls.yValue.setText(animData.positionY.toString());
+                this.editorInstance.positionControls.flipValue.setText(animData.flip_horizontally.toString());
+            }
+        }
+        
+        // Automatically play the selected animation
+        this.playCurrentAnimation();
+    }
+
+    static adjustPosition(axis, delta) {
+        if (!this.currentAnimation || !this.animationData[this.currentAnimation]) {
+            console.log('No animation selected');
+            return;
+        }
+
+        const animData = this.animationData[this.currentAnimation];
+        
+        if (axis === 'x') {
+            animData.positionX += delta;
+            this.editorInstance.positionControls.xValue.setText(animData.positionX.toString());
+        } else if (axis === 'y') {
+            animData.positionY += delta;
+            this.editorInstance.positionControls.yValue.setText(animData.positionY.toString());
+        }
+
+        // Apply position change to sprite immediately
+        if (this.currentSprite) {
+            this.currentSprite.x = animData.positionX;
+            this.currentSprite.y = animData.positionY;
+        }
+
+        console.log(`Updated ${this.currentAnimation} position${axis.toUpperCase()}: ${animData[`position${axis.toUpperCase()}`]}`);
+    }
+
+    static toggleFlip() {
+        if (!this.currentAnimation || !this.animationData[this.currentAnimation]) {
+            console.log('No animation selected');
+            return;
+        }
+
+        const animData = this.animationData[this.currentAnimation];
+        
+        // Toggle flip_horizontally value
+        animData.flip_horizontally = !animData.flip_horizontally;
+        this.editorInstance.positionControls.flipValue.setText(animData.flip_horizontally.toString());
+
+        // Apply flip change to sprite immediately
+        if (this.currentSprite) {
+            this.currentSprite.setFlipX(animData.flip_horizontally);
+        }
+
+        console.log(`Updated ${this.currentAnimation} flip_horizontally: ${animData.flip_horizontally}`);
+    }
+
+    static playCurrentAnimation() {
+        if (!this.currentAnimation || !this.currentSprite) {
+            console.log('No animation or sprite available');
+            return;
+        }
+
+        const animationKey = this.currentUser.avatarId + `_${this.currentAnimation}`;
+        
+        try {
+            // Apply position and flip from animation data to the sprite's container
+            const animData = this.animationData[this.currentAnimation];
+            
+            // Get the sprite's parent container (containerUser)
+            const containerUser = this.currentSprite.parentContainer;
+            if (containerUser) {
+                // Apply position offset to the sprite within its container
+                this.currentSprite.x = animData.positionX;
+                this.currentSprite.y = animData.positionY;
+                
+                // Apply horizontal flip if specified
+                this.currentSprite.setFlipX(animData.flip_horizontally || false);
+            }
+            
+            // Play the animation with infinite repeat
+            this.currentSprite.play({
+                key: animationKey,
+                repeat: -1
+            });
+            console.log(`Playing animation: ${animationKey} with position X:${animData.positionX}, Y:${animData.positionY}`);
+        } catch (error) {
+            console.error(`Error playing animation ${animationKey}:`, error);
+        }
+    }
+
+    static stopCurrentAnimation() {
+        if (this.currentSprite) {
+            this.currentSprite.stop();
+            // Reset position to 0,0 within container
+            this.currentSprite.x = 0;
+            this.currentSprite.y = 0;
+            console.log('Animation stopped');
+        }
+    }
+
+    static downloadModifiedConfig() {
+        try {
+            // Create downloadable JSON file
+            const dataStr = JSON.stringify(this.animationData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'modified_avatar_config.json';
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            console.log('Configuration downloaded successfully');
+        } catch (error) {
+            console.error('Error downloading configuration:', error);
+        }
+    }
+
+    static close() {
+        if (this.editorInstance) {
+            this.editorInstance.container.destroy();
+            this.editorInstance = null;
+            this.currentSprite = null;
+            this.currentAnimation = null;
+            console.log('Animation editor closed');
+        }
+    }
+
+    static remove() {
+        this.close();
+    }
+}
+
+export default AnimationEditorController;
