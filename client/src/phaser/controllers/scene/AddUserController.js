@@ -1,18 +1,19 @@
 import MoveUserToTileController from "./MoveUserToTileController.js";
+//import MovementControlsController from "./MovementControlsController.js";
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserModel from "../../models/UserModel.js";
-import socket from "../../../sockets/socket.js"; // Conexión Socket.io
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
+import socket from "@/sockets/socket.js"; // Conexión Socket.io
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
 import ShadowColorsEnum from "@/enums/ShadowColorsEnum.js";
 import NameColorsEnum from "@/enums/NameColorsEnum.js";
-import SceneUtils from "../../../utils/SceneUtils.js";
-import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
-import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
-import AvatarPositionSpriteModal from "../../admin/modals/AvatarPositionSpriteModal.js";
-import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
-import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
-import UserEmojiAnimation from "../../animations/UserEmojiAnimation.js";
-import UserChatAnimation from "../../animations/UserChatAnimation.js";
+//import SceneUtils from "../../../utils/SceneUtils.js";
+//import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
+//import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
+//import AvatarPositionSpriteModal from "../../admin/modals/AvatarPositionSpriteModal.js";
+//import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
+//import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
+//import UserEmojiAnimation from "../../animations/UserEmojiAnimation.js";
+//import UserChatAnimation from "../../animations/UserChatAnimation.js";
 
 /* =========================
    NameTag texture cache (Opción B)
@@ -91,6 +92,7 @@ class AddUserController {
         ]);
         containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
+        //MovementControlsController.createMovementControls(gameScene, spriteAvatar, "5_rightdown_flor");
         // AvatarOriginSpriteModal.main(gameScene, spriteAvatar);
         // AvatarPositionSpriteModal.main(gameScene, spriteAvatar);
         return { containerUser, spriteAvatar, spriteShadow };
@@ -146,7 +148,6 @@ class AddUserController {
         const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + userData.id);
         spriteAvatar._avatarId = userData.avatar_id;
         spriteAvatar._z = userData.z;
-        // UserIdleAnimation.main( spriteAvatar, 1, userData.avatar_id );
         UserIdleAnimation.main(
             spriteAvatar,
             userData.z,
@@ -215,6 +216,7 @@ class AddUserController {
             name: userNameText
         };
     }
+
 }
 
 export default AddUserController;

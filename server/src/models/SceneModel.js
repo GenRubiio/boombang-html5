@@ -33,6 +33,8 @@ class SceneModel {
         // Inicializar el procesador de movimiento
         this.movementProcessorInstance = new MovementProcessorInstance(this);
         this.movementProcessorInstance.startProcessing();
+
+        this.interactions = new Map();
     }
 
     // Método para añadir un usuario
@@ -76,6 +78,7 @@ class SceneModel {
             // Si no quedan usuarios, eliminamos la escena
             PrivateScenesCollection.remove(this.id);
         }
+        this.#removeAllUserInteractions(user);
         this.#refreshUsersChatList();
         this.#refreshUsers();
     }
@@ -95,6 +98,49 @@ class SceneModel {
             }
         });
     }
+
+    /**
+     * Interactions besos, bebidas, rozas
+     */
+    addInteraction(userSenderId, targetUserId, interactionType) {
+        if (!this.interactions.has(userSenderId)) {
+            this.interactions.set(userSenderId, new Map());
+        }
+        this.interactions.get(userSenderId).set(targetUserId, interactionType);
+    }
+
+    removeInteraction(userSenderId, targetUserId) {
+        if (this.interactions.has(userSenderId)) {
+            this.interactions.get(userSenderId).delete(targetUserId);
+        }
+    }
+
+    hasInteraction(userSenderId, targetUserId) {
+        return this.interactions.has(userSenderId) && this.interactions.get(userSenderId).has(targetUserId);
+    }
+
+    getInteractionType(userSenderId, targetUserId) {
+        if (this.hasInteraction(userSenderId, targetUserId)) {
+            return this.interactions.get(userSenderId).get(targetUserId);
+        }
+        return null;
+    }
+
+    #removeAllUserInteractions(user) {
+        this.interactions.forEach((targetsMap, senderId) => {
+            if (senderId == user.id) {
+                targetsMap.forEach((interactionType, targetId) => {
+                    this.emit(ResponseSocketsEnum.USER_CANCEL_INTERACTION, {
+                        type: interactionType,
+                        fromUser: user.socket.id,
+                    });
+                });
+            }
+        });
+        this.interactions.delete(user.id);
+    }
+
+    //****************************************************************************************************** */
 
     // Método para emitir un evento a todos los usuarios del área
     emit(event, data) {

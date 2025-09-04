@@ -16,6 +16,10 @@ import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
 import ButtonsPrivateSceneHtml from "@/phaser/html/private-scene/ButtonsPrivateSceneHtml";
 import InventoryPrivateSceneHtml from "@/phaser/html/private-scene/InventoryPrivateSceneHtml";
 import DetailPanelPrivateSceneHtml from "@/phaser/html/private-scene/DetailPanelPrivateSceneHtml";
+import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
+import asset_kiss_image from "@/assets/game/ficha/interactions/kiss.webp";
+import asset_drink_image from "@/assets/game/ficha/interactions/drink.webp";
+import asset_rose_image from "@/assets/game/ficha/interactions/rose.webp";
 import i18n from "../plugins/i18n";
 
 export default class PrivateScene extends Phaser.Scene {
@@ -70,6 +74,10 @@ export default class PrivateScene extends Phaser.Scene {
         this.load.image("tile", asset_tile_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
+        this.load.image("asset_interaction_background_image", asset_interaction_background_image);
+        this.load.image("asset_kiss_image", asset_kiss_image);
+        this.load.image("asset_drink_image", asset_drink_image);
+        this.load.image("asset_rose_image", asset_rose_image);
 
         if (this.sceneData.myScene) {
             // Cargar dinámicamente los assets de inventario

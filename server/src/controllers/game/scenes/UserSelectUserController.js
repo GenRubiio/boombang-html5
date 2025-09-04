@@ -4,6 +4,7 @@ const UserMovimentUtil = require('../../../utils/UserMovimentUtil');
 const UserResource = require('../../../resources/UserResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const AnimationEnum = require('../../../enums/AnimationEnum');
+const SceneTypesEnum = require('../../../enums/SceneTypesEnum');
 
 class UserSelectUserController {
     static main(socket, io, data) {
@@ -37,9 +38,16 @@ class UserSelectUserController {
             updateCard = true;
         }
         if (updateCard) {
+            let pendingInteraction = null;
+            if (user.currentArea.scene_type != SceneTypesEnum.MINIGAME_RING){
+                pendingInteraction = user.currentArea.getInteractionType(user.id, selectedUser.id);
+            }
             user.emit(ResponseSocketsEnum.USER_SELECT_USER, {
                 selected_user: new UserResource(selectedUser).toObject(),
-                auth_user: new UserResource(user).toObject()
+                auth_user: new UserResource(user).toObject(),
+                pending_interaction: pendingInteraction ? {
+                    type: pendingInteraction
+                } : null
             });
         }
     }

@@ -94,6 +94,15 @@ class CreateSceneController {
         zone.on("pointerdown", (pointer) => {
             if (!EventLimiter.canClick()) return;
 
+            // Check if click is on a notification button (high depth objects)
+            const hitObjects = gameScene.input.hitTestPointer(pointer);
+            for (let obj of hitObjects) {
+                if (obj.input && obj.input.enabled && obj !== zone && obj.depth >= 1000) {
+                    // Click is on a notification button or similar UI element, ignore floor click
+                    return;
+                }
+            }
+
             const mx = pointer.worldX;
             const my = pointer.worldY;
 
