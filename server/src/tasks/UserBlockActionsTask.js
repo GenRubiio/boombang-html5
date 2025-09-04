@@ -11,6 +11,7 @@ const MoveUserToSceneDoorTask = require('./MoveUserToSceneDoorTask');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const RemoveUserFromSceneTask = require('./RemoveUserFromSceneTask');
 const CoconutsBlockActionsMap = require('../maps/CoconutsBlockActionsMap');
+const InteractionsBlockActionsMap = require('../maps/InteractionsBlockActionsMap');
 
 class UserBlockActionsTask {
     static blockByEmojiSend(user, emojiId) {
@@ -27,6 +28,23 @@ class UserBlockActionsTask {
         catch (err) {
             console.log(err);
             logger.log(`Error blocking by emoji: ${err.message}`, 'error');
+        }
+    }
+
+    static blockByInteraction(user, interactionType) {
+        try {
+            const actionData = InteractionsBlockActionsMap.get(interactionType);
+            if (!actionData) {
+                throw new Error('Invalid interaction type');
+            }
+            const blockTime = actionData.time[user.avatarId];
+            actionData.actions.forEach(action => {
+                user.blockAction(action, blockTime);
+            });
+        }
+        catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by interaction: ${err.message}`, 'error');
         }
     }
 

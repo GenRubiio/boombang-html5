@@ -44,7 +44,11 @@ const RequestSocketsEnum = new Enum({
     ROTATE_OBJECT: 'request:rotate_object',
     SETTINGS_UPDATE_NAME: 'request:settings_update_name',
     SETTINGS_UPDATE_GRAPHICS: 'request:settings_update_graphics',
-    SETTINGS_UPDATE_LANG: 'request:settings_update_lang'
+    SETTINGS_UPDATE_LANG: 'request:settings_update_lang',
+    USER_SEND_INTERACTION: 'request:user_send_interaction',
+    USER_ACCEPT_INTERACTION: 'request:user_accept_interaction',
+    USER_REJECT_INTERACTION: 'request:user_reject_interaction',
+    USER_CANCEL_INTERACTION: 'request:user_cancel_interaction'
 });
 
 export default RequestSocketsEnum;

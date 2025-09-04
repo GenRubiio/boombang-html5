@@ -13,6 +13,10 @@ import TintManager from "./managers/TintManager"; // Gestor de tintes
 import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
 import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
 import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
+import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
+import asset_kiss_image from "@/assets/game/ficha/interactions/kiss.webp";
+import asset_drink_image from "@/assets/game/ficha/interactions/drink.webp";
+import asset_rose_image from "@/assets/game/ficha/interactions/rose.webp";
 import i18n from "../plugins/i18n";
 import ButtonsPublicSceneHtml from "./html/public-scene/ButtonsPublicSceneHtml";
 
@@ -41,6 +45,10 @@ export default class PublicScene extends Phaser.Scene {
         this.load.image("shadow_selected", asset_shadow_selected_image);
         this.load.image("asset_ui_shop_image", asset_ui_shop_image);
         this.load.image("asset_ui_avatars_image", asset_ui_avatars_image);
+        this.load.image("asset_interaction_background_image", asset_interaction_background_image);
+        this.load.image("asset_kiss_image", asset_kiss_image);
+        this.load.image("asset_drink_image", asset_drink_image);
+        this.load.image("asset_rose_image", asset_rose_image);
     }
 
     create() {

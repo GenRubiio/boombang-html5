@@ -1,13 +1,17 @@
 <template>
   <div class="interactions-wrapper">
-    <div class="container" :class="colorUser">
-      <div class="container__item">
+    <!-- Normal interactions view -->
+    <div v-if="!pendingInteraction" class="container" :class="colorUser">
+      <div class="container__item" @click="sendInteraction('kiss')">
         <img :src="asset_kiss_image" :alt="$t('user_card.interactions.kiss')" />
       </div>
-      <div class="container__item">
-        <img :src="asset_drink_image" :alt="$t('user_card.interactions.drink')" />
+      <div class="container__item" @click="sendInteraction('drink')">
+        <img
+          :src="asset_drink_image"
+          :alt="$t('user_card.interactions.drink')"
+        />
       </div>
-      <div class="container__item">
+      <div class="container__item" @click="sendInteraction('rose')">
         <img :src="asset_rose_image" :alt="$t('user_card.interactions.rose')" />
       </div>
       <div></div>
@@ -28,20 +32,46 @@
       <div></div>
       <div></div>
     </div>
+
+    <!-- Pending interaction view -->
+    <div v-else class="pending-container" :class="colorUser">
+      <div class="pending-left">
+        <div class="spinner-container">
+          <div class="spinner"></div>
+          <img
+            :src="getPendingInteractionImage()"
+            :alt="pendingInteraction.type"
+            class="interaction-image"
+          />
+        </div>
+      </div>
+      <div class="pending-right">
+        <span class="username">{{ selectedUser.username }}</span>
+        <button class="cancel-button" @click="cancelInteraction">
+          {{ $t("user_card.interactions.cancel") }}
+        </button>
+      </div>
+    </div>
+
     <span
+      v-if="!pendingInteraction"
       class="uppercuts__plus-button"
       :class="colorUser"
       @click.stop="toggleContainerUppers"
       >+</span
     >
     <span
+      v-if="!pendingInteraction"
       class="coconuts__plus-button"
       :class="colorUser"
       @click.stop="toggleContainerCocos"
       >+</span
     >
 
-    <div class="uppercuts-list-container" v-if="showContainerUppers">
+    <div
+      class="uppercuts-list-container"
+      v-if="showContainerUppers && !pendingInteraction"
+    >
       <div class="uppercuts-list-container__list">
         <div
           v-for="(img, index) in uppercuts"
@@ -59,7 +89,10 @@
         <i class="las la-times-circle"></i>
       </div>
     </div>
-    <div class="coconuts-list-container" v-if="showContainerCocos">
+    <div
+      class="coconuts-list-container"
+      v-if="showContainerCocos && !pendingInteraction"
+    >
       <div class="coconuts-list-container__list">
         <div
           v-for="(img, index) in coconuts"
@@ -80,6 +113,7 @@
 <script>
 import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import asset_red_upper_image from "@/assets/game/ficha/uppercuts/red.webp";
 import asset_pink_upper_image from "@/assets/game/ficha/uppercuts/pink.webp";
 import asset_orange_upper_image from "@/assets/game/ficha/uppercuts/orange.webp";
@@ -115,6 +149,10 @@ export default {
     authUser: {
       type: Object,
       required: true,
+    },
+    pendingInteraction: {
+      type: Object,
+      required: false,
     },
   },
   data() {
@@ -197,6 +235,40 @@ export default {
         this.showContainerCocos = false;
       }
     },
+    sendInteraction(type) {
+      socket.emit(RequestSocketsEnum.USER_SEND_INTERACTION, {
+        targetUser: this.selectedUser.id,
+        type,
+      });
+
+      // Emitir evento al componente padre para actualizar pendingInteraction
+      this.$emit("interaction-sent", {
+        targetUser: this.selectedUser.id,
+        type,
+      });
+    },
+    cancelInteraction() {
+      socket.emit(RequestSocketsEnum.USER_CANCEL_INTERACTION, {
+        targetUser: this.selectedUser.id,
+      });
+
+      // Emitir evento al componente padre para limpiar pendingInteraction
+      this.$emit("interaction-cancelled");
+    },
+    getPendingInteractionImage() {
+      if (!this.pendingInteraction) return null;
+
+      switch (this.pendingInteraction.type) {
+        case "kiss":
+          return this.asset_kiss_image;
+        case "drink":
+          return this.asset_drink_image;
+        case "rose":
+          return this.asset_rose_image;
+        default:
+          return null;
+      }
+    },
   },
   computed: {
     colorUser() {
@@ -205,6 +277,14 @@ export default {
       }
       return this.selectedUser.ficha_color;
     },
+  },
+  mounted() {
+    socket.off(ResponseSocketsEnum.USER_SEND_INTERACTION);
+    socket.on(ResponseSocketsEnum.USER_SEND_INTERACTION, (data) => {
+      if (data.action == "cancel" && this.selectedUser.id == data.user) {
+        this.$emit("interaction-cancelled");
+      }
+    });
   },
 };
 </script>
@@ -438,5 +518,88 @@ export default {
 .uppercuts__plus-button.beta,
 .coconuts__plus-button.beta {
   color: #08d1d1;
+}
+
+/* Pending interaction styles */
+.pending-container {
+  background-color: white;
+  border-radius: 0 8px 8px 8px;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 90px;
+  position: relative;
+  z-index: 1;
+  padding: 0 15px;
+}
+
+.pending-left {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.spinner-container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.interaction-image {
+  width: 30px;
+  height: 30px;
+  z-index: 1;
+}
+
+.pending-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.username {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.cancel-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-button:hover {
+  background-color: #c0392b;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

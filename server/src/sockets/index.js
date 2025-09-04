@@ -8,6 +8,7 @@ const matchMakerSockets = require('./game/scenes/matchMakerSockets');
 const userSockets = require('./game/userSockets');
 const lobbySockets = require('./game/lobbySockets');
 const objectSockets = require('./game/objectSockets');
+const adminSockets = require('./game/admin/adminSockets');
 const MinigamesEnum = require('../enums/MinigamesEnum');
 const MatchMakerInstance = require('../instances/MatchMakerInstance');
 
@@ -29,5 +30,6 @@ module.exports = (io, authorizedBotTokens) => {
         matchMakerSockets(socket, io, matchMakers);
         userSockets(socket, io);
         objectSockets(socket, io);
+        adminSockets(socket, io);
     });
 };

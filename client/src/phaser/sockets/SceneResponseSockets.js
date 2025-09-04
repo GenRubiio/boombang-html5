@@ -11,7 +11,8 @@ import RemoveUserController from "../controllers/scene/RemoveUserController";
 import AddUserController from "../controllers/scene/AddUserController";
 import RemoveUserAreaController from "../controllers/scene/RemoveUserAreaController";
 import UserReceiveEffectController from "../controllers/scene/UserReceiveEffectController";
-
+import InteractionNotificationController from "../controllers/scene/InteractionNotificationController";
+import SendInteractionAnimationController from "../controllers/scene/SendInteractionAnimationController";
 
 class SceneResponseSockets {
     static main(gameScene) {
@@ -60,6 +61,22 @@ class SceneResponseSockets {
 
         socket.on(ResponseSocketsEnum.USER_RECEIVE_EFFECT, (data) => {
             UserReceiveEffectController.main(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.USER_RECEIVE_INTERACTION, (data) => {
+            InteractionNotificationController.create(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.USER_CANCEL_INTERACTION, (data) => {
+            InteractionNotificationController.remove(data.fromUser);
+        });
+
+        socket.on(ResponseSocketsEnum.USER_ACCEPT_INTERACTION, (data) => {
+            InteractionNotificationController.remove(data.fromUser);
+        });
+
+        socket.on(ResponseSocketsEnum.USERS_INTERACTION, (data) => {
+            SendInteractionAnimationController.main(gameScene, data);
         });
     }
 }

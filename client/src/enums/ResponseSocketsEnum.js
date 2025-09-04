@@ -52,7 +52,13 @@ const ResponseSocketsEnum = new Enum({
     ROTATE_OBJECT: 'response:rotate_object',
     SETTINGS_UPDATE_NAME: 'response:settings_update_name',
     SETTINGS_UPDATE_GRAPHICS: 'response:settings_update_graphics',
-    SETTINGS_UPDATE_LANG: 'response:settings_update_lang'
+    SETTINGS_UPDATE_LANG: 'response:settings_update_lang',
+    USER_SEND_INTERACTION: 'response:user_send_interaction',
+    USER_RECEIVE_INTERACTION: 'response:user_receive_interaction',
+    USER_ACCEPT_INTERACTION: 'response:user_accept_interaction',
+    USER_REJECT_INTERACTION: 'response:user_reject_interaction',
+    USER_CANCEL_INTERACTION: 'response:user_cancel_interaction',
+    USERS_INTERACTION: 'response:users_interaction'
 });
 
 export default ResponseSocketsEnum;

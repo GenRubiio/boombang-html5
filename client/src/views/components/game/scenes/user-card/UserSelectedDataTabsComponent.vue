@@ -30,8 +30,11 @@
       :is="activeTabComponent"
       :selectedUser="selectedUser"
       :authUser="authUser"
+      :pendingInteraction="pendingInteraction"
       @open-ring-info="$emit('open-ring-info')"
       @open-coconuts-info="$emit('open-coconuts-info')"
+      @interaction-sent="$emit('interaction-sent', $event)"
+      @interaction-cancelled="$emit('interaction-cancelled')"
     />
   </div>
 </template>
@@ -51,6 +54,10 @@ export default {
     authUser: {
       type: Object,
       required: true,
+    },
+    pendingInteraction: {
+      type: Object,
+      required: false,
     },
   },
   data() {

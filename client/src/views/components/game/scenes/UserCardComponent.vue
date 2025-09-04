@@ -90,8 +90,11 @@
       v-if="selectedUser.is_selected"
       :selectedUser="selectedUser"
       :authUser="authUser"
+      :pendingInteraction="pendingInteraction"
       @open-ring-info="$emit('open-ring-info')"
       @open-coconuts-info="$emit('open-coconuts-info')"
+      @interaction-sent="handleInteractionSent"
+      @interaction-cancelled="handleInteractionCancelled"
     />
   </div>
 </template>
@@ -110,6 +113,7 @@ export default {
     return {
       selectedUser: null,
       authUser: null,
+      pendingInteraction: null,
       asset_change_ficha_icon_image,
       isEditingDescription: false,
       hoveringDesc: false,
@@ -130,6 +134,7 @@ export default {
     updateData(usersData) {
       this.selectedUser = usersData.selectedUser;
       this.authUser = usersData.authUser || this.selectedUser;
+      this.pendingInteraction = usersData.pendingInteraction;
       this.descriptionText = (this.selectedUser?.description ?? "").toString();
     },
     changeFicha() {
@@ -200,6 +205,17 @@ export default {
       socket.emit(RequestSocketsEnum.USER_UPDATE_DESCRIPTION, {
         description: this.descriptionText,
       });
+    },
+    handleInteractionSent(interactionData) {
+      // Actualizar pendingInteraction inmediatamente para mostrar la UI de pending
+      this.pendingInteraction = {
+        targetUser: interactionData.targetUser,
+        type: interactionData.type,
+      };
+    },
+    handleInteractionCancelled() {
+      // Limpiar pendingInteraction para volver a la UI normal
+      this.pendingInteraction = null;
     },
   },
   beforeUnmount() {

@@ -24,6 +24,9 @@ const AnimationEnum = new Enum({
     AVATAR_RIGHTDOWN_TALK: 'rightdown_talk',
     AVATAR_LEFTUP_TALK: 'leftup_talk',
     AVATAR_RIGHTUP_TALK: 'rightup_talk',
+    INTERACTION_KISS: 'kiss',
+    INTERACTION_DRINK: 'drink',
+    INTERACTION_ROSE: 'rose'
 });
 
 module.exports = AnimationEnum;
