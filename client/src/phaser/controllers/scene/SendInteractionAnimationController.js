@@ -52,19 +52,19 @@ class SendInteractionAnimationController {
         const senderUserSprite = senderUser.spriteAvatar;
 
         UserInteractionAnimation.main(
-            receiverUserSprite,
-            data.direction,
+            senderUserSprite,
+            data.senderDirection,
             true,
-            receiverUser.avatarId,
+            senderUser.avatarId,
             gameScene,
             data.interactionType
         );
 
         UserInteractionAnimation.main(
-            senderUserSprite,
-            data.direction,
+            receiverUserSprite,
+            data.receiverDirection,
             false,
-            senderUser.avatarId,
+            receiverUser.avatarId,
             gameScene,
             data.interactionType
         );
