@@ -130,7 +130,9 @@
       "upper": "Uppercut",
       "coco": "Coco",
       "upper_item": "Objeto Uppercut",
-      "coco_item": "Objeto Coco"
+      "coco_item": "Objeto Coco",
+      "waiting_response": "Esperando respuesta",
+      "cancel": "Cancelar"
     },
     "statistics": {
       "title": "Estadísticas de Interacciones",

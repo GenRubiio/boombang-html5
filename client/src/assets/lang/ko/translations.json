@@ -130,7 +130,9 @@
       "upper": "어퍼컷",
       "coco": "코코넛",
       "upper_item": "어퍼컷 아이템",
-      "coco_item": "코코넛 아이템"
+      "coco_item": "코코넛 아이템",
+      "waiting_response": "응답 대기 중",
+      "cancel": "취소"
     },
     "statistics": {
       "title": "상호작용 통계",

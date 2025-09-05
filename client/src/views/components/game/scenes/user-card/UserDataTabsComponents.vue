@@ -6,7 +6,7 @@
         :class="{ active: activeTab === 'emojis' }"
         @click="activeTab = 'emojis'"
       >
-                <img
+        <img
           :src="asset_emojis_tab_icon_image"
           :alt="$t('user_card.tabs.emojis')"
           class="tab-icon"
@@ -18,7 +18,7 @@
         :class="{ active: activeTab === 'statistics' }"
         @click="activeTab = 'statistics'"
       >
-                <img
+        <img
           :src="asset_statistics_tab_icon_image"
           :alt="$t('user_card.tabs.statistics')"
           class="tab-icon"
