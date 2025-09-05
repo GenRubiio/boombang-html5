@@ -130,7 +130,9 @@
       "upper": "Uppercut",
       "coco": "Coconut",
       "upper_item": "Uppercut Item",
-      "coco_item": "Coconut Item"
+      "coco_item": "Coconut Item",
+      "waiting_response": "Waiting for response",
+      "cancel": "Cancel"
     },
     "statistics": {
       "title": "Interaction Statistics",

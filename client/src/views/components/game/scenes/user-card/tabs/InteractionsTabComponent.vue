@@ -46,9 +46,10 @@
         </div>
       </div>
       <div class="pending-right">
-        <span class="username">Esperando respuesta</span>
+        <span class="username">{{ $t('user_card.interactions.waiting_response') }}</span>
         <button class="cancel-button" @click="cancelInteraction">
-          {{ $t("user_card.interactions.cancel") }}
+          <img :src="asset_reject_image" alt="Cancel" class="cancel-icon" />
+          <span>{{ $t('user_card.interactions.cancel') }}</span>
         </button>
       </div>
     </div>
@@ -140,6 +141,8 @@ import asset_kiss_image from "@/assets/game/ficha/interactions/kiss.webp";
 import asset_drink_image from "@/assets/game/ficha/interactions/drink.webp";
 import asset_rose_image from "@/assets/game/ficha/interactions/rose.webp";
 
+import asset_reject_image from "@/assets/game/ficha/interactions/reject.png";
+
 export default {
   props: {
     selectedUser: {
@@ -160,6 +163,7 @@ export default {
       asset_kiss_image,
       asset_drink_image,
       asset_rose_image,
+      asset_reject_image,
       uppercuts: [
         asset_red_upper_image,
         asset_pink_upper_image,
@@ -549,6 +553,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
   flex: 1;
   background-color: white;
   overflow: hidden;
@@ -567,18 +572,28 @@ export default {
 }
 
 .cancel-button {
-  background-color: #e74c3c;
+  background-color: transparent;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: 2px 2px;
   cursor: pointer;
   font-size: 12px;
-  transition: background-color 0.2s ease;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  outline: none;
 }
 
 .cancel-button:hover {
-  background-color: #c0392b;
+  opacity: 0.7;
+}
+
+.cancel-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .container__item img {

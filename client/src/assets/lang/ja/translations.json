@@ -156,7 +156,9 @@
       "upper": "アッパーカット",
       "coco": "ココナッツ",
       "upper_item": "アッパーカットアイテム",
-      "coco_item": "ココナッツアイテム"
+      "coco_item": "ココナッツアイテム",
+      "waiting_response": "応答を待っています",
+      "cancel": "キャンセル"
     },
     "statistics": {
       "title": "インタラクション統計",

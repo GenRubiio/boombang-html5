@@ -130,7 +130,9 @@
       "upper": "上勾拳",
       "coco": "椰子",
       "upper_item": "上勾拳物品",
-      "coco_item": "椰子物品"
+      "coco_item": "椰子物品",
+      "waiting_response": "等待回应",
+      "cancel": "取消"
     },
     "statistics": {
       "title": "互动统计",
