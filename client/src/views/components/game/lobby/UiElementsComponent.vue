@@ -114,6 +114,24 @@ export default {
         import.meta.url
       ).href;
       this.asset_avatarImage = avatarUrl;
+
+      this.$nextTick(() => {
+        const avatarElement = this.$el.querySelector(".lobby__avatar");
+        if (avatarElement) {
+          const avatarId = this.$socket.user.avatar_id;
+
+          const margins = {
+            5: { top: "2px", left: "-20px" },
+            12: { top: "20px", left: "-20px" },
+          };
+
+          const margin = margins[avatarId];
+          if (margin) {
+            avatarElement.style.marginTop = margin.top;
+            avatarElement.style.marginLeft = margin.left;
+          }
+        }
+      });
     } catch (error) {
       console.error(this.$t("lobby.ui.avatar_error"), error);
     }
