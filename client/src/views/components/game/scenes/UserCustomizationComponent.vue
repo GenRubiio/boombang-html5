@@ -51,7 +51,10 @@
                 'empty-item': !ficha.key,
               }"
             >
-              <img v-if="ficha.image" :src="ficha.image" />
+              <div class="image-wrapper">
+                <div v-if="cooldownActive" class="cooldown-overlay"></div>
+                <img v-if="ficha.image" :src="ficha.image" />
+              </div>
               <div
                 v-if="ficha.description"
                 class="info-icon"
@@ -74,7 +77,10 @@
                 'empty-item': !chat.key,
               }"
             >
-              <img v-if="chat.image" :src="chat.image" />
+              <div class="image-wrapper">
+                <div v-if="cooldownActive" class="cooldown-overlay"></div>
+                <img v-if="chat.image" :src="chat.image" />
+              </div>
               <div
                 v-if="chat.description"
                 class="info-icon"
@@ -97,7 +103,10 @@
                 'empty-item': !name.key,
               }"
             >
-              <img v-if="name.image" :src="name.image" />
+              <div class="image-wrapper">
+                <div v-if="cooldownActive" class="cooldown-overlay"></div>
+                <img v-if="name.image" :src="name.image" />
+              </div>
               <div
                 v-if="name.description"
                 class="info-icon"
@@ -120,7 +129,10 @@
                 'empty-item': !shadow.key,
               }"
             >
-              <img v-if="shadow.image" :src="shadow.image" />
+              <div class="image-wrapper">
+                <div v-if="cooldownActive" class="cooldown-overlay"></div>
+                <img v-if="shadow.image" :src="shadow.image" />
+              </div>
               <div
                 v-if="shadow.description"
                 class="info-icon"
@@ -171,6 +183,7 @@ export default {
         x: 0,
         y: 0,
       },
+      cooldownActive: false,
     };
   },
   computed: {
@@ -241,69 +254,84 @@ export default {
     hideTooltip() {
       this.tooltip.visible = false;
     },
-    onSelectFicha(ficha) {
+    onSelectFicha(fichaKey) {
+      if (this.cooldownActive) return;
       if (
-        !ficha ||
-        this.isFichaSelected(ficha) ||
-        !this.isFichaEnabled(ficha)
+        !fichaKey ||
+        this.isFichaSelected(fichaKey) ||
+        !this.isFichaEnabled(fichaKey)
       ) {
         return;
       }
       socket.emit(RequestSocketsEnum.USER_CHANGE_FICHA, {
-        ficha: ficha,
+        ficha: fichaKey,
       });
+      this.triggerCooldown();
     },
-    isFichaEnabled(ficha) {
-      return this.authUser.fichas ? this.authUser.fichas.includes(ficha) : true;
+    isFichaEnabled(fichaKey) {
+      return this.authUser.fichas ? this.authUser.fichas.includes(fichaKey) : true;
     },
-    isFichaSelected(ficha) {
-      return this.authUser.ficha_color === ficha;
+    isFichaSelected(fichaKey) {
+      return this.authUser.ficha_color === fichaKey;
     },
-    onSelectChat(chat) {
-      if (!chat || this.isChatSelected(chat) || !this.isChatEnabled(chat)) {
+    onSelectChat(chatKey) {
+      if (this.cooldownActive) return;
+      if (!chatKey || this.isChatSelected(chatKey) || !this.isChatEnabled(chatKey)) {
         return;
       }
       socket.emit(RequestSocketsEnum.USER_CHANGE_CHAT, {
-        chat: chat,
+        chat: chatKey,
       });
+      this.triggerCooldown();
     },
-    isChatEnabled(chat) {
-      return this.authUser.chats ? this.authUser.chats.includes(chat) : true;
+    isChatEnabled(chatKey) {
+      return this.authUser.chats ? this.authUser.chats.includes(chatKey) : true;
     },
-    isChatSelected(chat) {
-      return this.authUser.chat_color === chat;
+    isChatSelected(chatKey) {
+      return this.authUser.chat_color === chatKey;
     },
-    onSelectName(name) {
-      if (!name || this.isNameSelected(name) || !this.isNameEnabled(name)) {
+    onSelectName(nameKey) {
+      if (this.cooldownActive) return;
+      if (!nameKey || this.isNameSelected(nameKey) || !this.isNameEnabled(nameKey)) {
         return;
       }
       socket.emit(RequestSocketsEnum.USER_CHANGE_NAME_COLOR, {
-        colorname: name,
+        colorname: nameKey,
       });
+      this.triggerCooldown();
     },
-    isNameEnabled(name) {
-      return this.authUser.colornames ? this.authUser.colornames.includes(name) : true;
+    isNameEnabled(nameKey) {
+      return this.authUser.colornames ? this.authUser.colornames.includes(nameKey) : true;
     },
-    isNameSelected(name) {
-      return this.authUser.name_color === name;
+    isNameSelected(nameKey) {
+      return this.authUser.name_color === nameKey;
     },
-    onSelectShadow(shadow) {
+    onSelectShadow(shadowKey) {
+      if (this.cooldownActive) return;
       if (
-        !shadow ||
-        this.isShadowSelected(shadow) ||
-        !this.isShadowEnabled(shadow)
+        !shadowKey ||
+        this.isShadowSelected(shadowKey) ||
+        !this.isShadowEnabled(shadowKey)
       ) {
         return;
       }
       socket.emit(RequestSocketsEnum.USER_CHANGE_SHADOW_COLOR, {
-        shadow: shadow,
+        shadow: shadowKey,
       });
+      this.triggerCooldown();
     },
-    isShadowEnabled(shadow) {
-      return this.authUser.shadows ? this.authUser.shadows.includes(shadow) : true;
+    isShadowEnabled(shadowKey) {
+      return this.authUser.shadows ? this.authUser.shadows.includes(shadowKey) : true;
     },
-    isShadowSelected(shadow) {
-      return this.authUser.shadow_color === shadow;
+    isShadowSelected(shadowKey) {
+      return this.authUser.shadow_color === shadowKey;
+    },
+    triggerCooldown() {
+      if (this.cooldownActive) return;
+      this.cooldownActive = true;
+      setTimeout(() => {
+        this.cooldownActive = false;
+      }, 4000);
     },
   },
   mounted() {
@@ -328,6 +356,38 @@ export default {
   },
 };
 </script>
+
+<style>
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes clock-unwipe {
+  from {
+    --a: 0deg;
+  }
+  to {
+    --a: 360deg;
+  }
+}
+
+.cooldown-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    transparent var(--a),
+    rgba(255, 255, 255, 0.7) var(--a)
+  );
+  animation: clock-unwipe 2s linear forwards;
+  z-index: 1;
+  border-radius: 5px;
+}
+</style>
 
 <style scoped>
 .user-customization {
@@ -470,6 +530,12 @@ export default {
   box-sizing: border-box;
 }
 
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .user-customization__grid-item img{
   width: 100%;
   height: 100%;
@@ -491,6 +557,7 @@ export default {
   cursor: pointer;
   font-weight: bold;
   box-shadow: 1px 1px #0000004d;
+  z-index: 2;
 }
 
 .chat-grid .user-customization__grid-item {
