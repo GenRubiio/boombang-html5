@@ -5,13 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\MenuTypeEnum;
 use App\Http\Requests\PublicSceneRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Prologue\Alerts\Facades\Alert;
+
 
 class PublicSceneCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
+        store as traitStore;
+    }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
+        update as traitUpdate;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
 
     public function setup()
     {
@@ -26,7 +33,7 @@ class PublicSceneCrudController extends CrudController
         $this->crud->addColumn(['name' => 'name', 'label' => 'Nombre']);
         $this->crud->addColumn(['name' => 'type', 'label' => 'Tipo']);
         $this->crud->addColumn([
-            'name' => 'menu_type', 
+            'name' => 'menu_type',
             'label' => 'Tipo de menú',
             'type' => 'select_from_array',
             'options' => MenuTypeEnum::toAssociativeArray(),
@@ -69,6 +76,15 @@ class PublicSceneCrudController extends CrudController
                 'tab' => 'General'
             ],
             [
+                'name' => 'npc_id',
+                'label' => 'NPC Asociado',
+                'type' => 'select2',
+                'entity' => 'npc',
+                'model' => "App\Models\Npc",
+                'attribute' => 'name',
+                'tab' => 'General'
+            ],
+            [
                 'name' => 'active',
                 'label' => 'Activo',
                 'type' => 'checkbox',
@@ -85,37 +101,286 @@ class PublicSceneCrudController extends CrudController
                 'name' => 'map_width',
                 'label' => 'Ancho del mapa',
                 'type' => 'number',
-                'tab' => 'Mapa'
+                'tab' => 'Mapa',
+                'default' => 30
             ],
             [
                 'name' => 'map_height',
                 'label' => 'Alto del mapa',
                 'type' => 'number',
-                'tab' => 'Mapa'
+                'tab' => 'Mapa',
+                'default' => 30
             ],
             [
                 'name' => 'start_x',
                 'label' => 'Posición inicial X',
                 'type' => 'number',
-                'tab' => 'Mapa'
+                'tab' => 'Mapa',
+                'default' => 11
             ],
             [
                 'name' => 'start_y',
                 'label' => 'Posición inicial Y',
                 'type' => 'number',
-                'tab' => 'Mapa'
+                'tab' => 'Mapa',
+                'default' => 11
             ],
             [
                 'name' => 'start_z',
                 'label' => 'Posición inicial Z',
                 'type' => 'number',
-                'tab' => 'Mapa'
-            ]
+                'tab' => 'Mapa',
+                'default' => 4,
+                'attributes' => ["step" => "1", "min" => "0", "max" => "8"],
+            ],
+            [
+                'name' => 'assets_data_repeatable',
+                'label' => 'Assets',
+                'type' => 'repeatable',
+                'subfields' => [
+                    [
+                        'name' => 'position_x',
+                        'type' => 'number',
+                        'default' => 0,
+                        'label' => 'Position X',
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'position_y',
+                        'type' => 'number',
+                        'default' => 0,
+                        'label' => 'Position Y',
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'depth',
+                        'type' => 'number',
+                        'default' => 0,
+                        'label' => 'Depth',
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'image',
+                        'label' => 'Image',
+                        'type' => 'image',
+                        'disk'  => 'uploads',
+                        'upload' => true,
+                    ],
+                    [
+                        'name' => 'is_background',
+                        'label' => 'Is Background',
+                        'type' => 'radio',
+                        'options' => [
+                            1 => trans('backpack::crud.yes'),
+                            0 => trans('backpack::crud.no')
+                        ],
+                        'default' => 0,
+                        'inline' => true,
+                    ],
+                    [
+                        'name' => 'show_controller',
+                        'label' => 'Show Controller',
+                        'type' => 'radio',
+                        'options' => [
+                            1 => trans('backpack::crud.yes'),
+                            0 => trans('backpack::crud.no')
+                        ],
+                        'default' => 0,
+                        'inline' => true,
+                    ],
+                    [
+                        'name' => 'active',
+                        'label' => 'Activo',
+                        'type' => 'radio',
+                        'options' => [
+                            1 => trans('backpack::crud.yes'),
+                            0 => trans('backpack::crud.no')
+                        ],
+                        'default' => 1,
+                        'inline' => true,
+                    ]
+                ],
+                'new_item_label' => 'Add',
+                'reorder' => true,
+                'fake' => true,
+                'store_in' => 'assets_data',
+                'tab' => 'Assets Data',
+            ],
+            [
+                'name' => 'scene_items_pivot',
+                'label' => 'Items de la Escena',
+                'type' => 'repeatable',
+                'fake' => true,
+                'store_in' => 'scene_items_pivot',
+                'subfields' => [
+                    [
+                        'name' => 'scene_item_id',
+                        'label' => 'Item',
+                        'type' => 'select2',
+                        'model' => "App\Models\SceneItem",
+                        'attribute' => 'name',
+                        'wrapper' => ['class' => 'form-group col-md-12'],
+                    ],
+                    [
+                        'name' => 'activate_time',
+                        'label' => 'Tiempo de Activación',
+                        'type' => 'number',
+                        'default' => 180,
+                        'attributes' => ["step" => "1", "min" => "1"],
+                        'hint' => 'Tiempo en segundos que tarda el item en caer cundo se cumple la condición de mínimo de usuarios',
+                        'wrapper' => ['class' => 'form-group col-md-6'],
+                    ],
+                    [
+                        'name' => 'desactivate_time',
+                        'label' => 'Tiempo de Desactivación',
+                        'type' => 'number',
+                        'default' => 15,
+                        'attributes' => ["step" => "1", "min" => "1"],
+                        'hint' => 'Tiempo en segundos que tarda el item en desaparecer después de haber caído',
+                        'wrapper' => ['class' => 'form-group col-md-6'],
+                    ],
+                    [
+                        'name' => 'min_users',
+                        'label' => 'Mínimo de Usuarios',
+                        'type' => 'number',
+                        'default' => 1,
+                        'attributes' => ["step" => "1", "min" => "1"],
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'sum_points',
+                        'label' => 'Puntos a Sumar',
+                        'type' => 'number',
+                        'default' => 0,
+                        'attributes' => ["step" => "1"],
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'sum_points_to_user_attribute',
+                        'label' => 'Sumar Puntos a Atributo de Usuario',
+                        'type' => 'checkbox',
+                        'default' => false,
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'user_attribute_name',
+                        'label' => 'Nombre del Atributo de Usuario',
+                        'type' => 'text',
+                        'hint' => 'Solo se usa si "Sumar Puntos a Atributo de Usuario" está marcado',
+                        'wrapper' => ['class' => 'form-group col-md-12'],
+                    ],
+                ],
+                'new_item_label' => 'Añadir Item',
+                'reorder' => true,
+                'tab' => 'Items',
+            ],
         ]);
     }
 
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function store()
+    {
+        $this->crud->hasAccessOrFail('create');
+        
+        // Execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
+        
+        // Register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+        
+        // Insert item in the db
+        $item = $this->crud->create($this->crud->getStrippedSaveRequest($request));
+        $this->data['entry'] = $this->crud->entry = $item;
+        
+        // Handle scene_items_pivot relationship
+        $this->handleSceneItemsPivot($item, $request);
+        
+        // Show a success message
+        Alert::success(trans('backpack::crud.insert_success'))->flash();
+        
+        // Save the redirect choice for next time
+        $this->crud->setSaveAction();
+        
+        return $this->crud->performSaveAction($item->getKey());
+    }
+
+    public function update()
+    {
+        $this->crud->hasAccessOrFail('update');
+        
+        // Execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
+        
+        // Register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+        
+        // Update the row in the db
+        $item = $this->crud->update(
+            $request->get($this->crud->model->getKeyName()),
+            $this->crud->getStrippedSaveRequest($request)
+        );
+        $this->data['entry'] = $this->crud->entry = $item;
+        
+        // Handle scene_items_pivot relationship
+        $this->handleSceneItemsPivot($item, $request);
+        
+        // Show a success message
+        Alert::success(trans('backpack::crud.update_success'))->flash();
+        
+        // Save the redirect choice for next time
+        $this->crud->setSaveAction();
+        
+        return $this->crud->performSaveAction($item->getKey());
+    }
+
+    private function handleSceneItemsPivot($publicScene, $request)
+    {
+        $pivotData = $request->get('scene_items_pivot');
+        
+        if (!empty($pivotData)) {
+            if (is_string($pivotData)) {
+                $pivotData = json_decode($pivotData, true);
+            }
+            
+            if (is_array($pivotData)) {
+                $syncData = [];
+                foreach ($pivotData as $item) {
+                    if (isset($item['scene_item_id']) && !empty($item['scene_item_id'])) {
+                        $syncData[$item['scene_item_id']] = [
+                            'activate_time' => $item['activate_time'] ?? null,
+                            'desactivate_time' => $item['desactivate_time'] ?? null,
+                            'min_users' => $item['min_users'] ?? 1,
+                            'sum_points' => $item['sum_points'] ?? 0,
+                            'sum_points_to_user_attribute' => isset($item['sum_points_to_user_attribute']) ? (bool)$item['sum_points_to_user_attribute'] : false,
+                            'user_attribute_name' => $item['user_attribute_name'] ?? null,
+                        ];
+                    }
+                }
+                
+                // Sincronizar la relación
+                $publicScene->items()->sync($syncData);
+            }
+        } else {
+            // Si no hay datos, limpiar la relación
+            $publicScene->items()->sync([]);
+        }
+    }
+
+    protected function setupReorderOperation()
+    {
+        // define which model attribute will be shown on draggable elements
+        $this->crud->set('reorder.label', 'name');
+        // define how deep the admin is allowed to nest the items
+        // for infinite levels, set it to 0
+        $this->crud->set('reorder.max_level', 2);
+
+        // if you don't fully trust the input in your database, you can set 
+        // "escaped" to true, so that the label is escaped before being shown
+        // you can also enable it globally in config/backpack/operations/reorder.php
+        $this->crud->set('reorder.escaped', true);
     }
 }

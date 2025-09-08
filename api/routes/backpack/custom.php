@@ -28,6 +28,7 @@ Route::group([
     Route::crud('ranking-category', 'RankingCategoryCrudController');
     Route::crud('ranking', 'RankingCrudController');
     Route::crud('v-ranking-summary', 'VRankingSummaryCrudController');
+    Route::crud('npc', 'NpcCrudController');
 }); // this should be the absolute last line of this file
 
 /**

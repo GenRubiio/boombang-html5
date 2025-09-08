@@ -41,7 +41,7 @@ export default class PublicScene extends Phaser.Scene {
     }
 
     preload() {
-        PublicSceneLoader.main(this, this.sceneType, true); // Precargar imágenes específicas de la sala
+        PublicSceneLoader.main(this, true); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tile_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
@@ -70,7 +70,7 @@ export default class PublicScene extends Phaser.Scene {
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicSceneResponse.main(this); // Respuesta de la escena pública
 
-        PublicSceneLoader.main(this, this.sceneData.scenery.type, false);
+        PublicSceneLoader.main(this, false);
         CreateSceneController.main(this, this.sceneData); // Crear escena con jugadores
         this.vueComponent.$emit("updateLoading", false);
 

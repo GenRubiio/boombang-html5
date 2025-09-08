@@ -12,6 +12,8 @@ class PublicSceneResource extends Resource {
             map_cols: data.map_height,
             game_map: data.game_map,
             items: data.possible_items,
+            assets_data: data.assets_data,
+            npc: data.npc,
         };
     }
 }

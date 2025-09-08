@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SceneItemRequest extends FormRequest
+class NpcRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,12 @@ class SceneItemRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'file_name' => 'required',
-            'sprite_file' => 'required',
-            'text' => 'required',
+            'type' => 'required',
+            'stripe_name' => 'required',
+            'image' => 'required',
+            'position_x' => 'required|numeric',
+            'position_y' => 'required|numeric',
+            'depth' => 'required|numeric',
         ];
     }
 

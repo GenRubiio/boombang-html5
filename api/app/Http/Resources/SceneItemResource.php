@@ -24,6 +24,10 @@ class SceneItemResource extends JsonResource
             'id' => (int)$this->id,
             'name' => $this->name,
             'file_name' => $this->file_name,
+            'sprite_file' => $this->sprite_file,
+            'sprite_file_url' => urlDocker($this->sprite_file),
+            'catch_sprite_file' => $this->catch_sprite_file,
+            'catch_sprite_file_url' => urlDocker($this->catch_sprite_file),
             'catch_file_name' => $this->catch_file_name,
             'text' => $this->text,
             'points' => $this->whenPivotLoaded('public_scene_items', function () {

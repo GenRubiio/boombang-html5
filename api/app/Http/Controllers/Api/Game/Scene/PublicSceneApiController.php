@@ -20,7 +20,7 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
     public function get(Request $request): JsonResource
     {
         try {
-            $items = PublicScene::with('items')->where('menu_type', MenuTypeEnum::PUBLIC_SCENE->key())->get();
+            $items = PublicScene::with('items', 'npc')->where('menu_type', MenuTypeEnum::PUBLIC_SCENE->key())->get();
             return $this->successResponse(
                 [
                     'scenes' => PublicSceneResource::collection($items)

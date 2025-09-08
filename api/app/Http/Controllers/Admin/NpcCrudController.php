@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\SceneItemRequest;
+use App\Enums\NpcTypesEnum;
+use App\Http\Requests\NpcRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class SceneItemCrudController extends CrudController
+class NpcCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -14,9 +15,9 @@ class SceneItemCrudController extends CrudController
 
     public function setup()
     {
-        $this->crud->setModel(\App\Models\SceneItem::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/scene-item');
-        $this->crud->setEntityNameStrings('elemento de escena', 'elementos de escena');
+        $this->crud->setModel(\App\Models\Npc::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/npc');
+        $this->crud->setEntityNameStrings('npc', 'npcs');
     }
 
     protected function setupListOperation()
@@ -27,30 +28,29 @@ class SceneItemCrudController extends CrudController
             'type' => 'text',
         ]);
         $this->crud->addColumn([
+            'name' => 'image',
+            'label' => 'Imagen',
+            'type' => 'image',
+        ]);
+        $this->crud->addColumn([
             'name' => 'name',
             'label' => 'Nombre',
             'type' => 'text',
         ]);
         $this->crud->addColumn([
-            'name' => 'sprite_file',
-            'label' => 'Archivo Sprite',
-            'type' => 'image',
-        ]);
-        $this->crud->addColumn([
-            'name' => 'file_name',
-            'label' => 'Archivo',
+            'name' => 'type',
+            'label' => 'Tipo',
             'type' => 'text',
         ]);
         $this->crud->addColumn([
-            'name' => 'catch_file_name',
-            'label' => 'Archivo de Captura',
-            'type' => 'text',
+            'name' => 'position_x',
+            'label' => 'Posición X',
+            'type' => 'number',
         ]);
         $this->crud->addColumn([
-            'name' => 'text',
-            'label' => 'Texto',
-            'type' => 'text',
-            'limit' => 50,
+            'name' => 'position_y',
+            'label' => 'Posición Y',
+            'type' => 'number',
         ]);
         $this->crud->addColumn([
             'name' => 'active',
@@ -61,7 +61,7 @@ class SceneItemCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(SceneItemRequest::class);
+        $this->crud->setValidation(NpcRequest::class);
 
         $this->crud->addFields([
             [
@@ -71,37 +71,53 @@ class SceneItemCrudController extends CrudController
                 'tab' => 'General'
             ],
             [
-                'name' => 'file_name',
+                'name' => 'description',
+                'label' => 'Descripción',
+                'type' => 'ckeditor',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'type',
+                'label' => 'Tipo',
+                'type' => 'select_from_array',
+                'options' => NpcTypesEnum::toAssociativeArray(),
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'stripe_name',
                 'label' => 'Nombre del Sprite',
                 'type' => 'text',
                 'tab' => 'General'
             ],
             [
-                'name' => 'sprite_file',
-                'label' => 'Archivo Sprite',
+                'name' => 'image',
+                'label' => 'Imagen',
                 'type' => 'image',
+                'disk'  => 'uploads',
                 'upload' => true,
-                'disk' => 'uploads',
                 'tab' => 'General'
             ],
             [
-                'name' => 'catch_file_name',
-                'label' => 'Nombre del Sprite de Captura',
-                'type' => 'text',
+                'name' => 'position_x',
+                'label' => 'Posición X',
+                'type' => 'number',
+                'default' => 0,
+                'suffix' => 'px',
                 'tab' => 'General'
             ],
             [
-                'name' => 'catch_sprite_file',
-                'label' => 'Archivo Sprite de Captura',
-                'type' => 'image',
-                'upload' => true,
-                'disk' => 'uploads',
+                'name' => 'position_y',
+                'label' => 'Posición Y',
+                'type' => 'number',
+                'default' => 0,
+                'suffix' => 'px',
                 'tab' => 'General'
             ],
             [
-                'name' => 'text',
-                'label' => 'Texto',
-                'type' => 'text',
+                'name' => 'depth',
+                'label' => 'Profundidad',
+                'type' => 'number',
+                'default' => 0,
                 'tab' => 'General'
             ],
             [
