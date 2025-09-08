@@ -43,6 +43,9 @@ class PublicSceneCrudController extends CrudController
             'label' => 'Activo',
             'type' => 'check',
         ]);
+
+        // Add duplicate button
+        $this->crud->addButtonFromModelFunction('line', 'duplicate', 'duplicateButton', 'beginning');
     }
 
     protected function setupCreateOperation()
@@ -382,5 +385,84 @@ class PublicSceneCrudController extends CrudController
         // "escaped" to true, so that the label is escaped before being shown
         // you can also enable it globally in config/backpack/operations/reorder.php
         $this->crud->set('reorder.escaped', true);
+    }
+
+    public function duplicate($id)
+    {
+        $this->crud->hasAccessOrFail('create');
+        
+        // Get the original record
+        $original = $this->crud->model->findOrFail($id);
+        
+        // Create array with all attributes except id and timestamps
+        $attributes = $original->toArray();
+        unset($attributes['id']);
+        unset($attributes['created_at']);
+        unset($attributes['updated_at']);
+        
+        // Modify the name to indicate it's a duplicate
+        $attributes['name'] = $attributes['name'] . ' (Copia)';
+        
+        // Handle assets_data duplication with file copying
+        if (!empty($attributes['assets_data'])) {
+            $attributes['assets_data'] = $this->duplicateAssetsData($attributes['assets_data'], $attributes['name']);
+        }
+        
+        // Create the new record
+        $duplicate = $this->crud->model->create($attributes);
+        
+        // Handle pivot relationships - duplicate scene items relationships
+        if ($original->items()->exists()) {
+            $pivotData = [];
+            foreach ($original->items as $item) {
+                $pivotData[$item->id] = [
+                    'activate_time' => $item->pivot->activate_time,
+                    'desactivate_time' => $item->pivot->desactivate_time,
+                    'min_users' => $item->pivot->min_users,
+                    'sum_points' => $item->pivot->sum_points,
+                    'sum_points_to_user_attribute' => $item->pivot->sum_points_to_user_attribute,
+                    'user_attribute_name' => $item->pivot->user_attribute_name,
+                ];
+            }
+            $duplicate->items()->sync($pivotData);
+        }
+        
+        Alert::success('Registro duplicado exitosamente')->flash();
+        
+        return redirect($this->crud->route);
+    }
+    
+    private function duplicateAssetsData($assetsData, $newName)
+    {
+        if (is_string($assetsData)) {
+            $assetsData = json_decode($assetsData, true);
+        }
+        
+        if (!is_array($assetsData)) {
+            return $assetsData;
+        }
+        
+        $newAssetsData = $assetsData;
+        $newDestinationPath = "uploads/public-scene/" . \Illuminate\Support\Str::slug($newName) . "/assets";
+        
+        // Create new directory for duplicated assets
+        if (!\Illuminate\Support\Facades\File::exists($newDestinationPath)) {
+            \Illuminate\Support\Facades\File::makeDirectory($newDestinationPath, 0777, true, true);
+        }
+        
+        // Process each asset and copy files
+        foreach ($newAssetsData as $key => &$asset) {
+            if (isset($asset['image']) && !empty($asset['image']) && is_string($asset['image'])) {
+                $originalPath = $asset['image'];
+                if (\Illuminate\Support\Facades\File::exists($originalPath)) {
+                    $filename = basename($originalPath);
+                    $newPath = $newDestinationPath . '/' . $filename;
+                    \Illuminate\Support\Facades\File::copy($originalPath, $newPath);
+                    $asset['image'] = $newPath;
+                }
+            }
+        }
+        
+        return json_encode($newAssetsData);
     }
 }
