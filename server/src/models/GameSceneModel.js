@@ -9,6 +9,7 @@ class GameSceneModel extends SceneModel {
         this.uuid = uuid; // UUID único de la escena
         this.max_users = row.max_users; // Número máximo de usuarios permitidos en el área
         this.scene_type = SceneTypesEnum.GAME_SCENE;// Tipo de modelo
+        this.base_api_url = row.base_api_url ? row.base_api_url : ''; // URL base para los recursos
         this.assets_data = row.assets_data ? row.assets_data : []; // Datos de los assets en formato JSON,
         this.npc = row.npc ? new NpcModel(row.npc) : null; // Datos del NPC asociado a la escena
     }
