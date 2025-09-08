@@ -6,6 +6,7 @@ use App\Enums\CatalogItemTypesEnum;
 use App\Http\Requests\CatalogItemRequest;
 use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Illuminate\Support\Facades\Auth;
 
 class CatalogItemCrudController extends CrudController
 {
@@ -23,6 +24,31 @@ class CatalogItemCrudController extends CrudController
         $this->crud->setModel(\App\Models\CatalogItem::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/catalog-item');
         $this->crud->setEntityNameStrings('artículo de catálogo', 'artículos de catálogo');
+
+        $this->setupRoleBasedAccess();
+    }
+    
+    /**
+     * Setup role-based access control
+     */
+    protected function setupRoleBasedAccess()
+    {
+        $user = backpack_user();
+        
+        // Check if user has Superadmin role - full access
+        if ($user && $user->hasRole('Superadmin')) {
+            return; // Superadmin has full access, no restrictions
+        }
+        
+        // Check if user has Catalog role - restricted access
+        if ($user && $user->hasRole('Catalog')) {
+            // Restrict to only items created by this user
+            $this->crud->addClause('where', 'user_id', $user->id);
+            return;
+        }
+        
+        // If user doesn't have required roles, deny access
+        abort(403, 'No tienes permisos para acceder a esta sección.');
     }
 
     protected function setupListOperation()
@@ -60,10 +86,25 @@ class CatalogItemCrudController extends CrudController
             'label' => 'Activo',
             'type' => 'btnToggle',
         ]);
+        
+        // Add creator column for Superadmin users
+        if (backpack_user() && backpack_user()->hasRole('Superadmin')) {
+            $this->crud->addColumn([
+                'name' => 'user_id',
+                'label' => 'Creado por',
+                'type' => 'select',
+                'entity' => 'user',
+                'attribute' => 'name',
+                'model' => "App\Models\User",
+            ]);
+        }
     }
 
     protected function setupCreateOperation()
     {
+        // Check permissions for create operation
+        $this->checkCreatePermissions();
+        
         $this->crud->setValidation(CatalogItemRequest::class);
 
         $this->crud->addFields([
@@ -234,15 +275,32 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'Configuración'
             ]
         ]);
+        
+        // Add user_id field for Catalog users (hidden, auto-filled)
+        if (backpack_user() && backpack_user()->hasRole('Catalog')) {
+            $this->crud->addField([
+                'name' => 'user_id',
+                'type' => 'hidden',
+                'value' => Auth::id()
+            ]);
+        }
     }
 
     protected function setupUpdateOperation()
     {
+        // Check permissions for update operation
+        $this->checkUpdatePermissions();
+        
         $this->setupCreateOperation();
     }
 
     protected function store()
     {
+        // Ensure user_id is set for Catalog users
+        if (backpack_user() && backpack_user()->hasRole('Catalog')) {
+            $this->crud->getRequest()->merge(['user_id' => Auth::id()]);
+        }
+        
         $response = $this->traitStore();
         storeReplicateOtherLocales($this->crud);
         if ($this->crud->getRequest()->get('ai_translate')) {
@@ -258,5 +316,88 @@ class CatalogItemCrudController extends CrudController
             app(GeminiAiService::class)->translate($this->crud->entry);
         }
         return $response;
+    }
+    
+    /**
+     * Check permissions for create operation
+     */
+    protected function checkCreatePermissions()
+    {
+        $user = backpack_user();
+        
+        if (!$user) {
+            abort(403, 'Debes estar autenticado.');
+        }
+        
+        // Superadmin can create
+        if ($user->hasRole('Superadmin')) {
+            return;
+        }
+        
+        // Catalog users can create
+        if ($user->hasRole('Catalog')) {
+            return;
+        }
+        
+        abort(403, 'No tienes permisos para crear artículos de catálogo.');
+    }
+    
+    /**
+     * Check permissions for update operation
+     */
+    protected function checkUpdatePermissions()
+    {
+        $user = backpack_user();
+        
+        if (!$user) {
+            abort(403, 'Debes estar autenticado.');
+        }
+        
+        // Superadmin can update any item
+        if ($user->hasRole('Superadmin')) {
+            return;
+        }
+        
+        // Catalog users can only update their own items
+        if ($user->hasRole('Catalog')) {
+            $itemId = $this->crud->getCurrentEntryId();
+            if ($itemId) {
+                $item = $this->crud->getModel()->find($itemId);
+                if (!$item || $item->user_id !== $user->id) {
+                    abort(403, 'Solo puedes modificar artículos que has creado.');
+                }
+            }
+            return;
+        }
+        
+        abort(403, 'No tienes permisos para modificar artículos de catálogo.');
+    }
+    
+    /**
+     * Override destroy method to check delete permissions
+     */
+    public function destroy($id)
+    {
+        $user = backpack_user();
+        
+        if (!$user) {
+            abort(403, 'Debes estar autenticado.');
+        }
+        
+        // Superadmin can delete any item
+        if ($user->hasRole('Superadmin')) {
+            return $this->crud->delete($id);
+        }
+        
+        // Catalog users can only delete their own items
+        if ($user->hasRole('Catalog')) {
+            $item = $this->crud->getModel()->find($id);
+            if (!$item || $item->user_id !== $user->id) {
+                abort(403, 'Solo puedes eliminar artículos que has creado.');
+            }
+            return $this->crud->delete($id);
+        }
+        
+        abort(403, 'No tienes permisos para eliminar artículos de catálogo.');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CatalogCategoryRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class CatalogCategoryCrudController extends CrudController
 {
@@ -11,9 +12,12 @@ class CatalogCategoryCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use SuperadminProtection;
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+        
         $this->crud->setModel(\App\Models\CatalogCategory::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/catalog-category');
         $this->crud->setEntityNameStrings('categoría de catálogo', 'categorías de catálogo');

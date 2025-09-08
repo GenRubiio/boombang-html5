@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RankingCategoryRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -14,6 +15,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 class RankingCategoryCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
@@ -26,6 +28,8 @@ class RankingCategoryCrudController extends CrudController
      */
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         CRUD::setModel(\App\Models\RankingCategory::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/ranking-category');
         CRUD::setEntityNameStrings('ranking category', 'ranking categories');

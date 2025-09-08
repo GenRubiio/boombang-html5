@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Spatie\Permission\PermissionRegistrar;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use Backpack\PermissionManager\app\Http\Requests\PermissionStoreCrudRequest as StoreRequest;
 use Backpack\PermissionManager\app\Http\Requests\PermissionUpdateCrudRequest as UpdateRequest;
-use Spatie\Permission\PermissionRegistrar;
 
 // VALIDATION
 
@@ -15,12 +16,15 @@ class PermissionCrudController extends CrudController
     protected string $permission_model;
 
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->role_model = $role_model = config('backpack.permissionmanager.models.role');
         $this->permission_model = $permission_model = config('backpack.permissionmanager.models.permission');
 
