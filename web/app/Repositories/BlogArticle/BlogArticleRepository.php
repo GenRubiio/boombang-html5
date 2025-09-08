@@ -16,14 +16,14 @@ class BlogArticleRepository extends Repository implements BlogArticleRepositoryI
 
     public function getIndexData()
     {
-        return cache()->remember($this->modelCamel . '.'  . $this->model->id . __FUNCTION__ . '.' . LaravelLocalization::getCurrentLocale(), $this->defaultTtl, function () {
+        return cache()->remember($this->modelCamel . __FUNCTION__ . '.' . LaravelLocalization::getCurrentLocale(), $this->defaultTtl, function () {
             return $this->model->published()->datePast()->limit($this->limit)->get();
         });
     }
 
     public function getBlogArticle($slug)
     {
-        return cache()->remember($this->modelCamel . '.' . $this->model->id . '.' . __FUNCTION__ . '.' . LaravelLocalization::getCurrentLocale(), $this->defaultTtl, function () use ($slug) {
+        return cache()->remember($this->modelCamel . '.' . $slug . '.' . __FUNCTION__ . '.' . LaravelLocalization::getCurrentLocale(), $this->defaultTtl, function () use ($slug) {
             return $this->model->published()->datePast()->whereSlug($slug)->firstOrFail();
         });
     }
