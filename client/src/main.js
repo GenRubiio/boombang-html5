@@ -5,6 +5,7 @@ import socket from "./sockets/socket";
 import { createPinia } from "pinia";
 import i18n, { setI18nLanguage, setupI18nSync } from "./plugins/i18n";
 import { useLanguageStore } from "./stores/languageStore";
+//import SocketDebugUtil from "./utils/SocketDebugUtil";
 
 const initializeApp = async () => {
   const app = createApp(App);
@@ -22,6 +23,10 @@ const initializeApp = async () => {
 
   app.config.globalProperties.$socket = socket;
   app.mount("#app");
+
+  //setInterval(() => {
+  //  SocketDebugUtil.fullAudit();
+  //}, 5000);
 };
 
 initializeApp();
