@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\SlideTypeEnum;
 use App\Http\Requests\SlideRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class SlideCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
@@ -18,9 +20,8 @@ class SlideCrudController extends CrudController
 
     public function setup()
     {
-        if (!isAdminOrSuperadmin()) {
-            abort(403);
-        }
+        $this->applySuperadminProtection();
+
 
         $this->crud->setModel(\App\Models\Slide::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/slide');

@@ -9,9 +9,11 @@ use App\Traits\PageTemplates;
 use App\Http\Requests\PageRequest;
 use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class PageCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
@@ -24,6 +26,8 @@ class PageCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel(config('backpack.pagemanager.page_model_class', 'Backpack\PageManager\app\Models\Page'));
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/page');
         $this->crud->setEntityNameStrings(trans('backpack::pagemanager.page'), trans('backpack::pagemanager.pages'));
@@ -32,9 +36,6 @@ class PageCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        if (!backpack_user()->hasRole('Superadmin')) {
-            $this->crud->removeButton('create');
-        }
 
         $this->crud->setDefaultPageLength(25);
         $this->crud->setOperationSetting('lineButtonsAsDropdown', false);

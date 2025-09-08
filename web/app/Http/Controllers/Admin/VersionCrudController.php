@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\VersionCreateRequest;
 use App\Http\Requests\VersionUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class VersionCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
@@ -17,6 +19,8 @@ class VersionCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel(\App\Models\Version::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/version');
         $this->crud->setEntityNameStrings('versión', 'versiones');

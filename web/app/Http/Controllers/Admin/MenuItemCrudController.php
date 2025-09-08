@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\MenuItemRequest;
 use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use App\Http\Controllers\Admin\Operations\ReorderMenuTopOperation;
 use App\Http\Controllers\Admin\Operations\ReorderMenuLegalOperation;
 use App\Http\Controllers\Admin\Operations\ReorderMenuFooterOperation;
 
 class MenuItemCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
@@ -26,6 +28,8 @@ class MenuItemCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel("App\Models\MenuItem");
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/menu-item');
         $this->crud->setEntityNameStrings('menu item', 'menu items');

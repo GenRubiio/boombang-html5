@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 class SettingCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
@@ -18,9 +20,8 @@ class SettingCrudController extends CrudController
 
     public function setup()
     {
-        if (!backpack_user()->hasRole('Superadmin')) {
-            abort(403);
-        }
+        $this->applySuperadminProtection();
+
 
         $this->crud->setModel("App\Models\Setting");
         $this->crud->setEntityNameStrings(

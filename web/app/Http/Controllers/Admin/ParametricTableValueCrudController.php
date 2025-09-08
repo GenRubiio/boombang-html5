@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Requests\ParametricTableValueCreateRequest;
 use App\Models\ParametricTable;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class ParametricTableValueCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -23,6 +25,8 @@ class ParametricTableValueCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel(ParametricTableValue::class);
         $this->parametricTableId = Route::current()->parameter('parametric_table_id');
         $this->crud->setRoute('admin/parametric-table/' . $this->parametricTableId . '/parametric-table-value');

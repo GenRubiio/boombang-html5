@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\File;
 use Backpack\LangFileManager\app\Models\Language;
 use Backpack\LangFileManager\app\Services\LangFiles;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use Backpack\LangFileManager\app\Http\Requests\LanguageRequest;
 
 class LanguageCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
@@ -28,6 +30,8 @@ class LanguageCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel("App\Models\Language");
         $this->crud->setRoute(config('backpack.base.route_prefix', 'admin') . '/language');
         $this->crud->setEntityNameStrings(trans('backpack::langfilemanager.language'), trans('backpack::langfilemanager.languages'));
@@ -160,7 +164,7 @@ class LanguageCrudController extends CrudController
                     'success' => ''
                 ]);
             }
-        } catch (GenericException|Exception $e) {
+        } catch (GenericException | Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ]);
@@ -209,7 +213,7 @@ class LanguageCrudController extends CrudController
             return response()->json([
                 'success' => ''
             ]);
-        } catch (GenericException|Exception $e) {
+        } catch (GenericException | Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ]);

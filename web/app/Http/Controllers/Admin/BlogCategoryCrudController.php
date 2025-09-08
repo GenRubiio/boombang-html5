@@ -19,6 +19,15 @@ class BlogCategoryCrudController extends CrudController
 
     public function setup()
     {
+        if (!backpack_user()->check()) {
+            abort(401, 'No has iniciado sesión.');
+        }
+
+        if (!backpack_user()->hasRole(['Superadmin', 'Blog'])) {
+            $this->crud->denyAccess(['list', 'create', 'update', 'delete', 'show']);
+            abort(403, 'No tienes permisos para acceder a esta sección.');
+        }
+
         $this->crud->setModel("App\Models\BlogCategory");
         $this->crud->setRoute(config('backpack.base.route_prefix', 'admin') . '/blog-category');
         $this->crud->setEntityNameStrings('categoría blog', 'categorías blog');

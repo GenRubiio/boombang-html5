@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\CookieCategoriesEnum;
 use App\Http\Requests\CookieRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 class CookieCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -17,6 +19,8 @@ class CookieCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         CRUD::setModel(\App\Models\Cookie::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/cookie');
         CRUD::setEntityNameStrings(trans('admin.cookie'), trans('admin.cookies'));

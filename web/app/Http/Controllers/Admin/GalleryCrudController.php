@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\GalleryRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class GalleryCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     //use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     //use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -17,6 +19,8 @@ class GalleryCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel('App\Models\Gallery');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/gallery');
         $this->crud->setEntityNameStrings('galería', 'galerías');

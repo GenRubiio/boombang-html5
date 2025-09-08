@@ -9,10 +9,12 @@ use Prologue\Alerts\Facades\Alert;
 use App\Exceptions\GenericException;
 use App\Http\Requests\ParametricTableRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use App\Tasks\ParametricTables\CreateParamTableValueTask;
 
 class ParametricTableCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
@@ -22,13 +24,12 @@ class ParametricTableCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel(\App\Models\ParametricTable::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/parametric-table');
         $this->crud->setEntityNameStrings('tabla paramétrica', 'tablas paramétricas');
 
-        if (!isSuperAdmin()) {
-            abort(403);
-        }
         if (env('APP_ENV') != 'local') {
             $this->crud->removeButton('delete');
         }
@@ -173,7 +174,7 @@ class ParametricTableCrudController extends CrudController
         try {
             (new CreateParamTableValueTask($tableName, $createModel, $createBackpackCrud, $createHexagonalStructure))->run();
             return $this->traitStore();
-        } catch (GenericException|Exception $e) {
+        } catch (GenericException | Exception $e) {
             Alert::add('error', $e->getMessage())->flash();
             return back();
         }

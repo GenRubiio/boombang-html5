@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class LeadCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setup()
     {
-        if (!isAdminOrSuperadmin()) {
-            abort(403);
-        }
+        $this->applySuperadminProtection();
+
 
         $this->crud->setModel(\App\Models\Lead::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/lead');

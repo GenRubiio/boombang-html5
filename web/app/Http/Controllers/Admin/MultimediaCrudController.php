@@ -6,9 +6,11 @@ use App\Http\Requests\MultimediaCreateRequest;
 use App\Http\Requests\MultimediaUpdateRequest;
 use App\Models\Multimedia;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class MultimediaCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -17,9 +19,8 @@ class MultimediaCrudController extends CrudController
 
     public function setup()
     {
-        if (!isAdminOrSuperadmin()) {
-            abort(403);
-        }
+        $this->applySuperadminProtection();
+
 
         $this->crud->setModel(\App\Models\Multimedia::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/multimedia');
