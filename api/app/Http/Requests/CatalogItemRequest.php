@@ -26,12 +26,14 @@ class CatalogItemRequest extends FormRequest
     {
         $rules = [
             'name' => 'required',
+            'category_id' => 'required|exists:catalog_categories,id',
             'description' => 'required',
             'sprite_name' => 'required|unique:catalog_items,sprite_name,' . $this->route('id') . ',id',
             'image' => 'required',
             'atlas' => 'nullable|json',
             'price' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0|max:100',
+            'spreadsheet' => 'required',
         ];
 
         return $rules;
