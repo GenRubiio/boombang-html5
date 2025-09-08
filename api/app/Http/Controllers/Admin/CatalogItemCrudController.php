@@ -27,26 +27,26 @@ class CatalogItemCrudController extends CrudController
 
         $this->setupRoleBasedAccess();
     }
-    
+
     /**
      * Setup role-based access control
      */
     protected function setupRoleBasedAccess()
     {
         $user = backpack_user();
-        
+
         // Check if user has Superadmin role - full access
         if ($user && $user->hasRole('Superadmin')) {
             return; // Superadmin has full access, no restrictions
         }
-        
+
         // Check if user has Catalog role - restricted access
         if ($user && $user->hasRole('Catalog')) {
             // Restrict to only items created by this user
             $this->crud->addClause('where', 'user_id', $user->id);
             return;
         }
-        
+
         // If user doesn't have required roles, deny access
         abort(403, 'No tienes permisos para acceder a esta sección.');
     }
@@ -86,7 +86,7 @@ class CatalogItemCrudController extends CrudController
             'label' => 'Activo',
             'type' => 'btnToggle',
         ]);
-        
+
         // Add creator column for Superadmin users
         if (backpack_user() && backpack_user()->hasRole('Superadmin')) {
             $this->crud->addColumn([
@@ -104,7 +104,7 @@ class CatalogItemCrudController extends CrudController
     {
         // Check permissions for create operation
         $this->checkCreatePermissions();
-        
+
         $this->crud->setValidation(CatalogItemRequest::class);
 
         $this->crud->addFields([
@@ -133,6 +133,7 @@ class CatalogItemCrudController extends CrudController
                 'name' => 'sprite_name',
                 'label' => 'Nombre del Sprite',
                 'type' => 'text',
+                'hint' => 'El nombre del sprite debe ser único y se usará para referenciar este objeto en el juego.<br>Ejemplo: "tree_01", "house_red", etc.',
                 'tab' => 'General'
             ],
             [
@@ -141,6 +142,7 @@ class CatalogItemCrudController extends CrudController
                 'type' => 'image',
                 'disk'  => 'uploads',
                 'upload' => true,
+                'hint' => 'Esta imagen se usará como vista previa en el catálogo.',
                 'tab' => 'General'
             ],
             [
@@ -148,6 +150,8 @@ class CatalogItemCrudController extends CrudController
                 'label' => 'Phaser Spreadsheet',
                 'type' => 'upload',
                 'upload' => true,
+                'hint' => 'Spreadsheet exportado desde TexturePacker o la imagen del objeto sin perder calidad.<br>Formatos soportados: WEBP, WEBM',
+                'wrapper' => ['class' => 'form-group col-md-6'],
                 'tab' => 'General'
             ],
             [
@@ -155,6 +159,8 @@ class CatalogItemCrudController extends CrudController
                 'label' => 'Phaser Atlas',
                 'type' => 'upload',
                 'upload' => true,
+                'hint' => 'Atlas exportado desde TexturePacker en formato JSON Hash.',
+                'wrapper' => ['class' => 'form-group col-md-6'],
                 'tab' => 'General'
             ],
             [
@@ -163,6 +169,8 @@ class CatalogItemCrudController extends CrudController
                 'type' => 'number',
                 'default' => null,
                 'suffix' => 'px',
+                'hint' => 'Ancho del objeto en píxeles. Dejar en blanco para usar el ancho original de la imagen.',
+                'wrapper' => ['class' => 'form-group col-md-6'],
                 'tab' => 'General'
             ],
             [
@@ -171,6 +179,8 @@ class CatalogItemCrudController extends CrudController
                 'type' => 'number',
                 'default' => null,
                 'suffix' => 'px',
+                'hint' => 'Alto del objeto en píxeles. Dejar en blanco para usar el alto original de la imagen.',
+                'wrapper' => ['class' => 'form-group col-md-6'],
                 'tab' => 'General'
             ],
             [
@@ -202,6 +212,7 @@ class CatalogItemCrudController extends CrudController
                 'label' => 'Tipo',
                 'type' => 'select_from_array',
                 'options' => CatalogItemTypesEnum::toAssociativeArray(),
+                'hint' => 'El tipo de artículo determina cómo se comporta en el juego.',
                 'tab' => 'Configuración'
             ],
             [
@@ -215,12 +226,15 @@ class CatalogItemCrudController extends CrudController
                     4 => '4 Estrellas',
                     5 => '5 Estrellas',
                 ],
+                'hint' => 'Clasificación del artículo. Afecta su rareza y valor en el juego.',
                 'tab' => 'Configuración'
             ],
             [
                 'name' => 'map_size',
                 'label' => 'Tamaño del Mapa',
                 'type' => 'text',
+                'default' => '[[0, 0]]',
+                'hint' => 'Define las celdas que ocupa el objeto en el mapa. Formato: [[x1, y1], [x2, y2], ...] donde cada par representa una celda ocupada.<br>Ejemplo para un objeto que ocupa 2x2 celdas: [[0, 0], [0, 1], [1, 0], [1, 1]]',
                 'tab' => 'Configuración'
             ],
             [
@@ -233,12 +247,14 @@ class CatalogItemCrudController extends CrudController
                     'name' => 'Name',
                     'shadow' => 'Shadow',
                 ],
+                'hint' => 'Tipo de decoración que este artículo proporciona al usuario.<br>Dejar en blanco si no es una decoración.',
                 'tab' => 'Configuración'
             ],
             [
                 'name' => 'user_decoration_value',
                 'label' => 'Valor de Decoración de Usuario',
                 'type' => 'text',
+                'hint' => 'Valor asociado a la decoración del usuario. Por ejemplo, el nombre del sprite para una ficha o el color para el chat.<br>Dejar en blanco si no es una decoración.',
                 'tab' => 'Configuración'
             ],
             [
@@ -275,7 +291,7 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'Configuración'
             ]
         ]);
-        
+
         // Add user_id field for Catalog users (hidden, auto-filled)
         if (backpack_user() && backpack_user()->hasRole('Catalog')) {
             $this->crud->addField([
@@ -290,7 +306,7 @@ class CatalogItemCrudController extends CrudController
     {
         // Check permissions for update operation
         $this->checkUpdatePermissions();
-        
+
         $this->setupCreateOperation();
     }
 
@@ -300,7 +316,7 @@ class CatalogItemCrudController extends CrudController
         if (backpack_user() && backpack_user()->hasRole('Catalog')) {
             $this->crud->getRequest()->merge(['user_id' => Auth::id()]);
         }
-        
+
         $response = $this->traitStore();
         storeReplicateOtherLocales($this->crud);
         if ($this->crud->getRequest()->get('ai_translate')) {
@@ -317,47 +333,47 @@ class CatalogItemCrudController extends CrudController
         }
         return $response;
     }
-    
+
     /**
      * Check permissions for create operation
      */
     protected function checkCreatePermissions()
     {
         $user = backpack_user();
-        
+
         if (!$user) {
             abort(403, 'Debes estar autenticado.');
         }
-        
+
         // Superadmin can create
         if ($user->hasRole('Superadmin')) {
             return;
         }
-        
+
         // Catalog users can create
         if ($user->hasRole('Catalog')) {
             return;
         }
-        
+
         abort(403, 'No tienes permisos para crear artículos de catálogo.');
     }
-    
+
     /**
      * Check permissions for update operation
      */
     protected function checkUpdatePermissions()
     {
         $user = backpack_user();
-        
+
         if (!$user) {
             abort(403, 'Debes estar autenticado.');
         }
-        
+
         // Superadmin can update any item
         if ($user->hasRole('Superadmin')) {
             return;
         }
-        
+
         // Catalog users can only update their own items
         if ($user->hasRole('Catalog')) {
             $itemId = $this->crud->getCurrentEntryId();
@@ -369,26 +385,26 @@ class CatalogItemCrudController extends CrudController
             }
             return;
         }
-        
+
         abort(403, 'No tienes permisos para modificar artículos de catálogo.');
     }
-    
+
     /**
      * Override destroy method to check delete permissions
      */
     public function destroy($id)
     {
         $user = backpack_user();
-        
+
         if (!$user) {
             abort(403, 'Debes estar autenticado.');
         }
-        
+
         // Superadmin can delete any item
         if ($user->hasRole('Superadmin')) {
             return $this->crud->delete($id);
         }
-        
+
         // Catalog users can only delete their own items
         if ($user->hasRole('Catalog')) {
             $item = $this->crud->getModel()->find($id);
@@ -397,7 +413,7 @@ class CatalogItemCrudController extends CrudController
             }
             return $this->crud->delete($id);
         }
-        
+
         abort(403, 'No tienes permisos para eliminar artículos de catálogo.');
     }
 }
