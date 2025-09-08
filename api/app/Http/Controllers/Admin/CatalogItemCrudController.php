@@ -6,7 +6,6 @@ use App\Enums\CatalogItemTypesEnum;
 use App\Http\Requests\CatalogItemRequest;
 use App\Services\External\GeminiAiService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Illuminate\Support\Facades\Auth;
 
 class CatalogItemCrudController extends CrudController
 {
@@ -292,12 +291,11 @@ class CatalogItemCrudController extends CrudController
             ]
         ]);
 
-        // Add user_id field for Catalog users (hidden, auto-filled)
         if (backpack_user() && backpack_user()->hasRole('Catalog')) {
             $this->crud->addField([
                 'name' => 'user_id',
                 'type' => 'hidden',
-                'value' => Auth::id()
+                'value' => backpack_user()->id,
             ]);
         }
     }
@@ -314,7 +312,7 @@ class CatalogItemCrudController extends CrudController
     {
         // Ensure user_id is set for Catalog users
         if (backpack_user() && backpack_user()->hasRole('Catalog')) {
-            $this->crud->getRequest()->merge(['user_id' => Auth::id()]);
+            $this->crud->getRequest()->merge(['user_id' => backpack_user()->id]);
         }
 
         $response = $this->traitStore();
