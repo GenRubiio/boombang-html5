@@ -22,6 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
         
+        $middleware->alias([
+            'superadmin' => \App\Http\Middleware\EnsureUserIsSuperadmin::class,
+        ]);
+
         $middleware->redirectGuestsTo(function (Request $request) {
             if ($request->is('api/*')) {
                 return response()->json(['message' => 'Unauthorized'], 401);

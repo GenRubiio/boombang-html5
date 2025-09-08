@@ -5,16 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\NpcTypesEnum;
 use App\Http\Requests\NpcRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 class NpcCrudController extends CrudController
 {
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+        
         $this->crud->setModel(\App\Models\Npc::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/npc');
         $this->crud->setEntityNameStrings('npc', 'npcs');

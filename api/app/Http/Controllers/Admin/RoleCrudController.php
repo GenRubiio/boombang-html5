@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
+
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\PermissionManager\app\Http\Requests\RoleStoreCrudRequest as StoreRequest;
 use Backpack\PermissionManager\app\Http\Requests\RoleUpdateCrudRequest as UpdateRequest;
@@ -11,16 +13,20 @@ use Spatie\Permission\PermissionRegistrar;
 
 class RoleCrudController extends CrudController
 {
+    use SuperadminProtection;
     protected string $role_model;
     protected string $permission_model;
 
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+        
         $this->role_model = $role_model = config('backpack.permissionmanager.models.role');
         $this->permission_model = $permission_model = config('backpack.permissionmanager.models.permission');
 
@@ -67,10 +73,10 @@ class RoleCrudController extends CrudController
             'name'      => 'users_count',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, $related_key) {
-                    return backpack_url('user?role='.$entry->getKey());
+                    return backpack_url('user?role=' . $entry->getKey());
                 },
             ],
-            'suffix'    => ' '.strtolower(trans('backpack::permissionmanager.users')),
+            'suffix'    => ' ' . strtolower(trans('backpack::permissionmanager.users')),
         ]);
 
         /**

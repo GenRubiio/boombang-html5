@@ -29,6 +29,7 @@ class CatalogItem extends Model
 
     protected $fillable = [
         'category_id',
+        'user_id',
         'name',
         'sprite_name',
         'image',
@@ -81,6 +82,11 @@ class CatalogItem extends Model
     public function category()
     {
         return $this->belongsTo(CatalogCategory::class, 'category_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /*

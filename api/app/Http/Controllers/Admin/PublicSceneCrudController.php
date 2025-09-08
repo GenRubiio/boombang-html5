@@ -6,11 +6,13 @@ use App\Enums\MenuTypeEnum;
 use App\Http\Requests\PublicSceneRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Prologue\Alerts\Facades\Alert;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 
 class PublicSceneCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
     }
@@ -22,6 +24,8 @@ class PublicSceneCrudController extends CrudController
 
     public function setup()
     {
+        $this->applySuperadminProtection();
+
         $this->crud->setModel(\App\Models\PublicScene::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/public-scene');
         $this->crud->setEntityNameStrings('escena pública', 'escenas públicas');
@@ -288,67 +292,67 @@ class PublicSceneCrudController extends CrudController
     public function store()
     {
         $this->crud->hasAccessOrFail('create');
-        
+
         // Execute the FormRequest authorization and validation, if one is required
         $request = $this->crud->validateRequest();
-        
+
         // Register any Model Events defined on fields
         $this->crud->registerFieldEvents();
-        
+
         // Insert item in the db
         $item = $this->crud->create($this->crud->getStrippedSaveRequest($request));
         $this->data['entry'] = $this->crud->entry = $item;
-        
+
         // Handle scene_items_pivot relationship
         $this->handleSceneItemsPivot($item, $request);
-        
+
         // Show a success message
         Alert::success(trans('backpack::crud.insert_success'))->flash();
-        
+
         // Save the redirect choice for next time
         $this->crud->setSaveAction();
-        
+
         return $this->crud->performSaveAction($item->getKey());
     }
 
     public function update()
     {
         $this->crud->hasAccessOrFail('update');
-        
+
         // Execute the FormRequest authorization and validation, if one is required
         $request = $this->crud->validateRequest();
-        
+
         // Register any Model Events defined on fields
         $this->crud->registerFieldEvents();
-        
+
         // Update the row in the db
         $item = $this->crud->update(
             $request->get($this->crud->model->getKeyName()),
             $this->crud->getStrippedSaveRequest($request)
         );
         $this->data['entry'] = $this->crud->entry = $item;
-        
+
         // Handle scene_items_pivot relationship
         $this->handleSceneItemsPivot($item, $request);
-        
+
         // Show a success message
         Alert::success(trans('backpack::crud.update_success'))->flash();
-        
+
         // Save the redirect choice for next time
         $this->crud->setSaveAction();
-        
+
         return $this->crud->performSaveAction($item->getKey());
     }
 
     private function handleSceneItemsPivot($publicScene, $request)
     {
         $pivotData = $request->get('scene_items_pivot');
-        
+
         if (!empty($pivotData)) {
             if (is_string($pivotData)) {
                 $pivotData = json_decode($pivotData, true);
             }
-            
+
             if (is_array($pivotData)) {
                 $syncData = [];
                 foreach ($pivotData as $item) {
@@ -363,7 +367,7 @@ class PublicSceneCrudController extends CrudController
                         ];
                     }
                 }
-                
+
                 // Sincronizar la relación
                 $publicScene->items()->sync($syncData);
             }
@@ -390,27 +394,27 @@ class PublicSceneCrudController extends CrudController
     public function duplicate($id)
     {
         $this->crud->hasAccessOrFail('create');
-        
+
         // Get the original record
         $original = $this->crud->model->findOrFail($id);
-        
+
         // Create array with all attributes except id and timestamps
         $attributes = $original->toArray();
         unset($attributes['id']);
         unset($attributes['created_at']);
         unset($attributes['updated_at']);
-        
+
         // Modify the name to indicate it's a duplicate
         $attributes['name'] = $attributes['name'] . ' (Copia)';
-        
+
         // Handle assets_data duplication with file copying
         if (!empty($attributes['assets_data'])) {
             $attributes['assets_data'] = $this->duplicateAssetsData($attributes['assets_data'], $attributes['name']);
         }
-        
+
         // Create the new record
         $duplicate = $this->crud->model->create($attributes);
-        
+
         // Handle pivot relationships - duplicate scene items relationships
         if ($original->items()->exists()) {
             $pivotData = [];
@@ -426,30 +430,30 @@ class PublicSceneCrudController extends CrudController
             }
             $duplicate->items()->sync($pivotData);
         }
-        
+
         Alert::success('Registro duplicado exitosamente')->flash();
-        
+
         return redirect($this->crud->route);
     }
-    
+
     private function duplicateAssetsData($assetsData, $newName)
     {
         if (is_string($assetsData)) {
             $assetsData = json_decode($assetsData, true);
         }
-        
+
         if (!is_array($assetsData)) {
             return $assetsData;
         }
-        
+
         $newAssetsData = $assetsData;
         $newDestinationPath = "uploads/public-scene/" . \Illuminate\Support\Str::slug($newName) . "/assets";
-        
+
         // Create new directory for duplicated assets
         if (!\Illuminate\Support\Facades\File::exists($newDestinationPath)) {
             \Illuminate\Support\Facades\File::makeDirectory($newDestinationPath, 0777, true, true);
         }
-        
+
         // Process each asset and copy files
         foreach ($newAssetsData as $key => &$asset) {
             if (isset($asset['image']) && !empty($asset['image']) && is_string($asset['image'])) {
@@ -462,7 +466,7 @@ class PublicSceneCrudController extends CrudController
                 }
             }
         }
-        
+
         return json_encode($newAssetsData);
     }
 }
