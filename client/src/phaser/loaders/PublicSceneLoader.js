@@ -5,7 +5,7 @@ class PublicSceneLoader {
         const areaId = gameScene.sceneData.scenery.id;
         const assets = gameScene.sceneData.scenery.assets_data.assets_data_repeatable || [];
         const npc = gameScene.sceneData.scenery.npc;
-        const baseApiUrl = gameScene.sceneData.base_api_url;
+        const baseApiUrl = gameScene.sceneData.scenery.base_api_url + '/';
 
         if (preload) {
             this.#preload(areaId, assets, npc, gameScene, baseApiUrl);
