@@ -232,4 +232,21 @@ class PublicScene extends Model
         return [];
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | CUSTOM BUTTONS
+    |--------------------------------------------------------------------------
+    */
+
+    public function duplicateButton($crud = false)
+    {
+        return '<a class="btn btn-sm btn-link" 
+                   href="' . url($crud->route . '/' . $this->getKey() . '/duplicate') . '" 
+                   data-toggle="tooltip" 
+                   title="Duplicar registro"
+                   onclick="return confirm(\'¿Estás seguro de que quieres duplicar este registro?\')">
+                   <i class="la la-copy"></i> Duplicar
+                </a>';
+    }
+
 }

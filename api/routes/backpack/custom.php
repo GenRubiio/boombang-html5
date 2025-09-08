@@ -17,6 +17,7 @@ Route::group([
     'namespace' => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
     Route::crud('public-scene', 'PublicSceneCrudController');
+    Route::get('public-scene/{id}/duplicate', 'PublicSceneCrudController@duplicate');
     Route::crud('minigame-scene', 'MinigameSceneCrudController');
     Route::crud('scene-item', 'SceneItemCrudController');
     Route::crud('island', 'IslandCrudController');
