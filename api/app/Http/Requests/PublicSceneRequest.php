@@ -25,7 +25,15 @@ class PublicSceneRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required',
+            'menu_type' => 'required',
+            'max_users' => 'required|numeric',
+            'map' => 'required',
+            'map_width' => 'required|numeric',
+            'map_height' => 'required|numeric',
+            'start_x' => 'required|numeric',
+            'start_y' => 'required|numeric',
+            'start_z' => 'required|numeric',
         ];
     }
 

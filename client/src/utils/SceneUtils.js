@@ -25,21 +25,30 @@ class SceneUtils {
         });
     }
 
+    /**
+    * Detectar si un archivo es un video por su extensión
+    */
+    static isVideoFile(src) {
+        if (!src) return false;
+        const videoExtensions = ['.webm', '.mp4', '.ogg', '.mov'];
+        const extension = src.toLowerCase().substring(src.lastIndexOf('.'));
+        return videoExtensions.includes(extension);
+    }
+
     static moveItem(gameScene, sprite) {
         // Texto fijo en pantalla para Pix: x/y
         const info = gameScene.add.text(10, 10, '', { font: '16px Arial', backgroundColor: '#000000AA' })
             .setScrollFactor(0)
             .setDepth(9999);
 
-        let depthOffset = 0; // Offset para la profundidad del sprite
+        let currentDepth = Number(sprite.depth); // Profundidad actual del sprite
 
         // Actualiza posición del sprite y del texto
         function updateInfo() {
-            // ajustamos profundidad al y actual
-            sprite.setDepth(sprite.y + depthOffset);
+            // La profundidad no cambia automáticamente con Y
             info.setText(
                 `Pix → x: ${Math.round(sprite.x)}, y: ${Math.round(sprite.y)}\n` +
-                `Depth: ${sprite.y + depthOffset}`
+                `Depth: ${currentDepth}`
             );
         }
         updateInfo();
@@ -59,8 +68,8 @@ class SceneUtils {
                 .setScrollFactor(0)
                 .setDepth(9999)
                 .on('pointerdown', () => {
-                    sprite.x += btn.dx;
-                    sprite.y += btn.dy;
+                    sprite.x = Number(sprite.x) + btn.dx;
+                    sprite.y = Number(sprite.y) + btn.dy;
                     updateInfo();
                 });
         });
@@ -75,19 +84,37 @@ class SceneUtils {
                 .setScrollFactor(0)
                 .setDepth(9999)
                 .on('pointerdown', () => {
-                    depthOffset += btn.delta;
+                    currentDepth = Number(currentDepth) + btn.delta;
+                    sprite.setDepth(currentDepth);
                     updateInfo();
                 });
         });
 
+        // Limpiar event listeners previos para evitar duplicados
+        gameScene.input.keyboard.removeAllListeners('keydown');
+
         gameScene.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
-                case 'ArrowUp': sprite.y -= 1; break;
-                case 'ArrowDown': sprite.y += 1; break;
-                case 'ArrowLeft': sprite.x -= 1; break;
-                case 'ArrowRight': sprite.x += 1; break;
-                case '+': depthOffset += 1; break;
-                case '-': depthOffset -= 1; break;
+                case 'ArrowUp':
+                    sprite.y = Number(sprite.y) - 1;
+                    break;
+                case 'ArrowDown':
+                    sprite.y = Number(sprite.y) + 1;
+                    break;
+                case 'ArrowLeft':
+                    sprite.x = Number(sprite.x) - 1;
+                    break;
+                case 'ArrowRight':
+                    sprite.x = Number(sprite.x) + 1;
+                    break;
+                case '+':
+                    currentDepth = Number(currentDepth) + 1;
+                    sprite.setDepth(currentDepth);
+                    break;
+                case '-':
+                    currentDepth = Number(currentDepth) - 1;
+                    sprite.setDepth(currentDepth);
+                    break;
             }
             updateInfo();
         });

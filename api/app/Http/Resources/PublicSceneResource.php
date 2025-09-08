@@ -37,14 +37,18 @@ class PublicSceneResource extends JsonResource
                 'y' => (int)$this->start_y,
                 'z' => (int)$this->start_z,
             ],
+            'base_api_url' => config('app.url'),
+            'assets_data' => $this->assets_data ? json_decode($this->assets_data, true) : [],
         ];
 
         if (debug_backtrace()[1]['function'] == "toDTO") {
             if ($this->relationLoaded('items')) {
                 $return['items'] = SceneItemResource::collectionToDTO($this->whenLoaded('items'));
+                $return['npc'] = (new NpcResource($this->whenLoaded('npc')))->toDTO();
             }
         } else {
             $return['items'] = SceneItemResource::collection($this->whenLoaded('items'));
+            $return['npc'] = (new NpcResource($this->whenLoaded('npc')));
         }
 
         return $return;

@@ -5,6 +5,9 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PublicScene extends Model
 {
@@ -22,6 +25,7 @@ class PublicScene extends Model
     // public $timestamps = false;
     protected $guarded = ['id'];
     protected $fillable = [
+        'npc_id',
         'name',
         'type',
         'menu_type',
@@ -29,6 +33,7 @@ class PublicScene extends Model
         'map_width',
         'map_height',
         'map',
+        'assets_data',
         'start_x',
         'start_y',
         'start_z',
@@ -38,7 +43,10 @@ class PublicScene extends Model
         'depth',
         'active',
     ];
-    // protected $hidden = [];
+    protected $fakeColumns = [
+        'assets_data',
+        'scene_items_pivot',
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -55,6 +63,11 @@ class PublicScene extends Model
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function npc()
+    {
+        return $this->belongsTo(Npc::class, 'npc_id');
     }
 
     public function items()
@@ -97,4 +110,126 @@ class PublicScene extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setAssetsDataAttribute($value)
+    {
+        if (!empty($value)) {
+            if (is_string($value)) {
+                $value = json_decode($value, true);
+            }
+            $destinationPath = "uploads/public-scene/" . Str::slug($this->name) .  "/assets";
+            $this->processDataRecursively($value, $destinationPath);
+            $this->attributes['assets_data'] = json_encode($value);
+        } else {
+            $this->attributes['assets_data'] = null;
+        }
+    }
+
+    private function processDataRecursively(&$value, $destinationPath = null)
+    {
+        foreach ($value as $key => &$subValue) {
+            if (str_contains($key, 'image') && !is_array($subValue)) {
+                $subValue = $this->saveImgInFakeField($subValue, $destinationPath);
+            } elseif (str_contains($key, 'file') && !is_array($subValue)) {
+                $subValue = $this->saveFileInFakeField($subValue, $destinationPath);
+            } elseif (is_array($subValue)) {
+                $this->processDataRecursively($subValue, $destinationPath);
+            }
+        }
+    }
+
+    public function saveFileInFakeField($value, $destinationPath)
+    {
+        try {
+            $name = Str::random(10);
+            if ($value == null) {
+                return null;
+            }
+            $name = $name . '.' . $value->getClientOriginalExtension();
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0777, true, true);
+            }
+            $value->move($destinationPath, $name);
+            return $destinationPath . '/' . $name;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    private function saveImgInFakeField($value, $destinationPath)
+    {
+        try {
+            $name = Str::random(10);
+            $disk = "uploads";
+            if ($value == null) {
+                return null;
+            }
+            $filename = Str::slug($name);
+            if (Str::startsWith($value, 'data:image/svg+xml')) {
+                $filename = $filename . '.svg';
+                $value = str_replace('data:image/svg+xml;base64,', '', $value);
+                $value = str_replace(' ', '+', $value);
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0777, true, true);
+                }
+                File::put($destinationPath . '/' . $filename, base64_decode($value));
+                return $destinationPath . '/' . $filename;
+            } elseif (Str::startsWith($value, 'data:image')) {
+                [$meta, $data] = explode(',', $value, 2);
+                $binary = base64_decode($data);
+                $ext = str_contains($meta, 'image/webp') ? 'webp' : (str_contains($meta, 'image/png') ? 'png' : 'jpg');
+                $filename = Str::random(40) . '.' . $ext;
+                $path = "{$destinationPath}/{$filename}";
+
+                Storage::disk($disk)->put($path, $binary);
+                return $path;
+            }
+            return $value;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public function setSceneItemsPivotAttribute($value)
+    {
+        if (!empty($value)) {
+            if (is_string($value)) {
+                $value = json_decode($value, true);
+            }
+            $this->attributes['scene_items_pivot'] = json_encode($value);
+        } else {
+            $this->attributes['scene_items_pivot'] = null;
+        }
+    }
+
+    public function getSceneItemsPivotAttribute($value)
+    {
+        // Si hay un valor guardado en el campo fake, lo usamos
+        if (!empty($value)) {
+            return json_decode($value, true);
+        }
+        
+        // Si no hay valor en el campo fake, cargamos desde la relación
+        if ($this->exists) {
+            $items = $this->items()->get();
+            $pivotData = [];
+            
+            foreach ($items as $item) {
+                $pivotData[] = [
+                    'scene_item_id' => $item->id,
+                    'activate_time' => $item->pivot->activate_time,
+                    'desactivate_time' => $item->pivot->desactivate_time,
+                    'min_users' => $item->pivot->min_users,
+                    'sum_points' => $item->pivot->sum_points,
+                    'sum_points_to_user_attribute' => $item->pivot->sum_points_to_user_attribute,
+                    'user_attribute_name' => $item->pivot->user_attribute_name,
+                ];
+            }
+            
+            return $pivotData;
+        }
+        
+        return [];
+    }
+
 }
