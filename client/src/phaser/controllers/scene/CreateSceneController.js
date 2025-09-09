@@ -152,7 +152,7 @@ class CreateSceneController {
                     if (t?.bob) {
                         t.isClickable = true;
                         t.bob.clearTint?.();
-                        t.bob.alpha = 0.5;
+                        t.bob.alpha = 1;
                     }
                     if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
                 }
