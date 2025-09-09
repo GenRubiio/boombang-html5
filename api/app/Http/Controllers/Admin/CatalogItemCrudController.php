@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use App\Enums\CatalogItemTypesEnum;
 use App\Http\Requests\CatalogItemRequest;
 use App\Services\External\GeminiAiService;
@@ -315,8 +316,12 @@ class CatalogItemCrudController extends CrudController
             $this->crud->getRequest()->merge(['user_id' => backpack_user()->id]);
         }
 
+        //if (empty($this->crud->getRequest()->get('sprite_name')) && $this->crud->getRequest()->get('name')) {
+        //    $spriteName = Str::slug($this->crud->getRequest()->get('name'), '_');
+        //    $this->crud->getRequest()->merge(['sprite_name' => $spriteName]);
+        //}
+
         $response = $this->traitStore();
-        storeReplicateOtherLocales($this->crud);
         if ($this->crud->getRequest()->get('ai_translate')) {
             app(GeminiAiService::class)->translate($this->crud->entry);
         }
