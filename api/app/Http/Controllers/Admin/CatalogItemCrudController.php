@@ -84,7 +84,7 @@ class CatalogItemCrudController extends CrudController
         $this->crud->addColumn([
             'name' => 'is_active',
             'label' => 'Activo',
-            'type' => 'btnToggle',
+            'type' => 'check',
         ]);
 
         // Add creator column for Superadmin users
