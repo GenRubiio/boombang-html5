@@ -37,7 +37,7 @@
   },
   "maintenance": {
     "title": "점검",
-    "description": "서버가 점검 중입니다.<br />나중에 다시 시도해주세요.",
+    "description": "서버가 점검 중입니다.\n나중에 다시 시도해주세요.",
     "alt": "점검"
   },
   "avatar_select": {

@@ -37,7 +37,7 @@
   },
   "maintenance": {
     "title": "维护",
-    "description": "服务器正在维护中。<br />请稍后再试。",
+    "description": "服务器正在维护中。\n请稍后再试。",
     "alt": "维护"
   },
   "avatar_select": {

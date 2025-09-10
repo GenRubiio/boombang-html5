@@ -37,7 +37,7 @@
   },
   "maintenance": {
     "title": "Mantenimiento",
-    "description": "El servidor está en mantenimiento.<br />Por favor, inténtalo más tarde.",
+    "description": "El servidor está en mantenimiento.\nPor favor, inténtalo más tarde.",
     "alt": "Mantenimiento"
   },
   "avatar_select": {

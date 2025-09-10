@@ -74,7 +74,7 @@ export default class OverheadChatAnimation {
             </div>
         `;
 
-        const domElement = this.scene.add.dom(0, 0).createFromHTML(containerHTML);
+        const domElement = this.scene.add.dom(-9999, -9999).createFromHTML(containerHTML);
 
         // Empujar mensajes existentes hacia arriba
         this.messages.forEach(msg => {
@@ -122,7 +122,7 @@ export default class OverheadChatAnimation {
             </div>
         `;
 
-        const domElement = this.scene.add.dom(0, 0).createFromHTML(containerHTML);
+        const domElement = this.scene.add.dom(-9999, -9999).createFromHTML(containerHTML);
 
         // Empujar mensajes existentes hacia arriba
         this.messages.forEach(msg => {

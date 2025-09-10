@@ -37,7 +37,7 @@
   },
   "maintenance": {
     "title": "Maintenance",
-    "description": "The server is under maintenance.<br />Please try again later.",
+    "description": "The server is under maintenance.\nPlease try again later.",
     "alt": "Maintenance"
   },
   "avatar_select": {
