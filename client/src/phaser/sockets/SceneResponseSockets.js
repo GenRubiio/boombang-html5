@@ -13,6 +13,7 @@ import RemoveUserAreaController from "../controllers/scene/RemoveUserAreaControl
 import UserReceiveEffectController from "../controllers/scene/UserReceiveEffectController";
 import InteractionNotificationController from "../controllers/scene/InteractionNotificationController";
 import SendInteractionAnimationController from "../controllers/scene/SendInteractionAnimationController";
+import UserChangeAvatarController from "../controllers/scene/UserChangeAvatarController.js";
 
 class SceneResponseSockets {
     static main(gameScene) {
@@ -77,6 +78,10 @@ class SceneResponseSockets {
 
         socket.on(ResponseSocketsEnum.USERS_INTERACTION, (data) => {
             SendInteractionAnimationController.main(gameScene, data);
+        });
+
+        socket.on(ResponseSocketsEnum.USER_CHANGE_AVATAR, (data) => {
+            UserChangeAvatarController.main(gameScene, data);
         });
     }
 }

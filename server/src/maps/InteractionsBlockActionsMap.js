@@ -31,7 +31,8 @@ class InteractionsBlockActionsMap {
                     AnimationEnum.COCONUT,
                     AnimationEnum.INTERACTION_KISS,
                     AnimationEnum.INTERACTION_DRINK,
-                    AnimationEnum.INTERACTION_ROSE
+                    AnimationEnum.INTERACTION_ROSE,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_KISS,
@@ -78,7 +79,8 @@ class InteractionsBlockActionsMap {
                     AnimationEnum.COCONUT,
                     AnimationEnum.INTERACTION_KISS,
                     AnimationEnum.INTERACTION_DRINK,
-                    AnimationEnum.INTERACTION_ROSE
+                    AnimationEnum.INTERACTION_ROSE,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_DRINK,
@@ -125,7 +127,8 @@ class InteractionsBlockActionsMap {
                     AnimationEnum.COCONUT,
                     AnimationEnum.INTERACTION_KISS,
                     AnimationEnum.INTERACTION_DRINK,
-                    AnimationEnum.INTERACTION_ROSE
+                    AnimationEnum.INTERACTION_ROSE,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_ROSE,

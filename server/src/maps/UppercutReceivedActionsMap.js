@@ -24,6 +24,7 @@ class UppercutReceivedActionsMap {
             AnimationEnum.AVATAR_LEFTUP_TALK,
             AnimationEnum.AVATAR_RIGHTUP_TALK,
             AnimationEnum.COCONUT,
+            AnimationEnum.UPDATE_AVATAR,
         ]
     }
 }

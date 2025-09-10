@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
 use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\Game\Scene\RankingApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
+use App\Http\Controllers\Api\User\UserChangeAvatarController;
 use App\Http\Controllers\Api\Game\Lobby\GachaponApiController;
 use App\Http\Controllers\Api\User\UserChangeChatApiController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Api\Game\Object\RotateObjectApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeColornameApiController;
 use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
+use App\Http\Controllers\Api\Game\Scene\SceneUserAvatarsApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
 
 Route::prefix('test')->group(function () {
@@ -67,6 +69,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('change-chat', [UserChangeChatApiController::class, 'index']);
             Route::post('change-colorname', [UserChangeColornameApiController::class, 'index']);
             Route::post('change-shadowcolor', [UserChangeShadowColorController::class, 'index']);
+            Route::post('change-avatar', [UserChangeAvatarController::class, 'index']);
         });
 
         Route::prefix('lobby')->group(function () {
@@ -109,6 +112,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
         Route::prefix('scene')->group(function () {
             Route::post('user-decorations', [SceneUserDecorationsApiController::class, 'index']);
+            Route::post('user-avatars', [SceneUserAvatarsApiController::class, 'index']);
         });
 
         Route::prefix('ranking')->group(function () {

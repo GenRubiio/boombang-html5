@@ -4,59 +4,82 @@
       <button class="close-button" @click="$emit('close')">
         <i class="las la-times"></i>
       </button>
-      <h2 class="main-title">{{ $t('gacha.help.main_title') }}</h2>
+      <h2 class="main-title">{{ $t("gacha.help.main_title") }}</h2>
 
-      <div class="section">
-        <h3>{{ $t('gacha.help.items_title') }}</h3>
-        <div v-if="isLoading" class="loading-container">
-          <div class="spinner"></div>
-        </div>
-        <template v-else>
-          <div
-            v-for="(group, rarity) in normalItems"
-            :key="`normal-${rarity}`"
-            class="rarity-group"
-          >
-            <div class="rarity-header normal-items">
-              <span
-                >{{ $t('gacha.help.rarity') }}: <span class="star">{{ "★".repeat(rarity) }}</span></span
-              >
-              <span>{{ $t('gacha.help.appearance') }}: {{ group.percentage }}%</span>
-            </div>
-            <div class="item-grid">
-              <div v-for="item in group.items" :key="item.id" class="item-cell" :title="item.name">
-                <img :src="item.imageUrl" :alt="item.name" />
+      <div class="sections-container">
+        <div class="section">
+          <h3>{{ $t("gacha.help.items_title") }}</h3>
+          <div v-if="isLoading" class="loading-container">
+            <div class="spinner"></div>
+          </div>
+          <template v-else>
+            <div
+              v-for="(group, rarity) in normalItems"
+              :key="`normal-${rarity}`"
+              class="rarity-group"
+            >
+              <div class="rarity-header normal-items">
+                <span
+                  >{{ $t("gacha.help.rarity") }}:
+                  <span class="star">{{ "★".repeat(rarity) }}</span></span
+                >
+                <span
+                  >{{ $t("gacha.help.appearance") }}:
+                  {{ group.percentage }}%</span
+                >
+              </div>
+              <div class="item-grid">
+                <div
+                  v-for="item in group.items"
+                  :key="item.id"
+                  class="item-cell"
+                  :title="item.name"
+                >
+                  <img :src="item.imageUrl" :alt="item.name" />
+                </div>
               </div>
             </div>
-          </div>
-        </template>
-      </div>
-
-      <div class="section">
-        <h3>{{ $t('gacha.help.decorations_title') }}</h3>
-        <div v-if="isLoading" class="loading-container">
-          <div class="spinner"></div>
+          </template>
         </div>
-        <template v-else>
-          <div
-            v-for="(group, rarity) in decorationItems"
-            :key="`deco-${rarity}`"
-            class="rarity-group"
-          >
-            <div class="rarity-header">
-              <span
-                >{{ $t('gacha.help.rarity') }}: <span class="star">{{ "★".repeat(rarity) }}</span></span
-              >
-              <span>{{ $t('gacha.help.appearance') }}: {{ group.percentage }}%</span>
-              <span>{{ $t('gacha.help.compensation') }}: {{ group.compensation }}</span>
-            </div>
-            <div class="item-grid">
-              <div v-for="item in group.items" :key="item.id" class="item-cell" :title="item.name">
-                <img :src="item.imageUrl" :alt="item.name" />
+
+        <div class="section">
+          <h3>{{ $t("gacha.help.decorations_title") }}</h3>
+          <div v-if="isLoading" class="loading-container">
+            <div class="spinner"></div>
+          </div>
+          <template v-else>
+            <div
+              v-for="(group, rarity) in decorationItems"
+              :key="`deco-${rarity}`"
+              class="rarity-group"
+            >
+              <div class="rarity-header">
+                <span
+                  >{{ $t("gacha.help.rarity") }}:
+                  <span class="star">{{ "★".repeat(rarity) }}</span></span
+                >
+                <span
+                  >{{ $t("gacha.help.appearance") }}:
+                  {{ group.percentage }}%</span
+                >
+                <span
+                  >{{ $t("gacha.help.compensation") }}:
+                  {{ group.compensation }}</span
+                >
+              </div>
+              <div class="item-grid">
+                <div
+                  v-for="item in group.items"
+                  :key="item.id"
+                  class="item-cell"
+                  :title="item.name"
+                >
+                  <img :src="item.imageUrl" :alt="item.name" />
+                </div>
               </div>
             </div>
-          </div>
-        </template>
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -75,7 +98,6 @@ export default {
       normalItems: {},
 
       decorationItems: {},
-
     };
   },
   created() {
@@ -89,14 +111,38 @@ export default {
   methods: {
     initializeItems() {
       this.normalItems = {
-        1: { percentage: 55, compensation: this.$t('gacha.help.comp_silver', { amount: 5 }), items: [] },
-        2: { percentage: 25, compensation: this.$t('gacha.help.comp_silver', { amount: 15 }), items: [] },
-        3: { percentage: 10, compensation: this.$t('gacha.help.comp_silver', { amount: 40 }), items: [] },
-        4: { percentage: 7, compensation: this.$t('gacha.help.comp_silver', { amount: 120 }), items: [] },
-        5: { percentage: 2, compensation: this.$t('gacha.help.comp_silver', { amount: 300 }), items: [] },
+        1: {
+          percentage: 55,
+          compensation: this.$t("gacha.help.comp_silver", { amount: 5 }),
+          items: [],
+        },
+        2: {
+          percentage: 25,
+          compensation: this.$t("gacha.help.comp_silver", { amount: 15 }),
+          items: [],
+        },
+        3: {
+          percentage: 10,
+          compensation: this.$t("gacha.help.comp_silver", { amount: 40 }),
+          items: [],
+        },
+        4: {
+          percentage: 7,
+          compensation: this.$t("gacha.help.comp_silver", { amount: 120 }),
+          items: [],
+        },
+        5: {
+          percentage: 2,
+          compensation: this.$t("gacha.help.comp_silver", { amount: 300 }),
+          items: [],
+        },
       };
       this.decorationItems = {
-        5: { percentage: 1, compensation: this.$t('gacha.help.comp_gold', { amount: 10 }), items: [] },
+        5: {
+          percentage: 1,
+          compensation: this.$t("gacha.help.comp_gold", { amount: 10 }),
+          items: [],
+        },
       };
     },
     handleGachaPrizes(data) {
@@ -136,9 +182,13 @@ export default {
   background-color: #ffffffd9;
   box-shadow: 3px 3px #0000004d;
   width: 800px;
-  max-height: 500px;
+  height: 500px;
+}
+
+.sections-container {
   overflow-y: auto;
   scrollbar-gutter: stable;
+  height: 425px;
 }
 
 .rarity-header.normal-items {

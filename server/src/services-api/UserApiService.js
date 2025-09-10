@@ -144,6 +144,18 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async changeAvatar(user, newAvatarId) {
+        try {
+            const data = {
+                avatar: newAvatarId
+            };
+            return await ApiService.post('api/user/change-avatar', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al cambiar el avatar del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = UserApiService;

@@ -9,6 +9,15 @@ class SceneApiService {
             throw error;
         }
     }
+
+    static userAvatars(user) {
+        try {
+            return ApiService.post('api/scene/user-avatars', [], user.authJwt);
+        } catch (error) {
+            console.error('Error al obtener los avatares del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = SceneApiService;

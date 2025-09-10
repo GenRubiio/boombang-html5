@@ -42,7 +42,8 @@
   },
   "avatar_select": {
     "title": "角色",
-    "label": "选择你的角色"
+    "label": "选择你的角色",
+    "gallery_title": "角色画廊"
   },
   "register": {
     "title": "创建您的帐户",

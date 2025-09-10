@@ -131,6 +131,21 @@ class User extends Authenticatable
             ->toArray();
     }
 
+    public function enabledAvatars(): array
+    {
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'avatar')
+            ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

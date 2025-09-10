@@ -128,6 +128,10 @@ export default class PublicScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     console.log('Botón de avatares pulsado');
                 }
+                // Emit event to Vue component to show avatar selection popup
+                if (this.vueComponent && this.vueComponent.showAvatarSelection) {
+                    this.vueComponent.showAvatarSelection();
+                }
             });
             
             // Tooltip functionality

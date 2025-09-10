@@ -110,7 +110,7 @@ export default {
   async mounted() {
     try {
       const avatarUrl = new URL(
-        `../../../../assets/game/lobby/avatars/${this.$socket.user.avatar_id}.svg`,
+        `../../../../assets/game/lobby/avatars/${socket.user.avatar_id}.svg`,
         import.meta.url
       ).href;
       this.asset_avatarImage = avatarUrl;
