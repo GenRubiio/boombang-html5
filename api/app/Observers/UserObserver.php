@@ -3,100 +3,48 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Enums\AvatarEnum;
 use App\Models\CatalogItem;
 use App\Enums\ColorChatEnum;
 use App\Enums\ColorNameEnum;
 use App\Enums\ColorFichaEnum;
 use App\Enums\ColorShadowEnum;
+use Illuminate\Support\Facades\Log;
 
 class UserObserver
 {
+    /**
+     * Create catalog items for a given decoration type and values.
+     */
+    private function createCatalogItems(User $user, string $decorationType, array $decorationValues): void
+    {
+        foreach ($decorationValues as $value) {
+            $catalogItem = CatalogItem::where('user_decoration_type', $decorationType)
+                ->where('user_decoration_value', $value->key())
+                ->first();
+
+            if ($catalogItem) {
+                $user->catalogItems()->create([
+                    'catalog_item_id' => $catalogItem->id,
+                    'show_in_inventory' => false
+                ]);
+            }
+        }
+    }
+
     /**
      * Handle the User "created" event.
      */
     public function created(User $user): void
     {
-        /**
-         * Create catalog items for ficha decorations.
-         */
         try {
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'ficha')
-                    ->where('user_decoration_value', ColorFichaEnum::USER->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'ficha')
-                    ->where('user_decoration_value', ColorFichaEnum::VIP->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'ficha')
-                    ->where('user_decoration_value', ColorFichaEnum::BETA->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-
-            /**
-             * Create catalog items for shadow decorations.
-             */
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'shadow')
-                    ->where('user_decoration_value', ColorShadowEnum::USER->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'shadow')
-                    ->where('user_decoration_value', ColorShadowEnum::VIP->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-
-            /**
-             * Create catalog items for chat decorations.
-             */
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'chat')
-                    ->where('user_decoration_value', ColorChatEnum::USER->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'chat')
-                    ->where('user_decoration_value', ColorChatEnum::VIP->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-
-            /**
-             * Create catalog items for name decorations.
-             */
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'name')
-                    ->where('user_decoration_value', ColorNameEnum::USER->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
-            $user->catalogItems()->create([
-                'catalog_item_id' => CatalogItem::where('user_decoration_type', 'name')
-                    ->where('user_decoration_value', ColorNameEnum::VIP->key())
-                    ->first()
-                    ->id,
-                'show_in_inventory' => false
-            ]);
+            $this->createCatalogItems($user, 'ficha', [ColorFichaEnum::USER, ColorFichaEnum::VIP, ColorFichaEnum::BETA]);
+            $this->createCatalogItems($user, 'shadow', [ColorShadowEnum::USER, ColorShadowEnum::VIP]);
+            $this->createCatalogItems($user, 'chat', [ColorChatEnum::USER, ColorChatEnum::VIP]);
+            $this->createCatalogItems($user, 'name', [ColorNameEnum::USER, ColorNameEnum::VIP]);
+            $this->createCatalogItems($user, 'avatar', [AvatarEnum::GATA, AvatarEnum::RASTA]);
         } catch (\Exception $e) {
-            \Log::error('Error creating catalog items for user: ' . $e->getMessage());
+            Log::error('Error creating catalog items for user: ' . $e->getMessage());
         }
     }
 
