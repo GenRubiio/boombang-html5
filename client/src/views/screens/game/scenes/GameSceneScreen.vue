@@ -15,6 +15,11 @@
     />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
     <NpcComponent v-if="showNpcModal" @close="closeNpcModal" :npcId="npcId" />
+    <AvatarSelectionPopup
+      v-if="isAvatarSelectionVisible"
+      :authUser="sceneData.authUser"
+      @close-avatar-selection="hideAvatarSelection"
+    />
   </div>
 </template>
 
@@ -26,6 +31,7 @@ import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsI
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import NpcComponent from "../../../components/game/scenes/NpcComponent.vue";
+import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 
 export default {
   props: {
@@ -43,6 +49,7 @@ export default {
       npcId: null, // usa esto si quieres pasar datos al modal
       isRingInfoCardVisible: false,
       isCoconutsInfoCardVisible: false,
+      isAvatarSelectionVisible: false,
     };
   },
   created() {
@@ -54,6 +61,7 @@ export default {
     NpcComponent,
     RingInfoCardComponent,
     CoconutsInfoCardComponent,
+    AvatarSelectionPopup,
   },
   methods: {
     initializeGame() {
@@ -109,6 +117,12 @@ export default {
     },
     hideCoconutsInfoCard() {
       this.isCoconutsInfoCardVisible = false;
+    },
+    showAvatarSelection() {
+      this.isAvatarSelectionVisible = true;
+    },
+    hideAvatarSelection() {
+      this.isAvatarSelectionVisible = false;
     },
   },
   mounted() {

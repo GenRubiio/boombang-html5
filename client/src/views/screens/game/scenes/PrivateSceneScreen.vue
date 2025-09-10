@@ -14,6 +14,11 @@
       @close-coconuts-info="hideCoconutsInfoCard"
     />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
+    <AvatarSelectionPopup
+      v-if="isAvatarSelectionVisible"
+      :authUser="sceneData.authUser"
+      @close-avatar-selection="hideAvatarSelection"
+    />
   </div>
 </template>
 
@@ -23,6 +28,7 @@ import UserCardComponent from "../../../components/game/scenes/UserCardComponent
 import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardComponent.vue";
 import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
+import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
@@ -39,6 +45,7 @@ export default {
     return {
       isRingInfoCardVisible: false,
       isCoconutsInfoCardVisible: false,
+      isAvatarSelectionVisible: false,
     };
   },
   created() {
@@ -49,6 +56,7 @@ export default {
     BaseChatComponent,
     RingInfoCardComponent,
     CoconutsInfoCardComponent,
+    AvatarSelectionPopup,
   },
   methods: {
     initializeGame() {
@@ -94,6 +102,12 @@ export default {
     },
     hideCoconutsInfoCard() {
       this.isCoconutsInfoCardVisible = false;
+    },
+    showAvatarSelection() {
+      this.isAvatarSelectionVisible = true;
+    },
+    hideAvatarSelection() {
+      this.isAvatarSelectionVisible = false;
     },
   },
   mounted() {

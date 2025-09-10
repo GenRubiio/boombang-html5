@@ -20,6 +20,11 @@
       :alertType="alertType"
       :winnerName="winnerName"
     />
+    <AvatarSelectionPopup
+      v-if="isAvatarSelectionVisible"
+      :authUser="sceneData.authUser"
+      @close-avatar-selection="hideAvatarSelection"
+    />
   </div>
 </template>
 
@@ -31,6 +36,7 @@ import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsI
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import CounterMinigameComponent from "../../../components/game/minigames/CounterMinigameComponent.vue";
 import AlertMinigameComponent from "../../../components/game/minigames/AlertMinigameComponent.vue";
+import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum.js";
 import MinigameAlertsEnum from "../../../../enums/MinigameAlertsEnum.js";
@@ -56,6 +62,7 @@ export default {
       winnerName: null,
       isRingInfoCardVisible: false,
       isCoconutsInfoCardVisible: false,
+      isAvatarSelectionVisible: false,
     };
   },
   created() {
@@ -68,6 +75,7 @@ export default {
     AlertMinigameComponent,
     RingInfoCardComponent,
     CoconutsInfoCardComponent,
+    AvatarSelectionPopup,
   },
   methods: {
     initializeGame() {
@@ -115,6 +123,12 @@ export default {
     },
     hideCoconutsInfoCard() {
       this.isCoconutsInfoCardVisible = false;
+    },
+    showAvatarSelection() {
+      this.isAvatarSelectionVisible = true;
+    },
+    hideAvatarSelection() {
+      this.isAvatarSelectionVisible = false;
     },
   },
   mounted() {
