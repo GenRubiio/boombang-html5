@@ -37,7 +37,7 @@
   },
   "maintenance": {
     "title": "メンテナンス",
-    "description": "サーバーはメンテナンス中です。<br />後でもう一度お試しください。",
+    "description": "サーバーはメンテナンス中です。\n後でもう一度お試しください。",
     "alt": "メンテナンス"
   },
   "avatar_select": {

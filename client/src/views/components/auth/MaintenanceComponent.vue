@@ -2,7 +2,7 @@
   <div class="maintenance">
     <div class="maintenance__content">
       <h1 class="maintenance__title">{{ $t('maintenance.title') }}</h1>
-      <p class="maintenance__description" v-html="$t('maintenance.description')"></p>
+      <p class="maintenance__description">{{ $t('maintenance.description') }}</p>
       <img :src="asset_maintenance_avatar_image" :alt="$t('maintenance.alt')" />
     </div>
   </div>
@@ -55,5 +55,6 @@ export default {
 .maintenance__description {
   font-size: 1.2rem;
   color: white;
+  white-space: pre-line;
 }
 </style>
