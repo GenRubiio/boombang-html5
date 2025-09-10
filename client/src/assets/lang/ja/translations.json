@@ -42,7 +42,8 @@
   },
   "avatar_select": {
     "title": "キャラクター",
-    "label": "キャラクターを選択してください"
+    "label": "キャラクターを選択してください",
+    "gallery_title": "キャラクターギャラリー"
   },
   "register": {
     "title": "アカウントを作成する",

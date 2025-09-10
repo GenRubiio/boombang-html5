@@ -33,7 +33,7 @@ class CatalogItemRequest extends FormRequest
             'atlas' => 'nullable|json',
             'price' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0|max:100',
-            'spreadsheet' => 'required',
+            //'spreadsheet' => 'required',
         ];
 
         return $rules;

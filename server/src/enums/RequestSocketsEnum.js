@@ -51,7 +51,9 @@ const RequestSocketsEnum = new Enum({
     USER_SEND_INTERACTION: 'request:user_send_interaction',
     USER_ACCEPT_INTERACTION: 'request:user_accept_interaction',
     USER_REJECT_INTERACTION: 'request:user_reject_interaction',
-    USER_CANCEL_INTERACTION: 'request:user_cancel_interaction'
+    USER_CANCEL_INTERACTION: 'request:user_cancel_interaction',
+    GET_USER_AVATARS: 'request:get_user_avatars',
+    USER_CHANGE_AVATAR: 'request:user_change_avatar'
 });
 
 module.exports = RequestSocketsEnum;

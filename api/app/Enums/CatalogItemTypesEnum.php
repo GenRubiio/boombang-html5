@@ -11,14 +11,12 @@ enum CatalogItemTypesEnum
 
     case SCENE_ITEM;
     case USER_DECORATION;
-    case USER_AVATAR;
 
     public function key(): string
     {
         return match ($this) {
             self::USER_DECORATION => 'user_decoration',
             self::SCENE_ITEM => 'scene_item',
-            self::USER_AVATAR => 'user_avatar',
         };
     }
 
@@ -27,7 +25,6 @@ enum CatalogItemTypesEnum
         return match ($key) {
             'user_decoration' => self::USER_DECORATION,
             'scene_item' => self::SCENE_ITEM,
-            'user_avatar' => self::USER_AVATAR,
             default => throw new InvalidArgumentException("Invalid key: $key"),
         };
     }
@@ -37,7 +34,6 @@ enum CatalogItemTypesEnum
         return match ($this) {
             self::USER_DECORATION => 'User Decoration',
             self::SCENE_ITEM => 'Scene Item',
-            self::USER_AVATAR => 'User Avatar',
         };
     }
 

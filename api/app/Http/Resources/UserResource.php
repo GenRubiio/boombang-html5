@@ -55,6 +55,7 @@ class UserResource extends JsonResource
             'chats' => $this->enabledChats(),
             'colornames' => $this->enabledColorNames(),
             'shadows' => $this->enabledShadows(),
+            'avatars' => $this->enabledAvatars(),
         ];
 
         return $return;

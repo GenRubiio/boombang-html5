@@ -246,6 +246,7 @@ class CatalogItemCrudController extends CrudController
                     'chat' => 'Chat',
                     'name' => 'Name',
                     'shadow' => 'Shadow',
+                    'avatar' => 'Avatar'
                 ],
                 'hint' => 'Tipo de decoración que este artículo proporciona al usuario.<br>Dejar en blanco si no es una decoración.',
                 'tab' => 'Configuración'

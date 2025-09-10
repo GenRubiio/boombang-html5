@@ -42,7 +42,8 @@
   },
   "avatar_select": {
     "title": "캐릭터",
-    "label": "캐릭터를 선택하세요"
+    "label": "캐릭터를 선택하세요",
+    "gallery_title": "캐릭터 갤러리"
   },
   "register": {
     "title": "계정 만들기",

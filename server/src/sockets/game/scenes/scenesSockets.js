@@ -17,6 +17,8 @@ const UserChangeShadowColorController = require('../../../controllers/game/scene
 const RefreshUsersSceneChatListController = require('../../../controllers/game/scenes/RefreshUsersSceneChatListController');
 const GetUserDecorationsController = require('../../../controllers/game/scenes/GetUserDecorationsController');
 const InteractionRequestController = require('../../../controllers/game/interactions/InteractionRequestController');
+const GetUserAvatarsController = require('../../../controllers/game/scenes/GetUserAvatarsController');
+const UserChangeAvatarController = require('../../../controllers/game/scenes/UserChangeAvatarController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
@@ -82,5 +84,11 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.USER_CANCEL_INTERACTION, (data) => {
         InteractionRequestController.cancel(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.GET_USER_AVATARS, (data) => {
+        GetUserAvatarsController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.USER_CHANGE_AVATAR, (data) => {
+        UserChangeAvatarController.main(socket, io, data);
     });
 };

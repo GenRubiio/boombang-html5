@@ -26,7 +26,9 @@ class RemovePhaserSocketsUtil {
             ResponseSocketsEnum.USER_ACCEPT_INTERACTION,
             ResponseSocketsEnum.USER_REJECT_INTERACTION,
             ResponseSocketsEnum.USER_CANCEL_INTERACTION,
-            ResponseSocketsEnum.USERS_INTERACTION
+            ResponseSocketsEnum.USERS_INTERACTION,
+            ResponseSocketsEnum.GET_USER_AVATARS,
+            ResponseSocketsEnum.USER_CHANGE_AVATAR
         ];
 
         const excludedRequestEvents = [
@@ -51,7 +53,9 @@ class RemovePhaserSocketsUtil {
             RequestSocketsEnum.USER_SEND_INTERACTION,
             RequestSocketsEnum.USER_ACCEPT_INTERACTION,
             RequestSocketsEnum.USER_REJECT_INTERACTION,
-            RequestSocketsEnum.USER_CANCEL_INTERACTION
+            RequestSocketsEnum.USER_CANCEL_INTERACTION,
+            RequestSocketsEnum.GET_USER_AVATARS,
+            RequestSocketsEnum.USER_CHANGE_AVATAR
         ];
 
         // Remover solo eventos que no están en las listas de exclusión

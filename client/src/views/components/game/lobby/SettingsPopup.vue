@@ -46,7 +46,11 @@
                   class="setting-input"
                   :placeholder="$t('settings.profile.username_placeholder')"
                 />
-                <button class="save-button-inline" @click="saveUsername" :disabled="isLoading">
+                <button
+                  class="save-button-inline"
+                  @click="saveUsername"
+                  :disabled="isLoading"
+                >
                   {{ $t("settings.save") }}
                 </button>
               </div>
@@ -76,7 +80,11 @@
                   <option value="ja">日本語</option>
                   <option value="ko">한국어</option>
                 </select>
-                <button class="save-button-inline" @click="saveLanguage" :disabled="isLoading">
+                <button
+                  class="save-button-inline"
+                  @click="saveLanguage"
+                  :disabled="isLoading"
+                >
                   {{ $t("settings.save") }}
                 </button>
               </div>
@@ -207,7 +215,11 @@
               {{ graphicsError }}
             </div>
             <div class="save-button-container">
-              <button class="save-button" @click="saveGraphicsSettings" :disabled="isLoading">
+              <button
+                class="save-button"
+                @click="saveGraphicsSettings"
+                :disabled="isLoading"
+              >
                 {{ $t("settings.save") }}
               </button>
             </div>
@@ -403,9 +415,7 @@ export default {
   background-color: #ffffffd9;
   box-shadow: 3px 3px #0000004d;
   width: 800px;
-  max-height: 600px;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
+  height: 500px;
 }
 
 .close-button {
@@ -460,6 +470,7 @@ export default {
   text-align: left;
   font-weight: bold;
   transition: background-color 0.3s ease;
+  color: black;
 }
 
 .settings-tab.active {
@@ -476,6 +487,9 @@ export default {
   background-color: #f9f9f9;
   border-radius: 5px;
   padding: 20px;
+  height: 390px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .tab-content {
@@ -559,6 +573,7 @@ export default {
   font-size: 14px;
   background-color: white;
   transition: border-color 0.3s ease;
+  color: black;
 }
 
 .setting-input:focus,

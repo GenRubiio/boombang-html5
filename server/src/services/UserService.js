@@ -159,6 +159,15 @@ class UserService {
             console.error('Error updating user shadow color:', error);
         }
     }
+
+    static async changeAvatar(user, newAvatarId) {
+        user.avatarId = newAvatarId;
+        try {
+            await UserApiService.changeAvatar(user, newAvatarId);
+        } catch (error) {
+            console.error('Error updating user avatar:', error);
+        }
+    }
 }
 
 module.exports = UserService;

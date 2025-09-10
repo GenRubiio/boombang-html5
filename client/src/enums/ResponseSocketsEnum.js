@@ -58,7 +58,9 @@ const ResponseSocketsEnum = new Enum({
     USER_ACCEPT_INTERACTION: 'response:user_accept_interaction',
     USER_REJECT_INTERACTION: 'response:user_reject_interaction',
     USER_CANCEL_INTERACTION: 'response:user_cancel_interaction',
-    USERS_INTERACTION: 'response:users_interaction'
+    USERS_INTERACTION: 'response:users_interaction',
+    GET_USER_AVATARS: 'response:get_user_avatars',
+    USER_CHANGE_AVATAR: 'response:user_change_avatar',
 });
 
 export default ResponseSocketsEnum;

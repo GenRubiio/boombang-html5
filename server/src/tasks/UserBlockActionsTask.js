@@ -104,6 +104,15 @@ class UserBlockActionsTask {
         }
     }
 
+    static blockByUpdateAvatar(user) {
+        try {
+            user.blockAction(AnimationEnum.UPDATE_AVATAR, 2000);
+        } catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by update avatar: ${err.message}`, 'error');
+        }
+    }
+
     static blockByChat(user) {
         try {
             user.blockAction(AnimationEnum.CHAT, 1200);
