@@ -375,6 +375,9 @@ export default class PrivateScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     console.log('Botón de avatares pulsado');
                 }
+                if (this.vueComponent && this.vueComponent.showAvatarSelection) {
+                    this.vueComponent.showAvatarSelection();
+                }
                 break;
 
             case 'color':
