@@ -63,7 +63,7 @@ class UserCatalogItemCrudController extends CrudController
             'type'  => 'select2',
             'label' => 'User',
         ], function () {
-            return \App\Models\User::all()->pluck('name', 'id')->toArray();
+            return \App\Models\User::all()->pluck('username', 'id')->toArray();
         }, function ($value) {
             $this->crud->addClause('where', 'user_id', $value);
         });
@@ -78,7 +78,7 @@ class UserCatalogItemCrudController extends CrudController
             'label' => 'User',
             'type' => 'select',
             'entity' => 'user',
-            'attribute' => 'name',
+            'attribute' => 'username',
             'model' => "App\Models\User",
         ]);
         $this->crud->addColumn([
@@ -117,7 +117,7 @@ class UserCatalogItemCrudController extends CrudController
                 'label' => 'User',
                 'type' => 'select2',
                 'entity' => 'user',
-                'attribute' => 'name',
+                'attribute' => 'username',
                 'model' => "App\\Models\\User",
                 'defaultValue' => request('user_id')
             ],
