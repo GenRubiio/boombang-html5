@@ -19,7 +19,10 @@ class GameSceneApiController extends Controller implements GameSceneApiControlle
     public function get(Request $request): JsonResource
     {
         try {
-            $items = PublicScene::with('items', 'npc')->where('menu_type', MenuTypeEnum::GAME_SCENE->key())->get();
+            $items = PublicScene::with('items', 'npc')
+                ->where('menu_type', MenuTypeEnum::GAME_SCENE->key())
+                ->ordered()
+                ->get();
             return $this->successResponse(
                 [
                     'scenes' => PublicSceneResource::collection($items)
