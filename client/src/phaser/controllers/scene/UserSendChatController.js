@@ -3,6 +3,11 @@ class UserSendChatController {
     static main(gameScene, data) {
         const userEmiter = gameScene.users[data.user_socket];
         if (!userEmiter) return;
+
+        if (data.message.startsWith("/object-map")) {
+            window.show_object_map = true;
+            return;
+        }
         UserChatAnimation.main(userEmiter, data.animation);
         gameScene.chatManager.addMessage(
             data.message,
