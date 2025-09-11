@@ -1,0 +1,19 @@
+{
+  "name": "objects-maker",
+  "version": "1.0.0",
+  "description": "Convert animation frames to animated WebP",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "sharp": "^0.32.6",
+    "fs-extra": "^11.1.1",
+    "path": "^0.12.7",
+    "fluent-ffmpeg": "^2.1.2",
+    "ffmpeg-static": "^5.2.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
