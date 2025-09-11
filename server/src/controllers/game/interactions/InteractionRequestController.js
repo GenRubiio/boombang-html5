@@ -22,6 +22,13 @@ class InteractionRequestController {
             return;
         }
 
+        if (
+            user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+            || targetUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+        ) {
+            return;
+        }
+
         if (user.currentArea.hasInteraction(user.id, targetUser.id)) {
             return;
         }
@@ -46,7 +53,10 @@ class InteractionRequestController {
             return;
         }
 
-        if (!user.currentArea.hasInteraction(user.id, targetUser.id)) {
+        if (
+            user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+            || targetUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+        ) {
             return;
         }
 
@@ -150,6 +160,13 @@ class InteractionRequestController {
 
         const fromUser = ConnectedUsersCollection.getBySocketId(data.fromUser);
         if (!fromUser || !fromUser.currentArea || user.currentArea != fromUser.currentArea) {
+            return;
+        }
+
+        if (
+            user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+            || fromUser.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+        ) {
             return;
         }
 
