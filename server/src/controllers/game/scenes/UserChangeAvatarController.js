@@ -39,6 +39,11 @@ class UserChangeAvatarController {
                 avatar: data.avatar,
                 position: user.currentAreaPosition
             });
+            
+            socket.emit(ResponseSocketsEnum.USER_CHANGE_AVATAR_POPUP, {
+                success: true,
+                avatar: data.avatar
+            });
         } catch (err) {
             console.log(err);
             Log.error('Error in UserChangeAvatarController: ' + err);
