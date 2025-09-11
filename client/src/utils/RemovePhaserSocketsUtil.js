@@ -28,7 +28,8 @@ class RemovePhaserSocketsUtil {
             ResponseSocketsEnum.USER_CANCEL_INTERACTION,
             ResponseSocketsEnum.USERS_INTERACTION,
             ResponseSocketsEnum.GET_USER_AVATARS,
-            ResponseSocketsEnum.USER_CHANGE_AVATAR
+            ResponseSocketsEnum.USER_CHANGE_AVATAR,
+            ResponseSocketsEnum.USER_CHANGE_AVATAR_POPUP
         ];
 
         const excludedRequestEvents = [

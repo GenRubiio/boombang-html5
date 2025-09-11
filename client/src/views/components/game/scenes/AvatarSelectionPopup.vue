@@ -1,12 +1,17 @@
 <template>
-  <div class="avatar-selection" @pointerdown.stop @mousedown.stop @touchstart.stop>
+  <div
+    class="avatar-selection"
+    @pointerdown.stop
+    @mousedown.stop
+    @touchstart.stop
+  >
     <button class="close-button" @click="$emit('close-avatar-selection')">
       <i class="las la-times"></i>
     </button>
     <div class="avatar-selection__container">
       <div class="avatar-selection__content">
         <div class="avatar-selection__title">
-          {{ $t('avatar_select.gallery_title') }}
+          {{ $t("avatar_select.gallery_title") }}
         </div>
         <div class="avatar-selection__grid avatars-grid">
           <div
@@ -105,20 +110,24 @@ export default {
       if (!avatarKey || !this.isAvatarEnabled(avatarKey)) {
         return;
       }
-      
+
       // Don't proceed if clicking on the already selected avatar
       if (this.selectedAvatarKey == avatarKey) {
         return;
       }
 
-      // Actualizar manualmente la selección
-      this.selectedAvatarKey = avatarKey;
-
       socket.emit(RequestSocketsEnum.USER_CHANGE_AVATAR, {
         avatar: avatarKey,
       });
-      socket.user.avatar_id = avatarKey;
-      this.triggerCooldown();
+      socket.off(ResponseSocketsEnum.USER_CHANGE_AVATAR_POPUP);
+      socket.on(ResponseSocketsEnum.USER_CHANGE_AVATAR_POPUP, (data) => {
+        if (data && data.success) {
+          // Actualizar manualmente la selección
+          this.selectedAvatarKey = avatarKey;
+          socket.user.avatar_id = avatarKey;
+          this.triggerCooldown();
+        }
+      });
     },
     isAvatarEnabled(avatarKey) {
       return this.authUser.avatars
@@ -138,8 +147,8 @@ export default {
   },
   mounted() {
     // Inicializar la selección actual
-    this.selectedAvatarKey = this.authUser.avatar_id;
-    
+    this.selectedAvatarKey = socket.user.avatar_id;
+
     socket.emit(RequestSocketsEnum.GET_USER_AVATARS);
     socket.off(ResponseSocketsEnum.GET_USER_AVATARS);
     socket.on(ResponseSocketsEnum.GET_USER_AVATARS, (data) => {
