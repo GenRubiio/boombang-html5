@@ -69,6 +69,11 @@ class CatalogItemCrudController extends CrudController
             'type' => 'text',
         ]);
         $this->crud->addColumn([
+            'name' => 'sprite_name',
+            'label' => 'Nombre del Sprite',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
             'name' => 'category_id',
             'label' => 'Categoría',
             'type' => 'select',
