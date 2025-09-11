@@ -18,7 +18,6 @@ class GachaponApiController extends Controller
     {
         try {
             $user = Auth::user();
-            throw new Exception('Fuera de servicio.');
             if ($user->silver_coins < 100) {
                 throw new Exception('Not enough silver coins');
             }

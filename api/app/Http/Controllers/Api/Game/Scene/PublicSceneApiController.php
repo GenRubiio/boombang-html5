@@ -20,7 +20,10 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
     public function get(Request $request): JsonResource
     {
         try {
-            $items = PublicScene::with('items', 'npc')->where('menu_type', MenuTypeEnum::PUBLIC_SCENE->key())->get();
+            $items = PublicScene::with('items', 'npc')
+                ->where('menu_type', MenuTypeEnum::PUBLIC_SCENE->key())
+                ->ordered()
+                ->get();
             return $this->successResponse(
                 [
                     'scenes' => PublicSceneResource::collection($items)
@@ -55,7 +58,7 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
                     throw new Exception('User attribute name is not set.');
                 }
             }
-            
+
             return $this->successResponse(['message' => 'Item caught successfully.']);
         } catch (Exception $e) {
             return $this->handleException($e);
