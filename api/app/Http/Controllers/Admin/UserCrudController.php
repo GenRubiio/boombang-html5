@@ -40,8 +40,8 @@ class UserCrudController extends CrudController
                 'type'  => 'number',
             ],
             [
-                'name'  => 'name',
-                'label' => trans('backpack::permissionmanager.name'),
+                'name'  => 'username',
+                'label' => 'Username',
                 'type'  => 'text',
             ],
             [
