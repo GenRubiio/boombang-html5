@@ -61,15 +61,14 @@ echo Iniciando API...
 start "api" cmd /k "cd /d "%ROOT%api" && php artisan serve"
 goto :eof
 
+:START_CLIENT
+echo Iniciando cliente...
+start "client" cmd /k "cd /d "%ROOT%client" && npm run dev"
+goto :eof
 
 :START_SERVER
 echo Iniciando servidor...
 start "server" cmd /k "cd /d "%ROOT%server" && node index.js"
-goto :eof
-
-:START_CLIENT
-echo Iniciando cliente...
-start "client" cmd /k "cd /d "%ROOT%client" && npm run dev"
 goto :eof
 
 ::––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
