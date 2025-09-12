@@ -7,6 +7,7 @@
     "build": "electron-packager . my-electron-app --platform=win32 --arch=x64 --out=release --overwrite"
   },
   "dependencies": {
+    "dotenv": "^17.2.2",
     "electron": "^26.0.0"
   },
   "devDependencies": {
