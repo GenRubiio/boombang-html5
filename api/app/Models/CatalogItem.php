@@ -40,6 +40,7 @@ class CatalogItem extends Model
         'description',
         'price',
         'type',
+        'type_of_behavior',
         'price_type',
         'discount',
         'stars',

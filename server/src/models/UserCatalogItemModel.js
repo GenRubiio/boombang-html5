@@ -17,6 +17,7 @@ class UserCatalogItemModel {
         this.rotated = row.rotated;
         this.resize_enabled = row.resize_enabled;
         this.resized = row.resized;
+        this.type_of_behavior = row.type_of_behavior;
     }
 }
 

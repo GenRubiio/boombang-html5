@@ -38,6 +38,7 @@ class CatalogItemResource extends JsonResource
             'price_type' => $this->price_type,
             'discount' => $this->discount,
             'stars' => $this->stars,
+            'type_of_behavior' => $this->type_of_behavior,
         ];
 
         if (debug_backtrace()[1]['function'] == "toDTO") {

@@ -62,6 +62,8 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
+                'user_inventory_items' => $scene->user_id == Auth::user()->id
+                    ? UserCatalogItemsResource::collection(Auth::user()->catalogShowItems) : [],
             ]);
         } catch (Exception $e) {
             Log::error('Error creating private scene: ' . $e->getMessage(), [
@@ -170,5 +172,4 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             return $this->handleException($e);
         }
     }
-
 }

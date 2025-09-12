@@ -5,6 +5,7 @@ const UserCatalogItemModel = require('./UserCatalogItemModel'); // Importar el m
 const UserResource = require('../resources/UserResource');
 const PrivateSceneResource = require('../resources/PrivateSceneResource');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
+const CatalogItemTypeOfBehaviorEnum = require('../enums/CatalogItemTypeOfBehaviorEnum');
 
 class PrivateSceneModel extends SceneModel {
     constructor(uuid, row) {
@@ -28,14 +29,19 @@ class PrivateSceneModel extends SceneModel {
         // Get the base map with players and reserved tiles from the parent
         let navigationMap = super.getNavigationMapWithPlayers(excludeUserId);
 
-        // Block tiles occupied by objects
+        // Block tiles occupied by objects (except WALKABLE items)
         if (this.objects && this.objects.length > 0) {
             this.objects.forEach(object => {
                 if (object.occupied_tiles && object.occupied_tiles.length > 0) {
                     object.occupied_tiles.forEach(tile => {
                         const [x, y] = tile;
                         if (navigationMap[y] && navigationMap[y][x] !== undefined) {
-                            navigationMap[y][x] = 1; // Mark as unwalkable
+                            // Only block navigation if the object is NOT WALKABLE or WALKABLE_OVERLAY
+                            if (object.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE && 
+                                object.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY) {
+                                navigationMap[y][x] = 1; // Mark as unwalkable
+                            }
+                            // WALKABLE items don't block navigation, so we skip marking them
                         }
                     });
                 }
