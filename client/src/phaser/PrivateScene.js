@@ -443,7 +443,7 @@ export default class PrivateScene extends Phaser.Scene {
 
                 const bob = this.tileBlitter.create(x, y);
                 bob.alpha = import.meta.env.VITE_APP_ENV === "local" ? 1 : 0;
-                if (window.show_object_map) {
+                if (this.sceneData.authUser?.admin_tools?.show_object_reserved_tiles) {
                     bob.alpha = 1;
                 }
 

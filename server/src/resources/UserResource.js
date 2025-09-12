@@ -52,6 +52,8 @@ class UserResource extends Resource {
             phaser_power_preference: data.phaser_power_preference,
 
             animations: [],
+
+            admin_tools: data.adminTools,
         };
     }
 }

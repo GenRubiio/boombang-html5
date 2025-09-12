@@ -71,7 +71,9 @@ class CreateSceneController {
                 const isClickable = map[row][col] === 0;
                 const bob = blitter.create(x - halfTileWidth, y - halfTileHeight);
 
-                if (import.meta.env.VITE_MAP_MAKER == "true" || import.meta.env.VITE_SHOW_ISOMAP == "true") {
+                if (import.meta.env.VITE_MAP_MAKER == "true" 
+                    || import.meta.env.VITE_SHOW_ISOMAP == "true"
+                    || gameScene.sceneData.authUser?.admin_tools?.show_isomap) {
                     if (!isClickable) bob.tint = 0x808080;
                     bob.alpha = 0.5;
                 } else {
