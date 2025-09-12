@@ -277,6 +277,7 @@ export default {
   justify-content: center;
   align-items: center;
   border: 1px solid #bbb;
+  padding: 3px;
 }
 
 .item-cell img {

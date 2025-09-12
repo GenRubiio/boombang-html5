@@ -54,6 +54,11 @@ class UserModel {
         this.blockedActions = {};
 
         this.inventory = []; // Inventario del usuario
+
+        this.adminTools = {
+            show_isomap: false,
+            show_object_reserved_tiles: false,
+        };
     }
 
     // Bloquea una acción específica durante 'duration' ms

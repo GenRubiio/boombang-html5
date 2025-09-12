@@ -70,6 +70,12 @@ class UserSendChatController {
         if (data.message.startsWith('/')) {
             const command = data.message.split(' ')[0].substring(1);
             switch (command) {
+                case 'show_isomap':
+                    user.adminTools.show_isomap = !user.adminTools.show_isomap;
+                    return true;
+                case 'show_object_reserved_tiles':
+                    user.adminTools.show_object_reserved_tiles = !user.adminTools.show_object_reserved_tiles;
+                    return true;
                 case 'coco':
                     const effect = data.message.split(' ')[1];
                     user.currentArea.emit('response:user_receive_effect',
