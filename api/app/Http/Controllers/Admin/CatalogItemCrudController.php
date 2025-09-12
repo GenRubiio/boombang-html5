@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use App\Enums\CatalogItemTypesEnum;
 use App\Http\Requests\CatalogItemRequest;
 use App\Services\External\GeminiAiService;
+use App\Enums\CatalogItemTypeOfBehaviorEnum;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class CatalogItemCrudController extends CrudController
@@ -53,6 +54,8 @@ class CatalogItemCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->addFilters();
+
         $this->crud->addColumn([
             'name' => 'id',
             'label' => 'ID',
@@ -92,17 +95,14 @@ class CatalogItemCrudController extends CrudController
             'type' => 'check',
         ]);
 
-        // Add creator column for Superadmin users
-        if (backpack_user() && backpack_user()->hasRole('Superadmin')) {
-            $this->crud->addColumn([
-                'name' => 'user_id',
-                'label' => 'Creado por',
-                'type' => 'select',
-                'entity' => 'user',
-                'attribute' => 'name',
-                'model' => "App\Models\User",
-            ]);
-        }
+        $this->crud->addColumn([
+            'name' => 'user_id',
+            'label' => 'Creado por',
+            'type' => 'select',
+            'entity' => 'user',
+            'attribute' => 'name',
+            'model' => "App\Models\User",
+        ]);
     }
 
     protected function setupCreateOperation()
@@ -213,6 +213,14 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'Precios'
             ],
             [
+                'name' => 'type_of_behavior',
+                'label' => 'Tipo de Comportamiento',
+                'type' => 'select_from_array',
+                'options' => CatalogItemTypeOfBehaviorEnum::toAssociativeArray(),
+                'hint' => 'El tipo de comportamiento define cómo interactúa el objeto en la escena.',
+                'tab' => 'Configuración'
+            ],
+            [
                 'name' => 'type',
                 'label' => 'Tipo',
                 'type' => 'select_from_array',
@@ -298,13 +306,11 @@ class CatalogItemCrudController extends CrudController
             ]
         ]);
 
-        if (backpack_user() && backpack_user()->hasRole('Catalog')) {
-            $this->crud->addField([
-                'name' => 'user_id',
-                'type' => 'hidden',
-                'value' => backpack_user()->id,
-            ]);
-        }
+        $this->crud->addField([
+            'name' => 'user_id',
+            'type' => 'hidden',
+            'value' => backpack_user()->id,
+        ]);
     }
 
     protected function setupUpdateOperation()
@@ -424,5 +430,86 @@ class CatalogItemCrudController extends CrudController
         }
 
         abort(403, 'No tienes permisos para eliminar artículos de catálogo.');
+    }
+
+    protected function addFilters()
+    {
+        $this->crud->addFilter([
+            'name' => 'category_id',
+            'type' => 'select2_multiple',
+            'label' => 'Categoría',
+        ], function () {
+            return \App\Models\CatalogCategory::all()->pluck('name', 'id')->toArray();
+        }, function ($values) {
+            $this->crud->addClause('whereIn', 'category_id', json_decode($values));
+        });
+
+        $this->crud->addFilter([
+            'name' => 'type_of_behavior',
+            'type' => 'select2_multiple',
+            'label' => 'Tipo de Comportamiento',
+        ], CatalogItemTypeOfBehaviorEnum::toAssociativeArray(), function ($values) {
+            $this->crud->addClause('whereIn', 'type_of_behavior', json_decode($values));
+        });
+
+        $this->crud->addFilter([
+            'name' => 'type',
+            'type' => 'select2_multiple',
+            'label' => 'Tipo',
+        ], CatalogItemTypesEnum::toAssociativeArray(), function ($values) {
+            $this->crud->addClause('whereIn', 'type', json_decode($values));
+        });
+
+        $this->crud->addFilter([
+            'name' => 'stars',
+            'type' => 'select2_multiple',
+            'label' => 'Estrellas',
+        ], [
+            1 => '1 Estrella',
+            2 => '2 Estrellas',
+            3 => '3 Estrellas',
+            4 => '4 Estrellas',
+            5 => '5 Estrellas',
+        ], function ($values) {
+            $this->crud->addClause('whereIn', 'stars', json_decode($values));
+        });
+
+        $this->crud->addFilter([
+            'name' => 'user_decoration_type',
+            'type' => 'select2_multiple',
+            'label' => 'Tipo de Decoración',
+        ], [
+            'ficha' => 'Ficha',
+            'chat' => 'Chat',
+            'name' => 'Name',
+            'shadow' => 'Shadow',
+            'avatar' => 'Avatar'
+        ], function ($values) {
+            $this->crud->addClause('whereIn', 'user_decoration_type', json_decode($values));
+        });
+
+        $this->crud->addFilter([
+            'type' => 'simple',
+            'name' => 'in_lobby_gacha',
+            'label' => 'En Lobby Gacha',
+        ], false, function () {
+            $this->crud->addClause('where', 'in_lobby_gacha', 1);
+        });
+
+        $this->crud->addFilter([
+            'type' => 'simple',
+            'name' => 'show_in_inventory',
+            'label' => 'Mostrar en Inventario',
+        ], false, function () {
+            $this->crud->addClause('where', 'show_in_inventory', 1);
+        });
+
+        $this->crud->addFilter([
+            'type' => 'simple',
+            'name' => 'is_purchasable',
+            'label' => 'Comprable',
+        ], false, function () {
+            $this->crud->addClause('where', 'is_purchasable', 1);
+        });
     }
 }

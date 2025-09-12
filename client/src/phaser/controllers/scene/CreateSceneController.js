@@ -4,6 +4,7 @@ import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
 import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
+import CatalogItemTypeOfBehaviorEnum from "../../../enums/CatalogItemTypeOfBehaviorEnum.js";
 
 class CreateSceneController {
     //TODO: El bob y blitter esta consumiendo 5% de CPU hay que condicionarlo para que no aparezca si no es necesario. Ya lo he comprobado y solo hay que quitarlo
@@ -131,10 +132,18 @@ class CreateSceneController {
             const isClickable = map[row][col] === 0;
 
             // Verificar también si el tile está ocupado por objetos (si existe tileGrid)
-            const isTileOccupied = gameScene.tileGrid &&
-                gameScene.tileGrid[row] &&
-                gameScene.tileGrid[row][col] &&
-                gameScene.tileGrid[row][col].occupied;
+            // But allow movement through WALKABLE items
+            let isTileOccupied = false;
+            if (gameScene.tileGrid && gameScene.tileGrid[row] && gameScene.tileGrid[row][col] && gameScene.tileGrid[row][col].occupied) {
+                const occupyingObjectId = gameScene.tileGrid[row][col].objectId;
+                const occupyingObject = gameScene.sceneItems?.find(item => item.id === occupyingObjectId);
+                
+                // Only consider it occupied if it's not a WALKABLE/WALKABLE_OVERLAY item
+                if (!occupyingObject || (occupyingObject.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE && 
+                                        occupyingObject.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
+                    isTileOccupied = true;
+                }
+            }
 
             if (!isClickable || isTileOccupied) {
                 if (import.meta.env.VITE_APP_ENV === "local") {

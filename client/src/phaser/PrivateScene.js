@@ -23,6 +23,7 @@ import asset_rose_image from "@/assets/game/scene/interactions/rose.webp";
 import asset_accept_image from "@/assets/game/scene/interactions/accept.png";
 import asset_reject_image from "@/assets/game/scene/interactions/reject.png";
 import i18n from "../plugins/i18n";
+import CatalogItemTypeOfBehaviorEnum from "../enums/CatalogItemTypeOfBehaviorEnum";
 
 export default class PrivateScene extends Phaser.Scene {
     constructor() {
@@ -450,14 +451,25 @@ export default class PrivateScene extends Phaser.Scene {
                 if (row < this.tileGrid.length && col < this.tileGrid[row].length) {
                     this.tileGrid[row][col].occupied = true;
                     this.tileGrid[row][col].objectId = item.id;
-                    this.tileGrid[row][col].isClickable = false;
-                    this.tileGrid[row][col].bob = bob;
-
-                    // Bloquear clic también en tiles visibles (si existen en this.tiles)
-                    const t = this.tiles[row]?.[col];
-                    if (t) {
-                        t.isClickable = false;
+                    
+                    // WALKABLE and WALKABLE_OVERLAY items don't block clicking or movement
+                    if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE || 
+                        item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY) {
+                        this.tileGrid[row][col].isClickable = true;
+                        // Keep original tile clickability for WALKABLE items
+                        const t = this.tiles[row]?.[col];
+                        if (t && gameMap && gameMap[row] && gameMap[row][col] === 0) {
+                            t.isClickable = true;
+                        }
+                    } else {
+                        this.tileGrid[row][col].isClickable = false;
+                        // Bloquear clic también en tiles visibles (si existen en this.tiles)
+                        const t = this.tiles[row]?.[col];
+                        if (t) {
+                            t.isClickable = false;
+                        }
                     }
+                    this.tileGrid[row][col].bob = bob;
                 }
             });
         });
@@ -644,9 +656,26 @@ export default class PrivateScene extends Phaser.Scene {
                 return false;
             }
 
-            // No se puede posicionar si el tile está ocupado por OTRO objeto
+            // Check if tile is occupied by another object
             if (this.tileGrid[row][col].occupied && this.tileGrid[row][col].objectId !== currentObjectId) {
-                return false;
+                // Find the occupying object
+                const occupyingObject = this.sceneItems.find(item => item.id === this.tileGrid[row][col].objectId);
+                
+                // Allow placing objects on WALKABLE/WALKABLE_OVERLAY items, but not WALKABLE on WALKABLE
+                if (occupyingObject && (occupyingObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE || 
+                                       occupyingObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
+                    // Find the current object being placed/moved
+                    const currentObject = this.sceneItems.find(item => item.id === currentObjectId);
+                    
+                    // If placing a WALKABLE/WALKABLE_OVERLAY item on another WALKABLE/WALKABLE_OVERLAY item, reject
+                    if (currentObject && (currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE || 
+                                         currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
+                        return false;
+                    }
+                    // Otherwise allow placement on WALKABLE/WALKABLE_OVERLAY items
+                } else {
+                    return false; // Occupied by non-WALKABLE object
+                }
             }
         }
 
@@ -788,8 +817,7 @@ export default class PrivateScene extends Phaser.Scene {
                 if (isVideo && this.cache.video.exists(item.sprite_name)) {
                     // Crear video sprite
                     item.sprite = this.add.video(avgX, y, item.sprite_name)
-                        .setOrigin(0.5, 0.90)
-                        .setDepth(y);
+                        .setOrigin(0.5, 0.90);
 
                     // Configurar el video para que se reproduzca en bucle
                     item.sprite.setLoop(true);
@@ -800,10 +828,26 @@ export default class PrivateScene extends Phaser.Scene {
                 } else if (this.textures.exists(item.sprite_name)) {
                     // Crear imagen sprite
                     item.sprite = this.add.image(avgX, y, item.sprite_name)
-                        .setOrigin(0.5, 0.90)
-                        .setDepth(y);
+                        .setOrigin(0.5, 0.90);
 
                     item.isVideo = false;
+                }
+
+                // Set depth based on behavior type
+                if (item.sprite) {
+                    if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE) {
+                        // WALKABLE objects appear below users (lower depth but still visible)
+                        item.sprite.setDepth(y - 100);
+                    } else if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY) {
+                        // WALKABLE_OVERLAY objects start below users but can switch to above
+                        item.sprite.setDepth(y - 100);
+                        item.baseDepth = y; // Store base depth for switching
+                        item.belowUserDepth = y - 100;
+                        item.aboveUserDepth = y + 100;
+                    } else {
+                        // Normal objects use standard depth
+                        item.sprite.setDepth(y);
+                    }
                 }
 
                 // Aplicar dimensiones personalizadas si están definidas (manteniendo aspect ratio)
@@ -828,12 +872,84 @@ export default class PrivateScene extends Phaser.Scene {
                 }
             } else {
                 item.sprite.setPosition(avgX, y);
-                item.sprite.setDepth(y);
+                
+                // Update depth based on behavior type
+                if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE) {
+                    // WALKABLE objects appear below users (lower depth but still visible)
+                    item.sprite.setDepth(y - 100);
+                } else if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY) {
+                    // Update depth values for WALKABLE_OVERLAY
+                    item.baseDepth = y;
+                    item.belowUserDepth = y - 100;
+                    item.aboveUserDepth = y + 100;
+                    // Keep current depth or set to below user if not set
+                    if (!item.sprite.depth || item.sprite.depth === item.belowUserDepth || item.sprite.depth === item.aboveUserDepth) {
+                        item.sprite.setDepth(item.belowUserDepth);
+                    }
+                } else {
+                    // Normal objects use standard depth
+                    item.sprite.setDepth(y);
+                }
 
                 // Si es un video y no está reproduciéndose, iniciarlo
                 if (item.isVideo && item.sprite.isPaused) {
                     item.sprite.play();
                 }
+            }
+        });
+
+        // Update WALKABLE_OVERLAY depths based on user positions
+        this.updateWalkableOverlayDepths();
+    }
+
+    updateWalkableOverlayDepths() {
+        // Find all WALKABLE_OVERLAY items
+        const walkableOverlayItems = this.sceneItems.filter(item => 
+            item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY && item.sprite
+        );
+
+        walkableOverlayItems.forEach(item => {
+            let shouldBeAbove = false;
+            
+            // Check if any user should make this item appear above
+            Object.values(this.users).forEach(user => {
+                if (user.currentAreaPosition) {
+                    const userCol = user.currentAreaPosition.x;
+                    const userRow = user.currentAreaPosition.y;
+                    const userVisualY = (userCol + userRow) * (33 / 2); // halfTileHeight = 33/2
+                    
+                    // Get the item's visual Y range (from top-most to bottom-most tile)
+                    const itemMinRowColSum = Math.min(...item.occupied_tiles.map(([col, row]) => row + col));
+                    const itemMaxRowColSum = Math.max(...item.occupied_tiles.map(([col, row]) => row + col));
+                    const itemTopY = itemMinRowColSum * (33 / 2);
+                    const itemBottomY = itemMaxRowColSum * (33 / 2);
+                    
+                    // Check if user position overlaps with any of the item's occupied tiles
+                    const isOnItem = item.occupied_tiles.some(([col, row]) => 
+                        col === userCol && row === userRow
+                    );
+                    
+                    if (isOnItem) {
+                        // User is on top of the item - object should appear above
+                        shouldBeAbove = true;
+                    } else {
+                        // User is not on the item - check relative position
+                        // If user is behind the object (smaller Y), object should appear above
+                        // If user is in front of the object (larger Y), object should appear below
+                        if (userVisualY <= itemTopY) {
+                            // User is behind the object
+                            shouldBeAbove = true;
+                        }
+                        // If userVisualY > itemBottomY, user is in front, object stays below (shouldBeAbove = false)
+                    }
+                }
+            });
+
+            // Switch depth based on calculation
+            if (shouldBeAbove && item.sprite.depth !== item.aboveUserDepth) {
+                item.sprite.setDepth(item.aboveUserDepth);
+            } else if (!shouldBeAbove && item.sprite.depth !== item.belowUserDepth) {
+                item.sprite.setDepth(item.belowUserDepth);
             }
         });
     }

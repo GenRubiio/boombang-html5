@@ -79,10 +79,27 @@ class MoveUserController {
                 if (!user.containerUser) return;
                 // Actualiza la profundidad según la Y (opcional en cada frame).
                 user.containerUser.setDepth(user.containerUser.y);
+                
+                // Update user position during animation for real-time WALKABLE_OVERLAY depth updates
+                user.currentAreaPosition = { x: step.x, y: step.y };
+                
+                // Update WALKABLE_OVERLAY depths during movement
+                if (gameScene.updateWalkableOverlayDepths) {
+                    gameScene.updateWalkableOverlayDepths();
+                }
             },
             onComplete: () => {
                 // Al terminar el movimiento, detenemos la animación
                 user.spriteAvatar.stop();
+                
+                // Update user's current position for WALKABLE_OVERLAY depth management
+                user.currentAreaPosition = { x: step.x, y: step.y };
+                
+                // Update WALKABLE_OVERLAY depths when user moves
+                if (gameScene.updateWalkableOverlayDepths) {
+                    gameScene.updateWalkableOverlayDepths();
+                }
+                
                 if (isLastStep) {
                     UserMoveDeniedController.main(gameScene, socketId);
                 }

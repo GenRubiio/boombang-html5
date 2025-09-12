@@ -7,11 +7,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
-/**
- * Class UserCatalogItemCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
+
 class UserCatalogItemCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -20,11 +16,6 @@ class UserCatalogItemCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
-     */
     public function setup()
     {
         $this->applySuperadminProtection();
@@ -50,14 +41,10 @@ class UserCatalogItemCrudController extends CrudController
         }
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
+        $this->crud->removeButton('create');
+        $this->crud->addButtonFromView('top', 'create_item_for_user', 'create_item_for_user', 'beginning');
         $this->crud->addFilter([
             'name'  => 'user_id',
             'type'  => 'select2',
@@ -101,25 +88,28 @@ class UserCatalogItemCrudController extends CrudController
         ]);
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(UserCatalogItemRequest::class);
 
         $this->crud->addFields([
             [
-                'name' => 'user_id',
+                'name' => 'user_id_display',
                 'label' => 'User',
                 'type' => 'select2',
                 'entity' => 'user',
                 'attribute' => 'username',
                 'model' => "App\\Models\\User",
-                'defaultValue' => request('user_id')
+                'default' => request()->has('user_id') ? request('user_id') : null,
+                'attributes' => [
+                    'readonly' => 'readonly',
+                    'disabled' => 'disabled',
+                ],
+            ],
+            [
+                'name' => 'user_id',
+                'type' => 'hidden',
+                'default' => request()->has('user_id') ? request('user_id') : null,
             ],
             [
                 'name' => 'catalog_item_id',
@@ -143,12 +133,6 @@ class UserCatalogItemCrudController extends CrudController
         ]);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
