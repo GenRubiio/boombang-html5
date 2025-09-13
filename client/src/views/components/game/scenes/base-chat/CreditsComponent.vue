@@ -1,8 +1,12 @@
 <template>
   <div class="base-chat__container_credits">
-    <div class="base-chat__container_credits-gold-container">{{ gold }}</div>
+    <div class="base-chat__container_credits-gold-container">
+      <img :src="asset_gold_image" alt="Gold" />
+      <span>{{ gold }}</span>
+    </div>
     <div class="base-chat__container_credits-silver-container">
-      {{ silver }}
+      <img :src="asset_silver_image" alt="Silver" />
+      <span>{{ silver }}</span>
     </div>
   </div>
 </template>
@@ -11,12 +15,16 @@
 import socket from "@/sockets/socket";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import asset_gold_image from "@/assets/game/basechat/golden_coins.webp";
+import asset_silver_image from "@/assets/game/basechat/silver_coins.webp";
 
 export default {
   data() {
     return {
       gold: 0,
       silver: 0,
+      asset_gold_image,
+      asset_silver_image,
     };
   },
   mounted() {
@@ -37,6 +45,7 @@ export default {
   left: 15px;
   bottom: 13px;
   display: flex;
+  gap: 3px;
 }
 
 .base-chat__container_credits-gold-container,
@@ -55,7 +64,21 @@ export default {
   color: #d98933;
 }
 
+.base-chat__container_credits-gold-container span,
+.base-chat__container_credits-silver-container span {
+  position: absolute;
+  z-index: 1;
+}
+
 .base-chat__container_credits-silver-container {
   color: white;
+}
+
+.base-chat__container_credits-gold-container img,
+.base-chat__container_credits-silver-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: absolute;
 }
 </style>

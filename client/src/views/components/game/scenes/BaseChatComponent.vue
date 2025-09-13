@@ -145,7 +145,7 @@ export default {
 .base-chat__container__chat input {
   position: absolute;
   left: 282px;
-  top: 45px;
+  top: 16px;
   width: 386px;
   background: transparent;
   border: none;
@@ -161,14 +161,14 @@ export default {
 .base-chat__container__brujula {
   position: absolute;
   right: 12px;
-  top: -3px;
+  top: -36px;
   cursor: pointer;
 }
 
 .base-chat__container__emoji-button {
   position: absolute;
   right: 293px;
-  top: 36px;
+  top: 10px;
   cursor: pointer;
   font-size: 24px;
   color: white;
