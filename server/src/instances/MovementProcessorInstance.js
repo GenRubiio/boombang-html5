@@ -7,6 +7,7 @@ const AnimationEnum = require('../enums/AnimationEnum');
 const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const PublicSceneService = require('../services/PublicSceneService');
+const SendUserToSceneController = require('../controllers/game/scenes/SendUserToSceneController');
 
 class MovementProcessorInstance {
     constructor(scene) {
@@ -61,8 +62,8 @@ class MovementProcessorInstance {
 
             const isOccupied = this.scene.users.some(
                 otherUser => otherUser.id !== user.id &&
-                otherUser.currentAreaPosition.x === nextStep.x &&
-                otherUser.currentAreaPosition.y === nextStep.y
+                    otherUser.currentAreaPosition.x === nextStep.x &&
+                    otherUser.currentAreaPosition.y === nextStep.y
             );
 
             if (isOccupied) {
@@ -104,6 +105,14 @@ class MovementProcessorInstance {
 
             if (isFinalStep) {
                 user.finalTarget = null;
+            }
+
+            // Validar si la posición coincide con alguna flecha
+            const arrow = this.#getArrowAtPosition(nextStep.x, nextStep.y);
+            if (arrow) {
+                this.#clearUserReservation(user);
+                user.finalTarget = null;
+                await SendUserToSceneController.main(user, arrow);
             }
         } catch (err) {
             console.log(err);
@@ -155,6 +164,19 @@ class MovementProcessorInstance {
         });
     }
 
+    #getArrowAtPosition(x, y) {
+        if (!this.scene.arrows || !Array.isArray(this.scene.arrows) || this.scene.arrows.length === 0) {
+            return null;
+        }
+
+        return this.scene.arrows.find(arrow => {
+            const arrowX = parseInt(arrow.position_x) || 0;
+            const arrowY = parseInt(arrow.position_y) || 0;
+
+            return arrowX === x && arrowY === y;
+        });
+    }
+
     stopProcessing() {
         this.processing = false;
     }
@@ -175,7 +197,7 @@ class MovementProcessorInstance {
 
     #cleanOrphanedReservations() {
         const activeUserIds = new Set(this.scene.users.map(user => user.id));
-        
+
         // Eliminar reservas de usuarios que ya no están en la escena
         for (let key in this.scene.reservedTiles) {
             const userId = this.scene.reservedTiles[key];

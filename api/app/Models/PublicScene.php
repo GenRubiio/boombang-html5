@@ -67,6 +67,7 @@ class PublicScene extends Model
                 $arrow = SceneArrow::find($item['scene_arrow_id']);
                 if ($arrow) {
                     $output[] = [
+                        'public_scene_id' => $item['public_scene_id'] ?? $this->id,
                         'image' => $arrow->image,
                         'image_url' => urlDocker($arrow->image),
                         'sprite_name' => $arrow->sprite_name,

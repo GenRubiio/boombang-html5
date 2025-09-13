@@ -38,10 +38,13 @@ class SceneModel {
     }
 
     // Método para añadir un usuario
-    addUser(user) {
+    addUser(user, startPosition = null) {
         if (this.users.includes(user)) {
             logger.log('User already in area', 'error');
             return;
+        }
+        if (startPosition){
+            user.currentAreaPosition = { ...startPosition };
         }
         // Inicializamos la posición actual del usuario si no existe
         if (!user.currentAreaPosition) {

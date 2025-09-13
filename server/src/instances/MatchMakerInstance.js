@@ -123,7 +123,7 @@ class MatchMakerInstance {
                 if (user.currentArea && (user.currentArea.scene_type !== SceneTypesEnum.MINIGAME_RING)) {
                     RemoveUserFromSceneTask.main(user.currentArea, user);
                 }
-                
+
                 const startPosition = {
                     x: miniGameInstance.position_users[index][0],
                     y: miniGameInstance.position_users[index][1],
@@ -143,7 +143,7 @@ class MatchMakerInstance {
             // 3. Notificar a cada jugador con la lista completa
             for (const player of players) {
                 const user = ConnectedUsersCollection.getBySocketId(player.id);
-                 if (!user) continue;
+                if (!user) continue;
 
                 player.emit(ResponseSocketsEnum.MINIGAME_JOIN, {
                     success: true,
