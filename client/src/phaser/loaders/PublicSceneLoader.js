@@ -10,6 +10,7 @@ class PublicSceneLoader {
         if (preload) {
             this.#preload(areaId, assets, npc, gameScene, baseApiUrl);
             this.#loadItems(gameScene);
+            this.#loadArrows(gameScene);
         }
         else {
             this.#load(areaId, assets, npc, gameScene);
@@ -125,6 +126,14 @@ class PublicSceneLoader {
     static #loadBackground(gameScene, spriteName) {
         const background = gameScene.add.image(0, 0, spriteName).setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
+    }
+
+    static #loadArrows(gameScene) {
+        const viteEnv = import.meta.env.VITE_APP_ENV;
+        for (const arrow of gameScene.sceneData.scenery.arrows) {
+            const assetSpriteFile = viteEnv == 'local' ? arrow.image : arrow.image_url;
+            gameScene.load.image('arrow_' + arrow.sprite_name, assetSpriteFile);
+        }
     }
 
     static async #loadItems(gameScene) {

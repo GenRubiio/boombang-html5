@@ -69,6 +69,7 @@ class PublicScene extends Model
                     $output[] = [
                         'image' => $arrow->image,
                         'image_url' => urlDocker($arrow->image),
+                        'sprite_name' => $arrow->sprite_name,
                         'position_x' => $item['position_x'] ?? 0,
                         'position_y' => $item['position_y'] ?? 0,
                         'position_door_x' => $item['position_door_x'] ?? 0,
