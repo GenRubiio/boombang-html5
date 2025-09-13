@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use PgSql\Lob;
 
 class PublicScene extends Model
 {
@@ -55,6 +56,30 @@ class PublicScene extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function arrows()
+    {
+        $output = [];
+        $data = json_decode($this->arrows, true) ?? [];
+        $arrowDataItems = $data['arrows_data'] ?? [];
+        foreach ($arrowDataItems as $item) {
+            if (isset($item) && !empty($item['scene_arrow_id'])) {
+                $arrow = SceneArrow::find($item['scene_arrow_id']);
+                if ($arrow) {
+                    $output[] = [
+                        'image' => $arrow->image,
+                        'image_url' => urlDocker($arrow->image),
+                        'position_x' => $item['position_x'] ?? 0,
+                        'position_y' => $item['position_y'] ?? 0,
+                        'position_door_x' => $item['position_door_x'] ?? 0,
+                        'position_door_y' => $item['position_door_y'] ?? 0,
+                        'position_door_z' => $item['position_door_z'] ?? 0
+                    ];
+                }
+            }
+        }
+        return $output;
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -210,12 +235,12 @@ class PublicScene extends Model
         if (!empty($value)) {
             return json_decode($value, true);
         }
-        
+
         // Si no hay valor en el campo fake, cargamos desde la relación
         if ($this->exists) {
             $items = $this->items()->get();
             $pivotData = [];
-            
+
             foreach ($items as $item) {
                 $pivotData[] = [
                     'scene_item_id' => $item->id,
@@ -227,10 +252,10 @@ class PublicScene extends Model
                     'user_attribute_name' => $item->pivot->user_attribute_name,
                 ];
             }
-            
+
             return $pivotData;
         }
-        
+
         return [];
     }
 
@@ -250,5 +275,4 @@ class PublicScene extends Model
                    <i class="la la-copy"></i> Duplicar
                 </a>';
     }
-
 }

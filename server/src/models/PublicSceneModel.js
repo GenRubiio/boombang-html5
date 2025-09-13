@@ -11,6 +11,7 @@ class PublicSceneModel extends SceneModel {
         this.base_api_url = row.base_api_url ? row.base_api_url : ''; // URL base para los recursos
         this.assets_data = row.assets_data ? row.assets_data : []; // Datos de los assets en formato JSON
         this.npc = row.npc ? new NpcModel(row.npc) : null; // Datos del NPC asociado a la escena
+        this.arrows = row.arrows ? row.arrows : []; // Flechas de navegación en la escena
     }
     // Puedes agregar métodos adicionales o sobrescribir los existentes si es necesario
 }

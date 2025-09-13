@@ -15,6 +15,7 @@ class PublicSceneResource extends Resource {
             assets_data: data.assets_data,
             npc: data.npc,
             base_api_url: data.base_api_url,
+            arrows: data.arrows,
         };
     }
 }
