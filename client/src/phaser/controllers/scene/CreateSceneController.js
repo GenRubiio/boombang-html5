@@ -16,6 +16,8 @@ class CreateSceneController {
         if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "false") {
             this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
         }
+        
+        this.#createArrows(gameScene);
         this.createUsers(gameScene, usersData, authUserData);
     }
 
@@ -179,6 +181,50 @@ class CreateSceneController {
         });
     }
 
+    static #createArrows(gameScene) {
+        // Place arrows in the scene using the loaded textures and position data
+        if (!gameScene.sceneData.scenery.arrows) {
+            return; // No arrows to place
+        }
+
+        // Use the same tile dimensions as in createTile method
+        const tileWidth = 65;
+        const tileHeight = 33;
+        const halfTileWidth = tileWidth / 2;
+        const halfTileHeight = tileHeight / 2;
+
+        const W = gameScene.scale.width;
+        const centerX = W / 2;
+
+        for (const arrow of gameScene.sceneData.scenery.arrows) {
+            // Check if sprite was loaded properly
+            const spriteName = 'arrow_' + arrow.sprite_name;
+            if (!gameScene.textures.exists(spriteName)) {
+                console.error(`Arrow sprite not found: ${spriteName}`);
+                continue;
+            }
+    
+            const col = parseInt(arrow.position_x) || 0; // Grid column position
+            const row = parseInt(arrow.position_y) || 0; // Grid row position
+
+            // Convert grid position to isometric screen coordinates (same logic as tiles)
+            const screenX = (col - row) * halfTileWidth + centerX;
+            const screenY = (col + row) * halfTileHeight;
+            
+            // Create the arrow sprite at the converted screen position
+            // Adjust positioning to center on tile - use same origin as tiles and add small offset
+            gameScene.add.image(screenX, screenY + halfTileHeight, spriteName)
+                .setOrigin(0.5, 1) // Center the arrow
+                .setDepth(0) // Place arrows above tiles and other objects
+                .setName(spriteName);
+
+            // Make arrows interactive (clickable for navigation)
+            //arrowSprite.setInteractive({
+            //    cursor: 'pointer',
+            //    pixelPerfect: true
+            //});
+        }
+    }
 
     static createUsers(gameScene, usersData, authUserData) {
         // Crear los jugadores iniciales
