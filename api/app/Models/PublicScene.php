@@ -34,6 +34,7 @@ class PublicScene extends Model
         'map_height',
         'map',
         'assets_data',
+        'arrows',
         'start_x',
         'start_y',
         'start_z',
@@ -46,6 +47,7 @@ class PublicScene extends Model
     protected $fakeColumns = [
         'assets_data',
         'scene_items_pivot',
+        'arrows'
     ];
 
     /*
