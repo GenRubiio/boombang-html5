@@ -10,6 +10,7 @@
 @if (backpack_user()->hasRole('Superadmin'))
     <x-backpack::menu-item title="Public scenes" icon="la la-question" :link="backpack_url('public-scene')" />
     <x-backpack::menu-item title="Scene items" icon="la la-question" :link="backpack_url('scene-item')" />
+    <x-backpack::menu-item title="Scene arrows" icon="la la-question" :link="backpack_url('scene-arrow')" />
     <x-backpack::menu-item title="Npcs" icon="la la-question" :link="backpack_url('npc')" />
 @endif
 @if (backpack_user()->hasAnyRole(['Superadmin', 'Catalog']))
