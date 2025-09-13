@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+use Illuminate\Support\Facades\File;
 
 class CatalogItem extends Model
 {
@@ -146,8 +147,17 @@ class CatalogItem extends Model
             return;
         }
 
-        // Base64 (por si usas un campo que envía data:image/...)
-        if (is_string($value) && str_starts_with($value, 'data:image')) {
+        if (Str::startsWith($value, 'data:image/svg+xml')) {
+            $filename = Str::random(40) . '.svg';
+            $value = str_replace('data:image/svg+xml;base64,', '', $value);
+            $value = str_replace(' ', '+', $value);
+            if (!File::exists($destinationPath)) {
+                mkdir($destinationPath);
+            }
+            File::put($destinationPath . '/' . $filename, base64_decode($value));
+            $this->attributes[$attribute] = $destinationPath . '/' . $filename;
+            return;
+        } else if (is_string($value) && str_starts_with($value, 'data:image')) {
             [$meta, $data] = explode(',', $value, 2);
             $binary = base64_decode($data);
             $ext = str_contains($meta, 'image/webp') ? 'webp' : (str_contains($meta, 'image/png') ? 'png' : 'jpg');
