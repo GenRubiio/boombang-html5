@@ -39,6 +39,7 @@ class PublicSceneResource extends JsonResource
             ],
             'base_api_url' => config('app.url'),
             'assets_data' => $this->assets_data ? json_decode($this->assets_data, true) : [],
+            'arrows' => $this->arrows(),
         ];
 
         if (debug_backtrace()[1]['function'] == "toDTO") {
