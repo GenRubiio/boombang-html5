@@ -312,7 +312,15 @@ class PublicSceneCrudController extends CrudController
                         'hint' => 'Posición en el eje Y de la flecha',
                         'wrapper' => ['class' => 'form-group col-md-4'],
                     ],
-                   [
+                    [
+                        'name' => 'public_scene_id',
+                        'label' => 'Escena Destino',
+                        'type' => 'select2',
+                        'model' => "App\Models\PublicScene",
+                        'attribute' => 'name',
+                        'wrapper' => ['class' => 'form-group col-md-12'],
+                    ],
+                    [
                         'name' => 'position_door_x',
                         'label' => 'Posición Door X',
                         'type' => 'number',

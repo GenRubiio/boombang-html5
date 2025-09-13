@@ -129,6 +129,9 @@ class PublicSceneLoader {
     }
 
     static #loadArrows(gameScene) {
+        if (!gameScene.sceneData.scenery.arrows || gameScene.sceneData.scenery.arrows.length === 0) {
+            return;
+        }
         const viteEnv = import.meta.env.VITE_APP_ENV;
         for (const arrow of gameScene.sceneData.scenery.arrows) {
             const assetSpriteFile = viteEnv == 'local' ? arrow.image : arrow.image_url;

@@ -175,6 +175,18 @@ export default {
       this.showMinigameNotification = true;
     });
 
+    socket.off(ResponseSocketsEnum.JOIN_PUBLIC_SCENE);
+    socket.on(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, (response) => {
+      if (response.success) {
+        let sceneryType = response.data.scenery.type;
+        this.onJoinPublicScene(sceneryType, response.data);
+      } else {
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log("Error al unirse a la sala.");
+        }
+      }
+    });
+
     socket.off(ResponseSocketsEnum.JOIN_ISLAND);
     socket.on(ResponseSocketsEnum.JOIN_ISLAND, (response) => {
       this.onJoinIsland(response.island);
