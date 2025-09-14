@@ -94,6 +94,8 @@ export default {
         default:
           phaserType = Phaser.AUTO;
       }
+      const LOGICAL_WIDTH = 1012;
+      const LOGICAL_HEIGHT = 657;
       this.gamePhaser = new Phaser.Game({
         type: phaserType,
         powerPreference: socket.user.phaser_power_preference || "default", // "high-performance", "low-power", "default"
@@ -101,8 +103,8 @@ export default {
         antialiasGL: socket.user.phaser_antialias_gl ? true : false, // Desactiva si no necesitas suavizado en WebGL
         roundPixels: socket.user.phaser_round_pixels ? true : false, // Reduce cálculos de subpíxeles
         pixelArt: socket.user.phaser_pixel_art ? true : false, // Esencial para evitar el antialiasing que causa el blur
-        width: 1012,
-        height: 657,
+        width: LOGICAL_WIDTH,
+        height: LOGICAL_HEIGHT,
         // Registras todas las escenas globales que vayas a usar
         scene: [GlobalPreloader, PublicScene, PrivateScene, MinigameScene],
         plugins: {
