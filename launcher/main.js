@@ -22,6 +22,14 @@ app.whenReady().then(() => {
   const vueURL = process.env.VUE_URL || "https://play.boommania.com/";
   mainWindow.loadURL(vueURL);
 
+  // Ocultar barras de scroll del contenido cargado
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.insertCSS(`
+      html, body { overflow: hidden !important; }
+      ::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+    `);
+  });
+
   mainWindow.webContents.on('page-title-updated', (event) => {
     event.preventDefault();
     mainWindow.setTitle('BoomMania | Game Launcher');
