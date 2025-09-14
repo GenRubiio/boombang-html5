@@ -21,6 +21,7 @@ import asset_accept_image from "@/assets/game/scene/interactions/accept.png";
 import asset_reject_image from "@/assets/game/scene/interactions/reject.png";
 import i18n from "../plugins/i18n";
 import ButtonsPublicSceneHtml from "./html/public-scene/ButtonsPublicSceneHtml";
+import SceneUtils from "../utils/SceneUtils";
 
 
 export default class PublicScene extends Phaser.Scene {
@@ -82,6 +83,10 @@ export default class PublicScene extends Phaser.Scene {
         this.scene.pauseOnHide = false;
 
         this.createHTMLButtons();
+
+        // Configurar controlador unificado para mover/ajustar sprites con show_controller
+        // Solo si existen elementos registrados por el loader
+        SceneUtils.setupPublicMoveController(this);
     }
 
     createHTMLButtons() {

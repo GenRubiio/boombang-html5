@@ -210,6 +210,167 @@ class SceneUtils {
             uiElement.destroy();
         });
     }
+
+    /**
+     * Public Scene unified controller: builds a dropdown to pick which sprite to control
+     * among those marked with show_controller=Yes in the API.
+     */
+    static setupPublicMoveController(gameScene) {
+        // Ensure there are items registered and that there is more than one to justify a dropdown
+        if (!gameScene.activeItems || gameScene.activeItems.size < 2) return;
+
+        // Create UI container with dropdown and arrow/depth buttons
+        const names = Array.from(gameScene.activeItems.keys());
+        const uiHTML = `
+            <div id="public-scene-controller" style="position: fixed; top: 10px; left: 70px; z-index: 10002; font-family: Arial, sans-serif; font-size: 14px; color: white; pointer-events: auto;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <label style="margin-right: 6px;">Controller:</label>
+                    <select id="public-controller-select" style="padding: 2px;">
+                        <option value="">Select object</option>
+                        ${names.map(n => `<option value="${n}">${n}</option>`).join('')}
+                    </select>
+                </div>
+                <div style="margin-top:8px; display:inline-block;">
+                    <div style="display:flex; justify-content:center; gap:6px; margin-bottom:4px;">
+                        <button data-move="up" style="width:30px; height:30px;">↑</button>
+                    </div>
+                    <div style="display:flex; justify-content:center; gap:6px;">
+                        <button data-move="left" style="width:30px; height:30px;">←</button>
+                        <button data-move="down" style="width:30px; height:30px;">↓</button>
+                        <button data-move="right" style="width:30px; height:30px;">→</button>
+                    </div>
+                    <div style="display:flex; justify-content:center; gap:6px; margin-top:6px;">
+                        <button data-depth="plus" style="width:30px; height:30px;">+</button>
+                        <button data-depth="minus" style="width:30px; height:30px;">−</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const uiElement = gameScene.add.dom(0, 0).createFromHTML(uiHTML);
+        uiElement.setOrigin(0, 0);
+        uiElement.setScrollFactor(0);
+        uiElement.setDepth(10000);
+
+        // On-screen info text
+        const infoText = gameScene.add.text(10, 120, 'Select object', {
+            font: '16px Arial',
+            backgroundColor: '#000000AA',
+            color: '#ffffff',
+        }).setDepth(10000).setScrollFactor(0);
+
+        const dropdown = uiElement.node.querySelector('#public-controller-select');
+        // Make dropdown not focusable via keyboard (but still clickable)
+        if (dropdown) {
+            dropdown.setAttribute('tabindex', '-1');
+            // Prevent arrow keys and +/- from changing the selection when dropdown has focus
+            dropdown.addEventListener('keydown', (ev) => {
+                const blockedKeys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','+','-','=', '_','PageUp','PageDown','Home','End'];
+                if (blockedKeys.includes(ev.key)) {
+                    ev.preventDefault();
+                }
+            });
+            // Hide visual focus ring to avoid the feeling of taking focus
+            dropdown.style.outline = 'none';
+            dropdown.addEventListener('focus', () => {
+                dropdown.style.outline = 'none';
+            });
+        }
+
+        // Stop propagation so clicks on the DOM UI don't interfere with scene input
+        const containerNode = uiElement.node;
+        const stopPropagation = (ev) => ev.stopPropagation();
+        ['pointerdown','mousedown','touchstart','click'].forEach(evt => containerNode.addEventListener(evt, stopPropagation));
+
+        const updateInfo = (sprite) => {
+            if (!sprite) {
+                infoText.setText('Select object');
+                return;
+            }
+            infoText.setText(`Sprite: ${sprite.name}\nX: ${Math.round(sprite.x)}, Y: ${Math.round(sprite.y)}\nDepth: ${Math.round(sprite.depth)}`);
+        };
+
+        const focusCanvas = () => {
+            const canvas = gameScene.game && gameScene.game.canvas ? gameScene.game.canvas : null;
+            if (canvas) {
+                if (!canvas.hasAttribute('tabindex')) {
+                    canvas.setAttribute('tabindex', '-1');
+                }
+                try { canvas.focus(); } catch {}
+            }
+        };
+
+        if (dropdown) {
+            dropdown.addEventListener('change', (e) => {
+                const selectedName = e.target.value;
+                gameScene.selectedSprite = selectedName ? gameScene.activeItems.get(selectedName) : null;
+                updateInfo(gameScene.selectedSprite);
+                // Blur dropdown and focus canvas so arrow keys are ready
+                try { dropdown.blur(); } catch {}
+                focusCanvas();
+            });
+        }
+
+        // Button controls for currently selected sprite
+        const moveButtons = containerNode.querySelectorAll('button[data-move]');
+        moveButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const dir = btn.getAttribute('data-move');
+                const sprite = gameScene.selectedSprite;
+                if (!sprite) return;
+                switch (dir) {
+                    case 'up': sprite.y = Number(sprite.y) - 1; break;
+                    case 'down': sprite.y = Number(sprite.y) + 1; break;
+                    case 'left': sprite.x = Number(sprite.x) - 1; break;
+                    case 'right': sprite.x = Number(sprite.x) + 1; break;
+                }
+                updateInfo(sprite);
+                focusCanvas();
+            });
+        });
+
+        const depthButtons = containerNode.querySelectorAll('button[data-depth]');
+        depthButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const action = btn.getAttribute('data-depth');
+                const sprite = gameScene.selectedSprite;
+                if (!sprite) return;
+                if (action === 'plus') sprite.setDepth(Number(sprite.depth) + 1);
+                if (action === 'minus') sprite.setDepth(Number(sprite.depth) - 1);
+                updateInfo(sprite);
+                focusCanvas();
+            });
+        });
+
+        // Keyboard controls for currently selected sprite
+        const keydownHandler = (event) => {
+            const sprite = gameScene.selectedSprite;
+            if (!sprite) return;
+            switch (event.key) {
+                case 'ArrowUp': sprite.y = Number(sprite.y) - 1; break;
+                case 'ArrowDown': sprite.y = Number(sprite.y) + 1; break;
+                case 'ArrowLeft': sprite.x = Number(sprite.x) - 1; break;
+                case 'ArrowRight': sprite.x = Number(sprite.x) + 1; break;
+                case '+': sprite.setDepth(Number(sprite.depth) + 1); break;
+                case '-': sprite.setDepth(Number(sprite.depth) - 1); break;
+                default: return;
+            }
+            updateInfo(sprite);
+        };
+
+        // Avoid stacking multiple listeners
+        // Note: do not remove all listeners globally to not affect other systems
+        gameScene.input.keyboard.on('keydown', keydownHandler);
+
+        // Cleanup on shutdown
+        gameScene.events.on('shutdown', () => {
+            try { gameScene.input.keyboard.off('keydown', keydownHandler); } catch {}
+            uiElement.destroy();
+            infoText.destroy();
+        });
+    }
 }
 
 export default SceneUtils;

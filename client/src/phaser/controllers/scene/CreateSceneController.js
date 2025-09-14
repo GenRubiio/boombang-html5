@@ -7,235 +7,381 @@ import EventLimiter from "../../../utils/EventLimiter.js";
 import CatalogItemTypeOfBehaviorEnum from "../../../enums/CatalogItemTypeOfBehaviorEnum.js";
 
 class CreateSceneController {
-    //TODO: El bob y blitter esta consumiendo 5% de CPU hay que condicionarlo para que no aparezca si no es necesario. Ya lo he comprobado y solo hay que quitarlo
-    static async main(gameScene, data) {
-        const usersData = data.players;
-        const sceneryData = data.scenery;
-        const authUserData = data.authUser;
+  //TODO: El bob y blitter esta consumiendo 5% de CPU hay que condicionarlo para que no aparezca si no es necesario. Ya lo he comprobado y solo hay que quitarlo
+  static async main(gameScene, data) {
+    const usersData = data.players;
+    const sceneryData = data.scenery;
+    const authUserData = data.authUser;
 
-        if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "false") {
-            this.createTile(gameScene, sceneryData.game_map, sceneryData.map_rows, sceneryData.map_cols);
-        }
-        
-        this.#createArrows(gameScene);
-        this.createUsers(gameScene, usersData, authUserData);
+    if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "false") {
+      this.createTile(
+        gameScene,
+        sceneryData.game_map,
+        sceneryData.map_rows,
+        sceneryData.map_cols
+      );
     }
 
-    static createTile(gameScene, map, rows, cols) {
-        const tileWidth = 65;
-        const tileHeight = 33;
-        const halfTileWidth = tileWidth / 2;
-        const halfTileHeight = tileHeight / 2;
+    this.#createArrows(gameScene);
+    this.createUsers(gameScene, usersData, authUserData);
+  }
 
-        const W = gameScene.scale.width;
-        const H = gameScene.scale.height;
-        const centerX = W / 2;
+  static createTile(gameScene, map, rows, cols) {
+    const tileWidth = 65;
+    const tileHeight = 33;
+    const halfTileWidth = tileWidth / 2;
+    const halfTileHeight = tileHeight / 2;
 
-        const blitter = gameScene.add.blitter(0, 0, "tile");
-        blitter.setDepth(100);
+    const W = gameScene.scale.width;
+    const H = gameScene.scale.height;
+    const centerX = W / 2;
 
-        // Si quieres seguir guardando referencias solo para los tiles visibles:
-        gameScene.tiles = Array.from({ length: rows }, () => Array(cols).fill(null));
+    const blitter = gameScene.add.blitter(0, 0, "tile");
+    blitter.setDepth(100);
 
-        // --------- Cálculo de límites de visibilidad ----------
-        // s = row + col controla la "diagonal" (afecta a Y)
-        // y = s * halfTileHeight debe caer dentro de pantalla (con pequeño margen)
-        const marginY = halfTileHeight; // margen para bordes
-        const sMaxByHeight = Math.floor((H + marginY) / halfTileHeight);
-        const sMax = Math.min(sMaxByHeight, (rows - 1) + (cols - 1)); // tope real del mapa
+    // Si quieres seguir guardando referencias solo para los tiles visibles:
+    gameScene.tiles = Array.from({ length: rows }, () =>
+      Array(cols).fill(null)
+    );
 
-        // Para X: x = (col - row) * halfTileWidth + centerX debe entrar en [-margenX, W + margenX]
-        const marginX = halfTileWidth;
-        const diffMin = Math.ceil((-marginX - centerX) / halfTileWidth);           // (col - row) mínimo
-        const diffMax = Math.floor((W + marginX - centerX) / halfTileWidth);       // (col - row) máximo
+    // --------- Cálculo de límites de visibilidad ----------
+    // s = row + col controla la "diagonal" (afecta a Y)
+    // y = s * halfTileHeight debe caer dentro de pantalla (con pequeño margen)
+    const marginY = halfTileHeight; // margen para bordes
+    const sMaxByHeight = Math.floor((H + marginY) / halfTileHeight);
+    const sMax = Math.min(sMaxByHeight, rows - 1 + (cols - 1)); // tope real del mapa
 
-        // Recorremos por diagonales s = row + col, solo hasta sMax (parte superior del rombo)
-        for (let s = 0; s <= sMax; s++) {
-            // col está en [max(0, s-(rows-1)), min(cols-1, s)] para mantener row y col dentro de la matriz
-            const colStart = Math.max(0, s - (rows - 1));
-            const colEnd = Math.min(cols - 1, s);
+    // Para X: x = (col - row) * halfTileWidth + centerX debe entrar en [-margenX, W + margenX]
+    const marginX = halfTileWidth;
+    const diffMin = Math.ceil((-marginX - centerX) / halfTileWidth); // (col - row) mínimo
+    const diffMax = Math.floor((W + marginX - centerX) / halfTileWidth); // (col - row) máximo
 
-            for (let col = colStart; col <= colEnd; col++) {
-                const row = s - col;
+    // Recorremos por diagonales s = row + col, solo hasta sMax (parte superior del rombo)
+    for (let s = 0; s <= sMax; s++) {
+      // col está en [max(0, s-(rows-1)), min(cols-1, s)] para mantener row y col dentro de la matriz
+      const colStart = Math.max(0, s - (rows - 1));
+      const colEnd = Math.min(cols - 1, s);
 
-                // Filtro por X: (col - row) debe caer en [diffMin, diffMax]
-                const diff = col - row;
-                if (diff < diffMin || diff > diffMax) continue;
+      for (let col = colStart; col <= colEnd; col++) {
+        const row = s - col;
 
-                // Coordenadas proyectadas
-                const x = (col - row) * halfTileWidth + centerX;
-                const y = (col + row) * halfTileHeight;
+        // Filtro por X: (col - row) debe caer en [diffMin, diffMax]
+        const diff = col - row;
+        if (diff < diffMin || diff > diffMax) continue;
 
-                // Doble verificación por seguridad (clipping de pantalla)
-                if (x < -marginX || x > W + marginX) continue;
-                if (y < -marginY || y > H + marginY) continue;
+        // Coordenadas proyectadas
+        const x = (col - row) * halfTileWidth + centerX;
+        const y = (col + row) * halfTileHeight;
 
-                // Crear bob solo si se quiere mostrar algo sobre el tile
-                const isClickable = map[row][col] === 0;
-                const bob = blitter.create(x - halfTileWidth, y - halfTileHeight);
+        // Doble verificación por seguridad (clipping de pantalla)
+        if (x < -marginX || x > W + marginX) continue;
+        if (y < -marginY || y > H + marginY) continue;
 
-                if (import.meta.env.VITE_MAP_MAKER == "true" 
-                    || import.meta.env.VITE_SHOW_ISOMAP == "true"
-                    || gameScene.sceneData.authUser?.admin_tools?.show_isomap) {
-                    if (!isClickable) bob.tint = 0x808080;
-                    bob.alpha = 0.5;
-                } else {
-                    bob.alpha = 0;
-                }
+        // Crear bob solo si se quiere mostrar algo sobre el tile
+        const isClickable = map[row][col] === 0;
+        const bob = blitter.create(x - halfTileWidth, y - halfTileHeight);
 
-                // Guarda referencia SOLO para los visibles
-                gameScene.tiles[row][col] = { bob, gridPos: { x: col, y: row }, isClickable };
-            }
+        if (
+          import.meta.env.VITE_MAP_MAKER == "true" ||
+          import.meta.env.VITE_SHOW_ISOMAP == "true" ||
+          gameScene.sceneData.authUser?.admin_tools?.show_isomap
+        ) {
+          if (!isClickable) bob.tint = 0x808080;
+          bob.alpha = 0.5;
+        } else {
+          bob.alpha = 0;
         }
 
-        // Rombo local para test de click fino
-        const diamondPolygon = new Phaser.Geom.Polygon([
-            { x: -halfTileWidth, y: 0 },
-            { x: 0, y: -halfTileHeight },
-            { x: halfTileWidth, y: 0 },
-            { x: 0, y: halfTileHeight }
-        ]);
-
-        const zone = gameScene.add.zone(0, 0, W, H).setOrigin(0).setInteractive();
-
-        zone.on("pointerdown", (pointer) => {
-            if (!EventLimiter.canClick()) return;
-
-            // Check if click is on a notification button (high depth objects)
-            const hitObjects = gameScene.input.hitTestPointer(pointer);
-            for (let obj of hitObjects) {
-                if (obj.input && obj.input.enabled && obj !== zone && obj.depth >= 1000) {
-                    // Click is on a notification button or similar UI element, ignore floor click
-                    return;
-                }
-            }
-
-            const mx = pointer.worldX;
-            const my = pointer.worldY;
-
-            // Inversión iso
-            const colFloat = ((mx - centerX) / halfTileWidth + my / halfTileHeight) / 2;
-            const rowFloat = (my / halfTileHeight - (mx - centerX) / halfTileWidth) / 2;
-
-            const col = Math.round(colFloat);
-            const row = Math.round(rowFloat);
-
-            if (col < 0 || col >= cols || row < 0 || row >= rows) return;
-
-            // Centro del tile
-            const tileCenterX = (col - row) * halfTileWidth + centerX;
-            const tileCenterY = (col + row) * halfTileHeight;
-            const localX = mx - tileCenterX;
-            const localY = my - tileCenterY;
-
-            if (!Phaser.Geom.Polygon.Contains(diamondPolygon, localX, localY)) return;
-
-            // Determina clickeable desde el mapa (no dependas de gameScene.tiles)
-            const isClickable = map[row][col] === 0;
-
-            // Verificar también si el tile está ocupado por objetos (si existe tileGrid)
-            // But allow movement through WALKABLE items
-            let isTileOccupied = false;
-            if (gameScene.tileGrid && gameScene.tileGrid[row] && gameScene.tileGrid[row][col] && gameScene.tileGrid[row][col].occupied) {
-                const occupyingObjectId = gameScene.tileGrid[row][col].objectId;
-                const occupyingObject = gameScene.sceneItems?.find(item => item.id === occupyingObjectId);
-                
-                // Only consider it occupied if it's not a WALKABLE/WALKABLE_OVERLAY item
-                if (!occupyingObject || (occupyingObject.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE && 
-                                        occupyingObject.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
-                    isTileOccupied = true;
-                }
-            }
-
-            if (!isClickable || isTileOccupied) {
-                if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log(`Tile at ${col}, ${row} is not clickable. Reason: ${!isClickable ? 'floor not walkable' : 'occupied by object'}`);
-                }
-
-                // Emitir CHANGE_LOOK tanto para tiles no clickeables como para tiles ocupados por objetos
-                socket.emit(RequestSocketsEnum.CHANGE_LOOK, { x: col, y: row });
-
-                // Solo actualizar el mapa si es por razones de piso no transitable y está en modo editor
-                if (!isClickable && import.meta.env.VITE_MAP_MAKER === "true") {
-                    // Actualiza el mapa (aunque no exista bob)
-                    map[row][col] = 0;
-
-                    // Si existe un bob visible, actualiza aspecto
-                    const t = gameScene.tiles[row][col];
-                    if (t?.bob) {
-                        t.isClickable = true;
-                        t.bob.clearTint?.();
-                        t.bob.alpha = 1;
-                    }
-                    if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
-                }
-
-                return; // Bloquear completamente cualquier acción adicional
-            }
-
-            if (import.meta.env.VITE_APP_ENV === "local") {
-                console.log(`Clicked tile at ${col}, ${row}`);
-            }
-            socket.emit(RequestSocketsEnum.USER_MOVE, { x: col, y: row });
-            FloorPulseAnimation.main(gameScene, mx, my);
-        });
+        // Guarda referencia SOLO para los visibles
+        gameScene.tiles[row][col] = {
+          bob,
+          gridPos: { x: col, y: row },
+          isClickable,
+        };
+      }
     }
 
-    static #createArrows(gameScene) {
-        // Place arrows in the scene using the loaded textures and position data
-        if (!gameScene.sceneData.scenery.arrows) {
-            return; // No arrows to place
+    // Rombo local para test de click fino
+    const diamondPolygon = new Phaser.Geom.Polygon([
+      { x: -halfTileWidth, y: 0 },
+      { x: 0, y: -halfTileHeight },
+      { x: halfTileWidth, y: 0 },
+      { x: 0, y: halfTileHeight },
+    ]);
+
+    const zone = gameScene.add.zone(0, 0, W, H).setOrigin(0).setInteractive();
+    if (import.meta.env.VITE_MAP_MAKER == "true") {
+      // Desactivar el menú contextual del navegador para permitir usar el botón derecho
+      if (
+        gameScene.input &&
+        gameScene.input.mouse &&
+        gameScene.input.mouse.disableContextMenu
+      ) {
+        gameScene.input.mouse.disableContextMenu();
+      }
+    }
+
+    zone.on("pointerdown", (pointer) => {
+      if (!EventLimiter.canClick()) return;
+
+      // Check if click is on a notification button (high depth objects)
+      const hitObjects = gameScene.input.hitTestPointer(pointer);
+      for (let obj of hitObjects) {
+        if (
+          obj.input &&
+          obj.input.enabled &&
+          obj !== zone &&
+          obj.depth >= 1000
+        ) {
+          // Click is on a notification button or similar UI element, ignore floor click
+          return;
+        }
+      }
+
+      const mx = pointer.worldX;
+      const my = pointer.worldY;
+
+      // Inversión iso
+      const colFloat =
+        ((mx - centerX) / halfTileWidth + my / halfTileHeight) / 2;
+      const rowFloat =
+        (my / halfTileHeight - (mx - centerX) / halfTileWidth) / 2;
+
+      const col = Math.round(colFloat);
+      const row = Math.round(rowFloat);
+
+      if (col < 0 || col >= cols || row < 0 || row >= rows) return;
+
+      // Centro del tile
+      const tileCenterX = (col - row) * halfTileWidth + centerX;
+      const tileCenterY = (col + row) * halfTileHeight;
+      const localX = mx - tileCenterX;
+      const localY = my - tileCenterY;
+
+      if (!Phaser.Geom.Polygon.Contains(diamondPolygon, localX, localY)) return;
+
+      // Edición de tiles en modo editor: botón derecho despinta (1), izquierdo pinta (0)
+      if (import.meta.env.VITE_MAP_MAKER == "true") {
+        // Despintar con botón derecho -> no transitable (1)
+        if (pointer.rightButtonDown && pointer.rightButtonDown()) {
+          if (map[row][col] !== 1) {
+            map[row][col] = 1;
+            const t = gameScene.tiles[row][col];
+            if (t?.bob) {
+              t.isClickable = false;
+              t.bob.tint = 0x808080;
+              t.bob.alpha = 0.5;
+            }
+            if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
+          }
+          return; // no continuar con movimiento (click derecho nunca mueve)
+        }
+        // Pintar con botón izquierdo -> transitable (0)
+        if (pointer.leftButtonDown && pointer.leftButtonDown()) {
+          if (map[row][col] !== 0) {
+            map[row][col] = 0;
+            const t = gameScene.tiles[row][col];
+            if (t?.bob) {
+              t.isClickable = true;
+              t.bob.clearTint?.();
+              t.bob.alpha = 1;
+            }
+            if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
+            return; // consumimos el click porque hemos editado el tile
+          }
+          // Si ya era 0, permitimos que continúe la lógica de movimiento
+        }
+      }
+
+      // Determina clickeable desde el mapa (no dependas de gameScene.tiles)
+      const isClickable = map[row][col] === 0;
+
+      // Verificar también si el tile está ocupado por objetos (si existe tileGrid)
+      // But allow movement through WALKABLE items
+      let isTileOccupied = false;
+      if (
+        gameScene.tileGrid &&
+        gameScene.tileGrid[row] &&
+        gameScene.tileGrid[row][col] &&
+        gameScene.tileGrid[row][col].occupied
+      ) {
+        const occupyingObjectId = gameScene.tileGrid[row][col].objectId;
+        const occupyingObject = gameScene.sceneItems?.find(
+          (item) => item.id === occupyingObjectId
+        );
+
+        // Only consider it occupied if it's not a WALKABLE/WALKABLE_OVERLAY item
+        if (
+          !occupyingObject ||
+          (occupyingObject.type_of_behavior !==
+            CatalogItemTypeOfBehaviorEnum.WALKABLE &&
+            occupyingObject.type_of_behavior !==
+              CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)
+        ) {
+          isTileOccupied = true;
+        }
+      }
+
+      if (!isClickable || isTileOccupied) {
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log(
+            `Tile at ${col}, ${row} is not clickable. Reason: ${
+              !isClickable ? "floor not walkable" : "occupied by object"
+            }`
+          );
         }
 
-        // Use the same tile dimensions as in createTile method
-        const tileWidth = 65;
-        const tileHeight = 33;
-        const halfTileWidth = tileWidth / 2;
-        const halfTileHeight = tileHeight / 2;
+        // Emitir CHANGE_LOOK tanto para tiles no clickeables como para tiles ocupados por objetos
+        socket.emit(RequestSocketsEnum.CHANGE_LOOK, { x: col, y: row });
 
-        const W = gameScene.scale.width;
-        const centerX = W / 2;
+        // Solo actualizar el mapa si es por razones de piso no transitable y está en modo editor
+        if (!isClickable && import.meta.env.VITE_MAP_MAKER === "true") {
+          // Actualiza el mapa (aunque no exista bob)
+          map[row][col] = 0;
 
-        for (const arrow of gameScene.sceneData.scenery.arrows) {
-            // Check if sprite was loaded properly
-            const spriteName = 'arrow_' + arrow.sprite_name;
-            if (!gameScene.textures.exists(spriteName)) {
-                console.error(`Arrow sprite not found: ${spriteName}`);
-                continue;
-            }
-    
-            const col = parseInt(arrow.position_x) || 0; // Grid column position
-            const row = parseInt(arrow.position_y) || 0; // Grid row position
-
-            // Convert grid position to isometric screen coordinates (same logic as tiles)
-            const screenX = (col - row) * halfTileWidth + centerX;
-            const screenY = (col + row) * halfTileHeight;
-            
-            // Create the arrow sprite at the converted screen position
-            // Adjust positioning to center on tile - use same origin as tiles and add small offset
-            gameScene.add.image(screenX, screenY + halfTileHeight, spriteName)
-                .setOrigin(0.5, 1) // Center the arrow
-                .setDepth(0) // Place arrows above tiles and other objects
-                .setName(spriteName);
-
-            // Make arrows interactive (clickable for navigation)
-            //arrowSprite.setInteractive({
-            //    cursor: 'pointer',
-            //    pixelPerfect: true
-            //});
+          // Si existe un bob visible, actualiza aspecto
+          const t = gameScene.tiles[row][col];
+          if (t?.bob) {
+            t.isClickable = true;
+            t.bob.clearTint?.();
+            t.bob.alpha = 1;
+          }
+          if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
         }
+
+        return; // Bloquear completamente cualquier acción adicional
+      }
+
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log(`Clicked tile at ${col}, ${row}`);
+      }
+      socket.emit(RequestSocketsEnum.USER_MOVE, { x: col, y: row });
+      FloorPulseAnimation.main(gameScene, mx, my);
+    });
+    if (import.meta.env.VITE_MAP_MAKER == "true") {
+      // Soporte de arrastre para pintar/despintar manteniendo el botón
+      zone.on("pointermove", (pointer) => {
+        if (import.meta.env.VITE_MAP_MAKER !== "true") return;
+        if (!pointer.isDown) return;
+
+        // Evitar pintar sobre UI superpuesta
+        const hitObjects = gameScene.input.hitTestPointer(pointer);
+        for (let obj of hitObjects) {
+          if (
+            obj.input &&
+            obj.input.enabled &&
+            obj !== zone &&
+            obj.depth >= 1000
+          ) {
+            return;
+          }
+        }
+
+        const mx = pointer.worldX;
+        const my = pointer.worldY;
+
+        const colFloat =
+          ((mx - centerX) / halfTileWidth + my / halfTileHeight) / 2;
+        const rowFloat =
+          (my / halfTileHeight - (mx - centerX) / halfTileWidth) / 2;
+
+        const col = Math.round(colFloat);
+        const row = Math.round(rowFloat);
+
+        if (col < 0 || col >= cols || row < 0 || row >= rows) return;
+
+        const tileCenterX = (col - row) * halfTileWidth + centerX;
+        const tileCenterY = (col + row) * halfTileHeight;
+        const localX = mx - tileCenterX;
+        const localY = my - tileCenterY;
+
+        if (!Phaser.Geom.Polygon.Contains(diamondPolygon, localX, localY))
+          return;
+
+        // Arrastre: botón izquierdo pinta (0), botón derecho despinta (1)
+        if (pointer.leftButtonDown && pointer.leftButtonDown()) {
+          if (map[row][col] !== 0) {
+            map[row][col] = 0;
+            const t = gameScene.tiles[row][col];
+            if (t?.bob) {
+              t.isClickable = true;
+              t.bob.clearTint?.();
+              t.bob.alpha = 1;
+            }
+            if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
+          }
+        } else if (pointer.rightButtonDown && pointer.rightButtonDown()) {
+          if (map[row][col] !== 1) {
+            map[row][col] = 1;
+            const t = gameScene.tiles[row][col];
+            if (t?.bob) {
+              t.isClickable = false;
+              t.bob.tint = 0x808080;
+              t.bob.alpha = 0.5;
+            }
+            if (import.meta.env.VITE_APP_ENV === "local") console.log(map);
+          }
+        }
+      });
+    }
+  }
+
+  static #createArrows(gameScene) {
+    // Place arrows in the scene using the loaded textures and position data
+    if (!gameScene.sceneData.scenery.arrows) {
+      return; // No arrows to place
     }
 
-    static createUsers(gameScene, usersData, authUserData) {
-        // Crear los jugadores iniciales
-        (async () => {
-            for (const userData of usersData) {
-                await AddUserController.main(gameScene, userData);
-            }
-            //console.log("Players loaded", gameScene.users);
-            SetUserCardController.main(gameScene, authUserData, authUserData);
-        })();
+    // Use the same tile dimensions as in createTile method
+    const tileWidth = 65;
+    const tileHeight = 33;
+    const halfTileWidth = tileWidth / 2;
+    const halfTileHeight = tileHeight / 2;
+
+    const W = gameScene.scale.width;
+    const centerX = W / 2;
+
+    for (const arrow of gameScene.sceneData.scenery.arrows) {
+      // Check if sprite was loaded properly
+      const spriteName = "arrow_" + arrow.sprite_name;
+      if (!gameScene.textures.exists(spriteName)) {
+        console.error(`Arrow sprite not found: ${spriteName}`);
+        continue;
+      }
+
+      const col = parseInt(arrow.position_x) || 0; // Grid column position
+      const row = parseInt(arrow.position_y) || 0; // Grid row position
+
+      // Convert grid position to isometric screen coordinates (same logic as tiles)
+      const screenX = (col - row) * halfTileWidth + centerX;
+      const screenY = (col + row) * halfTileHeight;
+
+      // Create the arrow sprite at the converted screen position
+      // Adjust positioning to center on tile - use same origin as tiles and add small offset
+      gameScene.add
+        .image(screenX, screenY + halfTileHeight, spriteName)
+        .setOrigin(0.5, 1) // Center the arrow
+        .setDepth(0) // Place arrows above tiles and other objects
+        .setName(spriteName);
+
+      // Make arrows interactive (clickable for navigation)
+      //arrowSprite.setInteractive({
+      //    cursor: 'pointer',
+      //    pixelPerfect: true
+      //});
     }
+  }
+
+  static createUsers(gameScene, usersData, authUserData) {
+    // Crear los jugadores iniciales
+    (async () => {
+      for (const userData of usersData) {
+        await AddUserController.main(gameScene, userData);
+      }
+      //console.log("Players loaded", gameScene.users);
+      SetUserCardController.main(gameScene, authUserData, authUserData);
+    })();
+  }
 }
 
 export default CreateSceneController;

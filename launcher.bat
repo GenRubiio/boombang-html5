@@ -29,8 +29,9 @@ goto MAIN_MENU
 
 :START_ALL
 call :START_API
-call :START_SERVER
 call :START_CLIENT
+timeout /t 5 /nobreak
+call :START_SERVER
 pause
 goto MAIN_MENU
 
@@ -65,6 +66,7 @@ goto :eof
 echo Iniciando cliente...
 start "client" cmd /k "cd /d "%ROOT%client" && npm run dev"
 goto :eof
+
 
 :START_SERVER
 echo Iniciando servidor...
