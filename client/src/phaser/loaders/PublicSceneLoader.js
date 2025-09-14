@@ -83,9 +83,12 @@ class PublicSceneLoader {
                 .setName(spriteName);
         }
 
+        // Registrar sprites con controlador activo para un controlador unificado
         if (item.show_controller) {
-            // Si es un item que se puede mover, añadimos el controlador
-            SceneUtils.moveItem(gameScene, sprite);
+            if (!gameScene.activeItems) {
+                gameScene.activeItems = new Map();
+            }
+            gameScene.activeItems.set(spriteName, sprite);
         }
     }
 
