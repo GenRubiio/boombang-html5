@@ -1,4 +1,4 @@
-import avatarConfig from "@/assets/game/avatars/rasta/config.json";
+import avatarConfig from "@/assets/game/avatars/zombie/config.json";
 
 class AnimationEditorController {
     static editorInstance = null;
@@ -6,6 +6,8 @@ class AnimationEditorController {
     static currentSprite = null;
     static currentAnimation = null;
     static dropdownOpen = false;
+    static gameScene = null;
+    static keyRepeatIntervals = {};
 
     static create(gameScene, spriteAvatar, user) {
         // Prevent multiple instances
@@ -17,6 +19,7 @@ class AnimationEditorController {
         this.animationData = JSON.parse(JSON.stringify(avatarConfig));
         this.currentSprite = spriteAvatar;
         this.currentUser = user;
+        this.gameScene = gameScene;
 
         // Create the dropdown UI container
         const editorContainer = gameScene.add.container(0, 0);
@@ -45,17 +48,20 @@ class AnimationEditorController {
         ]);
 
         // Position the editor in the top-left corner with 50px margin
-        editorContainer.x = 70;
-        editorContainer.y = 20;
-        editorContainer.setDepth(9999);
+        editorContainer.setPosition(50, 50);
+        editorContainer.setDepth(1000);
         editorContainer.setScrollFactor(0);
 
+        // Setup keyboard controls
+        this.setupKeyboardControls(gameScene);
+
+        // Store references
         this.editorInstance = {
             container: editorContainer,
-            dropdownButton: dropdownButton,
-            dropdownList: dropdownList,
-            positionControls: positionControls,
-            actionButtons: actionButtons,
+            dropdownButton,
+            dropdownList,
+            positionControls,
+            actionButtons,
             gameScene: gameScene
         };
 
@@ -414,14 +420,48 @@ class AnimationEditorController {
     }
 
     static playCurrentAnimation() {
-        if (!this.currentAnimation || !this.currentSprite) {
-            console.log('No animation or sprite available');
+        if (!this.currentAnimation || !this.currentUser) {
+            console.log('No animation or user available');
             return;
+        }
+
+        // Obtener referencia fresca del sprite desde el usuario
+        const freshSprite = this.currentUser.spriteAvatar;
+        if (!freshSprite) {
+            console.error('No sprite available in user');
+            return;
+        }
+
+        // Actualizar la referencia del sprite si es diferente
+        if (this.currentSprite !== freshSprite) {
+            console.log('Updating sprite reference');
+            this.currentSprite = freshSprite;
         }
 
         const animationKey = this.currentUser.avatarId + `_${this.currentAnimation}`;
         
         try {
+            // Verificar que el sprite tenga el método play
+            if (!this.currentSprite.play || typeof this.currentSprite.play !== 'function') {
+                console.error('Sprite does not have play method. Sprite type:', this.currentSprite.type);
+                console.error('Sprite properties:', Object.keys(this.currentSprite));
+                console.error('Fresh sprite properties:', Object.keys(freshSprite));
+                return;
+            }
+
+            // Verificar que la animación existe en el scene
+            const scene = this.gameScene;
+            if (!scene || !scene.anims) {
+                console.error('Game scene or animations not available');
+                return;
+            }
+            
+            if (!scene.anims.exists(animationKey)) {
+                console.error(`Animation ${animationKey} does not exist in scene animations`);
+                console.log('Available animations:', Array.from(scene.anims.anims.entries.keys()));
+                return;
+            }
+            
             // Apply position and flip from animation data to the sprite's container
             const animData = this.animationData[this.currentAnimation];
             
@@ -444,6 +484,8 @@ class AnimationEditorController {
             console.log(`Playing animation: ${animationKey} with position X:${animData.positionX}, Y:${animData.positionY}`);
         } catch (error) {
             console.error(`Error playing animation ${animationKey}:`, error);
+            console.error('Current sprite:', this.currentSprite);
+            console.error('Current user:', this.currentUser);
         }
     }
 
@@ -481,6 +523,9 @@ class AnimationEditorController {
 
     static close() {
         if (this.editorInstance) {
+            // Limpiar intervalos de repetición de teclas antes de cerrar
+            this.clearKeyRepeatIntervals();
+            
             this.editorInstance.container.destroy();
             this.editorInstance = null;
             this.currentSprite = null;
@@ -491,6 +536,105 @@ class AnimationEditorController {
 
     static remove() {
         this.close();
+    }
+
+    /**
+     * Configura controles de teclado para mover animaciones con flechas
+     */
+    static setupKeyboardControls(gameScene) {
+        // Crear objeto de teclas
+        this.cursors = gameScene.input.keyboard.createCursorKeys();
+        
+        // Agregar teclas adicionales para control fino
+        this.keys = gameScene.input.keyboard.addKeys({
+            'shift': Phaser.Input.Keyboard.KeyCodes.SHIFT,
+            'ctrl': Phaser.Input.Keyboard.KeyCodes.CTRL
+        });
+
+        // Configurar eventos de keydown para iniciar movimiento continuo
+        gameScene.input.keyboard.on('keydown', (event) => {
+            // Solo procesar si hay una animación seleccionada y el editor está visible
+            if (!this.currentAnimation || !this.editorInstance || !this.editorInstance.positionControls.container.visible) {
+                return;
+            }
+
+            // Si ya hay un intervalo para esta tecla, no crear otro
+            if (this.keyRepeatIntervals[event.code]) {
+                return;
+            }
+
+            const isShiftPressed = this.keys.shift.isDown;
+            const isCtrlPressed = this.keys.ctrl.isDown;
+            
+            // Determinar el incremento basado en modificadores
+            let increment = 1;
+            if (isShiftPressed) increment = 5;  // Movimiento rápido con Shift
+            if (isCtrlPressed) increment = 0.5; // Movimiento fino con Ctrl
+
+            // Determinar la velocidad de repetición
+            let repeatDelay = 100; // ms entre repeticiones
+            if (isShiftPressed) repeatDelay = 50;  // Más rápido con Shift
+            if (isCtrlPressed) repeatDelay = 150;  // Más lento con Ctrl para precisión
+
+            let moveFunction = null;
+
+            switch (event.code) {
+                case 'ArrowUp':
+                    event.preventDefault();
+                    moveFunction = () => this.adjustPosition('y', -increment);
+                    break;
+                case 'ArrowDown':
+                    event.preventDefault();
+                    moveFunction = () => this.adjustPosition('y', increment);
+                    break;
+                case 'ArrowLeft':
+                    event.preventDefault();
+                    moveFunction = () => this.adjustPosition('x', -increment);
+                    break;
+                case 'ArrowRight':
+                    event.preventDefault();
+                    moveFunction = () => this.adjustPosition('x', increment);
+                    break;
+                case 'Space':
+                    event.preventDefault();
+                    this.toggleFlip();
+                    return; // Space no necesita repetición continua
+            }
+
+            if (moveFunction) {
+                // Ejecutar inmediatamente
+                moveFunction();
+                
+                // Configurar repetición continua
+                this.keyRepeatIntervals[event.code] = setInterval(moveFunction, repeatDelay);
+            }
+        });
+
+        // Configurar eventos de keyup para detener movimiento continuo
+        gameScene.input.keyboard.on('keyup', (event) => {
+            // Limpiar intervalo si existe
+            if (this.keyRepeatIntervals[event.code]) {
+                clearInterval(this.keyRepeatIntervals[event.code]);
+                delete this.keyRepeatIntervals[event.code];
+            }
+        });
+
+        console.log('⌨️ Controles de teclado configurados:');
+        console.log('  • Flechas: Mover animación continuo (mantener presionado)');
+        console.log('  • Shift + Flechas: Movimiento rápido (±5px, 50ms)');
+        console.log('  • Ctrl + Flechas: Movimiento fino (±0.5px, 150ms)');
+        console.log('  • Normal: Movimiento estándar (±1px, 100ms)');
+        console.log('  • Espacio: Alternar flip horizontal');
+    }
+
+    /**
+     * Limpia todos los intervalos de repetición de teclas
+     */
+    static clearKeyRepeatIntervals() {
+        Object.values(this.keyRepeatIntervals).forEach(interval => {
+            clearInterval(interval);
+        });
+        this.keyRepeatIntervals = {};
     }
 }
 
