@@ -17,9 +17,9 @@ class UserChangeAvatarController extends Controller
     {
         try {
             $user = Auth::user();
-            if (isset($request->avatar) && in_array($request->avatar, $user->enabledAvatars())) {
-                $user->update(['avatar' => $request->avatar]);
-            }
+            //if (isset($request->avatar) && in_array($request->avatar, $user->enabledAvatars())) {
+            //    $user->update(['avatar' => $request->avatar]);
+            //}
             return $this->successResponse();
         } catch (Exception $e) {
             return $this->handleException($e);
