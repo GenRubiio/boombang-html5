@@ -571,19 +571,6 @@
         "positionY": 0,
         "repeat": -1
     },
-    "parado": {
-        "atlasKey": "cholo_atlas",
-        "prefix": "sprites/parado/",
-        "flip_horizontally": false,
-        "start": 1,
-        "end": 1,
-        "frameRate": 19,
-        "frameWidth": 59,
-        "frameHeight": 90,
-        "positionX": 0,
-        "positionY": 0,
-        "repeat": 0
-    },
     "leftdown_talk": {
         "atlasKey": "cholo_atlas",
         "prefix": "sprites/leftdown_talk/",

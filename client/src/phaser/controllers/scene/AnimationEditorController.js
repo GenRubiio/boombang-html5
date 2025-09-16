@@ -1,4 +1,4 @@
-import avatarConfig from "@/assets/game/avatars/zombie/config.json";
+import avatarConfig from "@/assets/game/avatars/boomer/config.json";
 
 class AnimationEditorController {
     static editorInstance = null;
