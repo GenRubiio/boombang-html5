@@ -156,7 +156,7 @@ class AvatarManager {
                     // Crear animaciones del avatar
                     this.createAvatarAnimations(scene, avatarId);
                     this.loadedAvatars.add(avatarId);
-                    console.log(`✅ Avatar cargado desde red y cacheado: ${avatarId}`);
+                    console.log(`🌐 Avatar cargado desde red y guardado en cache: ${avatarId}`);
                     resolve();
                 });
 
@@ -395,6 +395,11 @@ class AvatarManager {
                 return false;
             }
 
+            // Logs para mostrar información de carga desde cache
+            console.log(`💾 CARGA DESDE CACHE - Avatar ${avatarId}:`);
+            console.log(`   📦 Tamaño atlas en cache: ${(atlasAsset.data.size / 1024 / 1024).toFixed(2)}MB`);
+            console.log(`   📋 Tamaño spreadsheet en cache: ${(spreadsheetAsset.data.size / 1024).toFixed(1)}KB`);
+
             // Convertir datos del cache a URLs utilizables (usando fast URLs si están disponibles)
             const atlasURL = await cacheManager.getFastBlobURL(versionedAtlasKey, cacheManager.stores.ATLAS);
             const spreadsheetURL = await cacheManager.getFastBlobURL(versionedSpreadsheetKey, cacheManager.stores.SPREADSHEET);
@@ -454,6 +459,15 @@ class AvatarManager {
                 const atlasSource = atlasTexture?.source?.[0];
                 
                 if (atlasSource && atlasSource.image) {
+                    // Calcular tamaño teórico sin comprimir (RGBA = 4 bytes por pixel)
+                    const theoreticalSize = atlasSource.width * atlasSource.height * 4;
+                    
+                    // Logs para mostrar información de la textura original desde la red
+                    console.log(`🌐 CARGA DESDE RED - Avatar ${avatarId}:`);
+                    console.log(`   📐 Dimensiones originales: ${atlasSource.width}x${atlasSource.height}px`);
+                    console.log(`   🔗 URL original: ${atlasSource.image.src}`);
+                    console.log(`   📊 Tamaño teórico sin comprimir: ${(theoreticalSize / 1024 / 1024).toFixed(2)}MB`);
+                    
                     // Convertir imagen a blob para almacenar
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
@@ -461,9 +475,16 @@ class AvatarManager {
                     canvas.height = atlasSource.height;
                     ctx.drawImage(atlasSource.image, 0, 0);
                     
+                    console.log(`📐 Dimensiones del atlas para avatar ${avatarId}: ${atlasSource.width}x${atlasSource.height}px`);
+                    
                     await new Promise(resolve => {
                         canvas.toBlob(async (blob) => {
                             if (blob) {
+                                console.log(`� COMPRESIÓN RESULTADO - Avatar ${avatarId}:`);
+                                console.log(`   🗜️ Tamaño PNG comprimido: ${(blob.size / 1024 / 1024).toFixed(2)}MB`);
+                                console.log(`   📉 Factor de compresión: ${(theoreticalSize / blob.size).toFixed(1)}x`);
+                                console.log(`   💯 Reducción: ${(((theoreticalSize - blob.size) / theoreticalSize) * 100).toFixed(1)}%`);
+                                
                                 await cacheManager.storeAsset(
                                     versionedAtlasKey, 
                                     blob, 
@@ -488,9 +509,12 @@ class AvatarManager {
                 if (atlasTexture && atlasTexture.dataSource && atlasTexture.dataSource.length > 0) {
                     const jsonData = atlasTexture.dataSource[0];
                     if (jsonData) {
+                        const jsonString = JSON.stringify(jsonData);
+                        console.log(`📋 Cacheando spreadsheet para avatar ${avatarId}: ${(jsonString.length / 1024).toFixed(1)}KB`);
+                        
                         await cacheManager.storeAsset(
                             versionedSpreadsheetKey,
-                            JSON.stringify(jsonData),
+                            jsonString,
                             cacheManager.stores.SPREADSHEET,
                             {
                                 type: 'atlas_json',
