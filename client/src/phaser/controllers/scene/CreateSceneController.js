@@ -27,8 +27,8 @@ class CreateSceneController {
   }
 
   static createTile(gameScene, map, rows, cols) {
-    const tileWidth = 65;
-    const tileHeight = 33;
+    const tileWidth = 65 * 2;
+    const tileHeight = 33 * 2;
     const halfTileWidth = tileWidth / 2;
     const halfTileHeight = tileHeight / 2;
 
@@ -333,8 +333,8 @@ class CreateSceneController {
     }
 
     // Use the same tile dimensions as in createTile method
-    const tileWidth = 65;
-    const tileHeight = 33;
+    const tileWidth = 65 * 2;
+    const tileHeight = 33 * 2;
     const halfTileWidth = tileWidth / 2;
     const halfTileHeight = tileHeight / 2;
 
@@ -362,7 +362,8 @@ class CreateSceneController {
         .image(screenX, screenY + halfTileHeight, spriteName)
         .setOrigin(0.5, 1) // Center the arrow
         .setDepth(0) // Place arrows above tiles and other objects
-        .setName(spriteName);
+        .setName(spriteName)
+        .setScale(arrow.scale || 2); // Apply scale if provided, default to 1
 
       // Make arrows interactive (clickable for navigation)
       //arrowSprite.setInteractive({

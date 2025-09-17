@@ -25,8 +25,8 @@ class UserUpdatePositionController {
         user.pathIndex = 0;
 
         // Forzar la posición en el mapa según la lógica isométrica
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
         const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
 
@@ -35,7 +35,7 @@ class UserUpdatePositionController {
         //user.spriteShadow.setPosition(0, 0);
         //user.spriteAvatar.setPosition(
         //    0,
-        //    -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15
+        //    -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15 * 2
         //);
 
         //console.log(`Updating player ${socketId} position/direction to:`, position);

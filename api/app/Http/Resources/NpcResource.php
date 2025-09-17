@@ -31,6 +31,7 @@ class NpcResource extends JsonResource
             'position_x' => (int)$this->position_x,
             'position_y' => (int)$this->position_y,
             'depth' => (int)$this->depth,
+            'scale' => (int)$this->scale,
             'active' => (bool)$this->active,
         ];
     }

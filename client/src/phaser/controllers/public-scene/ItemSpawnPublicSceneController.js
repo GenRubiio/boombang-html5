@@ -5,8 +5,8 @@ class ItemSpawnPublicSceneController {
         const gridPosition = data.position;
 
         // Convertir coordenadas de grid a isométricas
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = gameScene.scale.width / 2;
@@ -15,12 +15,12 @@ class ItemSpawnPublicSceneController {
         const isoY = (gridPosition.x + gridPosition.y) * halfTileHeight;
 
         // Cálculo de profundidad corregido (misma lógica que usuarios)
-        const depth = (gridPosition.y + gridPosition.x) * 17;
+        const depth = (gridPosition.y + gridPosition.x) * 17 * 2;
 
         // Crear sprite con offset para centrar en el tile
         const itemSprite = gameScene.add.sprite(
             isoX,
-            isoY - 20,
+            isoY - 20 * 2,
             'item_' + itemConfig.file_name
         )
             .setDepth(depth) // Orden de renderizado consistente

@@ -54,6 +54,13 @@ class SceneArrowCrudController extends CrudController
             'type' => 'text',
         ]);
         $this->crud->addField([
+            'name' => 'scale',
+            'label' => 'Escala',
+            'type' => 'number',
+            'attributes' => ["step" => "1", "min" => "1"],
+            'default' => 1,
+        ]);
+        $this->crud->addField([
             'name' => 'image',
             'label' => 'Imagen',
             'type' => 'image',

@@ -9,6 +9,7 @@ class NpcModel {
         this.positionX = row.position_x;
         this.positionY = row.position_y;
         this.depth = row.depth;
+        this.scale = row.scale;
         this.active = row.active;
     }
 }

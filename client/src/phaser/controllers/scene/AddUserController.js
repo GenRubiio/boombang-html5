@@ -33,15 +33,15 @@ function ensureNameTagTexture(gameScene, texKey, w, h, bgColor, alpha) {
     }
     const g = gameScene.add.graphics();
     g.fillStyle(bgColor, alpha);
-    g.fillRoundedRect(0, 0, w, h, 8);
+    g.fillRoundedRect(0, 0, w, h, 8 * 2);
     // punta inferior
     g.fillTriangle(
-        w / 2 - 5, h,
-        w / 2 + 5, h,
-        w / 2, h + 6
+        w / 2 - 5 * 2, h,
+        w / 2 + 5 * 2, h,
+        w / 2, h + 6 * 2
     );
     // incluye la punta en la textura
-    g.generateTexture(texKey, w, h + 6);
+    g.generateTexture(texKey, w, h + 6 * 2);
     g.destroy();
     nameTagStyleHash.set(texKey, hash);
 }
@@ -71,37 +71,37 @@ class AddUserController {
         // Verificar si el avatar está cargado, si no, usar fallback y cargar en segundo plano
         const requestedAvatarId = userData.avatar_id;
         const avatarToUse = avatarManager.getAvatarToUse(requestedAvatarId);
-        
+
         // Si usamos fallback, añadir el avatar original a la cola de carga
         if (avatarToUse !== requestedAvatarId) {
             avatarManager.queueAvatarForBackgroundLoading(requestedAvatarId);
         }
-        
+
         // Usar el avatar disponible (original o fallback)
         const modifiedUserData = { ...userData, avatar_id: avatarToUse };
 
         const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
         const user = new UserModel(userData, spriteAvatar, spriteShadow, containerUser);
-        
+
         // Guardar el avatar original solicitado para futuras actualizaciones
         user.originalAvatarId = requestedAvatarId;
         user.currentAvatarId = avatarToUse;
-        
+
         MoveUserToTileController.main(gameScene, user);
 
         // Almacenar jugador
         gameScene.users[userData.id] = user;
-        
+
         // Create animation editor for this user's sprite
         if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "true") {
             AnimationEditorController.create(gameScene, user.spriteAvatar, user);
         }
-        
+
         // Si estamos usando fallback, configurar listener para actualizar cuando se cargue el avatar real
         if (avatarToUse !== requestedAvatarId) {
             this.setupAvatarUpdateListener(gameScene, user, requestedAvatarId);
         }
-        
+
         // UserChatAnimation.main(user, "leftup_talk");
         // UserEmojiAnimation.main(user, 8);
     }
@@ -130,10 +130,11 @@ class AddUserController {
     }
 
     static createShadowSprite(gameScene, userData) {
-        // Crear sombra
-        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
+        //TODO: Nuevo rederizado * 2
+        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54 * 2, 20 * 2);
         spriteShadow.setDepth(0);
         spriteShadow.setInteractive({ useHandCursor: true });
+
         spriteShadow.playerSocketId = userData.id;
 
         let color = 0xff6700;
@@ -179,7 +180,7 @@ class AddUserController {
         // Obtener el atlas key correcto para el avatar
         const avatarName = this.avatarName(userData.avatar_id);
         const atlasKey = `${avatarName}_atlas`;
-        
+
         // Verificar que el atlas existe antes de crear el sprite
         if (!gameScene.textures.exists(atlasKey)) {
             console.error(`❌ Atlas no encontrado para avatar ${userData.avatar_id}: ${atlasKey}`);
@@ -190,24 +191,23 @@ class AddUserController {
             spriteAvatar._z = userData.z;
             return spriteAvatar;
         }
-        
+
         // Crear sprite con el atlas correcto
         const spriteAvatar = gameScene.add.sprite(0, 0, atlasKey);
         spriteAvatar._avatarId = userData.avatar_id;
         spriteAvatar._z = userData.z;
-        
+
         // Aplicar animación idle
         UserIdleAnimation.main(
             spriteAvatar,
             userData.z,
             userData.avatar_id
         );
-        
+
         spriteAvatar.setDepth(1);
-        
+
         // Aplicar tints de color si están configurados - usando safeApplyTint
         this.safeApplyTint(gameScene, spriteAvatar, userData.uppercut_selected);
-        
         return spriteAvatar;
     }
 
@@ -233,15 +233,15 @@ class AddUserController {
 
         // 1) Crear el texto para medir y reutilizarlo
         const userNameText = gameScene.add.text(0, 0, userName, {
-            fontSize: "10px",
+            fontSize: "20px",
             color: textColor,
             fontFamily: "Arial",
             padding: { x: 0, y: 0 }
         }).setOrigin(0.5, 1);
 
         // 2) Medidas con padding visual
-        const textWidth = Math.ceil(userNameText.width) + 12;  // margen extra
-        const textHeight = Math.ceil(userNameText.height) + 10; // padding vertical
+        const textWidth = Math.ceil(userNameText.width) + 12 * 2;  // margen extra
+        const textHeight = Math.ceil(userNameText.height) + 10 * 2; // padding vertical
 
         // 3) Clave única por usuario (id si existe; fallback a username)
         const safeName = String(userName).replace(/\s+/g, "_");
@@ -251,7 +251,7 @@ class AddUserController {
         ensureNameTagTexture(gameScene, textureKey, textWidth, textHeight, backgroundColor, alpha);
 
         // 5) Crear imagen de fondo usando la textura
-        const yBg = -spriteAvatar.displayHeight / 2 - textHeight - 8;
+        const yBg = -spriteAvatar.displayHeight / 2 - textHeight - 8 * 2;
         const textBackground = gameScene.add.image(0, yBg, textureKey)
             .setOrigin(0.5, 1)
             .setDepth(2);
@@ -260,6 +260,10 @@ class AddUserController {
         userNameText.y = textBackground.y - textHeight / 2;
         userNameText.setDepth(3);
         userNameText.setColor(textColor); // por si cambia dinámicamente
+
+         //TODO: Nuevo rederizado * 2
+        // textBackground.setScale(2);  // Removed: scaling elements directly instead
+        // userNameText.setScale(2);    // Removed: scaling font size instead
 
         return {
             background: textBackground,
@@ -274,10 +278,10 @@ class AddUserController {
         const checkInterval = setInterval(() => {
             if (avatarManager.isAvatarLoaded(originalAvatarId)) {
                 console.log(`🔄 Actualizando avatar de ${user.username} a ${originalAvatarId}`);
-                
+
                 // Actualizar el sprite del avatar
                 this.updateUserAvatar(gameScene, user, originalAvatarId);
-                
+
                 // Limpiar el interval
                 clearInterval(checkInterval);
             }
@@ -315,13 +319,13 @@ class AddUserController {
             // Obtener el atlas key correcto para el nuevo avatar
             const avatarName = this.avatarName(newAvatarId);
             const atlasKey = `${avatarName}_atlas`;
-            
+
             // Verificar que el atlas existe
             if (!gameScene.textures.exists(atlasKey)) {
                 console.error(`❌ Atlas no encontrado para avatar ${newAvatarId}: ${atlasKey}`);
                 return;
             }
-            
+
             // Crear nuevo sprite de avatar con el atlas correcto
             const newSpriteAvatar = gameScene.add.sprite(currentX, currentY, atlasKey);
             newSpriteAvatar._avatarId = newAvatarId;
@@ -387,11 +391,11 @@ class AddUserController {
                 if (sprite && !sprite.destroyed && gameScene.tintMgr) {
                     // Triple verificación antes de aplicar tint
                     const currentPipeline = gameScene.renderer.pipelines.get('ColorReplacePipeline');
-                    if (currentPipeline && 
-                        currentPipeline.gl && 
+                    if (currentPipeline &&
+                        currentPipeline.gl &&
                         currentPipeline.gl.getParameter &&
                         !currentPipeline.gl.isContextLost()) {
-                        
+
                         // Verificar que el sprite tenga las propiedades necesarias
                         if (sprite.pipeline && sprite.texture && sprite.texture.source) {
                             gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
@@ -421,18 +425,18 @@ class AddUserController {
         if (pipeline) {
             // Guardar el estado original del pipeline
             const originalActive = pipeline.active;
-            
+
             // Deshabilitar temporalmente
             pipeline.active = false;
-            
+
             // Reintentar después de un delay más largo
             setTimeout(() => {
                 try {
                     // Restaurar el pipeline
                     pipeline.active = originalActive;
-                    
+
                     // Verificar nuevamente y aplicar tint
-                    if (sprite && !sprite.destroyed && gameScene.tintMgr && 
+                    if (sprite && !sprite.destroyed && gameScene.tintMgr &&
                         pipeline.gl && !pipeline.gl.isContextLost()) {
                         gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
                     }

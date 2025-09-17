@@ -27,8 +27,8 @@ class UserMoveDeniedController {
             gameScene.tweens.killTweensOf(spriteShadow);
 
             // Forzar la posición del jugador en el mapa según (x, y)
-            const tileWidth = 65;
-            const tileHeight = 33;
+            const tileWidth = 65 * 2;
+            const tileHeight = 33 * 2;
             const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
             const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
 
@@ -40,7 +40,7 @@ class UserMoveDeniedController {
             //spriteShadow.setPosition(0, 0);
             //spriteAvatar.setPosition(
             //    0,
-            //    -(spriteShadow.displayHeight / 2) - (spriteAvatar.displayHeight / 2) + 15
+            //    -(spriteShadow.displayHeight / 2) - (spriteAvatar.displayHeight / 2) + 15 * 2
             //);
 
             // Detener animación actual y asegurar el frame idle

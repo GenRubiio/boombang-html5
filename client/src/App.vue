@@ -144,10 +144,10 @@ export default {
       this.gamePhaser.scene.start("GlobalPreloaderScene");
 
       //TODO: Lo aplicaremos cuando terminemos nuevo logca de importacion de texturas
-      //const dpi = 2;
-      //this.gamePhaser.scale.resize(LOGICAL_WIDTH * dpi, LOGICAL_HEIGHT * dpi);
-      //this.gamePhaser.canvas.style.width = LOGICAL_WIDTH + "px";
-      //this.gamePhaser.canvas.style.height = LOGICAL_HEIGHT + "px";
+      const dpi = 2;
+      this.gamePhaser.scale.resize(LOGICAL_WIDTH * dpi, LOGICAL_HEIGHT * dpi);
+      this.gamePhaser.canvas.style.width = LOGICAL_WIDTH + "px";
+      this.gamePhaser.canvas.style.height = LOGICAL_HEIGHT + "px";
     },
     handleDisconnect() {
       this.onUpdateLoading(true);

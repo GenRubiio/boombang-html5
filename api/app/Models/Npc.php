@@ -36,6 +36,7 @@ class Npc extends Model
         'position_x',
         'position_y',
         'depth',
+        'scale',
         'active',
     ];
     // protected $hidden = [];

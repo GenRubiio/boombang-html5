@@ -1,7 +1,7 @@
 class MoveUserToTileController {
     static main(gameScene, user) {
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
 
         // Calcular posición en pantalla en la cuadrícula isométrica
         const centerX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;

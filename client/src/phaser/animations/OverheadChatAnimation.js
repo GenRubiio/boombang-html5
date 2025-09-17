@@ -12,11 +12,11 @@ export default class OverheadChatAnimation {
         this.lineSpacing = 5;
         this.pushSpeed = 1;
         this.checkInterval = 5000;
-        this.rightReserved = 220;
+        this.rightReserved = 220 * 2;
         this.leftBound = 0;
         this.textDepth = 9999;
         this.playerSprite = null;
-        this.areaStartHeight = 140;
+        this.areaStartHeight = 140 * 2;
 
         // Array para almacenar los contenedores de mensajes
         this.messages = [];
@@ -82,15 +82,15 @@ export default class OverheadChatAnimation {
         });
 
         const playerBounds = this.playerSprite.getBounds();
-        const sceneWidth = this.scene.game.config.width;
+        const sceneWidth = this.scene.game.config.width * 2;
         const rightBound = sceneWidth - this.rightReserved;
         const minX = this.leftBound + (domElement.width / 2);
         const maxX = rightBound - (domElement.width / 2);
         const finalX = Phaser.Math.Clamp(playerBounds.centerX, minX, maxX);
 
         domElement.setPosition(
-            Math.round(finalX),
-            Math.round(this.areaStartHeight)
+            Math.round(finalX / 2),
+            Math.round(this.areaStartHeight / 2)
         );
         domElement.setDepth(this.textDepth);
 
@@ -132,7 +132,7 @@ export default class OverheadChatAnimation {
         const sceneWidth = this.scene.game.config.width;
         domElement.setPosition(
             Math.round(sceneWidth / 2),
-            Math.round(this.areaStartHeight)
+            Math.round(this.areaStartHeight / 2)
         );
         domElement.setDepth(this.textDepth);
 
@@ -168,7 +168,7 @@ export default class OverheadChatAnimation {
         if (this.messages.length === 0) {
             return;
         }
-        
+
         this.messages = this.messages.filter(chatContainer => {
             if (chatContainer.y + chatContainer.height < 0) {
                 chatContainer.destroy();
@@ -176,7 +176,7 @@ export default class OverheadChatAnimation {
             }
             return true;
         });
-        
+
         // Si no quedan mensajes, desregistrar el update temporalmente
         if (this.messages.length === 0) {
             this.scene.events.off('update', this.update, this);

@@ -24,8 +24,8 @@ class DetailPanelPrivateSceneHtml {
         return `
             <div id="html-detail-panel" style="
                 position: fixed;
-                right: -496px;
-                bottom: -258px;
+                right: 10px;
+                bottom: 72px;
                 width: 179px;
                 height: 272px;
                 background: rgba(255, 255, 255, 0.9);

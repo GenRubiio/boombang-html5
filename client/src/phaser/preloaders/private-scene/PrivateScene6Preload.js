@@ -52,10 +52,13 @@ class PrivateScene6Preload {
             return; // Si no se debe mostrar el item, no hacemos nada
         }
         // Creamos el sprite en (x,y)
-        const sprite = gameScene.add.image(item.x, item.y, item.name + suffix)
+        //TODO: Nuevo rederizado * 2
+        const sprite = gameScene.add.image(item.x * 2, item.y * 2, item.name + suffix)
             .setOrigin(0.5, 1)
             .setDepth(item.custom_depth || item.y)
-            .setName(item.name + suffix);
+            .setName(item.name + suffix)
+            //TODO: Nuevo rederizado * 2
+            .setScale(2);
         if (item.show_controller) {
             // Si es un item que se puede mover, añadimos el controlador
             SceneUtils.moveItem(gameScene, sprite);
