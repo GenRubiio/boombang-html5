@@ -15,8 +15,6 @@ class AvatarAnimationsLoad {
         
         // Cargar solo avatares prioritarios para reducir tiempo de carga inicial
         avatarManager.loadPriorityAvatars(gameScene);
-        
-        console.log("🚀 Carga optimizada: Solo avatares prioritarios (Gata, Rasta) con sistema de cache");
     }
 
     /**
@@ -26,10 +24,8 @@ class AvatarAnimationsLoad {
     static create(gameScene) {
         // Las animaciones ahora se crean automáticamente en AvatarManager
         // cuando se cargan los avatares individuales
-        console.log("✅ Sistema de animaciones optimizado activo con cache persistente");
-        
         // Mostrar estadísticas de cache
-        this.showCacheStats();
+        //this.showCacheStats();
     }
 
     /**
@@ -78,7 +74,7 @@ class AvatarAnimationsLoad {
                     repeat: animData.repeat
                 });
             } catch (error) {
-                console.warn(`⚠️ Error creando animación ${animKey}:`, error);
+                // Error creando animación
             }
         });
     }

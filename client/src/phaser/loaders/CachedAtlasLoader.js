@@ -14,15 +14,13 @@ class CachedAtlasLoader {
     static registerWithPhaser(scene) {
         // Extender el loader existente de Phaser con funcionalidad de cache
         const originalAtlasLoader = scene.load.atlas;
-        
-        scene.load.cachedAtlas = function(key, textureURL, atlasURL, textureXhrSettings, atlasXhrSettings) {
+
+        scene.load.cachedAtlas = function (key, textureURL, atlasURL, textureXhrSettings, atlasXhrSettings) {
             return CachedAtlasLoader.loadCachedAtlas.call(this, key, textureURL, atlasURL, textureXhrSettings, atlasXhrSettings);
         };
 
         // Mantener referencia al loader original para fallback
         scene.load._originalAtlas = originalAtlasLoader;
-        
-        console.log("🔧 CachedAtlasLoader registrado en Phaser");
     }
 
     /**
@@ -32,7 +30,7 @@ class CachedAtlasLoader {
         const scene = this.scene;
         const cacheManager = await import('../managers/CacheManager').then(m => m.default);
         const assetVersionManager = await import('../managers/AssetVersionManager').then(m => m.default);
-        
+
         try {
             // Generar claves versionadas para el cache
             const avatarId = CachedAtlasLoader.extractAvatarIdFromKey(key);
@@ -42,20 +40,18 @@ class CachedAtlasLoader {
 
             // Intentar cargar desde cache primero
             const loadedFromCache = await CachedAtlasLoader.loadFromCache(
-                scene, 
-                key, 
-                versionedAtlasKey, 
+                scene,
+                key,
+                versionedAtlasKey,
                 versionedSpreadsheetKey,
                 cacheManager
             );
 
             if (loadedFromCache) {
-                console.log(`📦 Atlas ${key} cargado desde cache`);
                 return scene.load;
             }
 
             // Si no está en cache, usar el loader original de Phaser
-            console.log(`🌐 Atlas ${key} cargando desde red...`);
             const loadResult = scene.load._originalAtlas.call(scene.load, key, textureURL, atlasURL, textureXhrSettings, atlasXhrSettings);
 
             // Configurar callback para cachear después de la carga
@@ -64,7 +60,6 @@ class CachedAtlasLoader {
             return loadResult;
 
         } catch (error) {
-            console.warn(`⚠️ Error en CachedAtlasLoader para ${key}:`, error);
             // Fallback al loader original
             return scene.load._originalAtlas.call(scene.load, key, textureURL, atlasURL, textureXhrSettings, atlasXhrSettings);
         }
@@ -106,7 +101,6 @@ class CachedAtlasLoader {
             return true;
 
         } catch (error) {
-            console.warn(`⚠️ Error cargando ${key} desde cache:`, error);
             return false;
         }
     }
@@ -118,16 +112,15 @@ class CachedAtlasLoader {
         const cacheAfterLoad = async () => {
             try {
                 await CachedAtlasLoader.cacheLoadedAtlas(
-                    scene, 
-                    key, 
-                    versionedAtlasKey, 
+                    scene,
+                    key,
+                    versionedAtlasKey,
                     versionedSpreadsheetKey,
                     avatarId,
-                    cacheManager, 
+                    cacheManager,
                     assetVersionManager
                 );
             } catch (error) {
-                console.warn(`⚠️ Error cacheando ${key} después de carga:`, error);
             }
         };
 
@@ -190,10 +183,7 @@ class CachedAtlasLoader {
                 }
             }
 
-            console.log(`💾 Atlas ${key} cacheado con versión ${assetVersionManager.getAvatarVersion(avatarId)}`);
-
         } catch (error) {
-            console.warn(`⚠️ Error cacheando atlas ${key}:`, error);
         }
     }
 
@@ -235,9 +225,7 @@ class CachedAtlasLoader {
 
         try {
             await Promise.allSettled(loadPromises);
-            console.log(`✅ Precarga masiva completada: ${atlasKeys.length} atlas`);
         } catch (error) {
-            console.warn('⚠️ Error en precarga masiva:', error);
         }
     }
 
@@ -248,7 +236,7 @@ class CachedAtlasLoader {
         try {
             const cacheManager = await import('../managers/CacheManager').then(m => m.default);
             const stats = await cacheManager.getCacheStats();
-            
+
             return {
                 atlasCount: stats.stores.ATLAS?.count || 0,
                 atlasSize: stats.stores.ATLAS?.size || 0,
@@ -258,7 +246,6 @@ class CachedAtlasLoader {
                 usagePercentage: stats.usagePercentage
             };
         } catch (error) {
-            console.warn('⚠️ Error obteniendo estadísticas de cache de atlas:', error);
             return null;
         }
     }
@@ -281,11 +268,9 @@ class CachedAtlasLoader {
                     await cacheManager.removeAsset(versionedAtlasKey, cacheManager.stores.ATLAS);
                     await cacheManager.removeAsset(versionedSpreadsheetKey, cacheManager.stores.SPREADSHEET);
 
-                    console.log(`🗑️ Cache limpiado para avatar ${avatarId} (${avatarName})`);
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Error limpiando cache de atlas:', error);
         }
     }
 

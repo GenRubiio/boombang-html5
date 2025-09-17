@@ -28,13 +28,11 @@ class CacheManager {
             const request = indexedDB.open(this.dbName, this.dbVersion);
             
             request.onerror = () => {
-                console.error('❌ Error abriendo IndexedDB:', request.error);
                 reject(request.error);
             };
             
             request.onsuccess = async () => {
                 this.db = request.result;
-                console.log('✅ CacheManager inicializado correctamente');
                 
                 // Configurar límite de cache automáticamente basado en storage disponible
                 await this.autoConfigureCacheLimit();
@@ -55,8 +53,6 @@ class CacheManager {
                         store.createIndex('version', 'version', { unique: false });
                     }
                 });
-                
-                console.log('🔧 Base de datos de cache creada/actualizada');
             };
         });
     }
@@ -66,7 +62,6 @@ class CacheManager {
      */
     async storeAsset(key, data, type = this.stores.ATLAS, metadata = {}) {
         if (!this.db) {
-            console.warn('⚠️ Cache no inicializado');
             return false;
         }
 
@@ -109,11 +104,9 @@ class CacheManager {
                 request.onerror = () => reject(request.error);
             });
 
-            console.log(`💾 Asset guardado en cache: ${key} (${(blobData.size / 1024).toFixed(1)}KB)`);
             return true;
 
         } catch (error) {
-            console.error(`❌ Error guardando asset en cache: ${key}`, error);
             return false;
         }
     }
@@ -123,7 +116,6 @@ class CacheManager {
      */
     async getAsset(key, type = this.stores.ATLAS) {
         if (!this.db) {
-            console.warn('⚠️ Cache no inicializado');
             return null;
         }
 
@@ -140,22 +132,19 @@ class CacheManager {
             if (result) {
                 // Verificar versión
                 if (result.version !== this.assetVersion) {
-                    console.log(`🔄 Versión obsoleta en cache para ${key}, eliminando...`);
                     await this.removeAsset(key, type);
                     return null;
                 }
 
                 // Actualizar timestamp para LRU
                 await this.updateAccessTime(key, type);
-                
-                console.log(`📦 Asset recuperado desde cache: ${key}`);
+            
                 return result;
             }
 
             return null;
 
         } catch (error) {
-            console.error(`❌ Error recuperando asset desde cache: ${key}`, error);
             return null;
         }
     }
@@ -195,14 +184,12 @@ class CacheManager {
                     request.onerror = () => reject(request.error);
                 });
 
-                console.log(`🗑️ Asset eliminado del cache: ${key}`);
                 return true;
             }
 
             return false;
 
         } catch (error) {
-            console.error(`❌ Error eliminando asset del cache: ${key}`, error);
             return false;
         }
     }
@@ -283,11 +270,8 @@ class CacheManager {
                     request.onerror = () => resolve();
                 });
             } catch (error) {
-                console.warn(`⚠️ Error calculando tamaño del store ${storeName}:`, error);
             }
         }
-
-        console.log(`📊 Tamaño actual del cache: ${(this.currentCacheSize / 1024 / 1024).toFixed(2)}MB`);
     }
 
     /**
@@ -297,8 +281,6 @@ class CacheManager {
         if (this.currentCacheSize + requiredSize <= this.maxCacheSize) {
             return; // Hay espacio suficiente
         }
-
-        console.log(`🧹 Limpiando cache: necesario ${(requiredSize / 1024).toFixed(1)}KB, disponible ${((this.maxCacheSize - this.currentCacheSize) / 1024).toFixed(1)}KB`);
 
         // Implementar LRU: eliminar assets más antiguos
         const allAssets = [];
@@ -328,7 +310,6 @@ class CacheManager {
                     request.onerror = () => resolve();
                 });
             } catch (error) {
-                console.warn(`⚠️ Error obteniendo assets del store ${storeName}:`, error);
             }
         }
 
@@ -345,8 +326,6 @@ class CacheManager {
             await this.removeAsset(asset.key, asset.store);
             freedSpace += asset.size;
         }
-
-        console.log(`✅ Liberado ${(freedSpace / 1024).toFixed(1)}KB de espacio en cache`);
     }
 
     /**
@@ -390,10 +369,8 @@ class CacheManager {
             }
 
             this.currentCacheSize = 0;
-            console.log('🧹 Cache limpiado completamente');
 
         } catch (error) {
-            console.error('❌ Error limpiando cache:', error);
         }
     }
 
@@ -458,11 +435,9 @@ class CacheManager {
     setCacheLimit(sizeInMB = 500) {
         const newLimit = sizeInMB * 1024 * 1024;
         this.maxCacheSize = newLimit;
-        console.log(`📦 Límite de cache configurado a ${sizeInMB}MB`);
         
         // Verificar si necesitamos limpiar cache existente
         if (this.currentCacheSize > newLimit) {
-            console.log(`⚠️ Cache actual (${(this.currentCacheSize / 1024 / 1024).toFixed(2)}MB) excede el nuevo límite, ejecutando limpieza LRU...`);
             this.enforceStorageLimit();
         }
     }
@@ -484,7 +459,6 @@ class CacheManager {
                 };
             }
         } catch (error) {
-            console.warn('⚠️ No se pudo obtener información de storage quota:', error);
         }
         return null;
     }
@@ -500,13 +474,6 @@ class CacheManager {
             const safeLimitMB = Math.max(recommendedMB, 200); // Mínimo 200MB
             
             this.setCacheLimit(safeLimitMB);
-            
-            console.log(`📊 Storage del navegador:
-                Total: ${quota.quotaMB}MB
-                Usado: ${quota.usageMB}MB  
-                Disponible: ${quota.availableMB}MB
-                Cache configurado: ${safeLimitMB}MB`);
-                
             return safeLimitMB;
         } else {
             // Fallback si no se puede detectar el storage
@@ -554,10 +521,8 @@ class CacheManager {
                     });
                     
                     results[key] = url;
-                    console.log(`⚡ Blob URL pre-cacheado: ${key}`);
                 }
             } catch (error) {
-                console.warn(`⚠️ Error pre-cacheando blob URL para ${key}:`, error);
             }
         }
         
@@ -573,7 +538,6 @@ class CacheManager {
             const cached = this.blobURLCache.get(key);
             // Verificar que no sea muy viejo (máximo 5 minutos)
             if (Date.now() - cached.timestamp < 300000) {
-                console.log(`⚡ Usando blob URL pre-cacheado: ${key}`);
                 return cached.url;
             } else {
                 // Limpiar URL viejo
@@ -595,16 +559,13 @@ class CacheManager {
                 URL.revokeObjectURL(cached.url);
             }
             this.blobURLCache.clear();
-            console.log('🗑️ Cache de blob URLs limpiado');
         }
     }
 
     /**
      * Pre-carga assets de avatares más usados para acceso ultra-rápido
      */
-    async preloadHotAvatars(avatarIds = [12, 16, 5, 6]) { // Rasta, Zombie, Asiatica, Bruja
-        console.log('🚀 Pre-cargando avatares más usados...');
-        
+    async preloadHotAvatars(avatarIds = [12, 5]) { // Rasta, Gata
         for (const avatarId of avatarIds) {
             try {
                 const avatarName = this.getAvatarNameById(avatarId);
@@ -618,11 +579,9 @@ class CacheManager {
                 await this.precacheBlobURLs([spreadsheetKey], this.stores.SPREADSHEET);
                 
             } catch (error) {
-                console.warn(`⚠️ Error pre-cargando avatar ${avatarId}:`, error);
+                // Error pre-cargando avatar
             }
         }
-        
-        console.log('✅ Pre-carga de avatares completada');
     }
 
     /**

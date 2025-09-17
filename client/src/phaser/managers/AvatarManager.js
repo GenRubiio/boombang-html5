@@ -73,16 +73,14 @@ class AvatarManager {
         // Inicializar el sistema de cache
         try {
             await cacheManager.init();
-            console.log("🚀 AvatarManager inicializado con sistema de cache y versionado");
             
             // Pre-cargar blob URLs de avatares más populares para cambios ultra-rápidos
             await cacheManager.preloadHotAvatars();
             
             // Mostrar estadísticas del cache
             const stats = await cacheManager.getCacheStats();
-            console.log(`📊 Cache actual: ${(stats.totalSize / 1024 / 1024).toFixed(2)}MB de ${(stats.maxSize / 1024 / 1024).toFixed(0)}MB (${stats.usagePercentage.toFixed(1)}%)`);
         } catch (error) {
-            console.warn("⚠️ Error inicializando cache, funcionando sin persistencia:", error);
+            // Error inicializando cache, funcionando sin persistencia
         }
     }
 
@@ -90,8 +88,6 @@ class AvatarManager {
      * Carga solo los avatares prioritarios (Gata y Rasta)
      */
     loadPriorityAvatars(scene) {
-        console.log("🚀 Cargando avatares prioritarios:", this.priorityAvatars);
-        
         this.priorityAvatars.forEach(avatarId => {
             this.loadAvatar(scene, avatarId);
         });
@@ -107,7 +103,6 @@ class AvatarManager {
 
         const loader = this.avatarLoaders[avatarId];
         if (!loader) {
-            console.warn(`⚠️ No se encontró loader para avatar: ${avatarId}`);
             return Promise.reject();
         }
 
@@ -129,7 +124,6 @@ class AvatarManager {
                     if (scene.textures.exists(atlasKey)) {
                         this.createAvatarAnimations(scene, avatarId);
                         this.loadedAvatars.add(avatarId);
-                        console.log(`✅ Avatar cargado desde cache: ${avatarId}`);
                         resolve();
                     } else {
                         // Verificar de nuevo en 50ms
@@ -156,12 +150,10 @@ class AvatarManager {
                     // Crear animaciones del avatar
                     this.createAvatarAnimations(scene, avatarId);
                     this.loadedAvatars.add(avatarId);
-                    console.log(`🌐 Avatar cargado desde red y guardado en cache: ${avatarId}`);
                     resolve();
                 });
 
                 scene.load.once('loaderror', (file) => {
-                    console.error(`❌ Error cargando avatar ${avatarId}:`, file);
                     reject();
                 });
 
@@ -171,7 +163,6 @@ class AvatarManager {
                 }
 
             } catch (error) {
-                console.error(`❌ Error iniciando carga de avatar ${avatarId}:`, error);
                 reject();
             }
         });
@@ -183,7 +174,6 @@ class AvatarManager {
     createAvatarAnimations(scene, avatarId) {
         const config = window.avatars_config[avatarId];
         if (!config) {
-            console.warn(`⚠️ No se encontró config para avatar: ${avatarId}`);
             return;
         }
 
@@ -208,7 +198,7 @@ class AvatarManager {
                     repeat: animData.repeat
                 });
             } catch (error) {
-                console.warn(`⚠️ Error creando animación ${animKey}:`, error);
+                // Error creating animation
             }
         });
     }
@@ -267,12 +257,11 @@ class AvatarManager {
                     }
                 });
                 
-                console.log(`⚡ Texture pre-cargada ultra-rápida: ${avatarId}`);
                 return true;
             }
             
         } catch (error) {
-            console.warn(`⚠️ Error precargando texture desde cache para avatar ${avatarId}:`, error);
+            // Error precargando texture desde cache
         }
         
         return false;
@@ -287,7 +276,6 @@ class AvatarManager {
         }
         
         // Si el avatar solicitado no está cargado, usar el por defecto
-        console.log(`🔄 Avatar ${requestedAvatarId} no cargado, usando fallback: ${this.defaultAvatar}`);
         return this.defaultAvatar;
     }
 
@@ -300,7 +288,6 @@ class AvatarManager {
         }
 
         this.loadingQueue.push(avatarId);
-        console.log(`📋 Avatar añadido a cola de carga: ${avatarId}`);
         
         // Iniciar carga en segundo plano si no está activa
         this.processBackgroundQueue();
@@ -321,19 +308,17 @@ class AvatarManager {
             
             if (!this.isAvatarLoaded(avatarId)) {
                 try {
-                    console.log(`🔄 Cargando en segundo plano: ${avatarId}`);
                     await this.loadAvatar(this.currentScene, avatarId);
                     
                     // Pequeña pausa para no bloquear el hilo principal
                     await new Promise(resolve => setTimeout(resolve, 100));
                 } catch (error) {
-                    console.error(`❌ Error cargando avatar en segundo plano ${avatarId}:`, error);
+                    // Error cargando avatar en segundo plano
                 }
             }
         }
         
         this.isLoading = false;
-        console.log("✅ Cola de carga en segundo plano completada");
     }
 
     /**
@@ -383,7 +368,6 @@ class AvatarManager {
 
             // Verificar si ya está cargado en Phaser (para evitar cargas duplicadas)
             if (scene.textures.exists(atlasKey)) {
-                console.log(`📦 Atlas ${atlasKey} ya disponible en Phaser desde cache previo`);
                 return true;
             }
 
@@ -394,11 +378,6 @@ class AvatarManager {
             if (!atlasAsset || !spreadsheetAsset) {
                 return false;
             }
-
-            // Logs para mostrar información de carga desde cache
-            console.log(`💾 CARGA DESDE CACHE - Avatar ${avatarId}:`);
-            console.log(`   📦 Tamaño atlas en cache: ${(atlasAsset.data.size / 1024 / 1024).toFixed(2)}MB`);
-            console.log(`   📋 Tamaño spreadsheet en cache: ${(spreadsheetAsset.data.size / 1024).toFixed(1)}KB`);
 
             // Convertir datos del cache a URLs utilizables (usando fast URLs si están disponibles)
             const atlasURL = await cacheManager.getFastBlobURL(versionedAtlasKey, cacheManager.stores.ATLAS);
@@ -429,11 +408,9 @@ class AvatarManager {
 
             // Retornar inmediatamente para indicar que los assets están en cache
             // La carga real se completará de forma asíncrona
-            console.log(`⚡ Iniciando carga rápida desde cache para avatar ${avatarId}`);
             return true;
 
         } catch (error) {
-            console.warn(`⚠️ Error cargando avatar ${avatarId} desde cache:`, error);
             return false;
         }
     }
@@ -448,7 +425,6 @@ class AvatarManager {
             const hasSpreadsheet = await cacheManager.hasAsset(versionedSpreadsheetKey, cacheManager.stores.SPREADSHEET);
             
             if (hasAtlas && hasSpreadsheet) {
-                console.log(`📦 Assets de avatar ${avatarId} ya están en cache, omitiendo re-cacheo`);
                 return;
             }
 
@@ -462,12 +438,6 @@ class AvatarManager {
                     // Calcular tamaño teórico sin comprimir (RGBA = 4 bytes por pixel)
                     const theoreticalSize = atlasSource.width * atlasSource.height * 4;
                     
-                    // Logs para mostrar información de la textura original desde la red
-                    console.log(`🌐 CARGA DESDE RED - Avatar ${avatarId}:`);
-                    console.log(`   📐 Dimensiones originales: ${atlasSource.width}x${atlasSource.height}px`);
-                    console.log(`   🔗 URL original: ${atlasSource.image.src}`);
-                    console.log(`   📊 Tamaño teórico sin comprimir: ${(theoreticalSize / 1024 / 1024).toFixed(2)}MB`);
-                    
                     // Convertir imagen a blob para almacenar
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
@@ -475,16 +445,9 @@ class AvatarManager {
                     canvas.height = atlasSource.height;
                     ctx.drawImage(atlasSource.image, 0, 0);
                     
-                    console.log(`📐 Dimensiones del atlas para avatar ${avatarId}: ${atlasSource.width}x${atlasSource.height}px`);
-                    
                     await new Promise(resolve => {
                         canvas.toBlob(async (blob) => {
                             if (blob) {
-                                console.log(`� COMPRESIÓN RESULTADO - Avatar ${avatarId}:`);
-                                console.log(`   🗜️ Tamaño PNG comprimido: ${(blob.size / 1024 / 1024).toFixed(2)}MB`);
-                                console.log(`   📉 Factor de compresión: ${(theoreticalSize / blob.size).toFixed(1)}x`);
-                                console.log(`   💯 Reducción: ${(((theoreticalSize - blob.size) / theoreticalSize) * 100).toFixed(1)}%`);
-                                
                                 await cacheManager.storeAsset(
                                     versionedAtlasKey, 
                                     blob, 
@@ -510,7 +473,6 @@ class AvatarManager {
                     const jsonData = atlasTexture.dataSource[0];
                     if (jsonData) {
                         const jsonString = JSON.stringify(jsonData);
-                        console.log(`📋 Cacheando spreadsheet para avatar ${avatarId}: ${(jsonString.length / 1024).toFixed(1)}KB`);
                         
                         await cacheManager.storeAsset(
                             versionedSpreadsheetKey,
@@ -526,10 +488,8 @@ class AvatarManager {
                 }
             }
 
-            console.log(`💾 Assets de avatar ${avatarId} cacheados exitosamente con versión ${assetVersionManager.getAvatarVersion(avatarId)}`);
-
         } catch (error) {
-            console.warn(`⚠️ Error cacheando assets de avatar ${avatarId}:`, error);
+            // Error cacheando assets de avatar
         }
     }
 
@@ -571,7 +531,6 @@ class AvatarManager {
      */
     async clearCache() {
         await cacheManager.clearCache();
-        console.log("🧹 Cache de avatares limpiado");
     }
 }
 
