@@ -22,11 +22,12 @@ class UserReceiveEffectController {
 
         // Crear sprite del efecto en la posición inicial
         const effect = gameScene.add.sprite(
-            container.x + effectData.effect.positionOffset.x,
-            container.y + effectData.effect.positionOffset.y,
+            container.x + effectData.effect.positionOffset.x * 2,
+            container.y + effectData.effect.positionOffset.y * 2,
             data.effect
         );
         effect.setDepth(container.depth + 1);
+        effect.setScale(2);
 
         if (effectData.effect.avatarAnimation) {
             gameScene.time.delayedCall(
