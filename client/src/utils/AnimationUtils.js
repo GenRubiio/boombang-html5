@@ -19,9 +19,11 @@ class AnimationUtils {
         //    animationData.originY + (animationData.offsetY / animationData.frameHeight)
         //);
         spriteAvatar.setPosition(
-            animationData.positionX,
-            animationData.positionY
+            animationData.positionX * 2,
+            animationData.positionY * 2
         );
+        //TODO: Nuevo rederizado * 2
+        //spriteAvatar.setScale(2);
     }
 }
 

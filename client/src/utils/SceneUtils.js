@@ -1,13 +1,13 @@
 class SceneUtils {
     static loadNpc(col, row, gameScene, name, npcId) {
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = gameScene.scale.width / 2;
 
-        const x = (col - row) * halfTileWidth + centerX + 40;
-        const y = (col + row) * halfTileHeight + 253;
+        const x = (col - row) * halfTileWidth + centerX + 40 * 2;
+        const y = (col + row) * halfTileHeight + 253 * 2;
 
         const npc = gameScene.add.image(x, y, name);
         npc.setOrigin(0.5, 1);

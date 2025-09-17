@@ -32,16 +32,16 @@ class InteractionNotificationController {
         let interactionImage;
         switch (type) {
             case 'kiss':
-                interactionImage = gameScene.add.image(-15, -5, 'asset_kiss_image');
+                interactionImage = gameScene.add.image(-15 * 2, -5 * 2, 'asset_kiss_image');
                 break;
             case 'drink':
-                interactionImage = gameScene.add.image(-15, -5, 'asset_drink_image');
+                interactionImage = gameScene.add.image(-15 * 2, -5 * 2, 'asset_drink_image');
                 break;
             case 'rose':
-                interactionImage = gameScene.add.image(-15, -5, 'asset_rose_image');
+                interactionImage = gameScene.add.image(-15 * 2, -5 * 2, 'asset_rose_image');
                 break;
             default:
-                interactionImage = gameScene.add.image(-15, -5, 'asset_kiss_image');
+                interactionImage = gameScene.add.image(-15 * 2, -5 * 2, 'asset_kiss_image');
         }
 
         // Apply anti-aliasing and smooth scaling to fix pixelation
@@ -49,7 +49,7 @@ class InteractionNotificationController {
         interactionImage.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
 
         // Create Accept button using image asset
-        const acceptButton = gameScene.add.image(30, -15, 'asset_accept_image');
+        const acceptButton = gameScene.add.image(30 * 2, -15 * 2, 'asset_accept_image');
         acceptButton.setScale(1);
         acceptButton.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         acceptButton.setInteractive();
@@ -72,7 +72,7 @@ class InteractionNotificationController {
         });
 
         // Create Reject button using image asset
-        const rejectButton = gameScene.add.image(30, 10, 'asset_reject_image');
+        const rejectButton = gameScene.add.image(30 * 2, 10 * 2, 'asset_reject_image');
         rejectButton.setScale(1);
         rejectButton.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         rejectButton.setInteractive();
@@ -105,7 +105,7 @@ class InteractionNotificationController {
 
             // Position relative to the container (higher and behind name text)
             notificationContainer.x = 0; // Centered on user
-            notificationContainer.y = -160; // Higher position, behind name text
+            notificationContainer.y = -160 * 2; // Higher position, behind name text
             notificationContainer.setDepth(-1); // Behind name text
         } else {
             return;

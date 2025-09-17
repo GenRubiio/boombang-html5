@@ -272,6 +272,16 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'Configuración'
             ],
             [
+                'name' => 'scale',
+                'label' => 'Escala',
+                'type' => 'number',
+                'default' => 1,
+                'attributes' => ["step" => "1", "min" => "1"],
+                'wrapper' => ['class' => 'form-group col-md-4'],
+                'hint' => 'Factor de escala para el objeto en la escena. 1 = tamaño original, 2 = el doble de grande, etc.',
+                'tab' => 'Configuración'
+            ],
+            [
                 'name' => 'in_lobby_gacha',
                 'label' => 'En Lobby Gacha',
                 'type' => 'checkbox',

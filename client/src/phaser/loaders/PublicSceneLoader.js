@@ -48,9 +48,10 @@ class PublicSceneLoader {
             else {
                 this.#loadSingleItem(gameScene, spriteName, {
                     name: spriteName,
-                    x: asset.position_x,
-                    y: asset.position_y,
-                    custom_depth: asset.depth,
+                    x: parseInt(asset.position_x),
+                    y: parseInt(asset.position_y),
+                    custom_depth: parseInt(asset.depth),
+                    scale: parseInt(asset.scale) || null,
                     show_item: true,
                     show_controller: asset.show_controller == 1
                 });
@@ -68,20 +69,21 @@ class PublicSceneLoader {
         }
         let sprite;
         if (SceneUtils.isVideoFile(item.image)) {
-            sprite = gameScene.add.video(item.x, item.y, spriteName)
+            sprite = gameScene.add.video(item.x * item.scale, item.y * item.scale, spriteName)
                 .setOrigin(0.5, 1)
-                .setDepth(item.custom_depth || item.y)
+                .setDepth((item.custom_depth || item.y) * item.scale)
                 .setName(spriteName);
 
             sprite.setLoop(true);
             sprite.play(true);
         }
         else {
-            sprite = gameScene.add.image(item.x, item.y, spriteName)
+            sprite = gameScene.add.image(item.x * item.scale, item.y * item.scale, spriteName)
                 .setOrigin(0.5, 1)
-                .setDepth(item.custom_depth || item.y)
+                .setDepth((item.custom_depth || item.y) * item.scale)
                 .setName(spriteName);
         }
+        sprite.setScale(item.scale);
 
         // Registrar sprites con controlador activo para un controlador unificado
         if (item.show_controller) {
@@ -100,17 +102,18 @@ class PublicSceneLoader {
         let sprite;
 
         if (SceneUtils.isVideoFile(npcData.image)) {
-            sprite = gameScene.add.video(npcData.positionX, npcData.positionY, spriteName);
+            sprite = gameScene.add.video(npcData.positionX * npcData.scale, npcData.positionY * npcData.scale, spriteName);
             sprite.setOrigin(0.5, 1);
-            sprite.setDepth(npcData.depth || npcData.positionY);
+            sprite.setDepth(npcData.depth || npcData.positionY * npcData.scale);
             sprite.setLoop(true);
             sprite.play(true);
         }
         else {
-            sprite = gameScene.add.image(npcData.positionX, npcData.positionY, spriteName);
+            sprite = gameScene.add.image(npcData.positionX * npcData.scale, npcData.positionY * npcData.scale, spriteName);
             sprite.setOrigin(0.5, 1);
-            sprite.setDepth(npcData.depth || npcData.positionY);
+            sprite.setDepth(npcData.depth || npcData.positionY * npcData.scale);
         }
+        sprite.setScale(npcData.scale);
 
         sprite.setInteractive({
             cursor: 'pointer',

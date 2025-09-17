@@ -51,8 +51,8 @@ class MoveUserController {
         const step = user.path[user.pathIndex];
 
         // Ajusta según tu grid isométrico
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
 
         // Calcula la posición en pantalla
         const centerX = (step.x - step.y) * (tileWidth / 2) + gameScene.scale.width / 2;

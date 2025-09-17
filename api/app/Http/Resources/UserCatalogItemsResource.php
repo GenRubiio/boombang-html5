@@ -39,6 +39,7 @@ class UserCatalogItemsResource extends JsonResource
             'resize_enabled' => $this->resize_enabled,
             'resized' => $this->resized,
             'type_of_behavior' => $this->catalogItem->type_of_behavior,
+            'scale' => $this->catalogItem->scale,
         ];
     }
 }

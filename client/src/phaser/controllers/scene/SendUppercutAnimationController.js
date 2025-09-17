@@ -16,8 +16,8 @@ class SendUppercutAnimationController {
         attacker.path = [];
         attacker.pathIndex = 0;
 
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
         const attackerFinalX = (attacker.position.x - attacker.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const attackerFinalY = (attacker.position.x + attacker.position.y) * (tileHeight / 2);
 
@@ -26,7 +26,7 @@ class SendUppercutAnimationController {
         //attacker.spriteShadow.setPosition(0, 0);
         //attacker.spriteAvatar.setPosition(
         //    0,
-        //    -(attacker.spriteShadow.displayHeight / 2) - (attacker.spriteAvatar.displayHeight / 2) + 15
+        //    -(attacker.spriteShadow.displayHeight / 2) - (attacker.spriteAvatar.displayHeight / 2) + 15 * 2
         //);
 
         // ===== DETENER Y REPOSICIONAR AL RECEPTOR =====
@@ -46,7 +46,7 @@ class SendUppercutAnimationController {
         //receiver.spriteShadow.setPosition(0, 0);
         //receiver.spriteAvatar.setPosition(
         //    0,
-        //    -(receiver.spriteShadow.displayHeight / 2) - (receiver.spriteAvatar.displayHeight / 2) + 15
+        //    -(receiver.spriteShadow.displayHeight / 2) - (receiver.spriteAvatar.displayHeight / 2) + 15 * 2
         //);
 
         // Ahora ambos están forzados a la posición lógica del servidor

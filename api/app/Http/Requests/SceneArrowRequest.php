@@ -28,6 +28,7 @@ class SceneArrowRequest extends FormRequest
             'name' => 'required',
             'sprite_name' => 'required',
             'image' => 'required', // max 2MB
+            'scale' => 'required|integer',
         ];
     }
 

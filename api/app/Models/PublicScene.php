@@ -75,7 +75,8 @@ class PublicScene extends Model
                         'position_y' => $item['position_y'] ?? 0,
                         'position_door_x' => $item['position_door_x'] ?? 0,
                         'position_door_y' => $item['position_door_y'] ?? 0,
-                        'position_door_z' => $item['position_door_z'] ?? 0
+                        'position_door_z' => $item['position_door_z'] ?? 0,
+                        'scale' => $arrow->scale,
                     ];
                 }
             }

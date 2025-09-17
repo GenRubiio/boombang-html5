@@ -6,7 +6,7 @@ class UserChangeAvatarController {
     static async main(gameScene, data) {
         const socketId = data.user;
         const position = data.position;
-        
+
         // Verificar que el jugador exista
         if (!gameScene.users[socketId]) return;
 
@@ -14,14 +14,14 @@ class UserChangeAvatarController {
         if (!user) return;
 
         const requestedAvatarId = parseInt(data.avatar);
-        
+
         // Verificar si el avatar está cargado ANTES de intentar pre-carga
         let avatarToUse = requestedAvatarId;
-        
+
         if (!avatarManager.isAvatarLoaded(requestedAvatarId)) {
             // Si no está cargado, intentar cargar desde cache
             console.log(`🔄 Avatar ${requestedAvatarId} no está cargado, intentando cache...`);
-            
+
             try {
                 // Intentar cargar usando el sistema unificado de AvatarManager
                 await avatarManager.loadAvatar(gameScene, requestedAvatarId);
@@ -29,7 +29,7 @@ class UserChangeAvatarController {
             } catch (error) {
                 console.warn(`⚠️ Error cargando avatar ${requestedAvatarId}, usando fallback:`, error);
                 avatarToUse = avatarManager.getAvatarToUse(requestedAvatarId);
-                
+
                 // Añadir a cola de carga en segundo plano
                 avatarManager.queueAvatarForBackgroundLoading(requestedAvatarId);
             }
@@ -55,8 +55,8 @@ class UserChangeAvatarController {
         user.pathIndex = 0;
 
         // Forzar la posición en el mapa según la lógica isométrica
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
         const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
 
@@ -79,10 +79,10 @@ class UserChangeAvatarController {
         const checkInterval = setInterval(() => {
             if (avatarManager.isAvatarLoaded(originalAvatarId)) {
                 console.log(`🔄 Cambiando avatar de ${user.username} a ${originalAvatarId}`);
-                
+
                 // Actualizar el avatar del usuario
                 this.updateUserAvatarChange(gameScene, user, originalAvatarId, position);
-                
+
                 // Limpiar el interval
                 clearInterval(checkInterval);
             }
@@ -128,7 +128,7 @@ class UserChangeAvatarController {
             // Obtener el atlas key correcto para el nuevo avatar
             const avatarName = this.avatarName(newAvatarId);
             const atlasKey = `${avatarName}_atlas`;
-            
+
             // Verificar que el atlas existe con retry para casos de cache
             if (!gameScene.textures.exists(atlasKey)) {
                 // Intentar esperar un poco y verificar de nuevo (para casos de cache que aún se están procesando)
@@ -213,11 +213,11 @@ class UserChangeAvatarController {
                 if (sprite && !sprite.destroyed && gameScene.tintMgr) {
                     // Triple verificación antes de aplicar tint
                     const currentPipeline = gameScene.renderer.pipelines.get('ColorReplacePipeline');
-                    if (currentPipeline && 
-                        currentPipeline.gl && 
+                    if (currentPipeline &&
+                        currentPipeline.gl &&
                         currentPipeline.gl.getParameter &&
                         !currentPipeline.gl.isContextLost()) {
-                        
+
                         // Verificar que el sprite tenga las propiedades necesarias
                         if (sprite.pipeline && sprite.texture && sprite.texture.source) {
                             gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
@@ -247,18 +247,18 @@ class UserChangeAvatarController {
         if (pipeline) {
             // Guardar el estado original del pipeline
             const originalActive = pipeline.active;
-            
+
             // Deshabilitar temporalmente
             pipeline.active = false;
-            
+
             // Reintentar después de un delay más largo
             setTimeout(() => {
                 try {
                     // Restaurar el pipeline
                     pipeline.active = originalActive;
-                    
+
                     // Verificar nuevamente y aplicar tint
-                    if (sprite && !sprite.destroyed && gameScene.tintMgr && 
+                    if (sprite && !sprite.destroyed && gameScene.tintMgr &&
                         pipeline.gl && !pipeline.gl.isContextLost()) {
                         gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
                     }

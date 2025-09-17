@@ -46,6 +46,9 @@ export default class PrivateScene extends Phaser.Scene {
             console.log("PrivateScene init", this.sceneType, this.sceneData);
         }
 
+        // Factor de escala DPI aplicado en App.vue
+        this.dpiScale = 2;
+
         // Datos dinámicos de inventario y objetos
         this.backpackUserItems = this.sceneData.userInventory;
 
@@ -429,8 +432,8 @@ export default class PrivateScene extends Phaser.Scene {
 
         this.initializeTileGrid();
 
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * this.dpiScale;
+        const tileHeight = 33 * this.dpiScale;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
@@ -451,9 +454,9 @@ export default class PrivateScene extends Phaser.Scene {
                 if (row < this.tileGrid.length && col < this.tileGrid[row].length) {
                     this.tileGrid[row][col].occupied = true;
                     this.tileGrid[row][col].objectId = item.id;
-                    
+
                     // WALKABLE and WALKABLE_OVERLAY items don't block clicking or movement
-                    if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE || 
+                    if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE ||
                         item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY) {
                         this.tileGrid[row][col].isClickable = true;
                         // Keep original tile clickability for WALKABLE items
@@ -591,8 +594,8 @@ export default class PrivateScene extends Phaser.Scene {
         const sprite = item.sprite;
         this.input.setDraggable(sprite, true);
 
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * this.dpiScale;
+        const tileHeight = 33 * this.dpiScale;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
@@ -660,16 +663,16 @@ export default class PrivateScene extends Phaser.Scene {
             if (this.tileGrid[row][col].occupied && this.tileGrid[row][col].objectId !== currentObjectId) {
                 // Find the occupying object
                 const occupyingObject = this.sceneItems.find(item => item.id === this.tileGrid[row][col].objectId);
-                
+
                 // Allow placing objects on WALKABLE/WALKABLE_OVERLAY items, but not WALKABLE on WALKABLE
-                if (occupyingObject && (occupyingObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE || 
-                                       occupyingObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
+                if (occupyingObject && (occupyingObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE ||
+                    occupyingObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
                     // Find the current object being placed/moved
                     const currentObject = this.sceneItems.find(item => item.id === currentObjectId);
-                    
+
                     // If placing a WALKABLE/WALKABLE_OVERLAY item on another WALKABLE/WALKABLE_OVERLAY item, reject
-                    if (currentObject && (currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE || 
-                                         currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
+                    if (currentObject && (currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE ||
+                        currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
                         return false;
                     }
                     // Otherwise allow placement on WALKABLE/WALKABLE_OVERLAY items
@@ -692,8 +695,8 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     validateObjectPosition(item) {
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * this.dpiScale;
+        const tileHeight = 33 * this.dpiScale;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
@@ -747,8 +750,8 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     updateOccupiedTiles(item) {
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * this.dpiScale;
+        const tileHeight = 33 * this.dpiScale;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
@@ -785,8 +788,8 @@ export default class PrivateScene extends Phaser.Scene {
      */
     // Dentro de la clase PrivateScene, modifica el método renderSceneObjects
     renderSceneObjects() {
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * this.dpiScale;
+        const tileHeight = 33 * this.dpiScale;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
@@ -817,7 +820,8 @@ export default class PrivateScene extends Phaser.Scene {
                 if (isVideo && this.cache.video.exists(item.sprite_name)) {
                     // Crear video sprite
                     item.sprite = this.add.video(avgX, y, item.sprite_name)
-                        .setOrigin(0.5, 0.90);
+                        .setOrigin(0.5, 0.90)
+                        .setScale(item.scale || this.dpiScale);
 
                     // Configurar el video para que se reproduzca en bucle
                     item.sprite.setLoop(true);
@@ -828,7 +832,8 @@ export default class PrivateScene extends Phaser.Scene {
                 } else if (this.textures.exists(item.sprite_name)) {
                     // Crear imagen sprite
                     item.sprite = this.add.image(avgX, y, item.sprite_name)
-                        .setOrigin(0.5, 0.90);
+                        .setOrigin(0.5, 0.90)
+                        .setScale(item.scale || this.dpiScale);
 
                     item.isVideo = false;
                 }
@@ -855,8 +860,8 @@ export default class PrivateScene extends Phaser.Scene {
                     const originalWidth = item.sprite.width;
                     const originalHeight = item.sprite.height;
 
-                    let targetWidth = item.width || originalWidth;
-                    let targetHeight = item.height || originalHeight;
+                    let targetWidth = (item.width || originalWidth) * (item.scale || this.dpiScale);
+                    let targetHeight = (item.height || originalHeight) * (item.scale || this.dpiScale);
 
                     // Calcular escala para mantener aspect ratio (contain)
                     const scaleX = targetWidth / originalWidth;
@@ -864,6 +869,9 @@ export default class PrivateScene extends Phaser.Scene {
                     const scale = Math.min(scaleX, scaleY);
 
                     item.sprite.setScale(scale);
+                } else if (item.sprite) {
+                    // Si no hay dimensiones personalizadas, aplicar solo el escalado DPI
+                    item.sprite.setScale(item.scale || this.dpiScale);
                 }
 
                 // Aplicar rotación si el atributo rotated es true
@@ -872,7 +880,7 @@ export default class PrivateScene extends Phaser.Scene {
                 }
             } else {
                 item.sprite.setPosition(avgX, y);
-                
+
                 // Update depth based on behavior type
                 if (item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE) {
                     // WALKABLE objects appear below users (lower depth but still visible)
@@ -904,31 +912,32 @@ export default class PrivateScene extends Phaser.Scene {
 
     updateWalkableOverlayDepths() {
         // Find all WALKABLE_OVERLAY items
-        const walkableOverlayItems = this.sceneItems.filter(item => 
+        const walkableOverlayItems = this.sceneItems.filter(item =>
             item.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY && item.sprite
         );
 
         walkableOverlayItems.forEach(item => {
             let shouldBeAbove = false;
-            
+
             // Check if any user should make this item appear above
             Object.values(this.users).forEach(user => {
                 if (user.currentAreaPosition) {
                     const userCol = user.currentAreaPosition.x;
                     const userRow = user.currentAreaPosition.y;
-                    const userVisualY = (userCol + userRow) * (33 / 2); // halfTileHeight = 33/2
-                    
+                    const halfTileHeight = (33 * this.dpiScale) / 2;
+                    const userVisualY = (userCol + userRow) * halfTileHeight;
+
                     // Get the item's visual Y range (from top-most to bottom-most tile)
                     const itemMinRowColSum = Math.min(...item.occupied_tiles.map(([col, row]) => row + col));
                     const itemMaxRowColSum = Math.max(...item.occupied_tiles.map(([col, row]) => row + col));
-                    const itemTopY = itemMinRowColSum * (33 / 2);
-                    const itemBottomY = itemMaxRowColSum * (33 / 2);
-                    
+                    const itemTopY = itemMinRowColSum * halfTileHeight;
+                    const itemBottomY = itemMaxRowColSum * halfTileHeight;
+
                     // Check if user position overlaps with any of the item's occupied tiles
-                    const isOnItem = item.occupied_tiles.some(([col, row]) => 
+                    const isOnItem = item.occupied_tiles.some(([col, row]) =>
                         col === userCol && row === userRow
                     );
-                    
+
                     if (isOnItem) {
                         // User is on top of the item - object should appear above
                         shouldBeAbove = true;

@@ -32,6 +32,7 @@ class NpcRequest extends FormRequest
             'position_x' => 'required|numeric',
             'position_y' => 'required|numeric',
             'depth' => 'required|numeric',
+            'scale' => 'required|integer|min:1',
         ];
     }
 

@@ -16,8 +16,8 @@ class SendInteractionAnimationController {
         receiverUser.path = [];
         receiverUser.pathIndex = 0;
 
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * 2;
+        const tileHeight = 33 * 2;
         const receiverUserFinalX = (receiverUser.position.x - receiverUser.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
         const receiverUserFinalY = (receiverUser.position.x + receiverUser.position.y) * (tileHeight / 2);
 

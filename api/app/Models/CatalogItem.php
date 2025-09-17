@@ -48,6 +48,7 @@ class CatalogItem extends Model
         'map_size',
         'user_decoration_type',
         'user_decoration_value',
+        'scale',
         'in_lobby_gacha',
         'show_in_inventory',
         'is_purchasable',

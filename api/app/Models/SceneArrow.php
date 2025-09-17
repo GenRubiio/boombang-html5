@@ -28,6 +28,7 @@ class SceneArrow extends Model
     protected $fillable = [
         'name',
         'sprite_name',
+        'scale',
         'image',
     ];
     // protected $hidden = [];

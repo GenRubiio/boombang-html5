@@ -19,7 +19,7 @@ class NpcCrudController extends CrudController
     public function setup()
     {
         $this->applySuperadminProtection();
-        
+
         $this->crud->setModel(\App\Models\Npc::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/npc');
         $this->crud->setEntityNameStrings('npc', 'npcs');
@@ -108,6 +108,7 @@ class NpcCrudController extends CrudController
                 'type' => 'number',
                 'default' => 0,
                 'suffix' => 'px',
+                'wrapper' => ['class' => 'form-group col-md-4'],
                 'tab' => 'General'
             ],
             [
@@ -116,6 +117,7 @@ class NpcCrudController extends CrudController
                 'type' => 'number',
                 'default' => 0,
                 'suffix' => 'px',
+                'wrapper' => ['class' => 'form-group col-md-4'],
                 'tab' => 'General'
             ],
             [
@@ -123,6 +125,16 @@ class NpcCrudController extends CrudController
                 'label' => 'Profundidad',
                 'type' => 'number',
                 'default' => 0,
+                'wrapper' => ['class' => 'form-group col-md-4'],
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'scale',
+                'label' => 'Escala',
+                'type' => 'number',
+                'default' => 1,
+                'attributes' => ["step" => "1", "min" => "1"],
+                'wrapper' => ['class' => 'form-group col-md-4'],
                 'tab' => 'General'
             ],
             [

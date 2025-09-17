@@ -23,8 +23,8 @@ class InventoryPrivateSceneHtml {
         return `
             <div id="html-inventory" style="
                 position: fixed;
-                right: -497px;
-                bottom: -258px;
+                right: 10px;
+                bottom: 72px;
                 width: ${INV_W}px;
                 height: auto;
                 background: rgba(255, 255, 255, 0.9);
@@ -300,8 +300,8 @@ class InventoryPrivateSceneHtml {
         }
 
         // Calculate tile position
-        const TILE_WIDTH = 65;
-        const TILE_HEIGHT = 33;
+        const TILE_WIDTH = 65 * (this.scene.dpiScale || 2);
+        const TILE_HEIGHT = 33 * (this.scene.dpiScale || 2);
         const HALF_TILE_WIDTH = TILE_WIDTH / 2;
         const HALF_TILE_HEIGHT = TILE_HEIGHT / 2;
         const CENTER_X = this.scene.scale.width / 2;
@@ -378,13 +378,14 @@ class InventoryPrivateSceneHtml {
     }
 
     handleDropOnScene(e, rect) {
+        const dpiScale = this.scene.dpiScale || 2;
         const scaleX = this.scene.scale.width / rect.width;
         const scaleY = this.scene.scale.height / rect.height;
         const worldX = (e.clientX - rect.left) * scaleX;
         const worldY = (e.clientY - rect.top) * scaleY;
 
-        const TILE_WIDTH = 65;
-        const TILE_HEIGHT = 33;
+        const TILE_WIDTH = 65 * (this.scene.dpiScale || 2);
+        const TILE_HEIGHT = 33 * (this.scene.dpiScale || 2);
         const HALF_TILE_WIDTH = TILE_WIDTH / 2;
         const HALF_TILE_HEIGHT = TILE_HEIGHT / 2;
         const CENTER_X = this.scene.scale.width / 2;

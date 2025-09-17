@@ -174,6 +174,14 @@ class PublicSceneCrudController extends CrudController
                         'upload' => true,
                     ],
                     [
+                        'name' => 'scale',
+                        'type' => 'number',
+                        'label' => 'Scale',
+                        'attributes' => ["step" => "1", "min" => "1"],
+                        'default' => 1,
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
                         'name' => 'is_background',
                         'label' => 'Is Background',
                         'type' => 'radio',
