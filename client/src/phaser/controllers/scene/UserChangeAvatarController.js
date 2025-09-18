@@ -1,5 +1,5 @@
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
-import avatarManager from "../../managers/AvatarManager.js";
+import smartAvatarSystem from "../../managers/SmartAvatarSystem.js";
 import AvatarEnum from "@/enums/AvatarEnum.js";
 
 class UserChangeAvatarController {
@@ -15,30 +15,17 @@ class UserChangeAvatarController {
 
         const requestedAvatarId = parseInt(data.avatar);
 
-        // Verificar si el avatar está cargado ANTES de intentar pre-carga
-        let avatarToUse = requestedAvatarId;
+        // Usar el sistema inteligente para obtener el avatar
+        const avatarSelection = smartAvatarSystem.getAvatarForUser(socketId, requestedAvatarId);
 
-        if (!avatarManager.isAvatarLoaded(requestedAvatarId)) {
-            // Si no está cargado, intentar cargar desde cache
-            //console.log(`🔄 Avatar ${requestedAvatarId} no está cargado, intentando cache...`);
-
-            try {
-                // Intentar cargar usando el sistema unificado de AvatarManager
-                await avatarManager.loadAvatar(gameScene, requestedAvatarId);
-                //console.log(`✅ Avatar ${requestedAvatarId} cargado exitosamente`);
-            } catch (error) {
-                //console.warn(`⚠️ Error cargando avatar ${requestedAvatarId}, usando fallback:`, error);
-                avatarToUse = avatarManager.getAvatarToUse(requestedAvatarId);
-
-                // Añadir a cola de carga en segundo plano
-                avatarManager.queueAvatarForBackgroundLoading(requestedAvatarId);
-            }
-        }
+        //console.log(`🔄 Cambio de avatar para ${user.username}: solicitado=${requestedAvatarId}, usando=${avatarSelection.avatarId}, fallback=${avatarSelection.isFallback}`);
 
         // Actualizar el avatarId del usuario
-        user.avatarId = avatarToUse;
+        user.avatarId = avatarSelection.avatarId;
         user.originalAvatarId = requestedAvatarId; // Guardar el avatar solicitado originalmente
-        user.spriteAvatar._avatarId = avatarToUse;
+        user.currentAvatarId = avatarSelection.avatarId;
+        user.isFallbackAvatar = avatarSelection.isFallback;
+        user.spriteAvatar._avatarId = avatarSelection.avatarId;
 
         // Actualizar la posición lógica del jugador
         user.position = position;
@@ -64,11 +51,11 @@ class UserChangeAvatarController {
         user.containerUser.setDepth(finalY);
 
         // Reemplazar el sprite con el nuevo avatar
-        this.replaceUserSprite(gameScene, user, avatarToUse, position.z);
+        this.replaceUserSprite(gameScene, user, avatarSelection.avatarId, position.z);
 
         // Si estamos usando fallback, configurar listener para actualizar cuando se cargue el avatar real
-        if (avatarToUse !== requestedAvatarId) {
-            this.setupAvatarChangeListener(gameScene, user, requestedAvatarId, position);
+        if (avatarSelection.isFallback) {
+            this.setupSmartAvatarChangeListener(gameScene, user, requestedAvatarId, position);
         }
     }
 
@@ -101,9 +88,9 @@ class UserChangeAvatarController {
      */
     static updateUserAvatarChange(gameScene, user, newAvatarId, position) {
         try {
-            // Verificar que el avatar esté cargado en el AvatarManager
-            if (!avatarManager.isAvatarLoaded(newAvatarId)) {
-                //console.warn(`⚠️ Avatar ${newAvatarId} no está cargado, reintentando...`);
+            // Verificar que el avatar esté disponible en el sistema inteligente
+            if (!smartAvatarSystem.isAvatarAvailable(newAvatarId)) {
+                //console.warn(`⚠️ Avatar ${newAvatarId} no está disponible, reintentando...`);
                 // Reintentar en 500ms
                 setTimeout(() => {
                     this.updateUserAvatarChange(gameScene, user, newAvatarId, position);
@@ -292,6 +279,42 @@ class UserChangeAvatarController {
             case AvatarEnum.YAYO: return "yayo";
             case AvatarEnum.ZOMBIE: return "zombie";
             default: return "unknown";
+        }
+    }
+
+    /**
+     * Configura listener inteligente para cambio de avatar cuando se carga en segundo plano
+     */
+    static setupSmartAvatarChangeListener(gameScene, user, originalAvatarId, position) {
+        const onAvatarReady = (data) => {
+            if (data.userId === user.username && data.avatarId === originalAvatarId) {
+                //console.log(`🔄 Avatar ${originalAvatarId} listo para cambio de ${user.username}`);
+                
+                // Actualizar el avatar del usuario
+                this.updateUserAvatarChange(gameScene, user, originalAvatarId, position);
+                
+                // Actualizar información en el sistema
+                smartAvatarSystem.updateUserAvatar(user.username, originalAvatarId);
+                
+                // Actualizar referencias del usuario
+                user.isFallbackAvatar = false;
+                user.currentAvatarId = originalAvatarId;
+                user.avatarId = originalAvatarId;
+            }
+        };
+        
+        // Registrar listener
+        smartAvatarSystem.on('userAvatarReady', onAvatarReady);
+        
+        // Limpiar listener cuando el usuario se desconecte
+        if (user.cleanupCallbacks) {
+            user.cleanupCallbacks.push(() => {
+                smartAvatarSystem.off('userAvatarReady', onAvatarReady);
+            });
+        } else {
+            user.cleanupCallbacks = [() => {
+                smartAvatarSystem.off('userAvatarReady', onAvatarReady);
+            }];
         }
     }
 }
