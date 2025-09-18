@@ -2,7 +2,7 @@
     "left_punch_rec": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/leftdown_punch_rec/",
-        "flip_horizontally": true,
+        "flip_horizontally": false,
         "start": 1,
         "end": 400,
         "frameRate": 19,
@@ -15,7 +15,7 @@
     "right_punch_rec": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/leftdown_punch_rec/",
-        "flip_horizontally": false,
+        "flip_horizontally": true,
         "start": 1,
         "end": 400,
         "frameRate": 19,
@@ -54,7 +54,7 @@
     "left_beber": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_beber/",
-        "flip_horizontally": true,
+        "flip_horizontally": false,
         "start": 1,
         "end": 142,
         "frameRate": 19,
@@ -67,7 +67,7 @@
     "right_beber": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_beber/",
-        "flip_horizontally": false,
+        "flip_horizontally": true,
         "start": 1,
         "end": 142,
         "frameRate": 19,
@@ -288,7 +288,7 @@
     "left_flor_rec": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_flor_rec/",
-        "flip_horizontally": true,
+        "flip_horizontally": false,
         "start": 1,
         "end": 50,
         "frameRate": 19,
@@ -301,7 +301,7 @@
     "right_flor_rec": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_flor_rec/",
-        "flip_horizontally": false,
+        "flip_horizontally": true,
         "start": 1,
         "end": 50,
         "frameRate": 19,
@@ -340,7 +340,7 @@
     "left_flor": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_flor/",
-        "flip_horizontally": true,
+        "flip_horizontally": false,
         "start": 1,
         "end": 72,
         "frameRate": 19,
@@ -353,7 +353,7 @@
     "right_flor": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_flor/",
-        "flip_horizontally": false,
+        "flip_horizontally": true,
         "start": 1,
         "end": 72,
         "frameRate": 19,
@@ -457,7 +457,7 @@
     "left_punch_doy": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/leftdown_punch_doy/",
-        "flip_horizontally": true,
+        "flip_horizontally": false,
         "start": 1,
         "end": 210,
         "frameRate": 19,
@@ -470,7 +470,7 @@
     "right_punch_doy": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/leftdown_punch_doy/",
-        "flip_horizontally": false,
+        "flip_horizontally": true,
         "start": 1,
         "end": 210,
         "frameRate": 19,
@@ -496,7 +496,7 @@
     "left_beso": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_beso/",
-        "flip_horizontally": true,
+        "flip_horizontally": false,
         "start": 1,
         "end": 36,
         "frameRate": 19,
@@ -509,7 +509,7 @@
     "right_beso": {
         "atlasKey": "rasta_atlas",
         "prefix": "sprites/left_beso/",
-        "flip_horizontally": false,
+        "flip_horizontally": true,
         "start": 1,
         "end": 36,
         "frameRate": 19,
