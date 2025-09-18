@@ -61,8 +61,8 @@
         "frameWidth": 92,
         "frameHeight": 131,
         "repeat": 0,
-        "positionX": -14,
-        "positionY": -55
+        "positionX": 15,
+        "positionY": -56
     },
     "right_beber": {
         "atlasKey": "rasta_atlas",
@@ -74,8 +74,8 @@
         "frameWidth": 92,
         "frameHeight": 131,
         "repeat": 0,
-        "positionX": 13,
-        "positionY": -55
+        "positionX": -13,
+        "positionY": -56
     },
     "escupir": {
         "atlasKey": "rasta_atlas",
@@ -126,8 +126,8 @@
         "frameWidth": 96,
         "frameHeight": 105,
         "repeat": 0,
-        "positionX": 0,
-        "positionY": -50
+        "positionX": 13,
+        "positionY": -48
     },
     "risa1": {
         "atlasKey": "rasta_atlas",
@@ -295,8 +295,8 @@
         "frameWidth": 71,
         "frameHeight": 100,
         "repeat": 0,
-        "positionX": -12,
-        "positionY": -49
+        "positionX": 10,
+        "positionY": -50
     },
     "right_flor_rec": {
         "atlasKey": "rasta_atlas",
@@ -308,8 +308,8 @@
         "frameWidth": 71,
         "frameHeight": 100,
         "repeat": 0,
-        "positionX": 11,
-        "positionY": -49
+        "positionX": -12,
+        "positionY": -50
     },
     "left_idle": {
         "atlasKey": "rasta_atlas",
@@ -347,8 +347,8 @@
         "frameWidth": 88,
         "frameHeight": 104,
         "repeat": 0,
-        "positionX": -4,
-        "positionY": -52
+        "positionX": 4,
+        "positionY": -51
     },
     "right_flor": {
         "atlasKey": "rasta_atlas",
@@ -360,8 +360,8 @@
         "frameWidth": 88,
         "frameHeight": 104,
         "repeat": 0,
-        "positionX": 4,
-        "positionY": -52
+        "positionX": -6,
+        "positionY": -51
     },
     "left_talk": {
         "atlasKey": "rasta_atlas",
@@ -464,7 +464,7 @@
         "frameWidth": 103,
         "frameHeight": 118,
         "repeat": 0,
-        "positionX": 0,
+        "positionX": 3,
         "positionY": -66
     },
     "right_punch_doy": {
@@ -477,7 +477,7 @@
         "frameWidth": 103,
         "frameHeight": 118,
         "repeat": 0,
-        "positionX": 0,
+        "positionX": -3,
         "positionY": -66
     },
     "down_idle": {

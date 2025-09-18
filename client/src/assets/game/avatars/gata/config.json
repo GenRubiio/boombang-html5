@@ -9,7 +9,7 @@
         "frameWidth": 122,
         "frameHeight": 125,
         "repeat": 0,
-        "positionX": 4,
+        "positionX": 5,
         "positionY": -84
     },
     "right_punch_rec": {
@@ -22,7 +22,7 @@
         "frameWidth": 122,
         "frameHeight": 125,
         "repeat": 0,
-        "positionX": 4,
+        "positionX": -4,
         "positionY": -84
     },
     "down_ouch": {
@@ -35,8 +35,8 @@
         "frameWidth": 92,
         "frameHeight": 105,
         "repeat": 0,
-        "positionX": 0,
-        "positionY": -50
+        "positionX": 6,
+        "positionY": -62
     },
     "special": {
         "atlasKey": "gata_atlas",
@@ -217,8 +217,8 @@
         "frameWidth": 76,
         "frameHeight": 103,
         "repeat": 0,
-        "positionX": 7,
-        "positionY": -57
+        "positionX": -7,
+        "positionY": -58
     },
     "right_beso": {
         "atlasKey": "gata_atlas",
@@ -230,8 +230,8 @@
         "frameWidth": 76,
         "frameHeight": 103,
         "repeat": 0,
-        "positionX": -6,
-        "positionY": -57
+        "positionX": 7,
+        "positionY": -58
     },
     "left_flor_rec": {
         "atlasKey": "gata_atlas",
@@ -243,7 +243,7 @@
         "frameWidth": 74,
         "frameHeight": 102,
         "repeat": 0,
-        "positionX": -2,
+        "positionX": 3,
         "positionY": -57
     },
     "right_flor_rec": {
@@ -256,7 +256,7 @@
         "frameWidth": 74,
         "frameHeight": 102,
         "repeat": 0,
-        "positionX": 2,
+        "positionX": -2,
         "positionY": -57
     },
     "left_idle": {
