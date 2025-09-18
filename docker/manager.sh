@@ -88,15 +88,15 @@ while true; do
   echo
   echo "Seleccione una opción:"
   echo " 1) Salir"
-  echo " 2) WEB: Docker → Host (Copiando uploads)"
-  echo " 3) WEB: Host → Docker (Copiando uploads)"
-  echo " 4) API: Docker → Host (Copiando uploads)"
-  echo " 5) API: Host → Docker (Copiando uploads)"
-  echo " 6) Deploy client"
-  echo " 7) Clear cache docker"
-  echo " 8) UP Containers"
-  echo " 9) Deploy api"
-  echo " 10) Deploy web"
+  #echo " 2) WEB: Docker → Host (Copiando uploads)"
+  #echo " 3) WEB: Host → Docker (Copiando uploads)"
+  #echo " 4) API: Docker → Host (Copiando uploads)"
+  #echo " 5) API: Host → Docker (Copiando uploads)"
+  echo " 2) Deploy client"
+  echo " 3) Clear cache docker"
+  echo " 4) UP Containers"
+  echo " 5) Deploy api"
+  echo " 6) Deploy web"
   read -p "Opción: " opt
   echo
 
@@ -104,41 +104,40 @@ while true; do
     1)
       echo "Saliendo..."
       break
-      ;;
+    #2)
+    #  echo "==> Copiando WEB uploads desde contenedor al host..."
+    #  copiar_desde_contenedor "$WEB_CONTAINER" "/var/www/html/public" "$WEB_TAR" "$WEB_UPLOADS" "data"
+    #  ;;
+    #3)
+    #  echo "==> Copiando WEB uploads desde host al contenedor..."
+    #  copiar_a_contenedor "$WEB_CONTAINER" "/var/www/html/public" "$WEB_TAR" "$WEB_UPLOADS"
+    #  ;;
+    #4)
+    #  echo "==> Copiando API uploads desde contenedor al host..."
+    #  copiar_desde_contenedor "$API_CONTAINER" "/var/www/html/public" "$API_TAR" "$API_UPLOADS" "data"
+    #  ;;
+    #5)
+    #  echo "==> Copiando API uploads desde host al contenedor..."
+    #  copiar_a_contenedor "$API_CONTAINER" "/var/www/html/public" "$API_TAR" "$API_UPLOADS"
+       ;;
     2)
-      echo "==> Copiando WEB uploads desde contenedor al host..."
-      copiar_desde_contenedor "$WEB_CONTAINER" "/var/www/html/public" "$WEB_TAR" "$WEB_UPLOADS" "data"
-      ;;
-    3)
-      echo "==> Copiando WEB uploads desde host al contenedor..."
-      copiar_a_contenedor "$WEB_CONTAINER" "/var/www/html/public" "$WEB_TAR" "$WEB_UPLOADS"
-      ;;
-    4)
-      echo "==> Copiando API uploads desde contenedor al host..."
-      copiar_desde_contenedor "$API_CONTAINER" "/var/www/html/public" "$API_TAR" "$API_UPLOADS" "data"
-      ;;
-    5)
-      echo "==> Copiando API uploads desde host al contenedor..."
-      copiar_a_contenedor "$API_CONTAINER" "/var/www/html/public" "$API_TAR" "$API_UPLOADS"
-      ;;
-    6)
       echo "==> Deploy client..."
       sudo docker stop boombang-html5-server-1
       sudo docker compose build client && sudo docker compose up -d client
       sudo docker exec boombang-html5-api-1 php artisan passport:clear-tokens
       sudo docker restart boombang-html5-server-1
       ;;
-    7)
+    3)
       echo "==> Clear cache docker..."
       sudo docker builder prune -af && sudo docker image prune -af
       ;;
-    8)
+    4)
       echo "==> UP Containers..."
       sudo docker start $(sudo docker ps -a -q)
       sudo docker restart boombang-html5-web-1
       sudo docker restart boombang-html5-server-1
       ;;
-    9)
+    5)
       echo "==> Deploy api..."
       sudo docker stop boombang-html5-server-1
       sudo docker compose build api
@@ -150,7 +149,7 @@ while true; do
       sudo docker restart boombang-html5-server-1
       echo "==> API deployment completed. Upload files preserved."
       ;;
-    10)
+    6)
       echo "==> Deploy web..."
       sudo docker compose build web
       sudo docker compose up -d web
