@@ -157,7 +157,7 @@ class AddUserController {
                 gameScene.selectedShadow = spriteShadow;
             } else if (gameScene.selectedShadow !== spriteShadow) {
                 try {
-                    // console.log("Desmarcando sombra: ");
+                    //console.log("Desmarcando sombra: ");
                     gameScene.tintMgr.clearPart(gameScene.selectedShadow, "shadow");
                     gameScene.selectedShadow.setTexture("shadow");
                 } catch (e) { }
@@ -167,7 +167,7 @@ class AddUserController {
             }
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
             if (clickedPlayer) {
-                // console.log("Jugador clickeado: ", clickedPlayer);
+                //console.log("Jugador clickeado: ", clickedPlayer);
                 socket.emit(RequestSocketsEnum.USER_SELECT_USER, {
                     socketId: spriteShadow.playerSocketId
                 });
@@ -183,7 +183,7 @@ class AddUserController {
 
         // Verificar que el atlas existe antes de crear el sprite
         if (!gameScene.textures.exists(atlasKey)) {
-            console.error(`❌ Atlas no encontrado para avatar ${userData.avatar_id}: ${atlasKey}`);
+            //console.error(`❌ Atlas no encontrado para avatar ${userData.avatar_id}: ${atlasKey}`);
             // Usar un sprite por defecto o placeholder
             const spriteAvatar = gameScene.add.sprite(0, 0);
             spriteAvatar.setVisible(false); // Ocultar hasta que se cargue
@@ -277,7 +277,7 @@ class AddUserController {
     static setupAvatarUpdateListener(gameScene, user, originalAvatarId) {
         const checkInterval = setInterval(() => {
             if (avatarManager.isAvatarLoaded(originalAvatarId)) {
-                console.log(`🔄 Actualizando avatar de ${user.username} a ${originalAvatarId}`);
+                //console.log(`🔄 Actualizando avatar de ${user.username} a ${originalAvatarId}`);
 
                 // Actualizar el sprite del avatar
                 this.updateUserAvatar(gameScene, user, originalAvatarId);
@@ -302,7 +302,7 @@ class AddUserController {
         try {
             // Verificar que el avatar esté cargado en el AvatarManager
             if (!avatarManager.isAvatarLoaded(newAvatarId)) {
-                console.warn(`⚠️ Avatar ${newAvatarId} no está cargado, reintentando...`);
+                //console.warn(`⚠️ Avatar ${newAvatarId} no está cargado, reintentando...`);
                 // Reintentar en 500ms
                 setTimeout(() => {
                     this.updateUserAvatar(gameScene, user, newAvatarId);
@@ -322,7 +322,7 @@ class AddUserController {
 
             // Verificar que el atlas existe
             if (!gameScene.textures.exists(atlasKey)) {
-                console.error(`❌ Atlas no encontrado para avatar ${newAvatarId}: ${atlasKey}`);
+                //console.error(`❌ Atlas no encontrado para avatar ${newAvatarId}: ${atlasKey}`);
                 return;
             }
 
@@ -352,9 +352,9 @@ class AddUserController {
             user.spriteAvatar = newSpriteAvatar;
             user.currentAvatarId = newAvatarId;
 
-            console.log(`✅ Avatar actualizado exitosamente para ${user.username}`);
+            //console.log(`✅ Avatar actualizado exitosamente para ${user.username}`);
         } catch (error) {
-            console.error(`❌ Error actualizando avatar para ${user.username}:`, error);
+            //console.error(`❌ Error actualizando avatar para ${user.username}:`, error);
         }
     }
 
@@ -369,7 +369,7 @@ class AddUserController {
         // Verificar que el pipeline esté disponible y completamente inicializado
         const pipeline = gameScene.renderer.pipelines.get('ColorReplacePipeline');
         if (!pipeline || !pipeline.gl || !pipeline.gl.getParameter) {
-            console.warn('⚠️ ColorReplacePipeline no disponible o no inicializado, omitiendo tint');
+            //console.warn('⚠️ ColorReplacePipeline no disponible o no inicializado, omitiendo tint');
             return;
         }
 
@@ -377,11 +377,11 @@ class AddUserController {
         try {
             const contextLost = pipeline.gl.isContextLost();
             if (contextLost) {
-                console.warn('⚠️ Contexto WebGL perdido, omitiendo tint');
+                //console.warn('⚠️ Contexto WebGL perdido, omitiendo tint');
                 return;
             }
         } catch (contextError) {
-            console.warn('⚠️ Error verificando contexto WebGL, omitiendo tint');
+            //console.warn('⚠️ Error verificando contexto WebGL, omitiendo tint');
             return;
         }
 
@@ -400,17 +400,17 @@ class AddUserController {
                         if (sprite.pipeline && sprite.texture && sprite.texture.source) {
                             gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
                         } else {
-                            console.warn('⚠️ Sprite no completamente inicializado, omitiendo tint');
+                            //console.warn('⚠️ Sprite no completamente inicializado, omitiendo tint');
                         }
                     } else {
-                        console.warn('⚠️ Pipeline no inicializado correctamente en callback, omitiendo tint');
+                        //console.warn('⚠️ Pipeline no inicializado correctamente en callback, omitiendo tint');
                     }
                 }
             } catch (tintError) {
-                console.warn(`⚠️ Error aplicando tint:`, tintError.message);
+                //console.warn(`⚠️ Error aplicando tint:`, tintError.message);
                 // Si el error es específicamente del set1f, intentar deshabilitar temporalmente el pipeline
                 if (tintError.message && tintError.message.includes('set1f')) {
-                    console.warn('🔧 Error set1f detectado, deshabilitando pipeline temporalmente');
+                    //console.warn('🔧 Error set1f detectado, deshabilitando pipeline temporalmente');
                     this.disablePipelineTemporarily(gameScene, sprite, uppercutSelected);
                 }
             }
@@ -441,7 +441,7 @@ class AddUserController {
                         gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
                     }
                 } catch (retryError) {
-                    console.warn('⚠️ Error en reintento de tint:', retryError.message);
+                    //console.warn('⚠️ Error en reintento de tint:', retryError.message);
                 }
             }, 500);
         }

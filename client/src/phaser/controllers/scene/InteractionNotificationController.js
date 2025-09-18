@@ -97,11 +97,13 @@ class InteractionNotificationController {
         // Add all elements to container
         notificationContainer.add([background, interactionImage, acceptButton, rejectButton]);
 
-        // Position above sender's sprite (who sent the interaction) like createUserNameText
-        const senderSprite = gameScene.users[senderSocketId];
-        if (senderSprite && senderSprite.containerUser) {
-            // Add notification to the sender's containerUser so it moves with the user
-            senderSprite.containerUser.add(notificationContainer);
+        // Position above current player's sprite (who is receiving the interaction)
+        // The notification should appear above the receiver (current player), not the sender
+        const currentPlayerSocketId = socket.id;
+        const currentPlayerSprite = gameScene.users[currentPlayerSocketId];
+        if (currentPlayerSprite && currentPlayerSprite.containerUser) {
+            // Add notification to the current player's containerUser so it moves with them
+            currentPlayerSprite.containerUser.add(notificationContainer);
 
             // Position relative to the container (higher and behind name text)
             notificationContainer.x = 0; // Centered on user
@@ -111,7 +113,7 @@ class InteractionNotificationController {
             return;
         }
 
-        // Store notification with sender's socket ID so it follows the sender
+        // Store notification with sender's socket ID for tracking purposes
         this.notifications.set(senderSocketId, {
             container: notificationContainer,
             fromUser: fromUser,
@@ -149,8 +151,12 @@ class InteractionNotificationController {
 
     static removeAll(gameScene) {
         this.notifications.forEach((notification, userSocketId) => {
-            this.remove(gameScene, userSocketId);
+            this.remove(userSocketId);
         });
+    }
+
+    static clearAll() {
+        this.notifications.clear();
     }
 }
 

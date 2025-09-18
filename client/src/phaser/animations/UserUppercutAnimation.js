@@ -45,7 +45,7 @@ class UserUppercutAnimation {
         // Aplicamos un tween para que el personaje salga volando hacia arriba
         spriteAvatar.scene.tweens.add({
             targets: spriteAvatar,
-            y: spriteAvatar.y - 500, // Mueve 500px hacia arriba
+            y: spriteAvatar.y - (500 * 2), // Mueve 500px hacia arriba
             duration: 800, // Duración de la animación
             ease: 'Power2', // Efecto de aceleración suave
             onComplete: () => {

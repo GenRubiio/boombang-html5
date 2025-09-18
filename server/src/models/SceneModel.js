@@ -5,6 +5,7 @@ const SceneItemModel = require('./SceneItemModel');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const PrivateScenesCollection = require('../collections/PrivateScenesCollection');
+const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
 
 class SceneModel {
     constructor(row) {
@@ -119,7 +120,8 @@ class SceneModel {
     }
 
     hasInteraction(userSenderId, targetUserId) {
-        return this.interactions.has(userSenderId) && this.interactions.get(userSenderId).has(targetUserId);
+        const exists = this.interactions.has(userSenderId) && this.interactions.get(userSenderId).has(targetUserId);
+        return exists;
     }
 
     getInteractionType(userSenderId, targetUserId) {
@@ -130,17 +132,48 @@ class SceneModel {
     }
 
     #removeAllUserInteractions(user) {
-        this.interactions.forEach((targetsMap, senderId) => {
-            if (senderId == user.id) {
-                targetsMap.forEach((interactionType, targetId) => {
-                    this.emit(ResponseSocketsEnum.USER_CANCEL_INTERACTION, {
+        // First, handle interactions initiated by this user (user is the sender)
+        if (this.interactions.has(user.id)) {
+            const targetsMap = this.interactions.get(user.id);
+            targetsMap.forEach((interactionType, targetId) => {
+                // Find the target user and send them the cancellation
+                const targetUser = ConnectedUsersCollection.getByUserId(targetId);
+                if (targetUser) {
+                    targetUser.emit(ResponseSocketsEnum.USER_CANCEL_INTERACTION, {
                         type: interactionType,
                         fromUser: user.socket.id,
                     });
+                }
+            });
+            // Remove all interactions initiated by this user
+            this.interactions.delete(user.id);
+        }
+        
+        // Then, remove any interactions where this user is the target
+        const interactionsToClean = [];
+        this.interactions.forEach((targetsMap, senderId) => {
+            if (targetsMap.has(user.id)) {
+                interactionsToClean.push({
+                    senderId,
+                    interactionType: targetsMap.get(user.id)
                 });
             }
         });
-        this.interactions.delete(user.id);
+        
+        // Clean up the interactions where this user was the target
+        interactionsToClean.forEach(({ senderId, interactionType }) => {
+            this.interactions.get(senderId).delete(user.id);
+            
+            // Notify the sender that their interaction was cancelled
+            const senderUser = ConnectedUsersCollection.getByUserId(senderId);
+            if (senderUser) {
+                senderUser.emit(ResponseSocketsEnum.USER_SEND_INTERACTION, {
+                    type: interactionType,
+                    user: user.socket.id,
+                    action: "cancel"
+                });
+            }
+        });
     }
 
     //****************************************************************************************************** */

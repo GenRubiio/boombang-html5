@@ -26,6 +26,9 @@ class UppercutSendBlockActionsMap {
             AnimationEnum.AVATAR_RIGHTUP_TALK,
             AnimationEnum.COCONUT,
             AnimationEnum.UPDATE_AVATAR,
+            AnimationEnum.INTERACTION_KISS,
+            AnimationEnum.INTERACTION_DRINK,
+            AnimationEnum.INTERACTION_ROSE,
         ]
     }
 }
