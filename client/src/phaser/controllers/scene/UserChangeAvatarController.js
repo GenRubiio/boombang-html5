@@ -20,14 +20,14 @@ class UserChangeAvatarController {
 
         if (!avatarManager.isAvatarLoaded(requestedAvatarId)) {
             // Si no está cargado, intentar cargar desde cache
-            console.log(`🔄 Avatar ${requestedAvatarId} no está cargado, intentando cache...`);
+            //console.log(`🔄 Avatar ${requestedAvatarId} no está cargado, intentando cache...`);
 
             try {
                 // Intentar cargar usando el sistema unificado de AvatarManager
                 await avatarManager.loadAvatar(gameScene, requestedAvatarId);
-                console.log(`✅ Avatar ${requestedAvatarId} cargado exitosamente`);
+                //console.log(`✅ Avatar ${requestedAvatarId} cargado exitosamente`);
             } catch (error) {
-                console.warn(`⚠️ Error cargando avatar ${requestedAvatarId}, usando fallback:`, error);
+                //console.warn(`⚠️ Error cargando avatar ${requestedAvatarId}, usando fallback:`, error);
                 avatarToUse = avatarManager.getAvatarToUse(requestedAvatarId);
 
                 // Añadir a cola de carga en segundo plano
@@ -78,7 +78,7 @@ class UserChangeAvatarController {
     static setupAvatarChangeListener(gameScene, user, originalAvatarId, position) {
         const checkInterval = setInterval(() => {
             if (avatarManager.isAvatarLoaded(originalAvatarId)) {
-                console.log(`🔄 Cambiando avatar de ${user.username} a ${originalAvatarId}`);
+                //console.log(`🔄 Cambiando avatar de ${user.username} a ${originalAvatarId}`);
 
                 // Actualizar el avatar del usuario
                 this.updateUserAvatarChange(gameScene, user, originalAvatarId, position);
@@ -103,7 +103,7 @@ class UserChangeAvatarController {
         try {
             // Verificar que el avatar esté cargado en el AvatarManager
             if (!avatarManager.isAvatarLoaded(newAvatarId)) {
-                console.warn(`⚠️ Avatar ${newAvatarId} no está cargado, reintentando...`);
+                //console.warn(`⚠️ Avatar ${newAvatarId} no está cargado, reintentando...`);
                 // Reintentar en 500ms
                 setTimeout(() => {
                     this.updateUserAvatarChange(gameScene, user, newAvatarId, position);
@@ -114,9 +114,9 @@ class UserChangeAvatarController {
             // Reemplazar el sprite con el nuevo avatar
             this.replaceUserSprite(gameScene, user, newAvatarId, position.z);
 
-            console.log(`✅ Avatar cambiado exitosamente para ${user.username} a ${newAvatarId}`);
+            //console.log(`✅ Avatar cambiado exitosamente para ${user.username} a ${newAvatarId}`);
         } catch (error) {
-            console.error(`❌ Error cambiando avatar para ${user.username}:`, error);
+            //console.error(`❌ Error cambiando avatar para ${user.username}:`, error);
         }
     }
 
@@ -136,7 +136,7 @@ class UserChangeAvatarController {
                     if (gameScene.textures.exists(atlasKey)) {
                         this.replaceUserSprite(gameScene, user, newAvatarId, currentZ);
                     } else {
-                        console.error(`❌ Atlas no encontrado para avatar ${newAvatarId}: ${atlasKey}`);
+                        //console.error(`❌ Atlas no encontrado para avatar ${newAvatarId}: ${atlasKey}`);
                     }
                 }, 100); // 100ms es suficiente para que se procese el texture desde cache
                 return;
@@ -174,9 +174,9 @@ class UserChangeAvatarController {
             user.spriteAvatar = newSpriteAvatar;
             user.avatarId = newAvatarId;
 
-            console.log(`🔄 Sprite reemplazado exitosamente para ${user.username} con avatar ${newAvatarId}`);
+            //console.log(`🔄 Sprite reemplazado exitosamente para ${user.username} con avatar ${newAvatarId}`);
         } catch (error) {
-            console.error(`❌ Error reemplazando sprite para ${user.username}:`, error);
+            //console.error(`❌ Error reemplazando sprite para ${user.username}:`, error);
         }
     }
 
@@ -191,7 +191,7 @@ class UserChangeAvatarController {
         // Verificar que el pipeline esté disponible y completamente inicializado
         const pipeline = gameScene.renderer.pipelines.get('ColorReplacePipeline');
         if (!pipeline || !pipeline.gl || !pipeline.gl.getParameter) {
-            console.warn('⚠️ ColorReplacePipeline no disponible o no inicializado, omitiendo tint');
+            //console.warn('⚠️ ColorReplacePipeline no disponible o no inicializado, omitiendo tint');
             return;
         }
 
@@ -199,11 +199,11 @@ class UserChangeAvatarController {
         try {
             const contextLost = pipeline.gl.isContextLost();
             if (contextLost) {
-                console.warn('⚠️ Contexto WebGL perdido, omitiendo tint');
+                //console.warn('⚠️ Contexto WebGL perdido, omitiendo tint');
                 return;
             }
         } catch (contextError) {
-            console.warn('⚠️ Error verificando contexto WebGL, omitiendo tint');
+            //console.warn('⚠️ Error verificando contexto WebGL, omitiendo tint');
             return;
         }
 
@@ -222,17 +222,17 @@ class UserChangeAvatarController {
                         if (sprite.pipeline && sprite.texture && sprite.texture.source) {
                             gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
                         } else {
-                            console.warn('⚠️ Sprite no completamente inicializado, omitiendo tint');
+                            //console.warn('⚠️ Sprite no completamente inicializado, omitiendo tint');
                         }
                     } else {
-                        console.warn('⚠️ Pipeline no inicializado correctamente en callback, omitiendo tint');
+                        //console.warn('⚠️ Pipeline no inicializado correctamente en callback, omitiendo tint');
                     }
                 }
             } catch (tintError) {
-                console.warn(`⚠️ Error aplicando tint:`, tintError.message);
+                //console.warn(`⚠️ Error aplicando tint:`, tintError.message);
                 // Si el error es específicamente del set1f, intentar deshabilitar temporalmente el pipeline
                 if (tintError.message && tintError.message.includes('set1f')) {
-                    console.warn('🔧 Error set1f detectado, deshabilitando pipeline temporalmente');
+                    //console.warn('🔧 Error set1f detectado, deshabilitando pipeline temporalmente');
                     this.disablePipelineTemporarily(gameScene, sprite, uppercutSelected);
                 }
             }
@@ -263,7 +263,7 @@ class UserChangeAvatarController {
                         gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
                     }
                 } catch (retryError) {
-                    console.warn('⚠️ Error en reintento de tint:', retryError.message);
+                    //console.warn('⚠️ Error en reintento de tint:', retryError.message);
                 }
             }, 500);
         }
