@@ -1,4 +1,4 @@
-import avatarConfig from "@/assets/game/avatars/boomer/config.json";
+import avatarConfig from "@/assets/game/avatars/rasta/config.json";
 
 class AnimationEditorController {
     static editorInstance = null;
@@ -47,9 +47,9 @@ class AnimationEditorController {
             actionButtons.container
         ]);
 
-        // Position the editor in the top-left corner with 50px margin
-        editorContainer.setPosition(50, 50);
-        editorContainer.setDepth(1000);
+        // Position the editor in the top-left corner with 100px margin
+        editorContainer.setPosition(100, 100);
+        editorContainer.setDepth(99999);
         editorContainer.setScrollFactor(0);
 
         // Setup keyboard controls
@@ -74,20 +74,20 @@ class AnimationEditorController {
         // Simplified button background - no rounded corners for better performance
         const buttonBg = gameScene.add.graphics();
         buttonBg.fillStyle(0x333333, 1);
-        buttonBg.fillRect(0, 0, 180, 25);
-        buttonBg.setInteractive(new Phaser.Geom.Rectangle(0, 0, 180, 25), Phaser.Geom.Rectangle.Contains);
+        buttonBg.fillRect(0, 0, 360, 50);
+        buttonBg.setInteractive(new Phaser.Geom.Rectangle(0, 0, 360, 50), Phaser.Geom.Rectangle.Contains);
         buttonBg.setScrollFactor(0);
 
         // Button text
-        const buttonText = gameScene.add.text(5, 12, 'Select Animation', {
-            fontSize: '11px',
+        const buttonText = gameScene.add.text(10, 25, 'Select Animation', {
+            fontSize: '22px',
             color: '#ffffff',
             fontFamily: 'Arial'
         }).setOrigin(0, 0.5).setScrollFactor(0);
 
         // Arrow indicator
-        const arrow = gameScene.add.text(165, 12, '▼', {
-            fontSize: '10px',
+        const arrow = gameScene.add.text(330, 25, '▼', {
+            fontSize: '20px',
             color: '#ffffff',
             fontFamily: 'Arial'
         }).setOrigin(0.5, 0.5).setScrollFactor(0);
@@ -102,7 +102,7 @@ class AnimationEditorController {
     }
 
     static createDropdownList(gameScene) {
-        const container = gameScene.add.container(0, 30);
+        const container = gameScene.add.container(0, 60);
         container.setScrollFactor(0);
 
         // Show all animations from the JSON
@@ -114,8 +114,8 @@ class AnimationEditorController {
         const rightColumnKeys = animationKeys.slice(halfLength);
         
         // Create two side-by-side lists
-        const listHeight = 300;
-        const columnWidth = 170;
+        const listHeight = 600;
+        const columnWidth = 340;
         
         // Left column background
         const leftBg = gameScene.add.graphics();
@@ -126,26 +126,26 @@ class AnimationEditorController {
         // Right column background
         const rightBg = gameScene.add.graphics();
         rightBg.fillStyle(0x222222, 0.9);
-        rightBg.fillRect(columnWidth + 10, 0, columnWidth, listHeight);
+        rightBg.fillRect(columnWidth + 20, 0, columnWidth, listHeight);
         rightBg.setScrollFactor(0);
 
         container.add([leftBg, rightBg]);
 
         // Create left column animations
-        let yOffset = 2;
+        let yOffset = 4;
         leftColumnKeys.forEach((key, index) => {
             const animButton = gameScene.add.graphics();
             animButton.fillStyle(0x444444, 1);
-            animButton.fillRect(2, yOffset, columnWidth - 4, 18);
-            animButton.setInteractive(new Phaser.Geom.Rectangle(2, yOffset, columnWidth - 4, 18), Phaser.Geom.Rectangle.Contains);
+            animButton.fillRect(4, yOffset, columnWidth - 8, 36);
+            animButton.setInteractive(new Phaser.Geom.Rectangle(4, yOffset, columnWidth - 8, 36), Phaser.Geom.Rectangle.Contains);
             animButton.setScrollFactor(0);
 
-            const animText = gameScene.add.text(5, yOffset + 2, key, {
-                fontSize: '8px',
+            const animText = gameScene.add.text(10, yOffset + 4, key, {
+                fontSize: '16px',
                 color: '#ffffff',
                 fontFamily: 'Arial',
                 stroke: '#000000',
-                strokeThickness: 1
+                strokeThickness: 2
             }).setOrigin(0, 0).setScrollFactor(0);
 
             animButton.on('pointerdown', () => {
@@ -154,24 +154,24 @@ class AnimationEditorController {
             });
 
             container.add([animButton, animText]);
-            yOffset += 20;
+            yOffset += 40;
         });
 
         // Create right column animations
-        yOffset = 2;
+        yOffset = 4;
         rightColumnKeys.forEach((key, index) => {
             const animButton = gameScene.add.graphics();
             animButton.fillStyle(0x444444, 1);
-            animButton.fillRect(columnWidth + 12, yOffset, columnWidth - 4, 18);
-            animButton.setInteractive(new Phaser.Geom.Rectangle(columnWidth + 12, yOffset, columnWidth - 4, 18), Phaser.Geom.Rectangle.Contains);
+            animButton.fillRect(columnWidth + 24, yOffset, columnWidth - 8, 36);
+            animButton.setInteractive(new Phaser.Geom.Rectangle(columnWidth + 24, yOffset, columnWidth - 8, 36), Phaser.Geom.Rectangle.Contains);
             animButton.setScrollFactor(0);
 
-            const animText = gameScene.add.text(columnWidth + 15, yOffset + 2, key, {
-                fontSize: '8px',
+            const animText = gameScene.add.text(columnWidth + 30, yOffset + 4, key, {
+                fontSize: '16px',
                 color: '#ffffff',
                 fontFamily: 'Arial',
                 stroke: '#000000',
-                strokeThickness: 1
+                strokeThickness: 2
             }).setOrigin(0, 0).setScrollFactor(0);
 
             animButton.on('pointerdown', () => {
@@ -180,7 +180,7 @@ class AnimationEditorController {
             });
 
             container.add([animButton, animText]);
-            yOffset += 20;
+            yOffset += 40;
         });
 
         return container;
@@ -205,65 +205,65 @@ class AnimationEditorController {
     }
 
     static createPositionControls(gameScene) {
-        const container = gameScene.add.container(0, 160);
+        const container = gameScene.add.container(0, 320);
         container.setScrollFactor(0);
 
         // Simplified background
         const controlsBg = gameScene.add.graphics();
         controlsBg.fillStyle(0x222222, 0.9);
-        controlsBg.fillRect(0, 0, 180, 100);
+        controlsBg.fillRect(0, 0, 360, 200);
         controlsBg.setScrollFactor(0);
 
         // Title
-        const title = gameScene.add.text(5, 5, 'Position:', {
-            fontSize: '10px',
+        const title = gameScene.add.text(10, 10, 'Position:', {
+            fontSize: '20px',
             color: '#ffffff',
             fontFamily: 'Arial'
         }).setOrigin(0, 0).setScrollFactor(0);
 
         // Position values display
-        const xValue = gameScene.add.text(90, 15, '0', {
-            fontSize: '10px',
+        const xValue = gameScene.add.text(180, 30, '0', {
+            fontSize: '20px',
             color: '#ffff00',
             fontFamily: 'Arial'
         }).setOrigin(0.5, 0.5).setScrollFactor(0);
 
-        const yValue = gameScene.add.text(90, 50, '0', {
-            fontSize: '10px',
+        const yValue = gameScene.add.text(180, 100, '0', {
+            fontSize: '20px',
             color: '#ffff00',
             fontFamily: 'Arial'
         }).setOrigin(0.5, 0.5).setScrollFactor(0);
 
         // Flip value display
-        const flipValue = gameScene.add.text(90, 85, 'false', {
-            fontSize: '10px',
+        const flipValue = gameScene.add.text(180, 170, 'false', {
+            fontSize: '20px',
             color: '#ffff00',
             fontFamily: 'Arial'
         }).setOrigin(0.5, 0.5).setScrollFactor(0);
 
         // Cross formation arrow buttons
         // Up arrow (Y-)
-        const upBtn = this.createArrowButton(gameScene, 90, 30, '▲', () => {
+        const upBtn = this.createArrowButton(gameScene, 180, 60, '▲', () => {
             this.adjustPosition('y', -1);
         });
 
         // Down arrow (Y+)
-        const downBtn = this.createArrowButton(gameScene, 90, 65, '▼', () => {
+        const downBtn = this.createArrowButton(gameScene, 180, 130, '▼', () => {
             this.adjustPosition('y', 1);
         });
 
         // Left arrow (X-)
-        const leftBtn = this.createArrowButton(gameScene, 70, 47, '◄', () => {
+        const leftBtn = this.createArrowButton(gameScene, 140, 94, '◄', () => {
             this.adjustPosition('x', -1);
         });
 
         // Right arrow (X+)
-        const rightBtn = this.createArrowButton(gameScene, 110, 47, '►', () => {
+        const rightBtn = this.createArrowButton(gameScene, 220, 94, '►', () => {
             this.adjustPosition('x', 1);
         });
 
         // Flip toggle button
-        const flipBtn = this.createArrowButton(gameScene, 130, 85, '⟷', () => {
+        const flipBtn = this.createArrowButton(gameScene, 260, 170, '⟷', () => {
             this.toggleFlip();
         });
 
@@ -280,12 +280,12 @@ class AnimationEditorController {
     static createArrowButton(gameScene, x, y, arrow, callback) {
         const button = gameScene.add.graphics();
         button.fillStyle(0x444444, 1);
-        button.fillRect(x - 10, y - 8, 20, 16);
-        button.setInteractive(new Phaser.Geom.Rectangle(x - 10, y - 8, 20, 16), Phaser.Geom.Rectangle.Contains);
+        button.fillRect(x - 20, y - 16, 40, 32);
+        button.setInteractive(new Phaser.Geom.Rectangle(x - 20, y - 16, 40, 32), Phaser.Geom.Rectangle.Contains);
         button.setScrollFactor(0);
 
         const buttonText = gameScene.add.text(x, y, arrow, {
-            fontSize: '12px',
+            fontSize: '24px',
             color: '#ffffff',
             fontFamily: 'Arial'
         }).setOrigin(0.5, 0.5).setScrollFactor(0);
@@ -299,27 +299,27 @@ class AnimationEditorController {
     }
 
     static createActionButtons(gameScene) {
-        const container = gameScene.add.container(0, 270);
+        const container = gameScene.add.container(0, 540);
         container.setScrollFactor(0);
 
         // Simplified background
         const actionsBg = gameScene.add.graphics();
         actionsBg.fillStyle(0x222222, 0.9);
-        actionsBg.fillRect(0, 0, 180, 50);
+        actionsBg.fillRect(0, 0, 360, 100);
         actionsBg.setScrollFactor(0);
 
         // Stop Animation Button
-        const stopBtn = this.createActionButton(gameScene, 5, 5, 'Stop', () => {
+        const stopBtn = this.createActionButton(gameScene, 10, 10, 'Stop', () => {
             this.stopCurrentAnimation();
         });
 
         // Download Button
-        const downloadBtn = this.createActionButton(gameScene, 95, 5, 'Save', () => {
+        const downloadBtn = this.createActionButton(gameScene, 190, 10, 'Save', () => {
             this.downloadModifiedConfig();
         });
 
         // Close Button
-        const closeBtn = this.createActionButton(gameScene, 50, 25, 'Close', () => {
+        const closeBtn = this.createActionButton(gameScene, 100, 50, 'Close', () => {
             this.close();
         });
 
@@ -331,12 +331,12 @@ class AnimationEditorController {
     static createActionButton(gameScene, x, y, text, callback) {
         const button = gameScene.add.graphics();
         button.fillStyle(0x006600, 1);
-        button.fillRect(x, y, 70, 18);
-        button.setInteractive(new Phaser.Geom.Rectangle(x, y, 70, 18), Phaser.Geom.Rectangle.Contains);
+        button.fillRect(x, y, 140, 36);
+        button.setInteractive(new Phaser.Geom.Rectangle(x, y, 140, 36), Phaser.Geom.Rectangle.Contains);
         button.setScrollFactor(0);
 
-        const buttonText = gameScene.add.text(x + 35, y + 9, text, {
-            fontSize: '9px',
+        const buttonText = gameScene.add.text(x + 70, y + 18, text, {
+            fontSize: '18px',
             color: '#ffffff',
             fontFamily: 'Arial'
         }).setOrigin(0.5, 0.5).setScrollFactor(0);
@@ -392,8 +392,8 @@ class AnimationEditorController {
 
         // Apply position change to sprite immediately
         if (this.currentSprite) {
-            this.currentSprite.x = animData.positionX;
-            this.currentSprite.y = animData.positionY;
+            this.currentSprite.x = animData.positionX * 2;
+            this.currentSprite.y = animData.positionY * 2;
         }
 
         console.log(`Updated ${this.currentAnimation} position${axis.toUpperCase()}: ${animData[`position${axis.toUpperCase()}`]}`);
@@ -477,6 +477,8 @@ class AnimationEditorController {
             }
             
             // Play the animation with infinite repeat
+            this.currentSprite.x = this.currentSprite.x * 2;
+            this.currentSprite.y = this.currentSprite.y * 2;
             this.currentSprite.play({
                 key: animationKey,
                 repeat: -1
