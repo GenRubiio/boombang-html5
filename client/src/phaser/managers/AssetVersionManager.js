@@ -173,10 +173,14 @@ class AssetVersionManager {
             const avatarName = avatarManager.getAvatarName(avatarId);
             const atlasKey = `${avatarName}_atlas`;
             const spreadsheetKey = `${avatarName}_spreadsheet`;
-            
-            // Eliminar assets del avatar del cache
+
+            // Limpiar claves legacy sin version (compatibilidad)
             await cacheManager.removeAsset(atlasKey, cacheManager.stores.ATLAS);
             await cacheManager.removeAsset(spreadsheetKey, cacheManager.stores.SPREADSHEET);
+
+            // Limpiar todas las versiones por prefijo (multiatlas páginas y json versionados)
+            await cacheManager.removeByPrefix(`${atlasKey}_v`, cacheManager.stores.ATLAS);
+            await cacheManager.removeByPrefix(`${spreadsheetKey}_v`, cacheManager.stores.SPREADSHEET);
             
             // Remover de avatares cargados si está presente
             avatarManager.loadedAvatars.delete(avatarId);

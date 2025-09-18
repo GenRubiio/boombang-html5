@@ -41,10 +41,12 @@ class UserUpdatePositionController {
         //console.log(`Updating player ${socketId} position/direction to:`, position);
 
         // Ahora que el jugador está posicionado correctamente, cambiar el frame idle según la dirección
+        // Usar el avatar realmente disponible (fallback) para la animación mientras carga el solicitado
+        const effectiveAvatarId = user.currentAvatarId || user.avatarId;
         UserIdleAnimation.main(
             user.spriteAvatar,
             position.z,
-            user.avatarId
+            effectiveAvatarId
         );
     }
 }

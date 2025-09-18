@@ -14,6 +14,7 @@ class AvatarSkeletonLoad {
         gameScene.load.multiatlas('skeleton_atlas', asset_atlas_json);
         gameScene.load.svg((avatarId + "_cara_peque"), asset_cara_peque_image);
         gameScene.load.svg((avatarId + "_cara_media"), asset_cara_media_image);
+        return asset_atlas_json;
     }
 }
 

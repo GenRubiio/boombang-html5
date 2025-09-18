@@ -8,8 +8,16 @@ class UserIdleAnimation {
      */
     static main(spriteAvatar, direction, avatarId) {
         const textureKey = this.getTextureKey(direction);
+        const animKey = avatarId + "_" + textureKey;
+        // Si la animación aún no existe (atlas no cargado), usar un frame por defecto o salir silenciosamente
+        const scene = spriteAvatar.scene;
+        if (!scene || !scene.anims || !scene.anims.exists(animKey)) {
+            // Placeholder: mostrar sprite invisible para no romper, se hará play cuando exista
+            // Opcional: podríamos setear un frame neutral si existiera
+            return;
+        }
         AnimationUtils.setSpriteConfig(spriteAvatar, avatarId, textureKey);
-        spriteAvatar.play(avatarId + "_" + textureKey, true);
+        spriteAvatar.play(animKey, true);
     }
 
     /**

@@ -11,6 +11,7 @@ import CreateSceneController from "./controllers/scene/CreateSceneController"; /
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 import TintManager from "./managers/TintManager"; // Gestor de tintes
 import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
+import AvatarSystemController from "./controllers/AvatarSystemController.js"; // Nuevo sistema de avatares
 import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
 import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
 import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
@@ -29,6 +30,11 @@ export default class PublicScene extends Phaser.Scene {
         super("PublicScene");
         this.users = {}; // Reiniciar al crear una nueva instancia
         this.avatarAnimations = {}; // Reiniciar al crear una nueva instancia
+        
+        // Estado del sistema de avatares
+        this.avatarsEssentialReady = false;
+        this.allAvatarsReady = false;
+        this.avatarLoadingProgress = 0;
     }
 
     init(data) {
@@ -57,6 +63,8 @@ export default class PublicScene extends Phaser.Scene {
     }
 
     create() {
+        //console.log("🎮 Inicializando PublicScene...");
+        
         if (!this.plugins.get('rexColorReplacePipeline')) {
             this.plugins.start('rexColorReplacePipeline');
         }
@@ -66,6 +74,18 @@ export default class PublicScene extends Phaser.Scene {
         this.scene.pauseOnHide = false;
         this.input.enabled = true;
         this.input.topOnly = false;
+
+        // Verificar si el sistema de avatares está inicializado
+        const avatarSystemReady = this.registry.get('avatarSystemReady');
+        if (!avatarSystemReady) {
+            //console.warn("⚠️ Sistema de avatares no está listo, inicializando en escena...");
+            this.initializeAvatarSystemFallback();
+        } else {
+            //console.log("✅ Sistema de avatares ya inicializado");
+        }
+
+        // Configurar listeners para eventos del sistema de avatares
+        this.setupAvatarSystemListeners();
 
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
@@ -112,7 +132,7 @@ export default class PublicScene extends Phaser.Scene {
         if (shopButton) {
             shopButton.addEventListener('click', (event) => {
                 if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log('Botón de tienda pulsado');
+                    //console.log('Botón de tienda pulsado');
                 }
             });
             
@@ -131,7 +151,7 @@ export default class PublicScene extends Phaser.Scene {
         if (avatarsButton) {
             avatarsButton.addEventListener('click', (event) => {
                 if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log('Botón de avatares pulsado');
+                    //console.log('Botón de avatares pulsado');
                 }
                 // Emit event to Vue component to show avatar selection popup
                 if (this.vueComponent && this.vueComponent.showAvatarSelection) {
@@ -150,8 +170,87 @@ export default class PublicScene extends Phaser.Scene {
         }
     }
 
+    /**
+     * Configura listeners para eventos del sistema de avatares
+     */
+    setupAvatarSystemListeners() {
+        // Cuando los avatares esenciales estén listos
+        this.events.on('avatarsEssentialReady', () => {
+            //console.log("⚡ Avatares esenciales listos en PublicScene");
+            this.avatarsEssentialReady = true;
+        });
+
+        // Cuando todos los avatares estén cargados
+        this.events.on('allAvatarsReady', (stats) => {
+            //console.log("🎉 Todos los avatares disponibles en PublicScene:", stats);
+            this.allAvatarsReady = true;
+        });
+
+        // Progreso de carga individual
+        this.events.on('avatarLoaded', (data) => {
+            this.avatarLoadingProgress = data.loadedCount / data.totalCount;
+            // Opcional: actualizar UI de progreso
+        });
+    }
+
+    /**
+     * Inicializa el sistema de avatares como fallback si no está listo
+     */
+    async initializeAvatarSystemFallback() {
+        try {
+            const avatarSystemReady = await AvatarSystemController.init(this);
+            if (avatarSystemReady) {
+                //console.log("✅ Sistema de avatares inicializado como fallback en PublicScene");
+                this.registry.set('avatarSystemReady', true);
+            }
+        } catch (error) {
+            //console.error("❌ Error inicializando sistema de avatares en PublicScene:", error);
+        }
+    }
+
+    /**
+     * Método llamado cuando un usuario entra a la sala
+     */
+    onUserJoinRoom(userData) {
+        // AddUserController ya está actualizado para usar el nuevo sistema
+        // No necesitas modificar nada aquí
+        
+        // Opcional: priorizar avatares de usuarios recién entrados
+        AvatarSystemController.prioritizeActiveUsers(this);
+    }
+
+    /**
+     * Método llamado cuando un usuario se desconecta
+     */
+    onUserDisconnect(userId) {
+        // Limpiar del sistema de avatares
+        AvatarSystemController.removeUser(userId);
+        
+        // Lógica existente de limpieza
+        if (this.users[userId]) {
+            // Ejecutar callbacks de limpieza si existen
+            if (this.users[userId].cleanupCallbacks) {
+                this.users[userId].cleanupCallbacks.forEach(callback => callback());
+            }
+            
+            delete this.users[userId];
+        }
+    }
+
+    /**
+     * Obtiene estadísticas del sistema de avatares para debugging
+     */
+    getAvatarStats() {
+        return AvatarSystemController.diagnose();
+    }
+
     shutdown() {
-        //console.log("Shutting down scene with exclusion lists.");
+        //console.log("🧹 Shutting down PublicScene...");
+
+        // Limpiar del sistema de avatares
+        Object.keys(this.users).forEach(userId => {
+            AvatarSystemController.removeUser(userId);
+        });
 
         RemovePhaserSocketsUtil.main(socket); // Eliminar eventos de socket
 

@@ -10,6 +10,7 @@ import PrivateSceneLoader from "./loaders/PrivateSceneLoader";
 import CreateSceneController from "./controllers/scene/CreateSceneController";
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil";
 import TintManager from "./managers/TintManager";
+import AvatarSystemController from "./controllers/AvatarSystemController.js"; // Nuevo sistema de avatares
 import PrivateSceneUpdateColorsService from "./services/PrivateScene/PrivateSceneUpdateColorsService";
 import RequestSocketsEnum from "../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
@@ -33,6 +34,11 @@ export default class PrivateScene extends Phaser.Scene {
         this.selectedSprite = null;
         /** Blitter for tile overlays */
         this.tileBlitter = null;
+        
+        // Estado del sistema de avatares
+        this.avatarsEssentialReady = false;
+        this.allAvatarsReady = false;
+        this.avatarLoadingProgress = 0;
     }
 
     init(data) {
@@ -43,7 +49,7 @@ export default class PrivateScene extends Phaser.Scene {
         this.vueComponent = data.vueComponent;
         this.selectedShadow = null;
         if (import.meta.env.VITE_APP_ENV === "local") {
-            console.log("PrivateScene init", this.sceneType, this.sceneData);
+            //console.log("PrivateScene init", this.sceneType, this.sceneData);
         }
 
         // Factor de escala DPI aplicado en App.vue
@@ -115,6 +121,8 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     create() {
+        //console.log("🏠 Inicializando PrivateScene...");
+        
         if (!this.plugins.get('rexColorReplacePipeline')) {
             this.plugins.start('rexColorReplacePipeline');
         }
@@ -124,6 +132,18 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnHide = false;
         this.input.enabled = true;
         this.input.topOnly = false;
+
+        // Verificar si el sistema de avatares está inicializado
+        const avatarSystemReady = this.registry.get('avatarSystemReady');
+        if (!avatarSystemReady) {
+            //console.warn("⚠️ Sistema de avatares no está listo, inicializando en escena...");
+            this.initializeAvatarSystemFallback();
+        } else {
+            //console.log("✅ Sistema de avatares ya inicializado");
+        }
+
+        // Configurar listeners para eventos del sistema de avatares
+        this.setupAvatarSystemListeners();
 
         SceneRequestSockets.main(this);
         SceneResponseSockets.main(this);
@@ -174,7 +194,7 @@ export default class PrivateScene extends Phaser.Scene {
     handleSockets() {
         socket.on(ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY, (data) => {
             if (import.meta.env.VITE_APP_ENV === "local") {
-                console.log('Socket event received:', ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY);
+                //console.log('Socket event received:', ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY);
             }
             if (data.item) {
                 this.inventoryItemsList.push(data.item);
@@ -183,7 +203,7 @@ export default class PrivateScene extends Phaser.Scene {
         });
         socket.on(ResponseSocketsEnum.SCENE_REMOVE_ITEM, (data) => {
             if (import.meta.env.VITE_APP_ENV === "local") {
-                console.log('Socket event received:', ResponseSocketsEnum.SCENE_REMOVE_ITEM);
+                //console.log('Socket event received:', ResponseSocketsEnum.SCENE_REMOVE_ITEM);
             }
             const itemId = data.user_catalog_item_id;
             const itemToRemove = this.sceneItems.find(i => i.id === itemId);
@@ -207,7 +227,7 @@ export default class PrivateScene extends Phaser.Scene {
         });
         socket.on(ResponseSocketsEnum.SCENE_PUT_ITEM, (data) => {
             if (import.meta.env.VITE_APP_ENV === "local") {
-                console.log('Socket event received:', ResponseSocketsEnum.SCENE_PUT_ITEM);
+                //console.log('Socket event received:', ResponseSocketsEnum.SCENE_PUT_ITEM);
             }
             if (data.item) {
                 const existingItem = this.sceneItems.find(i => i.id === data.item.id);
@@ -267,7 +287,7 @@ export default class PrivateScene extends Phaser.Scene {
         });
         socket.on(ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY, (data) => {
             if (import.meta.env.VITE_APP_ENV === "local") {
-                console.log('Socket event received:', ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY);
+                //console.log('Socket event received:', ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY);
             }
             const itemId = data.user_catalog_item_id;
             const itemIndex = this.inventoryItemsList.findIndex(i => i.id === itemId);
@@ -278,7 +298,7 @@ export default class PrivateScene extends Phaser.Scene {
         });
         socket.on(ResponseSocketsEnum.ROTATE_OBJECT, (data) => {
             if (import.meta.env.VITE_APP_ENV === "local") {
-                console.log('Socket event received:', ResponseSocketsEnum.ROTATE_OBJECT);
+                //console.log('Socket event received:', ResponseSocketsEnum.ROTATE_OBJECT);
             }
             if (data.item) {
                 const existingItem = this.sceneItems.find(i => i.id === data.item.id);
@@ -371,13 +391,13 @@ export default class PrivateScene extends Phaser.Scene {
         switch (action) {
             case 'shop':
                 if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log('Botón de tienda pulsado');
+                    //console.log('Botón de tienda pulsado');
                 }
                 break;
 
             case 'avatars':
                 if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log('Botón de avatares pulsado');
+                    //console.log('Botón de avatares pulsado');
                 }
                 if (this.vueComponent && this.vueComponent.showAvatarSelection) {
                     this.vueComponent.showAvatarSelection();
@@ -386,7 +406,7 @@ export default class PrivateScene extends Phaser.Scene {
 
             case 'color':
                 if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log('Boton de colorear pulsado');
+                    //console.log('Boton de colorear pulsado');
                 }
                 break;
 
@@ -396,12 +416,12 @@ export default class PrivateScene extends Phaser.Scene {
 
             case 'inventory':
                 if (import.meta.env.VITE_APP_ENV === "local") {
-                    console.log('Botón de inventario pulsado', this.htmlInventory);
+                    //console.log('Botón de inventario pulsado', this.htmlInventory);
                 }
                 if (this.htmlInventory) {
                     this.htmlInventory.toggle();
                 } else {
-                    console.error('htmlInventory no está inicializado');
+                    //console.error('htmlInventory no está inicializado');
                 }
                 break;
         }

@@ -9,6 +9,7 @@ import MinigameSceneLoader from "./loaders/MinigameSceneLoader"; // Precargador 
 import CreateSceneController from "./controllers/scene/CreateSceneController"; // Controlador de creación de escena
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 import TintManager from "./managers/TintManager"; // Gestor de tintes
+import AvatarSystemController from "./controllers/AvatarSystemController.js"; // Sistema de avatares
 
 export default class MinigameScene extends Phaser.Scene {
     constructor() {
@@ -40,6 +41,15 @@ export default class MinigameScene extends Phaser.Scene {
         this.input.enabled = true;
         this.input.topOnly = false; // Permitir que objetos en capas más bajas reciban eventos
 
+        // Verificar si el sistema de avatares está inicializado (igual que en PublicScene)
+        const avatarSystemReady = this.registry.get('avatarSystemReady');
+        if (!avatarSystemReady) {
+            this.initializeAvatarSystemFallback();
+        }
+
+        // Configurar listeners para eventos del sistema de avatares
+        this.setupAvatarSystemListeners();
+
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
 
@@ -53,6 +63,40 @@ export default class MinigameScene extends Phaser.Scene {
         this.events.on('destroy', this.destroy, this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
+    }
+
+    /**
+     * Configura listeners para eventos del sistema de avatares
+     */
+    setupAvatarSystemListeners() {
+        // Cuando los avatares esenciales estén listos
+        this.events.on('avatarsEssentialReady', () => {
+            this.avatarsEssentialReady = true;
+        });
+
+        // Cuando todos los avatares estén cargados
+        this.events.on('allAvatarsReady', (stats) => {
+            this.allAvatarsReady = true;
+        });
+
+        // Progreso de carga individual
+        this.events.on('avatarLoaded', (data) => {
+            this.avatarLoadingProgress = data.loadedCount / data.totalCount;
+        });
+    }
+
+    /**
+     * Inicializa el sistema de avatares como fallback si no está listo
+     */
+    async initializeAvatarSystemFallback() {
+        try {
+            const ready = await AvatarSystemController.init(this);
+            if (ready) {
+                this.registry.set('avatarSystemReady', true);
+            }
+        } catch (error) {
+            // Silencioso: si falla, la escena seguirá funcionando sin caché persistente
+        }
     }
 
     shutdown() {

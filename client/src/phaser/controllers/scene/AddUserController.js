@@ -7,7 +7,7 @@ import socket from "@/sockets/socket.js"; // Conexión Socket.io
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
 import ShadowColorsEnum from "@/enums/ShadowColorsEnum.js";
 import NameColorsEnum from "@/enums/NameColorsEnum.js";
-import avatarManager from "../../managers/AvatarManager.js";
+import smartAvatarSystem from "../../managers/SmartAvatarSystem.js";
 import AvatarEnum from "@/enums/AvatarEnum.js";
 //import SceneUtils from "../../../utils/SceneUtils.js";
 //import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
@@ -68,24 +68,25 @@ class AddUserController {
         // engancha limpieza de nameTags al cerrar la escena
         setupNameTagCleanup(gameScene);
 
-        // Verificar si el avatar está cargado, si no, usar fallback y cargar en segundo plano
+        // Usar el nuevo sistema inteligente de avatares
         const requestedAvatarId = userData.avatar_id;
-        const avatarToUse = avatarManager.getAvatarToUse(requestedAvatarId);
+        const avatarSelection = smartAvatarSystem.getAvatarForUser(userData.id, requestedAvatarId);
 
-        // Si usamos fallback, añadir el avatar original a la cola de carga
-        if (avatarToUse !== requestedAvatarId) {
-            avatarManager.queueAvatarForBackgroundLoading(requestedAvatarId);
-        }
+        //console.log(`👤 Usuario ${userData.username}: solicitado=${requestedAvatarId}, usando=${avatarSelection.avatarId}, fallback=${avatarSelection.isFallback}`);
 
-        // Usar el avatar disponible (original o fallback)
-        const modifiedUserData = { ...userData, avatar_id: avatarToUse };
+        // Usar el avatar seleccionado (original o fallback)
+        const modifiedUserData = { ...userData, avatar_id: avatarSelection.avatarId };
 
-        const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
-        const user = new UserModel(userData, spriteAvatar, spriteShadow, containerUser);
+    const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
+    // Importante: pasar los datos modificados para que UserModel.avatarId sea el realmente usado (fallback si aplica)
+    const user = new UserModel(modifiedUserData, spriteAvatar, spriteShadow, containerUser);
 
-        // Guardar el avatar original solicitado para futuras actualizaciones
-        user.originalAvatarId = requestedAvatarId;
-        user.currentAvatarId = avatarToUse;
+        // Guardar información del avatar para futuras actualizaciones
+    user.originalAvatarId = requestedAvatarId;
+    user.currentAvatarId = avatarSelection.avatarId;
+    user.isFallbackAvatar = avatarSelection.isFallback;
+    // Mantener compatibilidad: muchas animaciones leen user.avatarId; asegúralo igual al usado
+    user.avatarId = avatarSelection.avatarId;
 
         MoveUserToTileController.main(gameScene, user);
 
@@ -97,13 +98,13 @@ class AddUserController {
             AnimationEditorController.create(gameScene, user.spriteAvatar, user);
         }
 
-        // Si estamos usando fallback, configurar listener para actualizar cuando se cargue el avatar real
-        if (avatarToUse !== requestedAvatarId) {
-            this.setupAvatarUpdateListener(gameScene, user, requestedAvatarId);
+        // Si estamos usando fallback, configurar listener para actualización automática
+        if (avatarSelection.isFallback) {
+            this.setupSmartAvatarUpdateListener(gameScene, user);
         }
 
         // UserChatAnimation.main(user, "leftup_talk");
-        // UserEmojiAnimation.main(user, 8);
+        // UserEmojiAnimation.main(user, 8");
     }
 
     static createContainerUser(gameScene, userData) {
@@ -467,6 +468,101 @@ class AddUserController {
             case AvatarEnum.YAYO: return "yayo";
             case AvatarEnum.ZOMBIE: return "zombie";
             default: return "unknown";
+        }
+    }
+
+    /**
+     * Configura listener inteligente para actualización automática de avatar
+     */
+    static setupSmartAvatarUpdateListener(gameScene, user) {
+        // Escuchar cuando el avatar original esté listo
+        const onAvatarReady = (data) => {
+            if (data.userId === user.username && data.avatarId === user.originalAvatarId) {
+                //console.log(`🔄 Actualizando avatar de ${user.username} de ${data.previousId} a ${data.avatarId}`);
+                
+                // Actualizar el avatar del usuario
+                this.updateUserAvatarSmart(gameScene, user, data.avatarId);
+                
+                // Actualizar información en el sistema
+                smartAvatarSystem.updateUserAvatar(user.username, data.avatarId);
+                
+                // Marcar como no-fallback
+                user.isFallbackAvatar = false;
+                user.currentAvatarId = data.avatarId;
+            }
+        };
+        
+        // Registrar listener
+        smartAvatarSystem.on('userAvatarReady', onAvatarReady);
+        
+        // Limpiar listener cuando el usuario se desconecte
+        if (user.cleanupCallbacks) {
+            user.cleanupCallbacks.push(() => {
+                smartAvatarSystem.off('userAvatarReady', onAvatarReady);
+            });
+        } else {
+            user.cleanupCallbacks = [() => {
+                smartAvatarSystem.off('userAvatarReady', onAvatarReady);
+            }];
+        }
+    }
+
+    /**
+     * Actualiza el avatar de un usuario usando el sistema inteligente
+     */
+    static updateUserAvatarSmart(gameScene, user, newAvatarId) {
+        try {
+            // Verificar que el avatar esté disponible en el sistema
+            if (!smartAvatarSystem.isAvatarAvailable(newAvatarId)) {
+                //console.warn(`⚠️ Avatar ${newAvatarId} no está disponible para ${user.username}`);
+                return;
+            }
+
+            // Guardar posición y propiedades actuales
+            const currentX = user.spriteAvatar.x;
+            const currentY = user.spriteAvatar.y;
+            const currentDepth = user.spriteAvatar.depth;
+            const currentZ = user.spriteAvatar._z;
+
+            // Obtener el atlas key correcto para el nuevo avatar
+            const avatarName = this.avatarName(newAvatarId);
+            const atlasKey = `${avatarName}_atlas`;
+
+            // Verificar que el atlas existe en Phaser
+            if (!gameScene.textures.exists(atlasKey)) {
+                //console.error(`❌ Atlas no encontrado en Phaser para avatar ${newAvatarId}: ${atlasKey}`);
+                return;
+            }
+
+            // Crear nuevo sprite de avatar con el atlas correcto
+            const newSpriteAvatar = gameScene.add.sprite(currentX, currentY, atlasKey);
+            newSpriteAvatar._avatarId = newAvatarId;
+            newSpriteAvatar._z = currentZ;
+            newSpriteAvatar.setDepth(currentDepth);
+
+            // Aplicar animación idle
+            UserIdleAnimation.main(newSpriteAvatar, currentZ, newAvatarId);
+
+            // Aplicar tints si los había - con verificación de pipeline
+            this.safeApplyTint(gameScene, newSpriteAvatar, user.uppercut_selected);
+
+            // Reemplazar en el contenedor
+            const containerIndex = user.containerUser.list.indexOf(user.spriteAvatar);
+            if (containerIndex !== -1) {
+                user.containerUser.removeAt(containerIndex);
+                user.containerUser.addAt(newSpriteAvatar, containerIndex);
+            }
+
+            // Destruir sprite anterior
+            user.spriteAvatar.destroy();
+
+            // Actualizar referencias
+            user.spriteAvatar = newSpriteAvatar;
+            user.currentAvatarId = newAvatarId;
+
+            //console.log(`✅ Avatar actualizado exitosamente para ${user.username} a ${newAvatarId}`);
+        } catch (error) {
+            //console.error(`❌ Error actualizando avatar para ${user.username}:`, error);
         }
     }
 }

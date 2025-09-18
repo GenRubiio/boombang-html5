@@ -94,15 +94,22 @@ class CacheManager {
 
             const transaction = this.db.transaction([type], 'readwrite');
             const store = transaction.objectStore(type);
-            
+
+            // Ajustar tamaño si ya existe
+            const existing = await new Promise((resolve) => {
+                const getReq = store.get(key);
+                getReq.onsuccess = () => resolve(getReq.result || null);
+                getReq.onerror = () => resolve(null);
+            });
+
             await new Promise((resolve, reject) => {
                 const request = store.put(assetRecord);
-                request.onsuccess = () => {
-                    this.currentCacheSize += blobData.size;
-                    resolve();
-                };
+                request.onsuccess = () => resolve();
                 request.onerror = () => reject(request.error);
             });
+
+            const prevSize = existing?.size || 0;
+            this.currentCacheSize += (blobData.size - prevSize);
 
             return true;
 
@@ -252,6 +259,10 @@ class CacheManager {
         this.currentCacheSize = 0;
         
         for (const storeName of Object.values(this.stores)) {
+            if (storeName === this.stores.METADATA) {
+                // Los metadatos (alias) no cuentan para tamaño y pueden ser muchos
+                continue;
+            }
             try {
                 const transaction = this.db.transaction([storeName], 'readonly');
                 const store = transaction.objectStore(storeName);
@@ -286,6 +297,7 @@ class CacheManager {
         const allAssets = [];
         
         for (const storeName of Object.values(this.stores)) {
+            if (storeName === this.stores.METADATA) continue; // no evictar alias primero
             try {
                 const transaction = this.db.transaction([storeName], 'readonly');
                 const store = transaction.objectStore(storeName);
@@ -372,6 +384,52 @@ class CacheManager {
 
         } catch (error) {
         }
+    }
+
+    /**
+     * Elimina todos los assets cuyo key comience con un prefijo dado
+     */
+    async removeByPrefix(prefix, type = this.stores.ATLAS) {
+        if (!this.db) return 0;
+
+        let removed = 0;
+        try {
+            const transaction = this.db.transaction([type], 'readwrite');
+            const store = transaction.objectStore(type);
+            const request = store.openCursor();
+
+            await new Promise((resolve) => {
+                request.onsuccess = async (event) => {
+                    const cursor = event.target.result;
+                    if (cursor) {
+                        const key = cursor.key;
+                        if (typeof key === 'string' && key.startsWith(prefix)) {
+                            const size = cursor.value?.size || 0;
+                            try {
+                                await new Promise((res, rej) => {
+                                    const delReq = store.delete(key);
+                                    delReq.onsuccess = () => res();
+                                    delReq.onerror = () => rej(delReq.error);
+                                });
+                                this.currentCacheSize -= size;
+                                removed++;
+                            } catch (_) { /* noop */ }
+                            cursor.continue();
+                        } else {
+                            cursor.continue();
+                        }
+                    } else {
+                        resolve();
+                    }
+                };
+                request.onerror = () => resolve();
+            });
+
+        } catch (error) {
+            // noop
+        }
+
+        return removed;
     }
 
     /**
@@ -505,9 +563,8 @@ class CacheManager {
             try {
                 const asset = await this.getAsset(key, storeName);
                 if (asset && asset.data) {
-                    // Crear blob URL y mantenerlo en memoria
-                    const blob = new Blob([asset.data], { type: asset.mimeType || 'application/octet-stream' });
-                    const url = URL.createObjectURL(blob);
+                    // Crear blob URL directamente del Blob almacenado
+                    const url = URL.createObjectURL(asset.data);
                     
                     // Guardar en cache temporal de URLs
                     if (!this.blobURLCache) {
@@ -581,6 +638,96 @@ class CacheManager {
             } catch (error) {
                 // Error pre-cargando avatar
             }
+        }
+    }
+
+    // Alias: registros sin blob que apuntan a otra clave canónica para evitar duplicación de datos
+    async setAlias(aliasKey, targetKey, storeName = this.stores.ATLAS) {
+        if (!this.db) return false;
+        try {
+            const metaKey = `alias|${storeName}|${aliasKey}`;
+            const record = {
+                key: metaKey,
+                targetKey,
+                targetStore: storeName,
+                timestamp: Date.now(),
+                size: 0,
+                version: this.assetVersion,
+                type: 'alias'
+            };
+            const tx = this.db.transaction([this.stores.METADATA], 'readwrite');
+            const store = tx.objectStore(this.stores.METADATA);
+            await new Promise((resolve, reject) => {
+                const req = store.put(record);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+
+    async getAliasTarget(aliasKey, storeName = this.stores.ATLAS) {
+        if (!this.db) return null;
+        try {
+            const metaKey = `alias|${storeName}|${aliasKey}`;
+            const tx = this.db.transaction([this.stores.METADATA], 'readonly');
+            const store = tx.objectStore(this.stores.METADATA);
+            const rec = await new Promise((resolve, reject) => {
+                const req = store.get(metaKey);
+                req.onsuccess = () => resolve(req.result || null);
+                req.onerror = () => reject(req.error);
+            });
+            if (rec && rec.targetKey) {
+                return { key: rec.targetKey, store: rec.targetStore || storeName };
+            }
+        } catch (_) {}
+        return null;
+    }
+
+    // Sobrescribir getAsset para resolver alias antes de leer datos
+    async getAsset(key, type = this.stores.ATLAS) {
+        if (!this.db) {
+            return null;
+        }
+
+        try {
+            // Resolver alias si existe
+            const alias = await this.getAliasTarget(key, type);
+            let lookupKey = key;
+            let lookupStore = type;
+            if (alias) {
+                lookupKey = alias.key;
+                lookupStore = alias.store;
+            }
+
+            const transaction = this.db.transaction([lookupStore], 'readonly');
+            const store = transaction.objectStore(lookupStore);
+            
+            const result = await new Promise((resolve, reject) => {
+                const request = store.get(lookupKey);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+
+            if (result) {
+                // Verificar versión
+                if (result.version !== this.assetVersion) {
+                    await this.removeAsset(lookupKey, lookupStore);
+                    return null;
+                }
+
+                // Actualizar timestamp para LRU
+                await this.updateAccessTime(lookupKey, lookupStore);
+            
+                return result;
+            }
+
+            return null;
+
+        } catch (error) {
+            return null;
         }
     }
 
