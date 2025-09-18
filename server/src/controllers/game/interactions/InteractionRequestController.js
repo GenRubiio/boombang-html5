@@ -133,8 +133,8 @@ class InteractionRequestController {
                 user.currentArea.emit(ResponseSocketsEnum.USERS_INTERACTION, {
                     receiverUser: user.socket.id,
                     senderUser: fromUser.socket.id,
-                    senderDirection: (deltaX === -1 && deltaY === 1) ? 'right' : 'left',
-                    receiverDirection: (deltaX === -1 && deltaY === 1) ? 'left' : 'right',
+                    senderDirection: (deltaX === -1 && deltaY === 1) ? 'left' : 'right',
+                    receiverDirection: (deltaX === -1 && deltaY === 1) ? 'right' : 'left',
                     interactionType: interactionType
                 });
 
