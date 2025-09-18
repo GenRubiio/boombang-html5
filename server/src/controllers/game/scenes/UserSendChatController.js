@@ -5,6 +5,7 @@ const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 const DirectionEnum = require('../../../enums/DirectionEnum');
 const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
+const UserForcedJoinSceneController = require('./UserForcedJoinSceneController');
 
 class UserSendChatController {
     static async main(socket, io, data) {
@@ -85,8 +86,9 @@ class UserSendChatController {
                         }
                     );
                     return true;
-                case 'say':
-                    // Handle say command
+                case 'join':
+                    const sceneType = data.message.split(' ')[1];
+                    UserForcedJoinSceneController.main(user, sceneType);
                     return true;
             }
             return true;
