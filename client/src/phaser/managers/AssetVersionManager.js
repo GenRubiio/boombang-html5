@@ -62,7 +62,7 @@ class AssetVersionManager {
             const forceUpdate = localStorage.getItem(this.forceUpdateKey);
             
             if (forceUpdate === 'true') {
-                console.log('🔄 Actualizacion forzada detectada, limpiando cache...');
+                //console.log('🔄 Actualizacion forzada detectada, limpiando cache...');
                 this.handleForceUpdate();
                 return;
             }
@@ -70,7 +70,7 @@ class AssetVersionManager {
             if (!storedVersions) {
                 // Primera vez - guardar versiones actuales
                 this.saveCurrentVersions();
-                console.log('📝 Versiones de assets inicializadas');
+                //console.log('📝 Versiones de assets inicializadas');
                 return;
             }
 
@@ -78,7 +78,7 @@ class AssetVersionManager {
             const updatedAvatars = this.compareVersions(stored);
             
             if (updatedAvatars.length > 0) {
-                console.log(`🔄 Avatares actualizados detectados: ${updatedAvatars.join(', ')}`);
+                //console.log(`🔄 Avatares actualizados detectados: ${updatedAvatars.join(', ')}`);
                 this.handleAvatarUpdates(updatedAvatars);
             }
 
@@ -86,7 +86,7 @@ class AssetVersionManager {
             this.saveCurrentVersions();
 
         } catch (error) {
-            console.warn('⚠️ Error verificando actualizaciones de assets:', error);
+            //console.warn('⚠️ Error verificando actualizaciones de assets:', error);
             // En caso de error, limpiar y comenzar de nuevo
             this.clearVersionData();
             this.saveCurrentVersions();
@@ -101,7 +101,7 @@ class AssetVersionManager {
 
         // Verificar si la versión base cambió
         if (storedVersions.base !== this.avatarVersions.base) {
-            console.log(`🔄 Versión base actualizada: ${storedVersions.base} → ${this.avatarVersions.base}`);
+            //console.log(`🔄 Versión base actualizada: ${storedVersions.base} → ${this.avatarVersions.base}`);
             // Si la base cambió, todos los avatares necesitan actualización
             return Object.keys(this.avatarVersions.avatars).map(id => parseInt(id));
         }
@@ -111,7 +111,7 @@ class AssetVersionManager {
             const storedVersion = storedVersions.avatars?.[avatarId];
             
             if (!storedVersion || storedVersion !== currentVersion) {
-                console.log(`🔄 Avatar ${avatarId} actualizado: ${storedVersion || 'nuevo'} → ${currentVersion}`);
+                //console.log(`🔄 Avatar ${avatarId} actualizado: ${storedVersion || 'nuevo'} → ${currentVersion}`);
                 updatedAvatars.push(parseInt(avatarId));
             }
         }
@@ -133,7 +133,7 @@ class AssetVersionManager {
             this.clearVersionData();
             this.saveCurrentVersions();
             
-            console.log('✅ Actualización forzada completada');
+            //console.log('✅ Actualización forzada completada');
             
             // Recargar la página para asegurar estado limpio
             setTimeout(() => {
@@ -141,7 +141,7 @@ class AssetVersionManager {
             }, 1000);
 
         } catch (error) {
-            console.error('❌ Error en actualización forzada:', error);
+            //console.error('❌ Error en actualización forzada:', error);
         }
     }
 
@@ -158,10 +158,10 @@ class AssetVersionManager {
                 await this.clearAvatarCache(cacheManager, avatarManager, avatarId);
             }
 
-            console.log(`✅ Cache actualizado para ${updatedAvatarIds.length} avatares`);
+            //console.log(`✅ Cache actualizado para ${updatedAvatarIds.length} avatares`);
 
         } catch (error) {
-            console.error('❌ Error actualizando cache de avatares:', error);
+            //console.error('❌ Error actualizando cache de avatares:', error);
         }
     }
 
@@ -181,10 +181,10 @@ class AssetVersionManager {
             // Remover de avatares cargados si está presente
             avatarManager.loadedAvatars.delete(avatarId);
             
-            console.log(`🗑️ Cache limpiado para avatar ${avatarId} (${avatarName})`);
+            //console.log(`🗑️ Cache limpiado para avatar ${avatarId} (${avatarName})`);
 
         } catch (error) {
-            console.warn(`⚠️ Error limpiando cache del avatar ${avatarId}:`, error);
+            //console.warn(`⚠️ Error limpiando cache del avatar ${avatarId}:`, error);
         }
     }
 
@@ -201,7 +201,7 @@ class AssetVersionManager {
             
             localStorage.setItem(this.versionKey, JSON.stringify(versionData));
         } catch (error) {
-            console.warn('⚠️ Error guardando versiones:', error);
+            //console.warn('⚠️ Error guardando versiones:', error);
         }
     }
 
@@ -212,7 +212,7 @@ class AssetVersionManager {
         try {
             localStorage.removeItem(this.versionKey);
         } catch (error) {
-            console.warn('⚠️ Error limpiando datos de versiones:', error);
+            //console.warn('⚠️ Error limpiando datos de versiones:', error);
         }
     }
 
@@ -222,9 +222,9 @@ class AssetVersionManager {
     forceUpdate() {
         try {
             localStorage.setItem(this.forceUpdateKey, 'true');
-            console.log('🔄 Actualización forzada programada para próximo reinicio');
+            //console.log('🔄 Actualización forzada programada para próximo reinicio');
         } catch (error) {
-            console.warn('⚠️ Error programando actualización forzada:', error);
+            //console.warn('⚠️ Error programando actualización forzada:', error);
         }
     }
 
@@ -238,7 +238,7 @@ class AssetVersionManager {
             versionParts[2] = (parseInt(versionParts[2]) + 1).toString();
             this.avatarVersions.avatars[avatarId] = versionParts.join('.');
             
-            console.log(`📝 Versión del avatar ${avatarId} incrementada a ${this.avatarVersions.avatars[avatarId]}`);
+            //console.log(`📝 Versión del avatar ${avatarId} incrementada a ${this.avatarVersions.avatars[avatarId]}`);
             this.saveCurrentVersions();
         }
     }
@@ -252,7 +252,7 @@ class AssetVersionManager {
         versionParts[2] = '0'; // Reset patch version
         this.avatarVersions.base = versionParts.join('.');
         
-        console.log(`📝 Versión base incrementada a ${this.avatarVersions.base}`);
+        //console.log(`📝 Versión base incrementada a ${this.avatarVersions.base}`);
         this.saveCurrentVersions();
     }
 

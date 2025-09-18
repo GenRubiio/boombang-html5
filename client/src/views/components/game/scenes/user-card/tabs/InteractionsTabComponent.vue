@@ -640,12 +640,21 @@ export default {
 .pending-container.admin .spinner {
   border-top: 3px solid #f59200;
 }
+.pending-container.admin .pending-right {
+  background-color: #f59200;
+}
 
 .pending-container.vip .spinner {
   border-top: 3px solid #420143;
 }
+.pending-container.vip .pending-right {
+  background-color: #420143;
+}
 
 .pending-container.beta .spinner {
   border-top: 3px solid #08d1d1;
+}
+.pending-container.beta .pending-right {
+  background-color: #08d1d1;
 }
 </style>

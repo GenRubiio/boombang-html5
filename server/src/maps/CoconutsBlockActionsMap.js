@@ -62,6 +62,9 @@ class CoconutsBlockActionsMap {
                 AnimationEnum.AVATAR_LEFTUP_TALK,
                 AnimationEnum.AVATAR_RIGHTUP_TALK,
                 AnimationEnum.UPDATE_AVATAR,
+                AnimationEnum.INTERACTION_KISS,
+                AnimationEnum.INTERACTION_DRINK,
+                AnimationEnum.INTERACTION_ROSE,
             ],
             time: time
         };

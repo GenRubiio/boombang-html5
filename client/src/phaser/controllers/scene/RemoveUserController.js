@@ -6,7 +6,7 @@ class RemoveUserController {
         if (!user) return;
 
         // Remove any interaction notifications for this user
-        InteractionNotificationController.remove(gameScene, socketId);
+        InteractionNotificationController.remove(socketId);
 
         // Detener y eliminar tweens activos
         if (user.currentTween) user.currentTween.stop();
