@@ -191,6 +191,40 @@ export default class PrivateScene extends Phaser.Scene {
         PrivateSceneUpdateColorsService.main(this);
     }
 
+    /**
+     * Configura listeners para eventos del sistema de avatares (igual que en PublicScene)
+     */
+    setupAvatarSystemListeners() {
+        // Cuando los avatares esenciales estén listos
+        this.events.on('avatarsEssentialReady', () => {
+            this.avatarsEssentialReady = true;
+        });
+
+        // Cuando todos los avatares estén cargados
+        this.events.on('allAvatarsReady', (stats) => {
+            this.allAvatarsReady = true;
+        });
+
+        // Progreso de carga individual
+        this.events.on('avatarLoaded', (data) => {
+            this.avatarLoadingProgress = data.loadedCount / data.totalCount;
+        });
+    }
+
+    /**
+     * Inicializa el sistema de avatares como fallback si no está listo (igual que en PublicScene)
+     */
+    async initializeAvatarSystemFallback() {
+        try {
+            const avatarSystemReady = await AvatarSystemController.init(this);
+            if (avatarSystemReady) {
+                this.registry.set('avatarSystemReady', true);
+            }
+        } catch (error) {
+            // Silenciar: la escena continuará sin cache persistente si falla
+        }
+    }
+
     handleSockets() {
         socket.on(ResponseSocketsEnum.ADD_ITEM_TO_INVENTORY, (data) => {
             if (import.meta.env.VITE_APP_ENV === "local") {
