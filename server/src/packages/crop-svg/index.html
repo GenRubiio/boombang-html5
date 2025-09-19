@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recortar SVG y descargar</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            /* slate-900 */
+            --panel: #111827;
+            /* gray-900 */
+            --text: #f8fafc;
+            /* slate-50 */
+            --muted: #94a3b8;
+            /* slate-400 */
+            --brand: #22c55e;
+            /* green-500 */
+            --brand-2: #06b6d4;
+            /* cyan-500 */
+            --accent: #3b82f6;
+            /* blue-500 */
+            --danger: #ef4444;
+            /* red-500 */
+            --ring: #60a5fa55;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: radial-gradient(1200px 600px at 70% -10%, #0b1024, #0a0f22 40%, #060a17 60%, #05070f 100%);
+            color: var(--text);
+        }
+
+        header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: clamp(18px, 3vw, 22px);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        header .badge {
+            font-size: 12px;
+            color: #cbd5e1;
+            background: #0b1229;
+            border: 1px solid #132146;
+            padding: 4px 8px;
+            border-radius: 999px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 18px;
+            padding: 0 20px 24px;
+        }
+
+        @media (max-width: 960px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: linear-gradient(180deg, #0c132a, #0b1226);
+            border: 1px solid #172554;
+            border-radius: 16px;
+            box-shadow: 0 0 0 1px #0b1532 inset, 0 10px 30px #0006;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            padding: 16px;
+            position: relative;
+        }
+
+        .sidebar .group {
+            border: 1px solid #1e293b;
+            background: #0b1226;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .sidebar h3 {
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: #cbd5e1;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .sidebar .row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .sidebar input[type="file"] {
+            width: 100%;
+        }
+
+        .sidebar textarea {
+            width: 100%;
+            height: 120px;
+            resize: vertical;
+            border-radius: 10px;
+            border: 1px solid #1e293b;
+            background: #0a0f1f;
+            color: var(--text);
+            padding: 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+        }
+
+        .sidebar button,
+        .toolbar button {
+            appearance: none;
+            border: 1px solid #19407a;
+            background: linear-gradient(180deg, #0d1b36, #0b1730);
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .15s ease;
+            font-weight: 600;
+        }
+
+        .sidebar button:hover,
+        .toolbar button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px #0006, 0 0 0 4px var(--ring);
+        }
+
+        .sidebar .btn-primary {
+            border-color: #14532d;
+            background: linear-gradient(180deg, #0f2b1c, #0b2015);
+            color: #dcfce7;
+        }
+
+        .sidebar .btn-danger {
+            border-color: #5d1b1b;
+            background: linear-gradient(180deg, #2e0f12, #240b0d);
+            color: #fee2e2;
+        }
+
+        /* Stage */
+        .stageWrap {
+            position: relative;
+            padding: 14px;
+        }
+
+        .stageToolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar .pill {
+            padding: 6px 10px;
+            font-size: 12px;
+            border-radius: 999px;
+            border: 1px solid #244074;
+            color: #cbd5e1;
+            background: #0b1226;
+        }
+
+        #stage {
+            position: relative;
+            overflow: auto;
+            background: repeating-conic-gradient(from 45deg, #0b1120 0 10px, #0a1020 10px 20px);
+            min-height: 420px;
+            border-radius: 0 0 16px 16px;
+            border-top: 1px solid #0b1532;
+        }
+
+        #stageInner {
+            position: relative;
+            display: inline-block;
+            margin: 16px;
+        }
+
+        /* Canvas contenedor para escalar SVG + overlay juntos */
+        #canvas {
+            position: relative;
+            display: inline-block;
+            transform-origin: top left;
+        }
+
+        #loadedSvg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Selection overlay */
+        #overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: auto;
+        }
+
+        .selection {
+            position: absolute;
+            border: 1px dashed #93c5fd;
+            background: #60a5fa22;
+            box-shadow: 0 0 0 1px #93c5fd inset;
+            border-radius: 4px;
+        }
+
+        /* Handles en bordes y esquinas */
+        .handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #3b82f6;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .handle.nw {
+            top: -5px;
+            left: -5px;
+            cursor: nwse-resize;
+        }
+
+        .handle.ne {
+            top: -5px;
+            right: -5px;
+            cursor: nesw-resize;
+        }
+
+        .handle.sw {
+            bottom: -5px;
+            left: -5px;
+            cursor: nesw-resize;
+        }
+
+        .handle.se {
+            bottom: -5px;
+            right: -5px;
+            cursor: nwse-resize;
+        }
+
+        .handle.n {
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ns-resize;
+        }
+
+        .handle.s {
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ns-resize;
+        }
+
+        .handle.w {
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: ew-resize;
+        }
+
+        .handle.e {
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: ew-resize;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .note {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .kbd {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 12px;
+            border: 1px solid #334155;
+            background: #0b1226;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>✂️ Recortar SVG y descargar</h1>
+        <span class="badge">Arrastra un .svg, pega código o usa el selector</span>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="panel sidebar">
+            <div class="group">
+                <h3>1) Cargar SVG</h3>
+                <div class="row"><input id="fileInput" type="file" accept="image/svg+xml,.svg" /></div>
+                <div class="row actions">
+                    <button id="btnPaste">Pegar desde portapapeles</button>
+                    <button id="btnClear" class="btn-danger">Limpiar</button>
+                </div>
+                <p class="note">También puedes <span class="kbd">arrastrar y soltar</span> un archivo dentro del área
+                    derecha.</p>
+            </div>
+
+            <div class="group">
+                <h3>2) O pega el código SVG</h3>
+                <textarea id="svgText" placeholder="&lt;svg ...&gt;...&lt;/svg&gt;"></textarea>
+                <div class="row actions">
+                    <button id="btnLoadText" class="btn-primary">Cargar código</button>
+                </div>
+            </div>
+
+            <div class="group">
+                <h3>3) Exportar</h3>
+                <div class="row actions">
+                    <button id="btnDownload" class="btn-primary">Descargar recorte .svg</button>
+                    <button id="btnCopy">Copiar recorte</button>
+                </div>
+        <p class="note">Arrastra para crear la selección. Doble clic para descargar. Arrastra dentro de la selección para moverla. Con los **puntos** redimensionas. Pulsa <span class="kbd">Esc</span> para borrar la selección. Zoom con <span class="kbd">+</span>/<span class="kbd">−</span> o <span class="kbd">Ctrl</span> + rueda.</p>
+            </div>
+        </aside>
+
+        <!-- Stage -->
+        <section class="panel stageWrap">
+            <div class="stageToolbar">
+                <div class="toolbar">
+                    <button id="btnFit">Ajustar a ancho</button>
+                    <button id="btnResetZoom">100%</button>
+                    <button id="btnZoomOut">−</button>
+                    <button id="btnZoomIn">+</button>
+                    <button id="btnToggleGrid">Toggle grid</button>
+                </div>
+                <div class="toolbar">
+                    <span class="pill" id="infoSize">–</span>
+                    <span class="pill" id="infoSel">Selección: –</span>
+                </div>
+            </div>
+
+            <div id="stage">
+                <div id="stageInner">
+                    <!-- SVG cargado se inserta aquí -->
+                    <div id="dropHint" class="note" style="position:absolute; inset: 16px auto auto 16px;">Suelta aquí
+                        tu archivo .svg…</div>
+                    <div id="overlay"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const svgText = document.getElementById('svgText');
+        const btnLoadText = document.getElementById('btnLoadText');
+        const btnDownload = document.getElementById('btnDownload');
+        const btnCopy = document.getElementById('btnCopy');
+        const btnClear = document.getElementById('btnClear');
+        const btnPaste = document.getElementById('btnPaste');
+        const btnFit = document.getElementById('btnFit');
+    const btnResetZoom = document.getElementById('btnResetZoom');
+    const btnZoomIn = document.getElementById('btnZoomIn');
+    const btnZoomOut = document.getElementById('btnZoomOut');
+        const btnToggleGrid = document.getElementById('btnToggleGrid');
+
+        const stage = document.getElementById('stage');
+        const stageInner = document.getElementById('stageInner');
+    const overlay = document.getElementById('overlay');
+    let canvasEl = null; // wrapper que se escala
+        const infoSize = document.getElementById('infoSize');
+        const infoSel = document.getElementById('infoSel');
+        const dropHint = document.getElementById('dropHint');
+
+        let loadedSvgEl = null;  // <svg> mostrado
+        let originalSvgEl = null; // copia de trabajo
+        let viewBox = null; // {minX,minY,width,height}
+    let scaleX = 1, scaleY = 1; // relación pantalla→SVG
+    let zoom = 1; // escala visual
+
+        // Selección
+        let sel = { x: 0, y: 0, w: 0, h: 0 };
+        let selecting = false;
+        let moving = false;
+        let startPt = { x: 0, y: 0 };
+        let selectionEl = null;
+
+        function parseSvgString(text) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'image/svg+xml');
+            const svg = doc.querySelector('svg');
+            if (!svg) throw new Error('No se encontró <svg> en el contenido.');
+            return svg;
+        }
+
+        function ensureViewBox(svg) {
+            let vb = svg.getAttribute('viewBox');
+            if (vb) {
+                const [minX, minY, w, h] = vb.split(/\s+/).map(Number);
+                return { minX, minY, width: w, height: h };
+            }
+            const wAttr = svg.getAttribute('width');
+            const hAttr = svg.getAttribute('height');
+            let w = wAttr ? parseFloat(wAttr) : null;
+            let h = hAttr ? parseFloat(hAttr) : null;
+            if (w && h) {
+                svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+                return { minX: 0, minY: 0, width: w, height: h };
+            }
+            const temp = svg.cloneNode(true);
+            temp.style.position = 'absolute'; temp.style.opacity = '0'; temp.style.pointerEvents = 'none';
+            document.body.appendChild(temp);
+            try {
+                const bb = temp.getBBox();
+                const vb2 = { minX: bb.x, minY: bb.y, width: bb.width, height: bb.height };
+                svg.setAttribute('viewBox', `${vb2.minX} ${vb2.minY} ${vb2.width} ${vb2.height}`);
+                document.body.removeChild(temp);
+                return vb2;
+            } catch (e) {
+                document.body.removeChild(temp);
+                throw new Error('No se pudo determinar el viewBox del SVG.');
+            }
+        }
+
+        function showSvg(svg) {
+            // Limpiar
+            stageInner.querySelector('#canvas')?.remove();
+            overlay.innerHTML = '';
+            selectionEl = null; sel = { x: 0, y: 0, w: 0, h: 0 };
+
+            loadedSvgEl = svg.cloneNode(true);
+            loadedSvgEl.id = 'loadedSvg';
+            loadedSvgEl.removeAttribute('width');
+            loadedSvgEl.removeAttribute('height');
+            loadedSvgEl.style.display = 'block';
+            loadedSvgEl.style.maxWidth = 'none';
+
+            // Crear canvas para escalar SVG + overlay juntos
+            canvasEl = document.createElement('div');
+            canvasEl.id = 'canvas';
+            stageInner.appendChild(canvasEl);
+            canvasEl.appendChild(loadedSvgEl);
+            canvasEl.appendChild(overlay);
+            dropHint.classList.add('hidden');
+
+            originalSvgEl = svg.cloneNode(true);
+            viewBox = ensureViewBox(originalSvgEl);
+            // Fijar tamaño base del SVG en px = unidades del viewBox
+            loadedSvgEl.style.width = viewBox.width + 'px';
+            loadedSvgEl.style.height = viewBox.height + 'px';
+            // Reset de zoom y aplicar
+            zoom = 1;
+            applyZoom();
+            updateScale();
+            infoSize.textContent = `viewBox: ${viewBox.width.toFixed(2)} × ${viewBox.height.toFixed(2)}`;
+        }
+
+        function updateScale() {
+            if (!loadedSvgEl) return;
+            const rect = loadedSvgEl.getBoundingClientRect();
+            const vb = originalSvgEl.getAttribute('viewBox').split(/\s+/).map(Number);
+            const w = vb[2], h = vb[3];
+            scaleX = w / rect.width;
+            scaleY = h / rect.height;
+        }
+
+        function applyZoom(newZoom) {
+            if (!canvasEl || !viewBox) return;
+            if (typeof newZoom === 'number') zoom = Math.max(0.1, Math.min(newZoom, 50));
+            canvasEl.style.transform = `scale(${zoom})`;
+            updateScale();
+        }
+
+        // Selección UI
+        // Helpers para detección de puntos
+        function pointInSel(px, py) {
+            if (!selectionEl) return false;
+            return px >= sel.x && px <= (sel.x + sel.w) && py >= sel.y && py <= (sel.y + sel.h);
+        }
+
+        function pointInImage(px, py) {
+            if (!viewBox) return false;
+            // px,py en coords del canvas (no escaladas)
+            return px >= 0 && px <= viewBox.width && py >= 0 && py <= viewBox.height;
+        }
+
+        function beginSelection(ev) {
+            if (!loadedSvgEl || !canvasEl) return;
+            
+            // Coordenadas relativas al canvas sin zoom
+            const base = canvasEl.getBoundingClientRect();
+            const rawX = ev.clientX - base.left;
+            const rawY = ev.clientY - base.top;
+            
+            // Convertir a coordenadas del SVG (sin zoom)
+            startPt.x = rawX / zoom;
+            startPt.y = rawY / zoom;
+
+            const insideSel = pointInSel(startPt.x, startPt.y);
+            const insideImg = pointInImage(startPt.x, startPt.y);
+
+            // Si ya hay selección: permitir mover con cualquier click dentro
+            if (selectionEl) {
+                if (insideSel) {
+                    // Mover la selección existente
+                    selecting = true; 
+                    moving = true;
+                    startPt.offX = startPt.x - sel.x;
+                    startPt.offY = startPt.y - sel.y;
+                    return;
+                }
+                // Click fuera de la selección: crear nueva selección si está dentro de la imagen
+                if (insideImg) {
+                    overlay.innerHTML = ''; // Limpiar selección anterior
+                    selectionEl = null;
+                } else {
+                    return; // Click fuera de la imagen, no hacer nada
+                }
+            }
+
+            // Crear nueva selección solo si se clickea dentro de la imagen
+            if (!insideImg) return;
+            
+            selecting = true; 
+            moving = false;
+            selectionEl = document.createElement('div');
+            selectionEl.className = 'selection';
+            overlay.appendChild(selectionEl);
+            sel.x = startPt.x; 
+            sel.y = startPt.y; 
+            sel.w = 0; 
+            sel.h = 0;
+            placeSelection();
+        }
+
+        function moveSelection(ev) {
+            if (!selecting || !loadedSvgEl || !canvasEl) return;
+            
+            // Coordenadas relativas al canvas sin zoom
+            const base = canvasEl.getBoundingClientRect();
+            const rawX = ev.clientX - base.left;
+            const rawY = ev.clientY - base.top;
+            
+            // Convertir a coordenadas del SVG (sin zoom)
+            const curX = rawX / zoom;
+            const curY = rawY / zoom;
+
+            if (moving) {
+                // Mover la selección existente
+                sel.x = curX - startPt.offX;
+                sel.y = curY - startPt.offY;
+            } else {
+                // Crear/redimensionar nueva selección
+                const minX = Math.min(startPt.x, curX);
+                const minY = Math.min(startPt.y, curY);
+                const maxX = Math.max(startPt.x, curX);
+                const maxY = Math.max(startPt.y, curY);
+                
+                sel.x = minX;
+                sel.y = minY;
+                sel.w = maxX - minX;
+                sel.h = maxY - minY;
+            }
+            
+            clampToImage();
+            placeSelection();
+        }
+
+        function endSelection() {
+            selecting = false; moving = false;
+        }
+
+        function clampToImage() {
+            if (!viewBox) return;
+            
+            // Limitar a las dimensiones del viewBox
+            const maxW = viewBox.width;
+            const maxH = viewBox.height;
+            
+            // Asegurar que la selección esté dentro de los límites
+            sel.x = Math.max(0, Math.min(sel.x, maxW));
+            sel.y = Math.max(0, Math.min(sel.y, maxH));
+            
+            // Ajustar el ancho y alto para que no se salgan
+            sel.w = Math.max(1, Math.min(sel.w, maxW - sel.x));
+            sel.h = Math.max(1, Math.min(sel.h, maxH - sel.y));
+        }
+
+        function placeSelection() {
+            if (!selectionEl) return;
+            selectionEl.style.left = sel.x + 'px';
+            selectionEl.style.top = sel.y + 'px';
+            selectionEl.style.width = sel.w + 'px';
+            selectionEl.style.height = sel.h + 'px';
+
+            // Crear handles una vez
+            if (selectionEl.querySelectorAll('.handle').length === 0) {
+                ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].forEach(pos => {
+                    const h = document.createElement('div');
+                    h.className = 'handle ' + pos; h.dataset.pos = pos;
+                    selectionEl.appendChild(h);
+                });
+            }
+
+            // En coords del canvas 1:1 con unidades del viewBox
+            infoSel.textContent = sel.w > 0 && sel.h > 0 ? `SVG: ${sel.w.toFixed(2)} × ${sel.h.toFixed(2)}` : 'Selección: –';
+        }
+
+        // Redimensionar con handles
+        let resizing = false;
+        let resizeDir = '';
+
+        overlay.addEventListener('mousedown', (e) => {
+            const isHandle = e.target.classList.contains('handle');
+            if (isHandle) {
+                e.stopPropagation();
+                resizing = true;
+                resizeDir = e.target.dataset.pos;
+                startPt.x = e.clientX;
+                startPt.y = e.clientY;
+                window.addEventListener('mousemove', resizeSelection);
+                window.addEventListener('mouseup', endResize, { once: true });
+            }
+        });
+
+        function resizeSelection(e) {
+            const dx = (e.clientX - startPt.x) / zoom;
+            const dy = (e.clientY - startPt.y) / zoom;
+            switch (resizeDir) {
+                case 'e': sel.w += dx; break;
+                case 'w': sel.x += dx; sel.w -= dx; break;
+                case 's': sel.h += dy; break;
+                case 'n': sel.y += dy; sel.h -= dy; break;
+                case 'se': sel.w += dx; sel.h += dy; break;
+                case 'sw': sel.x += dx; sel.w -= dx; sel.h += dy; break;
+                case 'ne': sel.w += dx; sel.y += dy; sel.h -= dy; break;
+                case 'nw': sel.x += dx; sel.w -= dx; sel.y += dy; sel.h -= dy; break;
+            }
+            startPt.x = e.clientX;
+            startPt.y = e.clientY;
+            clampToImage();
+            // Evitar tamaños negativos
+            sel.w = Math.max(1, sel.w); sel.h = Math.max(1, sel.h);
+            placeSelection();
+        }
+
+        function endResize() {
+            resizing = false;
+            window.removeEventListener('mousemove', resizeSelection);
+        }
+
+        // Limpiar solo la selección (con ESC)
+        function clearSelectionOnly() {
+            if (!selectionEl) return;
+            overlay.innerHTML = '';
+            selectionEl = null;
+            sel = { x: 0, y: 0, w: 0, h: 0 };
+            selecting = false; moving = false; resizing = false;
+            infoSel.textContent = 'Selección: –';
+        }
+
+        function cropSvg() {
+            if (!loadedSvgEl || !originalSvgEl) return alert('Primero carga un SVG.');
+            if (!selectionEl || sel.w <= 0 || sel.h <= 0) return alert('Crea una selección arrastrando sobre el SVG.');
+            // En este modelo, sel.* ya está en unidades del viewBox
+            const selSvg = {
+                x: sel.x + viewBox.minX,
+                y: sel.y + viewBox.minY,
+                w: sel.w,
+                h: sel.h
+            };
+
+            // Construir nuevo SVG clonando el original y ajustando el viewBox
+            const xmlns = 'http://www.w3.org/2000/svg';
+            const out = originalSvgEl.cloneNode(true);
+            out.setAttribute('xmlns', xmlns);
+            out.removeAttribute('width');
+            out.removeAttribute('height');
+            out.setAttribute('viewBox', `${selSvg.x} ${selSvg.y} ${selSvg.w} ${selSvg.h}`);
+            out.setAttribute('width', selSvg.w);
+            out.setAttribute('height', selSvg.h);
+
+            const xml = new XMLSerializer().serializeToString(out);
+            return xml;
+        }
+
+        function downloadCropped() {
+            const xml = cropSvg();
+            if (!xml) return;
+            const blob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'recorte.svg';
+            document.body.appendChild(a); a.click(); a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function copyCropped() {
+            const xml = cropSvg();
+            if (!xml) return;
+            navigator.clipboard.writeText(xml).then(() => {
+                toast('SVG copiado al portapapeles');
+            }, () => { alert('No se pudo copiar al portapapeles.'); });
+        }
+
+        // Cargar desde archivo
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const text = await file.text();
+            try { showSvg(parseSvgString(text)); } catch (err) { alert(err.message); }
+        });
+
+        // Cargar desde textarea
+        btnLoadText.addEventListener('click', () => {
+            const text = svgText.value.trim();
+            if (!text) return alert('Pega el contenido SVG primero.');
+            try { showSvg(parseSvgString(text)); } catch (err) { alert(err.message); }
+        });
+
+        // Pegar desde portapapeles
+        btnPaste.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                svgText.value = text;
+                if (/<svg[\s\S]*<\/svg>/.test(text)) {
+                    showSvg(parseSvgString(text));
+                } else {
+                    toast('Contenido pegado. Pulsa "Cargar código" si es un SVG.');
+                }
+            } catch (e) { alert('No se pudo leer del portapapeles.'); }
+        });
+
+        // Limpiar
+        btnClear.addEventListener('click', () => {
+            stageInner.querySelector('#loadedSvg')?.remove();
+            overlay.innerHTML = '';
+            selectionEl = null; sel = { x: 0, y: 0, w: 0, h: 0 };
+            loadedSvgEl = null; originalSvgEl = null; viewBox = null; infoSel.textContent = 'Selección: –'; infoSize.textContent = '–';
+            dropHint.classList.remove('hidden');
+        });
+
+        // Exportar
+        btnDownload.addEventListener('click', downloadCropped);
+        btnCopy.addEventListener('click', copyCropped);
+
+        // Drag & drop
+        ;['dragenter', 'dragover'].forEach(ev => {
+            stage.addEventListener(ev, e => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; stage.classList.add('drag'); });
+        });
+        ;['dragleave', 'drop'].forEach(ev => {
+            stage.addEventListener(ev, e => { e.preventDefault(); stage.classList.remove('drag'); });
+        });
+        stage.addEventListener('drop', async (e) => {
+            const f = e.dataTransfer.files?.[0]; if (!f) return;
+            const text = await f.text();
+            try { showSvg(parseSvgString(text)); } catch (err) { alert(err.message); }
+        });
+
+        // Interacción selección (sobre toda el área de stageInner)
+        stageInner.addEventListener('mousedown', (e) => {
+            if (e.button !== 0) return;
+            if (!loadedSvgEl) return;
+            beginSelection(e);
+            window.addEventListener('mousemove', moveSelection);
+            window.addEventListener('mouseup', () => { endSelection(); window.removeEventListener('mousemove', moveSelection); }, { once: true });
+        });
+
+        stageInner.addEventListener('dblclick', () => { if (selectionEl) downloadCropped(); });
+
+        // Zoom helpers
+        btnFit.addEventListener('click', () => {
+            if (!loadedSvgEl || !viewBox) return;
+            const padding = 40;
+            const avail = Math.max(50, stage.clientWidth - padding);
+            applyZoom(avail / viewBox.width);
+        });
+        btnResetZoom.addEventListener('click', () => {
+            if (!loadedSvgEl) return;
+            applyZoom(1);
+        });
+
+        btnZoomIn.addEventListener('click', () => { if (!loadedSvgEl) return; applyZoom(zoom * 1.1); });
+        btnZoomOut.addEventListener('click', () => { if (!loadedSvgEl) return; applyZoom(zoom / 1.1); });
+
+        // Ctrl + rueda para hacer zoom sin desplazar
+        stage.addEventListener('wheel', (e) => {
+            if (!loadedSvgEl || !viewBox) return;
+            if (!e.ctrlKey) return; // solo con Ctrl para no romper el scroll normal
+            e.preventDefault();
+            const factor = e.deltaY > 0 ? (1 / 1.1) : 1.1;
+            applyZoom(zoom * factor);
+        }, { passive: false });
+
+        // Toggle grid
+        let gridOn = true;
+        btnToggleGrid.addEventListener('click', () => {
+            gridOn = !gridOn;
+            stage.style.background = gridOn ? 'repeating-conic-gradient(from 45deg, #0b1120 0 10px, #0a1020 10px 20px)' : '#0b1120';
+        });
+
+        // Recalcular escala al redimensionar
+        window.addEventListener('resize', updateScale);
+
+        // ESC para borrar la selección actual sin limpiar el SVG cargado
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                clearSelectionOnly();
+            }
+        });
+
+        // Toast
+        function toast(msg) {
+            const t = document.createElement('div');
+            t.textContent = msg;
+            t.style.position = 'fixed'; t.style.left = '50%'; t.style.top = '20px'; t.style.transform = 'translateX(-50%)';
+            t.style.background = '#0b1226'; t.style.color = '#e2e8f0'; t.style.border = '1px solid #244074'; t.style.padding = '10px 14px'; t.style.borderRadius = '10px'; t.style.boxShadow = '0 10px 30px #0007';
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.transition = 'opacity .4s ease, transform .4s ease'; t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(-6px)'; }, 1200);
+            setTimeout(() => t.remove(), 1700);
+        }
+    </script>
+</body>
+
+</html>
