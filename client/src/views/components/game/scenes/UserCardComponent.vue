@@ -65,7 +65,7 @@
         class="user-card__description__edit-btn"
         @click.stop="startEditing"
       >
-        {{ $t('user_card.edit_button') }}
+        {{ $t("user_card.edit_button") }}
       </button>
     </div>
     <div
@@ -270,10 +270,13 @@ export default {
   overflow: hidden;
   position: relative;
   z-index: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .user-card__avatar-container__avatar img {
-  margin-top: 2px;
+  bottom: 0;
+  position: absolute;
 }
 
 .user-card__avatar-container {
