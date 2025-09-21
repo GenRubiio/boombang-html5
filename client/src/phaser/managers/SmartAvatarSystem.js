@@ -49,7 +49,14 @@ class SmartAvatarSystem extends EventEmitter {
         // Escuchar eventos del cargador
         this.setupLoaderListeners();
         
-        // Marcar avatares esenciales como disponibles
+        // Sincronizar con avatares ya cargados por el BackgroundAvatarLoader
+        if (backgroundAvatarLoader.loadedAvatars) {
+            for (const avatarId of backgroundAvatarLoader.loadedAvatars) {
+                this.availableAvatars.add(avatarId);
+            }
+        }
+        
+        // Marcar avatares esenciales como disponibles (por si no están en la sincronización)
         for (const avatarId of this.fallbackAvatars) {
             this.availableAvatars.add(avatarId);
         }
