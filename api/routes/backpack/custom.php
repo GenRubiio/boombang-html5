@@ -31,6 +31,10 @@ Route::group([
     Route::crud('v-ranking-summary', 'VRankingSummaryCrudController');
     Route::crud('npc', 'NpcCrudController');
     Route::crud('scene-arrow', 'SceneArrowCrudController');
+    
+    // Rutas para gestión del servidor
+    Route::get('server-management', 'ServerManagementController@index')->name('admin.server-management.index');
+    Route::post('server-management/restart', 'ServerManagementController@restartServer')->name('admin.server-management.restart');
 }); // this should be the absolute last line of this file
 
 /**
