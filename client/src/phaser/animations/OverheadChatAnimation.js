@@ -68,7 +68,7 @@ export default class OverheadChatAnimation {
                 cursor: default;
                 user-select: none;
             ">
-                <img src="${avatarImage}" style="width: 20px; height: 20px; margin-right: 4px;">
+                <img src="${avatarImage}" style="width: 20px; height: 20px; margin-right: 4px;object-fit: contain;">
                 <span style="font-weight: bold;">${userName}:</span>
                 <span style="margin-left: 4px;">${text}</span>
             </div>
