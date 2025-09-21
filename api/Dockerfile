@@ -47,6 +47,6 @@ RUN echo '* * * * * root cd /var/www/html && /usr/local/bin/php artisan schedule
 RUN crontab /etc/cron.d/laravel
 
 # Arrancar cron + servidor PHP con mejor manejo de procesos
-CMD ["sh", "-c", "cron && php -S 0.0.0.0:80 -t public"]
+CMD ["sh", "-c", "service cron start && php -S 0.0.0.0:80 -t public"]
 
 EXPOSE 80
