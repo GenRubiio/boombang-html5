@@ -11,7 +11,8 @@ class InteractionNotificationController {
         const senderSocketId = fromUser;
 
         if (!senderSocketId || !gameScene.users[senderSocketId]) {
-            return;
+            console.warn(`InteractionNotificationController: Sender user not found for socketId: ${senderSocketId}`);
+            return null;
         }
         // Check if notification already exists - don't remove it, just return
         if (this.notifications.has(senderSocketId)) {
@@ -97,20 +98,21 @@ class InteractionNotificationController {
         // Add all elements to container
         notificationContainer.add([background, interactionImage, acceptButton, rejectButton]);
 
-        // Position above current player's sprite (who is receiving the interaction)
-        // The notification should appear above the receiver (current player), not the sender
-        const currentPlayerSocketId = socket.id;
-        const currentPlayerSprite = gameScene.users[currentPlayerSocketId];
-        if (currentPlayerSprite && currentPlayerSprite.containerUser) {
-            // Add notification to the current player's containerUser so it moves with them
-            currentPlayerSprite.containerUser.add(notificationContainer);
+        // Position above sender's sprite (who is sending the interaction)
+        // The notification should appear above the sender, not the receiver
+        const senderSprite = gameScene.users[senderSocketId];
+        if (senderSprite && senderSprite.containerUser) {
+            // Add notification to the sender's containerUser so it moves with them
+            senderSprite.containerUser.add(notificationContainer);
 
             // Position relative to the container (higher and behind name text)
             notificationContainer.x = 0; // Centered on user
             notificationContainer.y = -160 * 2; // Higher position, behind name text
             notificationContainer.setDepth(-1); // Behind name text
         } else {
-            return;
+            // If sender sprite doesn't exist, clean up and return
+            notificationContainer.destroy();
+            return null;
         }
 
         // Store notification with sender's socket ID for tracking purposes
