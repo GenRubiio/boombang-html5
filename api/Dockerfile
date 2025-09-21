@@ -34,12 +34,19 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Frontend (si no usas assets en la API, puedes quitar estas dos líneas)
 RUN npm install && npm run build
 
+# Crear directorio de logs y archivo de log para cron
+RUN mkdir -p /var/log && touch /var/log/laravel-cron.log \
+    && chmod 644 /var/log/laravel-cron.log
+
 # Añadir tarea al crontab para Laravel scheduler
 RUN echo '* * * * * root cd /var/www/html && /usr/local/bin/php artisan schedule:run >> /var/log/laravel-cron.log 2>&1' > /etc/cron.d/laravel \
     && chmod 0644 /etc/cron.d/laravel \
     && echo >> /etc/cron.d/laravel
 
-# Arrancar cron + servidor PHP
-CMD cron && php -S 0.0.0.0:80 -t public
+# Crear el archivo crontab para root y aplicar
+RUN crontab /etc/cron.d/laravel
+
+# Arrancar cron + servidor PHP con mejor manejo de procesos
+CMD ["sh", "-c", "cron && php -S 0.0.0.0:80 -t public"]
 
 EXPOSE 80
