@@ -1,4 +1,4 @@
-import avatarConfig from "@/assets/game/avatars/rasta/config.json";
+import avatarConfig from "@/assets/game/avatars/cholo/config.json";
 
 class AnimationEditorController {
     static editorInstance = null;
