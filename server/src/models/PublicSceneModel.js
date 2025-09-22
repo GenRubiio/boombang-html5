@@ -6,6 +6,7 @@ class PublicSceneModel extends SceneModel {
     constructor(uuid, row) {
         super(row); // Llama al constructor de la clase padre
         this.uuid = uuid; // UUID único de la escena
+        this.parent_id = row.parent_id; // ID del área padre
         this.max_users = row.max_users; // Número máximo de usuarios permitidos en el área
         this.scene_type = SceneTypesEnum.PUBLIC_SCENE;// Tipo de modelo
         this.base_api_url = row.base_api_url ? row.base_api_url : ''; // URL base para los recursos

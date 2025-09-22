@@ -22,6 +22,7 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
         try {
             $items = PublicScene::with('items', 'npc')
                 ->where('menu_type', MenuTypeEnum::PUBLIC_SCENE->key())
+                ->active()
                 ->ordered()
                 ->get();
             return $this->successResponse(
@@ -45,7 +46,10 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
             $user = Auth::user();
             $itemId = $validated['item_id'];
             $sceneId = $validated['scene_id'];
-            $sceneItem = PublicScene::find($sceneId)->items()->find($itemId);
+            $sceneItem = PublicScene::find($sceneId)
+                ->items()
+                ->active()
+                ->find($itemId);
             if (!$sceneItem) {
                 throw new Exception('Item not found in the scene.');
             }

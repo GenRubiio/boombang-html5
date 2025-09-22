@@ -23,6 +23,10 @@ class PublicScenesCollection {
     getAll() {
         return Array.from(this.collection.values());
     }
+
+    getAllParentIdNull() {
+        return Array.from(this.collection.values()).filter(scene => (scene.parent_id == null || scene.parent_id == 0));
+    }
 }
 
 module.exports = new PublicScenesCollection();

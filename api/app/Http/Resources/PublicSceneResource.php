@@ -22,6 +22,7 @@ class PublicSceneResource extends JsonResource
     {
         $return = [
             'id' => (int)$this->id,
+            'parent_id' => (int)$this->parent_id,
             'name' => $this->name,
             'type' => $this->type,
             'menu_type' => $this->menu_type,
