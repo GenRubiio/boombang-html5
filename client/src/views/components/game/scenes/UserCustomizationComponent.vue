@@ -472,6 +472,7 @@ export default {
   border-radius: 5px;
   text-align: center;
   font-weight: bold;
+  color: black;
 }
 
 .user-customization__tab.active {
