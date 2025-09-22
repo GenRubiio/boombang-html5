@@ -252,6 +252,14 @@ class CreateSceneController {
         return; // Bloquear completamente cualquier acción adicional
       }
 
+      // Check if move mode is active (editing objects) to prevent character movement
+      if (gameScene.moveModeActive) {
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log(`Move mode active - blocking character movement to tile at ${col}, ${row}`);
+        }
+        return; // Block character movement when in edit mode
+      }
+
       if (import.meta.env.VITE_APP_ENV === "local") {
         console.log(`Clicked tile at ${col}, ${row}`);
       }
