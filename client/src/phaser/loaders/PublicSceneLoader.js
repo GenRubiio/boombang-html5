@@ -68,10 +68,11 @@ class PublicSceneLoader {
             return; // Si no se debe mostrar el item, no hacemos nada
         }
         let sprite;
+        const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y) * item.scale;
         if (SceneUtils.isVideoFile(item.image)) {
             sprite = gameScene.add.video(item.x * item.scale, item.y * item.scale, spriteName)
                 .setOrigin(0.5, 1)
-                .setDepth((item.custom_depth || item.y) * item.scale)
+                .setDepth(depth)
                 .setName(spriteName);
 
             sprite.setLoop(true);
@@ -80,7 +81,7 @@ class PublicSceneLoader {
         else {
             sprite = gameScene.add.image(item.x * item.scale, item.y * item.scale, spriteName)
                 .setOrigin(0.5, 1)
-                .setDepth((item.custom_depth || item.y) * item.scale)
+                .setDepth(depth)
                 .setName(spriteName);
         }
         sprite.setScale(item.scale);
