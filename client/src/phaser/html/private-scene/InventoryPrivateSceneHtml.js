@@ -290,13 +290,14 @@ class InventoryPrivateSceneHtml {
         const worldX = (clientX - rect.left) * scaleX;
         let worldY = (clientY - rect.top) * scaleY;
 
-        // Get the dragged image element to calculate the offset dynamically
-        const dragImage = document.getElementById('drag-shadow-img');
-        if (dragImage && dragImage.offsetHeight > 0) {
-            // Offset to position the shadow at the bottom of the dragged image.
-            // The offset is based on the image's screen height.
-            const yOffset = dragImage.offsetHeight / 2;
-            worldY += yOffset;
+        // Ajustar la posición para compensar el origen del sprite (0.5, 0.90)
+        if (this.draggedItem.group && this.scene.textures.exists(this.draggedItem.group.sprite_name)) {
+            const texture = this.scene.textures.get(this.draggedItem.group.sprite_name);
+            const dpiScale = this.scene.dpiScale || 2;
+            const spriteHeight = texture.source[0].height * (this.draggedItem.group.scale || dpiScale);
+            
+            // Ajustar Y para que coincida con el origen (0.5, 0.90) del sprite final
+            worldY = worldY + (spriteHeight * 0.40); // 0.90 - 0.50 = 0.40
         }
 
         // Calculate tile position
@@ -381,8 +382,17 @@ class InventoryPrivateSceneHtml {
         const dpiScale = this.scene.dpiScale || 2;
         const scaleX = this.scene.scale.width / rect.width;
         const scaleY = this.scene.scale.height / rect.height;
-        const worldX = (e.clientX - rect.left) * scaleX;
-        const worldY = (e.clientY - rect.top) * scaleY;
+        let worldX = (e.clientX - rect.left) * scaleX;
+        let worldY = (e.clientY - rect.top) * scaleY;
+
+        // Ajustar la posición para compensar el origen del sprite (0.5, 0.90)
+        if (this.draggedItem.group && this.scene.textures.exists(this.draggedItem.group.sprite_name)) {
+            const texture = this.scene.textures.get(this.draggedItem.group.sprite_name);
+            const spriteHeight = texture.source[0].height * (this.draggedItem.group.scale || dpiScale);
+            
+            // Ajustar Y para que coincida con el origen (0.5, 0.90) del sprite final
+            worldY = worldY + (spriteHeight * 0.40); // 0.90 - 0.50 = 0.40
+        }
 
         const TILE_WIDTH = 65 * (this.scene.dpiScale || 2);
         const TILE_HEIGHT = 33 * (this.scene.dpiScale || 2);
