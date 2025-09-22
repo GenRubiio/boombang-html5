@@ -1067,8 +1067,8 @@ export default class PrivateScene extends Phaser.Scene {
     updateInventoryUI() {
         if (!this.inventorySlots || !this.pageText) return;
 
-        const TILE_WIDTH = 65;
-        const TILE_HEIGHT = 33;
+        const TILE_WIDTH = 65 * this.dpiScale;
+        const TILE_HEIGHT = 33 * this.dpiScale;
         const HALF_TILE_WIDTH = TILE_WIDTH / 2;
         const HALF_TILE_HEIGHT = TILE_HEIGHT / 2;
         const CENTER_X = this.scale.width / 2;
@@ -1117,8 +1117,18 @@ export default class PrivateScene extends Phaser.Scene {
 
                 slot.icon.on('dragend', (pointer) => {
                     slot.icon.clearTint();
-                    const dropX = pointer.worldX;
-                    const dropY = pointer.worldY;
+                    let dropX = pointer.worldX;
+                    let dropY = pointer.worldY;
+
+                    // Ajustar la posición para compensar el origen del sprite (0.5, 0.90)
+                    // Esto es necesario porque el objeto se renderizará con origen en la base
+                    if (slot.group && this.textures.exists(slot.group.sprite_name)) {
+                        const texture = this.textures.get(slot.group.sprite_name);
+                        const spriteHeight = texture.source[0].height * (slot.group.scale || this.dpiScale);
+                        
+                        // Ajustar Y para que coincida con el origen (0.5, 0.90) del sprite final
+                        dropY = dropY + (spriteHeight * 0.40); // 0.90 - 0.50 = 0.40
+                    }
 
                     const newTiles = this.calculateNewTiles(
                         dropX, dropY, slot.group.map_size,
