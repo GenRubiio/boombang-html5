@@ -13,6 +13,7 @@ trait PageTemplates
     use Pages\DiscoverTemplate;
     use Pages\SecurityTemplate;
     use Pages\ShoppingTemplate;
+    use Pages\LauncherTemplate;
 
     /* Template Partials - Protected functions */
     use Pages\Partials\BaseTemplate;

@@ -66,6 +66,11 @@ class MenuItemCrudController extends CrudController
                 'type' => 'btnToggle',
                 'label' => trans('admin.menu_visible_legal')
             ]);
+              $this->crud->addColumn([
+                'name' => 'menu_subpage',
+                'type' => 'btnToggle',
+                'label' => 'Subpage Menu'
+            ]);
             $this->crud->addColumn([
                 'name' => 'active',
                 'type' => 'btnToggle',
@@ -130,6 +135,17 @@ class MenuItemCrudController extends CrudController
             [
                 'name' => 'menu_legal',
                 'label' => trans('admin.menu_visible_legal'),
+                'type' => 'radio',
+                'options' => [
+                    1 => trans('backpack::crud.yes'),
+                    0 => trans('backpack::crud.no')
+                ],
+                'default' => 0,
+                'inline' => true,
+            ],
+            [
+                'name' => 'menu_subpage',
+                'label' => 'Subpage Menu',
                 'type' => 'radio',
                 'options' => [
                     1 => trans('backpack::crud.yes'),
