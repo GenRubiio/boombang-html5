@@ -4,7 +4,7 @@
  */
 class ClientVersionManager {
     constructor() {
-        this.clientVersion = '1.0.3'; // 🔧 Cambiar esta versión para forzar limpieza de cache
+        this.clientVersion = '1.0.4'; // 🔧 Cambiar esta versión para forzar limpieza de cache
         this.versionKey = 'boombang_client_version';
         this.dbName = 'BoomBangAssetCache'; // Debe coincidir con CacheManager
     }
