@@ -3,7 +3,7 @@ const Enum = require('./Enum');
 // This is the enum for the animation block timer in milliseconds
 const AnimationBlockTimerEnum = new Enum({
     UPPERCUT_SEND: 12000,
-    UPPERCUT_RECEIVE: 22000,
+    UPPERCUT_RECEIVE: 15000,
     CHAT: 200,
     WALK: 750,
     BOOMER_LAUGHTER_1: 5000,
