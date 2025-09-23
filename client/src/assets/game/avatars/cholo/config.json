@@ -93,7 +93,7 @@
   "left_punch_doy": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/leftdown_punch_doy/",
-    "flip_horizontally": false,
+    "flip_horizontally": true,
     "start": 1,
     "end": 192,
     "frameRate": 19,
@@ -106,7 +106,7 @@
   "right_punch_doy": {
     "atlasKey": "cholo_atlas",
     "prefix": "sprites/leftdown_punch_doy/",
-    "flip_horizontally": true,
+    "flip_horizontally": false,
     "start": 1,
     "end": 192,
     "frameRate": 19,
