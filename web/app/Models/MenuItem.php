@@ -31,6 +31,8 @@ class MenuItem extends MenuItemOriginal
         'menu_footer_order',
         'menu_legal',
         'menu_legal_order',
+        'menu_subpage',
+        'menu_subpage_order',
         'page_id',
         'active',
         'parent_id',
