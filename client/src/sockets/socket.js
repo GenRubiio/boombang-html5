@@ -1,5 +1,4 @@
 import { io } from 'socket.io-client';
-import { useSocketStore } from '../stores/socketStore';
 
 // Configura la conexión con el servidor de Socket.io
 const socket = io(import.meta.env.VITE_SERVER_URL, {
@@ -11,29 +10,57 @@ const socket = io(import.meta.env.VITE_SERVER_URL, {
     //perMessageDeflate: false,    // menos CPU (a costa de más ancho de banda)
 });
 
-socket.on('connect', () => {
-    const socketStore = useSocketStore();
-    socketStore.setConnected(true);
-});
+// Variable para controlar si los listeners están configurados
+let listenersConfigured = false;
 
-// Maneja errores globales
-socket.on('connect_error', (err) => {
-    const socketStore = useSocketStore();
-    socketStore.setConnected(false);
-    if (import.meta.env.VITE_APP_ENV === "local") {
-        console.error('Socket connection error:', err.message);
+// Función para configurar los listeners cuando Pinia esté disponible
+const setupSocketListeners = async () => {
+    if (listenersConfigured) return;
+    
+    try {
+        const { useSocketStore } = await import('../stores/socketStore');
+        
+        socket.on('connect', () => {
+            const socketStore = useSocketStore();
+            socketStore.setConnected(true);
+            //console.log('🔌 Socket conectado y store actualizada');
+        });
+
+        // Maneja errores globales
+        socket.on('connect_error', (err) => {
+            const socketStore = useSocketStore();
+            socketStore.setConnected(false);
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                console.error('Socket connection error:', err.message);
+            }
+        });
+
+        socket.on('disconnect', (reason) => {
+            const socketStore = useSocketStore();
+            socketStore.setConnected(false);
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                //console.log('Desconectado del servidor:', reason);
+            }
+
+            // Puedes emitir un evento global en Vue para redirigir
+            window.dispatchEvent(new CustomEvent('socket-disconnected'));
+        });
+        
+        listenersConfigured = true;
+        //console.log('🔌 Socket listeners configurados exitosamente');
+        
+        // Si ya está conectado, ejecutar el handler de connect manualmente
+        if (socket.connected) {
+            const socketStore = useSocketStore();
+            socketStore.setConnected(true);
+        }
+        
+    } catch (error) {
+        console.error('❌ Error configurando socket listeners:', error);
     }
-});
+};
 
-socket.on('disconnect', (reason) => {
-    const socketStore = useSocketStore();
-    socketStore.setConnected(false);
-    if (import.meta.env.VITE_APP_ENV === "local") {
-        console.log('Desconectado del servidor:', reason);
-    }
-
-    // Puedes emitir un evento global en Vue para redirigir
-    window.dispatchEvent(new CustomEvent('socket-disconnected'));
-});
+// Exponer función de inicialización
+socket.setupListeners = setupSocketListeners;
 
 export default socket;

@@ -133,7 +133,6 @@ export default {
   border-radius: 10px;
   text-align: start;
   padding: 10px;
-  height: 315px;
 }
 
 .select-avatar__title {
