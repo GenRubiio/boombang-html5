@@ -21,6 +21,7 @@ class UserModel {
         this.uppercutsReceived = row.uppercuts_received; // Uppercuts recibidos por el usuario
         this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
+        this.is_bot = row.is_bot || 0; // Indica si el usuario es un bot
 
         this.last_update_username_at = row.last_update_username_at;
         this.phaser_rendering_type = row.phaser_rendering_type;

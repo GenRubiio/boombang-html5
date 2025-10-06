@@ -1,17 +1,21 @@
 const { io } = require("socket.io-client");
 require('dotenv').config();
 const axios = require('axios');
+const ApiService = require('../../../services-api/ApiService');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 
 class Bot {
-    constructor(username, password) {
+    constructor(username) {
         this.username = username;
-        this.password = password;
         this.socket = null;
+        this.jwtToken = null;
         this.uppercutInterval = null;
         this.api_url = process.env.API_URL;
+        this.reconnectAttempts = 0;
+        this.maxReconnectAttempts = 5;
+        this.reconnectDelay = 5000; // 5 segundos
 
         this.authenticateAndConnect();
     }
@@ -19,20 +23,58 @@ class Bot {
     async authenticateAndConnect() {
         try {
             console.log(`Bot ${this.username}: Obteniendo token de autenticación...`);
-            const response = await axios.post(`${this.api_url}/api/internal/bots/generate-token`);
-            const { token } = response.data;
+            
+            // Paso 1: Obtener bot token para la conexión socket
+            const tokenResponse = await axios.post(`${this.api_url}/api/internal/bots/generate-token`, {
+                username: this.username
+            });
+            
+            const { token: botToken } = tokenResponse.data;
 
-            if (!token) {
-                throw new Error('No se pudo obtener el token para el bot.');
+            if (!botToken) {
+                throw new Error('No se pudo obtener el bot token.');
             }
 
-            console.log(`Bot ${this.username}: Token obtenido. Conectando al servidor...`);
+            // Paso 2: Obtener JWT token de Laravel para llamadas HTTP
+            console.log(`Bot ${this.username}: Obteniendo JWT token...`);
+            const authData = await ApiService.post('api/auth/bot-login', {
+                username: this.username
+            });
+
+            console.log(`Bot ${this.username}: Respuesta del bot-login:`, authData);
+
+            if (!authData.token) {
+                console.error(`Bot ${this.username}: Error en bot-login - no se recibió token`);
+                throw new Error('No se pudo obtener el JWT token.');
+            }
+
+            this.jwtToken = authData.token;
+            console.log(`Bot ${this.username}: JWT token obtenido exitosamente`);
+            
+            console.log(`Bot ${this.username}: Tokens obtenidos. Conectando al servidor...`);
             this.socket = io(process.env.EMULATOR_URL);
-            this.initializeSocketEvents(token);
+            this.initializeSocketEvents(botToken);
+            this.reconnectAttempts = 0; // Reset counter on successful connection
 
         } catch (error) {
             console.error(`Error al autenticar el bot ${this.username}:`, error.message);
-            // Optional: retry logic
+            if (error.response) {
+                console.error(`Response data:`, error.response.data);
+            }
+            this.handleReconnection();
+        }
+    }
+
+    handleReconnection() {
+        if (this.reconnectAttempts < this.maxReconnectAttempts) {
+            this.reconnectAttempts++;
+            console.log(`Bot ${this.username}: Reintentando conexión (${this.reconnectAttempts}/${this.maxReconnectAttempts}) en ${this.reconnectDelay/1000} segundos...`);
+            
+            setTimeout(() => {
+                this.authenticateAndConnect();
+            }, this.reconnectDelay);
+        } else {
+            console.error(`Bot ${this.username}: Máximo número de reintentos alcanzado. Deteniendo bot.`);
         }
     }
 
@@ -44,6 +86,18 @@ class Bot {
 
         this.socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
             this.socket.user = data.user;
+            
+            // Añadir el JWT token al usuario después de un pequeño delay
+            setTimeout(() => {
+                const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
+                if (user && this.jwtToken) {
+                    user.addAuthJwt(this.jwtToken);
+                    console.log(`Bot ${this.username}: JWT token añadido al usuario`);
+                } else {
+                    console.log(`Bot ${this.username}: No se pudo añadir JWT token - user: ${!!user}, token: ${!!this.jwtToken}`);
+                }
+            }, 100); // Pequeño delay para asegurar que el usuario esté registrado
+            
             this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
             setTimeout(() => {
                 this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
@@ -117,10 +171,24 @@ class Bot {
 
         this.socket.on("disconnect", (data) => {
             console.error(`Bot ${this.username} desconectado. Motivo: ${data}`);
-            console.log(`${this.username} desconectado.`);
+            this.cleanup();
+            
+            // Intentar reconectar después de un delay
+            setTimeout(() => {
+                console.log(`Bot ${this.username}: Intentando reconectar...`);
+                this.authenticateAndConnect();
+            }, this.reconnectDelay);
         });
 
         this.socket.on("error_critical", () => {
+            console.error(`Bot ${this.username}: Error crítico recibido. Desconectando...`);
+            this.cleanup();
+            this.socket.disconnect();
+        });
+
+        this.socket.on(ResponseSocketsEnum.LOGIN_ERROR, (data) => {
+            console.error(`Bot ${this.username}: Error de login - ${data.message}`);
+            this.cleanup();
             this.socket.disconnect();
         });
     }
@@ -163,7 +231,7 @@ class Bot {
     login(token) {
         this.socket.emit(RequestSocketsEnum.LOGIN, { 
             username: this.username, 
-            password: this.password,
+            password: null, // Los bots no necesitan password
             bot_token: token 
         });
     }
@@ -211,6 +279,26 @@ class Bot {
 
     joinArea(sceneUuid) {
         this.socket.emit(RequestSocketsEnum.JOIN_PUBLIC_SCENE, { sceneUuid: sceneUuid, menuType: 1 });
+    }
+
+    cleanup() {
+        if (this.uppercutInterval) {
+            clearInterval(this.uppercutInterval);
+            this.uppercutInterval = null;
+        }
+        
+        // Limpiar otros intervalos si los hay
+        // Esto previene memory leaks
+        console.log(`Bot ${this.username}: Limpieza de recursos completada.`);
+    }
+
+    destroy() {
+        this.cleanup();
+        if (this.socket) {
+            this.socket.disconnect();
+            this.socket = null;
+        }
+        console.log(`Bot ${this.username}: Bot destruido completamente.`);
     }
 }
 

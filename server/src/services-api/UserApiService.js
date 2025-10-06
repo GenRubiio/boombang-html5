@@ -156,6 +156,37 @@ class UserApiService {
             throw error;
         }
     }
+
+    static async botLogin(username, botToken) {
+        try {
+            const data = {
+                username: username,
+                bot_token: botToken
+            };
+            return await ApiService.post('api/auth/bot-login', data);
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                return error.response.data;
+            }
+            console.error('Error en el bot login:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async getBotByUsername(username) {
+        try {
+            const data = {
+                username: username
+            };
+            return await ApiService.post('api/auth/get-bot-by-username', data);
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                return error.response.data;
+            }
+            console.error('Error getting bot by username:', error.response ? error.response.data : error.message);
+            return { success: false, message: 'Bot not found' };
+        }
+    }
 }
 
 module.exports = UserApiService;

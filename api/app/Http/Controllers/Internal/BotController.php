@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Internal;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 
 class BotController extends Controller
 {
@@ -17,6 +18,18 @@ class BotController extends Controller
      */
     public function generateToken(Request $request)
     {
+        // Validate that the username provided belongs to a valid bot
+        if ($request->has('username')) {
+            $user = User::where('username', $request->input('username'))
+                                   ->where('is_bot', 1)
+                                   ->where('active', 1)
+                                   ->first();
+            
+            if (!$user) {
+                return response()->json(['error' => 'Invalid bot username or bot is not active.'], 401);
+            }
+        }
+
         $token = Str::random(40);
         $gameServerUrl = config('app.emulator_docker_url');
 

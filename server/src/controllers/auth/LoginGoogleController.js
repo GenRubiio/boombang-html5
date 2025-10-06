@@ -18,6 +18,12 @@ class LoginGoogleController {
 
             const user = new UserModel(auth.user);
 
+            // Verificar si el usuario es un bot - los bots no pueden usar login con Google
+            if (user && user.is_bot) {
+                socket.emit(ResponseSocketsEnum.LOGIN_ERROR, { message: 'Bot accounts cannot login with Google' });
+                return;
+            }
+
             if (user) {
                 const connectedUser = ConnectedUsersCollection.getByUserId(user.id);
                 if (connectedUser) {

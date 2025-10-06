@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\Auth\LogoutApiController;
 use App\Http\Controllers\Api\Auth\RegisterApiController;
 use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
+use App\Http\Controllers\Api\Auth\BotLoginApiController;
+use App\Http\Controllers\Api\Auth\GetBotByUsernameApiController;
 use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\Game\Scene\RankingApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
@@ -36,6 +38,8 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::post('login', [LoginApiController::class, 'login']);
         Route::post('google', [LoginGoogleApiController::class, 'login']);
         Route::post('register', [RegisterApiController::class, 'register']);
+        Route::post('bot-login', [BotLoginApiController::class, 'login']);
+        Route::post('get-bot-by-username', [GetBotByUsernameApiController::class, 'getBotByUsername']);
     });
 
     /**

@@ -18,6 +18,12 @@ class JwtAutoLoginController {
 
             const user = new UserModel(auth.user);
 
+            // Verificar si el usuario es un bot - los bots no pueden usar auto-login JWT
+            if (user && user.is_bot) {
+                socket.emit(ResponseSocketsEnum.JWT_AUTO_LOGIN_INVALID, { message: 'Bot accounts cannot use JWT auto-login' });
+                return;
+            }
+
             if (user) {
                 const connectedUser = ConnectedUsersCollection.getByUserId(user.id);
                 if (connectedUser) {

@@ -39,6 +39,7 @@ class UserResource extends JsonResource
             'uppercuts_received' => (int)$this->uppercuts_received,
             'coconuts_sent' => (int)$this->coconuts_sent,
             'coconuts_received' => (int)$this->coconuts_received,
+            'is_bot' => (bool)$this->is_bot,
 
             'last_update_username_at' => $this->last_update_username_at,
             'phaser_rendering_type' => $this->phaser_rendering_type,
