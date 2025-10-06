@@ -35,6 +35,7 @@ Route::group([
     // Rutas para gestión del servidor
     Route::get('server-management', 'ServerManagementController@index')->name('admin.server-management.index');
     Route::post('server-management/restart', 'ServerManagementController@restartServer')->name('admin.server-management.restart');
+    Route::crud('api-key', 'ApiKeyCrudController');
 }); // this should be the absolute last line of this file
 
 /**
