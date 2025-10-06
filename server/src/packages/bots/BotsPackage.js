@@ -6,7 +6,9 @@ class BotsPackage {
     static async main() {
         try {
             const bots = await BotService.getAll();
-            bots.forEach(bot => new Bot(bot.username, 'test'));
+            bots.forEach(bot => {
+                new Bot(bot.username);
+            });
         } catch (error) {
             Log.error('BotsPackage.main', error);
         }
