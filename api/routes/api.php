@@ -4,18 +4,24 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyEmulatorToken;
 use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\Auth\LogoutApiController;
-use App\Http\Controllers\Api\Auth\RegisterApiController;
-use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
+use App\Http\Controllers\Api\Bot\BotContextController;
+use App\Http\Controllers\Api\Bot\BotMessagesController;
 use App\Http\Controllers\Api\Auth\BotLoginApiController;
-use App\Http\Controllers\Api\Auth\GetBotByUsernameApiController;
+use App\Http\Controllers\Api\Auth\RegisterApiController;
+use App\Http\Controllers\Api\Bot\BotAllowReplyController;
+use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
+use App\Http\Controllers\Api\Bot\AIProviderStatsController;
+use App\Http\Controllers\Api\Bot\BotConsumeQuotaController;
 use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\Game\Scene\RankingApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
 use App\Http\Controllers\Api\User\UserChangeAvatarController;
 use App\Http\Controllers\Api\Game\Lobby\GachaponApiController;
 use App\Http\Controllers\Api\User\UserChangeChatApiController;
+use App\Http\Controllers\Api\Bot\BotGenerateResponseController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeFichaApiController;
+use App\Http\Controllers\Api\Auth\GetBotByUsernameApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 use App\Http\Controllers\Api\User\UpdateDescriptionApiController;
 use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
@@ -134,4 +140,28 @@ Route::prefix('internal')->group(function () {
     Route::prefix('bots')->group(function () {
         Route::post('generate-token', [App\Http\Controllers\Internal\BotController::class, 'generateToken']);
     });
+});
+
+/**
+ * Bot Conversation System Routes
+ */
+Route::middleware(VerifyEmulatorToken::class)->prefix('bot')->group(function () {
+    // Check if bot can reply (quota + cooldown)
+    Route::post('allow-reply', [BotAllowReplyController::class, 'allowReply']);
+    
+    // Get context for bot response
+    Route::get('context', [BotContextController::class, 'getContext']);
+    
+    // Generate bot response
+    Route::post('generate', [BotGenerateResponseController::class, 'generate']);
+    
+    // Consume bot quota
+    Route::post('consume', [BotConsumeQuotaController::class, 'consume']);
+    
+    // Save/get messages
+    Route::post('messages', [BotMessagesController::class, 'store']);
+    Route::get('messages', [BotMessagesController::class, 'index']);
+    
+    // AI Provider statistics
+    Route::get('ai/stats', [AIProviderStatsController::class, 'stats']);
 });
