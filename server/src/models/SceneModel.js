@@ -63,6 +63,13 @@ class SceneModel {
         return this.users;
     }
 
+    // Método para encontrar un usuario en la sala por username
+    findUserByUsername(username) {
+        if (!username) return null;
+        const normalizedUsername = username.toLowerCase();
+        return this.users.find(u => u.username.toLowerCase() === normalizedUsername);
+    }
+
     // Método para comprobar si un usuario está en el área
     containsUser(user) {
         return this.users.includes(user);
