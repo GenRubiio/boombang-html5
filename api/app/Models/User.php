@@ -49,6 +49,9 @@ class User extends Authenticatable
         'phaser_round_pixels',
         'phaser_power_preference',
         'is_bot',
+        'bot_system_prompt',
+        'bot_language_mode',
+        'bot_settings',
         'active',
     ];
 
@@ -62,6 +65,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_bot' => 'boolean',
+            'bot_settings' => 'array',
         ];
     }
 
@@ -179,11 +184,49 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Scope a query to only include bots
+     */
+    public function scopeBots($query)
+    {
+        return $query->where('is_bot', true);
+    }
+
+    /**
+     * Scope a query to only include active bots
+     */
+    public function scopeActiveBots($query)
+    {
+        return $query->where('is_bot', true)->where('active', true);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Get daily quota for bot (from bot_settings)
+     */
+    public function getDailyQuota(): int
+    {
+        if (!$this->is_bot) {
+            return 0;
+        }
+        return $this->bot_settings['daily_quota'] ?? 300;
+    }
+
+    /**
+     * Get cooldown seconds for bot (from bot_settings)
+     */
+    public function getCooldownSeconds(): int
+    {
+        if (!$this->is_bot) {
+            return 0;
+        }
+        return $this->bot_settings['cooldown_sec'] ?? 2;
+    }
 
     /*
     |--------------------------------------------------------------------------

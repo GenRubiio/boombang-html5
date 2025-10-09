@@ -62,6 +62,19 @@ class ApiKey extends Model
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Get the decrypted API key
+     */
+    public function getDecryptedKeyAttribute(): string
+    {
+        try {
+            return decrypt($this->key);
+        } catch (\Exception $e) {
+            // If decryption fails, return as-is (for backwards compatibility)
+            return $this->key;
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
