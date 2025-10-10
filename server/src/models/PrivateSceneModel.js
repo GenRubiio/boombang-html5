@@ -6,6 +6,7 @@ const UserResource = require('../resources/UserResource');
 const PrivateSceneResource = require('../resources/PrivateSceneResource');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const CatalogItemTypeOfBehaviorEnum = require('../enums/CatalogItemTypeOfBehaviorEnum');
+const sceneMutex = require('../utils/SceneMutex');
 
 class PrivateSceneModel extends SceneModel {
     constructor(uuid, row) {
@@ -52,26 +53,45 @@ class PrivateSceneModel extends SceneModel {
     }
 
     async userJoin(user, userInventoryItems) {
-        user.setArea(this);
-        user.setInventory(userInventoryItems || []);
-        this.addUser(user);
-        let sceneUsers = [];
-        for (const user of this.users) {
-            sceneUsers.push(await new UserResource(user).toObject());
-        }
-        user.socket.emit(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, {
-            success: true,
-            data: {
-                players: sceneUsers,
-                scenery: await new PrivateSceneResource(this).toObject(),
-                authUser: await new UserResource(user).toObject(),
-                userInventory: user.inventory,
-                myScene: this.user_id == user.id,
+        // Usar el mutex global para sincronizar el acceso a la escena
+        const release = await sceneMutex.acquire(this.id);
+
+        try {
+            // Agregar usuario a la escena de manera atómica
+            user.setArea(this);
+            user.setInventory(userInventoryItems || []);
+            this.addUser(user);
+            
+            // Obtener la lista actualizada de usuarios
+            let sceneUsers = [];
+            for (const sceneUser of this.users) {
+                sceneUsers.push(await new UserResource(sceneUser).toObject());
             }
-        });
-        this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
-            user: await new UserResource(user).toObject(),
-        }, user);
+            
+            // Enviar respuesta al usuario que se está uniendo
+            user.socket.emit(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, {
+                success: true,
+                data: {
+                    players: sceneUsers,
+                    scenery: await new PrivateSceneResource(this).toObject(),
+                    authUser: await new UserResource(user).toObject(),
+                    userInventory: user.inventory,
+                    myScene: this.user_id == user.id,
+                }
+            });
+            
+            // Pequeño delay antes de notificar a otros usuarios
+            await new Promise(resolve => setTimeout(resolve, 50));
+            
+            // Notificar a todos los demás usuarios
+            this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
+                user: await new UserResource(user).toObject(),
+            }, user);
+            
+        } finally {
+            // Liberar el mutex
+            release();
+        }
     }
 }
 

@@ -22,7 +22,7 @@ class Bot {
 
     async authenticateAndConnect() {
         try {
-            console.log(`Bot ${this.username}: Obteniendo token de autenticación...`);
+            //console.log(`Bot ${this.username}: Obteniendo token de autenticación...`);
             
             // Paso 1: Obtener bot token para la conexión socket
             const tokenResponse = await axios.post(`${this.api_url}/api/internal/bots/generate-token`, {
@@ -36,12 +36,12 @@ class Bot {
             }
 
             // Paso 2: Obtener JWT token de Laravel para llamadas HTTP
-            console.log(`Bot ${this.username}: Obteniendo JWT token...`);
+            //console.log(`Bot ${this.username}: Obteniendo JWT token...`);
             const authData = await ApiService.post('api/auth/bot-login', {
                 username: this.username
             });
 
-            console.log(`Bot ${this.username}: Respuesta del bot-login:`, authData);
+            //console.log(`Bot ${this.username}: Respuesta del bot-login:`, authData);
 
             if (!authData.token) {
                 console.error(`Bot ${this.username}: Error en bot-login - no se recibió token`);
@@ -49,9 +49,9 @@ class Bot {
             }
 
             this.jwtToken = authData.token;
-            console.log(`Bot ${this.username}: JWT token obtenido exitosamente`);
+            //console.log(`Bot ${this.username}: JWT token obtenido exitosamente`);
             
-            console.log(`Bot ${this.username}: Tokens obtenidos. Conectando al servidor...`);
+            //console.log(`Bot ${this.username}: Tokens obtenidos. Conectando al servidor...`);
             this.socket = io(process.env.EMULATOR_URL);
             this.initializeSocketEvents(botToken);
             this.reconnectAttempts = 0; // Reset counter on successful connection
@@ -68,7 +68,7 @@ class Bot {
     handleReconnection() {
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
-            console.log(`Bot ${this.username}: Reintentando conexión (${this.reconnectAttempts}/${this.maxReconnectAttempts}) en ${this.reconnectDelay/1000} segundos...`);
+            //console.log(`Bot ${this.username}: Reintentando conexión (${this.reconnectAttempts}/${this.maxReconnectAttempts}) en ${this.reconnectDelay/1000} segundos...`);
             
             setTimeout(() => {
                 this.authenticateAndConnect();
@@ -80,7 +80,7 @@ class Bot {
 
     initializeSocketEvents(token) {
         this.socket.on("connect", () => {
-            console.log(`Bot ${this.username}: Conectado. Realizando login...`);
+            //console.log(`Bot ${this.username}: Conectado. Realizando login...`);
             this.login(token);
         });
 
@@ -92,9 +92,9 @@ class Bot {
                 const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
                 if (user && this.jwtToken) {
                     user.addAuthJwt(this.jwtToken);
-                    console.log(`Bot ${this.username}: JWT token añadido al usuario`);
+                    //console.log(`Bot ${this.username}: JWT token añadido al usuario`);
                 } else {
-                    console.log(`Bot ${this.username}: No se pudo añadir JWT token - user: ${!!user}, token: ${!!this.jwtToken}`);
+                    //console.log(`Bot ${this.username}: No se pudo añadir JWT token - user: ${!!user}, token: ${!!this.jwtToken}`);
                 }
             }, 100); // Pequeño delay para asegurar que el usuario esté registrado
             
@@ -160,9 +160,9 @@ class Bot {
         });
 
         this.socket.on(ResponseSocketsEnum.MINIGAME_ALERT, (data) => {
-            console.log('\x1b[33m%s\x1b[0m', `Bot ${this.username} recibió alerta: ${data.alertType} - ${data.winnerName}`);
+            //console.log('\x1b[33m%s\x1b[0m', `Bot ${this.username} recibió alerta: ${data.alertType} - ${data.winnerName}`);
             setTimeout(() => {
-                console.log(`Bot ${this.username} se suscribe nuevamente al minijuego.`);
+                //console.log(`Bot ${this.username} se suscribe nuevamente al minijuego.`);
                 this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
                     type: 1,
                 });
@@ -175,7 +175,7 @@ class Bot {
             
             // Intentar reconectar después de un delay
             setTimeout(() => {
-                console.log(`Bot ${this.username}: Intentando reconectar...`);
+                //console.log(`Bot ${this.username}: Intentando reconectar...`);
                 this.authenticateAndConnect();
             }, this.reconnectDelay);
         });
@@ -243,7 +243,7 @@ class Bot {
         const moveInterval = setInterval(() => {
             const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
             if (!user || !user.currentArea) {
-                console.log('\x1b[31m' + "Usuario o área no encontrados: " + this.socket.user.username + '\x1b[0m');
+                //console.log('\x1b[31m' + "Usuario o área no encontrados: " + this.socket.user.username + '\x1b[0m');
                 return;
             }
 
@@ -289,7 +289,7 @@ class Bot {
         
         // Limpiar otros intervalos si los hay
         // Esto previene memory leaks
-        console.log(`Bot ${this.username}: Limpieza de recursos completada.`);
+        //console.log(`Bot ${this.username}: Limpieza de recursos completada.`);
     }
 
     destroy() {
@@ -298,7 +298,7 @@ class Bot {
             this.socket.disconnect();
             this.socket = null;
         }
-        console.log(`Bot ${this.username}: Bot destruido completamente.`);
+        //console.log(`Bot ${this.username}: Bot destruido completamente.`);
     }
 }
 

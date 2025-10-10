@@ -65,6 +65,7 @@ import GameScreensEnum from "../../../enums/GameScreensEnum";
 import socket from "../../../sockets/socket.js";
 import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
 import MenuTypeEnum from "../../../enums/MenuTypeEnum";
+import earlyEventBuffer from "../../../utils/EarlyEventBuffer.js";
 
 export default {
   props: {
@@ -162,6 +163,9 @@ export default {
     socket.off(ResponseSocketsEnum.MINIGAME_JOIN);
     socket.on(ResponseSocketsEnum.MINIGAME_JOIN, (response) => {
       if (response.success) {
+        // Activar el buffer INMEDIATAMENTE para capturar eventos tempranos
+        earlyEventBuffer.activate();
+        
         this.onJoinMinigameScene(response.sceneType, response.data);
       } else {
         if (import.meta.env.VITE_APP_ENV === "local") {
@@ -178,6 +182,9 @@ export default {
     socket.off(ResponseSocketsEnum.JOIN_PUBLIC_SCENE);
     socket.on(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, (response) => {
       if (response.success) {
+        // Activar el buffer INMEDIATAMENTE para capturar eventos tempranos
+        earlyEventBuffer.activate();
+        
         let sceneryType = response.data.scenery.type;
         this.onJoinPublicScene(sceneryType, response.data);
       } else {
@@ -195,6 +202,9 @@ export default {
     socket.off(ResponseSocketsEnum.JOIN_PRIVATE_SCENE);
     socket.on(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, (response) => {
       if (response.success) {
+        // Activar el buffer INMEDIATAMENTE para capturar eventos tempranos
+        earlyEventBuffer.activate();
+        
         let sceneryType = response.data.scenery.type;
         this.onJoinPrivateScene(sceneryType, response.data);
       } else {

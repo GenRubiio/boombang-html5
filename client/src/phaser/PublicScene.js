@@ -20,9 +20,10 @@ import asset_drink_image from "@/assets/game/scene/interactions/drink.webp";
 import asset_rose_image from "@/assets/game/scene/interactions/rose.webp";
 import asset_accept_image from "@/assets/game/scene/interactions/accept.png";
 import asset_reject_image from "@/assets/game/scene/interactions/reject.png";
-import i18n from "../plugins/i18n";
 import ButtonsPublicSceneHtml from "./html/public-scene/ButtonsPublicSceneHtml";
 import SceneUtils from "../utils/SceneUtils";
+import earlyEventBuffer from "../utils/EarlyEventBuffer"; // Buffer de eventos tempranos
+import AddUserController from "./controllers/scene/AddUserController"; // Para procesar usuarios del buffer
 
 
 export default class PublicScene extends Phaser.Scene {
@@ -35,6 +36,10 @@ export default class PublicScene extends Phaser.Scene {
         this.avatarsEssentialReady = false;
         this.allAvatarsReady = false;
         this.avatarLoadingProgress = 0;
+        
+        // Sistema de buffer de eventos
+        this.isSceneReady = false;
+        this.eventBuffer = [];
     }
 
     init(data) {
@@ -62,7 +67,7 @@ export default class PublicScene extends Phaser.Scene {
         this.load.image("asset_reject_image", asset_reject_image);
     }
 
-    create() {
+    async create() {
         //console.log("🎮 Inicializando PublicScene...");
         
         if (!this.plugins.get('rexColorReplacePipeline')) {
@@ -87,12 +92,16 @@ export default class PublicScene extends Phaser.Scene {
         // Configurar listeners para eventos del sistema de avatares
         this.setupAvatarSystemListeners();
 
+        // Configurar sockets PRIMERO para no perder eventos
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicSceneResponse.main(this); // Respuesta de la escena pública
 
         PublicSceneLoader.main(this, false);
-        CreateSceneController.main(this, this.sceneData); // Crear escena con jugadores
+        
+        // Crear usuarios iniciales
+        await CreateSceneController.main(this, this.sceneData);
+        
         this.vueComponent.$emit("updateLoading", false);
 
         this.chatManager = new OverheadChatAnimation(this);
@@ -107,6 +116,34 @@ export default class PublicScene extends Phaser.Scene {
         // Configurar controlador unificado para mover/ajustar sprites con show_controller
         // Solo si existen elementos registrados por el loader
         SceneUtils.setupPublicMoveController(this);
+        
+        // Marcar escena como lista
+        this.isSceneReady = true;
+        
+        // Obtener eventos capturados por el EarlyEventBuffer
+        const earlyEvents = earlyEventBuffer.deactivateAndFlush();
+        
+        // Agregar eventos tempranos al buffer de la escena
+        earlyEvents.forEach(event => {
+            this.eventBuffer.push({
+                type: 'NEW_USER_JOIN_SCENE',
+                data: event.data,
+                callback: () => AddUserController.processUser(this, event.data.user)
+            });
+        });
+        
+        // Procesar todos los eventos en buffer con un pequeño delay entre cada uno
+        const totalEvents = this.eventBuffer.length;
+        if (totalEvents > 0) {
+            this.eventBuffer.forEach((bufferedEvent, index) => {
+                setTimeout(() => {
+                    bufferedEvent.callback();
+                }, index * 100); // 100ms de delay entre cada evento
+            });
+            
+            // Limpiar buffer
+            this.eventBuffer = [];
+        }
     }
 
     createHTMLButtons() {
@@ -246,6 +283,13 @@ export default class PublicScene extends Phaser.Scene {
 
     shutdown() {
         //console.log("🧹 Shutting down PublicScene...");
+
+        // Limpiar buffer de eventos
+        this.eventBuffer = [];
+        this.isSceneReady = false;
+        
+        // Limpiar el buffer global de eventos tempranos
+        earlyEventBuffer.clear();
 
         // Limpiar del sistema de avatares
         Object.keys(this.users).forEach(userId => {
