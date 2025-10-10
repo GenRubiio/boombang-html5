@@ -23,8 +23,9 @@ import asset_drink_image from "@/assets/game/scene/interactions/drink.webp";
 import asset_rose_image from "@/assets/game/scene/interactions/rose.webp";
 import asset_accept_image from "@/assets/game/scene/interactions/accept.png";
 import asset_reject_image from "@/assets/game/scene/interactions/reject.png";
-import i18n from "../plugins/i18n";
 import CatalogItemTypeOfBehaviorEnum from "../enums/CatalogItemTypeOfBehaviorEnum";
+import earlyEventBuffer from "../utils/EarlyEventBuffer"; // Buffer de eventos tempranos
+import AddUserController from "./controllers/scene/AddUserController"; // Para procesar usuarios del buffer
 
 export default class PrivateScene extends Phaser.Scene {
     constructor() {
@@ -39,6 +40,10 @@ export default class PrivateScene extends Phaser.Scene {
         this.avatarsEssentialReady = false;
         this.allAvatarsReady = false;
         this.avatarLoadingProgress = 0;
+        
+        // Sistema de buffer de eventos
+        this.isSceneReady = false;
+        this.eventBuffer = [];
     }
 
     init(data) {
@@ -120,7 +125,7 @@ export default class PrivateScene extends Phaser.Scene {
         });
     }
 
-    create() {
+    async create() {
         //console.log("🏠 Inicializando PrivateScene...");
         
         if (!this.plugins.get('rexColorReplacePipeline')) {
@@ -149,7 +154,9 @@ export default class PrivateScene extends Phaser.Scene {
         SceneResponseSockets.main(this);
 
         PrivateSceneLoader.main(this, this.sceneData.scenery.type, false);
-        CreateSceneController.main(this, this.sceneData);
+        
+        // Crear usuarios iniciales
+        await CreateSceneController.main(this, this.sceneData);
 
         this.tileBlitter = this.add.blitter(0, 0, "tile");
         this.initializeTileGrid();
@@ -176,6 +183,34 @@ export default class PrivateScene extends Phaser.Scene {
 
         if (this.sceneData.myScene) {
             this.createHTMLButtons();
+        }
+
+        // Marcar escena como lista
+        this.isSceneReady = true;
+        
+        // Obtener eventos capturados por el EarlyEventBuffer
+        const earlyEvents = earlyEventBuffer.deactivateAndFlush();
+        
+        // Agregar eventos tempranos al buffer de la escena
+        earlyEvents.forEach(event => {
+            this.eventBuffer.push({
+                type: 'NEW_USER_JOIN_SCENE',
+                data: event.data,
+                callback: () => AddUserController.processUser(this, event.data.user)
+            });
+        });
+        
+        // Procesar todos los eventos en buffer con un pequeño delay entre cada uno
+        const totalEvents = this.eventBuffer.length;
+        if (totalEvents > 0) {
+            this.eventBuffer.forEach((bufferedEvent, index) => {
+                setTimeout(() => {
+                    bufferedEvent.callback();
+                }, index * 100); // 100ms de delay entre cada evento
+            });
+            
+            // Limpiar buffer
+            this.eventBuffer = [];
         }
 
         this.handleSockets();
@@ -1018,6 +1053,13 @@ export default class PrivateScene extends Phaser.Scene {
     }
 
     shutdown() {
+        // Limpiar buffer de eventos
+        this.eventBuffer = [];
+        this.isSceneReady = false;
+        
+        // Limpiar el buffer global de eventos tempranos
+        earlyEventBuffer.clear();
+        
         RemovePhaserSocketsUtil.main(socket);
         if (this.chatManager) {
             this.chatManager.destroy();

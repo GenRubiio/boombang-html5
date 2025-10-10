@@ -8,6 +8,7 @@ const UserResource = require('../resources/UserResource');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const MinigameInstancesCollection = require('../collections/MinigameInstancesCollection');
+const sceneMutex = require('../utils/SceneMutex');
 
 class MatchMakerInstance {
     constructor(requiredPlayers, io) {
@@ -102,6 +103,9 @@ class MatchMakerInstance {
     }
 
     async callUsers(miniGameInstance, players, io) {
+        // Usar el mutex global para sincronizar el acceso a la escena
+        const release = await sceneMutex.acquire(miniGameInstance.id);
+        
         try {
             // Notificar a los clientes que ya no están en la cola de espera
             for (const player of players) {
@@ -164,6 +168,9 @@ class MatchMakerInstance {
             this.clearNotifiedUsers(miniGameInstance, players);
         } catch (err) {
             console.error('Error al llamar a los usuarios:', err);
+            throw err;
+        } finally {
+            release();
         }
     }
 

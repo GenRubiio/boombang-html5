@@ -10,12 +10,18 @@ import CreateSceneController from "./controllers/scene/CreateSceneController"; /
 import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utilidad para eliminar sockets
 import TintManager from "./managers/TintManager"; // Gestor de tintes
 import AvatarSystemController from "./controllers/AvatarSystemController.js"; // Sistema de avatares
+import earlyEventBuffer from "../utils/EarlyEventBuffer"; // Buffer de eventos tempranos
+import AddUserController from "./controllers/scene/AddUserController"; // Para procesar usuarios del buffer
 
 export default class MinigameScene extends Phaser.Scene {
     constructor() {
         super("MinigameScene");
         this.users = {}; // Reiniciar al crear una nueva instancia
         this.avatarAnimations = {}; // Reiniciar al crear una nueva instancia
+        
+        // Sistema de buffer de eventos
+        this.isSceneReady = false;
+        this.eventBuffer = [];
     }
 
     init(data) {
@@ -33,7 +39,7 @@ export default class MinigameScene extends Phaser.Scene {
         this.load.image("shadow", asset_shadow_image);
     }
 
-    create() {
+    async create() {
         if (!this.plugins.get('rexColorReplacePipeline')) {
             this.plugins.start('rexColorReplacePipeline');
         }
@@ -54,7 +60,10 @@ export default class MinigameScene extends Phaser.Scene {
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
 
         MinigameSceneLoader.main(this, this.sceneData.scenery.type, false);
-        CreateSceneController.main(this, this.sceneData); // Crear escena con jugadores
+        
+        // Crear usuarios iniciales
+        await CreateSceneController.main(this, this.sceneData);
+        
         this.vueComponent.$emit("updateLoading", false);
 
         this.chatManager = new OverheadChatAnimation(this);
@@ -63,6 +72,34 @@ export default class MinigameScene extends Phaser.Scene {
         this.events.on('destroy', this.destroy, this);
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
+        
+        // Marcar escena como lista
+        this.isSceneReady = true;
+        
+        // Obtener eventos capturados por el EarlyEventBuffer
+        const earlyEvents = earlyEventBuffer.deactivateAndFlush();
+        
+        // Agregar eventos tempranos al buffer de la escena
+        earlyEvents.forEach(event => {
+            this.eventBuffer.push({
+                type: 'NEW_USER_JOIN_SCENE',
+                data: event.data,
+                callback: () => AddUserController.processUser(this, event.data.user)
+            });
+        });
+        
+        // Procesar todos los eventos en buffer con un pequeño delay entre cada uno
+        const totalEvents = this.eventBuffer.length;
+        if (totalEvents > 0) {
+            this.eventBuffer.forEach((bufferedEvent, index) => {
+                setTimeout(() => {
+                    bufferedEvent.callback();
+                }, index * 100); // 100ms de delay entre cada evento
+            });
+            
+            // Limpiar buffer
+            this.eventBuffer = [];
+        }
     }
 
     /**
@@ -101,6 +138,14 @@ export default class MinigameScene extends Phaser.Scene {
 
     shutdown() {
         //console.log("Shutting down scene with exclusion lists.");
+        
+        // Limpiar buffer de eventos
+        this.eventBuffer = [];
+        this.isSceneReady = false;
+        
+        // Limpiar el buffer global de eventos tempranos
+        earlyEventBuffer.clear();
+        
         RemovePhaserSocketsUtil.main(socket); // Eliminar eventos de socket
 
         if (this.chatManager) {

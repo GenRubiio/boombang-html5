@@ -63,7 +63,24 @@ function setupNameTagCleanup(scene) {
 
 class AddUserController {
     static async main(gameScene, userData) {
-        if (gameScene.users[userData.id]) return;
+        // Verificar si la escena está lista para procesar eventos
+        if (!gameScene.isSceneReady) {
+            gameScene.eventBuffer.push({
+                type: 'ADD_USER',
+                data: userData,
+                callback: () => AddUserController.processUser(gameScene, userData)
+            });
+            return;
+        }
+        
+        // Procesar inmediatamente si la escena está lista
+        return AddUserController.processUser(gameScene, userData);
+    }
+    
+    static async processUser(gameScene, userData) {
+        if (gameScene.users[userData.id]) {
+            return;
+        }
 
         // engancha limpieza de nameTags al cerrar la escena
         setupNameTagCleanup(gameScene);

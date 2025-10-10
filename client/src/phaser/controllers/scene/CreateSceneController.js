@@ -23,7 +23,7 @@ class CreateSceneController {
     }
 
     this.#createArrows(gameScene);
-    this.createUsers(gameScene, usersData, authUserData);
+    await this.createUsers(gameScene, usersData, authUserData);
   }
 
   static createTile(gameScene, map, rows, cols) {
@@ -381,15 +381,18 @@ class CreateSceneController {
     }
   }
 
-  static createUsers(gameScene, usersData, authUserData) {
-    // Crear los jugadores iniciales
-    (async () => {
-      for (const userData of usersData) {
+  static async createUsers(gameScene, usersData, authUserData) {
+    // Crear los jugadores iniciales de manera secuencial para evitar condiciones de carrera
+    try {
+      for (let i = 0; i < usersData.length; i++) {
+        const userData = usersData[i];
         await AddUserController.main(gameScene, userData);
       }
-      //console.log("Players loaded", gameScene.users);
+      
       SetUserCardController.main(gameScene, authUserData, authUserData);
-    })();
+    } catch (error) {
+      console.error("🎮 CreateSceneController: Error creando usuarios:", error);
+    }
   }
 }
 
