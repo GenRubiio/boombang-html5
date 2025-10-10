@@ -73,7 +73,12 @@ export default {
     selectedUser(newUser) {
       this.$emit("user-selected", newUser);
     },
+    users(newUsers) {
+      // Emitir evento cuando la lista de usuarios cambie
+      this.$emit("users-updated", newUsers);
+    },
   },
+  expose: ['users'], // Exponer users para que el componente padre pueda acceder
   methods: {
     toggleOpen() {
       this.isOpen = !this.isOpen;
