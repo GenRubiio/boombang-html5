@@ -46,6 +46,11 @@ class ApiKeyCrudController extends CrudController
             'type' => 'select_from_array',
             'options' => \App\Enums\ApiKeysTypeEnum::toAssociativeArray(),
         ]);
+        $this->crud->addColumn([
+            'name' => 'model',
+            'label' => 'Model',
+            'type' => 'text',
+        ]);
     }
 
 
@@ -69,6 +74,11 @@ class ApiKeyCrudController extends CrudController
                 'label' => 'Type',
                 'type' => 'select_from_array',
                 'options' => \App\Enums\ApiKeysTypeEnum::toAssociativeArray(),
+            ],
+            [
+                'name' => 'model',
+                'label' => 'Model',
+                'type' => 'text',
             ],
             [
                 'name' => 'active',

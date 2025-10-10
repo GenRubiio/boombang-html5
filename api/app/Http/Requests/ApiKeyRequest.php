@@ -25,9 +25,10 @@ class ApiKeyRequest extends FormRequest
     public function rules()
     {
         return [
-            'key' => 'required|min:5|max:255',
+            'key' => 'required',
             'type' => 'required|in:' . implode(',', array_keys(\App\Enums\ApiKeysTypeEnum::toAssociativeArray())),
             'description' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
             'active' => 'boolean',
         ];
     }
