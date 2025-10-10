@@ -8,14 +8,28 @@
     <div class="base-chat__container">
       <div class="base-chat__container__chat" @dragover.prevent @drop.prevent>
         <img :src="asset_base_image" :alt="$t('chat.base_alt')" />
-        <UsersChatListComponent @user-selected="handleUserSelected" />
+        <UsersChatListComponent 
+          ref="usersList"
+          @user-selected="handleUserSelected"
+          @users-updated="handleUsersUpdated"
+        />
         <CreditsComponent />
+        <MentionAutocompleteComponent
+          :users="availableUsers"
+          :search-query="mentionSearchQuery"
+          :show-suggestions="showMentionSuggestions"
+          :position="mentionPosition"
+          @select-user="insertMention"
+          ref="mentionAutocomplete"
+        />
         <input
           ref="messageInput"
           v-model="message"
           type="text"
           :placeholder="$t('chat.placeholder')"
-          @keyup.enter="sendMessage"
+          @keydown="handleInputKeydown"
+          @keydown.enter="handleEnterKey"
+          @input="handleInput"
           maxlength="60"
         />
         <div
@@ -40,12 +54,14 @@ import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
 import EmojisPickerComponent from "./base-chat/EmojisPickerComponent.vue";
 import UsersChatListComponent from "./base-chat/UsersChatListComponent.vue";
 import CreditsComponent from "./base-chat/CreditsComponent.vue";
+import MentionAutocompleteComponent from "./base-chat/MentionAutocompleteComponent.vue";
 
 export default {
   components: {
     EmojisPickerComponent,
     UsersChatListComponent,
     CreditsComponent,
+    MentionAutocompleteComponent,
   },
   data() {
     return {
@@ -54,7 +70,22 @@ export default {
       message: "",
       showEmojiPicker: false,
       selectedUser: null,
+      // Mention system
+      showMentionSuggestions: false,
+      mentionSearchQuery: "",
+      mentionStartPos: -1,
+      mentionPosition: { left: 282, bottom: 65 },
+      cachedUsers: [], // Cache de usuarios para el autocompletado
     };
+  },
+  computed: {
+    availableUsers() {
+      // Usar cache primero, luego intentar obtener del ref
+      if (this.cachedUsers.length > 0) {
+        return this.cachedUsers;
+      }
+      return this.$refs.usersList?.users || [];
+    },
   },
   mounted() {
     document.addEventListener("keydown", this.handleKeydown);
@@ -66,6 +97,10 @@ export default {
     handleUserSelected(user) {
       this.selectedUser = user;
     },
+    handleUsersUpdated(users) {
+      this.cachedUsers = users;
+      console.log("Usuarios disponibles para menciones:", users);
+    },
     toggleEmojiPicker() {
       this.showEmojiPicker = !this.showEmojiPicker;
     },
@@ -73,6 +108,105 @@ export default {
       const maxLength = 60;
       this.message = (this.message + emoji).slice(0, maxLength);
       this.$refs.messageInput.focus();
+    },
+    handleInput(event) {
+      const input = event.target;
+      const cursorPos = input.selectionStart;
+      const text = this.message;
+
+      console.log("Input event - texto:", text, "cursor:", cursorPos);
+
+      // Buscar el último @ antes del cursor
+      let lastAtPos = -1;
+      for (let i = cursorPos - 1; i >= 0; i--) {
+        if (text[i] === "@") {
+          // Verificar que el @ está al inicio o precedido por un espacio
+          if (i === 0 || text[i - 1] === " ") {
+            lastAtPos = i;
+            break;
+          }
+        }
+        // Si encontramos un espacio antes del @, no hay mención activa
+        if (text[i] === " ") {
+          break;
+        }
+      }
+
+      if (lastAtPos !== -1) {
+        // Hay una mención activa
+        this.mentionStartPos = lastAtPos;
+        this.mentionSearchQuery = text.substring(lastAtPos + 1, cursorPos);
+        this.showMentionSuggestions = true;
+        this.updateMentionPosition();
+        console.log("Mención activa - búsqueda:", this.mentionSearchQuery, "usuarios:", this.availableUsers);
+      } else {
+        // No hay mención activa
+        this.closeMentionSuggestions();
+      }
+    },
+    handleInputKeydown(event) {
+      if (this.showMentionSuggestions) {
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          this.$refs.mentionAutocomplete?.selectNext();
+        } else if (event.key === "ArrowUp") {
+          event.preventDefault();
+          this.$refs.mentionAutocomplete?.selectPrevious();
+        } else if (event.key === "Enter" || event.key === "Tab") {
+          if (this.$refs.mentionAutocomplete?.filteredUsers?.length > 0) {
+            event.preventDefault();
+            event.stopPropagation(); // Evitar que el evento suba
+            this.$refs.mentionAutocomplete?.selectCurrent();
+            return; // Salir sin enviar el mensaje
+          }
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          this.closeMentionSuggestions();
+        }
+      }
+    },
+    handleEnterKey(event) {
+      // Si hay sugerencias de menciones abiertas, no enviar el mensaje
+      if (this.showMentionSuggestions && this.$refs.mentionAutocomplete?.filteredUsers?.length > 0) {
+        return; // Ya manejado en handleInputKeydown
+      }
+      // De lo contrario, enviar el mensaje
+      this.sendMessage();
+    },
+    insertMention(user) {
+      const beforeMention = this.message.substring(0, this.mentionStartPos);
+      const afterCursor = this.message.substring(
+        this.$refs.messageInput.selectionStart
+      );
+      
+      // Insertar la mención con un espacio al final
+      this.message = `${beforeMention}@${user.username} ${afterCursor}`.slice(0, 60);
+      
+      this.closeMentionSuggestions();
+      
+      // Poner el cursor después de la mención
+      this.$nextTick(() => {
+        const newCursorPos = beforeMention.length + user.username.length + 2;
+        this.$refs.messageInput.focus();
+        this.$refs.messageInput.setSelectionRange(newCursorPos, newCursorPos);
+      });
+    },
+    closeMentionSuggestions() {
+      this.showMentionSuggestions = false;
+      this.mentionSearchQuery = "";
+      this.mentionStartPos = -1;
+    },
+    updateMentionPosition() {
+      // Calcular la posición del dropdown basándose en el input
+      const input = this.$refs.messageInput;
+      if (input) {
+        const inputRect = input.getBoundingClientRect();
+        // Posición relativa al contenedor del chat
+        this.mentionPosition = {
+          left: 282, // Misma posición left que el input
+          bottom: 65, // Bajado de 80 a 65
+        };
+      }
     },
     sendMessage() {
       if (this.message.trim() !== "") {
@@ -83,6 +217,7 @@ export default {
         });
         this.message = "";
         this.showEmojiPicker = false;
+        this.closeMentionSuggestions();
       }
     },
     exitToLobby() {
