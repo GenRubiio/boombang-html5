@@ -28,7 +28,6 @@
           type="text"
           :placeholder="$t('chat.placeholder')"
           @keydown="handleInputKeydown"
-          @keydown.enter="handleEnterKey"
           @input="handleInput"
           maxlength="60"
         />
@@ -99,7 +98,7 @@ export default {
     },
     handleUsersUpdated(users) {
       this.cachedUsers = users;
-      console.log("Usuarios disponibles para menciones:", users);
+      //console.log("Usuarios disponibles para menciones:", users);
     },
     toggleEmojiPicker() {
       this.showEmojiPicker = !this.showEmojiPicker;
@@ -114,7 +113,7 @@ export default {
       const cursorPos = input.selectionStart;
       const text = this.message;
 
-      console.log("Input event - texto:", text, "cursor:", cursorPos);
+      //console.log("Input event - texto:", text, "cursor:", cursorPos);
 
       // Buscar el último @ antes del cursor
       let lastAtPos = -1;
@@ -138,7 +137,7 @@ export default {
         this.mentionSearchQuery = text.substring(lastAtPos + 1, cursorPos);
         this.showMentionSuggestions = true;
         this.updateMentionPosition();
-        console.log("Mención activa - búsqueda:", this.mentionSearchQuery, "usuarios:", this.availableUsers);
+        //console.log("Mención activa - búsqueda:", this.mentionSearchQuery, "usuarios:", this.availableUsers);
       } else {
         // No hay mención activa
         this.closeMentionSuggestions();
@@ -155,23 +154,19 @@ export default {
         } else if (event.key === "Enter" || event.key === "Tab") {
           if (this.$refs.mentionAutocomplete?.filteredUsers?.length > 0) {
             event.preventDefault();
-            event.stopPropagation(); // Evitar que el evento suba
+            event.stopPropagation();
             this.$refs.mentionAutocomplete?.selectCurrent();
-            return; // Salir sin enviar el mensaje
+            return false; // Detener completamente el evento
           }
         } else if (event.key === "Escape") {
           event.preventDefault();
           this.closeMentionSuggestions();
         }
+      } else if (event.key === "Enter") {
+        // Si no hay menciones activas y se presiona Enter, enviar mensaje
+        event.preventDefault();
+        this.sendMessage();
       }
-    },
-    handleEnterKey(event) {
-      // Si hay sugerencias de menciones abiertas, no enviar el mensaje
-      if (this.showMentionSuggestions && this.$refs.mentionAutocomplete?.filteredUsers?.length > 0) {
-        return; // Ya manejado en handleInputKeydown
-      }
-      // De lo contrario, enviar el mensaje
-      this.sendMessage();
     },
     insertMention(user) {
       const beforeMention = this.message.substring(0, this.mentionStartPos);

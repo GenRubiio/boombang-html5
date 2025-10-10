@@ -19,12 +19,6 @@ class AIProviderManager
         'claude_api_key' => ClaudeProvider::class,
     ];
 
-    protected array $defaultModels = [
-        'gemini_api_key' => 'gemini-2.5-flash',
-        'openai_api_key' => 'gpt-4o-mini',
-        'claude_api_key' => 'claude-3-5-sonnet-20241022',
-    ];
-
     /**
      * Get a random available provider with load balancing
      * 
@@ -196,10 +190,13 @@ class AIProviderManager
             throw new Exception("Unknown provider type: {$apiKey->type}");
         }
 
-        $model = $this->defaultModels[$apiKey->type] ?? null;
+        // Use the model specified in the ApiKey, or throw exception if not set
+        if (empty($apiKey->model)) {
+            throw new Exception("Model not specified for API key ID: {$apiKey->id}");
+        }
 
         // Use decrypted key (API keys are encrypted in database)
-        return new $providerClass($apiKey->decrypted_key, $model);
+        return new $providerClass($apiKey->decrypted_key, $apiKey->model);
     }
 
     /**

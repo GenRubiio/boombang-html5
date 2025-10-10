@@ -28,6 +28,7 @@ class ApiKey extends Model
         'user_id',
         'key',
         'type',
+        'model',
         'description',
         'active',
     ];
