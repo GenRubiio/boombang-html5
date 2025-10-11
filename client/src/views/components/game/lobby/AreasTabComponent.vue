@@ -2,7 +2,10 @@
   <div class="lobby__scenes-tab">
     <div class="lobby__scenes-list">
       <div v-for="publicScene in publicScenes" :key="publicScene.uuid">
-        <button @click="handleClick(publicScene.uuid, MenuTypeEnum.PUBLIC_SCENE)" :disabled="isJoining">
+        <button
+          @click="handleClick(publicScene.uuid, MenuTypeEnum.PUBLIC_SCENE)"
+          :disabled="isJoining"
+        >
           {{ publicScene.name }}
           <span>{{ publicScene.total_users_in }}</span>
         </button>
@@ -40,6 +43,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  max-height: 315px;
+  overflow-y: overlay;
 }
 
 .lobby__scenes-list button {
