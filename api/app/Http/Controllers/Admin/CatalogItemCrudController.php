@@ -92,7 +92,7 @@ class CatalogItemCrudController extends CrudController
         $this->crud->addColumn([
             'name' => 'is_active',
             'label' => 'Activo',
-            'type' => 'check',
+            'type' => 'btnToggle',
         ]);
 
         $this->crud->addColumn([
