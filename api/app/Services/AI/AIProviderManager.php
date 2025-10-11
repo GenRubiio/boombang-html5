@@ -39,6 +39,12 @@ class AIProviderManager
             ->get();
 
         if ($availableKeys->isEmpty()) {
+            // Log the exact issue for debugging
+            Log::error('No API keys found', [
+                'preferred_types' => $preferredTypes,
+                'total_keys' => ApiKey::count(),
+                'active_keys' => ApiKey::where('active', true)->count(),
+            ]);
             throw new Exception('No active API keys available for AI providers');
         }
 

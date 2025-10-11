@@ -14,17 +14,18 @@ const BotApiService = require('../../../services-api/BotApiService');
 class UserSendChatController {
     static async main(socket, io, data) {
         try {
-            //console.log(`[CHAT] Message received from ${socket.id}: "${data.message}"`);
+            //console.log(`[CHAT-DEBUG] Message received from ${socket.id}: "${data.message}"`);
 
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user || !user.currentArea) {
-                //console.log(`[CHAT] User not found or not in area`);
+                //console.log(`[CHAT-DEBUG] User not found or not in area`);
                 return;
             }
 
-            //console.log(`[CHAT] User ${user.username} in area ${user.currentArea.id}`);
+            //console.log(`[CHAT-DEBUG] User ${user.username} in area ${user.currentArea.id}`);
 
             if (this.#validateIfCommand(user, data)) {
+                //console.log(`[CHAT-DEBUG] Message was a command, returning`);
                 return;
             }
 
@@ -42,7 +43,7 @@ class UserSendChatController {
                 // Extract mentions
                 const mentions = MentionExtractor.extract(data.message);
 
-                //console.log(`[CHAT] Mentions found: ${JSON.stringify(mentions)}`);
+                ////console.log(`[CHAT] Mentions found: ${JSON.stringify(mentions)}`);
 
                 if (data.recipient) {
                     const recipient = ConnectedUsersCollection.getBySocketId(data.recipient);
@@ -80,11 +81,12 @@ class UserSendChatController {
                     });
 
                     // Process bot mentions
-                    //console.log(`[CHAT] Processing bot mentions...`);
+                    //console.log(`[CHAT-DEBUG] Processing bot mentions...`);
+                    //console.log(`[CHAT-DEBUG] Mentions found: ${JSON.stringify(mentions)}`);
                     await this.#processBotMentions(user, mentions, data.message, detectedLanguage, visualWidth);
                 }
             } else {
-                //console.log(`[CHAT] User ${user.username} is blocked from chat`);
+                ////console.log(`[CHAT] User ${user.username} is blocked from chat`);
             }
 
         } catch (err) {
@@ -98,22 +100,45 @@ class UserSendChatController {
      * Process bot mentions and generate responses
      */
     static async #processBotMentions(user, mentions, message, language, visualWidth) {
-        if (!mentions || mentions.length === 0) return;
+        //console.log(`[BOT-MENTIONS-DEBUG] Starting processBotMentions`);
+        //console.log(`[BOT-MENTIONS-DEBUG] Mentions: ${JSON.stringify(mentions)}`);
+        //console.log(`[BOT-MENTIONS-DEBUG] Message: "${message}"`);
+        //console.log(`[BOT-MENTIONS-DEBUG] Language: ${language}`);
+        
+        if (!mentions || mentions.length === 0) {
+            //console.log(`[BOT-MENTIONS-DEBUG] No mentions found, returning`);
+            return;
+        }
 
         for (const mentionedName of mentions) {
             try {
+                //console.log(`[BOT-MENTIONS-DEBUG] Processing mention: ${mentionedName}`);
+                
                 // Find user in room by username using SceneModel helper
                 const mentionedUser = user.currentArea.findUserByUsername(mentionedName);
 
-                if (!mentionedUser) continue;
+                //console.log(`[BOT-MENTIONS-DEBUG] Found mentioned user: ${mentionedUser ? mentionedUser.username : 'null'}`);
+
+                if (!mentionedUser) {
+                    //console.log(`[BOT-MENTIONS-DEBUG] User ${mentionedName} not found in area`);
+                    continue;
+                }
+
+                //console.log(`[BOT-MENTIONS-DEBUG] Checking if ${mentionedUser.username} is bot: ${mentionedUser.is_bot}`);
 
                 // Check if mentioned user is a bot
-                if (mentionedUser.is_bot !== true) continue;
+                if (mentionedUser.is_bot !== true) {
+                    //console.log(`[BOT-MENTIONS-DEBUG] User ${mentionedName} is not a bot`);
+                    continue;
+                }
+
+                //console.log(`[BOT-MENTIONS-DEBUG] Bot detected! Starting response pipeline for ${mentionedUser.username}`);
 
                 // Bot detected! Start response pipeline (no room tracking)
                 await this.#handleBotResponse(user, mentionedUser, message, language);
 
             } catch (error) {
+                //console.log(`[BOT-MENTIONS-DEBUG] Error processing bot mention for ${mentionedName}: ${error.message}`);
                 Log.error(`Error processing bot mention for ${mentionedName}: ${error.message}`);
             }
         }
@@ -124,54 +149,56 @@ class UserSendChatController {
      */
     static async #handleBotResponse(user, bot, message, language) {
         try {
-            //console.log(`[BOT] Starting bot response for ${bot.username} to user ${user.username}`);
+            //console.log(`[BOT-DEBUG] Starting bot response for ${bot.username} to user ${user.username}`);
+            //console.log(`[BOT-DEBUG] Message: "${message}"`);
+            //console.log(`[BOT-DEBUG] Language: ${language}`);
 
             // (1) Check if bot can reply (quota + cooldown)
             const allowResponse = await BotApiService.canReply(bot.id, user.id);
 
-            //console.log(`[BOT] Allow reply response: ${JSON.stringify(allowResponse)}`);
+            //console.log(`[BOT-DEBUG] Allow reply response: ${JSON.stringify(allowResponse)}`);
 
             if (!allowResponse.ok) {
-                //console.log(`[BOT] Bot ${bot.username} cannot reply: ${allowResponse.reason}`);
+                //console.log(`[BOT-DEBUG] Bot ${bot.username} cannot reply: ${allowResponse.reason}`);
                 return;
             }
 
-            //console.log(`[BOT] Bot ${bot.username} can reply, generating response...`);
+            //console.log(`[BOT-DEBUG] Bot ${bot.username} can reply, generating response...`);
 
             // (2) Generate bot response
             const generateResponse = await BotApiService.generateResponse(bot.id, user.id, message, language);
 
-            //console.log(`[BOT] Generate response data: ${JSON.stringify(generateResponse)}`);
+            //console.log(`[BOT-DEBUG] Generate response data: ${JSON.stringify(generateResponse)}`);
 
             // Check if the response is successful
             if (!generateResponse.success) {
-                //console.log(`[BOT] Bot response generation failed: ${generateResponse.error || 'Unknown error'}`);
+                //console.log(`[BOT-DEBUG] Bot response generation failed: ${generateResponse.error || 'Unknown error'}`);
                 return;
             }
 
-            //console.log(`[BOT] ✅ Response generation successful!`);
+            //console.log(`[BOT-DEBUG] ✅ Response generation successful!`);
 
             const botReply = generateResponse.response;
             const meta = generateResponse.meta;
 
-            //console.log(`[BOT] Bot ${bot.username} responding with ${meta.provider} (${meta.model}): "${botReply}"`);
+            //console.log(`[BOT-DEBUG] Bot ${bot.username} responding with ${meta.provider} (${meta.model}): "${botReply}"`);
 
             // Validate bot object before emission
-            //console.log(`[BOT] Validating bot for emission:`);
-            //console.log(`[BOT] - bot.socket: ${bot.socket?.id}`);
-            //console.log(`[BOT] - bot.username: ${bot.username}`);
-            //console.log(`[BOT] - bot.avatarId: ${bot.avatarId}`);
-            //console.log(`[BOT] - bot.currentAreaPosition: ${JSON.stringify(bot.currentAreaPosition)}`);
-            //console.log(`[BOT] - user.currentArea: ${user.currentArea?.id}`);
+            //console.log(`[BOT-DEBUG] Validating bot for emission:`);
+            //console.log(`[BOT-DEBUG] - bot.socket: ${bot.socket?.id}`);
+            //console.log(`[BOT-DEBUG] - bot.username: ${bot.username}`);
+            //console.log(`[BOT-DEBUG] - bot.avatarId: ${bot.avatarId}`);
+            //console.log(`[BOT-DEBUG] - bot.currentAreaPosition: ${JSON.stringify(bot.currentAreaPosition)}`);
+            //console.log(`[BOT-DEBUG] - user.currentArea: ${user.currentArea?.id}`);
 
             // (3) Split and emit bot response in chunks of max 75 characters
             await this.#sendBotMessageInChunks(user, bot, botReply);
 
-            //console.log(`[BOT] Bot response emitted successfully!`);
+            //console.log(`[BOT-DEBUG] Bot response emitted successfully!`);
 
         } catch (error) {
-            //console.log(`[BOT] Error handling bot response: ${error.message}`);
-            //console.log(`[BOT] Stack: ${error.stack}`);
+            //console.log(`[BOT-DEBUG] Error handling bot response: ${error.message}`);
+            //console.log(`[BOT-DEBUG] Stack: ${error.stack}`);
         }
     }
 
@@ -234,16 +261,36 @@ class UserSendChatController {
         const MAX_CHARS = 75;
         const DELAY_MS = 1500; // 1.5 seconds between messages
 
-        // Split message into chunks of max 25 characters, respecting word boundaries
-        const chunks = this.#splitMessageIntoChunks(message, MAX_CHARS);
-
-        //console.log(`[BOT] Splitting message into ${chunks.length} chunks:`, chunks);
+        // Calculate mention length
+        const mentionPrefix = `@${user.username} `;
+        const mentionLength = mentionPrefix.length;
+        
+        // For the first chunk, we need to reserve space for the mention
+        // For subsequent chunks, we can use the full MAX_CHARS
+        let chunks = [];
+        
+        // If the message with mention fits in one chunk
+        if ((message.length + mentionLength) <= MAX_CHARS) {
+            chunks = [message];
+        } else {
+            // Split the message considering the mention will be added to first chunk
+            const firstChunkMaxChars = MAX_CHARS - mentionLength;
+            chunks = this.#splitMessageIntoChunks(message, firstChunkMaxChars, MAX_CHARS);
+        }
+        
+        //console.log(`[BOT-DEBUG] Splitting message into ${chunks.length} chunks with mention:`, chunks);
 
         for (let i = 0; i < chunks.length; i++) {
-            const chunk = chunks[i];
+            let chunk = chunks[i];
+            
+            // Add mention only to the first chunk
+            if (i === 0) {
+                chunk = mentionPrefix + chunk;
+            }
+            
             const animation = this.getTalkAnimation(bot.currentAreaPosition?.z || DirectionEnum.DOWN);
 
-            //console.log(`[BOT] Sending chunk ${i + 1}/${chunks.length}: "${chunk}"`);
+            //console.log(`[BOT-DEBUG] Sending chunk ${i + 1}/${chunks.length}: "${chunk}" (${chunk.length} chars)`);
 
             user.currentArea.emit(ResponseSocketsEnum.USER_SEND_CHAT, {
                 'user_socket': bot.socket.id,
@@ -263,27 +310,38 @@ class UserSendChatController {
 
     /**
      * Split message into chunks respecting word boundaries
+     * Supports different max chars for first chunk vs subsequent chunks
      */
-    static #splitMessageIntoChunks(message, maxChars) {
-        if (message.length <= maxChars) {
+    static #splitMessageIntoChunks(message, firstChunkMaxChars, subsequentChunkMaxChars = null) {
+        // If no subsequentChunkMaxChars provided, use firstChunkMaxChars for all
+        if (subsequentChunkMaxChars === null) {
+            subsequentChunkMaxChars = firstChunkMaxChars;
+        }
+
+        if (message.length <= firstChunkMaxChars) {
             return [message];
         }
 
         const chunks = [];
         let currentChunk = '';
         const words = message.split(' ');
+        let isFirstChunk = true;
 
         for (const word of words) {
+            const maxChars = isFirstChunk ? firstChunkMaxChars : subsequentChunkMaxChars;
+            
             // If adding this word would exceed the limit
             if (currentChunk.length + word.length + 1 > maxChars) {
                 // If current chunk is not empty, save it
                 if (currentChunk.trim()) {
                     chunks.push(currentChunk.trim());
                     currentChunk = word;
+                    isFirstChunk = false; // No longer the first chunk
                 } else {
                     // If word is too long, split it forcefully
                     chunks.push(word.substring(0, maxChars));
                     currentChunk = word.substring(maxChars);
+                    isFirstChunk = false;
                 }
             } else {
                 // Add word to current chunk

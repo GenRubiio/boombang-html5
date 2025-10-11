@@ -12,7 +12,7 @@ class ClaudeProvider implements AIProviderInterface
     protected string $apiKey;
     protected string $model;
 
-    public function __construct(string $apiKey, string $model = 'claude-3-5-sonnet-20241022')
+    public function __construct(string $apiKey, string $model)
     {
         $this->apiKey = $apiKey;
         $this->model = $model;

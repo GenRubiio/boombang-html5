@@ -12,11 +12,11 @@ export default class OverheadChatAnimation {
         this.lineSpacing = 5;
         this.pushSpeed = 1;
         this.checkInterval = 5000;
-        this.rightReserved = 220 * 2;
-        this.leftBound = 0;
+        this.rightReserved = (220 * 2) + 230;
+        this.leftBound = 230; // Margen izquierdo para evitar que el chat se salga de la pantalla
         this.textDepth = 9999;
         this.playerSprite = null;
-        this.areaStartHeight = 140 * 2;
+        this.areaStartHeight = (140 * 2) + 30;
 
         // Array para almacenar los contenedores de mensajes
         this.messages = [];
@@ -84,7 +84,7 @@ export default class OverheadChatAnimation {
         const playerBounds = this.playerSprite.getBounds();
         const sceneWidth = this.scene.game.config.width * 2;
         const rightBound = sceneWidth - this.rightReserved;
-        const minX = this.leftBound + (domElement.width / 2);
+        const minX = this.leftBound + (domElement.width / 2) + 50; // Margen extra de seguridad
         const maxX = rightBound - (domElement.width / 2);
         const finalX = Phaser.Math.Clamp(playerBounds.centerX, minX, maxX);
 

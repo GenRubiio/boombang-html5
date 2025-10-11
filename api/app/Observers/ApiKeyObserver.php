@@ -6,15 +6,30 @@ use App\Models\ApiKey;
 
 class ApiKeyObserver
 {
-    public function creating(ApiKey $apiKey): void
+    public function saving(ApiKey $apiKey): void
     {
         $user = backpack_user() ?? auth()->user();
         if ($user && empty($apiKey->user_id)) {
             $apiKey->user_id = $user->id;
         }
-        // Si aún no está cifrada (por ejemplo, cuando se crea)
-        if (!empty($apiKey->key)) {
-            $apiKey->key = encrypt($apiKey->key);
+
+        // Cifrar solo si el campo 'key' cambió
+        if ($apiKey->isDirty('key') && !empty($apiKey->key)) {
+
+            // Evitar doble cifrado: si ya viene cifrada, no tocar
+            $value = $apiKey->key;
+            $alreadyEncrypted = false;
+            try {
+                // Si puede desencriptarse sin error, asumimos que ya estaba cifrada
+                decrypt($value);
+                $alreadyEncrypted = true;
+            } catch (\Throwable $e) {
+                $alreadyEncrypted = false;
+            }
+
+            if (!$alreadyEncrypted) {
+                $apiKey->key = encrypt($value);
+            }
         }
     }
     /**

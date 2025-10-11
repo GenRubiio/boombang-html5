@@ -54,10 +54,10 @@ class BotConversationService
     {
         $bot = User::where('is_bot', true)->findOrFail($botId);
 
-        // Get recent messages between this bot and user
+        // Get recent messages between this specific bot and user (last 2 only to save tokens)
         $recentMessages = BotMessage::conversation($botId, $userId)
             ->orderBy('created_at', 'desc')
-            ->limit(10)
+            ->limit(2)
             ->get()
             ->reverse()
             ->values();
@@ -66,7 +66,7 @@ class BotConversationService
         $facts = BotFact::where('bot_id', $botId)
             ->where('user_id', $userId)
             ->orderBy('confidence', 'desc')
-            ->limit(10)
+            ->limit(5)
             ->pluck('fact')
             ->toArray();
 
@@ -97,8 +97,9 @@ class BotConversationService
                 $systemPrompt,
                 $messages,
                 [
-                    'temperature' => 0.9,
-                    'max_tokens' => 800,
+                    'temperature' => 0.8,
+                    'max_tokens' => 150,  // Aumentado para evitar error de Gemini
+                    'top_p' => 0.9,
                 ]
             );
 
@@ -112,9 +113,10 @@ class BotConversationService
                 'tokens' => $aiResponse['tokens'],
             ]);
 
-            // Increment usage and set cooldown
+            // Increment usage and set cooldown (increased cooldown to prevent rapid responses)
             $this->incrementDailyUsage($botId);
-            $this->setCooldown($botId, $userId, $bot->getCooldownSeconds());
+            $cooldownSeconds = max($bot->getCooldownSeconds(), 5); // Minimum 5 seconds cooldown
+            $this->setCooldown($botId, $userId, $cooldownSeconds);
 
             return [
                 'success' => true,
@@ -143,47 +145,18 @@ class BotConversationService
 
     protected function buildSystemPrompt(User $bot, array $context, string $language): string
     {
-        $prompt = $bot->bot_system_prompt;
-
-        // Only add language instruction if not already specified in bot prompt
-        if (!str_contains($bot->bot_system_prompt, 'idioma') && !str_contains($bot->bot_system_prompt, 'language')) {
-            $languageNames = [
-                'es' => 'español',
-                'en' => 'English',
-                'ru' => 'русский',
-                'ja' => '日本語',
-                'zh' => '中文',
-                'ko' => '한국어',
-            ];
-            $langName = $languageNames[$language] ?? 'the same language as the user';
-            $prompt .= "\n\nResponde en {$langName}.";
-        }
-
-        if (!empty($context['facts'])) {
-            $prompt .= "\n\nKNOWN FACTS:\n";
-            foreach ($context['facts'] as $fact) {
-                $prompt .= "- {$fact}\n";
-            }
-        }
-
-        return $prompt;
+        // NO usar system prompt - Gemini 2.5 gasta tokens pensando
+        return "";
     }
 
     protected function buildMessages(object $recentMessages, string $currentMessage): array
     {
-        $messages = [];
-
-        foreach ($recentMessages as $msg) {
-            $role = $msg->sender_type === 'bot' ? 'assistant' : 'user';
-            $messages[] = [
-                'role' => $role,
-                'content' => $msg->content,
-            ];
-        }
-
-        $messages[] = [
-            'role' => 'user',
-            'content' => $currentMessage,
+        // Start with just current message to minimize tokens
+        $messages = [
+            [
+                'role' => 'user',
+                'content' => $currentMessage,
+            ]
         ];
 
         return $messages;
