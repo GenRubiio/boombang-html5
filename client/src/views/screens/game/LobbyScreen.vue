@@ -135,7 +135,7 @@ export default {
   padding: 10px;
   text-align: start;
   height: 100vh;
-  max-height: 350px;
+  max-height: 357px;
 }
 
 .lobby__scenes {
