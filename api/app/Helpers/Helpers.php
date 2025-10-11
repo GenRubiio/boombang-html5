@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\AuthHelper;
+use App\Helpers\CrudHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\UtilsHelper;
 
@@ -304,3 +305,13 @@ if (!function_exists('urlDocker')) {
     }
 }
 
+/**
+ * CrudHelper
+ */
+
+if (!function_exists('toggleField')) {
+    function toggleField($request)
+    {
+        return CrudHelper::toggleField($request);
+    }
+}

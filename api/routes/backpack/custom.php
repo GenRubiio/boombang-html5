@@ -16,6 +16,11 @@ Route::group([
     ),
     'namespace' => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
+    /** Toggle Active */
+    Route::post('toggleField', function (\Illuminate\Http\Request $request) {
+        return toggleField($request);
+    })->name('toggleField');
+    
     Route::crud('public-scene', 'PublicSceneCrudController');
     Route::get('public-scene/{id}/duplicate', 'PublicSceneCrudController@duplicate');
     Route::crud('minigame-scene', 'MinigameSceneCrudController');
