@@ -12,7 +12,7 @@ class OpenAIProvider implements AIProviderInterface
     protected string $apiKey;
     protected string $model;
 
-    public function __construct(string $apiKey, string $model = 'gpt-4o-mini')
+    public function __construct(string $apiKey, string $model)
     {
         $this->apiKey = $apiKey;
         $this->model = $model;

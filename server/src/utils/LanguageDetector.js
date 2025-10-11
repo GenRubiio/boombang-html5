@@ -36,18 +36,24 @@ class LanguageDetector {
             return 'ru';
         }
 
-        // Spanish vs English detection (simple heuristic)
-        const spanishWords = /\b(hola|que|como|esta|por|para|con|todo|hacer|poder|gracias|aqui|donde|cuando|quien|cual|muy|mas|menos|bien|mal|si|no|yo|tu|el|ella|nosotros|vosotros|ellos|ellas)\b/i;
-        const englishWords = /\b(hello|what|how|is|are|for|with|all|do|can|thanks|here|where|when|who|which|very|more|less|good|bad|yes|no|i|you|he|she|we|they)\b/i;
+        // Spanish vs English detection (improved heuristic)
+        const spanishWords = /\b(hola|que|como|esta|estas|por|para|con|todo|hacer|poder|gracias|aqui|donde|cuando|quien|cual|muy|mas|menos|bien|mal|si|no|yo|tu|el|ella|nosotros|vosotros|ellos|ellas|me|te|se|alegro|cuentame|chiste|eres|soy|estoy)\b/i;
+        const englishWords = /\b(hello|what|how|is|are|for|with|all|do|can|thanks|here|where|when|who|which|very|more|less|good|bad|yes|no|i|you|he|she|we|they|tell|me|joke|am|im)\b/i;
 
         const spanishMatches = (cleanText.match(spanishWords) || []).length;
         const englishMatches = (cleanText.match(englishWords) || []).length;
 
+        // Si hay más coincidencias en español, es español
         if (spanishMatches > englishMatches) {
             return 'es';
         }
+        
+        // Si hay más coincidencias en inglés, es inglés
+        if (englishMatches > spanishMatches) {
+            return 'en';
+        }
 
-        return 'en'; // Default
+        return 'en'; // Default si no hay coincidencias claras
     }
 
     /**

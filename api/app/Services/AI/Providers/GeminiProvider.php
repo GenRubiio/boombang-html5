@@ -12,10 +12,14 @@ class GeminiProvider implements AIProviderInterface
     protected string $apiKey;
     protected string $model;
 
-    public function __construct(string $apiKey, string $model = 'gemini-2.5-flash')
+    /**
+     * @param string $apiKey
+     * @param string $model  Ej: 'gemini-2.5-flash-lite' (recomendado) o 'gemini-1.5-pro'
+     */
+    public function __construct(string $apiKey, string $model = 'gemini-2.5-flash-lite')
     {
         $this->apiKey = $apiKey;
-        $this->model = $model;
+        $this->model  = $model;
     }
 
     public function getProviderName(): string
@@ -23,50 +27,127 @@ class GeminiProvider implements AIProviderInterface
         return 'gemini';
     }
 
+    /**
+     * Genera una respuesta de chat.
+     *
+     * $systemPrompt: prompt de sistema/rol (v1beta → systemInstruction; v1 → lo puedes inyectar como primer turno user si quisieras).
+     * $messages: [ ['role' => 'user'|'assistant', 'content' => '...'], ... ]
+     * $options:  ['temperature' => float, 'top_p' => float, 'max_tokens' => int]
+     */
     public function generate(string $systemPrompt, array $messages, array $options = []): array
     {
+        // 1) Selección de versión de API según modelo
+        $useV1Beta = $this->modelIs2x($this->model); // 2.x → v1beta; 1.5/anteriores → v1
+        $version   = $useV1Beta ? 'v1beta' : 'v1';
+
+        // 2) Historial completo en formato Gemini
+        $contents = $this->formatMessages($messages);
+
+        // 3) generationConfig básico (no enviamos thinkingBudget)
+        $generationConfig = [
+            'temperature' => $options['temperature'] ?? 0.9,
+            'topP'        => $options['top_p'] ?? 0.95,
+        ];
+        if (!empty($options['max_tokens']) && (int)$options['max_tokens'] >= 100) {
+            $generationConfig['maxOutputTokens'] = (int)$options['max_tokens'];
+        }
+
+        // 4) Payload base
+        $payload = [
+            'contents' => $contents,
+        ];
+
+        // 5) Campos extra solo si usamos v1beta (series 2.x)
+        if ($useV1Beta) {
+            // systemPrompt como systemInstruction
+            if (!empty($systemPrompt)) {
+                $payload['systemInstruction'] = [
+                    'parts' => [
+                        ['text' => $systemPrompt],
+                    ],
+                ];
+            }
+            // Forzar texto plano para evitar formatos raros
+            $generationConfig['responseMimeType'] = 'text/plain';
+        }
+
+        $payload['generationConfig'] = $generationConfig;
+
+        // 6) URL
+        $url = $this->endpointUrl($version);
+
+        // 7) Disparo con fallback si hay campos desconocidos
         try {
-            // Convert messages to Gemini format
-            $contents = $this->formatMessages($systemPrompt, $messages);
+            $res = $this->send($url, $payload);
 
-            $payload = [
-                'contents' => $contents,
-                'generationConfig' => [
-                    'temperature' => $options['temperature'] ?? 0.9,
-                    'maxOutputTokens' => $options['max_tokens'] ?? 800,
-                    'topP' => $options['top_p'] ?? 0.95,
-                ],
-            ];
+            if (!$res->successful()) {
+                $body = $res->body();
+                // Fallback si el backend rechaza campos (p. ej. responseMimeType en algún despliegue)
+                if ($res->status() === 400 && $this->hasUnknownFieldError($body)) {
+                    Log::warning('Gemini 400 Unknown field: applying safe fallback payload', [
+                        'version' => $version,
+                        'body'    => $body,
+                    ]);
 
-            $url = "https://generativelanguage.googleapis.com/v1/models/{$this->model}:generateContent?key={$this->apiKey}";
+                    // Quitar extras problemáticos y reintentar misma versión
+                    $fallback = [
+                        'contents' => $contents,
+                        'generationConfig' => [
+                            'temperature' => $options['temperature'] ?? 0.9,
+                            'topP'        => $options['top_p'] ?? 0.95,
+                        ],
+                    ];
+                    if (!empty($options['max_tokens']) && (int)$options['max_tokens'] >= 100) {
+                        $fallback['generationConfig']['maxOutputTokens'] = (int)$options['max_tokens'];
+                    }
 
-            $response = Http::timeout(30)
-                ->withHeaders(['Content-Type' => 'application/json'])
-                ->post($url, $payload);
+                    $res = $this->send($url, $fallback);
 
-            if (!$response->successful()) {
-                throw new Exception("Gemini API error: " . $response->body());
+                    // Segundo fallback: si aún falla y el modelo NO es 2.x, probar v1
+                    if (!$res->successful() && !$useV1Beta) {
+                        $urlV1 = $this->endpointUrl('v1');
+                        $res   = $this->send($urlV1, $fallback);
+                    }
+                }
             }
 
-            $data = $response->json();
-
-            if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
-                throw new Exception("Invalid Gemini response structure");
+            if (!$res->successful()) {
+                throw new Exception("Gemini API error: " . $res->body());
             }
 
-            $content = $data['candidates'][0]['content']['parts'][0]['text'];
-            
+            $data = $res->json();
+
+            Log::info('Gemini raw response', [
+                'status'        => $res->status(),
+                'usageMetadata' => $data['usageMetadata'] ?? null,
+                'finishReason'  => $data['candidates'][0]['finishReason'] ?? null,
+            ]);
+
+            // 8) Extraer texto
+            $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
+
+            if ($text === null) {
+                $finish   = $data['candidates'][0]['finishReason'] ?? '';
+                $thoughts = $data['usageMetadata']['thoughtsTokenCount'] ?? 0;
+
+                if ($finish === 'MAX_TOKENS' && $thoughts > 0) {
+                    // Nota: ya no enviamos thinkingBudget; si ocurre, sube maxOutputTokens o acorta prompts.
+                    throw new Exception("La respuesta agotó tokens sin texto útil. Sube maxOutputTokens o reduce el prompt.");
+                }
+
+                throw new Exception("Estructura de respuesta inesperada (sin texto).");
+            }
+
             return [
-                'content' => trim($content),
-                'tokens' => [
-                    'prompt_tokens' => $data['usageMetadata']['promptTokenCount'] ?? 0,
+                'content'  => trim($text),
+                'tokens'   => [
+                    'prompt_tokens'     => $data['usageMetadata']['promptTokenCount'] ?? 0,
                     'completion_tokens' => $data['usageMetadata']['candidatesTokenCount'] ?? 0,
-                    'total_tokens' => $data['usageMetadata']['totalTokenCount'] ?? 0,
+                    'total_tokens'      => $data['usageMetadata']['totalTokenCount'] ?? 0,
                 ],
-                'model' => $this->model,
+                'model'    => $this->model,
                 'provider' => 'gemini',
             ];
-
         } catch (Exception $e) {
             Log::error('GeminiProvider error', [
                 'error' => $e->getMessage(),
@@ -84,41 +165,72 @@ class GeminiProvider implements AIProviderInterface
     public function getCapabilities(): array
     {
         return [
-            'streaming' => false,
-            'vision' => str_contains($this->model, 'vision'),
+            'streaming'  => false,
+            'vision'     => str_contains($this->model, 'vision'),
             'max_tokens' => 8192,
-            'languages' => ['es', 'en', 'ru', 'ja', 'zh', 'ko'],
+            'languages'  => ['es', 'en', 'ru', 'ja', 'zh', 'ko'],
         ];
     }
 
+    // ======= Helpers =======
+
     /**
-     * Format messages for Gemini API
+     * Convierte tu historial [{role, content}] a formato Gemini [{role, parts[]}]
      */
-    protected function formatMessages(string $systemPrompt, array $messages): array
+    protected function formatMessages(array $messages): array
     {
         $contents = [];
 
-        // Add system prompt as first user message
-        if (!empty($systemPrompt)) {
+        foreach ($messages as $m) {
+            $role = $m['role'] ?? 'user';
+            $geminiRole = $role === 'assistant' ? 'model' : 'user';
+
+            $text = (string)($m['content'] ?? '');
             $contents[] = [
-                'role' => 'user',
-                'parts' => [['text' => $systemPrompt]],
-            ];
-            $contents[] = [
-                'role' => 'model',
-                'parts' => [['text' => 'OK']],
+                'role'  => $geminiRole,
+                'parts' => [['text' => $text]],
             ];
         }
 
-        // Add conversation messages
-        foreach ($messages as $msg) {
-            $role = $msg['role'] === 'assistant' ? 'model' : 'user';
+        if (empty($contents)) {
             $contents[] = [
-                'role' => $role,
-                'parts' => [['text' => $msg['content']]],
+                'role'  => 'user',
+                'parts' => [['text' => '']],
             ];
         }
 
         return $contents;
+    }
+
+    protected function modelIs2x(string $model): bool
+    {
+        // Cubre gemini-2.0*, 2.5*, etc.
+        return (bool)preg_match('/\bgemini-2\./i', $model);
+    }
+
+    protected function endpointUrl(string $version): string
+    {
+        return "https://generativelanguage.googleapis.com/{$version}/models/{$this->model}:generateContent?key={$this->apiKey}";
+    }
+
+    protected function send(string $url, array $payload)
+    {
+        Log::info('Gemini request', [
+            'url'     => $url,
+            'payload' => $payload,
+        ]);
+
+        return Http::timeout(30)
+            ->withHeaders(['Content-Type' => 'application/json'])
+            ->post($url, $payload);
+    }
+
+    protected function hasUnknownFieldError(string $body): bool
+    {
+        // Detecta errores típicos de “campo desconocido”
+        return str_contains($body, 'Unknown name "systemInstruction"')
+            || str_contains($body, 'Unknown name "responseMimeType"')
+            || str_contains($body, 'Unknown name "thinkingBudget"')
+            || str_contains($body, 'Cannot find field');
     }
 }

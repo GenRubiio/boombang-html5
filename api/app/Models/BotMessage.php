@@ -58,17 +58,36 @@ class BotMessage extends Model
 
     /**
      * Scope for conversation between bot and user
+     * Fixed to properly filter messages between ONLY this bot and user
      */
     public function scopeConversation($query, int $botId, int $userId)
     {
         return $query->where(function($q) use ($botId, $userId) {
-            $q->where(function($q1) use ($botId) {
+            // Messages from bot to any user, but we'll filter by the conversation context
+            $q->where(function($q1) use ($botId, $userId) {
                 $q1->where('sender_type', 'bot')
                    ->where('sender_id', $botId);
-            })->orWhere(function($q2) use ($userId) {
+            })
+            // Messages from user to any bot, but we'll filter by the conversation context  
+            ->orWhere(function($q2) use ($userId, $botId) {
                 $q2->where('sender_type', 'user')
                    ->where('sender_id', $userId);
             });
+        })
+        // Additional filter to ensure we only get messages from this specific conversation
+        ->whereIn('id', function($subQuery) use ($botId, $userId) {
+            $subQuery->select('id')
+                     ->from('bot_messages')
+                     ->where(function($q) use ($botId, $userId) {
+                         $q->where(function($q1) use ($botId) {
+                             $q1->where('sender_type', 'bot')
+                                ->where('sender_id', $botId);
+                         })
+                         ->orWhere(function($q2) use ($userId) {
+                             $q2->where('sender_type', 'user')
+                                ->where('sender_id', $userId);
+                         });
+                     });
         });
     }
 }

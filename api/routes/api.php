@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Bot\BotMessagesController;
 use App\Http\Controllers\Api\Auth\BotLoginApiController;
 use App\Http\Controllers\Api\Auth\RegisterApiController;
 use App\Http\Controllers\Api\Bot\BotAllowReplyController;
+use App\Http\Controllers\Api\Bot\BotCacheClearController;
 use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
 use App\Http\Controllers\Api\Bot\AIProviderStatsController;
 use App\Http\Controllers\Api\Bot\BotConsumeQuotaController;
@@ -157,6 +158,10 @@ Route::middleware(VerifyEmulatorToken::class)->prefix('bot')->group(function () 
     
     // Consume bot quota
     Route::post('consume', [BotConsumeQuotaController::class, 'consume']);
+    
+    // Clear bot cache
+    Route::post('clear-cache', [BotCacheClearController::class, 'clearCache']);
+    Route::post('clear-all-cache', [BotCacheClearController::class, 'clearAllCache']);
     
     // Save/get messages
     Route::post('messages', [BotMessagesController::class, 'store']);
