@@ -1,13 +1,14 @@
+import cacheConfig from '@/config/cacheManagerConfig.js';
 /**
  * CacheManager - Gestiona el almacenamiento local de assets de avatares
  * Utiliza IndexedDB para almacenar imágenes y configuraciones de manera persistente
  */
 class CacheManager {
     constructor() {
-        this.dbName = 'BoomBangAssetCache';
+        this.dbName = cacheConfig.dbName;
         this.dbVersion = 1;
         this.db = null;
-        this.assetVersion = '1.0.0'; // Versión actual de los assets
+        this.assetVersion = cacheConfig.assetVersion;
         this.maxCacheSize = 500 * 1024 * 1024; // 500MB límite (ajustable)
         this.currentCacheSize = 0;
         
