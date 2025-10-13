@@ -57,6 +57,7 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('gallery') }}'><i class='nav-icon la la-image'></i> {{trans('menu-admin.galleries')}}</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('backup') }}'><i class='nav-icon la la-hdd-o'></i> {{trans('menu-admin.backups')}}</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('version') }}'><i class='nav-icon las la-code-branch'></i> {{trans('menu-admin.versions')}}</a></li>
+        <x-backpack::menu-item title="Api keys" icon="la la-question" :link="backpack_url('api-key')" />
     @endif
     </ul>
 </li>
