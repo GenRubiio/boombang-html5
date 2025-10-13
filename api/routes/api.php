@@ -92,6 +92,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
                 Route::post('update-name', [SettingsUpdateApiController::class, 'updateName']);
                 Route::post('update-lang', [SettingsUpdateApiController::class, 'updateLang']);
                 Route::post('update-graphics', [SettingsUpdateApiController::class, 'updateGraphics']);
+                Route::post('update-sounds', [SettingsUpdateApiController::class, 'updateSounds']);
             });
         });
 

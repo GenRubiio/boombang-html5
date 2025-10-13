@@ -291,6 +291,13 @@ export default class PublicScene extends Phaser.Scene {
         // Limpiar el buffer global de eventos tempranos
         earlyEventBuffer.clear();
 
+        // Detener música de fondo de la escena si existe
+        if (this.sceneBackgroundMusic) {
+            this.sceneBackgroundMusic.stop();
+            this.sceneBackgroundMusic.destroy();
+            this.sceneBackgroundMusic = null;
+        }
+
         // Limpiar del sistema de avatares
         Object.keys(this.users).forEach(userId => {
             AvatarSystemController.removeUser(userId);

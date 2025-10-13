@@ -48,6 +48,8 @@ class User extends Authenticatable
         'phaser_pixel_art',
         'phaser_round_pixels',
         'phaser_power_preference',
+        'phaser_scene_sound_volume',
+        'phaser_scene_sound_muted',
         'is_bot',
         'bot_system_prompt',
         'bot_language_mode',

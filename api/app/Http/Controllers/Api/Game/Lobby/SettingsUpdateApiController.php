@@ -77,4 +77,22 @@ class SettingsUpdateApiController extends Controller
             return $this->handleException($e);
         }
     }
+
+    public function updateSounds()
+    {
+        try {
+            $user = Auth::user();
+            $validated = request()->validate([
+                'phaser_scene_sound_volume' => 'required|integer|min:0|max:100',
+                'phaser_scene_sound_muted' => 'required|boolean',
+            ]);
+
+            $user->phaser_scene_sound_volume = $validated['phaser_scene_sound_volume'];
+            $user->phaser_scene_sound_muted = $validated['phaser_scene_sound_muted'];
+            $user->save();
+            return $this->successResponse([]);
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
 }

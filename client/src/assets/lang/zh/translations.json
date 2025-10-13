@@ -382,7 +382,8 @@
     "save": "保存",
     "tabs": {
       "profile": "个人资料",
-      "graphics": "图像"
+      "graphics": "图像",
+      "sounds": "声音"
     },
     "profile": {
       "username": "用户名",
@@ -399,11 +400,17 @@
       "antialias_gl": "抗锯齿GL",
       "antialias_gl_desc": "在创建WebGL时激活MSAA（画布边缘平滑）。不会改变纹理。⚠️更改此项需要重启游戏。",
       "pixel_art": "像素艺术",
-      "pixel_art_desc": "激活antialias=false和roundPixels=true的“预设”。一切看起来都更清晰。",
+      "pixel_art_desc": "激活antialias=false和roundPixels=true的预设。一切看起来都更清晰。",
       "round_pixels": "圆整像素",
       "round_pixels_desc": "将位置四舍五入到最近的像素（防止精灵模糊）。",
       "power_preference": "电源偏好",
       "power_preference_desc": "向浏览器建议使用哪个GPU：high-performance → 强制使用独立GPU（功耗更高）。low-power → 节省电池。"
+    },
+    "sounds": {
+      "scene_sound": "禁用场景声音",
+      "scene_sound_desc": "启用或禁用当前场景的背景音乐。",
+      "scene_volume": "场景音量",
+      "scene_volume_desc": "调整场景背景音乐的音量级别。"
     },
     "confirm": {
       "title": "确认更改",

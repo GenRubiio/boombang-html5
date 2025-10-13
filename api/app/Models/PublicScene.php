@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use PgSql\Lob;
 
 class PublicScene extends Model
 {
@@ -29,6 +28,7 @@ class PublicScene extends Model
         'npc_id',
         'name',
         'type',
+        'sound',
         'menu_type',
         'max_users',
         'map_width',
@@ -140,6 +140,15 @@ class PublicScene extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setSoundAttribute($value)
+    {
+        $attribute_name = "sound";
+        $disk = "uploads";
+        $destination_path = "uploads/public-scene/" . Str::slug($this->name) .  "/sound";
+
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+    }
 
     public function setAssetsDataAttribute($value)
     {

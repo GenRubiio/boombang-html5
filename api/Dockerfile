@@ -23,6 +23,9 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copiar el proyecto (incluye artisan)
 COPY . .
 
+# Copiar configuración PHP personalizada
+COPY dev-php.ini /usr/local/etc/php/conf.d/custom.ini
+
 # Dependencias PHP (Laravel)
 RUN composer install --no-interaction --prefer-dist --no-dev
 

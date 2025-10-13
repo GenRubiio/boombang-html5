@@ -23,6 +23,7 @@ class CreateSceneController {
     }
 
     this.#createArrows(gameScene);
+    this.#playSceneSound(gameScene, sceneryData);
     await this.createUsers(gameScene, usersData, authUserData);
   }
 
@@ -378,6 +379,77 @@ class CreateSceneController {
       //    cursor: 'pointer',
       //    pixelPerfect: true
       //});
+    }
+  }
+
+  static #playSceneSound(gameScene, sceneryData) {
+    // Verificar que existan los datos de sonido
+    if (!sceneryData.sound || !sceneryData.sound_url) {
+      return; // No hay sonido configurado para esta escena
+    }
+
+    // Verificar si el usuario tiene el sonido silenciado
+    const authUser = gameScene.sceneData.authUser;
+    if (authUser && authUser.phaser_scene_sound_muted) {
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log("🔇 Sonido de la escena silenciado por configuración del usuario");
+      }
+      return;
+    }
+
+    const viteEnv = import.meta.env.VITE_APP_ENV;
+    const soundFile = viteEnv === 'local' ? sceneryData.sound : sceneryData.sound_url;
+
+    // Verificar que el archivo de sonido no sea null o vacío
+    if (!soundFile || soundFile.trim() === '') {
+      return;
+    }
+
+    // Detener cualquier sonido de escena anterior si existe
+    if (gameScene.sceneBackgroundMusic) {
+      gameScene.sceneBackgroundMusic.stop();
+      gameScene.sceneBackgroundMusic.destroy();
+      gameScene.sceneBackgroundMusic = null;
+    }
+
+    // Cargar y reproducir el sonido de fondo
+    const soundKey = 'scene_bg_music_' + sceneryData.id;
+    
+    // Si el sonido no está cargado, cargarlo primero
+    if (!gameScene.cache.audio.exists(soundKey)) {
+      gameScene.load.audio(soundKey, soundFile);
+      gameScene.load.once('complete', () => {
+        this.#startBackgroundMusic(gameScene, soundKey);
+      });
+      gameScene.load.start();
+    } else {
+      // Si ya está cargado, reproducirlo directamente
+      this.#startBackgroundMusic(gameScene, soundKey);
+    }
+  }
+
+  static #startBackgroundMusic(gameScene, soundKey) {
+    try {
+      // Obtener el volumen de la configuración del usuario (0-100) y convertirlo a 0-1
+      const authUser = gameScene.sceneData.authUser;
+      const userVolume = authUser && authUser.phaser_scene_sound_volume !== undefined
+        ? authUser.phaser_scene_sound_volume / 100
+        : 0.5; // Volumen por defecto al 50%
+
+      // Crear el sonido con configuración de bucle
+      gameScene.sceneBackgroundMusic = gameScene.sound.add(soundKey, {
+        loop: true,
+        volume: userVolume
+      });
+      
+      // Reproducir el sonido
+      gameScene.sceneBackgroundMusic.play();
+
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log(`🎵 Reproduciendo música de fondo de la escena: ${soundKey}`);
+      }
+    } catch (error) {
+      console.error("Error al reproducir música de fondo de la escena:", error);
     }
   }
 

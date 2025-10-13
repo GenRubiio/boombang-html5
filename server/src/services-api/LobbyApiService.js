@@ -45,6 +45,15 @@ class LobbyApiService {
             throw error;
         }
     }
+
+    static updateSettingsSounds(user, data) {
+        try {
+            return ApiService.post('api/lobby/settings/update-sounds', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar la configuración de sonido:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = LobbyApiService;

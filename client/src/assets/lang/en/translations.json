@@ -382,7 +382,8 @@
     "save": "Save",
     "tabs": {
       "profile": "Profile",
-      "graphics": "Graphics"
+      "graphics": "Graphics",
+      "sounds": "Sounds"
     },
     "profile": {
       "username": "Username",
@@ -404,6 +405,12 @@
       "round_pixels_desc": "Rounds positions to the nearest pixel (prevents sprite blurring).",
       "power_preference": "Power Preference",
       "power_preference_desc": "Suggests to browser which GPU to use: high-performance → forces dedicated GPU (more consumption). low-power → battery saving."
+    },
+    "sounds": {
+      "scene_sound": "Disable Scene Sound",
+      "scene_sound_desc": "Enable or disable background music for the current scene.",
+      "scene_volume": "Scene Volume",
+      "scene_volume_desc": "Adjust the volume level for the scene background music."
     },
     "confirm": {
       "title": "Confirm Changes",

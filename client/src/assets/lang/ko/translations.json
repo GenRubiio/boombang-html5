@@ -382,7 +382,8 @@
     "save": "저장",
     "tabs": {
       "profile": "프로필",
-      "graphics": "그래픽"
+      "graphics": "그래픽",
+      "sounds": "사운드"
     },
     "profile": {
       "username": "사용자 이름",
@@ -404,6 +405,12 @@
       "round_pixels_desc": "위치를 가장 가까운 픽셀로 반올림합니다(스프라이트 흐림 방지).",
       "power_preference": "전원 기본 설정",
       "power_preference_desc": "사용할 GPU를 브라우저에 제안합니다: high-performance → 전용 GPU 강제 사용(소비 전력 증가). low-power → 배터리 절약."
+    },
+    "sounds": {
+      "scene_sound": "씬 사운드 비활성화",
+      "scene_sound_desc": "현재 씬의 배경 음악을 활성화하거나 비활성화합니다.",
+      "scene_volume": "씬 볼륨",
+      "scene_volume_desc": "씬 배경 음악의 볼륨 레벨을 조정합니다."
     },
     "confirm": {
       "title": "변경 확인",

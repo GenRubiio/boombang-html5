@@ -48,6 +48,8 @@ class UserResource extends JsonResource
             'phaser_pixel_art' => $this->phaser_pixel_art,
             'phaser_round_pixels' => $this->phaser_round_pixels,
             'phaser_power_preference' => $this->phaser_power_preference,
+            'phaser_scene_sound_volume' => (int)$this->phaser_scene_sound_volume,
+            'phaser_scene_sound_muted' => (bool)$this->phaser_scene_sound_muted,
             
             /**
              * User customizations

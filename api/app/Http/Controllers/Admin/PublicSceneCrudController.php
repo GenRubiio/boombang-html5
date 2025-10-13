@@ -92,6 +92,14 @@ class PublicSceneCrudController extends CrudController
                 'tab' => 'General'
             ],
             [
+                'name' => 'sound',
+                'label' => 'Sonido',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'uploads',
+                'tab' => 'General'
+            ],
+            [
                 'name' => 'active',
                 'label' => 'Activo',
                 'type' => 'checkbox',
