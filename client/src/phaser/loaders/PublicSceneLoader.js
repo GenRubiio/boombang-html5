@@ -160,17 +160,9 @@ class PublicSceneLoader {
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
         background.setDepth(-1); // Asegurar que esté detrás de todo
         
-        // Aplicar oscurecimiento inicial si la sala tiene darkening
-        if (roomHasDarkening && gameTime) {
+        // Aplicar oscurecimiento inicial y registrar si la sala tiene darkening
+        if (roomHasDarkening && gameTime && gameScene.darkeningData) {
             DarkeningUtils.applyDarkening(background, gameTime);
-            
-            // Registrar background para actualizaciones dinámicas
-            if (!gameScene.darkeningData) {
-                gameScene.darkeningData = { backgrounds: [] };
-            }
-            if (!gameScene.darkeningData.backgrounds) {
-                gameScene.darkeningData.backgrounds = [];
-            }
             gameScene.darkeningData.backgrounds.push(background);
         }
     }

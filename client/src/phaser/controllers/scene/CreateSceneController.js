@@ -14,6 +14,24 @@ class CreateSceneController {
     const sceneryData = data.scenery;
     const authUserData = data.authUser;
 
+    // Inicializar sistema de oscurecimiento dinámico ANTES de cargar assets
+    // para que el background pueda registrarse correctamente
+    if (sceneryData.darkening && sceneryData.game_time) {
+      if (!gameScene.darkeningData) {
+        //console.log('🌙 Inicializando sistema de oscurecimiento:', sceneryData.game_time);
+        this.#initializeDarkening(gameScene, sceneryData.game_time);
+        //console.log('🌙 darkeningData inicializado:', gameScene.darkeningData);
+      } else {
+        // Si ya existe (inicializado en PublicScene.create), solo iniciar el timer
+        //console.log('🌙 darkeningData ya existe, iniciando timer de actualización');
+        gameScene.darkeningTimer = gameScene.time.addEvent({
+          delay: 3000,
+          callback: () => this.#updateDarkening(gameScene),
+          loop: true
+        });
+      }
+    }
+
     if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "false") {
       this.createTile(
         gameScene,
@@ -26,11 +44,6 @@ class CreateSceneController {
     this.#createArrows(gameScene);
     this.#playSceneSound(gameScene, sceneryData);
     await this.createUsers(gameScene, usersData, authUserData);
-
-    // Inicializar sistema de oscurecimiento dinámico si la sala lo tiene habilitado
-    if (sceneryData.darkening && sceneryData.game_time) {
-      this.#initializeDarkening(gameScene, sceneryData.game_time);
-    }
   }
 
   static createTile(gameScene, map, rows, cols) {

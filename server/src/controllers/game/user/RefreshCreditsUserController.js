@@ -2,6 +2,7 @@
 const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
+const GameClock = require('../../../utils/GameClock');
 const Log = require('../../../utils/Log');
 
 class RefreshCreditsUserController {
@@ -14,7 +15,8 @@ class RefreshCreditsUserController {
             
             socket.emit(ResponseSocketsEnum.REFRESH_USER_CREDITS, {
                 gold: user.goldCoins,
-                silver: user.silverCoins
+                silver: user.silverCoins,
+                game_time: GameClock.getCurrentGameTime()
             });
         } catch (err) {
             console.log(err);

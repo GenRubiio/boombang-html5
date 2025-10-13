@@ -97,6 +97,18 @@ export default class PublicScene extends Phaser.Scene {
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicSceneResponse.main(this); // Respuesta de la escena pública
 
+        // Inicializar darkeningData ANTES de cargar el background
+        if (this.sceneData.scenery.darkening && this.sceneData.scenery.game_time) {
+            this.darkeningData = {
+                initialGameTime: this.sceneData.scenery.game_time,
+                initialTimestamp: Date.now(),
+                backgrounds: [],
+                arrows: [],
+                items: []
+            };
+            //console.log('🌙 [PublicScene] darkeningData pre-inicializado:', this.darkeningData);
+        }
+
         PublicSceneLoader.main(this, false);
         
         // Crear usuarios iniciales
