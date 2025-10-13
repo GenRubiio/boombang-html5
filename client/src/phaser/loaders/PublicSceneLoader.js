@@ -101,15 +101,7 @@ class PublicSceneLoader {
         }
         sprite.setScale(item.scale);
 
-        // Aplicar oscurecimiento inicial si la sala tiene darkening y el item también
-        if (item.room_has_darkening && item.darkening && item.game_time) {
-            DarkeningUtils.applyDarkening(sprite, item.game_time);
-            
-            // Registrar item para actualizaciones dinámicas
-            if (gameScene.darkeningData) {
-                gameScene.darkeningData.items.push(sprite);
-            }
-        }
+        // El oscurecimiento ahora es global por escena, no por sprite
 
         // Registrar sprites con controlador activo para un controlador unificado
         if (item.show_controller) {
@@ -160,11 +152,7 @@ class PublicSceneLoader {
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
         background.setDepth(-1); // Asegurar que esté detrás de todo
         
-        // Aplicar oscurecimiento inicial y registrar si la sala tiene darkening
-        if (roomHasDarkening && gameTime && gameScene.darkeningData) {
-            DarkeningUtils.applyDarkening(background, gameTime);
-            gameScene.darkeningData.backgrounds.push(background);
-        }
+        // El oscurecimiento ahora es global por escena, no por sprite
     }
 
     static #loadArrows(gameScene) {

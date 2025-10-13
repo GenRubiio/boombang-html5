@@ -39,17 +39,7 @@ class ItemSpawnPublicSceneController {
             ease: 'Linear'
         });
 
-        // Aplicar oscurecimiento si la sala tiene darkening
-        const roomHasDarkening = gameScene.sceneData?.scenery?.darkening;
-        const gameTime = gameScene.sceneData?.scenery?.game_time;
-        if (roomHasDarkening && gameTime) {
-            DarkeningUtils.applyDarkening(itemSprite, gameTime);
-            
-            // Registrar item para actualizaciones dinámicas
-            if (gameScene.darkeningData) {
-                gameScene.darkeningData.items.push(itemSprite);
-            }
-        }
+        // El oscurecimiento ahora es global por escena, no por sprite
 
         // Guardar referencia
         gameScene.activeItems.set(`${gridPosition.x},${gridPosition.y}`, {

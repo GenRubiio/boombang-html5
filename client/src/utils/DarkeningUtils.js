@@ -2,6 +2,9 @@
  * Utilidad para calcular el oscurecimiento basado en la hora del juego
  */
 class DarkeningUtils {
+    static _overlay = null;
+    static _lastBrightness = 1;
+
     /**
      * Calcula la hora actual del juego basándose en el tiempo inicial y el tiempo transcurrido
      * @param {string} initialGameTime - Hora inicial en formato "HH:mm"
@@ -21,12 +24,10 @@ class DarkeningUtils {
         // Convertir a minutos reales
         const elapsedRealMinutes = elapsedRealMs / 1000 / 60;
         
-        // En el juego: 1 hora = 1 minuto real
-        // Entonces los minutos reales = horas del juego
-        const elapsedGameHours = elapsedRealMinutes;
-        
-        // Convertir horas del juego a minutos del juego
-        const elapsedGameMinutes = elapsedGameHours * 60;
+        // Nueva conversión: 24 horas de juego = 1 hora real
+        // 1440 minutos de juego = 60 minutos reales
+        // Factor de conversión: 1440 / 60 = 24
+        const elapsedGameMinutes = elapsedRealMinutes * 24;
         
         // Calcular la hora actual del juego
         const currentTotalMinutes = (initialTotalMinutes + elapsedGameMinutes) % (24 * 60);
@@ -43,56 +44,99 @@ class DarkeningUtils {
     }
 
     /**
-     * Calcula el nivel de oscurecimiento (tint) basado en la hora del juego
+     * Calcula el nivel de brightness basado en la hora del juego
      * @param {string} gameTime - Hora en formato "HH:mm" (ej: "14:30")
-     * @returns {number} Valor hexadecimal de tint (0x000000 = oscuro total, 0xFFFFFF = sin oscurecer)
+     * @returns {number} Valor de brightness (0.0 - 1.0)
      */
-    static calculateDarkeningTint(gameTime) {
-        if (!gameTime) return 0xFFFFFF; // Sin oscurecer si no hay hora
+    static calculateBrightness(gameTime) {
+        if (!gameTime) return 1.0;
 
         // Parsear la hora
         const [hours, minutes] = gameTime.split(':').map(Number);
         const totalMinutes = hours * 60 + minutes;
 
-        // Definir rangos de oscurecimiento
-        // 00:00 - 05:00: Noche (muy oscuro - punto máximo a las 00:00)
-        // 05:00 - 09:00: Amanecer (oscuridad disminuyendo gradualmente)
-        // 09:00 - 18:00: Día (sin oscurecer)
-        // 18:00 - 00:00: Atardecer/Noche (oscuridad aumentando gradualmente hasta las 00:00)
-
         let brightness;
 
         if (totalMinutes >= 0 && totalMinutes < 300) {
-            // 00:00 - 05:00: Noche (brightness de 0.3)
-            brightness = 0.3;
+            // 00:00 - 05:00: Noche
+            brightness = 0.30;
         } else if (totalMinutes >= 300 && totalMinutes < 540) {
-            // 05:00 - 09:00: Amanecer (brightness de 0.3 a 1.0 gradualmente)
-            const progress = (totalMinutes - 300) / 240; // 0 a 1 en 4 horas
-            brightness = 0.3 + (0.7 * progress);
+            // 05:00 - 09:00: Amanecer
+            const progress = (totalMinutes - 300) / 240;
+            brightness = 0.30 + 0.70 * progress;
         } else if (totalMinutes >= 540 && totalMinutes < 1080) {
-            // 09:00 - 18:00: Día (sin oscurecer)
+            // 09:00 - 18:00: Día
             brightness = 1.0;
         } else {
-            // 18:00 - 00:00: Atardecer/Noche (brightness de 1.0 a 0.3 gradualmente)
-            // 360 minutos de transición (6 horas: de 18:00 a 00:00)
-            const progress = (totalMinutes - 1080) / 360; // 0 a 1
-            brightness = 1.0 - (0.7 * progress);
+            // 18:00 - 00:00: Atardecer/Noche
+            const progress = (totalMinutes - 1080) / 360;
+            brightness = 1.0 - 0.70 * progress;
         }
 
-        // Convertir brightness (0.0 - 1.0) a valor de tint hexadecimal
-        const value = Math.floor(brightness * 255);
-        return (value << 16) | (value << 8) | value;
+        return Math.max(0.0, Math.min(1.0, brightness));
     }
 
     /**
-     * Aplica oscurecimiento a un sprite según la hora del juego
-     * @param {Phaser.GameObjects.Sprite|Phaser.GameObjects.Image} sprite - El sprite a oscurecer
+     * Crea/reutiliza un overlay pantalla en modo MULTIPLY
+     * @param {Phaser.Scene} scene - La escena de Phaser
+     * @returns {Phaser.GameObjects.Graphics} El overlay
+     */
+    static ensureOverlay(scene) {
+        if (this._overlay && !this._overlay.destroyed) return this._overlay;
+
+        const g = scene.add.graphics();
+        g.setScrollFactor(0);
+        g.setDepth(999999);
+        g.setBlendMode(Phaser.BlendModes.MULTIPLY);
+        this._overlay = g;
+
+        // Redibujar en resize
+        scene.scale.on('resize', () => {
+            if (this._overlay && !this._overlay.destroyed) {
+                this.redrawOverlay(scene, this._lastBrightness);
+            }
+        });
+
+        // Limpiar al cerrar escena
+        scene.sys.events.once('shutdown', () => {
+            if (this._overlay && !this._overlay.destroyed) {
+                this._overlay.destroy();
+            }
+            this._overlay = null;
+        });
+
+        return g;
+    }
+
+    /**
+     * Redibuja el overlay con el nivel de brightness especificado
+     * @param {Phaser.Scene} scene - La escena de Phaser
+     * @param {number} brightness - Nivel de brightness (0.0 - 1.0)
+     */
+    static redrawOverlay(scene, brightness) {
+        if (!this._overlay) return;
+        const w = scene.scale.width;
+        const h = scene.scale.height;
+
+        // En MULTIPLY, un gris (v,v,v) multiplica el color de fondo.
+        // Si brightness=1 → blanco (no cambia). Si 0.3 → gris oscuro.
+        const v = Math.floor(255 * brightness);
+        this._overlay.clear();
+        this._overlay.fillStyle((v << 16) | (v << 8) | v, 1);
+        this._overlay.fillRect(0, 0, w, h);
+    }
+
+    /**
+     * Aplica oscurecimiento global a la escena SIN tocar sprites individuales.
+     * Llamar 1 vez por frame/cambio de hora de juego.
+     * @param {Phaser.Scene} scene - La escena de Phaser
      * @param {string} gameTime - Hora en formato "HH:mm"
      */
-    static applyDarkening(sprite, gameTime) {
-        if (!sprite || sprite.destroyed) return;
-        const tint = this.calculateDarkeningTint(gameTime);
-        sprite.setTint(tint);
+    static applySceneDarkening(scene, gameTime) {
+        const brightness = this.calculateBrightness(gameTime);
+        this._lastBrightness = brightness;
+        this.ensureOverlay(scene);
+        this.redrawOverlay(scene, brightness);
     }
 
     /**

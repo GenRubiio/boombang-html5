@@ -228,12 +228,7 @@ class AddUserController {
         // Aplicar tints de color si están configurados - usando safeApplyTint
         this.safeApplyTint(gameScene, spriteAvatar, userData.uppercut_selected);
         
-        // Aplicar oscurecimiento si la sala tiene darkening
-        const roomHasDarkening = gameScene.sceneData?.scenery?.darkening;
-        const gameTime = gameScene.sceneData?.scenery?.game_time;
-        if (roomHasDarkening && gameTime) {
-            DarkeningUtils.applyDarkening(spriteAvatar, gameTime);
-        }
+        // El oscurecimiento ahora es global por escena, no por sprite
         
         return spriteAvatar;
     }
@@ -572,12 +567,7 @@ class AddUserController {
             // Aplicar tints si los había - con verificación de pipeline
             this.safeApplyTint(gameScene, newSpriteAvatar, user.uppercut_selected);
 
-            // Aplicar oscurecimiento si la sala tiene darkening
-            const roomHasDarkening = gameScene.sceneData?.scenery?.darkening;
-            const gameTime = gameScene.sceneData?.scenery?.game_time;
-            if (roomHasDarkening && gameTime) {
-                DarkeningUtils.applyDarkening(newSpriteAvatar, gameTime);
-            }
+            // Nada: el overlay global ya se encarga
 
             // Reemplazar en el contenedor
             const containerIndex = user.containerUser.list.indexOf(user.spriteAvatar);
