@@ -55,22 +55,22 @@ class DarkeningUtils {
         const totalMinutes = hours * 60 + minutes;
 
         // Definir rangos de oscurecimiento
-        // 00:00 - 06:00: Noche (muy oscuro - punto máximo a las 00:00)
-        // 06:00 - 08:00: Amanecer (oscuridad disminuyendo)
-        // 08:00 - 18:00: Día (sin oscurecer)
+        // 00:00 - 05:00: Noche (muy oscuro - punto máximo a las 00:00)
+        // 05:00 - 09:00: Amanecer (oscuridad disminuyendo gradualmente)
+        // 09:00 - 18:00: Día (sin oscurecer)
         // 18:00 - 00:00: Atardecer/Noche (oscuridad aumentando gradualmente hasta las 00:00)
 
         let brightness;
 
-        if (totalMinutes >= 0 && totalMinutes < 360) {
-            // 00:00 - 06:00: Noche (brightness de 0.3 a 0.3)
+        if (totalMinutes >= 0 && totalMinutes < 300) {
+            // 00:00 - 05:00: Noche (brightness de 0.3)
             brightness = 0.3;
-        } else if (totalMinutes >= 360 && totalMinutes < 480) {
-            // 06:00 - 08:00: Amanecer (brightness de 0.3 a 1.0)
-            const progress = (totalMinutes - 360) / 120; // 0 a 1
+        } else if (totalMinutes >= 300 && totalMinutes < 540) {
+            // 05:00 - 09:00: Amanecer (brightness de 0.3 a 1.0 gradualmente)
+            const progress = (totalMinutes - 300) / 240; // 0 a 1 en 4 horas
             brightness = 0.3 + (0.7 * progress);
-        } else if (totalMinutes >= 480 && totalMinutes < 1080) {
-            // 08:00 - 18:00: Día (sin oscurecer)
+        } else if (totalMinutes >= 540 && totalMinutes < 1080) {
+            // 09:00 - 18:00: Día (sin oscurecer)
             brightness = 1.0;
         } else {
             // 18:00 - 00:00: Atardecer/Noche (brightness de 1.0 a 0.3 gradualmente)
