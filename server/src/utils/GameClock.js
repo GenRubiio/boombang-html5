@@ -1,8 +1,8 @@
 /**
  * Reloj interno del juego
- * 24 horas del juego = 24 minutos reales
- * 1 hora del juego = 1 minuto real
- * 1 minuto del juego = 1 segundo real
+ * 24 horas del juego = 1 hora real
+ * 1 hora del juego = 2.5 minutos reales
+ * 1 minuto del juego = 2.5 segundos reales
  */
 class GameClock {
     constructor() {
@@ -37,12 +37,10 @@ class GameClock {
         // Convertir a minutos reales transcurridos
         const elapsedRealMinutes = elapsedRealTime / 1000 / 60;
         
-        // En el juego, 1 hora = 1 minuto real
-        // Entonces los minutos reales = horas del juego
-        const elapsedGameHours = elapsedRealMinutes;
-        
-        // Convertir horas del juego a minutos del juego
-        const elapsedGameMinutes = elapsedGameHours * 60;
+        // Nueva conversión: 24 horas de juego = 1 hora real
+        // 1440 minutos de juego = 60 minutos reales
+        // Factor de conversión: 1440 / 60 = 24
+        const elapsedGameMinutes = elapsedRealMinutes * 24;
         
         // Sumar al tiempo inicial (12:00)
         const totalGameMinutes = (this.initialGameTime + elapsedGameMinutes) % (24 * 60);

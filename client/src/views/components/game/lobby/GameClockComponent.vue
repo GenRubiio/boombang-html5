@@ -26,9 +26,22 @@ export default {
     },
   },
   mounted() {
-    this.initialGameTime = socket.user.game_time;
-    this.initialTimestamp = Date.now();
-    this.gameTime = this.initialGameTime;
+    // Intentar recuperar el estado guardado del localStorage
+    const savedState = localStorage.getItem('gameClockState');
+    
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        this.initialGameTime = state.initialGameTime;
+        this.initialTimestamp = state.initialTimestamp;
+        this.gameTime = this.calculateCurrentGameTime();
+      } catch (e) {
+        // Si hay error al parsear, inicializar normalmente
+        this.initializeClock();
+      }
+    } else {
+      this.initializeClock();
+    }
 
     // Actualizar la hora cada segundo calculando el tiempo transcurrido
     // 24 horas de juego = 1 hora real
@@ -44,6 +57,21 @@ export default {
     }, 300000);
   },
   methods: {
+    initializeClock() {
+      this.initialGameTime = socket.user.game_time;
+      this.initialTimestamp = Date.now();
+      this.gameTime = this.initialGameTime;
+      
+      // Guardar el estado inicial en localStorage
+      this.saveClockState();
+    },
+    saveClockState() {
+      const state = {
+        initialGameTime: this.initialGameTime,
+        initialTimestamp: this.initialTimestamp,
+      };
+      localStorage.setItem('gameClockState', JSON.stringify(state));
+    },
     calculateCurrentGameTime() {
       if (!this.initialGameTime || !this.initialTimestamp) return this.initialGameTime;
 
