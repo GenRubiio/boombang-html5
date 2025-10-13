@@ -1,11 +1,12 @@
 <template>
   <div>
     <div class="lobby__background">
-      <img :src="asset_background_image" :alt="$t('lobby.ui.background_alt')" />
+      <img :src="currentBackgroundImage" :alt="$t('lobby.ui.background_alt')" />
     </div>
     <div class="lobby__avatar">
       <img :src="asset_avatarImage" :alt="$t('lobby.ui.avatar_alt')" />
     </div>
+    <GameClockComponent ref="gameClock" />
     <div class="lobby__logout">
       <img
         :src="asset_logout_image"
@@ -77,6 +78,7 @@ import socket from "@/sockets/socket";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import asset_background_image from "@/assets/game/lobby/background.webp";
+import asset_background_night_image from "@/assets/game/lobby/background_night.png";
 import asset_logout_image from "@/assets/game/lobby/logout.webp";
 import asset_settings_image from "@/assets/game/lobby/settings.webp";
 import GachaponMachineComponent from "./GachaponMachineComponent.vue";
@@ -86,6 +88,7 @@ import GachaResultPopup from "./gachapon/GachaResultPopup.vue";
 import ErrorPopup from "./gachapon/ErrorPopup.vue";
 import CreditsComponent from "./CreditsComponent.vue";
 import SettingsPopup from "./SettingsPopup.vue";
+import GameClockComponent from "./GameClockComponent.vue";
 
 export default {
   data() {
@@ -96,6 +99,7 @@ export default {
       isErrorPopupVisible: false,
       isSettingsVisible: false,
       errorMessage: "",
+      asset_background_night_image,
       asset_background_image,
       asset_avatarImage: null,
       asset_logout_image,
@@ -105,7 +109,24 @@ export default {
         name: null,
         image: null,
       },
+      currentGameTime: socket.user?.game_time || "--:--",
     };
+  },
+  computed: {
+    currentBackgroundImage() {
+      if (!this.currentGameTime || this.currentGameTime === "--:--") {
+        return this.asset_background_image;
+      }
+      
+      const [hours] = this.currentGameTime.split(":").map(Number);
+      
+      // Si es entre las 22:00 (10 PM) y las 06:00 (6 AM), usar imagen de noche
+      if (hours >= 22 || hours < 6) {
+        return this.asset_background_night_image;
+      }
+      
+      return this.asset_background_image;
+    }
   },
   async mounted() {
     try {
@@ -136,11 +157,22 @@ export default {
           }
         }
       });
+
+      // Sincronizar el tiempo del juego cada segundo
+      this.timeUpdateInterval = setInterval(() => {
+        if (this.$refs.gameClock && this.$refs.gameClock.gameTime) {
+          this.currentGameTime = this.$refs.gameClock.gameTime;
+        }
+      }, 1000);
     } catch (error) {
       console.error(this.$t("lobby.ui.avatar_error"), error);
     }
   },
-  beforeUnmount() {},
+  beforeUnmount() {
+    if (this.timeUpdateInterval) {
+      clearInterval(this.timeUpdateInterval);
+    }
+  },
   components: {
     GachaponMachineComponent,
     AlertWishGachaComponent,
@@ -148,6 +180,7 @@ export default {
     GachaResultPopup,
     ErrorPopup,
     CreditsComponent,
+    GameClockComponent,
     SettingsPopup,
   },
   methods: {

@@ -14,7 +14,6 @@
           @users-updated="handleUsersUpdated"
         />
         <CreditsComponent />
-        <GameClockComponent />
         <MentionAutocompleteComponent
           :users="availableUsers"
           :search-query="mentionSearchQuery"
@@ -55,7 +54,6 @@ import EmojisPickerComponent from "./base-chat/EmojisPickerComponent.vue";
 import UsersChatListComponent from "./base-chat/UsersChatListComponent.vue";
 import CreditsComponent from "./base-chat/CreditsComponent.vue";
 import MentionAutocompleteComponent from "./base-chat/MentionAutocompleteComponent.vue";
-import GameClockComponent from "./base-chat/GameClockComponent.vue";
 
 export default {
   components: {
@@ -63,7 +61,6 @@ export default {
     UsersChatListComponent,
     CreditsComponent,
     MentionAutocompleteComponent,
-    GameClockComponent,
   },
   data() {
     return {

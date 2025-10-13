@@ -21,15 +21,8 @@ class CreateSceneController {
         //console.log('🌙 Inicializando sistema de oscurecimiento:', sceneryData.game_time);
         this.#initializeDarkening(gameScene, sceneryData.game_time);
         //console.log('🌙 darkeningData inicializado:', gameScene.darkeningData);
-      } else {
-        // Si ya existe (inicializado en PublicScene.create), solo iniciar el timer
-        //console.log('🌙 darkeningData ya existe, iniciando timer de actualización');
-        gameScene.darkeningTimer = gameScene.time.addEvent({
-          delay: 3000,
-          callback: () => this.#updateDarkening(gameScene),
-          loop: true
-        });
       }
+      // El oscurecimiento ahora se aplica globalmente en el método update() de la escena
     }
 
     if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "false") {
@@ -395,15 +388,7 @@ class CreateSceneController {
         .setName(spriteName)
         .setScale(arrow.scale || 2); // Apply scale if provided, default to 1
 
-      // Aplicar oscurecimiento inicial si la sala tiene darkening
-      if (roomHasDarkening && gameTime) {
-        DarkeningUtils.applyDarkening(arrowSprite, gameTime);
-
-        // Registrar arrow para actualizaciones dinámicas
-        if (gameScene.darkeningData) {
-          gameScene.darkeningData.arrows.push(arrowSprite);
-        }
-      }
+      // El oscurecimiento ahora es global por escena, no por sprite
 
       // Make arrows interactive (clickable for navigation)
       //arrowSprite.setInteractive({
@@ -511,66 +496,8 @@ class CreateSceneController {
       items: []
     };
 
-    // Actualizar oscurecimiento cada 3 segundos (optimizado para reducir consumo de recursos)
-    gameScene.darkeningTimer = gameScene.time.addEvent({
-      delay: 3000, // Actualizar cada 3 segundos
-      callback: () => this.#updateDarkening(gameScene),
-      loop: true
-    });
-  }
-
-  /**
-   * Actualiza el oscurecimiento de todos los elementos de la escena
-   */
-  static #updateDarkening(gameScene) {
-    if (!gameScene.darkeningData) return;
-
-    // Calcular la hora actual del juego
-    const currentGameTime = DarkeningUtils.calculateCurrentGameTime(
-      gameScene.darkeningData.initialGameTime,
-      gameScene.darkeningData.initialTimestamp
-    );
-
-    // Actualizar sceneData con la hora actual
-    if (gameScene.sceneData?.scenery) {
-      gameScene.sceneData.scenery.game_time = currentGameTime;
-    }
-
-    // Actualizar backgrounds
-    if (gameScene.darkeningData.backgrounds) {
-      gameScene.darkeningData.backgrounds.forEach(sprite => {
-        if (sprite && !sprite.destroyed) {
-          DarkeningUtils.applyDarkening(sprite, currentGameTime);
-        }
-      });
-    }
-
-    // Actualizar arrows
-    if (gameScene.darkeningData.arrows) {
-      gameScene.darkeningData.arrows.forEach(sprite => {
-        if (sprite && !sprite.destroyed) {
-          DarkeningUtils.applyDarkening(sprite, currentGameTime);
-        }
-      });
-    }
-
-    // Actualizar items con darkening
-    if (gameScene.darkeningData.items) {
-      gameScene.darkeningData.items.forEach(sprite => {
-        if (sprite && !sprite.destroyed) {
-          DarkeningUtils.applyDarkening(sprite, currentGameTime);
-        }
-      });
-    }
-
-    // Actualizar avatares de todos los usuarios
-    if (gameScene.users) {
-      Object.values(gameScene.users).forEach(user => {
-        if (user.spriteAvatar && !user.spriteAvatar.destroyed) {
-          DarkeningUtils.applyDarkening(user.spriteAvatar, currentGameTime);
-        }
-      });
-    }
+    // El oscurecimiento ahora se aplica globalmente en el método update() de la escena
+    // No es necesario actualizar cada sprite individualmente
   }
 }
 

@@ -210,12 +210,6 @@ class PublicSceneCrudController extends CrudController
                         'wrapper' => ['class' => 'form-group col-md-4'],
                     ],
                     [
-                        'name' => 'darkening',
-                        'label' => 'Oscurecimiento',
-                        'type' => 'checkbox',
-                        'default' => true,
-                    ],
-                    [
                         'name' => 'is_background',
                         'label' => 'Is Background',
                         'type' => 'radio',

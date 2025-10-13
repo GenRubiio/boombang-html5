@@ -30,12 +30,7 @@ class UserReceiveEffectController {
         effect.setDepth(container.depth + 1);
         effect.setScale(2);
 
-        // Aplicar oscurecimiento si la sala tiene darkening
-        const roomHasDarkening = gameScene.sceneData?.scenery?.darkening;
-        const gameTime = gameScene.sceneData?.scenery?.game_time;
-        if (roomHasDarkening && gameTime) {
-            DarkeningUtils.applyDarkening(effect, gameTime);
-        }
+        // El oscurecimiento ahora es global por escena, no por sprite
 
         if (effectData.effect.avatarAnimation) {
             gameScene.time.delayedCall(

@@ -12,6 +12,7 @@ import RemovePhaserSocketsUtil from "../utils/RemovePhaserSocketsUtil"; // Utili
 import TintManager from "./managers/TintManager"; // Gestor de tintes
 import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
 import AvatarSystemController from "./controllers/AvatarSystemController.js"; // Nuevo sistema de avatares
+import DarkeningUtils from "../utils/DarkeningUtils.js"; // Utilidad de oscurecimiento
 import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
 import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
 import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
@@ -330,5 +331,30 @@ export default class PublicScene extends Phaser.Scene {
 
     destroy() {
         this.shutdown();
+    }
+
+    update() {
+        // Aplicar oscurecimiento global si la sala lo requiere
+        const roomHasDarkening = this.sceneData?.scenery?.darkening;
+        
+        if (roomHasDarkening && this.darkeningData) {
+            // Calcular la hora actual del juego dinámicamente
+            const currentGameTime = DarkeningUtils.calculateCurrentGameTime(
+                this.darkeningData.initialGameTime,
+                this.darkeningData.initialTimestamp
+            );
+            
+            // Actualizar sceneData con la hora actual
+            if (this.sceneData?.scenery) {
+                this.sceneData.scenery.game_time = currentGameTime;
+            }
+            
+            DarkeningUtils.applySceneDarkening(this, currentGameTime);
+        } else {
+            // Limpiar overlay cuando no haya darkening
+            if (DarkeningUtils._overlay && !DarkeningUtils._overlay.destroyed) {
+                DarkeningUtils._overlay.clear();
+            }
+        }
     }
 }
