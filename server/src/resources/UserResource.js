@@ -1,8 +1,10 @@
 const Resource = require('./Resource');
+const GameClock = require('../utils/GameClock');
 
 class UserResource extends Resource {
     transform(data) {
         return {
+            game_time: GameClock.getCurrentGameTime(),
             id: data.socket.id,
             socket_id: data.socket.id,
             db_id: data.id,

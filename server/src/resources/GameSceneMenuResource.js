@@ -1,8 +1,10 @@
 const Resource = require('./Resource');
+const GameClock = require('../utils/GameClock');
 
 class GameSceneMenuResource extends Resource {
     transform(data) {
         return {
+            game_time: GameClock.getCurrentGameTime(),
             uuid: data.uuid,
             id: data.id,
             name: data.name,

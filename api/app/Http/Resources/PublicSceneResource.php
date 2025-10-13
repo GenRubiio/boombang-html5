@@ -25,6 +25,7 @@ class PublicSceneResource extends JsonResource
             'parent_id' => (int)$this->parent_id,
             'name' => $this->name,
             'type' => $this->type,
+            'darkening' => (bool)$this->darkening,
             'sound' => $this->sound,
             'sound_url' => urlDocker($this->sound),
             'menu_type' => $this->menu_type,

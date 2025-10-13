@@ -1,4 +1,5 @@
 import SceneUtils from "@/utils/SceneUtils";
+import DarkeningUtils from "@/utils/DarkeningUtils";
 
 class PublicSceneLoader {
     static main(gameScene, preload = true) {
@@ -40,10 +41,21 @@ class PublicSceneLoader {
     }
 
     static #load(areaId, assets, npc, gameScene) {
+        const gameTime = gameScene.sceneData.scenery.game_time;
+        const roomHasDarkening = gameScene.sceneData.scenery.darkening;
+
         assets.forEach((asset, index) => {
             const spriteName = 'public_scene_' + areaId + '_item_' + index;
+            
+            // Verificar si el item debe mostrarse según show_from y show_to
+            const shouldShow = DarkeningUtils.shouldShowItem(
+                gameTime,
+                asset.show_from,
+                asset.show_to
+            );
+
             if (asset.is_background == 1) {
-                this.#loadBackground(gameScene, spriteName);
+                this.#loadBackground(gameScene, spriteName, gameTime, roomHasDarkening);
             }
             else {
                 this.#loadSingleItem(gameScene, spriteName, {
@@ -52,8 +64,11 @@ class PublicSceneLoader {
                     y: parseInt(asset.position_y),
                     custom_depth: parseInt(asset.depth),
                     scale: parseInt(asset.scale) || null,
-                    show_item: true,
-                    show_controller: asset.show_controller == 1
+                    show_item: shouldShow,
+                    show_controller: asset.show_controller == 1,
+                    darkening: asset.darkening,
+                    game_time: gameTime,
+                    room_has_darkening: roomHasDarkening
                 });
             }
         });
@@ -85,6 +100,16 @@ class PublicSceneLoader {
                 .setName(spriteName);
         }
         sprite.setScale(item.scale);
+
+        // Aplicar oscurecimiento inicial si la sala tiene darkening y el item también
+        if (item.room_has_darkening && item.darkening && item.game_time) {
+            DarkeningUtils.applyDarkening(sprite, item.game_time);
+            
+            // Registrar item para actualizaciones dinámicas
+            if (gameScene.darkeningData) {
+                gameScene.darkeningData.items.push(sprite);
+            }
+        }
 
         // Registrar sprites con controlador activo para un controlador unificado
         if (item.show_controller) {
@@ -130,9 +155,24 @@ class PublicSceneLoader {
         //SceneUtils.moveItem(gameScene, sprite);
     }
 
-    static #loadBackground(gameScene, spriteName) {
+    static #loadBackground(gameScene, spriteName, gameTime, roomHasDarkening) {
         const background = gameScene.add.image(0, 0, spriteName).setOrigin(0);
         background.setDisplaySize(gameScene.scale.width, gameScene.scale.height);
+        background.setDepth(-1); // Asegurar que esté detrás de todo
+        
+        // Aplicar oscurecimiento inicial si la sala tiene darkening
+        if (roomHasDarkening && gameTime) {
+            DarkeningUtils.applyDarkening(background, gameTime);
+            
+            // Registrar background para actualizaciones dinámicas
+            if (!gameScene.darkeningData) {
+                gameScene.darkeningData = { backgrounds: [] };
+            }
+            if (!gameScene.darkeningData.backgrounds) {
+                gameScene.darkeningData.backgrounds = [];
+            }
+            gameScene.darkeningData.backgrounds.push(background);
+        }
     }
 
     static #loadArrows(gameScene) {

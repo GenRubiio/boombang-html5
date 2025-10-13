@@ -5,6 +5,7 @@ import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
 import CatalogItemTypeOfBehaviorEnum from "../../../enums/CatalogItemTypeOfBehaviorEnum.js";
+import DarkeningUtils from "../../../utils/DarkeningUtils.js";
 
 class CreateSceneController {
   //TODO: El bob y blitter esta consumiendo 5% de CPU hay que condicionarlo para que no aparezca si no es necesario. Ya lo he comprobado y solo hay que quitarlo
@@ -25,6 +26,11 @@ class CreateSceneController {
     this.#createArrows(gameScene);
     this.#playSceneSound(gameScene, sceneryData);
     await this.createUsers(gameScene, usersData, authUserData);
+
+    // Inicializar sistema de oscurecimiento dinámico si la sala lo tiene habilitado
+    if (sceneryData.darkening && sceneryData.game_time) {
+      this.#initializeDarkening(gameScene, sceneryData.game_time);
+    }
   }
 
   static createTile(gameScene, map, rows, cols) {
@@ -217,7 +223,7 @@ class CreateSceneController {
           (occupyingObject.type_of_behavior !==
             CatalogItemTypeOfBehaviorEnum.WALKABLE &&
             occupyingObject.type_of_behavior !==
-              CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)
+            CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)
         ) {
           isTileOccupied = true;
         }
@@ -226,8 +232,7 @@ class CreateSceneController {
       if (!isClickable || isTileOccupied) {
         if (import.meta.env.VITE_APP_ENV === "local") {
           console.log(
-            `Tile at ${col}, ${row} is not clickable. Reason: ${
-              !isClickable ? "floor not walkable" : "occupied by object"
+            `Tile at ${col}, ${row} is not clickable. Reason: ${!isClickable ? "floor not walkable" : "occupied by object"
             }`
           );
         }
@@ -350,6 +355,9 @@ class CreateSceneController {
     const W = gameScene.scale.width;
     const centerX = W / 2;
 
+    const roomHasDarkening = gameScene.sceneData.scenery.darkening;
+    const gameTime = gameScene.sceneData.scenery.game_time;
+
     for (const arrow of gameScene.sceneData.scenery.arrows) {
       // Check if sprite was loaded properly
       const spriteName = "arrow_" + arrow.sprite_name;
@@ -367,12 +375,22 @@ class CreateSceneController {
 
       // Create the arrow sprite at the converted screen position
       // Adjust positioning to center on tile - use same origin as tiles and add small offset
-      gameScene.add
+      const arrowSprite = gameScene.add
         .image(screenX, screenY + halfTileHeight, spriteName)
         .setOrigin(0.5, 1) // Center the arrow
         .setDepth(0) // Place arrows above tiles and other objects
         .setName(spriteName)
         .setScale(arrow.scale || 2); // Apply scale if provided, default to 1
+
+      // Aplicar oscurecimiento inicial si la sala tiene darkening
+      if (roomHasDarkening && gameTime) {
+        DarkeningUtils.applyDarkening(arrowSprite, gameTime);
+
+        // Registrar arrow para actualizaciones dinámicas
+        if (gameScene.darkeningData) {
+          gameScene.darkeningData.arrows.push(arrowSprite);
+        }
+      }
 
       // Make arrows interactive (clickable for navigation)
       //arrowSprite.setInteractive({
@@ -414,7 +432,7 @@ class CreateSceneController {
 
     // Cargar y reproducir el sonido de fondo
     const soundKey = 'scene_bg_music_' + sceneryData.id;
-    
+
     // Si el sonido no está cargado, cargarlo primero
     if (!gameScene.cache.audio.exists(soundKey)) {
       gameScene.load.audio(soundKey, soundFile);
@@ -441,7 +459,7 @@ class CreateSceneController {
         loop: true,
         volume: userVolume
       });
-      
+
       // Reproducir el sonido
       gameScene.sceneBackgroundMusic.play();
 
@@ -460,10 +478,85 @@ class CreateSceneController {
         const userData = usersData[i];
         await AddUserController.main(gameScene, userData);
       }
-      
+
       SetUserCardController.main(gameScene, authUserData, authUserData);
     } catch (error) {
       console.error("🎮 CreateSceneController: Error creando usuarios:", error);
+    }
+  }
+
+  /**
+   * Inicializa el sistema de oscurecimiento dinámico
+   */
+  static #initializeDarkening(gameScene, initialGameTime) {
+    // Guardar el tiempo inicial y timestamp
+    gameScene.darkeningData = {
+      initialGameTime: initialGameTime,
+      initialTimestamp: Date.now(),
+      backgrounds: [],
+      arrows: [],
+      items: []
+    };
+
+    // Actualizar oscurecimiento cada 3 segundos (optimizado para reducir consumo de recursos)
+    gameScene.darkeningTimer = gameScene.time.addEvent({
+      delay: 3000, // Actualizar cada 3 segundos
+      callback: () => this.#updateDarkening(gameScene),
+      loop: true
+    });
+  }
+
+  /**
+   * Actualiza el oscurecimiento de todos los elementos de la escena
+   */
+  static #updateDarkening(gameScene) {
+    if (!gameScene.darkeningData) return;
+
+    // Calcular la hora actual del juego
+    const currentGameTime = DarkeningUtils.calculateCurrentGameTime(
+      gameScene.darkeningData.initialGameTime,
+      gameScene.darkeningData.initialTimestamp
+    );
+
+    // Actualizar sceneData con la hora actual
+    if (gameScene.sceneData?.scenery) {
+      gameScene.sceneData.scenery.game_time = currentGameTime;
+    }
+
+    // Actualizar backgrounds
+    if (gameScene.darkeningData.backgrounds) {
+      gameScene.darkeningData.backgrounds.forEach(sprite => {
+        if (sprite && !sprite.destroyed) {
+          DarkeningUtils.applyDarkening(sprite, currentGameTime);
+        }
+      });
+    }
+
+    // Actualizar arrows
+    if (gameScene.darkeningData.arrows) {
+      gameScene.darkeningData.arrows.forEach(sprite => {
+        if (sprite && !sprite.destroyed) {
+          DarkeningUtils.applyDarkening(sprite, currentGameTime);
+        }
+      });
+    }
+
+    // Actualizar items con darkening
+    if (gameScene.darkeningData.items) {
+      gameScene.darkeningData.items.forEach(sprite => {
+        if (sprite && !sprite.destroyed) {
+          DarkeningUtils.applyDarkening(sprite, currentGameTime);
+        }
+      });
+    }
+
+    // Actualizar avatares de todos los usuarios
+    if (gameScene.users) {
+      Object.values(gameScene.users).forEach(user => {
+        if (user.spriteAvatar && !user.spriteAvatar.destroyed) {
+          DarkeningUtils.applyDarkening(user.spriteAvatar, currentGameTime);
+        }
+      });
     }
   }
 }
