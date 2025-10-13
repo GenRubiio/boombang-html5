@@ -154,6 +154,7 @@ while true; do
       sudo docker compose build web
       sudo docker compose up -d web
       sudo docker compose exec web composer install --no-dev --prefer-dist -n
+      sudo docker exec boombang-html5-web-1 php artisan migrate --force
       ;;
     *)
       echo "Opción inválida, inténtalo de nuevo."
