@@ -28,6 +28,7 @@ class PublicScene extends Model
         'npc_id',
         'name',
         'type',
+        'darkening',
         'sound',
         'menu_type',
         'max_users',

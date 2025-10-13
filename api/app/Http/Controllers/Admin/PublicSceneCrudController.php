@@ -100,6 +100,13 @@ class PublicSceneCrudController extends CrudController
                 'tab' => 'General'
             ],
             [
+                'name' => 'darkening',
+                'label' => 'Oscurecimiento',
+                'type' => 'checkbox',
+                'default' => true,
+                'tab' => 'General'
+            ],
+            [
                 'name' => 'active',
                 'label' => 'Activo',
                 'type' => 'checkbox',
@@ -188,6 +195,25 @@ class PublicSceneCrudController extends CrudController
                         'attributes' => ["step" => "1", "min" => "1"],
                         'default' => 1,
                         'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'show_from',
+                        'type' => 'time',
+                        'label' => 'Show From',
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                        'default' => '00:00',
+                    ],
+                    [
+                        'name' => 'show_to',
+                        'type' => 'time',
+                        'label' => 'Show To',
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'darkening',
+                        'label' => 'Oscurecimiento',
+                        'type' => 'checkbox',
+                        'default' => true,
                     ],
                     [
                         'name' => 'is_background',

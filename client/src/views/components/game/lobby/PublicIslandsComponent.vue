@@ -43,7 +43,6 @@ export default {
 
 <style scoped>
 .lobby__scenes-list {
-  border-radius: 10px;
   margin-top: 5px;
   display: flex;
   flex-direction: column;

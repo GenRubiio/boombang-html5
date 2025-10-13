@@ -2,6 +2,7 @@ const server = require('./src/config/server');
 const sockets = require('./src/sockets');
 const { initializer } = require('./src/config/initializer');
 const ConsoleLogger = require('./src/utils/ConsoleLogger');
+const GameClock = require('./src/utils/GameClock');
 const logger = new ConsoleLogger();
 const BotsPackage = require('./src/packages/bots/BotsPackage');
 
@@ -9,6 +10,10 @@ logger.log('Starting server...', 'success');
 (async () => {
     const port = process.env.PORT || 3000;
     await initializer();
+    
+    // Inicializar el reloj del juego
+    GameClock.start();
+    
     // Inicializar el servidor
     const { app, io, authorizedBotTokens } = server(port);
 

@@ -9,6 +9,7 @@ import ShadowColorsEnum from "@/enums/ShadowColorsEnum.js";
 import NameColorsEnum from "@/enums/NameColorsEnum.js";
 import smartAvatarSystem from "../../managers/SmartAvatarSystem.js";
 import AvatarEnum from "@/enums/AvatarEnum.js";
+import DarkeningUtils from "@/utils/DarkeningUtils.js";
 //import SceneUtils from "../../../utils/SceneUtils.js";
 //import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
 //import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
@@ -72,11 +73,11 @@ class AddUserController {
             });
             return;
         }
-        
+
         // Procesar inmediatamente si la escena está lista
         return AddUserController.processUser(gameScene, userData);
     }
-    
+
     static async processUser(gameScene, userData) {
         if (gameScene.users[userData.id]) {
             return;
@@ -94,16 +95,16 @@ class AddUserController {
         // Usar el avatar seleccionado (original o fallback)
         const modifiedUserData = { ...userData, avatar_id: avatarSelection.avatarId };
 
-    const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
-    // Importante: pasar los datos modificados para que UserModel.avatarId sea el realmente usado (fallback si aplica)
-    const user = new UserModel(modifiedUserData, spriteAvatar, spriteShadow, containerUser);
+        const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
+        // Importante: pasar los datos modificados para que UserModel.avatarId sea el realmente usado (fallback si aplica)
+        const user = new UserModel(modifiedUserData, spriteAvatar, spriteShadow, containerUser);
 
         // Guardar información del avatar para futuras actualizaciones
-    user.originalAvatarId = requestedAvatarId;
-    user.currentAvatarId = avatarSelection.avatarId;
-    user.isFallbackAvatar = avatarSelection.isFallback;
-    // Mantener compatibilidad: muchas animaciones leen user.avatarId; asegúralo igual al usado
-    user.avatarId = avatarSelection.avatarId;
+        user.originalAvatarId = requestedAvatarId;
+        user.currentAvatarId = avatarSelection.avatarId;
+        user.isFallbackAvatar = avatarSelection.isFallback;
+        // Mantener compatibilidad: muchas animaciones leen user.avatarId; asegúralo igual al usado
+        user.avatarId = avatarSelection.avatarId;
 
         MoveUserToTileController.main(gameScene, user);
 
@@ -226,6 +227,14 @@ class AddUserController {
 
         // Aplicar tints de color si están configurados - usando safeApplyTint
         this.safeApplyTint(gameScene, spriteAvatar, userData.uppercut_selected);
+        
+        // Aplicar oscurecimiento si la sala tiene darkening
+        const roomHasDarkening = gameScene.sceneData?.scenery?.darkening;
+        const gameTime = gameScene.sceneData?.scenery?.game_time;
+        if (roomHasDarkening && gameTime) {
+            DarkeningUtils.applyDarkening(spriteAvatar, gameTime);
+        }
+        
         return spriteAvatar;
     }
 
@@ -279,7 +288,7 @@ class AddUserController {
         userNameText.setDepth(3);
         userNameText.setColor(textColor); // por si cambia dinámicamente
 
-         //TODO: Nuevo rederizado * 2
+        //TODO: Nuevo rederizado * 2
         // textBackground.setScale(2);  // Removed: scaling elements directly instead
         // userNameText.setScale(2);    // Removed: scaling font size instead
 
@@ -496,22 +505,22 @@ class AddUserController {
         const onAvatarReady = (data) => {
             if (data.userId === user.username && data.avatarId === user.originalAvatarId) {
                 //console.log(`🔄 Actualizando avatar de ${user.username} de ${data.previousId} a ${data.avatarId}`);
-                
+
                 // Actualizar el avatar del usuario
                 this.updateUserAvatarSmart(gameScene, user, data.avatarId);
-                
+
                 // Actualizar información en el sistema
                 smartAvatarSystem.updateUserAvatar(user.username, data.avatarId);
-                
+
                 // Marcar como no-fallback
                 user.isFallbackAvatar = false;
                 user.currentAvatarId = data.avatarId;
             }
         };
-        
+
         // Registrar listener
         smartAvatarSystem.on('userAvatarReady', onAvatarReady);
-        
+
         // Limpiar listener cuando el usuario se desconecte
         if (user.cleanupCallbacks) {
             user.cleanupCallbacks.push(() => {
@@ -562,6 +571,13 @@ class AddUserController {
 
             // Aplicar tints si los había - con verificación de pipeline
             this.safeApplyTint(gameScene, newSpriteAvatar, user.uppercut_selected);
+
+            // Aplicar oscurecimiento si la sala tiene darkening
+            const roomHasDarkening = gameScene.sceneData?.scenery?.darkening;
+            const gameTime = gameScene.sceneData?.scenery?.game_time;
+            if (roomHasDarkening && gameTime) {
+                DarkeningUtils.applyDarkening(newSpriteAvatar, gameTime);
+            }
 
             // Reemplazar en el contenedor
             const containerIndex = user.containerUser.list.indexOf(user.spriteAvatar);

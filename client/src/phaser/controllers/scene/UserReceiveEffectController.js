@@ -1,6 +1,7 @@
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import DirectionEnum from "../../../enums/DirectionEnum.js";
 import UserCocoAnimation from "../../animations/UserCocoAnimation.js";
+import DarkeningUtils from "@/utils/DarkeningUtils";
 
 class UserReceiveEffectController {
     static main(gameScene, data) {
@@ -28,6 +29,13 @@ class UserReceiveEffectController {
         );
         effect.setDepth(container.depth + 1);
         effect.setScale(2);
+
+        // Aplicar oscurecimiento si la sala tiene darkening
+        const roomHasDarkening = gameScene.sceneData?.scenery?.darkening;
+        const gameTime = gameScene.sceneData?.scenery?.game_time;
+        if (roomHasDarkening && gameTime) {
+            DarkeningUtils.applyDarkening(effect, gameTime);
+        }
 
         if (effectData.effect.avatarAnimation) {
             gameScene.time.delayedCall(
