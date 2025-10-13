@@ -408,7 +408,8 @@
     "save": "保存",
     "tabs": {
       "profile": "プロフィール",
-      "graphics": "グラフィック"
+      "graphics": "グラフィック",
+      "sounds": "サウンド"
     },
     "profile": {
       "username": "ユーザー名",
@@ -430,6 +431,12 @@
       "round_pixels_desc": "位置を最も近いピクセルに丸めます (スプライトのぼやけを防ぎます)。",
       "power_preference": "電力設定",
       "power_preference_desc": "使用するGPUをブラウザに提案します: high-performance → 専用GPUを強制 (消費電力増)。low-power → バッテリー節約。"
+    },
+    "sounds": {
+      "scene_sound": "シーンサウンドを無効化",
+      "scene_sound_desc": "現在のシーンのバックグラウンドミュージックを有効または無効にします。",
+      "scene_volume": "シーン音量",
+      "scene_volume_desc": "シーンのバックグラウンドミュージックの音量レベルを調整します。"
     },
     "confirm": {
       "title": "変更を確認",

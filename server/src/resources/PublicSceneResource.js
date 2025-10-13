@@ -7,6 +7,8 @@ class PublicSceneResource extends Resource {
             id: data.id,
             name: data.name,
             type: data.type,
+            sound: data.sound,
+            sound_url: data.sound_url,
             menu_type: data.menu_type,
             map_rows: data.map_width,
             map_cols: data.map_height,

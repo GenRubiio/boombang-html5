@@ -5,6 +5,7 @@ const RequestSocketsEnum = require('../../enums/RequestSocketsEnum');
 const SettingsUpdateGraphicsController = require('../../controllers/game/lobby/SettingsUpdateGraphicsController');
 const SettingsUpdateLangController = require('../../controllers/game/lobby/SettingsUpdateLangController');
 const SettingsUpdateNameController = require('../../controllers/game/lobby/SettingsUpdateNameController');
+const SettingsUpdateSoundsController = require('../../controllers/game/lobby/SettingsUpdateSoundsController');
 
 module.exports = (socket, io) => {
     socket.on(RequestSocketsEnum.LOBBY_GACHA_SPIN, (data) => {
@@ -21,5 +22,8 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.SETTINGS_UPDATE_NAME, (data) => {
         SettingsUpdateNameController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.SETTINGS_UPDATE_SOUNDS, (data) => {
+        SettingsUpdateSoundsController.main(socket, io, data);
     });
 };

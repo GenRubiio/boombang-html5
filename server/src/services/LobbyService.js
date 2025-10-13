@@ -70,6 +70,19 @@ class LobbyService {
             throw error;
         }
     }
+
+    static async updateSettingsSounds(user, soundSettings) {
+        try {
+            const data = {
+                'phaser_scene_sound_volume': soundSettings.sceneVolume,
+                'phaser_scene_sound_muted': soundSettings.sceneSoundMuted,
+            }
+            const responseData = await LobbyApiService.updateSettingsSounds(user, data);
+            return responseData;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = LobbyService;

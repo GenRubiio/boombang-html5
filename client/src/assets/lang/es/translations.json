@@ -382,7 +382,8 @@
     "save": "Guardar",
     "tabs": {
       "profile": "Perfil",
-      "graphics": "Gráficos"
+      "graphics": "Gráficos",
+      "sounds": "Sonidos"
     },
     "profile": {
       "username": "Nombre de usuario",
@@ -404,6 +405,12 @@
       "round_pixels_desc": "Redondea posiciones al píxel más cercano (evita desenfoques en sprites).",
       "power_preference": "Preferencia de Energía",
       "power_preference_desc": "Sugiere al navegador qué GPU usar: high-performance → fuerza GPU dedicada (más consumo). low-power → ahorro batería."
+    },
+    "sounds": {
+      "scene_sound": "Desactivar Sonido de la Escena",
+      "scene_sound_desc": "Activa o desactiva la música de fondo de la escena actual.",
+      "scene_volume": "Volumen de la Escena",
+      "scene_volume_desc": "Ajusta el nivel de volumen de la música de fondo de la escena."
     },
     "confirm": {
       "title": "Confirmar Cambios",

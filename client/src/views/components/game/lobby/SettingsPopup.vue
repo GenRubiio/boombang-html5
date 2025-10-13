@@ -22,6 +22,13 @@
           >
             {{ $t("settings.tabs.graphics") }}
           </div>
+          <div
+            class="settings-tab"
+            :class="{ active: activeTab === 'sounds' }"
+            @click="activeTab = 'sounds'"
+          >
+            {{ $t("settings.tabs.sounds") }}
+          </div>
         </div>
 
         <div class="settings-content">
@@ -224,6 +231,65 @@
               </button>
             </div>
           </div>
+
+          <!-- Sounds Tab -->
+          <div v-if="activeTab === 'sounds'" class="tab-content">
+            <div class="setting-group-row">
+              <div class="setting-info">
+                <label class="setting-label">{{
+                  $t("settings.sounds.scene_sound")
+                }}</label>
+                <div class="setting-description">
+                  {{ $t("settings.sounds.scene_sound_desc") }}
+                </div>
+              </div>
+              <div class="toggle-container">
+                <input
+                  type="checkbox"
+                  id="sceneSoundMuted"
+                  v-model="soundSettings.sceneSoundMuted"
+                  class="toggle-input"
+                />
+                <label for="sceneSoundMuted" class="toggle-label"></label>
+              </div>
+            </div>
+
+            <div class="setting-group-row">
+              <div class="setting-info">
+                <label class="setting-label">{{
+                  $t("settings.sounds.scene_volume")
+                }}</label>
+                <div class="setting-description">
+                  {{ $t("settings.sounds.scene_volume_desc") }}
+                </div>
+              </div>
+              <div class="volume-control">
+                <input
+                  type="range"
+                  v-model="soundSettings.sceneVolume"
+                  min="0"
+                  max="100"
+                  step="1"
+                  class="volume-slider"
+                  :disabled="soundSettings.sceneSoundMuted"
+                />
+                <span class="volume-value">{{ soundSettings.sceneVolume }}%</span>
+              </div>
+            </div>
+
+            <div v-if="soundsError" class="error-message sounds-error">
+              {{ soundsError }}
+            </div>
+            <div class="save-button-container">
+              <button
+                class="save-button"
+                @click="saveSoundSettings"
+                :disabled="isLoading"
+              >
+                {{ $t("settings.save") }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -262,6 +328,7 @@ export default {
       usernameError: null,
       languageError: null,
       graphicsError: null,
+      soundsError: null,
       pendingAction: null,
       isLoading: false,
       profileSettings: {
@@ -275,6 +342,10 @@ export default {
         pixelArt: socket.user.phaser_pixel_art ? true : false,
         roundPixels: socket.user.phaser_round_pixels ? true : false,
         powerPreference: socket.user.phaser_power_preference,
+      },
+      soundSettings: {
+        sceneVolume: socket.user.phaser_scene_sound_volume || 50,
+        sceneSoundMuted: socket.user.phaser_scene_sound_muted ? true : false,
       },
     };
   },
@@ -320,6 +391,11 @@ export default {
       this.pendingAction = "graphics";
       this.showConfirmDialog = true;
     },
+    saveSoundSettings() {
+      this.soundsError = null;
+      this.pendingAction = "sounds";
+      this.showConfirmDialog = true;
+    },
     confirmRestart() {
       this.isLoading = true;
       switch (this.pendingAction) {
@@ -336,6 +412,11 @@ export default {
         case "graphics":
           socket.emit(RequestSocketsEnum.SETTINGS_UPDATE_GRAPHICS, {
             graphicsSettings: this.graphicsSettings,
+          });
+          break;
+        case "sounds":
+          socket.emit(RequestSocketsEnum.SETTINGS_UPDATE_SOUNDS, {
+            soundSettings: this.soundSettings,
           });
           break;
       }
@@ -385,11 +466,24 @@ export default {
         this.graphicsError = data.message;
       }
     });
+
+    socket.on(ResponseSocketsEnum.SETTINGS_UPDATE_SOUNDS, (data) => {
+      console.log("SettingsUpdateSoundsController: ", data);
+      this.isLoading = false;
+      if (data.success) {
+        location.reload();
+      } else if (data.error) {
+        this.soundsError = data.error;
+      } else if (data.message) {
+        this.soundsError = data.message;
+      }
+    });
   },
   beforeUnmount() {
     socket.off(ResponseSocketsEnum.SETTINGS_UPDATE_NAME);
     socket.off(ResponseSocketsEnum.SETTINGS_UPDATE_LANG);
     socket.off(ResponseSocketsEnum.SETTINGS_UPDATE_GRAPHICS);
+    socket.off(ResponseSocketsEnum.SETTINGS_UPDATE_SOUNDS);
   },
 };
 </script>
@@ -725,5 +819,80 @@ export default {
 
 .cancel-button:hover {
   background-color: #bbb;
+}
+
+/* Volume Control Styles */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-basis: 30%;
+}
+
+.volume-slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: #ddd;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #d96b35;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #d96b35;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.volume-slider:hover:not(:disabled)::-webkit-slider-thumb {
+  background: #c55a2e;
+}
+
+.volume-slider:hover:not(:disabled)::-moz-range-thumb {
+  background: #c55a2e;
+}
+
+.volume-slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.volume-slider:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+  background: #999;
+}
+
+.volume-slider:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+  background: #999;
+}
+
+.volume-value {
+  min-width: 40px;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+  text-align: right;
+}
+
+.sounds-error {
+  text-align: left;
+  margin-bottom: 10px;
 }
 </style>

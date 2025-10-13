@@ -30,6 +30,8 @@ class UserModel {
         this.phaser_pixel_art = row.phaser_pixel_art;
         this.phaser_round_pixels = row.phaser_round_pixels;
         this.phaser_power_preference = row.phaser_power_preference;
+        this.phaser_scene_sound_volume = row.phaser_scene_sound_volume;
+        this.phaser_scene_sound_muted = row.phaser_scene_sound_muted;
 
         this.fichas = row.fichas || []; // Fichas del usuario, por defecto es un array vacío
         this.chats = row.chats || []; // Colores del chat del usuario, por defecto es un array vacío

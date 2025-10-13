@@ -54,6 +54,7 @@ const ResponseSocketsEnum = new Enum({
     SETTINGS_UPDATE_NAME: 'response:settings_update_name',
     SETTINGS_UPDATE_GRAPHICS: 'response:settings_update_graphics',
     SETTINGS_UPDATE_LANG: 'response:settings_update_lang',
+    SETTINGS_UPDATE_SOUNDS: 'response:settings_update_sounds',
     USER_SEND_INTERACTION: 'response:user_send_interaction',
     USER_RECEIVE_INTERACTION: 'response:user_receive_interaction',
     USER_ACCEPT_INTERACTION: 'response:user_accept_interaction',

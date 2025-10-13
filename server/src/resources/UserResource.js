@@ -50,6 +50,8 @@ class UserResource extends Resource {
             phaser_pixel_art: data.phaser_pixel_art,
             phaser_round_pixels: data.phaser_round_pixels,
             phaser_power_preference: data.phaser_power_preference,
+            phaser_scene_sound_volume: data.phaser_scene_sound_volume,
+            phaser_scene_sound_muted: data.phaser_scene_sound_muted,
 
             animations: [],
 
