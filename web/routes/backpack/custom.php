@@ -49,4 +49,5 @@ Route::group([
     Route::group(['prefix' => 'parametric-table/{parametric_table_id}'], function () {
         Route::crud('parametric-table-value', 'ParametricTableValueCrudController');
     });
+    Route::crud('api-key', 'ApiKeyCrudController');
 }); // this should be the absolute last line of this file

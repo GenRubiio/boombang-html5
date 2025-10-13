@@ -3,19 +3,36 @@
 namespace App\Services\External;
 
 use App\Models\Seo;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ApiKey;
+use App\Enums\ApiKeysTypeEnum;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Database\Eloquent\Model;
 
 class GeminiAiService
 {
-    protected $apiKey;
-    protected $apiUrl;
+    protected $apiKeyService;
+    protected ?string $apiKey;
+    protected string $model;
 
     public function __construct()
     {
-        $this->apiKey = config('services.gemini.key');
-        $this->apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+        $this->apiKeyService = ApiKey::where('type', ApiKeysTypeEnum::GEMINI_API_KEY->key())
+            ->where('active', true)
+            ->latest()
+            ->first();
+        $this->apiKey = $this->apiKeyService ? $this->apiKeyService->decrypted_key : null;
+        $this->model  = $this->apiKeyService && $this->apiKeyService->model ? $this->apiKeyService->model : 'gemini-2.5-flash';
+
+        $useV1Beta = $this->modelIs2x($this->model); // 2.x → v1beta; 1.5/anteriores → v1
+        $version   = $useV1Beta ? 'v1beta' : 'v1';
+        $this->apiUrl = "https://generativelanguage.googleapis.com/{$version}/models/{$this->model}:generateContent?key={$this->apiKey}";
+    }
+
+    protected function modelIs2x(string $model): bool
+    {
+        // Cubre gemini-2.0*, 2.5*, etc.
+        return (bool)preg_match('/\bgemini-2\./i', $model);
     }
 
     /**
@@ -71,7 +88,7 @@ class GeminiAiService
             $request->withoutVerifying();
         }
 
-        $response = $request->post($this->apiUrl . '?key=' . $this->apiKey, [
+        $response = $request->post($this->apiUrl, [
             'contents' => [
                 [
                     'role' => 'user',
@@ -133,20 +150,20 @@ class GeminiAiService
 
         // Handle nested field like 'extras.meta_title'
         [$parentField, $nestedKey] = explode('.', $field, 2);
-        
+
         // Get parent data for this locale
         $parentData = $model->getTranslation($parentField, $locale);
-        
+
         // If it's a string (JSON), decode it
         if (is_string($parentData)) {
             $parentData = json_decode($parentData, true);
         }
-        
+
         // If it's not an array, return null
         if (!is_array($parentData)) {
             return null;
         }
-        
+
         return $parentData[$nestedKey] ?? null;
     }
 
@@ -164,23 +181,23 @@ class GeminiAiService
 
         // Handle nested field like 'extras.meta_title'
         [$parentField, $nestedKey] = explode('.', $field, 2);
-        
+
         // Get current parent data for this locale
         $parentData = $model->getTranslation($parentField, $locale);
-        
+
         // If it's a string (JSON), decode it
         if (is_string($parentData)) {
             $parentData = json_decode($parentData, true);
         }
-        
+
         // If it's null or not an array, initialize as empty array
         if (!is_array($parentData)) {
             $parentData = [];
         }
-        
+
         // Set the nested value
         $parentData[$nestedKey] = $value;
-        
+
         // Save back as array (Laravel will handle JSON encoding)
         $model->setTranslation($parentField, $locale, $parentData);
     }
@@ -193,7 +210,7 @@ class GeminiAiService
     private function groupAttributesByPrefix(array $attributes): array
     {
         $groups = [];
-        
+
         foreach ($attributes as $attribute) {
             if (str_contains($attribute, '.')) {
                 $prefix = explode('.', $attribute)[0];
@@ -202,7 +219,7 @@ class GeminiAiService
                 $groups['root'][] = $attribute;
             }
         }
-        
+
         return $groups;
     }
 
@@ -239,7 +256,7 @@ class GeminiAiService
             $request->withoutVerifying();
         }
 
-        $response = $request->post($this->apiUrl . '?key=' . $this->apiKey, [
+        $response = $request->post($this->apiUrl, [
             'contents' => [
                 [
                     'role' => 'user',
@@ -253,7 +270,7 @@ class GeminiAiService
         ]);
 
         $responseBody = json_decode($response->body(), true);
-        
+
         if (isset($responseBody['candidates'][0]['content']['parts'][0]['text'])) {
             // Clean the response to get only the JSON part, removing markdown backticks if present
             $responseText = $responseBody['candidates'][0]['content']['parts'][0]['text'];
