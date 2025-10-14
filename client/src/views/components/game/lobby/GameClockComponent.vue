@@ -26,15 +26,28 @@ export default {
     },
   },
   mounted() {
+    // Asegurar que tenemos datos actuales del socket primero
+    const socketTime = socket.user?.game_time;
+    
     // Intentar recuperar el estado guardado del localStorage
     const savedState = localStorage.getItem('gameClockState');
     
-    if (savedState) {
+    if (savedState && socketTime) {
       try {
         const state = JSON.parse(savedState);
-        this.initialGameTime = state.initialGameTime;
-        this.initialTimestamp = state.initialTimestamp;
-        this.gameTime = this.calculateCurrentGameTime();
+        
+        // Validar que los datos guardados no son muy antiguos (más de 10 minutos)
+        const timeDiff = Date.now() - state.initialTimestamp;
+        const tenMinutesInMs = 10 * 60 * 1000;
+        
+        if (timeDiff < tenMinutesInMs && state.initialGameTime !== "--:--") {
+          this.initialGameTime = state.initialGameTime;
+          this.initialTimestamp = state.initialTimestamp;
+          this.gameTime = this.calculateCurrentGameTime();
+        } else {
+          // Los datos guardados son muy antiguos, usar datos del socket
+          this.initializeClock();
+        }
       } catch (e) {
         // Si hay error al parsear, inicializar normalmente
         this.initializeClock();
@@ -102,6 +115,13 @@ export default {
       const minutesStr = currentMinutes.toString().padStart(2, '0');
       
       return `${hoursStr}:${minutesStr}`;
+    },
+    // Método público para forzar resincronización cuando se regresa al lobby
+    forceSync() {
+      const socketTime = socket.user?.game_time;
+      if (socketTime && socketTime !== "--:--") {
+        this.initializeClock();
+      }
     },
   },
   beforeUnmount() {

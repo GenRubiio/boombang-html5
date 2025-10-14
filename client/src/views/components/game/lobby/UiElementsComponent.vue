@@ -109,16 +109,20 @@ export default {
         name: null,
         image: null,
       },
-      currentGameTime: socket.user?.game_time || "--:--",
+      currentGameTime: this.getInitialGameTime(),
     };
   },
   computed: {
     currentBackgroundImage() {
-      if (!this.currentGameTime || this.currentGameTime === "--:--") {
+      // Intentar obtener tiempo del GameClockComponent primero
+      const gameClockTime = this.$refs.gameClock?.gameTime;
+      const timeToUse = gameClockTime && gameClockTime !== "--:--" ? gameClockTime : this.currentGameTime;
+      
+      if (!timeToUse || timeToUse === "--:--") {
         return this.asset_background_image;
       }
       
-      const [hours] = this.currentGameTime.split(":").map(Number);
+      const [hours] = timeToUse.split(":").map(Number);
       
       // Si es entre las 22:00 (10 PM) y las 06:00 (6 AM), usar imagen de noche
       if (hours >= 22 || hours < 6) {
@@ -160,10 +164,19 @@ export default {
 
       // Sincronizar el tiempo del juego cada segundo
       this.timeUpdateInterval = setInterval(() => {
-        if (this.$refs.gameClock && this.$refs.gameClock.gameTime) {
+        if (this.$refs.gameClock && this.$refs.gameClock.gameTime && this.$refs.gameClock.gameTime !== "--:--") {
           this.currentGameTime = this.$refs.gameClock.gameTime;
         }
       }, 1000);
+
+      // Forzar una actualización inicial después de un pequeño delay para asegurar sincronización
+      this.$nextTick(() => {
+        setTimeout(() => {
+          if (this.$refs.gameClock && this.$refs.gameClock.gameTime && this.$refs.gameClock.gameTime !== "--:--") {
+            this.currentGameTime = this.$refs.gameClock.gameTime;
+          }
+        }, 100);
+      });
     } catch (error) {
       console.error(this.$t("lobby.ui.avatar_error"), error);
     }
@@ -171,6 +184,30 @@ export default {
   beforeUnmount() {
     if (this.timeUpdateInterval) {
       clearInterval(this.timeUpdateInterval);
+    }
+  },
+  activated() {
+    // Hook llamado cuando el componente se activa después de estar inactivo
+    // Útil para resincronizar el tiempo cuando se regresa al lobby
+    this.$nextTick(() => {
+      if (this.$refs.gameClock) {
+        this.$refs.gameClock.forceSync();
+      }
+    });
+  },
+  watch: {
+    // Observar cambios en el tiempo del socket para actualizar inmediatamente
+    '$socket.user.game_time': {
+      handler(newTime) {
+        if (newTime && newTime !== "--:--" && newTime !== this.currentGameTime) {
+          this.currentGameTime = newTime;
+          // También actualizar el GameClockComponent si está disponible
+          if (this.$refs.gameClock) {
+            this.$refs.gameClock.forceSync();
+          }
+        }
+      },
+      immediate: false
     }
   },
   components: {
@@ -184,6 +221,27 @@ export default {
     SettingsPopup,
   },
   methods: {
+    getInitialGameTime() {
+      // Intentar obtener el tiempo desde localStorage si está disponible y es reciente
+      const savedState = localStorage.getItem('gameClockState');
+      if (savedState) {
+        try {
+          const state = JSON.parse(savedState);
+          const timeDiff = Date.now() - state.initialTimestamp;
+          const fiveMinutesInMs = 5 * 60 * 1000;
+          
+          // Si los datos guardados son recientes (menos de 5 minutos), usarlos para evitar parpadeo
+          if (timeDiff < fiveMinutesInMs && state.initialGameTime !== "--:--") {
+            return state.initialGameTime;
+          }
+        } catch (e) {
+          // Ignore parsing errors
+        }
+      }
+      
+      // Fallback al tiempo del socket o "--:--"
+      return socket.user?.game_time || "--:--";
+    },
     logout() {
       if (this.isLogoutButtonClicked) return;
       this.isLogoutButtonClicked = true;
