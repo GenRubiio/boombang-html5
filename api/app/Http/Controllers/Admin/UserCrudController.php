@@ -381,6 +381,24 @@ class UserCrudController extends CrudController
                 'type' => 'textarea',
                 'tab' => 'Bot Settings',
             ],
+            [
+                'name' => 'daily_quota',
+                'label' => 'Daily Quota (messages)',
+                'type' => 'number',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name' => 'cooldown_sec',
+                'label' => 'Cooldown Seconds',
+                'type' => 'number',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ]
         ]);
     }
 }

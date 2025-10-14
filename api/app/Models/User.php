@@ -62,6 +62,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $fakeColumns = [
+        'bot_settings',
+    ];
+
     protected function casts(): array
     {
         return [
