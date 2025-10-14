@@ -1,7 +1,7 @@
 <template>
   <div class="lobby__scenes-tab">
-    <div class="lobby__scenes-list">
-      <div v-for="publicScene in publicScenes" :key="publicScene.uuid">
+    <div class="lobby__scenes-list" ref="scrollContainer">
+      <div v-for="publicScene in publicScenes" :key="publicScene.uuid" class="scene-item">
         <button
           @click="handleClick(publicScene.uuid, MenuTypeEnum.PUBLIC_SCENE)"
           :disabled="isJoining"
@@ -16,6 +16,9 @@
 
 <script>
 import MenuTypeEnum from "../../../../enums/MenuTypeEnum";
+import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import 'overlayscrollbars/overlayscrollbars.css';
+
 export default {
   props: {
     publicScenes: Array,
@@ -25,6 +28,10 @@ export default {
       MenuTypeEnum,
       isJoining: false,
     };
+  },
+  mounted() {
+    const { initScrollbars } = useOverlayScrollbars();
+    initScrollbars(this.$refs.scrollContainer);
   },
   methods: {
     handleClick(sceneUuid, menuType) {
@@ -43,7 +50,15 @@ export default {
   flex-direction: column;
   gap: 5px;
   max-height: 315px;
-  overflow-y: overlay;
+  overflow: hidden;
+}
+
+.scene-item {
+  margin-bottom: 5px;
+}
+
+.scene-item:last-child {
+  margin-bottom: 0;
 }
 
 .lobby__scenes-list button {

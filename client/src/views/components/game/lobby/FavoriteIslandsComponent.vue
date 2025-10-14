@@ -1,6 +1,6 @@
 <template>
-  <div class="lobby__scenes-list">
-    <div v-for="island in islands" :key="island.id">
+  <div class="lobby__scenes-list" ref="scrollContainer">
+    <div v-for="island in islands" :key="island.id" class="scene-item">
       <button @click="handleClick(island.id)" :disabled="isJoining">
         {{ island.name }}
         <span>{{ island.visitors }}</span>
@@ -13,6 +13,9 @@
 </template>
 
 <script>
+import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import 'overlayscrollbars/overlayscrollbars.css';
+
 export default {
   props: {
     islands: Array,
@@ -21,6 +24,10 @@ export default {
     return {
       isJoining: false,
     };
+  },
+  mounted() {
+    const { initScrollbars } = useOverlayScrollbars();
+    initScrollbars(this.$refs.scrollContainer);
   },
   methods: {
     handleClick(islandId) {
@@ -38,6 +45,16 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  max-height: 315px;
+  overflow: hidden;
+}
+
+.scene-item {
+  margin-bottom: 5px;
+}
+
+.scene-item:last-child {
+  margin-bottom: 0;
 }
 
 .lobby__scenes-list button {

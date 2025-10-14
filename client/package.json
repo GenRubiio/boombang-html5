@@ -13,6 +13,7 @@
   "dependencies": {
     "gsap": "^3.13.0",
     "jquery": "^3.7.1",
+    "overlayscrollbars": "^2.12.0",
     "p-queue": "^8.0.1",
     "phaser": "^3.87.0",
     "phaser3-rex-plugins": "^1.80.15",
