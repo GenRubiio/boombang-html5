@@ -179,8 +179,8 @@ class MinigameRingSceneInstance {
     */
     addUser(user, currentAreaPosition) {
         if (this.users.includes(user)) {
-            logger.log('User already in area', 'error');
-            return;
+            logger.log(`User ${user.username || user.id} already in minigame area`, 'warn');
+            return false;
         }
         user.currentAreaPosition = currentAreaPosition;
         user.lastReservedTile = null;
@@ -188,6 +188,7 @@ class MinigameRingSceneInstance {
         this.users.push(user);
         this.coconutCounts.set(user.id, 0);
         this.#refreshUsersChatList();
+        return true;
     }
 
     #refreshUsersChatList() {

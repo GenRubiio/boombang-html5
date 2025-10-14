@@ -237,14 +237,14 @@ async function main() {
     }
 }
 
-// Handle errors
-process.on('unhandledRejection', (error) => {
-    console.error('❌ Unhandled error:', error);
-    process.exit(1);
-});
-
-// Run the program
+// Handle errors only when running as main module
 if (require.main === module) {
+    process.on('unhandledRejection', (error) => {
+        console.error('❌ Unhandled error:', error);
+        process.exit(1);
+    });
+    
+    // Run the program
     main().catch(console.error);
 }
 

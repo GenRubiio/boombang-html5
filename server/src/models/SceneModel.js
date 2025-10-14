@@ -41,8 +41,8 @@ class SceneModel {
     // Método para añadir un usuario
     addUser(user, startPosition = null) {
         if (this.users.includes(user)) {
-            logger.log('User already in area', 'error');
-            return;
+            logger.log(`User ${user.username || user.id} already in area ${this.name || this.id}`, 'warn');
+            return false;
         }
         if (startPosition){
             user.currentAreaPosition = { ...startPosition };
@@ -56,6 +56,7 @@ class SceneModel {
         this.users.push(user);
         this.#refreshUsersChatList();
         this.#refreshUsers();
+        return true;
     }
 
     // Método para devolver la lista de usuarios

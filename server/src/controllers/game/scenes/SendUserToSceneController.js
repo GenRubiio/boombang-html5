@@ -6,6 +6,8 @@ const PublicScenesCollection = require('../../../collections/PublicScenesCollect
 const GameScenesCollection = require('../../../collections/GameScenesCollection');
 const Log = require('../../../utils/Log');
 const sceneMutex = require('../../../utils/SceneMutex');
+const ConsoleLogger = require('../../../utils/ConsoleLogger');
+const logger = new ConsoleLogger();
 
 class SendUserToSceneController {
     static async main(user, arrow) {
@@ -27,11 +29,16 @@ class SendUserToSceneController {
             try {
                 // Agregar usuario a la escena de manera atómica
                 user.setArea(scene);
-                scene.addUser(user, {
+                const added = scene.addUser(user, {
                     x: parseInt(arrow.position_door_x),
                     y: parseInt(arrow.position_door_y),
                     z: parseInt(arrow.position_door_z)
                 });
+
+                if (!added) {
+                    logger.log(`Failed to add user ${user.username} to scene, user already present`, 'warn');
+                    return;
+                }
 
                 // Obtener la lista actualizada de usuarios
                 let sceneUsers = [];

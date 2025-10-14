@@ -8,6 +8,8 @@ const UserResource = require('../../../resources/UserResource');
 const Log = require('../../../utils/Log');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const PublicSceneResource = require('../../../resources/PublicSceneResource');
+const ConsoleLogger = require('../../../utils/ConsoleLogger');
+const logger = new ConsoleLogger();
 const MenuTypeEnum = require('../../../enums/MenuTypeEnum');
 const sceneMutex = require('../../../utils/SceneMutex');
 
@@ -26,7 +28,12 @@ class UserJoinPublicSceneController {
                 throw new Error("Scene not found");
             }
             if (scene.containsUser(user) || user.currentArea) {
-                //throw new Error("User already in area");
+                logger.log(`User ${user.username} already in area, skipping join request`, 'warn');
+                // Enviar respuesta para evitar que el cliente quede esperando
+                socket.emit(ResponseSocketsEnum.JOIN_PUBLIC_SCENE, {
+                    success: false,
+                    message: 'User already in area'
+                });
                 return;
             }
 
@@ -36,7 +43,12 @@ class UserJoinPublicSceneController {
             try {
                 // Agregar usuario a la escena de manera atómica
                 user.setArea(scene);
-                scene.addUser(user);
+                const added = scene.addUser(user);
+                
+                if (!added) {
+                    logger.log(`Failed to add user ${user.username} to scene ${scene.name}, user already present`, 'warn');
+                    return;
+                }
                 
                 // Obtener la lista actualizada de usuarios
                 let sceneUsers = [];

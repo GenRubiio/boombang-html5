@@ -6,6 +6,19 @@ const GameClock = require('./src/utils/GameClock');
 const logger = new ConsoleLogger();
 const BotsPackage = require('./src/packages/bots/BotsPackage');
 
+// Manejadores de errores globales
+process.on('uncaughtException', (error) => {
+    logger.log('Uncaught Exception: ' + error.message, 'error');
+    console.error(error.stack);
+    // No salir del proceso, solo registrar el error
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    logger.log('Unhandled Rejection at: ' + promise + ' reason: ' + reason, 'error');
+    console.error('Unhandled Rejection:', reason);
+    // No salir del proceso, solo registrar el error
+});
+
 logger.log('Starting server...', 'success');
 (async () => {
     const port = process.env.PORT || 3000;
