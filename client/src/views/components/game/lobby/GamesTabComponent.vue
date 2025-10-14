@@ -1,7 +1,7 @@
 <template>
   <div class="lobby__scenes-tab">
-    <div class="lobby__scenes-list">
-      <div v-for="gameScene in gameScenes" :key="gameScene.uuid">
+    <div class="lobby__scenes-list" ref="scrollContainer">
+      <div v-for="gameScene in gameScenes" :key="gameScene.uuid" class="scene-item">
         <button @click="handleClick(gameScene.uuid, MenuTypeEnum.GAME_SCENE)" :disabled="isJoining">
           {{ gameScene.name }}
           <span>{{ gameScene.total_users_in }}</span>
@@ -16,6 +16,9 @@ import socket from "../../../../sockets/socket";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
 import MenuTypeEnum from "../../../../enums/MenuTypeEnum";
+import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import 'overlayscrollbars/overlayscrollbars.css';
+
 export default {
   data() {
     return {
@@ -26,6 +29,10 @@ export default {
   },
   created() {
     this.loadGames();
+  },
+  mounted() {
+    const { initScrollbars } = useOverlayScrollbars();
+    initScrollbars(this.$refs.scrollContainer);
   },
   methods: {
     handleClick(sceneUuid, menuType) {
@@ -50,6 +57,16 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  max-height: 315px;
+  overflow: hidden;
+}
+
+.scene-item {
+  margin-bottom: 5px;
+}
+
+.scene-item:last-child {
+  margin-bottom: 0;
 }
 
 .lobby__scenes-list button {

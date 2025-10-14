@@ -1,6 +1,6 @@
 <template>
-  <div class="lobby__scenes-list">
-    <div v-for="island in islands" :key="island.id">
+  <div class="lobby__scenes-list" ref="scrollContainer">
+    <div v-for="island in islands" :key="island.id" class="scene-item">
       <button @click="handleClick(island.id)" :disabled="isJoining">
         {{ island.name }}
         <span>{{ island.visitors }}</span>
@@ -13,6 +13,9 @@
 </template>
 
 <script>
+import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import 'overlayscrollbars/overlayscrollbars.css';
+
 export default {
   props: {
     islands: Array,
@@ -21,6 +24,10 @@ export default {
     return {
       isJoining: false,
     };
+  },
+  mounted() {
+    const { initScrollbars } = useOverlayScrollbars();
+    initScrollbars(this.$refs.scrollContainer);
   },
   methods: {
     handleClick(islandId) {
@@ -39,48 +46,15 @@ export default {
   flex-direction: column;
   gap: 5px;
   height: 240px;
-  overflow-y: scroll;
-  border-radius: 0 !important;
+  overflow: hidden;
 }
 
-.lobby__scenes-list {
-  border-radius: 12px; /* bordes redondeados en el contenedor */
-  padding-right: 8px; /* espacio entre contenido y scrollbar */
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  height: 240px;
-  overflow-y: scroll;
-
-  /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: #3c87b3ad #2a3a46;
+.scene-item {
+  margin-bottom: 5px;
 }
 
-/* WebKit: ancho/alto */
-.lobby__scenes-list::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-/* WebKit: track */
-.lobby__scenes-list::-webkit-scrollbar-track {
-  background: #2a3a46;
-  border-radius: 12px; /* mismo radio que el contenedor */
-  margin: 4px 0; /* separa ligeramente el track de los extremos */
-}
-
-/* WebKit: thumb */
-.lobby__scenes-list::-webkit-scrollbar-thumb {
-  background-color: #3c87b3ad;
-  border-radius: 12px; /* bordes redondeados en el thumb */
-  border: 2px solid #2a3a46; /* crea “acolchado” entre thumb y track */
-}
-
-/* WebKit: hover thumb */
-.lobby__scenes-list::-webkit-scrollbar-thumb:hover {
-  background-color: #559ac0;
+.scene-item:last-child {
+  margin-bottom: 0;
 }
 
 .lobby__scenes-list button {

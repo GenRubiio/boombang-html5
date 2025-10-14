@@ -1,0 +1,44 @@
+/* Estilos personalizados para OverlayScrollbars */
+.os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+  background-color: #3c87b3ad;
+  border-radius: 12px;
+}
+
+.os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle:hover {
+  background-color: #559ac0;
+}
+
+.os-theme-dark > .os-scrollbar > .os-scrollbar-track {
+  background: #2a3a46;
+  border-radius: 12px;
+}
+
+.os-theme-dark > .os-scrollbar-vertical {
+  width: 8px;
+  padding: 4px 0;
+  right: 0;
+}
+
+.os-theme-dark .os-viewport {
+  padding-right: 12px !important;
+}
+
+.os-theme-dark > .os-scrollbar {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.os-theme-dark.os-host-scrollbar-vertical-visible > .os-scrollbar {
+  opacity: 1;
+}
+
+[data-overlayscrollbars-viewport="scrollbarHidden overflowXHidden overflowYScroll"] {
+  padding-right: 10px !important;
+}
+
+[data-overlayscrollbars-viewport="scrollbarHidden overflowXHidden overflowYScroll scrolling"] {
+  padding-right: 10px !important;
+}
+
+
+
