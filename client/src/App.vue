@@ -62,6 +62,11 @@ export default {
     },
     async onLoginSuccess() {
       this.onUpdateLoading(true);
+      
+      // Limpiar el estado del reloj guardado para evitar desincronización
+      // especialmente cuando el servidor se reinicia
+      localStorage.removeItem('gameClockState');
+      
       const { default: GamePreloaders } = await import(
         "./phaser/preloaders/GamePreloaders"
       );
