@@ -134,6 +134,13 @@ class PublicSceneCrudController extends CrudController
                 'default' => 30
             ],
             [
+                'name' => 'big_scene',
+                'label' => 'Escena Grande',
+                'type' => 'checkbox',
+                'default' => false,
+                'tab' => 'Mapa'
+            ],
+            [
                 'name' => 'start_x',
                 'label' => 'Posición inicial X',
                 'type' => 'number',

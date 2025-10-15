@@ -9,6 +9,7 @@ class PublicSceneModel extends SceneModel {
         this.parent_id = row.parent_id; // ID del área padre
         this.max_users = row.max_users; // Número máximo de usuarios permitidos en el área
         this.scene_type = SceneTypesEnum.PUBLIC_SCENE;// Tipo de modelo
+        this.big_scene = row.big_scene; // Indica si la escena es grande
         this.sound = row.sound; // Sonido ambiental de la escena
         this.sound_url = row.sound_url; // URL completa del sonido
         this.darkening = row.darkening; // Indica si la escena tiene oscurecimiento
