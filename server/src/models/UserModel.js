@@ -21,7 +21,9 @@ class UserModel {
         this.uppercutsReceived = row.uppercuts_received; // Uppercuts recibidos por el usuario
         this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
+        
         this.is_bot = row.is_bot || 0; // Indica si el usuario es un bot
+        this.bot_settings = row.bot_settings || {}; // Configuraciones del bot
 
         this.last_update_username_at = row.last_update_username_at;
         this.phaser_rendering_type = row.phaser_rendering_type;
@@ -212,6 +214,59 @@ class UserModel {
 
     emit(event, data) {
         this.socket.emit(event, data);
+    }
+
+    // Bot settings helper methods
+    getSubscribeRing() {
+        if (!this.is_bot) return false;
+        const value = this.bot_settings.subscribe_ring;
+        return value === true || value === 1 || value === "1";
+    }
+
+    getJoinPublicScenes() {
+        if (!this.is_bot) return [];
+        return this.bot_settings.join_public_scenes || [];
+    }
+
+    canReceiveUppercuts() {
+        if (!this.is_bot) return true; // Regular users can always receive uppercuts
+        const value = this.bot_settings.can_receive_uppercuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canSendUppercuts() {
+        if (!this.is_bot) return true; // Regular users can always send uppercuts
+        const value = this.bot_settings.can_send_uppercuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canReceiveCoconuts() {
+        if (!this.is_bot) return true; // Regular users can always receive coconuts
+        const value = this.bot_settings.can_receive_coconuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canSendCoconuts() {
+        if (!this.is_bot) return true; // Regular users can always send coconuts
+        const value = this.bot_settings.can_send_coconuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canAttackBots() {
+        if (!this.is_bot) return true; // Regular users can always attack bots
+        const value = this.bot_settings.can_attack_bots;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    selectOnlyUsers() {
+        if (!this.is_bot) return false; // Regular users don't have this restriction
+        const value = this.bot_settings.select_only_users;
+        return value === true || value === 1 || value === "1";
     }
 }
 

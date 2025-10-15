@@ -39,7 +39,12 @@ class UserResource extends JsonResource
             'uppercuts_received' => (int)$this->uppercuts_received,
             'coconuts_sent' => (int)$this->coconuts_sent,
             'coconuts_received' => (int)$this->coconuts_received,
+
+            /**
+             * Bot settings
+             */
             'is_bot' => (bool)$this->is_bot,
+            'bot_settings' => $this->bot_settings,
 
             'last_update_username_at' => $this->last_update_username_at,
             'phaser_rendering_type' => $this->phaser_rendering_type,
@@ -50,7 +55,7 @@ class UserResource extends JsonResource
             'phaser_power_preference' => $this->phaser_power_preference,
             'phaser_scene_sound_volume' => (int)$this->phaser_scene_sound_volume,
             'phaser_scene_sound_muted' => (bool)$this->phaser_scene_sound_muted,
-            
+
             /**
              * User customizations
              */

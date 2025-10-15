@@ -18,6 +18,12 @@ class UserSelectUserController {
             return;
         }
 
+        // Bot validation: if user is a bot with select_only_users=true, can't select other bots
+        if (user.selectOnlyUsers() && selectedUser.is_bot) {
+            //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to select bot ${selectedUser.username} but has select_only_users=true`);
+            return;
+        }
+
         this.selectUser(user, selectedUser);
         if (!user.isActionBlocked(AnimationEnum.LOOK)) {
             this.updateUserZPositionInArea(user, selectedUser);
