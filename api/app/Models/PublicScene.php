@@ -31,6 +31,7 @@ class PublicScene extends Model
         'darkening',
         'sound',
         'menu_type',
+        'big_scene',
         'max_users',
         'map_width',
         'map_height',
