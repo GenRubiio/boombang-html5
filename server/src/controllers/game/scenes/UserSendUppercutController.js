@@ -41,6 +41,24 @@ class UserSendUppercutController {
             const deltaX = user.currentAreaPosition.x - targetUser.currentAreaPosition.x;
             const deltaY = user.currentAreaPosition.y - targetUser.currentAreaPosition.y;
 
+            // Bot validation: check if attacker can send uppercuts
+            if (!user.canSendUppercuts()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to send uppercut but can_send_uppercuts=false`);
+                return;
+            }
+
+            // Bot validation: check if target can receive uppercuts
+            if (!targetUser.canReceiveUppercuts()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to uppercut ${targetUser.username} but target can_receive_uppercuts=false`);
+                return;
+            }
+
+            // Bot validation: check if attacker can attack bots (if target is a bot)
+            if (targetUser.is_bot && !user.canAttackBots()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to uppercut bot ${targetUser.username} but can_attack_bots=false`);
+                return;
+            }
+
             // Comprobar si la posición es la adecuada para el uppercut (ajusta la lógica a tu juego)
             if ((deltaX === -1 && deltaY === 1) || (deltaX === 1 && deltaY === -1)) {
                 if (!user.isActionBlocked(AnimationEnum.UPPERCUT) && !targetUser.isActionBlocked(AnimationEnum.UPPERCUT)) {

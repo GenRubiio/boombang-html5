@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AvatarEnum;
+use Illuminate\Support\Facades\Hash;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 use Backpack\PermissionManager\app\Http\Requests\UserStoreCrudRequest as StoreRequest;
 use Backpack\PermissionManager\app\Http\Requests\UserUpdateCrudRequest as UpdateRequest;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Admin\Traits\SuperadminProtection;
+use Prologue\Alerts\Facades\Alert;
 
 class UserCrudController extends CrudController
 {
@@ -20,6 +22,14 @@ class UserCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use SuperadminProtection;
 
+    protected function setupDuplicateOperation()
+    {
+        $this->crud->allowAccess('duplicate');
+        $this->crud->operation('duplicate', function() {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+        });
+    }
+
     public function setup()
     {
         $this->applySuperadminProtection();
@@ -27,11 +37,15 @@ class UserCrudController extends CrudController
         $this->crud->setModel(config('backpack.permissionmanager.models.user'));
         $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
         $this->crud->setRoute(backpack_url('user'));
+        $this->setupDuplicateOperation();
     }
 
     public function setupListOperation()
     {
         $this->crud->addButtonFromView('line', 'user_catalog_items', 'user_catalog_items', 'beginning');
+        
+        // Add duplicate button for bot users
+        $this->crud->addButtonFromView('line', 'duplicate_bot', 'duplicate_bot', 'end');
 
         $this->crud->addColumns([
             [
@@ -95,6 +109,22 @@ class UserCrudController extends CrudController
                     $this->crud->addClause('whereHas', 'permissions', function ($query) use ($value) {
                         $query->where('permission_id', '=', $value);
                     });
+                }
+            );
+
+            // Bot Filter
+            $this->crud->addFilter(
+                [
+                    'name'  => 'is_bot',
+                    'type'  => 'dropdown',
+                    'label' => 'Bot Status',
+                ],
+                [
+                    1 => 'Bots Only',
+                    0 => 'Users Only'
+                ],
+                function ($value) { // if the filter is active
+                    $this->crud->addClause('where', 'is_bot', '=', $value);
                 }
             );
         }
@@ -194,6 +224,82 @@ class UserCrudController extends CrudController
         return $request;
     }
 
+    /**
+     * Duplicate a bot user
+     */
+    public function duplicate($id)
+    {
+        $this->crud->hasAccessOrFail('duplicate');
+
+        $originalUser = $this->crud->getModel()::findOrFail($id);
+        
+        // Only allow duplicating bot users
+        if (!$originalUser->is_bot) {
+            Alert::add('error', 'Only bot users can be duplicated.')->flash();
+            return redirect()->back();
+        }
+
+        $newUser = $originalUser->replicate();
+        
+        // Generate unique values for required unique fields
+        $newUser->email = $this->generateUniqueEmail($originalUser->email);
+        $newUser->name = $this->generateUniqueName($originalUser->name);
+        $newUser->username = $this->generateUniqueUsername($originalUser->username);
+        
+        // Reset timestamps
+        $newUser->created_at = null;
+        $newUser->updated_at = null;
+        $newUser->email_verified_at = null;
+        
+        $newUser->save();
+
+        // Copy roles and permissions
+        $newUser->roles()->sync($originalUser->roles->pluck('id')->toArray());
+        $newUser->permissions()->sync($originalUser->permissions->pluck('id')->toArray());
+
+        Alert::add('success', 'Bot user duplicated successfully.')->flash();
+        return redirect($this->crud->route);
+    }
+
+    private function generateUniqueEmail($originalEmail)
+    {
+        $parts = explode('@', $originalEmail);
+        $username = $parts[0];
+        $domain = $parts[1];
+        $counter = 1;
+        
+        do {
+            $newEmail = $username . '_copy' . $counter . '@' . $domain;
+            $counter++;
+        } while ($this->crud->getModel()::where('email', $newEmail)->exists());
+        
+        return $newEmail;
+    }
+
+    private function generateUniqueName($originalName)
+    {
+        $counter = 1;
+        
+        do {
+            $newName = $originalName . ' (Copy ' . $counter . ')';
+            $counter++;
+        } while ($this->crud->getModel()::where('name', $newName)->exists());
+        
+        return $newName;
+    }
+
+    private function generateUniqueUsername($originalUsername)
+    {
+        $counter = 1;
+        
+        do {
+            $newUsername = $originalUsername . '_copy' . $counter;
+            $counter++;
+        } while ($this->crud->getModel()::where('username', $newUsername)->exists());
+        
+        return $newUsername;
+    }
+
     protected function addUserFields()
     {
         $this->crud->addFields([
@@ -255,6 +361,13 @@ class UserCrudController extends CrudController
                 'name'  => 'username',
                 'label' => 'Username',
                 'type'  => 'text',
+                'tab'   => 'Game Stats',
+            ],
+            [
+                'name' => 'avatar',
+                'label' => 'Avatar',
+                'type' => 'select2_from_array',
+                'options' => AvatarEnum::toAssociativeArray(),
                 'tab'   => 'Game Stats',
             ],
             [

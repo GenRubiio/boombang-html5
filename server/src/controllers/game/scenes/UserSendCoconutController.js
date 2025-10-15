@@ -29,6 +29,24 @@ class UserSendCoconutController {
                 return; // No se puede hacer coconut si el usuario está bloqueado
             }
 
+            // Bot validation: check if attacker can send coconuts
+            if (!user.canSendCoconuts()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to send coconut but can_send_coconuts=false`);
+                return;
+            }
+
+            // Bot validation: check if target can receive coconuts
+            if (!targetUser.canReceiveCoconuts()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to coconut ${targetUser.username} but target can_receive_coconuts=false`);
+                return;
+            }
+
+            // Bot validation: check if attacker can attack bots (if target is a bot)
+            if (targetUser.is_bot && !user.canAttackBots()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to coconut bot ${targetUser.username} but can_attack_bots=false`);
+                return;
+            }
+
             if (!targetUser.isActionBlocked(AnimationEnum.COCONUT)) {
                 targetUser.cancelMovement();
                 targetUser.currentArea.emit(ResponseSocketsEnum.USER_MOVE, {

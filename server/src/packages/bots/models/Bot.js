@@ -12,6 +12,9 @@ class Bot {
         this.socket = null;
         this.jwtToken = null;
         this.uppercutInterval = null;
+        this.sceneCheckInterval = null;
+        this.hasLoggedSceneError = false;
+        this.hasLoggedLobbyStay = false;
         this.api_url = process.env.API_URL;
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 5;
@@ -99,18 +102,63 @@ class Bot {
             }, 100); // Pequeño delay para asegurar que el usuario esté registrado
             
             this.socket.emit(RequestSocketsEnum.GET_PUBLIC_SCENES);
+            // Auto-subscribe to ring minigame if bot_settings allows it
             setTimeout(() => {
-                this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
-                    type: 1,
-                });
+                const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
+                if (user && user.getSubscribeRing()) {
+                    //console.log(`[BOT-SUBSCRIBE] Bot ${this.username} auto-subscribing to ring minigame`);
+                    this.socket.emit(RequestSocketsEnum.MINIGAME_SUBSCRIBE, {
+                        type: 1,
+                    });
+                }
             }, 5000); // Espera 5 segundos antes de unirse al minijuego
         });
 
         this.socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_SCENES, (publicScenes) => {
-            setInterval(() => {
+            // Store the interval ID to prevent multiple intervals
+            if (this.sceneCheckInterval) {
+                clearInterval(this.sceneCheckInterval);
+            }
+            
+            this.sceneCheckInterval = setInterval(() => {
                 const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
                 if (!user || !user.currentArea) {
-                    this.joinArea(publicScenes[0].uuid);
+                    // Check if bot has specific scenes to join
+                    const scenesToJoin = user.getJoinPublicScenes();
+                    if (scenesToJoin && scenesToJoin.length > 0) {
+                        //console.log(`[BOT-DEBUG] Bot ${this.username} assigned scenes:`, scenesToJoin);
+                        //console.log(`[BOT-DEBUG] Available scenes:`, publicScenes.map(s => ({ id: s.id, name: s.name })));
+                        // Find all scenes that match the bot's allowed scenes
+                        // Compare by name (string) or by original database ID (number)
+                        const matchingScenes = publicScenes.filter(scene => 
+                            scenesToJoin.includes(scene.name) || 
+                            scenesToJoin.includes(scene.id) ||
+                            scenesToJoin.includes(scene.id.toString())
+                        );
+                        if (matchingScenes.length > 0) {
+                            // Choose a random scene from the matching ones
+                            const randomIndex = Math.floor(Math.random() * matchingScenes.length);
+                            const selectedScene = matchingScenes[randomIndex];
+                            //console.log(`[BOT-JOIN] Bot ${this.username} joining random allowed scene: ${selectedScene.name} (${randomIndex + 1}/${matchingScenes.length})`);
+                            this.joinArea(selectedScene.uuid);
+                            
+                            // Clear the interval after joining a scene to prevent repeated attempts
+                            clearInterval(this.sceneCheckInterval);
+                            this.sceneCheckInterval = null;
+                        } else {
+                            // Only log once, then stop trying
+                            if (!this.hasLoggedSceneError) {
+                                //console.log(`[BOT-JOIN] Bot ${this.username} has assigned scenes but none match available scenes. Staying in lobby.`);
+                                this.hasLoggedSceneError = true;
+                            }
+                        }
+                    } else {
+                        // No specific scenes assigned - stay in lobby
+                        if (!this.hasLoggedLobbyStay) {
+                            //console.log(`[BOT-JOIN] Bot ${this.username} no specific scenes assigned, staying in lobby`);
+                            this.hasLoggedLobbyStay = true;
+                        }
+                    }
                 }
             }, 1000);
 
@@ -285,6 +333,11 @@ class Bot {
         if (this.uppercutInterval) {
             clearInterval(this.uppercutInterval);
             this.uppercutInterval = null;
+        }
+        
+        if (this.sceneCheckInterval) {
+            clearInterval(this.sceneCheckInterval);
+            this.sceneCheckInterval = null;
         }
         
         // Limpiar otros intervalos si los hay

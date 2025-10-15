@@ -31,6 +31,7 @@ Route::group([
     Route::crud('catalog-category', 'CatalogCategoryCrudController');
     Route::crud('catalog-item', 'CatalogItemCrudController');
     Route::crud('user-catalog-item', 'UserCatalogItemCrudController');
+    Route::get('user/{id}/duplicate', 'UserCrudController@duplicate');
     Route::crud('ranking-category', 'RankingCategoryCrudController');
     Route::crud('ranking', 'RankingCrudController');
     Route::crud('v-ranking-summary', 'VRankingSummaryCrudController');
