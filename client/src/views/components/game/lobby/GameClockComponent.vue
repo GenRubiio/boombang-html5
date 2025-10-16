@@ -16,7 +16,7 @@ export default {
   name: "GameClockComponent",
   data() {
     return {
-      gameTime: "--:--",
+      gameTime: this.getInitialGameTime(),
       initialGameTime: null,
       initialTimestamp: null,
     };
@@ -42,6 +42,34 @@ export default {
     }, 1000);
   },
   methods: {
+    getInitialGameTime() {
+      // Intentar obtener el último tiempo conocido desde localStorage
+      const savedState = localStorage.getItem('gameClockState');
+      if (savedState) {
+        try {
+          const state = JSON.parse(savedState);
+          const timeDiff = Date.now() - state.savedAt;
+          const fiveMinutesInMs = 5 * 60 * 1000;
+          
+          // Si los datos guardados son recientes (menos de 5 minutos), calcular tiempo actual basado en ellos
+          if (timeDiff < fiveMinutesInMs && state.initialGameTime && state.initialGameTime !== "--:--") {
+            const [hours, minutes] = state.initialGameTime.split(':').map(Number);
+            const initialTotalMinutes = hours * 60 + minutes;
+            const elapsedRealMinutes = (Date.now() - state.initialTimestamp) / 1000 / 60;
+            const elapsedGameMinutes = elapsedRealMinutes * 24;
+            const currentTotalMinutes = (initialTotalMinutes + elapsedGameMinutes) % (24 * 60);
+            const currentHours = Math.floor(currentTotalMinutes / 60);
+            const currentMinutes = Math.floor(currentTotalMinutes % 60);
+            return `${currentHours.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}`;
+          }
+        } catch (e) {
+          // Ignore parsing errors
+        }
+      }
+      
+      // Fallback al tiempo del socket o "--:--"
+      return socket.user?.game_time || "--:--";
+    },
     requestGameTime() {
       socket.emit(RequestSocketsEnum.GAME_TIME);
     },
@@ -54,6 +82,15 @@ export default {
       this.initialGameTime = gameTime || socket.user?.game_time || "--:--";
       this.initialTimestamp = serverTimestamp || Date.now();
       this.gameTime = this.initialGameTime;
+      
+      // Guardar estado en localStorage para evitar parpadeo al reiniciar el componente
+      if (this.initialGameTime !== "--:--") {
+        localStorage.setItem('gameClockState', JSON.stringify({
+          initialGameTime: this.initialGameTime,
+          initialTimestamp: this.initialTimestamp,
+          savedAt: Date.now()
+        }));
+      }
     },
     calculateCurrentGameTime() {
       if (!this.initialGameTime || !this.initialTimestamp) return this.initialGameTime;
@@ -84,7 +121,29 @@ export default {
       const hoursStr = currentHours.toString().padStart(2, '0');
       const minutesStr = currentMinutes.toString().padStart(2, '0');
       
-      return `${hoursStr}:${minutesStr}`;
+      const currentTimeString = `${hoursStr}:${minutesStr}`;
+      
+      // Actualizar localStorage periódicamente (cada minuto) para mantener sincronización
+      const savedState = localStorage.getItem('gameClockState');
+      if (savedState) {
+        try {
+          const state = JSON.parse(savedState);
+          const timeDiff = Date.now() - state.savedAt;
+          const oneMinuteInMs = 60 * 1000;
+          
+          if (timeDiff > oneMinuteInMs) {
+            localStorage.setItem('gameClockState', JSON.stringify({
+              initialGameTime: this.initialGameTime,
+              initialTimestamp: this.initialTimestamp,
+              savedAt: Date.now()
+            }));
+          }
+        } catch (e) {
+          // Ignore parsing errors
+        }
+      }
+      
+      return currentTimeString;
     },
     // Método público para forzar resincronización cuando se regresa al lobby
     forceSync() {
