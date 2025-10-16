@@ -116,7 +116,32 @@ export default {
     currentBackgroundImage() {
       // Intentar obtener tiempo del GameClockComponent primero
       const gameClockTime = this.$refs.gameClock?.gameTime;
-      const timeToUse = gameClockTime && gameClockTime !== "--:--" ? gameClockTime : this.currentGameTime;
+      let timeToUse = gameClockTime && gameClockTime !== "--:--" ? gameClockTime : this.currentGameTime;
+      
+      // Si aún no tenemos tiempo válido, intentar obtenerlo de localStorage
+      if (!timeToUse || timeToUse === "--:--") {
+        const savedState = localStorage.getItem('gameClockState');
+        if (savedState) {
+          try {
+            const state = JSON.parse(savedState);
+            const timeDiff = Date.now() - state.savedAt;
+            const fiveMinutesInMs = 5 * 60 * 1000;
+            
+            if (timeDiff < fiveMinutesInMs && state.initialGameTime && state.initialGameTime !== "--:--") {
+              const [hours, minutes] = state.initialGameTime.split(':').map(Number);
+              const initialTotalMinutes = hours * 60 + minutes;
+              const elapsedRealMinutes = (Date.now() - state.initialTimestamp) / 1000 / 60;
+              const elapsedGameMinutes = elapsedRealMinutes * 24;
+              const currentTotalMinutes = (initialTotalMinutes + elapsedGameMinutes) % (24 * 60);
+              const currentHours = Math.floor(currentTotalMinutes / 60);
+              const currentMinutes = Math.floor(currentTotalMinutes % 60);
+              timeToUse = `${currentHours.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}`;
+            }
+          } catch (e) {
+            // Ignore parsing errors
+          }
+        }
+      }
       
       if (!timeToUse || timeToUse === "--:--") {
         return this.asset_background_image;
