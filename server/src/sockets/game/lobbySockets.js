@@ -6,6 +6,7 @@ const SettingsUpdateGraphicsController = require('../../controllers/game/lobby/S
 const SettingsUpdateLangController = require('../../controllers/game/lobby/SettingsUpdateLangController');
 const SettingsUpdateNameController = require('../../controllers/game/lobby/SettingsUpdateNameController');
 const SettingsUpdateSoundsController = require('../../controllers/game/lobby/SettingsUpdateSoundsController');
+const GameTimeController = require('../../controllers/game/lobby/GameTimeController');
 
 module.exports = (socket, io) => {
     socket.on(RequestSocketsEnum.LOBBY_GACHA_SPIN, (data) => {
@@ -25,5 +26,8 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.SETTINGS_UPDATE_SOUNDS, (data) => {
         SettingsUpdateSoundsController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.GAME_TIME, (data) => {
+        GameTimeController.main(socket, io, data);
     });
 };
