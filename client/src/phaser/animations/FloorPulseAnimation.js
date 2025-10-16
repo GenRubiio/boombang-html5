@@ -1,9 +1,11 @@
+import gameConfig from '@/config/gameConfig.js';
+
 class FloorPulseAnimation {
     static main(scene, x, y) {
         // Crear un gráfico de óvalo negro transparente
         const pulse = scene.add.graphics();
         pulse.fillStyle(0x000000, 0.3); // Negro transparente con menos opacidad
-        pulse.fillEllipse(0, 0, 20 * 2, 10 * 2); // Tamaño inicial pequeño escalado por 2
+        pulse.fillEllipse(0, 0, 20 * gameConfig.DPI, 10 * gameConfig.DPI); // Tamaño inicial pequeño escalado por DPI
 
         // Configurar la posición
         pulse.setPosition(x, y);

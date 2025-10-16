@@ -1,5 +1,6 @@
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserInteractionAnimation from "../../animations/UserInteractionAnimation.js";
+import gameConfig from "@/config/gameConfig.js";
 
 class SendInteractionAnimationController {
     static main(gameScene, data) {
@@ -16,10 +17,10 @@ class SendInteractionAnimationController {
         receiverUser.path = [];
         receiverUser.pathIndex = 0;
 
-        const tileWidth = 65 * 2;
-        const tileHeight = 33 * 2;
-        const receiverUserFinalX = (receiverUser.position.x - receiverUser.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const receiverUserFinalY = (receiverUser.position.x + receiverUser.position.y) * (tileHeight / 2);
+        const tileWidth = 65 * gameConfig.DPI;
+        const tileHeight = 33 * gameConfig.DPI;
+        const receiverUserFinalX = (receiverUser.position.x - receiverUser.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+        const receiverUserFinalY = (receiverUser.position.x + receiverUser.position.y) * (tileHeight / gameConfig.DPI);
 
         receiverUser.containerUser.setPosition(receiverUserFinalX, receiverUserFinalY);
         receiverUser.containerUser.setDepth(receiverUserFinalY);
@@ -33,8 +34,8 @@ class SendInteractionAnimationController {
         senderUser.path = [];
         senderUser.pathIndex = 0;
 
-        const senderUserFinalX = (senderUser.position.x - senderUser.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const senderUserFinalY = (senderUser.position.x + senderUser.position.y) * (tileHeight / 2);
+        const senderUserFinalX = (senderUser.position.x - senderUser.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+        const senderUserFinalY = (senderUser.position.x + senderUser.position.y) * (tileHeight / gameConfig.DPI);
 
         senderUser.containerUser.setPosition(senderUserFinalX, senderUserFinalY);
         senderUser.containerUser.setDepth(senderUserFinalY);

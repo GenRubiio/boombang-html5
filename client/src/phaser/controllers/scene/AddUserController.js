@@ -9,7 +9,7 @@ import ShadowColorsEnum from "@/enums/ShadowColorsEnum.js";
 import NameColorsEnum from "@/enums/NameColorsEnum.js";
 import smartAvatarSystem from "../../managers/SmartAvatarSystem.js";
 import AvatarEnum from "@/enums/AvatarEnum.js";
-import DarkeningUtils from "@/utils/DarkeningUtils.js";
+import gameConfig from "@/config/gameConfig.js";
 //import SceneUtils from "../../../utils/SceneUtils.js";
 //import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
 //import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
@@ -34,15 +34,15 @@ function ensureNameTagTexture(gameScene, texKey, w, h, bgColor, alpha) {
     }
     const g = gameScene.add.graphics();
     g.fillStyle(bgColor, alpha);
-    g.fillRoundedRect(0, 0, w, h, 8 * 2);
+    g.fillRoundedRect(0, 0, w, h, 8 * gameConfig.DPI);
     // punta inferior
     g.fillTriangle(
-        w / 2 - 5 * 2, h,
-        w / 2 + 5 * 2, h,
-        w / 2, h + 6 * 2
+        w / gameConfig.DPI - 5 * gameConfig.DPI, h,
+        w / gameConfig.DPI + 5 * gameConfig.DPI, h,
+        w / gameConfig.DPI, h + 6 * gameConfig.DPI
     );
     // incluye la punta en la textura
-    g.generateTexture(texKey, w, h + 6 * 2);
+    g.generateTexture(texKey, w, h + 6 * gameConfig.DPI);
     g.destroy();
     nameTagStyleHash.set(texKey, hash);
 }
@@ -150,7 +150,7 @@ class AddUserController {
 
     static createShadowSprite(gameScene, userData) {
         //TODO: Nuevo rederizado * 2
-        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54 * 2, 20 * 2);
+        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54 * gameConfig.DPI, 20 * gameConfig.DPI);
         spriteShadow.setDepth(0);
         spriteShadow.setInteractive({ useHandCursor: true });
 
@@ -262,8 +262,8 @@ class AddUserController {
         }).setOrigin(0.5, 1);
 
         // 2) Medidas con padding visual
-        const textWidth = Math.ceil(userNameText.width) + 12 * 2;  // margen extra
-        const textHeight = Math.ceil(userNameText.height) + 10 * 2; // padding vertical
+        const textWidth = Math.ceil(userNameText.width) + 12 * gameConfig.DPI;  // margen extra
+        const textHeight = Math.ceil(userNameText.height) + 10 * gameConfig.DPI; // padding vertical
 
         // 3) Clave única por usuario (id si existe; fallback a username)
         const safeName = String(userName).replace(/\s+/g, "_");
@@ -273,13 +273,13 @@ class AddUserController {
         ensureNameTagTexture(gameScene, textureKey, textWidth, textHeight, backgroundColor, alpha);
 
         // 5) Crear imagen de fondo usando la textura
-        const yBg = -spriteAvatar.displayHeight / 2 - textHeight - 8 * 2;
+        const yBg = -spriteAvatar.displayHeight / gameConfig.DPI - textHeight - 8 * gameConfig.DPI;
         const textBackground = gameScene.add.image(0, yBg, textureKey)
             .setOrigin(0.5, 1)
             .setDepth(2);
 
         // 6) Ajustar posición del texto encima del fondo
-        userNameText.y = textBackground.y - textHeight / 2;
+        userNameText.y = textBackground.y - textHeight / gameConfig.DPI;
         userNameText.setDepth(3);
         userNameText.setColor(textColor); // por si cambia dinámicamente
 

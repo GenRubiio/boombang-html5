@@ -5,7 +5,7 @@ import FloorPulseAnimation from "../../animations/FloorPulseAnimation.js";
 import SetUserCardController from "../scene/SetUserCardController.js";
 import EventLimiter from "../../../utils/EventLimiter.js";
 import CatalogItemTypeOfBehaviorEnum from "../../../enums/CatalogItemTypeOfBehaviorEnum.js";
-import DarkeningUtils from "../../../utils/DarkeningUtils.js";
+import gameConfig from "@/config/gameConfig.js";
 
 class CreateSceneController {
   //TODO: El bob y blitter esta consumiendo 5% de CPU hay que condicionarlo para que no aparezca si no es necesario. Ya lo he comprobado y solo hay que quitarlo
@@ -40,10 +40,10 @@ class CreateSceneController {
   }
 
   static createTile(gameScene, map, rows, cols) {
-    const tileWidth = 65 * 2;
-    const tileHeight = 33 * 2;
-    const halfTileWidth = tileWidth / 2;
-    const halfTileHeight = tileHeight / 2;
+    const tileWidth = 65 * gameConfig.DPI;
+    const tileHeight = 33 * gameConfig.DPI;
+    const halfTileWidth = tileWidth / gameConfig.DPI;
+    const halfTileHeight = tileHeight / gameConfig.DPI;
 
     const W = gameScene.scale.width;
     const H = gameScene.scale.height;
@@ -353,16 +353,13 @@ class CreateSceneController {
     }
 
     // Use the same tile dimensions as in createTile method
-    const tileWidth = 65 * 2;
-    const tileHeight = 33 * 2;
-    const halfTileWidth = tileWidth / 2;
-    const halfTileHeight = tileHeight / 2;
+    const tileWidth = 65 * gameConfig.DPI;
+    const tileHeight = 33 * gameConfig.DPI;
+    const halfTileWidth = tileWidth / gameConfig.DPI;
+    const halfTileHeight = tileHeight / gameConfig.DPI;
 
     const W = gameScene.scale.width;
     const centerX = W / 2;
-
-    const roomHasDarkening = gameScene.sceneData.scenery.darkening;
-    const gameTime = gameScene.sceneData.scenery.game_time;
 
     for (const arrow of gameScene.sceneData.scenery.arrows) {
       // Check if sprite was loaded properly
@@ -381,20 +378,12 @@ class CreateSceneController {
 
       // Create the arrow sprite at the converted screen position
       // Adjust positioning to center on tile - use same origin as tiles and add small offset
-      const arrowSprite = gameScene.add
+      gameScene.add
         .image(screenX, screenY + halfTileHeight, spriteName)
         .setOrigin(0.5, 1) // Center the arrow
         .setDepth(0) // Place arrows above tiles and other objects
         .setName(spriteName)
         .setScale(arrow.scale || 2); // Apply scale if provided, default to 1
-
-      // El oscurecimiento ahora es global por escena, no por sprite
-
-      // Make arrows interactive (clickable for navigation)
-      //arrowSprite.setInteractive({
-      //    cursor: 'pointer',
-      //    pixelPerfect: true
-      //});
     }
   }
 

@@ -1,6 +1,5 @@
-
-
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
+import gameConfig from "@/config/gameConfig.js";
 
 class UserMoveDeniedController {
     static main(gameScene, socketId) {
@@ -27,10 +26,10 @@ class UserMoveDeniedController {
             gameScene.tweens.killTweensOf(spriteShadow);
 
             // Forzar la posición del jugador en el mapa según (x, y)
-            const tileWidth = 65 * 2;
-            const tileHeight = 33 * 2;
-            const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-            const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
+            const tileWidth = 65 * gameConfig.DPI;
+            const tileHeight = 33 * gameConfig.DPI;
+            const finalX = (user.position.x - user.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+            const finalY = (user.position.x + user.position.y) * (tileHeight / gameConfig.DPI);
 
             // Establecer posición y profundidad
             user.containerUser.setPosition(finalX, finalY);

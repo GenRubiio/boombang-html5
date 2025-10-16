@@ -1,7 +1,7 @@
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import DirectionEnum from "../../../enums/DirectionEnum.js";
 import UserCocoAnimation from "../../animations/UserCocoAnimation.js";
-import DarkeningUtils from "@/utils/DarkeningUtils";
+import gameConfig from "@/config/gameConfig.js";
 
 class UserReceiveEffectController {
     static main(gameScene, data) {
@@ -23,12 +23,12 @@ class UserReceiveEffectController {
 
         // Crear sprite del efecto en la posición inicial
         const effect = gameScene.add.sprite(
-            container.x + effectData.effect.positionOffset.x * 2,
-            container.y + effectData.effect.positionOffset.y * 2,
+            container.x + effectData.effect.positionOffset.x * gameConfig.DPI,
+            container.y + effectData.effect.positionOffset.y * gameConfig.DPI,
             data.effect
         );
         effect.setDepth(container.depth + 1);
-        effect.setScale(2);
+        effect.setScale(gameConfig.DPI);
 
         // El oscurecimiento ahora es global por escena, no por sprite
 
