@@ -63,6 +63,7 @@ const ResponseSocketsEnum = new Enum({
     GET_USER_AVATARS: 'response:get_user_avatars',
     USER_CHANGE_AVATAR: 'response:user_change_avatar',
     USER_CHANGE_AVATAR_POPUP: 'response:user_change_avatar_popup',
+    GAME_TIME: 'response:game_time',
 });
 
 export default ResponseSocketsEnum;

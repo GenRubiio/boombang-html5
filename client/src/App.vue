@@ -24,6 +24,7 @@ import { defineAsyncComponent } from "vue";
 import socket from "./sockets/socket";
 import GameScreensEnum from "./enums/GameScreensEnum";
 import ColorReplacePipelinePlugin from "phaser3-rex-plugins/plugins/colorreplacepipeline-plugin.js";
+import gameConfig from "@/config/gameConfig.js";
 
 export default {
   data() {
@@ -63,10 +64,6 @@ export default {
     async onLoginSuccess() {
       this.onUpdateLoading(true);
       
-      // Limpiar el estado del reloj guardado para evitar desincronización
-      // especialmente cuando el servidor se reinicia
-      localStorage.removeItem('gameClockState');
-      
       const { default: GamePreloaders } = await import(
         "./phaser/preloaders/GamePreloaders"
       );
@@ -99,8 +96,7 @@ export default {
         default:
           phaserType = Phaser.AUTO;
       }
-      const LOGICAL_WIDTH = 1012;
-      const LOGICAL_HEIGHT = 657;
+
       this.gamePhaser = new Phaser.Game({
         type: phaserType,
         powerPreference: socket.user.phaser_power_preference || "default", // "high-performance", "low-power", "default"
@@ -108,8 +104,8 @@ export default {
         antialiasGL: socket.user.phaser_antialias_gl ? true : false, // Desactiva si no necesitas suavizado en WebGL
         roundPixels: socket.user.phaser_round_pixels ? true : false, // Reduce cálculos de subpíxeles
         pixelArt: socket.user.phaser_pixel_art ? true : false, // Esencial para evitar el antialiasing que causa el blur
-        width: LOGICAL_WIDTH,
-        height: LOGICAL_HEIGHT,
+        width: gameConfig.GAME_WIDTH,
+        height: gameConfig.GAME_HEIGHT,
         // Registras todas las escenas globales que vayas a usar
         scene: [GlobalPreloader, PublicScene, PrivateScene, MinigameScene],
         plugins: {
@@ -148,11 +144,9 @@ export default {
       // Lanzamos la escena de Preloader para que cargue todo
       this.gamePhaser.scene.start("GlobalPreloaderScene");
 
-      //TODO: Lo aplicaremos cuando terminemos nuevo logca de importacion de texturas
-      const dpi = 2;
-      this.gamePhaser.scale.resize(LOGICAL_WIDTH * dpi, LOGICAL_HEIGHT * dpi);
-      this.gamePhaser.canvas.style.width = LOGICAL_WIDTH + "px";
-      this.gamePhaser.canvas.style.height = LOGICAL_HEIGHT + "px";
+      this.gamePhaser.scale.resize(gameConfig.GAME_WIDTH * gameConfig.DPI, gameConfig.GAME_HEIGHT * gameConfig.DPI);
+      this.gamePhaser.canvas.style.width = gameConfig.GAME_WIDTH + "px";
+      this.gamePhaser.canvas.style.height = gameConfig.GAME_HEIGHT + "px";
     },
     handleDisconnect() {
       this.onUpdateLoading(true);

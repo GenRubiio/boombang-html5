@@ -10,6 +10,7 @@
 <script>
 import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 
 export default {
   name: "GameClockComponent",
@@ -26,35 +27,11 @@ export default {
     },
   },
   mounted() {
-    // Asegurar que tenemos datos actuales del socket primero
-    const socketTime = socket.user?.game_time;
+    // Configurar listener para respuesta del tiempo del juego
+    socket.on(ResponseSocketsEnum.GAME_TIME, this.handleGameTimeResponse);
     
-    // Intentar recuperar el estado guardado del localStorage
-    const savedState = localStorage.getItem('gameClockState');
-    
-    if (savedState && socketTime) {
-      try {
-        const state = JSON.parse(savedState);
-        
-        // Validar que los datos guardados no son muy antiguos (más de 10 minutos)
-        const timeDiff = Date.now() - state.initialTimestamp;
-        const tenMinutesInMs = 10 * 60 * 1000;
-        
-        if (timeDiff < tenMinutesInMs && state.initialGameTime !== "--:--") {
-          this.initialGameTime = state.initialGameTime;
-          this.initialTimestamp = state.initialTimestamp;
-          this.gameTime = this.calculateCurrentGameTime();
-        } else {
-          // Los datos guardados son muy antiguos, usar datos del socket
-          this.initializeClock();
-        }
-      } catch (e) {
-        // Si hay error al parsear, inicializar normalmente
-        this.initializeClock();
-      }
-    } else {
-      this.initializeClock();
-    }
+    // Solicitar tiempo inicial del servidor
+    this.requestGameTime();
 
     // Actualizar la hora cada segundo calculando el tiempo transcurrido
     // 24 horas de juego = 1 hora real
@@ -63,27 +40,20 @@ export default {
         this.gameTime = this.calculateCurrentGameTime();
       }
     }, 1000);
-
-    // Sincronizar con el servidor cada 5 minutos
-    this.syncIntervalId = setInterval(() => {
-      socket.emit(RequestSocketsEnum.REFRESH_USER_CREDITS);
-    }, 300000);
   },
   methods: {
-    initializeClock() {
-      this.initialGameTime = socket.user.game_time;
-      this.initialTimestamp = Date.now();
-      this.gameTime = this.initialGameTime;
-      
-      // Guardar el estado inicial en localStorage
-      this.saveClockState();
+    requestGameTime() {
+      socket.emit(RequestSocketsEnum.GAME_TIME);
     },
-    saveClockState() {
-      const state = {
-        initialGameTime: this.initialGameTime,
-        initialTimestamp: this.initialTimestamp,
-      };
-      localStorage.setItem('gameClockState', JSON.stringify(state));
+    handleGameTimeResponse(response) {
+      if (response.success && response.data) {
+        this.initializeClock(response.data.game_time, response.data.timestamp);
+      }
+    },
+    initializeClock(gameTime, serverTimestamp) {
+      this.initialGameTime = gameTime || socket.user?.game_time || "--:--";
+      this.initialTimestamp = serverTimestamp || Date.now();
+      this.gameTime = this.initialGameTime;
     },
     calculateCurrentGameTime() {
       if (!this.initialGameTime || !this.initialTimestamp) return this.initialGameTime;
@@ -118,18 +88,16 @@ export default {
     },
     // Método público para forzar resincronización cuando se regresa al lobby
     forceSync() {
-      const socketTime = socket.user?.game_time;
-      if (socketTime && socketTime !== "--:--") {
-        this.initializeClock();
-      }
+      this.requestGameTime();
     },
   },
   beforeUnmount() {
+    // Limpiar listeners
+    socket.off(ResponseSocketsEnum.GAME_TIME, this.handleGameTimeResponse);
+    
+    // Limpiar intervalos
     if (this.intervalId) {
       clearInterval(this.intervalId);
-    }
-    if (this.syncIntervalId) {
-      clearInterval(this.syncIntervalId);
     }
   },
 };
