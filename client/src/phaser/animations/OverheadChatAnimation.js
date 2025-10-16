@@ -1,4 +1,5 @@
 import ChatColorsEnum from '@/enums/ChatColorsEnum';
+import gameConfig from '@/config/gameConfig.js';
 export default class OverheadChatAnimation {
     /**
      * @param {Phaser.Scene} scene - Escena de Phaser.
@@ -12,11 +13,11 @@ export default class OverheadChatAnimation {
         this.lineSpacing = 5;
         this.pushSpeed = 1;
         this.checkInterval = 5000;
-        this.rightReserved = (220 * 2) + 230;
+        this.rightReserved = (220 * gameConfig.DPI) + 230;
         this.leftBound = 230; // Margen izquierdo para evitar que el chat se salga de la pantalla
         this.textDepth = 9999;
         this.playerSprite = null;
-        this.areaStartHeight = (140 * 2) + 30;
+        this.areaStartHeight = (140 * gameConfig.DPI) + 30;
 
         // Array para almacenar los contenedores de mensajes
         this.messages = [];
@@ -82,15 +83,15 @@ export default class OverheadChatAnimation {
         });
 
         const playerBounds = this.playerSprite.getBounds();
-        const sceneWidth = this.scene.game.config.width * 2;
+        const sceneWidth = this.scene.game.config.width * gameConfig.DPI;
         const rightBound = sceneWidth - this.rightReserved;
-        const minX = this.leftBound + (domElement.width / 2) + 50; // Margen extra de seguridad
-        const maxX = rightBound - (domElement.width / 2);
+        const minX = this.leftBound + (domElement.width / gameConfig.DPI) + 50; // Margen extra de seguridad
+        const maxX = rightBound - (domElement.width / gameConfig.DPI);
         const finalX = Phaser.Math.Clamp(playerBounds.centerX, minX, maxX);
 
         domElement.setPosition(
-            Math.round(finalX / 2),
-            Math.round(this.areaStartHeight / 2)
+            Math.round(finalX / gameConfig.DPI),
+            Math.round(this.areaStartHeight / gameConfig.DPI)
         );
         domElement.setDepth(this.textDepth);
 
@@ -131,8 +132,8 @@ export default class OverheadChatAnimation {
 
         const sceneWidth = this.scene.game.config.width;
         domElement.setPosition(
-            Math.round(sceneWidth / 2),
-            Math.round(this.areaStartHeight / 2)
+            Math.round(sceneWidth / gameConfig.DPI),
+            Math.round(this.areaStartHeight / gameConfig.DPI)
         );
         domElement.setDepth(this.textDepth);
 

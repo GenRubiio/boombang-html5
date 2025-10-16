@@ -2,6 +2,7 @@
  * Utilidad para configurar el sprite antes de reproducir la animación
  * (flip horizontal, origen, offsets, etc.)
  */
+import gameConfig from '@/config/gameConfig.js';
 class AnimationUtils {
     static setSpriteConfig(spriteAvatar, avatarId, textureKey) {
         // Supone que tienes un objeto global con la config de cada avatar y animación
@@ -19,11 +20,11 @@ class AnimationUtils {
         //    animationData.originY + (animationData.offsetY / animationData.frameHeight)
         //);
         spriteAvatar.setPosition(
-            animationData.positionX * 2,
-            animationData.positionY * 2
+            animationData.positionX * gameConfig.DPI,
+            animationData.positionY * gameConfig.DPI
         );
         //TODO: Nuevo rederizado * 2
-        //spriteAvatar.setScale(2);
+        spriteAvatar.setScale(gameConfig.DPI / 2);
     }
 }
 

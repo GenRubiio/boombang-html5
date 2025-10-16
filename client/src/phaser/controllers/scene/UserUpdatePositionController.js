@@ -1,4 +1,5 @@
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
+import gameConfig from "@/config/gameConfig.js";
 
 class UserUpdatePositionController {
     static main(gameScene, data) {
@@ -25,10 +26,10 @@ class UserUpdatePositionController {
         user.pathIndex = 0;
 
         // Forzar la posición en el mapa según la lógica isométrica
-        const tileWidth = 65 * 2;
-        const tileHeight = 33 * 2;
-        const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
+        const tileWidth = 65 * gameConfig.DPI;
+        const tileHeight = 33 * gameConfig.DPI;
+        const finalX = (user.position.x - user.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+        const finalY = (user.position.x + user.position.y) * (tileHeight / gameConfig.DPI);
 
         user.containerUser.setPosition(finalX, finalY);
         user.containerUser.setDepth(finalY);
