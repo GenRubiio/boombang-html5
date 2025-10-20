@@ -14,7 +14,6 @@ use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
 use App\Http\Controllers\Api\Bot\AIProviderStatsController;
 use App\Http\Controllers\Api\Bot\BotConsumeQuotaController;
 use App\Http\Controllers\Api\Game\Scene\IslandApiController;
-use App\Http\Controllers\Api\Game\Scene\RankingApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
 use App\Http\Controllers\Api\User\UserChangeAvatarController;
 use App\Http\Controllers\Api\Game\Lobby\GachaponApiController;
@@ -125,11 +124,6 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::prefix('scene')->group(function () {
             Route::post('user-decorations', [SceneUserDecorationsApiController::class, 'index']);
             Route::post('user-avatars', [SceneUserAvatarsApiController::class, 'index']);
-        });
-
-        Route::prefix('ranking')->group(function () {
-            Route::post('categories', [RankingApiController::class, 'getCategories']);
-            Route::post('get', [RankingApiController::class, 'get']);
         });
 
         Route::prefix('catalog')->group(function () {
