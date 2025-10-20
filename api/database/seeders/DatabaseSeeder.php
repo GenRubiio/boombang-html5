@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PrivateSceneConfigSeeder::class);
         $this->call(CatalogCategorySeeder::class);
         $this->call(CatalogItemSeeder::class);
-        $this->call(RankingCategorySeeder::class);
 
         Artisan::call('passport:client --personal');
     }
