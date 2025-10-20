@@ -13,6 +13,12 @@ return [
                  * Route for accessing api documentation interface
                  */
                 'api' => 'api/documentation',
+                'docs' => 'api-docs',
+                'middleware' => [
+                    'api' => [],
+                    'docs' => [],
+                    'asset' => [],
+                ],
             ],
             'paths' => [
                 /*
