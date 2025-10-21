@@ -11,7 +11,7 @@ class ServeLocal extends Command
      *
      * @var string
      */
-    protected $signature = 'serve';
+    protected $signature = 'server';
 
     /**
      * The console command description.
@@ -26,6 +26,6 @@ class ServeLocal extends Command
     public function handle()
     {
         $this->info('Starting local server on http://127.0.0.1:8000');
-        passthru('php -S 127.0.0.1:8000 -t public');
+        passthru('php -S 127.0.0.1:8000 server.php');
     }
 }
