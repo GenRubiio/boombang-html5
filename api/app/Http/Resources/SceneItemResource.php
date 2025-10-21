@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\Traits\DtoResourceTrait;
+use App\Models\Event;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SceneItemResource extends JsonResource
@@ -42,6 +43,18 @@ class SceneItemResource extends JsonResource
             'min_users' => $this->whenPivotLoaded('public_scene_items', function () {
                 return (int)$this->pivot->min_users;
             }),
+            'active' => $this->whenPivotLoaded('public_scene_items', function () {
+                if ($this->pivot->event_id) {
+                    $event = Event::find($this->pivot->event_id);
+                    if ($event) {
+                        $now = now();
+                        if ($now->lt($event->start_time) || $now->gt($event->end_time)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }) ?? true,
         ];
     }
 }

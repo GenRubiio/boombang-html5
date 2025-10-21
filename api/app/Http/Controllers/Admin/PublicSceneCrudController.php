@@ -317,8 +317,16 @@ class PublicSceneCrudController extends CrudController
                         'label' => 'Nombre del Atributo de Usuario',
                         'type' => 'text',
                         'hint' => 'Solo se usa si "Sumar Puntos a Atributo de Usuario" está marcado',
-                        'wrapper' => ['class' => 'form-group col-md-12'],
+                        'wrapper' => ['class' => 'form-group col-md-6'],
                     ],
+                    [
+                        'name' => 'event_id',
+                        'label' => 'Evento Asociado',
+                        'type' => 'select2',
+                        'model' => "App\Models\Event",
+                        'attribute' => 'name',
+                        'wrapper' => ['class' => 'form-group col-md-6'],
+                    ]
                 ],
                 'new_item_label' => 'Añadir Item',
                 'reorder' => true,
@@ -475,6 +483,7 @@ class PublicSceneCrudController extends CrudController
                             'sum_points' => $item['sum_points'] ?? 0,
                             'sum_points_to_user_attribute' => isset($item['sum_points_to_user_attribute']) ? (bool)$item['sum_points_to_user_attribute'] : false,
                             'user_attribute_name' => $item['user_attribute_name'] ?? null,
+                            'event_id' => $item['event_id'] ?? null,
                         ];
                     }
                 }
@@ -537,6 +546,7 @@ class PublicSceneCrudController extends CrudController
                     'sum_points' => $item->pivot->sum_points,
                     'sum_points_to_user_attribute' => $item->pivot->sum_points_to_user_attribute,
                     'user_attribute_name' => $item->pivot->user_attribute_name,
+                    'event_id' => $item->pivot->event_id,
                 ];
             }
             $duplicate->items()->sync($pivotData);

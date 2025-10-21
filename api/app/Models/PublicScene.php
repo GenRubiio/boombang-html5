@@ -111,7 +111,8 @@ class PublicScene extends Model
                 'min_users',
                 'sum_points',
                 'sum_points_to_user_attribute',
-                'user_attribute_name'
+                'user_attribute_name',
+                'event_id'
             );
     }
 
