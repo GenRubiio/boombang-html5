@@ -26,6 +26,6 @@ class ServeLocal extends Command
     public function handle()
     {
         $this->info('Starting local server on http://127.0.0.1:8000');
-        passthru('php -S 127.0.0.1:8000 server.php');
+        passthru('php -S 127.0.0.1:8000 -t public');
     }
 }

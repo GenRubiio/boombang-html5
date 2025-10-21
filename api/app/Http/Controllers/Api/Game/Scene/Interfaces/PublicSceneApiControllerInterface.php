@@ -8,8 +8,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 interface PublicSceneApiControllerInterface
 {
     /**
-     * @OA\Get(
-     *     path="/api/public-scenes",
+     * @OA\Post(
+     *     path="/api/public-scene/get",
      *     summary="Get all public scenes",
      *     tags={"Public Scene"},
      *     security={{ "bearer_token": {} }},

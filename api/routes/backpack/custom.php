@@ -39,6 +39,12 @@ Route::group([
     Route::get('server-management', 'ServerManagementController@index')->name('admin.server-management.index');
     Route::post('server-management/restart', 'ServerManagementController@restartServer')->name('admin.server-management.restart');
     Route::crud('api-key', 'ApiKeyCrudController');
+    Route::crud('event', 'EventCrudController');
+    Route::crud('event-score', 'EventScoreCrudController');
+    Route::crud('minigame', 'MinigameCrudController');
+    Route::crud('minigame-week', 'MinigameWeekCrudController');
+    Route::crud('minigame-score', 'MinigameScoreCrudController');
+    Route::crud('reward', 'RewardCrudController');
 }); // this should be the absolute last line of this file
 
 /**

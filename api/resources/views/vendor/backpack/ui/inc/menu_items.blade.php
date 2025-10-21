@@ -15,6 +15,14 @@
 @endif
 @if (backpack_user()->hasAnyRole(['Superadmin', 'Catalog']))
     <x-backpack::menu-item title="Catalog items" icon="la la-question" :link="backpack_url('catalog-item')" />
+    <x-backpack::menu-dropdown title="Ranking" icon="la la-puzzle-piece">
+        <x-backpack::menu-item title="Events" icon="la la-question" :link="backpack_url('event')" />
+        <x-backpack::menu-item title="Event scores" icon="la la-question" :link="backpack_url('event-score')" />
+        <x-backpack::menu-item title="Minigames" icon="la la-question" :link="backpack_url('minigame')" />
+        <x-backpack::menu-item title="Minigame weeks" icon="la la-question" :link="backpack_url('minigame-week')" />
+        <x-backpack::menu-item title="Minigame scores" icon="la la-question" :link="backpack_url('minigame-score')" />
+        <x-backpack::menu-item title="Rewards" icon="la la-question" :link="backpack_url('reward')" />
+    </x-backpack::menu-dropdown>
 @endif
 @if (backpack_user()->hasRole('Superadmin'))
     <x-backpack::menu-item title="Api keys" icon="la la-question" :link="backpack_url('api-key')" />

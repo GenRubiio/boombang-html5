@@ -434,13 +434,13 @@
                 ]
             }
         },
-        "/api/public-scenes": {
-            "get": {
+        "/api/public-scene/get": {
+            "post": {
                 "tags": [
                     "Public Scene"
                 ],
                 "summary": "Get all public scenes",
-                "operationId": "8d1a9333ac3453141bc2404cf4b68c68",
+                "operationId": "f127f01c5175a94c55f2ab3de0871188",
                 "responses": {
                     "200": {
                         "description": "A list of public scenes"
