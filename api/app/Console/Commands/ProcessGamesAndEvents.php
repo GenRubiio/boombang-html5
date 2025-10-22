@@ -65,10 +65,7 @@ class ProcessGamesAndEvents extends Command
     protected function createWeeklyForMinigames(Carbon $now)
     {
         // Calculate week start (Monday 00:00) and end (next Monday 00:00)
-        $start = $now->copy()->startOfWeek();
-        if ($start->dayOfWeek !== Carbon::MONDAY) {
-            $start = $now->copy()->modify('monday this week')->startOfDay();
-        }
+        $start = $now->copy()->startOfWeek(Carbon::MONDAY)->startOfDay();
         $end = $start->copy()->addDays(7)->startOfDay();
 
         $weekNumber = $start->isoWeek();
@@ -107,9 +104,21 @@ class ProcessGamesAndEvents extends Command
             $weeks = MinigameWeek::where('end_date', '<=', $now)->get();
 
         foreach ($weeks as $week) {
-            // We mark a week as processed by creating a tiny lock in cache to avoid double processing within minutes
+            // Verificar si ya se procesó usando la base de datos
             $cacheKey = "minigame_week_processed_{$week->id}";
             if (Cache::has($cacheKey)) {
+                continue;
+            }
+            
+            // Verificar si ya existen premios otorgados para esta semana
+            $existingRewards = UserCatalogItem::where('created_at', '>=', $week->end_date)
+                ->whereHas('catalogItem.rewards', function($query) use ($week) {
+                    $query->where('minigame_id', $week->minigame_id);
+                })
+                ->exists();
+                
+            if ($existingRewards) {
+                Cache::put($cacheKey, true, 60*60*24*7);
                 continue;
             }
 
@@ -141,9 +150,12 @@ class ProcessGamesAndEvents extends Command
             // Iterate over scores and assign rewards based on rank
             $rank = 1;
             foreach ($scores as $score) {
+                $rewardGiven = false;
                 foreach ($rewards as $reward) {
-                    if ($rank >= $reward->rank_from && $rank <= $reward->rank_to) {
+                    if ($rank >= $reward->rank_from && $rank <= $reward->rank_to && !$rewardGiven) {
                         $this->giveRewardToUser($score->user_id, $reward, $week->minigame_id, 'minigame_week', $week->id);
+                        $rewardGiven = true; // Evita múltiples premios por rango superpuesto
+                        break;
                     }
                 }
                 $rank++;
@@ -161,6 +173,18 @@ class ProcessGamesAndEvents extends Command
         foreach ($events as $event) {
             $cacheKey = "event_processed_{$event->id}";
             if (Cache::has($cacheKey)) {
+                continue;
+            }
+            
+            // Verificar si ya existen premios otorgados para este evento
+            $existingRewards = UserCatalogItem::where('created_at', '>=', $event->end_date)
+                ->whereHas('catalogItem.rewards', function($query) use ($event) {
+                    $query->where('event_id', $event->id);
+                })
+                ->exists();
+                
+            if ($existingRewards) {
+                Cache::put($cacheKey, true, 60*60*24*7);
                 continue;
             }
 
@@ -188,9 +212,12 @@ class ProcessGamesAndEvents extends Command
 
             $rank = 1;
             foreach ($scores as $score) {
+                $rewardGiven = false;
                 foreach ($rewards as $reward) {
-                    if ($rank >= $reward->rank_from && $rank <= $reward->rank_to) {
+                    if ($rank >= $reward->rank_from && $rank <= $reward->rank_to && !$rewardGiven) {
                         $this->giveRewardToUser($score->user_id, $reward, null, 'event', $event->id);
+                        $rewardGiven = true; // Evita múltiples premios por rango superpuesto
+                        break;
                     }
                 }
                 $rank++;
@@ -216,7 +243,7 @@ class ProcessGamesAndEvents extends Command
                     'catalog_item_id' => $reward->catalog_item_id,
                     // sensible defaults; adjust if your items need other fields
                     'private_scene_id' => null,
-                    'occupied_tiles' => [],
+                    'occupied_tiles' => json_encode([]), // Convertir a JSON
                     'show_in_inventory' => true,
                     'expires_at' => null,
                     'rotated' => false,
