@@ -326,6 +326,7 @@ export default {
   flex-direction: column;
   gap: 5px;
   margin-right: 10px;
+  width: 160px;
 }
 
 .rankings__tab {
@@ -400,7 +401,7 @@ export default {
   align-items: center;
   padding: 10px;
   box-sizing: border-box;
-  min-height: 50px;
+  height: 45px;
 }
 
 .ranking-item {
