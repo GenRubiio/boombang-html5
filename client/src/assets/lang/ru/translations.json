@@ -33,7 +33,23 @@
     "tooltip_avatars": "Аватары",
     "tooltip_color": "Раскрасить",
     "tooltip_move": "Переместить",
-    "tooltip_inventory": "Инвентарь"
+    "tooltip_inventory": "Инвентарь",
+    "tooltip_rankings": "Рейтинги"
+  },
+  "rankings": {
+    "title": "Рейтинги мини-игр",
+    "loading": "Загрузка...",
+    "no_data": "Нет данных",
+    "position": "Позиция",
+    "username": "Пользователь",
+    "score": "Очки",
+    "week": "Неделя",
+    "select_week": "Выбрать неделю",
+    "page": "Страница",
+    "of": "из",
+    "previous_page": "Предыдущая страница",
+    "next_page": "Следующая страница",
+    "error_loading": "Ошибка загрузки данных"
   },
   "maintenance": {
     "title": "Техническое обслуживание",

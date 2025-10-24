@@ -218,6 +218,26 @@ export default class PublicScene extends Phaser.Scene {
                 if (avatarsTooltip) avatarsTooltip.style.opacity = '0';
             });
         }
+
+        // Rankings button
+        const rankingsButton = buttonsElement.querySelector('[data-action="rankings"]');
+        if (rankingsButton) {
+            rankingsButton.addEventListener('click', (event) => {
+                // Emit event to Vue component to show rankings popup
+                if (this.vueComponent && this.vueComponent.showRankings) {
+                    this.vueComponent.showRankings();
+                }
+            });
+            
+            // Tooltip functionality
+            const rankingsTooltip = rankingsButton.querySelector('.tooltip');
+            rankingsButton.addEventListener('mouseenter', () => {
+                if (rankingsTooltip) rankingsTooltip.style.opacity = '1';
+            });
+            rankingsButton.addEventListener('mouseleave', () => {
+                if (rankingsTooltip) rankingsTooltip.style.opacity = '0';
+            });
+        }
     }
 
     /**

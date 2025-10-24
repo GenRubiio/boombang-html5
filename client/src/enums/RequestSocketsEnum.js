@@ -53,6 +53,8 @@ const RequestSocketsEnum = new Enum({
     GET_USER_AVATARS: 'request:get_user_avatars',
     USER_CHANGE_AVATAR: 'request:user_change_avatar',
     GAME_TIME: 'request:game_time',
+    GET_MINIGAMES: 'request:get_minigames',
+    GET_MINIGAME_RANKING: 'request:get_minigame_ranking',
 });
 
 export default RequestSocketsEnum;

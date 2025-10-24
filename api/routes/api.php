@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\User\UserChangeColornameApiController;
 use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserAvatarsApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
+use App\Http\Controllers\Api\Game\MinigameApiController;
 
 Route::prefix('test')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -128,6 +129,11 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
         Route::prefix('catalog')->group(function () {
             Route::post('lobby-gachapon', [GachaponApiController::class, 'get']);
+        });
+
+        Route::prefix('minigames')->group(function () {
+            Route::post('/', [MinigameApiController::class, 'index']);
+            Route::post('ranking', [MinigameApiController::class, 'getRanking']);
         });
     });
 });

@@ -46,6 +46,326 @@
                 }
             }
         },
+        "/api/minigames": {
+            "get": {
+                "tags": [
+                    "Minigames"
+                ],
+                "summary": "Get all minigames with their weeks",
+                "operationId": "0c3b8d403deb1315fd3e11db4bece4b5",
+                "responses": {
+                    "200": {
+                        "description": "List of all minigames with their available weeks",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "minigames": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Snake Game"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Classic snake game"
+                                                    },
+                                                    "weeks": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "week_number": {
+                                                                    "type": "integer",
+                                                                    "example": 42
+                                                                },
+                                                                "year": {
+                                                                    "type": "integer",
+                                                                    "example": 2024
+                                                                },
+                                                                "start_date": {
+                                                                    "type": "string",
+                                                                    "format": "date-time",
+                                                                    "example": "2024-10-14T00:00:00Z"
+                                                                },
+                                                                "end_date": {
+                                                                    "type": "string",
+                                                                    "format": "date-time",
+                                                                    "example": "2024-10-21T00:00:00Z"
+                                                                },
+                                                                "week_identifier": {
+                                                                    "type": "string",
+                                                                    "example": "W42-2024"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error message"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/minigames/ranking": {
+            "post": {
+                "tags": [
+                    "Minigames"
+                ],
+                "summary": "Get ranking for a specific minigame and week",
+                "operationId": "10c17ee6e904a4284b48a0ac7b278bd7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "minigame_id",
+                                    "week_id"
+                                ],
+                                "properties": {
+                                    "minigame_id": {
+                                        "description": "ID of the minigame",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "week_id": {
+                                        "description": "ID of the week",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "page": {
+                                        "description": "Page number (optional, default: 1)",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "per_page": {
+                                        "description": "Items per page (optional, default: 20, max: 100)",
+                                        "type": "integer",
+                                        "example": 20
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ranking data with pagination",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "ranking": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "position": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 123
+                                                    },
+                                                    "username": {
+                                                        "type": "string",
+                                                        "example": "player123"
+                                                    },
+                                                    "score": {
+                                                        "type": "integer",
+                                                        "example": 9999
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-10-20T15:30:00Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 87
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "minigame": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Snake Game"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Classic snake game"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "week": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "week_number": {
+                                                    "type": "integer",
+                                                    "example": 42
+                                                },
+                                                "year": {
+                                                    "type": "integer",
+                                                    "example": 2024
+                                                },
+                                                "start_date": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-10-14T00:00:00Z"
+                                                },
+                                                "end_date": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-10-21T00:00:00Z"
+                                                },
+                                                "week_identifier": {
+                                                    "type": "string",
+                                                    "example": "W42-2024"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The minigame id field is required."
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 422
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error message"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
         "/api/game-scenes": {
             "get": {
                 "tags": [
@@ -458,6 +778,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Minigames",
+            "description": "Minigames"
         },
         {
             "name": "Game Scene",

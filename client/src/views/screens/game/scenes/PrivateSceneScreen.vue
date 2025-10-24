@@ -19,6 +19,11 @@
       :authUser="sceneData.authUser"
       @close-avatar-selection="hideAvatarSelection"
     />
+    <RankingsComponent
+      v-if="isRankingsVisible"
+      :authUser="sceneData.authUser"
+      @close-rankings="hideRankings"
+    />
   </div>
 </template>
 
@@ -29,6 +34,7 @@ import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardC
 import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
+import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 
 export default {
@@ -46,6 +52,7 @@ export default {
       isRingInfoCardVisible: false,
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
+      isRankingsVisible: false,
     };
   },
   created() {
@@ -57,6 +64,7 @@ export default {
     RingInfoCardComponent,
     CoconutsInfoCardComponent,
     AvatarSelectionPopup,
+    RankingsComponent,
   },
   methods: {
     initializeGame() {
@@ -108,6 +116,12 @@ export default {
     },
     hideAvatarSelection() {
       this.isAvatarSelectionVisible = false;
+    },
+    showRankings() {
+      this.isRankingsVisible = true;
+    },
+    hideRankings() {
+      this.isRankingsVisible = false;
     },
   },
   mounted() {
