@@ -102,41 +102,61 @@ class MinigameRingSceneInstance {
         if (this.gameEnded) {
             return; // Evitar ejecuciones múltiples
         }
+        
+        console.log(`Ending game for minigame instance: ${this.id}`);
         this.gameEnded = true;
         this.movementBlocked = true;
 
-        // Limpiar todos los temporizadores principales
-        clearInterval(this.intervalStartGame);
-        clearInterval(this.intervalEndGame);
-
-        // Detener el procesador de movimiento
-        this.movementProcessorInstance.stopProcessing();
-
-        this.sendAlertToAllUsers();
-
-        let countdown = this.removeUserInSeconds;
-
-        // Iniciar un nuevo temporizador para la cuenta atrás final
-        const finalCountdownTimer = setInterval(() => {
-            countdown--;
-            this.usersUpdateCounter(countdown);
-            if (countdown <= 0) {
-                clearInterval(finalCountdownTimer);
-
-                // Expulsar a todos los usuarios de forma segura
-                // Hacemos una copia del array porque RemoveUserFromSceneTask lo modifica
-                const usersToRemove = [...this.users];
-                usersToRemove.forEach(user => {
-                    console.log(`Expulsando a usuario: ${user.username} | area: ${user.currentArea} | id: ${user.currentArea.id} | instanceId: ${this.id}`);
-                    if (user.currentArea && user.currentArea.id == this.id) {
-                        console.log(`Expulsando a usuario: ${user.username} de la escena ${this.name}`);
-                        RemoveUserFromSceneTask.main(this, user);
-                    }
-                });
-
-                MinigameInstancesCollection.remove(this.id);
+        try {
+            // Limpiar todos los temporizadores principales
+            if (this.intervalStartGame) {
+                clearInterval(this.intervalStartGame);
+                this.intervalStartGame = null;
             }
-        }, 1000);
+            if (this.intervalEndGame) {
+                clearInterval(this.intervalEndGame);
+                this.intervalEndGame = null;
+            }
+
+            // Detener el procesador de movimiento de forma segura
+            if (this.movementProcessorInstance && typeof this.movementProcessorInstance.stopProcessing === 'function') {
+                this.movementProcessorInstance.stopProcessing();
+            }
+
+            this.sendAlertToAllUsers();
+
+            let countdown = this.removeUserInSeconds;
+
+            // Iniciar un nuevo temporizador para la cuenta atrás final
+            const finalCountdownTimer = setInterval(() => {
+                countdown--;
+                this.usersUpdateCounter(countdown);
+                if (countdown <= 0) {
+                    clearInterval(finalCountdownTimer);
+
+                    // Expulsar a todos los usuarios de forma segura
+                    // Hacemos una copia del array porque RemoveUserFromSceneTask lo modifica
+                    const usersToRemove = [...this.users];
+                    usersToRemove.forEach(user => {
+                        try {
+                            const areaId = user.currentArea ? user.currentArea.id : 'null';
+                            const areaName = user.currentArea ? user.currentArea.name || 'unnamed' : 'null';
+                            console.log(`Expulsando a usuario: ${user.username} | area: ${areaName} | id: ${areaId} | instanceId: ${this.id}`);
+                            if (user.currentArea && user.currentArea.id == this.id) {
+                                console.log(`Expulsando a usuario: ${user.username} de la escena ${this.name}`);
+                                RemoveUserFromSceneTask.main(this, user);
+                            }
+                        } catch (err) {
+                            console.error(`Error expulsando usuario ${user.username}:`, err.message);
+                        }
+                    });
+
+                    MinigameInstancesCollection.remove(this.id);
+                }
+            }, 1000);
+        } catch (err) {
+            console.error(`Error in endGame for instance ${this.id}:`, err.message);
+        }
     }
 
     sendAlertToAllUsers() {
