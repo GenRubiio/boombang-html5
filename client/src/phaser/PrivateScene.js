@@ -493,6 +493,15 @@ export default class PrivateScene extends Phaser.Scene {
                     //console.error('htmlInventory no está inicializado');
                 }
                 break;
+
+            case 'rankings':
+                if (import.meta.env.VITE_APP_ENV === "local") {
+                    //console.log('Botón de rankings pulsado');
+                }
+                if (this.vueComponent && this.vueComponent.showRankings) {
+                    this.vueComponent.showRankings();
+                }
+                break;
         }
     }
 

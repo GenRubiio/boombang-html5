@@ -33,7 +33,23 @@
     "tooltip_avatars": "Avatares",
     "tooltip_color": "Colorear",
     "tooltip_move": "Mover",
-    "tooltip_inventory": "Inventario"
+    "tooltip_inventory": "Inventario",
+    "tooltip_rankings": "Rankings"
+  },
+  "rankings": {
+    "title": "Rankings de Minijuegos",
+    "loading": "Cargando...",
+    "no_data": "No hay datos disponibles",
+    "position": "Posición",
+    "username": "Usuario",
+    "score": "Puntuación",
+    "week": "Semana",
+    "select_week": "Seleccionar semana",
+    "page": "Página",
+    "of": "de",
+    "previous_page": "Página anterior",
+    "next_page": "Página siguiente",
+    "error_loading": "Error al cargar datos"
   },
   "maintenance": {
     "title": "Mantenimiento",

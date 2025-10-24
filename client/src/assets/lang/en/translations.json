@@ -33,7 +33,23 @@
     "tooltip_avatars": "Avatars",
     "tooltip_color": "Color",
     "tooltip_move": "Move",
-    "tooltip_inventory": "Inventory"
+    "tooltip_inventory": "Inventory",
+    "tooltip_rankings": "Rankings"
+  },
+  "rankings": {
+    "title": "Minigame Rankings",
+    "loading": "Loading...",
+    "no_data": "No data available",
+    "position": "Position",
+    "username": "Username",
+    "score": "Score",
+    "week": "Week",
+    "select_week": "Select week",
+    "page": "Page",
+    "of": "of",
+    "previous_page": "Previous page",
+    "next_page": "Next page",
+    "error_loading": "Error loading data"
   },
   "maintenance": {
     "title": "Maintenance",

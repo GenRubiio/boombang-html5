@@ -65,6 +65,8 @@ const ResponseSocketsEnum = new Enum({
     USER_CHANGE_AVATAR: 'response:user_change_avatar',
     USER_CHANGE_AVATAR_POPUP: 'response:user_change_avatar_popup',
     GAME_TIME: 'response:game_time',
+    MINIGAMES_LIST: 'response:minigames_list',
+    MINIGAME_RANKING: 'response:minigame_ranking',
 });
 
 module.exports = ResponseSocketsEnum;
