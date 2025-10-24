@@ -125,7 +125,11 @@ class MatchMakerInstance {
                 }
 
                 if (user.currentArea && (user.currentArea.scene_type !== SceneTypesEnum.MINIGAME_RING)) {
-                    RemoveUserFromSceneTask.main(user.currentArea, user);
+                    try {
+                        RemoveUserFromSceneTask.main(user.currentArea, user);
+                    } catch (removeErr) {
+                        console.error(`Error removing user ${user.username} from current area:`, removeErr.message);
+                    }
                 }
 
                 const startPosition = {

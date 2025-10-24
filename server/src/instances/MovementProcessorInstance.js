@@ -196,25 +196,41 @@ class MovementProcessorInstance {
     }
 
     #cleanOrphanedReservations() {
-        const activeUserIds = new Set(this.scene.users.map(user => user.id));
-
-        // Eliminar reservas de usuarios que ya no están en la escena
-        for (let key in this.scene.reservedTiles) {
-            const userId = this.scene.reservedTiles[key];
-            if (!activeUserIds.has(userId)) {
-                delete this.scene.reservedTiles[key];
-                logger.log(`Cleaned orphaned reservation at ${key} for user ${userId}`, 'info');
+        try {
+            if (!this.scene || !this.scene.users || !this.scene.reservedTiles) {
+                return;
             }
+
+            const activeUserIds = new Set(this.scene.users.map(user => user.id));
+
+            // Eliminar reservas de usuarios que ya no están en la escena
+            const reservationKeys = Object.keys(this.scene.reservedTiles);
+            for (let key of reservationKeys) {
+                const userId = this.scene.reservedTiles[key];
+                if (!activeUserIds.has(userId)) {
+                    delete this.scene.reservedTiles[key];
+                    console.log(`-> Cleaned orphaned reservation at ${key} for user ${userId}`);
+                }
+            }
+
+            // Limpiar reservas de usuarios que no tienen finalTarget
+            this.scene.users.forEach(user => {
+                try {
+                    if (user && user.lastReservedTile && !user.finalTarget) {
+                        if (this.scene.reservedTiles[user.lastReservedTile]) {
+                            delete this.scene.reservedTiles[user.lastReservedTile];
+                        }
+                        user.lastReservedTile = null;
+                        console.log(`-> Cleaned stale reservation for user ${user.username}`);
+                    }
+                } catch (userErr) {
+                    console.error(`Error cleaning reservation for user ${user?.username}:`, userErr.message);
+                }
+            });
+        } catch (err) {
+            console.error('Error in cleanOrphanedReservations:', err.message);
+            logger.log(`Error cleaning orphaned reservations: ${err.message}`, 'error');
         }
-
-        // Limpiar reservas de usuarios que no tienen finalTarget
-        this.scene.users.forEach(user => {
-            if (user.lastReservedTile && !user.finalTarget) {
-                delete this.scene.reservedTiles[user.lastReservedTile];
-                user.lastReservedTile = null;
-                logger.log(`Cleaned stale reservation for user ${user.username}`, 'info');
-            }
-        });
     }
 
     stopProcessing() {

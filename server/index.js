@@ -9,14 +9,36 @@ const BotsPackage = require('./src/packages/bots/BotsPackage');
 // Manejadores de errores globales
 process.on('uncaughtException', (error) => {
     logger.log('Uncaught Exception: ' + error.message, 'error');
-    console.error(error.stack);
-    // No salir del proceso, solo registrar el error
+    console.error('UNCAUGHT EXCEPTION:', error.stack);
+    
+    // En producción, intentar hacer limpieza gradual
+    if (process.env.NODE_ENV === 'production') {
+        setTimeout(() => {
+            process.exit(1);
+        }, 5000);
+    }
 });
 
 process.on('unhandledRejection', (reason, promise) => {
     logger.log('Unhandled Rejection at: ' + promise + ' reason: ' + reason, 'error');
-    console.error('Unhandled Rejection:', reason);
-    // No salir del proceso, solo registrar el error
+    console.error('UNHANDLED REJECTION:', reason);
+    
+    // Si la razón es un error crítico, salir del proceso
+    if (reason && reason.message && reason.message.includes('ECONNREFUSED')) {
+        console.error('Database connection failed, exiting...');
+        process.exit(1);
+    }
+});
+
+// Manejo de señales del sistema
+process.on('SIGTERM', () => {
+    logger.log('SIGTERM received, shutting down gracefully', 'info');
+    process.exit(0);
+});
+
+process.on('SIGINT', () => {
+    logger.log('SIGINT received, shutting down gracefully', 'info');
+    process.exit(0);
 });
 
 logger.log('Starting server...', 'success');
