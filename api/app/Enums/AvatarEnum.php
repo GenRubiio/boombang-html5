@@ -105,4 +105,12 @@ enum AvatarEnum
         }
         return $array;
     }
+
+    public static function registerAvatarPermited(): array
+    {
+        return [
+            self::GATA->key(),
+            self::RASTA->key(),
+        ];
+    }
 }

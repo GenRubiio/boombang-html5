@@ -1,243 +1,222 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:ffdec="https://www.free-decompiler.com/flash" xmlns:xlink="http://www.w3.org/1999/xlink" ffdec:objectType="frame" height="121.25px" width="90.65px" xmlns="http://www.w3.org/2000/svg">
-  <g transform="matrix(1.0, 0.0, 0.0, 1.0, -0.1, 12.2)">
-    <clipPath id="clipPath0" transform="matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)">
-      <path d="M77.5 13.45 Q90.75 26.75 90.75 45.55 90.75 64.35 77.5 77.6 64.2 90.85 45.4 90.85 26.6 90.85 13.35 77.6 0.1 64.35 0.1 45.55 0.1 26.75 13.35 13.45 26.6 0.2 45.4 0.2 64.2 0.2 77.5 13.45" fill="#ff0000" fill-rule="evenodd" stroke="none"/>
-    </clipPath>
-    <g clip-path="url(#clipPath0)">
-      <use ffdec:characterId="185" height="100.25" id="mc200" transform="matrix(1.0351, 0.0, 0.0, 1.0351, 6.999, 5.2527)" width="78.15" xlink:href="#sprite0"/>
-      <use ffdec:characterId="186" height="0.0" id="hat" transform="matrix(1.0, 0.0, 0.0, 1.0, 14.65, -12.2)" width="0.0" xlink:href="#sprite28"/>
-    </g>
-  </g>
-  <defs>
-    <g id="sprite0" transform="matrix(1.0, 0.0, 0.0, 1.0, 35.6, 98.1)">
-      <use ffdec:characterId="149" height="26.6" id="mc2100" transform="matrix(0.9936, -0.1099, 0.1099, 0.9936, 4.7862, -39.2346)" width="28.9" xlink:href="#sprite1"/>
-      <use ffdec:characterId="151" height="16.15" id="hide_hat1" transform="matrix(1.0, 0.0, 0.0, 1.0, -16.5, -98.1)" width="18.2" xlink:href="#sprite3"/>
-      <use ffdec:characterId="153" height="65.8" id="mc1900" transform="matrix(1.0, 0.0, 0.0, 1.0, -35.6, -95.65)" width="78.15" xlink:href="#sprite5"/>
-      <use ffdec:characterId="157" height="11.35" id="mc1800" transform="matrix(-0.7071, -0.7071, 0.7071, -0.7071, -11.8818, -19.7917)" width="12.55" xlink:href="#sprite7"/>
-      <use ffdec:characterId="159" height="22.6" id="mc1700" transform="matrix(-0.9839, 0.1752, -0.1752, -0.9839, 4.8329, -1.3323)" width="12.05" xlink:href="#sprite9"/>
-      <use ffdec:characterId="159" height="22.6" id="mc1600" transform="matrix(-0.9839, 0.1752, -0.1752, -0.9839, 12.2329, 0.0177)" width="12.05" xlink:href="#sprite9"/>
-      <use ffdec:characterId="162" height="30.8" id="mc1500" transform="matrix(1.0, 0.0, 0.0, 1.0, -12.85, -37.75)" width="27.6" xlink:href="#sprite11"/>
-      <use ffdec:characterId="157" height="11.35" id="mc1400" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.6, -35.7)" width="12.55" xlink:href="#sprite7"/>
-      <use ffdec:characterId="163" height="13.1" id="mc1300" transform="matrix(1.0, 0.0, 0.0, 1.0, -16.2, -38.55)" width="31.15" xlink:href="#sprite14"/>
-      <use ffdec:characterId="165" height="52.8" id="mc1200" transform="matrix(1.0, 0.0, 0.0, 1.0, -22.65, -83.15)" width="37.25" xlink:href="#sprite15"/>
-      <use ffdec:characterId="168" height="10.9" id="mc1100" transform="matrix(1.0, 0.0, 0.0, 1.0, -12.45, -30.7)" width="10.9" xlink:href="#sprite17"/>
-      <use ffdec:characterId="173" height="15.05" id="mc900" transform="matrix(1.0, 0.0, 0.0, 1.0, -29.45, -36.3)" width="18.05" xlink:href="#sprite20"/>
-      <use ffdec:characterId="174" height="14.9" transform="matrix(1.0, 0.0, 0.0, 1.0, -19.35, -59.85)" width="26.65" xlink:href="#shape23"/>
-      <use ffdec:characterId="175" height="8.1" transform="matrix(1.0, 0.0, 0.0, 1.0, -19.65, -53.25)" width="7.6" xlink:href="#shape24"/>
-      <use ffdec:characterId="176" height="11.4" transform="matrix(1.0, 0.0, 0.0, 1.0, -17.05, -43.0)" width="20.0" xlink:href="#shape25"/>
-      <use ffdec:characterId="178" height="55.65" id="mc300" transform="matrix(1.0, 0.0, 0.0, 1.0, -24.3, -87.8)" width="44.6" xlink:href="#sprite22"/>
-      <use ffdec:characterId="180" height="24.65" id="hide_hat" transform="matrix(1.0, 0.0, 0.0, 1.0, 8.95, -96.45)" width="20.0" xlink:href="#sprite24"/>
-      <use ffdec:characterId="184" height="14.65" id="mc100" transform="matrix(-0.1006, 0.9946, -0.9946, -0.1006, 23.9715, -45.5634)" width="18.3" xlink:href="#sprite26"/>
-    </g>
-    <g id="sprite1" transform="matrix(1.0, 0.0, 0.0, 1.0, 14.35, 13.7)">
-      <use ffdec:characterId="147" height="25.1" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -13.6, -12.95)" width="27.4" xlink:href="#sprite2"/>
-      <use ffdec:characterId="148" height="26.6" transform="matrix(1.0, 0.0, 0.0, 1.0, -14.35, -13.7)" width="28.9" xlink:href="#shape2"/>
-    </g>
-    <g id="sprite2" transform="matrix(1.0, 0.0, 0.0, 1.0, 13.7, 12.55)">
-      <use ffdec:characterId="1" height="25.1" transform="matrix(1.0, 0.0, 0.0, 1.0, -13.7, -12.55)" width="27.4" xlink:href="#shape1"/>
-    </g>
-    <g id="shape1" transform="matrix(1.0, 0.0, 0.0, 1.0, 13.7, 12.55)">
-      <path d="M2.3 -10.15 L5.95 -9.8 8.5 -12.55 10.1 -9.55 13.7 -8.35 11.25 -6.15 12.45 -2.15 9.9 -2.75 9.85 -1.85 6.95 -1.05 Q7.75 0.9 9.05 2.0 8.45 3.75 7.35 5.55 L4.45 5.1 Q4.35 6.75 5.4 8.25 L4.7 9.05 Q2.85 11.05 0.25 11.95 -0.25 10.2 -1.95 9.25 L-2.9 12.5 -7.45 12.3 -11.1 11.45 -12.95 11.2 Q-14.6 9.1 -12.6 7.8 L-7.2 8.6 -8.8 8.6 Q-8.65 10.45 -7.5 11.65 -6.4 10.25 -6.7 8.6 -2.6 8.6 -0.1 7.45 1.0 8.95 2.6 9.45 2.85 7.65 2.4 6.0 L2.35 5.9 Q3.55 4.8 4.45 3.3 L4.5 3.15 7.35 3.7 Q7.1 1.9 5.7 0.45 L6.5 -3.0 1.95 -3.8 3.7 -6.75 2.3 -10.15" fill="#ff3366" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape2" transform="matrix(1.0, 0.0, 0.0, 1.0, 14.35, 13.7)">
-      <path d="M5.8 0.05 Q7.2 1.5 7.45 3.3 L4.6 2.75 5.8 0.05 M2.5 5.6 Q2.95 7.25 2.7 9.05 1.1 8.55 0.0 7.05 1.2 6.5 2.25 5.65 L2.5 5.6 M-6.6 8.2 Q-6.3 9.85 -7.4 11.25 -8.55 10.05 -8.7 8.2 L-7.1 8.2 -6.05 8.1 -5.85 8.15 -6.6 8.2 M-2.8 12.1 L-1.85 8.85 Q-0.15 9.8 0.35 11.55 L-2.8 12.1 M5.5 7.85 Q4.45 6.35 4.55 4.7 L7.45 5.15 7.15 5.6 5.5 7.85 M9.15 1.6 Q7.85 0.5 7.05 -1.45 L9.95 -2.25 Q9.85 -0.3 9.15 1.6" fill="#000000" fill-rule="evenodd" stroke="none"/>
-      <path d="M9.95 -2.25 L10.0 -3.15 12.55 -2.55 11.35 -6.55 13.8 -8.75 10.2 -9.95 8.6 -12.95 6.05 -10.2 2.4 -10.55 3.8 -7.15 2.05 -4.2 6.6 -3.4 M-12.5 7.4 Q-14.5 8.7 -12.85 10.8 L-11.0 11.05 -7.35 11.9 -2.8 12.1 0.35 11.55 Q2.95 10.65 4.8 8.65 L5.5 7.85 7.15 5.6 7.45 5.15 Q8.55 3.35 9.15 1.6 9.85 -0.3 9.95 -2.25" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-      <path d="M6.6 -3.4 L5.8 0.05 4.6 2.75 4.55 2.9 Q3.65 4.4 2.45 5.5 L2.25 5.65 Q1.2 6.5 0.0 7.05 -2.5 8.2 -6.6 8.2 M-7.1 8.2 L-12.5 7.4" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-      <path d="M2.45 5.5 L2.5 5.6" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"/>
-    </g>
-    <g id="sprite3" transform="matrix(1.0, 0.0, 0.0, 1.0, 9.1, 8.05)">
-      <use ffdec:characterId="150" height="13.6" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -8.2, -6.4)" width="11.85" xlink:href="#sprite4"/>
-      <use ffdec:characterId="7" height="16.15" transform="matrix(1.0, 0.0, 0.0, 1.0, -9.1, -8.05)" width="18.2" xlink:href="#shape4"/>
-    </g>
-    <g id="sprite4" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.95, 6.8)">
-      <use ffdec:characterId="5" height="13.6" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.95, -6.8)" width="11.85" xlink:href="#shape3"/>
-    </g>
-    <g id="shape3" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.95, 6.8)">
-      <path d="M-2.25 -4.45 L-0.3 -6.8 Q3.7 -4.35 5.9 3.0 L-5.95 6.8 Q-4.95 0.15 -2.25 -4.45" fill="#ffedd4" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape4" transform="matrix(1.0, 0.0, 0.0, 1.0, 9.1, 8.05)">
-      <path d="M3.65 3.4 Q1.45 -3.95 -2.55 -6.4 -0.6 -7.9 1.6 -6.4 6.2 -2.7 8.2 1.95 L3.65 3.4" fill="#000000" fill-rule="evenodd" stroke="none"/>
-      <path d="M-2.55 -6.4 Q-3.55 -5.65 -4.5 -4.05 -7.2 0.55 -8.2 7.2 L3.65 3.4 Q1.45 -3.95 -2.55 -6.4 -0.6 -7.9 1.6 -6.4 6.2 -2.7 8.2 1.95 L3.65 3.4" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite5" transform="matrix(1.0, 0.0, 0.0, 1.0, 39.05, 32.9)">
-      <use ffdec:characterId="152" height="64.0" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -38.15, -32.0)" width="76.35" xlink:href="#sprite6"/>
-      <use ffdec:characterId="11" height="65.8" transform="matrix(1.0, 0.0, 0.0, 1.0, -39.05, -32.9)" width="78.15" xlink:href="#shape6"/>
-    </g>
-    <g id="sprite6" transform="matrix(1.0, 0.0, 0.0, 1.0, 38.15, 32.0)">
-      <use ffdec:characterId="9" height="64.0" transform="matrix(1.0, 0.0, 0.0, 1.0, -38.15, -32.0)" width="76.35" xlink:href="#shape5"/>
-    </g>
-    <g id="shape5" transform="matrix(1.0, 0.0, 0.0, 1.0, 38.15, 32.0)">
-      <path d="M6.8 -31.0 Q23.05 -32.95 28.45 -9.05 30.85 1.6 38.2 8.15 30.85 13.75 22.6 12.85 24.2 18.8 28.15 22.2 23.8 23.75 17.7 21.75 L20.6 26.65 Q12.85 29.8 5.05 26.65 L-1.85 32.0 -4.75 24.85 -10.3 31.1 -16.1 22.4 Q-23.2 25.8 -30.35 24.85 L-23.7 14.65 Q-32.6 15.95 -38.15 13.75 -31.05 1.7 -26.7 -11.35 -21.85 -26.0 -10.45 -30.4 -2.55 -33.3 6.8 -31.0" fill="#ff6600" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape6" transform="matrix(1.0, 0.0, 0.0, 1.0, 39.05, 32.9)">
-      <path d="M6.8 -31.0 Q-2.55 -33.3 -10.45 -30.4 -21.85 -26.0 -26.7 -11.35 -31.05 1.7 -38.15 13.75 -32.6 15.95 -23.7 14.65 L-30.35 24.85 Q-23.2 25.8 -16.1 22.4 L-10.3 31.1 -4.75 24.85 -1.85 32.0 5.05 26.65 Q12.85 29.8 20.6 26.65 L17.7 21.75 Q23.8 23.75 28.15 22.2 24.2 18.8 22.6 12.85 30.85 13.75 38.2 8.15 30.85 1.6 28.45 -9.05 23.05 -32.95 6.8 -31.0 Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite7" transform="matrix(1.0, 0.0, 0.0, 1.0, 6.1, 5.65)">
-      <use ffdec:characterId="155" height="9.55" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.2, -4.75)" width="10.75" xlink:href="#sprite8"/>
-      <use ffdec:characterId="156" height="11.35" transform="matrix(1.0, 0.0, 0.0, 1.0, -6.1, -5.65)" width="12.55" xlink:href="#shape8"/>
-    </g>
-    <g id="sprite8" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.35, 4.8)">
-      <use ffdec:characterId="154" height="9.55" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.35, -4.8)" width="10.75" xlink:href="#shape7"/>
-    </g>
-    <g id="shape7" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.35, 4.8)">
-      <path d="M0.6 -4.8 L5.35 -3.6 5.4 0.15 Q-0.6 5.35 -2.3 4.7 -4.25 4.25 -5.35 2.85 -4.65 0.5 -3.4 -1.2 L-3.35 -1.25 Q-2.0 -3.15 0.6 -4.8" fill="#ff3366" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape8" transform="matrix(1.0, 0.0, 0.0, 1.0, 6.1, 5.65)">
-      <path d="M-2.15 4.75 Q-0.45 5.4 5.55 0.2 L5.5 -3.55 0.75 -4.75 Q-1.85 -3.1 -3.2 -1.2" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-      <path d="M-3.2 -1.2 L-3.25 -1.15 Q-4.5 0.55 -5.2 2.9 -4.1 4.3 -2.15 4.75" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite9" transform="matrix(1.0, 0.0, 0.0, 1.0, 6.0, 11.3)">
-      <use ffdec:characterId="158" height="20.8" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.1, -10.4)" width="10.25" xlink:href="#sprite10"/>
-      <use ffdec:characterId="19" height="22.6" transform="matrix(1.0, 0.0, 0.0, 1.0, -6.0, -11.3)" width="12.05" xlink:href="#shape10"/>
-    </g>
-    <g id="sprite10" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.1, 10.4)">
-      <use ffdec:characterId="17" height="20.8" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.1, -10.4)" width="10.25" xlink:href="#shape9"/>
-    </g>
-    <g id="shape9" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.1, 10.4)">
-      <path d="M4.5 -8.4 Q5.45 -6.95 5.05 -5.25 L1.4 -4.25 4.45 -2.5 2.25 7.1 Q1.85 8.8 0.7 9.7 -0.6 10.65 -2.25 10.35 -3.9 9.95 -4.6 8.5 -5.35 7.15 -4.95 5.4 L-4.4 0.5 -0.3 -0.6 -4.0 -3.3 -3.8 -5.2 0.1 -6.35 -2.85 -8.65 -1.5 -9.75 Q0.15 -10.7 1.85 -10.25 3.55 -9.85 4.5 -8.4" fill="#ff99cc" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape10" transform="matrix(1.0, 0.0, 0.0, 1.0, 6.0, 11.3)">
-      <path d="M5.05 -5.25 L4.45 -2.5 1.4 -4.25 5.05 -5.25 M-4.4 0.5 L-4.0 -3.3 -0.3 -0.6 -4.4 0.5 M-3.8 -5.2 L-3.6 -7.15 Q-3.4 -8.0 -2.85 -8.65 L0.1 -6.35 -3.8 -5.2" fill="#000000" fill-rule="evenodd" stroke="none"/>
-      <path d="M-2.85 -8.65 L-1.5 -9.75 Q0.15 -10.7 1.85 -10.25 3.55 -9.85 4.5 -8.4 5.45 -6.95 5.05 -5.25 L4.45 -2.5 2.25 7.1 Q1.85 8.8 0.7 9.7 -0.6 10.65 -2.25 10.35 -3.9 9.95 -4.6 8.5 -5.35 7.15 -4.95 5.4 L-4.4 0.5 -4.0 -3.3 -3.8 -5.2 -3.6 -7.15 Q-3.4 -8.0 -2.85 -8.65 Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite11" transform="matrix(1.0, 0.0, 0.0, 1.0, 13.45, 15.45)">
-      <use ffdec:characterId="160" height="29.0" id="mc200" transform="matrix(1.0, 0.0, 0.0, 1.0, -12.55, -14.55)" width="25.8" xlink:href="#sprite12"/>
-      <use ffdec:characterId="23" height="30.8" transform="matrix(1.0, 0.0, 0.0, 1.0, -13.45, -15.45)" width="27.6" xlink:href="#shape12"/>
-      <use ffdec:characterId="161" height="17.15" id="mc000" transform="matrix(1.0, 0.0, 0.0, 1.0, -12.55, -2.7)" width="25.8" xlink:href="#sprite13"/>
-    </g>
-    <g id="sprite12" transform="matrix(1.0, 0.0, 0.0, 1.0, 12.9, 14.5)">
-      <use ffdec:characterId="21" height="29.0" transform="matrix(1.0, 0.0, 0.0, 1.0, -12.9, -14.5)" width="25.8" xlink:href="#shape11"/>
-    </g>
-    <g id="shape11" transform="matrix(1.0, 0.0, 0.0, 1.0, 12.9, 14.5)">
-      <path d="M7.45 -14.5 L12.6 7.5 12.9 9.35 Q-1.95 16.6 -12.9 13.65 L-12.5 9.45 -11.95 4.4 -11.5 1.2 Q-10.4 -6.35 -8.65 -13.3 L7.45 -14.5" fill="#ff99cc" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape12" transform="matrix(1.0, 0.0, 0.0, 1.0, 13.45, 15.45)">
-      <path d="M-8.3 -13.35 Q-10.05 -6.4 -11.15 1.15 L-11.6 4.35 -12.15 9.4 -12.55 13.6 Q-1.6 16.55 13.25 9.3 L12.95 7.45 7.8 -14.55 -8.3 -13.35 Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite13" transform="matrix(1.0, 0.0, 0.0, 1.0, 12.9, 8.55)">
-      <use ffdec:characterId="24" height="17.15" transform="matrix(1.0, 0.0, 0.0, 1.0, -12.9, -8.55)" width="25.8" xlink:href="#shape13"/>
-    </g>
-    <g id="shape13" transform="matrix(1.0, 0.0, 0.0, 1.0, 12.9, 8.55)">
-      <path d="M-3.65 2.75 L-0.85 4.65 0.65 2.05 3.2 3.45 4.35 1.35 7.45 2.45 8.85 0.1 12.6 1.6 12.9 3.45 Q-1.95 10.7 -12.9 7.75 L-12.5 3.55 -10.25 5.65 -8.1 3.65 -6.15 4.8 -3.65 2.75 M10.15 -8.55 L10.85 -5.45 Q-3.1 0.0 -11.95 -1.5 L-11.5 -4.7 Q-3.75 -3.9 10.15 -8.55" fill="#000000" fill-opacity="0.19607843" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="sprite14" transform="matrix(1.0, 0.0, 0.0, 1.0, 15.55, 6.55)">
-      <use ffdec:characterId="27" height="13.1" transform="matrix(1.0, 0.0, 0.0, 1.0, -15.55, -6.55)" width="31.15" xlink:href="#shape14"/>
-    </g>
-    <g id="shape14" transform="matrix(1.0, 0.0, 0.0, 1.0, 15.55, 6.55)">
-      <path d="M-11.45 -4.35 L8.75 -5.65 14.7 -1.8 10.65 -1.8 12.45 3.35 6.85 1.25 2.5 4.6 0.4 3.0 -1.9 4.3 -4.65 3.2 -6.85 5.65 -8.7 2.25 -13.3 3.0 -11.65 -0.05 -14.65 -1.2 -11.45 -4.35" fill="#ffffff" fill-rule="evenodd" stroke="none"/>
-      <path d="M-14.65 -1.2 L-11.65 -0.05 -13.3 3.0 -8.7 2.25 -6.85 5.65 -4.65 3.2 -1.9 4.3 0.4 3.0 2.5 4.6 6.85 1.25 12.45 3.35 10.65 -1.8 14.7 -1.8 8.75 -5.65 -11.45 -4.35" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-      <path d="M-11.45 -4.35 L-14.65 -1.2" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite15" transform="matrix(1.0, 0.0, 0.0, 1.0, 18.6, 26.4)">
-      <use ffdec:characterId="164" height="51.0" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -17.7, -25.5)" width="35.45" xlink:href="#sprite16"/>
-      <use ffdec:characterId="31" height="52.8" transform="matrix(1.0, 0.0, 0.0, 1.0, -18.6, -26.4)" width="37.25" xlink:href="#shape16"/>
-    </g>
-    <g id="sprite16" transform="matrix(1.0, 0.0, 0.0, 1.0, 17.7, 25.5)">
-      <use ffdec:characterId="29" height="51.0" transform="matrix(1.0, 0.0, 0.0, 1.0, -17.7, -25.5)" width="35.45" xlink:href="#shape15"/>
-    </g>
-    <g id="shape15" transform="matrix(1.0, 0.0, 0.0, 1.0, 17.7, 25.5)">
-      <path d="M5.5 -25.5 L17.75 -9.05 17.75 0.7 Q18.25 17.3 8.5 23.7 1.6 25.65 -6.35 25.5 -12.6 22.3 -17.7 16.4 -15.3 10.55 -16.65 0.4 L-14.4 -13.85 -9.75 -24.0 5.5 -25.5" fill="#ffedd4" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape16" transform="matrix(1.0, 0.0, 0.0, 1.0, 18.6, 26.4)">
-      <path d="M5.5 -25.5 L-9.75 -24.0 -14.4 -13.85 -16.65 0.4 Q-15.3 10.55 -17.7 16.4 -12.6 22.3 -6.35 25.5 1.6 25.65 8.5 23.7 18.25 17.3 17.75 0.7 L17.75 -9.05 5.5 -25.5 Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite17" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.45, 5.45)">
-      <use ffdec:characterId="166" height="3.5" id="mc200" transform="matrix(1.0, 0.0, 0.0, 1.0, -2.4, -1.75)" width="3.5" xlink:href="#sprite18"/>
-      <use ffdec:characterId="167" height="9.4" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -4.7, -4.7)" width="9.4" xlink:href="#sprite19"/>
-      <use ffdec:characterId="37" height="10.9" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.45, -5.45)" width="10.9" xlink:href="#shape19"/>
-    </g>
-    <g id="sprite18" transform="matrix(1.0, 0.0, 0.0, 1.0, 1.75, 1.75)">
-      <use ffdec:characterId="33" height="3.5" transform="matrix(1.0, 0.0, 0.0, 1.0, -1.75, -1.75)" width="3.5" xlink:href="#shape17"/>
-    </g>
-    <g id="shape17" transform="matrix(1.0, 0.0, 0.0, 1.0, 1.75, 1.75)">
-      <path d="M0.9 -1.5 L1.2 -1.25 Q1.75 -0.7 1.75 0.0 1.75 0.7 1.2 1.2 0.7 1.75 0.0 1.75 L-0.4 1.7 -1.25 1.2 Q-1.75 0.7 -1.75 0.0 -1.75 -0.7 -1.25 -1.25 -0.7 -1.75 0.0 -1.75 L0.9 -1.5" fill="#339966" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="sprite19" transform="matrix(1.0, 0.0, 0.0, 1.0, 4.7, 4.7)">
-      <use ffdec:characterId="35" height="9.4" transform="matrix(1.0, 0.0, 0.0, 1.0, -4.7, -4.7)" width="9.4" xlink:href="#shape18"/>
-    </g>
-    <g id="shape18" transform="matrix(1.0, 0.0, 0.0, 1.0, 4.7, 4.7)">
-      <path d="M0.55 -1.25 L0.25 -1.5 -0.65 -1.75 Q-1.35 -1.75 -1.9 -1.25 -2.4 -0.7 -2.4 0.0 -2.4 0.7 -1.9 1.2 L-1.05 1.7 -0.65 1.75 Q0.05 1.75 0.55 1.2 1.1 0.7 1.1 0.0 1.1 -0.7 0.55 -1.25 M0.0 -4.7 Q1.95 -4.7 3.3 -3.35 4.7 -1.95 4.7 0.0 4.7 1.95 3.3 3.3 1.95 4.7 0.0 4.7 L-0.2 4.7 -1.05 4.6 Q-2.35 4.3 -3.35 3.3 -4.7 1.95 -4.7 0.0 -4.7 -1.95 -3.35 -3.35 -1.95 -4.7 0.0 -4.7" fill="#ffcc00" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape19" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.45, 5.45)">
-      <path d="M-1.05 1.7 L-1.9 1.2 Q-2.4 0.7 -2.4 0.0 -2.4 -0.7 -1.9 -1.25 -1.35 -1.75 -0.65 -1.75 L0.25 -1.5 0.55 -1.25 Q1.1 -0.7 1.1 0.0 1.1 0.7 0.55 1.2 0.05 1.75 -0.65 1.75 L-1.05 1.7" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-      <path d="M-1.05 1.7 L-1.05 4.6 -0.2 4.7 0.0 4.7 Q1.95 4.7 3.3 3.3 4.7 1.95 4.7 0.0 4.7 -1.95 3.3 -3.35 1.95 -4.7 0.0 -4.7 -1.95 -4.7 -3.35 -3.35 -4.7 -1.95 -4.7 0.0 -4.7 1.95 -3.35 3.3 -2.35 4.3 -1.05 4.6" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-    </g>
-    <g id="sprite20" transform="matrix(1.0, 0.0, 0.0, 1.0, 6.45, 7.8)">
-      <use ffdec:characterId="169" height="15.05" transform="matrix(1.0, 0.0, 0.0, 1.0, 1.35, -7.8)" width="10.25" xlink:href="#shape20"/>
-      <use ffdec:characterId="171" height="9.7" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.55, -4.85)" width="11.15" xlink:href="#sprite21"/>
-      <use ffdec:characterId="172" height="11.5" transform="matrix(1.0, 0.0, 0.0, 1.0, -6.45, -5.75)" width="12.95" xlink:href="#shape22"/>
-    </g>
-    <g id="shape20" transform="matrix(1.0, 0.0, 0.0, 1.0, -1.35, 7.8)">
-      <path d="M5.2 -6.9 L7.15 -4.0 10.7 -2.25 8.3 1.15 8.95 4.05 6.05 6.35 2.25 4.75 2.3 -4.3 5.2 -6.9" fill="#ffffff" fill-rule="evenodd" stroke="none"/>
-      <path d="M5.2 -6.9 L2.3 -4.3" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-      <path d="M2.3 -4.3 L2.25 4.75 6.05 6.35 8.95 4.05 8.3 1.15 10.7 -2.25 7.15 -4.0 5.2 -6.9" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite21" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.55, 4.85)">
-      <use ffdec:characterId="170" height="9.7" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.55, -4.85)" width="11.15" xlink:href="#shape21"/>
-    </g>
-    <g id="shape21" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.55, 4.85)">
-      <path d="M-5.55 -1.9 Q-4.9 -5.4 1.0 -4.75 4.85 -3.85 5.5 0.1 6.1 2.95 2.85 4.7 0.15 5.15 -1.6 4.05 -3.35 2.9 -3.3 1.35 -5.8 0.75 -5.55 -1.9" fill="#ff3366" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape22" transform="matrix(1.0, 0.0, 0.0, 1.0, 6.45, 5.75)">
-      <path d="M-3.3 1.35 Q-3.35 2.9 -1.6 4.05 0.15 5.15 2.85 4.7 6.1 2.95 5.5 0.1 4.85 -3.85 1.0 -4.75 -4.9 -5.4 -5.55 -1.9" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-      <path d="M-5.55 -1.9 Q-5.8 0.75 -3.3 1.35 L-0.35 1.4" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="shape23" transform="matrix(1.0, 0.0, 0.0, 1.0, 19.35, 59.85)">
-      <path d="M-0.85 -58.45 Q3.2 -58.25 6.7 -56.0" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2000000000000002"/>
-      <path d="M-12.7 -59.2 Q-16.35 -60.1 -18.85 -56.0" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.0"/>
-      <path d="M-2.95 -45.45 Q1.1 -52.9 5.55 -51.25" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.0"/>
-    </g>
-    <g id="shape24" transform="matrix(1.0, 0.0, 0.0, 1.0, 3.45, 4.05)">
-      <path d="M-2.85 -2.1 Q-0.2 -6.55 3.55 3.45" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2000000000000002"/>
-    </g>
-    <g id="shape25" transform="matrix(1.0, 0.0, 0.0, 1.0, 10.0, 5.65)">
-      <path d="M-8.0 -4.85 L-7.85 -2.05 Q-6.9 -0.85 -5.45 -0.35 L-5.1 -0.25 -2.45 0.2 Q-4.1 1.2 -5.35 2.75 -6.8 1.55 -8.25 -0.35 -10.1 -4.4 -8.95 -5.05 L-8.0 -4.85" fill="#000000" fill-rule="evenodd" stroke="none"/>
-      <path d="M-2.45 0.2 L-5.1 -0.25 -5.45 -0.35 Q-6.9 -0.85 -7.85 -2.05 L-8.0 -4.85 Q-0.1 -3.15 8.2 -3.8 10.5 -3.1 8.4 0.2 L6.45 -0.05 6.25 -0.2 5.05 1.4 3.6 0.05 3.35 0.3 Q0.35 0.55 -2.45 0.2 M3.05 -0.45 L3.6 0.05 3.05 -0.45 M7.05 -1.35 L6.25 -0.2 7.05 -1.35" fill="#ffffff" fill-rule="evenodd" stroke="none"/>
-      <path d="M-5.35 2.75 Q-4.1 1.2 -2.45 0.2 0.35 0.55 3.35 0.3 L3.6 0.05 5.05 1.4 6.25 -0.2 6.45 -0.05 8.4 0.2 6.65 2.45 Q0.45 7.65 -5.35 2.75" fill="#cc0000" fill-rule="evenodd" stroke="none"/>
-      <path d="M-2.45 0.2 L-5.1 -0.25 -5.45 -0.35 Q-6.9 -0.85 -7.85 -2.05 L-8.0 -4.85 -8.95 -5.05 Q-10.1 -4.4 -8.25 -0.35 -6.8 1.55 -5.35 2.75 -4.1 1.2 -2.45 0.2 0.35 0.55 3.35 0.3 M3.6 0.05 L3.05 -0.45 M3.6 0.05 L5.05 1.4 6.25 -0.2 7.05 -1.35 M6.45 -0.05 L8.4 0.2 Q10.5 -3.1 8.2 -3.8 -0.1 -3.15 -8.0 -4.85 M8.4 0.2 L6.65 2.45 Q0.45 7.65 -5.35 2.75" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2000000000000002"/>
-    </g>
-    <g id="sprite22" transform="matrix(1.0, 0.0, 0.0, 1.0, 22.3, 27.35)">
-      <use ffdec:characterId="177" height="54.75" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -21.4, -27.35)" width="43.0" xlink:href="#sprite23"/>
-      <use ffdec:characterId="49" height="40.1" transform="matrix(1.0, 0.0, 0.0, 1.0, -22.3, -11.8)" width="44.6" xlink:href="#shape27"/>
-    </g>
-    <g id="sprite23" transform="matrix(1.0, 0.0, 0.0, 1.0, 21.4, 27.35)">
-      <use ffdec:characterId="47" height="54.75" transform="matrix(1.0, 0.0, 0.0, 1.0, -21.4, -27.35)" width="43.0" xlink:href="#shape26"/>
-    </g>
-    <g id="shape26" transform="matrix(1.0, 0.0, 0.0, 1.0, 21.4, 27.35)">
-      <path d="M21.6 -2.85 L19.95 18.15 Q14.1 27.35 9.3 24.9 L7.8 27.4 Q6.2 8.75 2.9 -8.2 L0.7 8.05 Q-6.7 0.3 -11.75 -9.1 L-21.4 18.35 Q-18.45 3.7 -17.55 -10.9 L-12.45 -22.9 9.6 -27.35 Q16.65 -16.35 21.4 -4.9 L20.9 -3.0 21.6 -2.85" fill="#ff6600" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape27" transform="matrix(1.0, 0.0, 0.0, 1.0, 22.3, 11.8)">
-      <path d="M21.4 -4.9 L20.9 -3.0 Q16.1 13.2 9.3 24.9 L7.8 27.4 Q6.2 8.75 2.9 -8.2 L0.7 8.05 Q-6.7 0.3 -11.75 -9.1 L-21.4 18.35 Q-18.45 3.7 -17.55 -10.9" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite24" transform="matrix(1.0, 0.0, 0.0, 1.0, 10.0, 12.3)">
-      <use ffdec:characterId="179" height="14.45" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -7.5, -6.95)" width="7.9" xlink:href="#sprite25"/>
-      <use ffdec:characterId="53" height="24.65" transform="matrix(1.0, 0.0, 0.0, 1.0, -10.0, -12.3)" width="20.0" xlink:href="#shape29"/>
-    </g>
-    <g id="sprite25" transform="matrix(1.0, 0.0, 0.0, 1.0, 3.95, 7.2)">
-      <use ffdec:characterId="51" height="14.45" transform="matrix(1.0, 0.0, 0.0, 1.0, -3.95, -7.2)" width="7.9" xlink:href="#shape28"/>
-    </g>
-    <g id="shape28" transform="matrix(1.0, 0.0, 0.0, 1.0, 3.95, 7.2)">
-      <path d="M1.6 7.25 Q-0.15 2.0 -3.95 -2.45 -1.15 -6.25 3.95 -7.2 3.85 0.6 1.6 7.25" fill="#ffedd4" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape29" transform="matrix(1.0, 0.0, 0.0, 1.0, 10.0, 12.3)">
-      <path d="M-7.5 -2.2 L-9.1 -3.95 Q0.75 -14.15 6.55 -10.4 12.35 -6.7 4.95 10.85 1.5 12.5 -1.35 9.75 L-1.95 7.5 Q0.3 0.85 0.4 -6.95 -4.7 -6.0 -7.5 -2.2" fill="#000000" fill-rule="evenodd" stroke="none"/>
-      <path d="M-7.5 -2.2 L-9.1 -3.95 Q0.75 -14.15 6.55 -10.4 12.35 -6.7 4.95 10.85 1.5 12.5 -1.35 9.75 L-1.95 7.5 Q-3.7 2.25 -7.5 -2.2 -4.7 -6.0 0.4 -6.95 0.3 0.85 -1.95 7.5" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-    <g id="sprite26" transform="matrix(1.0, 0.0, 0.0, 1.0, 9.55, 7.3)">
-      <use ffdec:characterId="182" height="10.25" id="mc100" transform="matrix(1.0, 0.0, 0.0, 1.0, -8.65, -6.15)" width="11.7" xlink:href="#sprite27"/>
-      <use ffdec:characterId="183" height="14.65" transform="matrix(1.0, 0.0, 0.0, 1.0, -9.55, -7.3)" width="18.3" xlink:href="#shape31"/>
-    </g>
-    <g id="sprite27" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.85, 5.15)">
-      <use ffdec:characterId="181" height="10.25" transform="matrix(1.0, 0.0, 0.0, 1.0, -5.85, -5.15)" width="11.7" xlink:href="#shape30"/>
-    </g>
-    <g id="shape30" transform="matrix(1.0, 0.0, 0.0, 1.0, 5.85, 5.15)">
-      <path d="M-0.9 -4.45 Q1.85 -5.75 3.55 -4.7 5.3 -3.55 5.85 0.3 5.95 5.75 0.25 5.0 L-1.25 4.75 Q-5.35 4.4 -5.85 -0.95 -5.5 -4.5 -0.9 -4.45" fill="#ff3366" fill-rule="evenodd" stroke="none"/>
-    </g>
-    <g id="shape31" transform="matrix(1.0, 0.0, 0.0, 1.0, 9.55, 7.3)">
-      <path d="M6.8 -6.2 L6.55 -3.05 7.85 2.65 Q8.15 2.5 7.65 2.85 6.1 3.75 4.4 3.65 2.95 5.9 0.7 6.45 L-2.75 4.3 -2.6 4.05 -2.55 4.0 Q3.15 4.75 3.05 -0.7 2.5 -4.55 0.75 -5.7 L0.75 -5.8 0.85 -6.05 6.75 -6.2 6.8 -6.2" fill="#ffffff" fill-rule="evenodd" stroke="none"/>
-      <path d="M6.75 -6.2 L0.85 -6.05" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-      <path d="M7.85 2.65 L6.55 -3.05 6.8 -6.2 M0.75 -5.7 Q2.5 -4.55 3.05 -0.7 3.15 4.75 -2.55 4.0 L-4.05 3.75 Q-8.15 3.4 -8.65 -1.95 -8.3 -5.5 -3.7 -5.45 -0.95 -6.75 0.75 -5.7 M-2.75 4.3 L0.7 6.45 Q2.95 5.9 4.4 3.65 6.1 3.75 7.65 2.85" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
-    </g>
-  </defs>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 83 90" width="83" height="90">
+	<title>ficha</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m71.4 10.65q13.25 13.3 13.25 32.1 0 18.8-13.25 32.05-13.3 13.25-32.1 13.25-18.8 0-32.05-13.25-13.25-13.25-13.25-32.05 0-18.8 13.25-32.1 13.25-13.25 32.05-13.25 18.8 0 32.1 13.25z"/>
+		</clipPath>
+	</defs>
+	<style>
+		.s0 { fill: #ff3366 } 
+		.s1 { fill: #000000 } 
+		.s2 { fill: none;stroke: #000000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.6 } 
+		.s3 { fill: none;stroke: #000000;stroke-linecap: round;stroke-linejoin: round;stroke-width: .5 } 
+		.s4 { fill: #ffedd4 } 
+		.s5 { fill: none;stroke: #000000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.9 } 
+		.s6 { fill: #ff6600 } 
+		.s7 { fill: #ff99cc } 
+		.s8 { opacity: .2;fill: #000000 } 
+		.s9 { fill: #ffffff } 
+		.s10 { fill: #339966 } 
+		.s11 { fill: #ffcc00 } 
+		.s12 { fill: none;stroke: #000000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.2 } 
+		.s13 { fill: none;stroke: #000000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1 } 
+		.s14 { fill: #cc0000 } 
+	</style>
+	<g>
+		<g id="Clip-Path" clip-path="url(#cp1)">
+			<g>
+				<g id="sprite0">
+					<g id="sprite1">
+						<g id="sprite2">
+							<g id="shape1">
+								<path fill-rule="evenodd" class="s0" d="m60.3 64.7h3.8l2.3-3.2 2 2.9 3.8 0.9-2.3 2.5 1.7 4-2.7-0.3 0.1 0.9-2.9 1.1q1.1 2 2.5 2.9-0.4 1.9-1.3 3.9l-3.1-0.1q0.1 1.7 1.4 3.1l-0.7 0.9q-1.6 2.3-4.2 3.5-0.7-1.8-2.6-2.5l-0.6 3.4-4.7 0.3-3.8-0.4-2-0.1q-1.9-2 0-3.5l5.7 0.2-1.7 0.2q0.4 1.9 1.7 3 1-1.6 0.5-3.3 4.2-0.4 6.6-1.9 1.3 1.4 3 1.7 0.1-1.8-0.6-3.5v-0.1q1.1-1.2 1.8-2.9l0.1-0.2 3 0.3q-0.5-1.8-2.1-3.2l0.4-3.6-4.7-0.3 1.4-3.2z"/>
+							</g>
+						</g>
+						<g id="shape2">
+							<path fill-rule="evenodd" class="s1" d="m64.1 78.1l3 0.3q-0.5-1.8-2.1-3.2zm-2.1 3.3q-1 1-2.2 1.7 1.4 1.4 3.1 1.7 0-1.9-0.6-3.5zm-8.1 3.5h-0.2l-1.1 0.2-1.6 0.2q0.3 1.9 1.7 3 0.9-1.6 0.4-3.3zm6.8 2.8q-0.7-1.7-2.6-2.5l-0.6 3.4zm6.3-6.8l0.3-0.5-3-0.2q0.1 1.7 1.3 3.2zm2-8.4l-2.9 1.1q1 1.9 2.5 2.9 0.5-2 0.4-4z"/>
+							<path class="s2" d="m69 72.4l-0.1-0.9 2.7 0.3-1.7-4 2.3-2.5-3.8-0.9-2-2.9-2.3 3.2h-3.8l1.8 3.4-1.4 3.2 4.7 0.3m-18.4 13.3q-1.9 1.5 0 3.5l2 0.1 3.8 0.4 4.7-0.3 3.2-0.9q2.6-1.2 4.2-3.5l0.7-0.9 1.4-2.5 0.3-0.5q0.9-2 1.3-3.9 0.5-2 0.4-4"/>
+							<path class="s2" d="m65.4 71.6l-0.4 3.6-0.9 2.9-0.1 0.2q-0.7 1.7-1.8 2.9l-0.2 0.2q-1 1-2.2 1.7-2.4 1.5-6.6 1.9m-0.5 0.1l-5.7-0.2"/>
+							<path class="s3" d="m62.2 81.2v0.1"/>
+						</g>
+					</g>
+					<g id="sprite3">
+						<g id="sprite4">
+							<g id="shape3">
+								<path fill-rule="evenodd" class="s4" d="m25.4 6.6l2-2.4q4.2 2.5 6.5 10.1l-12.3 3.9q1-6.8 3.8-11.6z"/>
+							</g>
+						</g>
+						<g id="shape4">
+							<path fill-rule="evenodd" class="s1" d="m33.9 14.3q-2.3-7.6-6.5-10.1 2.1-1.6 4.3 0 4.8 3.8 6.9 8.6z"/>
+							<path class="s5" d="m27.4 4.2q-1 0.7-2 2.4-2.8 4.8-3.8 11.6l12.3-3.9q-2.3-7.6-6.5-10.1 2.1-1.6 4.3 0 4.8 3.8 6.9 8.6l-4.7 1.5"/>
+						</g>
+					</g>
+					<g id="sprite5">
+						<g id="sprite6">
+							<g id="shape5">
+								<path fill-rule="evenodd" class="s6" d="m48.4 7q16.8-2.1 22.4 22.7 2.5 11 10.1 17.8-7.6 5.8-16.2 4.8 1.7 6.2 5.8 9.7-4.5 1.6-10.9-0.4l3 5q-8 3.3-16.1 0l-7.1 5.6-3-7.4-5.7 6.4-6-9q-7.4 3.5-14.8 2.6l6.9-10.6q-9.2 1.4-15-0.9 7.4-12.5 11.9-26 5-15.2 16.8-19.7 8.2-3 17.9-0.6z"/>
+							</g>
+						</g>
+						<g id="shape6">
+							<path class="s5" d="m48.4 7q-9.7-2.4-17.9 0.6-11.8 4.5-16.8 19.7-4.5 13.5-11.9 26 5.8 2.3 15 0.9l-6.9 10.6q7.4 0.9 14.8-2.6l6 9 5.7-6.4 3 7.4 7.1-5.6q8.1 3.3 16.1 0l-3-5q6.4 2 10.9 0.4-4.1-3.5-5.8-9.7 8.6 1 16.2-4.8-7.6-6.8-10.1-17.8-5.6-24.8-22.4-22.7z"/>
+						</g>
+					</g>
+					<g id="sprite7">
+						<g id="sprite8">
+							<g id="shape7">
+								<path fill-rule="evenodd" class="s0" d="m21.1 77.8l-2.6-4.3 2.7-2.8q8.2 0.6 9 2.3 1.1 1.8 0.8 3.6-2.2 1.2-4.3 1.5h-0.1q-2.4 0.4-5.5-0.3z"/>
+							</g>
+						</g>
+						<g id="shape8">
+							<path class="s5" d="m30.2 73q-0.8-1.7-9-2.3l-2.7 2.8 2.6 4.3q3.1 0.7 5.5 0.3"/>
+							<path class="s5" d="m26.6 78.1h0.1q2.1-0.3 4.3-1.5 0.3-1.8-0.8-3.6"/>
+						</g>
+					</g>
+					<g id="sprite9">
+						<g id="sprite10">
+							<g id="shape9">
+								<path fill-rule="evenodd" class="s7" d="m31.5 101.6q-1.2-1.3-1.1-3.1l3.5-1.7-3.4-1.3 0.5-10.1q0.1-1.8 1.1-3 1.2-1.2 2.9-1.2 1.8 0.2 2.7 1.5 1 1.2 1 3.1l0.3 5.1-4 1.9 4.3 2 0.1 2-3.8 1.9 3.5 1.8-1.2 1.4q-1.5 1.2-3.3 1.1-1.8-0.1-3.1-1.4z"/>
+							</g>
+						</g>
+						<g id="shape10">
+							<path fill-rule="evenodd" class="s1" d="m30.4 98.5l0.1-3 3.4 1.3zm8.6-7.6l0.3 4-4.3-2.1zm0.5 5.9l0.1 2q0 0.9-0.5 1.7l-3.4-1.8z"/>
+							<path class="s5" d="m39.1 100.5l-1.2 1.4q-1.5 1.2-3.3 1.1-1.8-0.1-3.1-1.4-1.2-1.3-1.1-3.1l0.1-3 0.5-10.1q0.1-1.8 1.1-3 1.2-1.2 2.9-1.2 1.8 0.2 2.7 1.5 1 1.2 1 3.1l0.3 5.1 0.3 3.9 0.1 2 0.2 2q-0.1 0.9-0.5 1.7z"/>
+						</g>
+					</g>
+					<g id="sprite9">
+						<g id="sprite10">
+							<g id="shape9">
+								<path fill-rule="evenodd" class="s7" d="m39.2 103q-1.2-1.3-1.1-3.1l3.5-1.7-3.4-1.3 0.5-10.1q0.1-1.8 1.1-3 1.1-1.2 2.9-1.2 1.7 0.2 2.7 1.5 1 1.2 0.9 3.1l0.3 5.1-3.9 1.9 4.2 2 0.2 2-3.8 1.9 3.4 1.8-1.2 1.4q-1.5 1.2-3.3 1.1-1.8-0.1-3-1.4z"/>
+							</g>
+						</g>
+						<g id="shape10">
+							<path fill-rule="evenodd" class="s1" d="m38.1 99.9l0.1-3 3.4 1.3zm8.6-7.6l0.3 3.9-4.3-2zm0.4 5.9l0.2 2q-0.1 0.9-0.5 1.7l-3.4-1.8z"/>
+							<path class="s5" d="m46.7 101.9l-1.2 1.4q-1.5 1.2-3.3 1.1-1.8-0.1-3-1.4-1.2-1.3-1.1-3.1l0.1-3 0.5-10.1q0.1-1.8 1.1-3 1.1-1.2 2.9-1.2 1.7 0.2 2.7 1.5 1 1.2 0.9 3.1l0.3 5.1 0.3 3.9 0.2 2 0.1 2q0 0.9-0.5 1.7z"/>
+						</g>
+					</g>
+					<g id="sprite11">
+						<g id="sprite12">
+							<g id="shape11">
+								<path fill-rule="evenodd" class="s7" d="m46.4 65.9l5.4 22.7 0.3 1.9q-15.4 7.5-26.7 4.5l0.4-4.4 0.6-5.2 0.4-3.3q1.2-7.8 3-15z"/>
+							</g>
+						</g>
+						<g id="shape12">
+							<path class="s5" d="m29.8 67.1q-1.8 7.2-3 15l-0.4 3.3-0.6 5.2-0.4 4.4q11.3 3 26.7-4.5l-0.3-1.9-5.4-22.7z"/>
+						</g>
+						<g id="sprite13">
+							<g id="shape13">
+								<path fill-rule="evenodd" class="s8" d="m35 89.8l2.9 2 1.5-2.7 2.6 1.4 1.2-2.1 3.2 1.1 1.5-2.4 3.9 1.5 0.3 1.9q-15.4 7.5-26.7 4.5l0.4-4.4 2.3 2.2 2.2-2.1 2.1 1.2zm14.3-11.7l0.7 3.2q-14.5 5.7-23.6 4.1l0.4-3.3q8.1 0.9 22.5-4z"/>
+							</g>
+						</g>
+					</g>
+					<g id="sprite7">
+						<g id="sprite8">
+							<g id="shape7">
+								<path fill-rule="evenodd" class="s0" d="m50.6 68l5 1.2v3.9q-6.2 5.4-8 4.7-2-0.5-3.1-1.9 0.7-2.4 2-4.2v-0.1q1.4-1.9 4.1-3.6z"/>
+							</g>
+						</g>
+						<g id="shape8">
+							<path class="s5" d="m47.6 77.8q1.8 0.7 8-4.7v-3.9l-5-1.2q-2.7 1.7-4.1 3.6"/>
+							<path class="s5" d="m46.5 71.6v0.1q-1.3 1.8-2 4.2 1.1 1.4 3.1 1.9"/>
+						</g>
+					</g>
+					<g id="sprite14">
+						<g id="shape14">
+							<path fill-rule="evenodd" class="s9" d="m25.2 66.4l20.9-1.4 6.2 4h-4.2l1.9 5.3-5.8-2.1-4.5 3.4-2.2-1.6-2.4 1.3-2.8-1.1-2.3 2.5-1.9-3.5-4.8 0.8 1.7-3.2-3.1-1.2z"/>
+							<path class="s5" d="m21.9 69.6l3.1 1.2-1.7 3.2 4.8-0.8 1.9 3.5 2.3-2.5 2.8 1.1 2.4-1.3 2.2 1.6 4.5-3.4 5.8 2.1-1.9-5.3h4.2l-6.2-4-20.9 1.4"/>
+							<path class="s5" d="m25.2 66.4l-3.3 3.2"/>
+						</g>
+					</g>
+					<g id="sprite15">
+						<g id="sprite16">
+							<g id="shape15">
+								<path fill-rule="evenodd" class="s4" d="m39.2 18.9l12.7 17v10.1q0.5 17.2-9.5 23.8-7.2 2-15.4 1.8-6.5-3.3-11.8-9.4 2.5-6 1.1-16.5l2.4-14.8 4.8-10.5z"/>
+							</g>
+						</g>
+						<g id="shape16">
+							<path class="s5" d="m39.2 18.9l-15.7 1.5-4.8 10.5-2.4 14.8q1.4 10.5-1.1 16.5 5.3 6.1 11.8 9.4 8.2 0.2 15.4-1.8 10-6.6 9.5-23.8v-10.1z"/>
+						</g>
+					</g>
+					<g id="sprite17">
+						<g id="sprite18">
+							<g id="shape17">
+								<path fill-rule="evenodd" class="s10" d="m30.8 76.3l0.3 0.3q0.5 0.5 0.5 1.3 0 0.7-0.5 1.2-0.5 0.6-1.3 0.6l-0.4-0.1-0.9-0.5q-0.5-0.5-0.5-1.2 0-0.8 0.5-1.3 0.6-0.6 1.3-0.6z"/>
+							</g>
+						</g>
+						<g id="sprite19">
+							<g id="shape18">
+								<path fill-rule="evenodd" class="s11" d="m30.5 73q2 0 3.4 1.4 1.5 1.4 1.5 3.5 0 2-1.5 3.4-1.4 1.4-3.4 1.4h-0.2l-0.9-0.1q-1.3-0.3-2.4-1.3-1.4-1.4-1.4-3.4 0-2.1 1.4-3.5 1.5-1.4 3.5-1.4zm0.6 3.6l-0.3-0.3-1-0.3q-0.7 0-1.3 0.6-0.5 0.5-0.5 1.3 0 0.7 0.5 1.2l0.9 0.5 0.4 0.1q0.8 0 1.3-0.6 0.5-0.5 0.5-1.2 0-0.8-0.5-1.3z"/>
+							</g>
+						</g>
+						<g id="shape19">
+							<path class="s2" d="m29.4 79.6l-0.9-0.5q-0.5-0.5-0.5-1.2 0-0.8 0.5-1.3 0.6-0.6 1.3-0.6l1 0.3 0.3 0.3q0.5 0.5 0.5 1.3 0 0.7-0.5 1.2-0.5 0.6-1.3 0.6z"/>
+							<path class="s2" d="m29.4 79.6v3l0.9 0.1h0.2q2 0 3.4-1.4 1.5-1.4 1.5-3.4 0-2.1-1.5-3.5-1.4-1.4-3.4-1.4-2 0-3.5 1.4-1.4 1.4-1.4 3.5 0 2 1.4 3.4 1.1 1 2.4 1.3"/>
+						</g>
+					</g>
+					<g id="sprite20">
+						<g id="shape20">
+							<path fill-rule="evenodd" class="s9" d="m19.3 67.4l2 3 3.7 1.8-2.5 3.5 0.7 3-3 2.4-3.9-1.7v-9.4z"/>
+							<path class="s5" d="m19.3 67.4l-3 2.6"/>
+							<path class="s5" d="m16.3 70v9.4l3.9 1.7 3-2.4-0.7-3 2.5-3.5-3.7-1.8-2-3"/>
+						</g>
+						<g id="sprite21">
+							<g id="shape21">
+								<path fill-rule="evenodd" class="s0" d="m8.2 72.5q0.7-3.6 6.8-2.9 4 0.9 4.6 5 0.7 2.9-2.7 4.8-2.8 0.4-4.6-0.7-1.8-1.2-1.8-2.8-2.6-0.6-2.3-3.4z"/>
+							</g>
+						</g>
+						<g id="shape22">
+							<path class="s5" d="m10.5 75.9q0 1.6 1.8 2.8 1.8 1.1 4.6 0.7 3.4-1.9 2.7-4.8-0.6-4.1-4.6-5-6.1-0.7-6.8 2.9"/>
+							<path class="s5" d="m8.2 72.5q-0.3 2.8 2.3 3.4h3.1"/>
+						</g>
+					</g>
+					<g id="shape23">
+						<path class="s12" d="m36.9 43.5q4.2 0.2 7.8 2.5"/>
+						<path class="s13" d="m24.6 42.7q-3.8-0.9-6.4 3.3"/>
+						<path class="s13" d="m34.7 57q4.2-7.8 8.8-6.1"/>
+					</g>
+					<g id="shape24">
+						<path class="s12" d="m18 50.9q2.8-4.6 6.7 5.7"/>
+					</g>
+					<g id="shape25">
+						<path fill-rule="evenodd" class="s1" d="m22.2 60.3l0.1 2.9q1 1.3 2.5 1.8l0.4 0.1 2.7 0.4q-1.7 1.1-3 2.7-1.5-1.3-3-3.2-1.9-4.2-0.7-4.9z"/>
+						<path fill-rule="evenodd" class="s9" d="m27.9 65.5l-2.7-0.4-0.4-0.1q-1.5-0.5-2.5-1.8l-0.1-2.9q8.1 1.8 16.7 1.1 2.4 0.7 0.2 4.1l-2-0.2-0.2-0.2-1.2 1.7-1.5-1.4-0.3 0.2q-3.1 0.3-6-0.1zm5.7-0.6l0.6 0.5zm4.1-0.9l-0.8 1.1z"/>
+						<path fill-rule="evenodd" class="s14" d="m24.9 68.2q1.3-1.6 3-2.7 2.9 0.4 6 0.1l0.3-0.2 1.5 1.4 1.2-1.7 0.2 0.2 2 0.2-1.8 2.4q-6.4 5.4-12.4 0.3z"/>
+						<path class="s12" d="m27.9 65.5l-2.7-0.4-0.4-0.1q-1.5-0.5-2.5-1.8l-0.1-2.9-1-0.2q-1.2 0.7 0.7 4.9 1.5 1.9 3 3.2 1.3-1.6 3-2.7 2.9 0.4 6 0.1m3.2-0.3l2 0.2q2.2-3.4-0.2-4.1-8.6 0.7-16.7-1.1m12 5.1l1.5 1.4 1.2-1.7 0.8-1.2m-3.5 1.5l-0.6-0.5m5.5 0.6l-1.8 2.4q-6.4 5.4-12.4 0.3"/>
+					</g>
+					<g id="sprite22">
+						<g id="sprite23">
+							<g id="shape26">
+								<path fill-rule="evenodd" class="s6" d="m58 38.5l-1.7 21.7q-6 9.5-11 7l-1.5 2.6q-1.7-19.3-5.1-36.9l-2.3 16.9q-7.7-8.1-12.9-17.8l-10 28.4q3.1-15.1 4-30.3l5.3-12.4 22.8-4.6q7.3 11.4 12.2 23.3l-0.5 1.9z"/>
+							</g>
+						</g>
+						<g id="shape27">
+							<path class="s5" d="m57.8 36.4l-0.5 1.9q-5 16.8-12 28.9l-1.5 2.6q-1.7-19.3-5.1-36.9l-2.3 16.9q-7.7-8.1-12.9-17.8l-10 28.4q3.1-15.1 4-30.3"/>
+						</g>
+					</g>
+					<g id="sprite24">
+						<g id="sprite25">
+							<g id="shape28">
+								<path fill-rule="evenodd" class="s4" d="m55.3 24.7q-1.8-5.5-5.7-10.1 2.9-3.9 8.2-4.9-0.1 8.1-2.5 15z"/>
+							</g>
+						</g>
+						<g id="shape29">
+							<path fill-rule="evenodd" class="s1" d="m49.6 14.6l-1.7-1.8q10.2-10.6 16.2-6.7 6 3.9-1.6 22-3.6 1.7-6.5-1.1l-0.7-2.3q2.4-6.9 2.5-15-5.3 1-8.2 4.9z"/>
+							<path class="s5" d="m49.6 14.6l-1.7-1.8q10.2-10.6 16.2-6.7 6 3.9-1.6 22-3.6 1.7-6.5-1.1l-0.7-2.3q-1.8-5.5-5.7-10.1 2.9-3.9 8.2-4.9-0.1 8.1-2.5 15"/>
+						</g>
+					</g>
+					<g id="sprite26">
+						<g id="sprite27">
+							<g id="shape30">
+								<path fill-rule="evenodd" class="s0" d="m60 62.7q1.1 2.9-0.2 4.6-1.3 1.7-5.3 1.8-5.7-0.4-4.3-6.2l0.4-1.6q0.8-4.1 6.4-4.1 3.6 0.7 3 5.5z"/>
+							</g>
+						</g>
+						<g id="shape31">
+							<path fill-rule="evenodd" class="s9" d="m59.7 73.6l-3.2-0.6-6 0.7q0.1 0.3-0.2-0.2-0.7-1.7-0.5-3.4-2.1-1.8-2.5-4.1l2.6-3.4 0.3 0.2v0.1q-1.4 5.8 4.3 6.2 4-0.1 5.3-1.8h0.1l0.3 0.1-0.5 6.1z"/>
+							<path class="s5" d="m59.7 73.5l0.5-6.1"/>
+							<path class="s5" d="m50.5 73.7l6-0.7 3.2 0.6m0.1-6.3q-1.3 1.7-5.3 1.8-5.7-0.4-4.3-6.2l0.4-1.6q0.8-4.1 6.4-4.1 3.6 0.7 3 5.5 1.1 2.9-0.2 4.6zm-9.9-4.7l-2.6 3.4q0.4 2.3 2.5 4.1-0.2 1.7 0.5 3.4"/>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
 </svg>

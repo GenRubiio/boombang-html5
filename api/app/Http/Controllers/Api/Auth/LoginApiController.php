@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -10,8 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginApiLoginRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
+use App\Http\Controllers\Api\Auth\Interfaces\LoginApiControllerInterface;
 
-class LoginApiController extends Controller
+class LoginApiController extends Controller implements LoginApiControllerInterface
 {
     use ResponseApiControllerTrait;
 
@@ -23,6 +25,7 @@ class LoginApiController extends Controller
                 $user = Auth::user();
                 $user->tokens()->delete();
                 $tokenResult = $user->createToken('Personal Access Token');
+
                 return $this->successResponse([
                     'user' => (new UserResource($user))->toDTO(),
                     'token' => $tokenResult->accessToken,
@@ -30,6 +33,19 @@ class LoginApiController extends Controller
             } else {
                 throw new Exception('Unauthorized', 401);
             }
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function jwtAutoLogin(Request $request): JsonResource
+    {
+        try {
+            $user = Auth::user();
+            return $this->successResponse([
+                'user' => (new UserResource($user))->toDTO(),
+                'token' => $request->auth_token
+            ]);
         } catch (Exception $e) {
             return $this->handleException($e);
         }

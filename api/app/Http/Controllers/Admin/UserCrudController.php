@@ -1,0 +1,583 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Enums\AvatarEnum;
+use Illuminate\Support\Facades\Hash;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
+use Backpack\PermissionManager\app\Http\Requests\UserStoreCrudRequest as StoreRequest;
+use Backpack\PermissionManager\app\Http\Requests\UserUpdateCrudRequest as UpdateRequest;
+use Prologue\Alerts\Facades\Alert;
+
+class UserCrudController extends CrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
+        store as traitStore;
+    }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
+        update as traitUpdate;
+    }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use SuperadminProtection;
+
+    protected function setupDuplicateOperation()
+    {
+        $this->crud->allowAccess('duplicate');
+        $this->crud->operation('duplicate', function() {
+            $this->crud->loadDefaultOperationSettingsFromConfig();
+        });
+    }
+
+    public function setup()
+    {
+        $this->applySuperadminProtection();
+
+        $this->crud->setModel(config('backpack.permissionmanager.models.user'));
+        $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
+        $this->crud->setRoute(backpack_url('user'));
+        $this->setupDuplicateOperation();
+    }
+
+    public function setupListOperation()
+    {
+        $this->crud->addButtonFromView('line', 'user_catalog_items', 'user_catalog_items', 'beginning');
+        
+        // Add duplicate button for bot users
+        $this->crud->addButtonFromView('line', 'duplicate_bot', 'duplicate_bot', 'end');
+
+        $this->crud->addColumns([
+            [
+                'name'  => 'id',
+                'label' => 'ID',
+                'type'  => 'number',
+            ],
+            [
+                'name'  => 'username',
+                'label' => 'Username',
+                'type'  => 'text',
+            ],
+            [
+                'name'  => 'email',
+                'label' => trans('backpack::permissionmanager.email'),
+                'type'  => 'email',
+            ],
+            [ // n-n relationship (with pivot table)
+                'label'     => trans('backpack::permissionmanager.roles'), // Table column heading
+                'type'      => 'select_multiple',
+                'name'      => 'roles', // the method that defines the relationship in your Model
+                'entity'    => 'roles', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model'     => config('permission.models.role'), // foreign key model
+            ],
+            [ // n-n relationship (with pivot table)
+                'label'     => trans('backpack::permissionmanager.extra_permissions'), // Table column heading
+                'type'      => 'select_multiple',
+                'name'      => 'permissions', // the method that defines the relationship in your Model
+                'entity'    => 'permissions', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model'     => config('permission.models.permission'), // foreign key model
+            ],
+        ]);
+
+        if (backpack_pro()) {
+            // Role Filter
+            $this->crud->addFilter(
+                [
+                    'name'  => 'role',
+                    'type'  => 'dropdown',
+                    'label' => trans('backpack::permissionmanager.role'),
+                ],
+                config('permission.models.role')::all()->pluck('name', 'id')->toArray(),
+                function ($value) { // if the filter is active
+                    $this->crud->addClause('whereHas', 'roles', function ($query) use ($value) {
+                        $query->where('role_id', '=', $value);
+                    });
+                }
+            );
+
+            // Extra Permission Filter
+            $this->crud->addFilter(
+                [
+                    'name'  => 'permissions',
+                    'type'  => 'select2',
+                    'label' => trans('backpack::permissionmanager.extra_permissions'),
+                ],
+                config('permission.models.permission')::all()->pluck('name', 'id')->toArray(),
+                function ($value) { // if the filter is active
+                    $this->crud->addClause('whereHas', 'permissions', function ($query) use ($value) {
+                        $query->where('permission_id', '=', $value);
+                    });
+                }
+            );
+
+            // Bot Filter
+            $this->crud->addFilter(
+                [
+                    'name'  => 'is_bot',
+                    'type'  => 'dropdown',
+                    'label' => 'Bot Status',
+                ],
+                [
+                    1 => 'Bots Only',
+                    0 => 'Users Only'
+                ],
+                function ($value) { // if the filter is active
+                    $this->crud->addClause('where', 'is_bot', '=', $value);
+                }
+            );
+        }
+    }
+
+    public function setupCreateOperation()
+    {
+        $this->addUserFields();
+        $this->crud->setValidation(StoreRequest::class);
+    }
+
+    public function setupUpdateOperation()
+    {
+        $this->addUserFields();
+        $this->crud->setValidation(UpdateRequest::class);
+    }
+
+    public function setupShowOperation()
+    {
+        // automatically add the columns
+        $this->crud->column('name');
+        $this->crud->column('email');
+        $this->crud->column([
+            // two interconnected entities
+            'label'             => trans('backpack::permissionmanager.user_role_permission'),
+            'field_unique_name' => 'user_role_permission',
+            'type'              => 'checklist_dependency',
+            'name'              => 'roles_permissions',
+            'subfields'         => [
+                'primary' => [
+                    'label'            => trans('backpack::permissionmanager.role'),
+                    'name'             => 'roles', // the method that defines the relationship in your Model
+                    'entity'           => 'roles', // the method that defines the relationship in your Model
+                    'entity_secondary' => 'permissions', // the method that defines the relationship in your Model
+                    'attribute'        => 'name', // foreign key attribute that is shown to user
+                    'model'            => config('permission.models.role'), // foreign key model
+                ],
+                'secondary' => [
+                    'label'            => mb_ucfirst(trans('backpack::permissionmanager.permission_singular')),
+                    'name'             => 'permissions', // the method that defines the relationship in your Model
+                    'entity'           => 'permissions', // the method that defines the relationship in your Model
+                    'entity_primary'   => 'roles', // the method that defines the relationship in your Model
+                    'attribute'        => 'name', // foreign key attribute that is shown to user
+                    'model'            => config('permission.models.permission'), // foreign key model,
+                ],
+            ],
+        ]);
+        $this->crud->column('created_at');
+        $this->crud->column('updated_at');
+    }
+
+    /**
+     * Store a newly created resource in the database.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store()
+    {
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitStore();
+    }
+
+    /**
+     * Update the specified resource in the database.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update()
+    {
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitUpdate();
+    }
+
+    /**
+     * Handle password input fields.
+     */
+    protected function handlePasswordInput($request)
+    {
+        // Remove fields not present on the user.
+        $request->request->remove('password_confirmation');
+        $request->request->remove('roles_show');
+        $request->request->remove('permissions_show');
+
+        // Encrypt password if specified.
+        if ($request->input('password')) {
+            $request->request->set('password', Hash::make($request->input('password')));
+        } else {
+            $request->request->remove('password');
+        }
+
+        return $request;
+    }
+
+    /**
+     * Duplicate a bot user
+     */
+    public function duplicate($id)
+    {
+        $this->crud->hasAccessOrFail('duplicate');
+
+        $originalUser = $this->crud->getModel()::findOrFail($id);
+        
+        // Only allow duplicating bot users
+        if (!$originalUser->is_bot) {
+            Alert::add('error', 'Only bot users can be duplicated.')->flash();
+            return redirect()->back();
+        }
+
+        $newUser = $originalUser->replicate();
+        
+        // Generate unique values for required unique fields
+        $newUser->email = $this->generateUniqueEmail($originalUser->email);
+        $newUser->name = $this->generateUniqueName($originalUser->name);
+        $newUser->username = $this->generateUniqueUsername($originalUser->username);
+        
+        // Reset timestamps
+        $newUser->created_at = null;
+        $newUser->updated_at = null;
+        $newUser->email_verified_at = null;
+        
+        $newUser->save();
+
+        // Copy roles and permissions
+        $newUser->roles()->sync($originalUser->roles->pluck('id')->toArray());
+        $newUser->permissions()->sync($originalUser->permissions->pluck('id')->toArray());
+
+        Alert::add('success', 'Bot user duplicated successfully.')->flash();
+        return redirect($this->crud->route);
+    }
+
+    private function generateUniqueEmail($originalEmail)
+    {
+        $parts = explode('@', $originalEmail);
+        $username = $parts[0];
+        $domain = $parts[1];
+        $counter = 1;
+        
+        do {
+            $newEmail = $username . '_copy' . $counter . '@' . $domain;
+            $counter++;
+        } while ($this->crud->getModel()::where('email', $newEmail)->exists());
+        
+        return $newEmail;
+    }
+
+    private function generateUniqueName($originalName)
+    {
+        $counter = 1;
+        
+        do {
+            $newName = $originalName . ' (Copy ' . $counter . ')';
+            $counter++;
+        } while ($this->crud->getModel()::where('name', $newName)->exists());
+        
+        return $newName;
+    }
+
+    private function generateUniqueUsername($originalUsername)
+    {
+        $counter = 1;
+        
+        do {
+            $newUsername = $originalUsername . '_copy' . $counter;
+            $counter++;
+        } while ($this->crud->getModel()::where('username', $newUsername)->exists());
+        
+        return $newUsername;
+    }
+
+    protected function addUserFields()
+    {
+        $this->crud->addFields([
+            [
+                'name'  => 'name',
+                'label' => trans('backpack::permissionmanager.name'),
+                'type'  => 'text',
+                'tab'   => 'User Details',
+            ],
+            [
+                'name'  => 'email',
+                'label' => trans('backpack::permissionmanager.email'),
+                'type'  => 'email',
+                'tab'   => 'User Details',
+            ],
+            [
+                'name'  => 'password',
+                'label' => trans('backpack::permissionmanager.password'),
+                'type'  => 'password',
+                'tab'   => 'User Details',
+            ],
+            [
+                'name'  => 'password_confirmation',
+                'label' => trans('backpack::permissionmanager.password_confirmation'),
+                'type'  => 'password',
+                'tab'   => 'User Details',
+            ],
+            [
+                // two interconnected entities
+                'label'             => trans('backpack::permissionmanager.user_role_permission'),
+                'field_unique_name' => 'user_role_permission',
+                'type'              => 'checklist_dependency',
+                'name'              => 'roles,permissions',
+                'subfields'         => [
+                    'primary' => [
+                        'label'            => trans('backpack::permissionmanager.roles'),
+                        'name'             => 'roles', // the method that defines the relationship in your Model
+                        'entity'           => 'roles', // the method that defines the relationship in your Model
+                        'entity_secondary' => 'permissions', // the method that defines the relationship in your Model
+                        'attribute'        => 'name', // foreign key attribute that is shown to user
+                        'model'            => config('permission.models.role'), // foreign key model
+                        'pivot'            => true, // on create&update, do you need to add/delete pivot table entries?]
+                        'number_columns'   => 3, //can be 1,2,3,4,6
+                    ],
+                    'secondary' => [
+                        'label'          => mb_ucfirst(trans('backpack::permissionmanager.permission_plural')),
+                        'name'           => 'permissions', // the method that defines the relationship in your Model
+                        'entity'         => 'permissions', // the method that defines the relationship in your Model
+                        'entity_primary' => 'roles', // the method that defines the relationship in your Model
+                        'attribute'      => 'name', // foreign key attribute that is shown to user
+                        'model'          => config('permission.models.permission'), // foreign key model
+                        'pivot'          => true, // on create&update, do you need to add/delete pivot table entries?]
+                        'number_columns' => 3, //can be 1,2,3,4,6
+                    ],
+                ],
+                'tab' => 'User Details',
+            ],
+            [
+                'name'  => 'username',
+                'label' => 'Username',
+                'type'  => 'text',
+                'tab'   => 'Game Stats',
+            ],
+            [
+                'name' => 'avatar',
+                'label' => 'Avatar',
+                'type' => 'select2_from_array',
+                'options' => AvatarEnum::toAssociativeArray(),
+                'tab'   => 'Game Stats',
+            ],
+            [
+                'name'  => 'description',
+                'label' => 'Description',
+                'type'  => 'textarea',
+                'tab'   => 'Game Stats',
+            ],
+            [
+                'name'  => 'gold_coins',
+                'label' => 'Gold Coins',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'silver_coins',
+                'label' => 'Silver Coins',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'rings_won',
+                'label' => 'Rings Won',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+            ],
+            [
+                'name'  => 'coconuts_caught',
+                'label' => 'Coconuts Caught',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+            ],
+            [
+                'name'  => 'uppercuts_sent',
+                'label' => 'Uppercuts Sent',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'uppercuts_received',
+                'label' => 'Uppercuts Received',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'coconuts_sent',
+                'label' => 'Coconuts Sent',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'coconuts_received',
+                'label' => 'Coconuts Received',
+                'type'  => 'number',
+                'tab'   => 'Game Stats',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'phaser_rendering_type',
+                'label' => 'Phaser Rendering Type',
+                'type'  => 'text',
+                'tab'   => 'Game Settings',
+            ],
+            [
+                'name'  => 'phaser_antialias',
+                'label' => 'Phaser Antialias',
+                'type'  => 'boolean',
+                'tab'   => 'Game Settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'phaser_antialias_gl',
+                'label' => 'Phaser Antialias GL',
+                'type'  => 'boolean',
+                'tab'   => 'Game Settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'phaser_pixel_art',
+                'label' => 'Phaser Pixel Art',
+                'type'  => 'boolean',
+                'tab'   => 'Game Settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'phaser_round_pixels',
+                'label' => 'Phaser Round Pixels',
+                'type'  => 'boolean',
+                'tab'   => 'Game Settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'  => 'phaser_power_preference',
+                'label' => 'Phaser Power Preference',
+                'type'  => 'text',
+                'tab'   => 'Game Settings',
+            ],
+            [
+                'name'  => 'phaser_scene_sound_volume',
+                'label' => 'Phaser Scene Sound Volume',
+                'type'  => 'number',
+                'tab'   => 'Game Settings',
+            ],
+            [
+                'name'  => 'phaser_scene_sound_muted',
+                'label' => 'Phaser Scene Sound Muted',
+                'type'  => 'boolean',
+                'tab'   => 'Game Settings',
+            ],
+            [
+                'name' => 'is_bot',
+                'label' => 'Is Bot',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+            ],
+            [
+                'name' => 'bot_system_prompt',
+                'label' => 'Bot System Prompt',
+                'type' => 'textarea',
+                'tab' => 'Bot Settings',
+            ],
+            [
+                'name' => 'daily_quota',
+                'label' => 'Daily Quota (messages)',
+                'type' => 'number',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name' => 'cooldown_sec',
+                'label' => 'Cooldown Seconds',
+                'type' => 'number',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name' => 'subscribe_ring',
+                'label' => 'Subscribe Ring',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings'
+            ],
+            [
+                'name' => 'join_public_scenes',
+                'label' => 'Join Public Scenes',
+                'type' => 'select2_multiple',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+                'model' => "App\Models\PublicScene",
+                'attribute' => 'name',
+            ],
+            [
+                'name' => 'can_receive_uppercuts',
+                'label' => 'Can Receive Uppercuts',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+            ],
+            [
+                'name' => 'can_send_uppercuts',
+                'label' => 'Can Send Uppercuts',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+            ],
+            [
+                'name' => 'can_receive_coconuts',
+                'label' => 'Can Receive Coconuts',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+            ],
+            [
+                'name' => 'can_send_coconuts',
+                'label' => 'Can Send Coconuts',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+            ],
+            [
+                'name' => 'can_attack_bots',
+                'label' => 'Can Attack Bots',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+            ],
+            [
+                'name' => 'select_only_users',
+                'label' => 'Select Only Users',
+                'type' => 'checkbox',
+                'tab' => 'Bot Settings',
+                'fake' => true,
+                'store_in' => 'bot_settings',
+            ]
+        ]);
+    }
+}

@@ -8,6 +8,7 @@
       >
         <img
           :src="asset_emojis_tab_icon_image"
+          :alt="$t('user_card.tabs.interactions')"
           class="tab-icon"
           :class="{ active: activeTab === 'interactions' }"
         />
@@ -19,6 +20,7 @@
       >
         <img
           :src="asset_statistics_tab_icon_image"
+          :alt="$t('user_card.tabs.statistics')"
           class="tab-icon"
           :class="{ active: activeTab === 'statistics' }"
         />
@@ -28,13 +30,18 @@
       :is="activeTabComponent"
       :selectedUser="selectedUser"
       :authUser="authUser"
+      :pendingInteraction="pendingInteraction"
+      @open-ring-info="$emit('open-ring-info')"
+      @open-coconuts-info="$emit('open-coconuts-info')"
+      @interaction-sent="$emit('interaction-sent', $event)"
+      @interaction-cancelled="$emit('interaction-cancelled')"
     />
   </div>
 </template>
 
 <script>
-import asset_emojis_tab_icon_image from "../../../../../assets/game/ficha/tab-cons/user.svg";
-import asset_statistics_tab_icon_image from "../../../../../assets/game/ficha/tab-cons/statistics.svg";
+import asset_emojis_tab_icon_image from "@/assets/game/ficha/tab-cons/user.svg";
+import asset_statistics_tab_icon_image from "@/assets/game/ficha/tab-cons/statistics.svg";
 import InteractionsTabComponent from "./tabs/InteractionsTabComponent.vue";
 import StatisticsTabComponent from "./tabs/StatisticsTabComponent.vue";
 
@@ -47,6 +54,10 @@ export default {
     authUser: {
       type: Object,
       required: true,
+    },
+    pendingInteraction: {
+      type: Object,
+      required: false,
     },
   },
   data() {
@@ -63,13 +74,10 @@ export default {
         : StatisticsTabComponent;
     },
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
+      if (this.selectedUser.ficha_color == "user") {
+        return "selected";
       }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return "selected";
+      return this.selectedUser.ficha_color;
     },
   },
   components: {
@@ -86,6 +94,9 @@ export default {
   height: 21px;
   display: flex;
   gap: 3px;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .tabs-container__interactions {
@@ -127,6 +138,7 @@ export default {
     contrast(100%);
 }
 
+/********************************************************************* */
 .tabs-container.admin .tabs-container__interactions,
 .tabs-container.admin .tabs-container__statistics {
   background-color: #f59200;
@@ -140,6 +152,11 @@ export default {
 .tabs-container.selected .tabs-container__interactions,
 .tabs-container.selected .tabs-container__statistics {
   background-color: #045d03;
+}
+
+.tabs-container.beta .tabs-container__interactions,
+.tabs-container.beta .tabs-container__statistics {
+  background-color: rgb(1, 167, 167);
 }
 
 .tabs-container__interactions.active,

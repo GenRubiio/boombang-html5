@@ -1,0 +1,5 @@
+add_header Permissions-Policy "identity-credentials-get=(self \"https://play.boommania.com\")" always;
+add_header Access-Control-Allow-Origin "https://play.boommania.com" always;
+add_header Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE" always;
+add_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization" always;
+add_header Access-Control-Expose-Headers "Content-Length,Content-Range" always;

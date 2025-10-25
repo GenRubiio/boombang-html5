@@ -1,27 +1,128 @@
 import MoveUserToTileController from "./MoveUserToTileController.js";
+//import MovementControlsController from "./MovementControlsController.js";
+import AnimationEditorController from "./AnimationEditorController.js";
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserModel from "../../models/UserModel.js";
-import socket from "../../../sockets/socket.js"; // Conexión Socket.io
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum.js";
-import SceneUtils from "../../../utils/SceneUtils.js";
-import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
-import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
-import AvatarPositionSpriteModal from "../../admin/modals/AvatarPositionSpriteModal.js";
-import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
-import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
-import UserEmojiAnimation from "../../animations/UserEmojiAnimation.js";
-import UserChatAnimation from "../../animations/UserChatAnimation.js";
+import socket from "@/sockets/socket.js"; // Conexión Socket.io
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
+import ShadowColorsEnum from "@/enums/ShadowColorsEnum.js";
+import NameColorsEnum from "@/enums/NameColorsEnum.js";
+import smartAvatarSystem from "../../managers/SmartAvatarSystem.js";
+import AvatarEnum from "@/enums/AvatarEnum.js";
+import gameConfig from "@/config/gameConfig.js";
+//import SceneUtils from "../../../utils/SceneUtils.js";
+//import TintSpriteUtils from "../../../utils/TintSpriteUtils.js";
+//import AvatarOriginSpriteModal from "../../admin/modals/AvatarOriginSpriteModal.js";
+//import AvatarPositionSpriteModal from "../../admin/modals/AvatarPositionSpriteModal.js";
+//import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
+//import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
+//import UserEmojiAnimation from "../../animations/UserEmojiAnimation.js";
+//import UserChatAnimation from "../../animations/UserChatAnimation.js";
+
+/* =========================
+   NameTag texture cache (Opción B)
+   ========================= */
+const nameTagStyleHash = new Map(); // texKey -> "WxH_bgColor_alpha"
+
+function ensureNameTagTexture(gameScene, texKey, w, h, bgColor, alpha) {
+    const hash = `${w}x${h}_${bgColor}_${alpha}`;
+    if (nameTagStyleHash.get(texKey) === hash && gameScene.textures.exists(texKey)) {
+        return; // misma textura ya generada
+    }
+    if (gameScene.textures.exists(texKey)) {
+        gameScene.textures.remove(texKey);
+    }
+    const g = gameScene.add.graphics();
+    g.fillStyle(bgColor, alpha);
+    g.fillRoundedRect(0, 0, w, h, 8 * gameConfig.DPI);
+    // punta inferior
+    g.fillTriangle(
+        w / gameConfig.DPI - 5 * gameConfig.DPI, h,
+        w / gameConfig.DPI + 5 * gameConfig.DPI, h,
+        w / gameConfig.DPI, h + 6 * gameConfig.DPI
+    );
+    // incluye la punta en la textura
+    g.generateTexture(texKey, w, h + 6 * gameConfig.DPI);
+    g.destroy();
+    nameTagStyleHash.set(texKey, hash);
+}
+
+function setupNameTagCleanup(scene) {
+    if (scene._nameTagCleanupHooked) return;
+    scene._nameTagCleanupHooked = true;
+    scene.sys.events.once("shutdown", () => {
+        // elimina texturas nameTag_ creadas entre salas
+        const keys = Object.keys(scene.textures.list ?? {});
+        keys.forEach((key) => {
+            if (key.startsWith("nameTag_")) {
+                scene.textures.remove(key);
+                nameTagStyleHash.delete(key);
+            }
+        });
+    });
+}
 
 class AddUserController {
     static async main(gameScene, userData) {
-        if (gameScene.users[userData.id]) return;
-        const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, userData);
-        const user = new UserModel(userData, spriteAvatar, spriteShadow, containerUser);
+        // Verificar si la escena está lista para procesar eventos
+        if (!gameScene.isSceneReady) {
+            gameScene.eventBuffer.push({
+                type: 'ADD_USER',
+                data: userData,
+                callback: () => AddUserController.processUser(gameScene, userData)
+            });
+            return;
+        }
+
+        // Procesar inmediatamente si la escena está lista
+        return AddUserController.processUser(gameScene, userData);
+    }
+
+    static async processUser(gameScene, userData) {
+        if (gameScene.users[userData.id]) {
+            return;
+        }
+
+        // engancha limpieza de nameTags al cerrar la escena
+        setupNameTagCleanup(gameScene);
+
+        // Usar el nuevo sistema inteligente de avatares
+        const requestedAvatarId = userData.avatar_id;
+        const avatarSelection = smartAvatarSystem.getAvatarForUser(userData.id, requestedAvatarId);
+
+        //console.log(`👤 Usuario ${userData.username}: solicitado=${requestedAvatarId}, usando=${avatarSelection.avatarId}, fallback=${avatarSelection.isFallback}`);
+
+        // Usar el avatar seleccionado (original o fallback)
+        const modifiedUserData = { ...userData, avatar_id: avatarSelection.avatarId };
+
+        const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
+        // Importante: pasar los datos modificados para que UserModel.avatarId sea el realmente usado (fallback si aplica)
+        const user = new UserModel(modifiedUserData, spriteAvatar, spriteShadow, containerUser);
+
+        // Guardar información del avatar para futuras actualizaciones
+        user.originalAvatarId = requestedAvatarId;
+        user.currentAvatarId = avatarSelection.avatarId;
+        user.isFallbackAvatar = avatarSelection.isFallback;
+        // Mantener compatibilidad: muchas animaciones leen user.avatarId; asegúralo igual al usado
+        user.avatarId = avatarSelection.avatarId;
+
         MoveUserToTileController.main(gameScene, user);
+
         // Almacenar jugador
         gameScene.users[userData.id] = user;
-        //UserChatAnimation.main(user, "leftup_talk");
-        //UserEmojiAnimation.main(user, 8);
+
+        // Create animation editor for this user's sprite
+        if (import.meta.env.VITE_ANIMATION_AVATAR_EDITOR == "true") {
+            AnimationEditorController.create(gameScene, user.spriteAvatar, user);
+        }
+
+        // Si estamos usando fallback, configurar listener para actualización automática
+        if (avatarSelection.isFallback) {
+            this.setupSmartAvatarUpdateListener(gameScene, user);
+        }
+
+        // UserChatAnimation.main(user, "leftup_talk");
+        // UserEmojiAnimation.main(user, 8");
     }
 
     static createContainerUser(gameScene, userData) {
@@ -41,36 +142,46 @@ class AddUserController {
         ]);
         containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
-        //AvatarOriginSpriteModal.main(gameScene, spriteAvatar);
-        //AvatarPositionSpriteModal.main(gameScene, spriteAvatar);
+        //MovementControlsController.createMovementControls(gameScene, spriteAvatar, userData.avatar_id + "_" + "down_beber");
+        // AvatarOriginSpriteModal.main(gameScene, spriteAvatar);
+        // AvatarPositionSpriteModal.main(gameScene, spriteAvatar);
         return { containerUser, spriteAvatar, spriteShadow };
     }
 
     static createShadowSprite(gameScene, userData) {
-        // Crear sombra
-        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54, 20);
+        //TODO: Nuevo rederizado * 2
+        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54 * gameConfig.DPI, 20 * gameConfig.DPI);
         spriteShadow.setDepth(0);
         spriteShadow.setInteractive({ useHandCursor: true });
+
         spriteShadow.playerSocketId = userData.id;
 
-        //remove listener if already exists
+        let color = 0xff6700;
+        switch (userData.shadow_color) {
+            case ShadowColorsEnum.ADMIN:
+                color = 0xffd700;
+                break;
+            case ShadowColorsEnum.VIP:
+                color = 0x6a006a;
+                break;
+        }
+
+        // remove listener if already exists
         spriteShadow.removeAllListeners();
-        spriteShadow.on('pointerdown', () => {
+        spriteShadow.on("pointerdown", () => {
             if (!gameScene.selectedShadow) {
-                //change image shadow to shadow_selected
+                // change image shadow to shadow_selected
                 spriteShadow.setTexture("shadow_selected");
-                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
+                gameScene.tintMgr.replaceColor(spriteShadow, "shadow", 0x000000, color);
                 gameScene.selectedShadow = spriteShadow;
-            }
-            else if (gameScene.selectedShadow != spriteShadow) {
+            } else if (gameScene.selectedShadow !== spriteShadow) {
                 try {
                     //console.log("Desmarcando sombra: ");
-                    gameScene.tintMgr.clearPart(gameScene.selectedShadow, 'shadow');
+                    gameScene.tintMgr.clearPart(gameScene.selectedShadow, "shadow");
                     gameScene.selectedShadow.setTexture("shadow");
-                }
-                catch (e) { }
+                } catch (e) { }
                 spriteShadow.setTexture("shadow_selected");
-                gameScene.tintMgr.replaceColor(spriteShadow, 'shadow', 0x000000, 0xff6700);
+                gameScene.tintMgr.replaceColor(spriteShadow, "shadow", 0x000000, color);
                 gameScene.selectedShadow = spriteShadow;
             }
             const clickedPlayer = gameScene.users[spriteShadow.playerSocketId];
@@ -85,33 +196,40 @@ class AddUserController {
     }
 
     static createAvatarSprite(gameScene, userData) {
-        const spriteAvatar = gameScene.add.sprite(0, 0, "player_" + userData.id);
+        // Obtener el atlas key correcto para el avatar
+        const avatarName = this.avatarName(userData.avatar_id);
+        const atlasKey = `${avatarName}_atlas`;
+
+        // Verificar que el atlas existe antes de crear el sprite
+        if (!gameScene.textures.exists(atlasKey)) {
+            //console.error(`❌ Atlas no encontrado para avatar ${userData.avatar_id}: ${atlasKey}`);
+            // Usar un sprite por defecto o placeholder
+            const spriteAvatar = gameScene.add.sprite(0, 0);
+            spriteAvatar.setVisible(false); // Ocultar hasta que se cargue
+            spriteAvatar._avatarId = userData.avatar_id;
+            spriteAvatar._z = userData.z;
+            return spriteAvatar;
+        }
+
+        // Crear sprite con el atlas correcto
+        const spriteAvatar = gameScene.add.sprite(0, 0, atlasKey);
         spriteAvatar._avatarId = userData.avatar_id;
         spriteAvatar._z = userData.z;
-        //UserIdleAnimation.main(
-        //    spriteAvatar,
-        //    1,
-        //    userData.avatar_id
-        //);
+
+        // Aplicar animación idle
         UserIdleAnimation.main(
             spriteAvatar,
             userData.z,
             userData.avatar_id
         );
-        //UserWalkAnimation.playWalk(
-        //    spriteAvatar,
-        //    2,
-        //    userData.avatar_id
-        //);
-        //UserUppercutAnimation.main(
-        //    spriteAvatar,
-        //    'left',
-        //    true,
-        //    userData.avatar_id
-        //);
+
         spriteAvatar.setDepth(1);
-        //gameScene.tintMgr.replaceColor(spriteAvatar, 'pelo', 0xff9900, 0x36c5bf);
-        gameScene.tintMgr.changeUppercutColor(spriteAvatar, userData.uppercut_selected);
+
+        // Aplicar tints de color si están configurados - usando safeApplyTint
+        this.safeApplyTint(gameScene, spriteAvatar, userData.uppercut_selected);
+        
+        // El oscurecimiento ahora es global por escena, no por sprite
+        
         return spriteAvatar;
     }
 
@@ -119,44 +237,355 @@ class AddUserController {
         // Nombre del usuario
         const userName = userData.username || "Undefined";
 
-        // Crear temporalmente el texto para calcular el tamaño dinámico
+        // Estilos por defecto
+        let textColor = "#000000";
+        let backgroundColor = 0xffffff;
+        let alpha = 1;
+
+        switch (userData.name_color) {
+            case NameColorsEnum.ADMIN:
+                textColor = "#000000";
+                backgroundColor = 0xffd700;
+                break;
+            case NameColorsEnum.VIP:
+                textColor = "#ffffff";
+                backgroundColor = 0x420143;
+                break;
+        }
+
+        // 1) Crear el texto para medir y reutilizarlo
         const userNameText = gameScene.add.text(0, 0, userName, {
-            fontSize: "10px",
-            color: "#000",
+            fontSize: "20px",
+            color: textColor,
             fontFamily: "Arial",
             padding: { x: 0, y: 0 }
         }).setOrigin(0.5, 1);
 
-        // Obtener dimensiones del texto
-        const textWidth = userNameText.width + 12; // Margen extra
-        const textHeight = userNameText.height + 10; // Espacio extra para padding
+        // 2) Medidas con padding visual
+        const textWidth = Math.ceil(userNameText.width) + 12 * gameConfig.DPI;  // margen extra
+        const textHeight = Math.ceil(userNameText.height) + 10 * gameConfig.DPI; // padding vertical
 
-        // Crear clave de textura dinámica basada en el tamaño del texto
-        const textureKey = `nameTag_${userName}_${textWidth}x${textHeight}`;
+        // 3) Clave única por usuario (id si existe; fallback a username)
+        const safeName = String(userName).replace(/\s+/g, "_");
+        const textureKey = `nameTag_${userData.id ?? safeName}`;
 
-        // Solo generar la textura si no existe (evita recalcular siempre)
-        if (!gameScene.textures.exists(textureKey)) {
-            const graphics = gameScene.add.graphics();
-            graphics.fillStyle(0xffffff, 0.8); // Fondo blanco semitransparente
-            graphics.fillRoundedRect(0, 0, textWidth, textHeight, 8); // Rectángulo redondeado
-            graphics.fillTriangle(textWidth / 2 - 5, textHeight, textWidth / 2 + 5, textHeight, textWidth / 2, textHeight + 6); // Triángulo
+        // 4) Asegurar textura según estilo actual (regenera si cambió tamaño/color/alpha)
+        ensureNameTagTexture(gameScene, textureKey, textWidth, textHeight, backgroundColor, alpha);
 
-            // Generar la textura dinámica
-            graphics.generateTexture(textureKey, textWidth, textHeight + 6);
-            graphics.destroy(); // Liberar memoria del gráfico
-        }
+        // 5) Crear imagen de fondo usando la textura
+        const yBg = -spriteAvatar.displayHeight / gameConfig.DPI - textHeight - 8 * gameConfig.DPI;
+        const textBackground = gameScene.add.image(0, yBg, textureKey)
+            .setOrigin(0.5, 1)
+            .setDepth(2);
 
-        // Crear el fondo usando la textura generada
-        const textBackground = gameScene.add.image(0, -spriteAvatar.displayHeight / 2 - textHeight - 8, textureKey);
-        textBackground.setOrigin(0.5, 1);
-        textBackground.setDepth(2);
+        // 6) Ajustar posición del texto encima del fondo
+        userNameText.y = textBackground.y - textHeight / gameConfig.DPI;
+        userNameText.setDepth(3);
+        userNameText.setColor(textColor); // por si cambia dinámicamente
 
-        // Ajustar la posición del texto para que encaje con el fondo
-        userNameText.y = textBackground.y - textHeight / 2;
+        //TODO: Nuevo rederizado * 2
+        // textBackground.setScale(2);  // Removed: scaling elements directly instead
+        // userNameText.setScale(2);    // Removed: scaling font size instead
 
         return {
             background: textBackground,
             name: userNameText
+        };
+    }
+
+    /**
+     * Configura un listener para actualizar el avatar cuando se carga en segundo plano
+     */
+    static setupAvatarUpdateListener(gameScene, user, originalAvatarId) {
+        const checkInterval = setInterval(() => {
+            if (avatarManager.isAvatarLoaded(originalAvatarId)) {
+                //console.log(`🔄 Actualizando avatar de ${user.username} a ${originalAvatarId}`);
+
+                // Actualizar el sprite del avatar
+                this.updateUserAvatar(gameScene, user, originalAvatarId);
+
+                // Limpiar el interval
+                clearInterval(checkInterval);
+            }
+        }, 1000); // Verificar cada segundo
+
+        // Limpiar el interval si el usuario se desconecta
+        if (user.cleanupCallbacks) {
+            user.cleanupCallbacks.push(() => clearInterval(checkInterval));
+        } else {
+            user.cleanupCallbacks = [() => clearInterval(checkInterval)];
+        }
+    }
+
+    /**
+     * Actualiza el avatar de un usuario existente
+     */
+    static updateUserAvatar(gameScene, user, newAvatarId) {
+        try {
+            // Verificar que el avatar esté cargado en el AvatarManager
+            if (!avatarManager.isAvatarLoaded(newAvatarId)) {
+                //console.warn(`⚠️ Avatar ${newAvatarId} no está cargado, reintentando...`);
+                // Reintentar en 500ms
+                setTimeout(() => {
+                    this.updateUserAvatar(gameScene, user, newAvatarId);
+                }, 500);
+                return;
+            }
+
+            // Guardar posición y propiedades actuales
+            const currentX = user.spriteAvatar.x;
+            const currentY = user.spriteAvatar.y;
+            const currentDepth = user.spriteAvatar.depth;
+            const currentZ = user.spriteAvatar._z;
+
+            // Obtener el atlas key correcto para el nuevo avatar
+            const avatarName = this.avatarName(newAvatarId);
+            const atlasKey = `${avatarName}_atlas`;
+
+            // Verificar que el atlas existe
+            if (!gameScene.textures.exists(atlasKey)) {
+                //console.error(`❌ Atlas no encontrado para avatar ${newAvatarId}: ${atlasKey}`);
+                return;
+            }
+
+            // Crear nuevo sprite de avatar con el atlas correcto
+            const newSpriteAvatar = gameScene.add.sprite(currentX, currentY, atlasKey);
+            newSpriteAvatar._avatarId = newAvatarId;
+            newSpriteAvatar._z = currentZ;
+            newSpriteAvatar.setDepth(currentDepth);
+
+            // Aplicar animación idle
+            UserIdleAnimation.main(newSpriteAvatar, currentZ, newAvatarId);
+
+            // Aplicar tints si los había - con verificación de pipeline
+            this.safeApplyTint(gameScene, newSpriteAvatar, user.uppercut_selected);
+
+            // Reemplazar en el contenedor
+            const containerIndex = user.containerUser.list.indexOf(user.spriteAvatar);
+            if (containerIndex !== -1) {
+                user.containerUser.removeAt(containerIndex);
+                user.containerUser.addAt(newSpriteAvatar, containerIndex);
+            }
+
+            // Destruir sprite anterior
+            user.spriteAvatar.destroy();
+
+            // Actualizar referencias
+            user.spriteAvatar = newSpriteAvatar;
+            user.currentAvatarId = newAvatarId;
+
+            //console.log(`✅ Avatar actualizado exitosamente para ${user.username}`);
+        } catch (error) {
+            //console.error(`❌ Error actualizando avatar para ${user.username}:`, error);
+        }
+    }
+
+    /**
+     * Aplica tints de forma segura verificando el estado del ColorReplacePipeline
+     */
+    static safeApplyTint(gameScene, sprite, uppercutSelected) {
+        if (!uppercutSelected || !gameScene.tintMgr || !sprite) {
+            return;
+        }
+
+        // Verificar que el pipeline esté disponible y completamente inicializado
+        const pipeline = gameScene.renderer.pipelines.get('ColorReplacePipeline');
+        if (!pipeline || !pipeline.gl || !pipeline.gl.getParameter) {
+            //console.warn('⚠️ ColorReplacePipeline no disponible o no inicializado, omitiendo tint');
+            return;
+        }
+
+        // Verificar que el contexto WebGL esté activo
+        try {
+            const contextLost = pipeline.gl.isContextLost();
+            if (contextLost) {
+                //console.warn('⚠️ Contexto WebGL perdido, omitiendo tint');
+                return;
+            }
+        } catch (contextError) {
+            //console.warn('⚠️ Error verificando contexto WebGL, omitiendo tint');
+            return;
+        }
+
+        // Aplicar tint con delay y verificaciones adicionales
+        setTimeout(() => {
+            try {
+                if (sprite && !sprite.destroyed && gameScene.tintMgr) {
+                    // Triple verificación antes de aplicar tint
+                    const currentPipeline = gameScene.renderer.pipelines.get('ColorReplacePipeline');
+                    if (currentPipeline &&
+                        currentPipeline.gl &&
+                        currentPipeline.gl.getParameter &&
+                        !currentPipeline.gl.isContextLost()) {
+
+                        // Verificar que el sprite tenga las propiedades necesarias
+                        if (sprite.pipeline && sprite.texture && sprite.texture.source) {
+                            gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
+                        } else {
+                            //console.warn('⚠️ Sprite no completamente inicializado, omitiendo tint');
+                        }
+                    } else {
+                        //console.warn('⚠️ Pipeline no inicializado correctamente en callback, omitiendo tint');
+                    }
+                }
+            } catch (tintError) {
+                //console.warn(`⚠️ Error aplicando tint:`, tintError.message);
+                // Si el error es específicamente del set1f, intentar deshabilitar temporalmente el pipeline
+                if (tintError.message && tintError.message.includes('set1f')) {
+                    //console.warn('🔧 Error set1f detectado, deshabilitando pipeline temporalmente');
+                    this.disablePipelineTemporarily(gameScene, sprite, uppercutSelected);
+                }
+            }
+        }, 200); // Incrementar delay a 200ms
+    }
+
+    /**
+     * Deshabilita temporalmente el pipeline y reintenta después
+     */
+    static disablePipelineTemporarily(gameScene, sprite, uppercutSelected) {
+        const pipeline = gameScene.renderer.pipelines.get('ColorReplacePipeline');
+        if (pipeline) {
+            // Guardar el estado original del pipeline
+            const originalActive = pipeline.active;
+
+            // Deshabilitar temporalmente
+            pipeline.active = false;
+
+            // Reintentar después de un delay más largo
+            setTimeout(() => {
+                try {
+                    // Restaurar el pipeline
+                    pipeline.active = originalActive;
+
+                    // Verificar nuevamente y aplicar tint
+                    if (sprite && !sprite.destroyed && gameScene.tintMgr &&
+                        pipeline.gl && !pipeline.gl.isContextLost()) {
+                        gameScene.tintMgr.changeUppercutColor(sprite, uppercutSelected);
+                    }
+                } catch (retryError) {
+                    //console.warn('⚠️ Error en reintento de tint:', retryError.message);
+                }
+            }, 500);
+        }
+    }
+
+    static avatarName(avatarId) {
+        switch (avatarId) {
+            case AvatarEnum.BOOMER: return "boomer";
+            case AvatarEnum.BRUJITA: return "brujita";
+            case AvatarEnum.CHOLO: return "cholo";
+            case AvatarEnum.EMPOLLON: return "empollon";
+            case AvatarEnum.GATA: return "gata";
+            case AvatarEnum.GHOST: return "ghost";
+            case AvatarEnum.INDIA: return "india";
+            case AvatarEnum.LILIAN: return "lilian";
+            case AvatarEnum.MARSU: return "marsu";
+            case AvatarEnum.MODERN: return "modern";
+            case AvatarEnum.NINJA: return "ninja";
+            case AvatarEnum.RASTA: return "rasta";
+            case AvatarEnum.SKELETON: return "skeleton";
+            case AvatarEnum.WEREWOLF: return "werewolf";
+            case AvatarEnum.WRAITH: return "wraith";
+            case AvatarEnum.YAYO: return "yayo";
+            case AvatarEnum.ZOMBIE: return "zombie";
+            default: return "unknown";
+        }
+    }
+
+    /**
+     * Configura listener inteligente para actualización automática de avatar
+     */
+    static setupSmartAvatarUpdateListener(gameScene, user) {
+        // Escuchar cuando el avatar original esté listo
+        const onAvatarReady = (data) => {
+            if (data.userId === user.username && data.avatarId === user.originalAvatarId) {
+                //console.log(`🔄 Actualizando avatar de ${user.username} de ${data.previousId} a ${data.avatarId}`);
+
+                // Actualizar el avatar del usuario
+                this.updateUserAvatarSmart(gameScene, user, data.avatarId);
+
+                // Actualizar información en el sistema
+                smartAvatarSystem.updateUserAvatar(user.username, data.avatarId);
+
+                // Marcar como no-fallback
+                user.isFallbackAvatar = false;
+                user.currentAvatarId = data.avatarId;
+            }
+        };
+
+        // Registrar listener
+        smartAvatarSystem.on('userAvatarReady', onAvatarReady);
+
+        // Limpiar listener cuando el usuario se desconecte
+        if (user.cleanupCallbacks) {
+            user.cleanupCallbacks.push(() => {
+                smartAvatarSystem.off('userAvatarReady', onAvatarReady);
+            });
+        } else {
+            user.cleanupCallbacks = [() => {
+                smartAvatarSystem.off('userAvatarReady', onAvatarReady);
+            }];
+        }
+    }
+
+    /**
+     * Actualiza el avatar de un usuario usando el sistema inteligente
+     */
+    static updateUserAvatarSmart(gameScene, user, newAvatarId) {
+        try {
+            // Verificar que el avatar esté disponible en el sistema
+            if (!smartAvatarSystem.isAvatarAvailable(newAvatarId)) {
+                //console.warn(`⚠️ Avatar ${newAvatarId} no está disponible para ${user.username}`);
+                return;
+            }
+
+            // Guardar posición y propiedades actuales
+            const currentX = user.spriteAvatar.x;
+            const currentY = user.spriteAvatar.y;
+            const currentDepth = user.spriteAvatar.depth;
+            const currentZ = user.spriteAvatar._z;
+
+            // Obtener el atlas key correcto para el nuevo avatar
+            const avatarName = this.avatarName(newAvatarId);
+            const atlasKey = `${avatarName}_atlas`;
+
+            // Verificar que el atlas existe en Phaser
+            if (!gameScene.textures.exists(atlasKey)) {
+                //console.error(`❌ Atlas no encontrado en Phaser para avatar ${newAvatarId}: ${atlasKey}`);
+                return;
+            }
+
+            // Crear nuevo sprite de avatar con el atlas correcto
+            const newSpriteAvatar = gameScene.add.sprite(currentX, currentY, atlasKey);
+            newSpriteAvatar._avatarId = newAvatarId;
+            newSpriteAvatar._z = currentZ;
+            newSpriteAvatar.setDepth(currentDepth);
+
+            // Aplicar animación idle
+            UserIdleAnimation.main(newSpriteAvatar, currentZ, newAvatarId);
+
+            // Aplicar tints si los había - con verificación de pipeline
+            this.safeApplyTint(gameScene, newSpriteAvatar, user.uppercut_selected);
+
+            // Nada: el overlay global ya se encarga
+
+            // Reemplazar en el contenedor
+            const containerIndex = user.containerUser.list.indexOf(user.spriteAvatar);
+            if (containerIndex !== -1) {
+                user.containerUser.removeAt(containerIndex);
+                user.containerUser.addAt(newSpriteAvatar, containerIndex);
+            }
+
+            // Destruir sprite anterior
+            user.spriteAvatar.destroy();
+
+            // Actualizar referencias
+            user.spriteAvatar = newSpriteAvatar;
+            user.currentAvatarId = newAvatarId;
+
+            //console.log(`✅ Avatar actualizado exitosamente para ${user.username} a ${newAvatarId}`);
+        } catch (error) {
+            //console.error(`❌ Error actualizando avatar para ${user.username}:`, error);
         }
     }
 }

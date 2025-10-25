@@ -1,13 +1,13 @@
-import asset_background_image from "../../../assets/game/minigame-scenes/1/background.webp";
-import asset_item1_image from "../../../assets/game/minigame-scenes/1/108.webp";
-import asset_item2_image from "../../../assets/game/minigame-scenes/1/105.webp";
-import asset_item3_image from "../../../assets/game/minigame-scenes/1/111.webp";
-import asset_item4_image from "../../../assets/game/minigame-scenes/1/114.webp";
-import asset_item5_image from "../../../assets/game/minigame-scenes/1/117.webp";
-import asset_item6_image from "../../../assets/game/minigame-scenes/1/120.webp";
-import asset_item7_image from "../../../assets/game/minigame-scenes/1/136.webp";
-import asset_item8_image from "../../../assets/game/minigame-scenes/1/139.webp";
-import SceneUtils from "../../../utils/SceneUtils";
+import asset_background_image from "@/assets/game/minigame-scenes/1/background.webp";
+import asset_item1_image from "@/assets/game/minigame-scenes/1/108.webp";
+import asset_item2_image from "@/assets/game/minigame-scenes/1/105.webp";
+import asset_item3_image from "@/assets/game/minigame-scenes/1/111.webp";
+import asset_item4_image from "@/assets/game/minigame-scenes/1/114.webp";
+import asset_item5_image from "@/assets/game/minigame-scenes/1/117.webp";
+import asset_item6_image from "@/assets/game/minigame-scenes/1/120.webp";
+import asset_item7_image from "@/assets/game/minigame-scenes/1/136.webp";
+import asset_item8_image from "@/assets/game/minigame-scenes/1/139.webp";
+import SceneUtils from "@/utils/SceneUtils";
 
 class GoldenRingPreload {
     static preload(gameScene) {
@@ -49,10 +49,14 @@ class GoldenRingPreload {
 
     static #loadSingleItem(gameScene, suffix, item) {
         // Creamos el sprite en (x,y)
-        const sprite = gameScene.add.image(item.x, item.y, item.name + suffix)
+        //TODO: Nuevo rederizado * 2
+        const sprite = gameScene.add.image(item.x * 2, item.y * 2, item.name + suffix)
             .setOrigin(0.5, 1)
-            .setDepth(item.custom_depth || item.y)
-            .setName(item.name + suffix);
+            //TODO: Nuevo rederizado * 2
+            .setDepth((item.custom_depth || item.y) * 2)
+            .setName(item.name + suffix)
+            //TODO: Nuevo rederizado * 2
+            .setScale(2);
         if (item.show_controller) {
             // Si es un item que se puede mover, añadimos el controlador
             SceneUtils.moveItem(gameScene, sprite);

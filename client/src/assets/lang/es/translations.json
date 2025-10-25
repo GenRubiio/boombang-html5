@@ -1,0 +1,441 @@
+{
+  "auth": {
+    "rasta_alt": "Rasta",
+    "lilian_alt": "Lilian"
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "button": "Entrar",
+    "register": "Regístrate",
+    "already_have_account": "Ya tienes cuenta?",
+    "character_name": "Nombre del Personaje",
+    "username_placeholder": "Nombre",
+    "password_placeholder": "Contraseña",
+    "forgot_password": "Has olvidado tu contraseña?",
+    "separator": "O",
+    "google_login": "Continuar con Google",
+    "play_button": "Jugar",
+    "warning_alt": "Advertencia",
+    "play_alt": "Jugar",
+    "google_alt": "Google"
+  },
+  "common": {
+    "close": "X",
+    "delete": "Borrar",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "accept": "Aceptar"
+  },
+  "scene": {
+    "tooltip_shop": "Tienda",
+    "tooltip_avatars": "Avatares",
+    "tooltip_color": "Colorear",
+    "tooltip_move": "Mover",
+    "tooltip_inventory": "Inventario",
+    "tooltip_rankings": "Rankings"
+  },
+  "rankings": {
+    "title": "Rankings de Minijuegos",
+    "loading": "Cargando...",
+    "no_data": "No hay datos disponibles",
+    "position": "Posición",
+    "username": "Usuario",
+    "score": "Puntuación",
+    "week": "Semana",
+    "select_week": "Seleccionar semana",
+    "page": "Página",
+    "of": "de",
+    "previous_page": "Página anterior",
+    "next_page": "Página siguiente",
+    "error_loading": "Error al cargar datos"
+  },
+  "maintenance": {
+    "title": "Mantenimiento",
+    "description": "El servidor está en mantenimiento.\nPor favor, inténtalo más tarde.",
+    "alt": "Mantenimiento"
+  },
+  "avatar_select": {
+    "title": "Personaje",
+    "label": "Selecciona tu personaje",
+    "gallery_title": "Galeria de Personajes"
+  },
+  "register": {
+    "title": "Crea tu cuenta",
+    "character_name": "Nombre del Personaje",
+    "username_placeholder": "Nombre",
+    "password": "Contraseña",
+    "password_placeholder": "Contraseña",
+    "email": "Email",
+    "email_placeholder": "Email",
+    "terms_agree": "Acepto los",
+    "terms_and_conditions": "Términos y Condiciones",
+    "play_button": "Jugar",
+    "captcha_required": "Por favor, completa el reCAPTCHA.",
+    "captcha_expired": "El reCAPTCHA ha expirado. Vuelve a marcarlo.",
+    "captcha_error": "Error al cargar/verificar reCAPTCHA. Intenta de nuevo.",
+    "captcha_load_error": "No se pudo cargar reCAPTCHA.",
+    "warning_alt": "Advertencia",
+    "play_alt": "Jugar",
+    "language": "Idioma"
+  },
+  "auth_screen": {
+    "register_title": "Crear tu Cuenta",
+    "register_text": "Registrarse y eligir Personaje",
+    "login_title": "Iniciar Sesión",
+    "login_text": "Iniciar Sesión con tu Cuenta"
+  },
+  "island_create": {
+    "choose_background": "Escoge el fondo",
+    "island_name_placeholder": "Nombre de la isla",
+    "set_island_name": "Pon un nombre a tu isla"
+  },
+  "scene_create": {
+    "choose_scene": "Escoge la escena",
+    "scene_name_placeholder": "Nombre de la sala",
+    "set_scene_name": "Pon un nombre a tu sala",
+    "error_no_scenes": "La isla no se ha encontrado o no tiene escenas."
+  },
+  "island": {
+    "locations": "Localizaciones",
+    "add_scenario": "Añadir escenario"
+  },
+  "user_card": {
+    "change_ficha_alt": "Cambiar ficha",
+    "edit_button": "EDITAR",
+    "avatar_alt": "Avatar del usuario",
+    "tabs": {
+      "emojis": "Emojis",
+      "statistics": "Estadísticas",
+      "interactions": "Interacciones"
+    },
+    "emojis": {
+      "laughter_1": "Risa 1",
+      "laughter_2": "Risa 2",
+      "laughter_3": "Risa 3",
+      "love": "Amor",
+      "sad": "Triste",
+      "angry": "Enfadado",
+      "wink": "Guiño",
+      "kiss": "Beso",
+      "surprise": "Sorpresa",
+      "sleep": "Dormir",
+      "cool": "Genial",
+      "confused": "Confundido",
+      "cry": "Llorar",
+      "spit": "Escupir",
+      "fart": "Pedo",
+      "provoke": "Provocar",
+      "fly": "Volar"
+    },
+    "interactions": {
+      "kick": "Patada",
+      "bomb": "Bomba",
+      "spit": "Escupitajo",
+      "tomato": "Tomate",
+      "poop": "Caca",
+      "flower": "Flor",
+      "heart": "Corazón",
+      "kiss": "Beso",
+      "gift": "Regalo",
+      "question": "Pregunta",
+      "exclamation": "Exclamación",
+      "net": "Red",
+      "drink": "Beber",
+      "rose": "Rosa",
+      "upper": "Uppercut",
+      "coco": "Coco",
+      "upper_item": "Objeto Uppercut",
+      "coco_item": "Objeto Coco",
+      "waiting_response": "Esperando respuesta",
+      "cancel": "Cancelar"
+    },
+    "statistics": {
+      "title": "Estadísticas de Interacciones",
+      "sent": "Enviadas",
+      "received": "Recibidas",
+      "kicks_sent": "Patadas enviadas",
+      "kicks_received": "Patadas recibidas",
+      "bombs_sent": "Bombas enviadas",
+      "bombs_received": "Bombas recibidas",
+      "spits_sent": "Escupitajos enviados",
+      "spits_received": "Escupitajos recibidos",
+      "tomatoes_sent": "Tomates enviados",
+      "tomatoes_received": "Tomates recibidos",
+      "poops_sent": "Cacas enviadas",
+      "poops_received": "Cacas recibidas",
+      "flowers_sent": "Flores enviadas",
+      "flowers_received": "Flores recibidas",
+      "kisses_sent": "Besos enviados",
+      "kisses_received": "Besos recibidos",
+      "hearts_sent": "Corazones enviados",
+      "hearts_received": "Corazones recibidos",
+      "gifts_sent": "Regalos enviados",
+      "gifts_received": "Regalos recibidos",
+      "questions_sent": "Preguntas enviadas",
+      "questions_received": "Preguntas recibidas",
+      "exclamations_sent": "Exclamaciones enviadas",
+      "exclamations_received": "Exclamaciones recibidas",
+      "nets_sent": "Redes enviadas",
+      "nets_received": "Redes recibidas",
+      "rings": {
+        "title": "Ring",
+        "red": "Guante Rojo",
+        "white": "Guante Blanco",
+        "pink": "Guante Rosa",
+        "purple": "Guante Púrpura",
+        "orange": "Guante Naranja",
+        "brown": "Guante Marrón",
+        "green": "Guante Verde",
+        "black": "Guante Negro",
+        "blue": "Guante Azul",
+        "gold": "Guante de Oro",
+        "won": "Ganados"
+      },
+      "uppercuts": {
+        "title": "Uppercuts"
+      },
+      "coconuts": {
+        "title": "Cocos"
+      },
+      "coconuts_locos": {
+        "title": "Cocos Locos",
+        "caught": "Atrapados"
+      }
+    }
+  },
+  "ring_npc": {
+    "title": "Sabio del Ring",
+    "description": "¡Colecciona todos los guantes y demuestra tu poder!",
+    "victories": "{count} victorias",
+    "gloves": {
+      "bronze": "Guante de Bronce",
+      "silver": "Guante de Plata",
+      "gold": "Guante de Oro",
+      "diamond": "Guante de Diamante",
+      "special": "Guante Especial"
+    }
+  },
+  "chat": {
+    "base_alt": "Base del chat",
+    "placeholder": "Escribe un mensaje...",
+    "brujula_alt": "Salir al lobby",
+    "public": "Público"
+  },
+  "customization": {
+    "tabs": {
+      "ficha": "Ficha",
+      "chat": "Chat",
+      "nombre": "Nombre",
+      "sombra": "Sombra"
+    },
+    "title": "PERSONALIZACIÓN DE {tab}"
+  },
+  "npc": {
+    "ring": {
+      "welcome": "Bienvenido al Ring",
+      "description": "¡Suscríbete para competir contra otros usuarios y ganar recompensas!",
+      "searching": "Buscando oponente...",
+      "cancel": "Cancelar Búsqueda",
+      "subscribe": "Buscar Oponente",
+      "unlock_gloves": "Desbloquea los guantes ganando victorias",
+      "weekly_trophies": "Trofeos Semanales",
+      "trophies_alt": "Trofeos del Ring",
+      "gloves": {
+        "red": "{victories} Victorias",
+        "white": "{victories} Victorias",
+        "pink": "{victories} Victorias",
+        "purple": "{victories} Victorias",
+        "orange": "{victories} Victorias",
+        "brown": "{victories} Victorias",
+        "green": "{victories} Victorias",
+        "black": "{victories} Victorias",
+        "blue": "{victories} Victorias",
+        "gold": "{victories} Victorias",
+        "alt": {
+          "red": "Guante Rojo",
+          "white": "Guante Blanco",
+          "pink": "Guante Rosa",
+          "purple": "Guante Morado",
+          "orange": "Guante Naranja",
+          "brown": "Guante Marrón",
+          "green": "Guante Verde",
+          "black": "Guante Negro",
+          "blue": "Guante Azul",
+          "gold": "Guante de Oro"
+        }
+      }
+    }
+  },
+  "scenes": {
+    "ring_info": {
+      "title": "INFO RING",
+      "victories": "{count} Victorias",
+      "red": "Guante Rojo",
+      "white": "Guante Blanco",
+      "pink": "Guante Rosa",
+      "purple": "Guante Púrpura",
+      "orange": "Guante Naranja",
+      "brown": "Guante Marrón",
+      "green": "Guante Verde",
+      "black": "Guante Negro",
+      "blue": "Guante Azul",
+      "gold": "Guante de Oro",
+      "red_glove_alt": "Guante Rojo",
+      "white_glove_alt": "Guante Blanco",
+      "pink_glove_alt": "Guante Rosa",
+      "purple_glove_alt": "Guante Púrpura",
+      "orange_glove_alt": "Guante Naranja",
+      "brown_glove_alt": "Guante Marrón",
+      "green_glove_alt": "Guante Verde",
+      "black_glove_alt": "Guante Negro",
+      "blue_glove_alt": "Guante Azul",
+      "gold_glove_alt": "Guante de Oro"
+    },
+    "coconuts_info": {
+      "title": "INFO COCOS",
+      "coco_cost": "{count} Cocos",
+      "coco_alt": "Coco",
+      "coco_name": "Coco",
+      "honeycomb_alt": "Panal de abejas",
+      "honeycomb_name": "Panal de abejas",
+      "snowball_alt": "Bola de nieve",
+      "snowball_name": "Bola de nieve",
+      "garbage_alt": "Basura",
+      "garbage_name": "Basura",
+      "shoe_alt": "Zapato",
+      "shoe_name": "Zapato",
+      "watermelon_alt": "Sandía",
+      "watermelon_name": "Sandía",
+      "pie_alt": "Tarta",
+      "pie_name": "Tarta",
+      "anvil_alt": "Yunque",
+      "anvil_name": "Yunque",
+      "pot_alt": "Maceta",
+      "pot_name": "Maceta",
+      "piano_alt": "Piano",
+      "piano_name": "Piano"
+    }
+  },
+  "gacha": {
+    "help": {
+      "main_title": "Ayuda del Gachapón",
+      "items_title": "Premios Disponibles",
+      "rarity": "Rareza",
+      "appearance": "Aparición",
+      "decorations_title": "Premios de Decoración",
+      "compensation": "Compensación",
+      "comp_silver": "{amount} monedas de plata",
+      "comp_gold": "{amount} monedas de oro"
+    },
+    "result": {
+      "title": "¡Has ganado un premio!",
+      "confirm": "Aceptar"
+    },
+    "error": {
+      "title": "Error",
+      "close": "Cerrar",
+      "default_message": "Ha ocurrido un error inesperado."
+    },
+    "alert": {
+      "title": "¿Deseas jugar?",
+      "text": "El coste es de 100 créditos. ¿Quieres continuar?",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "lobby": {
+    "golden_coins_alt": "Monedas de oro",
+    "silver_coins_alt": "Monedas de plata",
+    "islands": {
+      "public_alt": "Islas públicas",
+      "public": "Públicas",
+      "favorites_alt": "Islas favoritas",
+      "favorites": "Favoritas",
+      "my_islands_alt": "Mis islas",
+      "my_islands": "Mis Islas",
+      "create_island": "Crear Isla",
+      "create_island_alt": "Crear una nueva isla"
+    },
+    "no_favorite_islands": "No tienes islas favoritas.",
+    "gacha": {
+      "machine_alt": "Máquina Gachapon",
+      "handle_alt": "Manivela del Gachapon",
+      "title_default": "Gachapon",
+      "price_default": "Precio",
+      "title": "Gachapón",
+      "price": "100 Créditos"
+    },
+    "tabs": {
+      "areas": "Áreas",
+      "games": "Juegos",
+      "islands": "Islas"
+    },
+    "my_islands": {
+      "no_islands": "No tienes islas creadas."
+    },
+    "search": {
+      "not_implemented": "La búsqueda aún no está implementada."
+    },
+    "ui": {
+      "background_alt": "Fondo del lobby",
+      "flor_alt": "Planta decorativa",
+      "foreground_alt": "Primer plano del lobby",
+      "marikita_alt": "Mariquita decorativa",
+      "avatar_alt": "Avatar del usuario",
+      "logout_alt": "Cerrar sesión",
+      "logout": "Salir",
+      "gachapon": "Gachapón",
+      "credits": "Créditos",
+      "settings": "Ajustes",
+      "settings_alt": "Configuración",
+      "avatar_error": "Error al cargar el avatar del usuario"
+    }
+  },
+  "settings": {
+    "main_title": "Configuración",
+    "save": "Guardar",
+    "tabs": {
+      "profile": "Perfil",
+      "graphics": "Gráficos",
+      "sounds": "Sonidos"
+    },
+    "profile": {
+      "username": "Nombre de usuario",
+      "username_placeholder": "Ingresa tu nombre de usuario",
+      "username_desc": "Puedes cambiar tu nombre de usuario una vez cada 30 días.",
+      "language": "Idioma",
+      "language_desc": "Elige tu idioma de preferencia."
+    },
+    "graphics": {
+      "render_type": "Tipo de Renderizado",
+      "render_type_desc": "Selecciona el motor de render: WEBGL (más rápido, efectos avanzados) o CANVAS (compatibilidad). AUTO intenta WebGL y cae a Canvas si falla.",
+      "antialias": "Antialias",
+      "antialias_desc": "Suaviza texturas al escalar/rotar. false deja píxeles nítidos.",
+      "antialias_gl": "Antialias GL",
+      "antialias_gl_desc": "Activa MSAA (suavizado de bordes del lienzo) al crear WebGL. No cambia texturas. ⚠️ Cambiarlo requiere reiniciar el juego.",
+      "pixel_art": "Pixel Art",
+      "pixel_art_desc": "\"Preset\" que activa antialias=false y roundPixels=true. Todo queda más nítido.",
+      "round_pixels": "Round Pixels",
+      "round_pixels_desc": "Redondea posiciones al píxel más cercano (evita desenfoques en sprites).",
+      "power_preference": "Preferencia de Energía",
+      "power_preference_desc": "Sugiere al navegador qué GPU usar: high-performance → fuerza GPU dedicada (más consumo). low-power → ahorro batería."
+    },
+    "sounds": {
+      "scene_sound": "Desactivar Sonido de la Escena",
+      "scene_sound_desc": "Activa o desactiva la música de fondo de la escena actual.",
+      "scene_volume": "Volumen de la Escena",
+      "scene_volume_desc": "Ajusta el nivel de volumen de la música de fondo de la escena."
+    },
+    "confirm": {
+      "title": "Confirmar Cambios",
+      "message": "Al aplicar estos cambios el juego se reiniciará. ¿Deseas continuar?",
+      "ok": "Aceptar",
+      "cancel": "Cancelar"
+    }
+  },
+  "loading": {
+    "title": "Cargando..."
+  }
+}

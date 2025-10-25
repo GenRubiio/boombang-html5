@@ -24,6 +24,7 @@ import { defineAsyncComponent } from "vue";
 import socket from "./sockets/socket";
 import GameScreensEnum from "./enums/GameScreensEnum";
 import ColorReplacePipelinePlugin from "phaser3-rex-plugins/plugins/colorreplacepipeline-plugin.js";
+import gameConfig from "@/config/gameConfig.js";
 
 export default {
   data() {
@@ -37,6 +38,7 @@ export default {
     //setInterval(() => {
     //  console.log("Eventos registrados:", socket._callbacks);
     //}, 5000);
+    //console.log("Server URL:", import.meta.env.VITE_SERVER_URL);
   },
   components: {
     LoadingScreen: defineAsyncComponent(() =>
@@ -61,6 +63,7 @@ export default {
     },
     async onLoginSuccess() {
       this.onUpdateLoading(true);
+      
       const { default: GamePreloaders } = await import(
         "./phaser/preloaders/GamePreloaders"
       );
@@ -79,28 +82,46 @@ export default {
         "./phaser/GlobalPreloader"
       );
       const { default: PublicScene } = await import("./phaser/PublicScene");
+      const { default: PrivateScene } = await import("./phaser/PrivateScene");
       const { default: MinigameScene } = await import("./phaser/MinigameScene");
       // Solo creas la instancia la primera vez.
+      let phaserType = Phaser.AUTO;
+      switch (socket.user.phaser_rendering_type) {
+        case "webgl":
+          phaserType = Phaser.WEBGL;
+          break;
+        case "canvas":
+          phaserType = Phaser.CANVAS;
+          break;
+        default:
+          phaserType = Phaser.AUTO;
+      }
+
       this.gamePhaser = new Phaser.Game({
-        type: Phaser.WEBGL,
-        powerPreference: "high-performance",
-        antialias: false, // Desactiva si no necesitas suavizado
-        roundPixels: true, // Reduce cálculos de subpíxeles
-        pixelArt: true,
-        width: 1012,
-        height: 657,
+        type: phaserType,
+        powerPreference: socket.user.phaser_power_preference || "default", // "high-performance", "low-power", "default"
+        antialias: socket.user.phaser_antialias ? true : false, // Desactiva si no necesitas suavizado
+        antialiasGL: socket.user.phaser_antialias_gl ? true : false, // Desactiva si no necesitas suavizado en WebGL
+        roundPixels: socket.user.phaser_round_pixels ? true : false, // Reduce cálculos de subpíxeles
+        pixelArt: socket.user.phaser_pixel_art ? true : false, // Esencial para evitar el antialiasing que causa el blur
+        width: gameConfig.GAME_WIDTH,
+        height: gameConfig.GAME_HEIGHT,
         // Registras todas las escenas globales que vayas a usar
-        scene: [GlobalPreloader, PublicScene, MinigameScene],
+        scene: [GlobalPreloader, PublicScene, PrivateScene, MinigameScene],
         plugins: {
           global: [
             {
               key: "rexColorReplacePipeline",
               plugin: ColorReplacePipelinePlugin,
-              start: true,
+              start: false,
             },
           ],
         },
+        resolution: window.devicePixelRatio || 1,
         parent: "phaser-container",
+        dom: {
+          createContainer: true,
+        },
         physics: {
           default: "arcade",
         },
@@ -114,11 +135,18 @@ export default {
           postBoot: function (game) {
             game.events.off("hidden", game.renderer.onHidden, game.renderer);
             game.events.off("visible", game.renderer.onVisible, game.renderer);
+            game.scene.getScenes(true).forEach((s) => {
+              if (s.cameras?.main) s.cameras.main.roundPixels = true;
+            });
           },
         },
       });
       // Lanzamos la escena de Preloader para que cargue todo
       this.gamePhaser.scene.start("GlobalPreloaderScene");
+
+      this.gamePhaser.scale.resize(gameConfig.GAME_WIDTH * gameConfig.DPI, gameConfig.GAME_HEIGHT * gameConfig.DPI);
+      this.gamePhaser.canvas.style.width = gameConfig.GAME_WIDTH + "px";
+      this.gamePhaser.canvas.style.height = gameConfig.GAME_HEIGHT + "px";
     },
     handleDisconnect() {
       this.onUpdateLoading(true);
@@ -162,6 +190,7 @@ export default {
   width: 1012px;
   height: 657px;
   position: relative;
+  overflow: hidden;
 }
 
 #phaser-container {

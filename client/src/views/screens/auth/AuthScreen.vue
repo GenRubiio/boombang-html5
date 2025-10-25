@@ -9,11 +9,15 @@
     <div class="auth__clouds-wrapper">
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + asset_clouds_background_image + ')' }"
+        :style="{
+          backgroundImage: 'url(' + asset_clouds_background_image + ')',
+        }"
       ></div>
       <div
         class="auth__clouds"
-        :style="{ backgroundImage: 'url(' + asset_clouds_background_image + ')' }"
+        :style="{
+          backgroundImage: 'url(' + asset_clouds_background_image + ')',
+        }"
       ></div>
     </div>
     <div class="auth__content">
@@ -21,14 +25,14 @@
         <div>
           <TopButtonComponent
             v-if="showForm == 'login'"
-            title="Crear tu Cuenta"
-            text="Registrarse y eligir Personaje"
+            :title="$t('auth_screen.register_title')"
+            :text="$t('auth_screen.register_text')"
             @click="changeForm('register')"
           />
           <TopButtonComponent
             v-if="showForm == 'register'"
-            title="Iniciar Sesión"
-            text="Iniciar Sesión con tu Cuenta"
+            :title="$t('auth_screen.login_title')"
+            :text="$t('auth_screen.login_text')"
             @click="changeForm('login')"
           />
         </div>
@@ -40,6 +44,7 @@
           <RegisterFormComponent
             v-if="showForm == 'register'"
             :avatar_id="avatar_id"
+            :lang="lang"
             @loginSuccess="$emit('loginSuccess')"
           />
         </div>
@@ -47,6 +52,7 @@
       <AvatarSelectComponent
         v-if="showForm == 'register'"
         @changeAvatar="onChangeAvatar"
+        @changeLang="onChangeLang"
       />
     </div>
   </div>
@@ -54,13 +60,15 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import socket from "../../../sockets/socket";
-import asset_background_image from "../../../assets/game/auth/background.webp";
-import asset_clouds_background_image from "../../../assets/game/auth/clouds-background.webp";
+import { useSocketStore } from "@/stores/socketStore";
+import { mapState } from "pinia";
+import asset_background_image from "@/assets/game/auth/background.webp";
+import asset_clouds_background_image from "@/assets/game/auth/clouds-background.webp";
 import LoginFormComponent from "../../components/auth/LoginFormComponent.vue";
 import RegisterFormComponent from "../../components/auth/RegisterFormComponent.vue";
 import TopButtonComponent from "../../components/auth/TopButtonComponent.vue";
 import AvatarSelectComponent from "../../components/auth/AvatarSelectComponent.vue";
+import AvatarEnum from "@/enums/AvatarEnum";
 
 export default {
   data() {
@@ -68,8 +76,8 @@ export default {
       showForm: "login",
       asset_background_image,
       asset_clouds_background_image,
-      avatar_id: 13,
-      isSocketConnected: socket.connected,
+      avatar_id: AvatarEnum.GATA,
+      lang: 'en',
     };
   },
   components: {
@@ -81,6 +89,12 @@ export default {
     ),
     AvatarSelectComponent,
   },
+  computed: {
+    ...mapState(useSocketStore, ["isConnected"]),
+    isSocketConnected() {
+      return this.isConnected;
+    },
+  },
   methods: {
     changeForm(form) {
       this.showForm = form;
@@ -88,14 +102,9 @@ export default {
     onChangeAvatar(avatar_id) {
       this.avatar_id = avatar_id;
     },
-  },
-  mounted() {
-    socket.on("connect", () => {
-      this.isSocketConnected = true;
-    });
-    socket.on("disconnect", () => {
-      this.isSocketConnected = false;
-    });
+    onChangeLang(lang) {
+      this.lang = lang;
+    },
   },
 };
 </script>
@@ -168,5 +177,6 @@ export default {
 .auth__content {
   display: flex;
   gap: 10px;
+  margin-top: 40px;
 }
 </style>

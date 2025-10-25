@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\AvatarEnum;
+use App\Rules\RecaptchaV2;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterApiRegisterRequest extends FormRequest
@@ -31,8 +32,10 @@ class RegisterApiRegisterRequest extends FormRequest
             'avatar_id' => [
                 'required',
                 'integer',
-                'in:' . implode(',', array_keys(AvatarEnum::toAssociativeArray())),
+                'in:' . implode(',', array_values(AvatarEnum::registerAvatarPermited())),
             ],
+            'recaptcha' => ['required', 'string', new RecaptchaV2()],
+            'lang' => ['required', 'string', 'in:' . implode(',', array_keys(config('backpack.crud.locales')))],
         ];
     }
 
@@ -65,6 +68,7 @@ class RegisterApiRegisterRequest extends FormRequest
             'avatar_id.required' => 'Avatar is required',
             'avatar_id.integer' => 'Avatar is invalid',
             'avatar_id.in' => 'Avatar is invalid',
+            'recaptcha.required' => 'reCAPTCHA is required',
         ];
     }
 }

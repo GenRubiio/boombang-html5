@@ -14,16 +14,16 @@
       </div>
       <div class="loading-screen__container-text">
         <div class="spinner"></div>
-        <div class="loading-text">Cargando...</div>
+        <div class="loading-text">{{ $t("loading.title") }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import asset_background_image from "../../../assets/game/loading/background.webp";
-import asset_motto_water_image from "../../../assets/game/loading/motto-water.webp";
-import asset_fish_image from "../../../assets/game/loading/fish.webp";
+import asset_background_image from "@/assets/game/loading/background.webp";
+import asset_motto_water_image from "@/assets/game/loading/motto-water.webp";
+import asset_fish_image from "@/assets/game/loading/fish.webp";
 
 export default {
   data() {

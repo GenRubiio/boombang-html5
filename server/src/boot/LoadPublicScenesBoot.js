@@ -1,4 +1,5 @@
 
+const uuidv4 = require('uuid');
 const PublicScenesCollection = require('../collections/PublicScenesCollection');
 const PublicSceneModel = require('../models/PublicSceneModel');
 const ConsoleLogger = require('../utils/ConsoleLogger');
@@ -16,7 +17,8 @@ class LoadPublicScenesBoot {
         }
         const scenes = response.scenes;
         scenes.forEach(scene => {
-            PublicScenesCollection.add(scene.id, new PublicSceneModel(scene));
+            const uuid = uuidv4.v4();
+            PublicScenesCollection.add(uuid, new PublicSceneModel(uuid, scene));
         });
 
         logger.log('Public scenes loaded: ' + PublicScenesCollection.getAll().length, 'info');

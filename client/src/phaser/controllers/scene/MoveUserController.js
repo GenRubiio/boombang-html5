@@ -1,6 +1,7 @@
 import UserWalkAnimation from "../../animations/UserWalkAnimation.js";
 import AnimationsTimerEnum from "../../../enums/AnimationsTimerEnum.js";
 import UserMoveDeniedController from "../scene/UserMoveDeniedController.js";
+import gameConfig from "@/config/gameConfig.js";
 
 //TODO: Codigo obsoleto, siempre se recibe 1 posición en el path
 class MoveUserController {
@@ -51,12 +52,12 @@ class MoveUserController {
         const step = user.path[user.pathIndex];
 
         // Ajusta según tu grid isométrico
-        const tileWidth = 65;
-        const tileHeight = 33;
+        const tileWidth = 65 * gameConfig.DPI;
+        const tileHeight = 33 * gameConfig.DPI;
 
         // Calcula la posición en pantalla
-        const centerX = (step.x - step.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const centerY = (step.x + step.y) * (tileHeight / 2);
+        const centerX = (step.x - step.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+        const centerY = (step.x + step.y) * (tileHeight / gameConfig.DPI);
 
         // Actualiza posición lógica del jugador
         user.position = { x: step.x, y: step.y, z: step.z };
@@ -79,10 +80,27 @@ class MoveUserController {
                 if (!user.containerUser) return;
                 // Actualiza la profundidad según la Y (opcional en cada frame).
                 user.containerUser.setDepth(user.containerUser.y);
+                
+                // Update user position during animation for real-time WALKABLE_OVERLAY depth updates
+                user.currentAreaPosition = { x: step.x, y: step.y };
+                
+                // Update WALKABLE_OVERLAY depths during movement
+                if (gameScene.updateWalkableOverlayDepths) {
+                    gameScene.updateWalkableOverlayDepths();
+                }
             },
             onComplete: () => {
                 // Al terminar el movimiento, detenemos la animación
                 user.spriteAvatar.stop();
+                
+                // Update user's current position for WALKABLE_OVERLAY depth management
+                user.currentAreaPosition = { x: step.x, y: step.y };
+                
+                // Update WALKABLE_OVERLAY depths when user moves
+                if (gameScene.updateWalkableOverlayDepths) {
+                    gameScene.updateWalkableOverlayDepths();
+                }
+                
                 if (isLastStep) {
                     UserMoveDeniedController.main(gameScene, socketId);
                 }

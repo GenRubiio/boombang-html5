@@ -16,14 +16,41 @@ services:
     networks:
       - boombang
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 300M
+      VIRTUAL_HOST: ${PMA_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${PMA_VIRTUAL_PORT}
+      VIRTUAL_PROTO: ${PMA_VIRTUAL_PROTO}
+    expose:
+      - "80"
+    depends_on:
+      - db
+    networks:
+      - boombang
+
   proxy:
-    image: jwilder/nginx-proxy:latest
+    image: nginxproxy/nginx-proxy:latest
     container_name: nginx-proxy
     ports:
       - "80:80"
       - "443:443"
+    environment:
+        - PROXY_TIMEOUT=300
+        - PROXY_READ_TIMEOUT=300
+        - PROXY_CONNECT_TIMEOUT=300
+        - CLIENT_MAX_BODY_SIZE=100M
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./docker/ssl:/etc/nginx/certs:ro
+      - ./docker/nginx/gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
+      - ./docker/nginx/www.boommania.com:/etc/nginx/vhost.d/www.boommania.com:ro
+      - ./docker/nginx/boommania.com:/etc/nginx/vhost.d/boommania.com:ro
+      - ./docker/nginx/api-cors.conf:/etc/nginx/vhost.d/api.boommania.com_location:ro
     networks:
       - boombang
 
@@ -31,14 +58,29 @@ services:
     build: ./api
     volumes:
       - ./api:/var/www/html
+      - api_storage:/var/www/html/storage
+      - api_uploads:/var/www/html/public/uploads
+      - ./api/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
+      - /var/www/html/node_modules
+      - /var/www/html/vendor
+      - /var/www/html/public/build
     env_file:
       - ./api/.env
     environment:
       VIRTUAL_HOST: ${API_VIRTUAL_HOST}
       VIRTUAL_PORT: ${API_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${API_VIRTUAL_PROTO}
+      APP_ENV: ${API_APP_ENV}
+      APP_DEBUG: ${API_APP_DEBUG}
+      BASSET_DEV_MODE: ${API_BASSET_DEV_MODE}
       APP_URL: ${API_APP_URL}
+      EMULATOR_API_TOKEN: ${API_EMULATOR_API_TOKEN}
+      EMULATOR_DOCKER_URL: ${API_EMULATOR_DOCKER_URL}
       DB_HOST: ${API_DB_HOST}
+      DB_DATABASE: ${API_DB_DATABASE}
+      DB_USERNAME: ${API_DB_USERNAME}
+      DB_PASSWORD: ${API_DB_PASSWORD}
+      REDIRECT_FRONTEND_URL: ${API_REDIRECT_FRONTEND_URL}
     depends_on:
       - db
       - proxy
@@ -48,7 +90,7 @@ services:
       - "80"
     labels:
       - "VIRTUAL_HOST=${API_VIRTUAL_HOST}"
-    command: php -S 0.0.0.0:80 -t public
+    command: sh -c "php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
         aliases:
@@ -57,15 +99,35 @@ services:
   web:
     build: ./web
     volumes:
+      # Volumen para el código de la aplicación (bind mount)
       - ./web:/var/www/html
+      # Volumen persistente para storage (gestionado por Docker)
+      - web_storage:/var/www/html/storage
+      # Volumen persistente para uploads (gestionado por Docker)
+      - web_uploads:/var/www/html/public/uploads
+      # Excepción para node_modules y vendor, para que use los de la imagen
+      - /var/www/html/node_modules
+      - /var/www/html/vendor
+      - /var/www/html/public/build
+      - ./web/dev-php.ini:/usr/local/etc/php/conf.d/dev-php.ini
     env_file:
       - ./web/.env
     environment:
       VIRTUAL_HOST: ${WEB_VIRTUAL_HOST}
       VIRTUAL_PORT: ${WEB_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${WEB_VIRTUAL_PROTO}
+      APP_ENV: ${WEB_APP_ENV}
+      APP_DEBUG: ${WEB_APP_DEBUG}
       APP_URL: ${WEB_APP_URL}
+      APP_FRONT_URL: ${WEB_APP_FRONT_URL}
+      L5_SWAGGER_CONST_HOST: ${WEB_L5_SWAGGER_CONST_HOST}
+      BASSET_DEV_MODE: ${WEB_BASSET_DEV_MODE}
+      FORCE_HTTPS: ${WEB_FORCE_HTTPS}
+      FORCE_WWW: ${WEB_FORCE_WWW}
       DB_HOST: ${WEB_DB_HOST}
+      DB_DATABASE: ${WEB_DB_DATABASE}
+      DB_USERNAME: ${WEB_DB_USERNAME}
+      DB_PASSWORD: ${WEB_DB_PASSWORD}
     depends_on:
       - db
       - proxy
@@ -75,7 +137,7 @@ services:
       - "80"
     labels:
       - "VIRTUAL_HOST=${WEB_VIRTUAL_HOST}"
-    command: php -S 0.0.0.0:80 -t public
+    command: sh -c "cron && php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
         aliases:
@@ -89,6 +151,7 @@ services:
     volumes:
       - ./server:/app           # Solo útil si usas nodemon y modo desarrollo
       - /app/node_modules       # Evita sobrescribir node_modules del contenedor
+      - ./docker/ssl:/etc/nginx/certs:ro
     env_file:
       - ./server/.env
     environment:
@@ -97,9 +160,16 @@ services:
       VIRTUAL_PORT: ${SERVER_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${SERVER_VIRTUAL_PROTO}
       DB_HOST: ${SERVER_DB_HOST}
+      APP_ENV: ${SERVER_APP_ENV}
       API_URL: ${SERVER_API_URL}
       CLIENT_URL: ${SERVER_CLIENT_URL}
       EMULATOR_URL: ${SERVER_EMULATOR_URL}
+      API_DOCKER_URL: ${SERVER_API_DOCKER_URL}
+      EMULATOR_API_TOKEN: ${SERVER_EMULATOR_API_TOKEN}
+      PORT: ${SERVER_PORT}
+      DB_USER: ${SERVER_DB_USER}
+      DB_PASSWORD: ${SERVER_DB_PASSWORD}
+      DB_DATABASE: ${SERVER_DB_DATABASE}
     depends_on:
       - db
       - api
@@ -117,21 +187,22 @@ services:
 
   client:
     build: ./client
+    mem_limit: 500m
+    cpus: '0.5'
     volumes:
       - ./client:/app
-      - /app/node_modules # To persist node_modules
+      - /app/node_modules
     env_file:
       - ./client/.env
     environment:
       VIRTUAL_HOST: ${CLIENT_VIRTUAL_HOST}
       VIRTUAL_PORT: ${CLIENT_VIRTUAL_PORT}
       VIRTUAL_PROTO: ${CLIENT_VIRTUAL_PROTO}
-      VITE_SERVER_URL: ${CLIENT_VITE_SERVER_URL}
     depends_on:
       - server
       - proxy
     expose:
-      - "5173"
+      - "80"
     labels:
       - "VIRTUAL_HOST=${CLIENT_VIRTUAL_HOST}"
     networks:
@@ -141,6 +212,10 @@ services:
 
 volumes:
   dbdata:
+  api_storage:
+  api_uploads:
+  web_storage:
+  web_uploads:
 
 networks:
   boombang:

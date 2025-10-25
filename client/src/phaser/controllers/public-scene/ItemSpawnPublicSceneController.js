@@ -1,3 +1,5 @@
+import DarkeningUtils from "@/utils/DarkeningUtils";
+import gameConfig from "@/config/gameConfig.js";
 
 class ItemSpawnPublicSceneController {
     static main(gameScene, data) {
@@ -5,23 +7,23 @@ class ItemSpawnPublicSceneController {
         const gridPosition = data.position;
 
         // Convertir coordenadas de grid a isométricas
-        const tileWidth = 65;
-        const tileHeight = 33;
-        const halfTileWidth = tileWidth / 2;
-        const halfTileHeight = tileHeight / 2;
-        const centerX = gameScene.scale.width / 2;
+        const tileWidth = 65 * gameConfig.DPI;
+        const tileHeight = 33 * gameConfig.DPI;
+        const halfTileWidth = tileWidth / gameConfig.DPI;
+        const halfTileHeight = tileHeight / gameConfig.DPI;
+        const centerX = gameScene.scale.width / gameConfig.DPI;
 
         const isoX = (gridPosition.x - gridPosition.y) * halfTileWidth + centerX;
         const isoY = (gridPosition.x + gridPosition.y) * halfTileHeight;
 
         // Cálculo de profundidad corregido (misma lógica que usuarios)
-        const depth = (gridPosition.y + gridPosition.x) * 17;
+        const depth = (gridPosition.y + gridPosition.x) * 17 * gameConfig.DPI;
 
         // Crear sprite con offset para centrar en el tile
         const itemSprite = gameScene.add.sprite(
             isoX,
-            isoY - 20,
-            itemConfig.file_name
+            isoY - 20 * gameConfig.DPI,
+            'item_' + itemConfig.file_name
         )
             .setDepth(depth) // Orden de renderizado consistente
             .setScale(1)
@@ -35,6 +37,8 @@ class ItemSpawnPublicSceneController {
             duration: 800,
             ease: 'Linear'
         });
+
+        // El oscurecimiento ahora es global por escena, no por sprite
 
         // Guardar referencia
         gameScene.activeItems.set(`${gridPosition.x},${gridPosition.y}`, {

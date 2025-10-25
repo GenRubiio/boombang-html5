@@ -1,0 +1,1 @@
+add_header Permissions-Policy "identity-credentials-get=(self \"https://play.boommania.com\")" always;

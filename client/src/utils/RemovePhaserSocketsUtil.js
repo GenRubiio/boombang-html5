@@ -6,15 +6,57 @@ class RemovePhaserSocketsUtil {
     static main(socket) {
         // Listas de exclusión
         const excludedResponseEvents = [
-            ResponseSocketsEnum.UPDATE_PUBLIC_AREAS,
-            ResponseSocketsEnum.JOIN_PUBLIC_AREA,
+            ResponseSocketsEnum.UPDATE_PUBLIC_SCENES,
+            ResponseSocketsEnum.UPDATE_GAME_SCENES,
+            ResponseSocketsEnum.JOIN_PUBLIC_SCENE,
             ResponseSocketsEnum.MINIGAME_JOIN,
-            ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION
+            ResponseSocketsEnum.MINIGAME_CALL_NOTIFICATION,
+            ResponseSocketsEnum.ISLAND_CREATE_ERROR,
+            ResponseSocketsEnum.JOIN_ISLAND,
+            ResponseSocketsEnum.GET_MY_ISLANDS,
+            ResponseSocketsEnum.PRIVATE_SCENE_CREATE_ERROR,
+            ResponseSocketsEnum.JOIN_PRIVATE_SCENE,
+            ResponseSocketsEnum.JOIN_PRIVATE_SCENE_ERROR,
+            ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS,
+            ResponseSocketsEnum.MINIGAME_SUBSCRIBE,
+            ResponseSocketsEnum.MINIGAME_SUBSCRIBE_STATUS,
+            ResponseSocketsEnum.REFRESH_USER_CREDITS,
+            ResponseSocketsEnum.USER_SEND_INTERACTION,
+            ResponseSocketsEnum.USER_RECEIVE_INTERACTION,
+            ResponseSocketsEnum.USER_ACCEPT_INTERACTION,
+            ResponseSocketsEnum.USER_REJECT_INTERACTION,
+            ResponseSocketsEnum.USER_CANCEL_INTERACTION,
+            ResponseSocketsEnum.USERS_INTERACTION,
+            ResponseSocketsEnum.GET_USER_AVATARS,
+            ResponseSocketsEnum.USER_CHANGE_AVATAR,
+            ResponseSocketsEnum.USER_CHANGE_AVATAR_POPUP
         ];
 
         const excludedRequestEvents = [
-            RequestSocketsEnum.GET_PUBLIC_AREAS,
-            RequestSocketsEnum.JOIN_PUBLIC_AREA
+            RequestSocketsEnum.GET_PUBLIC_SCENES,
+            RequestSocketsEnum.GET_GAME_SCENES,
+            RequestSocketsEnum.JOIN_PUBLIC_SCENE,
+            RequestSocketsEnum.MINIGAME_SUBSCRIBE,
+            RequestSocketsEnum.ISLAND_CREATE,
+            RequestSocketsEnum.JOIN_ISLAND,
+            RequestSocketsEnum.GET_MY_ISLANDS,
+            RequestSocketsEnum.PRIVATE_SCENE_CREATE,
+            RequestSocketsEnum.JOIN_PRIVATE_SCENE,
+            RequestSocketsEnum.GET_PUBLIC_ISLANDS,
+            RequestSocketsEnum.GET_MINIGAME_SUBSCRIBE_STATUS,
+            RequestSocketsEnum.USER_UPDATE_DESCRIPTION,
+            RequestSocketsEnum.USER_CATCH_ITEM,
+            RequestSocketsEnum.USER_CHANGE_FICHA,
+            RequestSocketsEnum.USER_CHANGE_CHAT,
+            RequestSocketsEnum.USER_CHANGE_NAME_COLOR,
+            RequestSocketsEnum.USER_CHANGE_SHADOW_COLOR,
+            RequestSocketsEnum.REFRESH_USER_CREDITS,
+            RequestSocketsEnum.USER_SEND_INTERACTION,
+            RequestSocketsEnum.USER_ACCEPT_INTERACTION,
+            RequestSocketsEnum.USER_REJECT_INTERACTION,
+            RequestSocketsEnum.USER_CANCEL_INTERACTION,
+            RequestSocketsEnum.GET_USER_AVATARS,
+            RequestSocketsEnum.USER_CHANGE_AVATAR
         ];
 
         // Remover solo eventos que no están en las listas de exclusión

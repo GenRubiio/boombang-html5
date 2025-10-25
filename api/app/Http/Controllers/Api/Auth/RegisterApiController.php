@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Auth;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
@@ -19,20 +21,30 @@ class RegisterApiController extends Controller
 
     public function register(RegisterApiRegisterRequest $request): JsonResource
     {
+        DB::beginTransaction();
         try {
-            $user = User::create([
+            User::create([
                 'name' => $request->username,
                 'username' => $request->username,
+                'description' => 'BoomMania 😍',
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'avatar' => $request->avatar_id,
+                'lang' => $request->lang,
             ]);
+
+            $user = User::where('email', $request->email)->first();
             $tokenResult = $user->createToken('Personal Access Token');
+            DB::commit();
             return $this->successResponse([
                 'user' => (new UserResource($user))->toDTO(),
                 'token' => $tokenResult->accessToken,
             ]);
         } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Registration error: ' . $e->getMessage(), [
+                'request' => $request->all(),
+            ]);
             return $this->handleException($e);
         }
     }

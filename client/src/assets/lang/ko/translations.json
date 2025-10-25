@@ -1,0 +1,425 @@
+{
+  "auth": {
+    "rasta_alt": "라스타",
+    "lilian_alt": "릴리안"
+  },
+  "login": {
+    "title": "로그인",
+    "username": "사용자 이름",
+    "password": "비밀번호",
+    "button": "입장",
+    "register": "가입하기",
+    "already_have_account": "계정이 이미 있으신가요?",
+    "character_name": "캐릭터 이름",
+    "username_placeholder": "이름",
+    "password_placeholder": "비밀번호",
+    "forgot_password": "비밀번호를 잊으셨나요?",
+    "separator": "또는",
+    "google_login": "Google로 계속하기",
+    "play_button": "플레이",
+    "warning_alt": "경고",
+    "play_alt": "플레이",
+    "google_alt": "구글"
+  },
+  "common": {
+    "close": "X",
+    "delete": "삭제",
+    "previous": "이전",
+    "next": "다음",
+    "accept": "수락"
+  },
+  "scene": {
+    "tooltip_shop": "상점",
+    "tooltip_avatars": "아바타",
+    "tooltip_color": "색상",
+    "tooltip_move": "이동",
+    "tooltip_inventory": "인벤토리"
+  },
+  "maintenance": {
+    "title": "점검",
+    "description": "서버가 점검 중입니다.\n나중에 다시 시도해주세요.",
+    "alt": "점검"
+  },
+  "avatar_select": {
+    "title": "캐릭터",
+    "label": "캐릭터를 선택하세요",
+    "gallery_title": "캐릭터 갤러리"
+  },
+  "register": {
+    "title": "계정 만들기",
+    "character_name": "캐릭터 이름",
+    "username_placeholder": "이름",
+    "password": "비밀번호",
+    "password_placeholder": "비밀번호",
+    "email": "이메일",
+    "email_placeholder": "이메일",
+    "terms_agree": "동의합니다",
+    "terms_and_conditions": "이용약관",
+    "play_button": "플레이",
+    "captcha_required": "reCAPTCHA를 완료해주세요.",
+    "captcha_expired": "reCAPTCHA가 만료되었습니다. 다시 시도해주세요.",
+    "captcha_error": "reCAPTCHA 로드/확인 중 오류가 발생했습니다. 다시 시도해주세요.",
+    "captcha_load_error": "reCAPTCHA를 로드할 수 없습니다.",
+    "warning_alt": "경고",
+    "play_alt": "플레이",
+    "language": "언어"
+  },
+  "auth_screen": {
+    "register_title": "계정 만들기",
+    "register_text": "가입하고 캐릭터를 선택하세요",
+    "login_title": "로그인",
+    "login_text": "계정으로 로그인"
+  },
+  "island_create": {
+    "choose_background": "배경 선택",
+    "island_name_placeholder": "섬 이름",
+    "set_island_name": "섬 이름 지정"
+  },
+  "scene_create": {
+    "choose_scene": "장면 선택",
+    "scene_name_placeholder": "방 이름",
+    "set_scene_name": "방 이름 지정",
+    "error_no_scenes": "섬을 찾을 수 없거나 장면이 없습니다."
+  },
+  "island": {
+    "locations": "위치",
+    "add_scenario": "시나리오 추가"
+  },
+  "user_card": {
+    "change_ficha_alt": "카드 변경",
+    "edit_button": "편집",
+    "avatar_alt": "사용자 아바타",
+    "tabs": {
+      "emojis": "이모지",
+      "statistics": "통계",
+      "interactions": "상호작용"
+    },
+    "emojis": {
+      "laughter_1": "웃음 1",
+      "laughter_2": "웃음 2",
+      "laughter_3": "웃음 3",
+      "love": "사랑",
+      "sad": "슬픔",
+      "angry": "화남",
+      "wink": "윙크",
+      "kiss": "키스",
+      "surprise": "놀람",
+      "sleep": "잠",
+      "cool": "멋짐",
+      "confused": "혼란",
+      "cry": "울음",
+      "spit": "침 뱉기",
+      "fart": "방귀",
+      "provoke": "도발",
+      "fly": "날기"
+    },
+    "interactions": {
+      "kick": "발차기",
+      "bomb": "폭탄",
+      "spit": "침",
+      "tomato": "토마토",
+      "poop": "똥",
+      "flower": "꽃",
+      "heart": "하트",
+      "kiss": "키스",
+      "gift": "선물",
+      "question": "질문",
+      "exclamation": "느낌표",
+      "net": "그물",
+      "drink": "마시기",
+      "rose": "장미",
+      "upper": "어퍼컷",
+      "coco": "코코넛",
+      "upper_item": "어퍼컷 아이템",
+      "coco_item": "코코넛 아이템",
+      "waiting_response": "응답 대기 중",
+      "cancel": "취소"
+    },
+    "statistics": {
+      "title": "상호작용 통계",
+      "sent": "보냄",
+      "received": "받음",
+      "kicks_sent": "보낸 발차기",
+      "kicks_received": "받은 발차기",
+      "bombs_sent": "보낸 폭탄",
+      "bombs_received": "받은 폭탄",
+      "spits_sent": "보낸 침",
+      "spits_received": "받은 침",
+      "tomatoes_sent": "보낸 토마토",
+      "tomatoes_received": "받은 토마토",
+      "poops_sent": "보낸 똥",
+      "poops_received": "받은 똥",
+      "flowers_sent": "보낸 꽃",
+      "flowers_received": "받은 꽃",
+      "kisses_sent": "보낸 키스",
+      "kisses_received": "받은 키스",
+      "hearts_sent": "보낸 하트",
+      "hearts_received": "받은 하트",
+      "gifts_sent": "보낸 선물",
+      "gifts_received": "받은 선물",
+      "questions_sent": "보낸 질문",
+      "questions_received": "받은 질문",
+      "exclamations_sent": "보낸 느낌표",
+      "exclamations_received": "받은 느낌표",
+      "nets_sent": "보낸 그물",
+      "nets_received": "받은 그물",
+      "rings": {
+        "title": "링",
+        "red": "빨간 장갑",
+        "white": "하얀 장갑",
+        "pink": "분홍 장갑",
+        "purple": "보라 장갑",
+        "orange": "주황 장갑",
+        "brown": "갈색 장갑",
+        "green": "초록 장갑",
+        "black": "검은 장갑",
+        "blue": "파란 장갑",
+        "gold": "황금 장갑",
+        "won": "승리"
+      },
+      "uppercuts": {
+        "title": "어퍼컷"
+      },
+      "coconuts": {
+        "title": "코코넛"
+      },
+      "coconuts_locos": {
+        "title": "미친 코코넛",
+        "caught": "잡음"
+      }
+    }
+  },
+  "ring_npc": {
+    "title": "링의 현자",
+    "description": "모든 장갑을 모아 당신의 힘을 증명하세요!",
+    "victories": "{count} 승리",
+    "gloves": {
+      "bronze": "청동 장갑",
+      "silver": "은 장갑",
+      "gold": "황금 장갑",
+      "diamond": "다이아몬드 장갑",
+      "special": "특별한 장갑"
+    }
+  },
+  "chat": {
+    "base_alt": "채팅 베이스",
+    "placeholder": "메시지를 입력하세요...",
+    "brujula_alt": "로비로 나가기",
+    "public": "공개"
+  },
+  "customization": {
+    "tabs": {
+      "ficha": "카드",
+      "chat": "채팅",
+      "nombre": "이름",
+      "sombra": "그림자"
+    },
+    "title": "{tab} 사용자 정의"
+  },
+  "npc": {
+    "ring": {
+      "welcome": "링에 오신 것을 환영합니다",
+      "description": "구독하여 다른 사용자와 경쟁하고 보상을 받으세요!",
+      "searching": "상대 찾는 중...",
+      "cancel": "검색 취소",
+      "subscribe": "상대 찾기",
+      "unlock_gloves": "승리하여 장갑을 잠금 해제하세요",
+      "weekly_trophies": "주간 트로피",
+      "trophies_alt": "링 트로피",
+      "gloves": {
+        "red": "{victories} 승리",
+        "white": "{victories} 승리",
+        "pink": "{victories} 승리",
+        "purple": "{victories} 승리",
+        "orange": "{victories} 승리",
+        "brown": "{victories} 승리",
+        "green": "{victories} 승리",
+        "black": "{victories} 승리",
+        "blue": "{victories} 승리",
+        "gold": "{victories} 승리",
+        "alt": {
+          "red": "빨간 장갑",
+          "white": "하얀 장갑",
+          "pink": "분홍 장갑",
+          "purple": "보라 장갑",
+          "orange": "주황 장갑",
+          "brown": "갈색 장갑",
+          "green": "초록 장갑",
+          "black": "검은 장갑",
+          "blue": "파란 장갑",
+          "gold": "황금 장갑"
+        }
+      }
+    }
+  },
+  "scenes": {
+    "ring_info": {
+      "title": "링 정보",
+      "victories": "{count} 승리",
+      "red": "빨간 장갑",
+      "white": "하얀 장갑",
+      "pink": "분홍 장갑",
+      "purple": "보라 장갑",
+      "orange": "주황 장갑",
+      "brown": "갈색 장갑",
+      "green": "초록 장갑",
+      "black": "검은 장갑",
+      "blue": "파란 장갑",
+      "gold": "황금 장갑",
+      "red_glove_alt": "빨간 장갑",
+      "white_glove_alt": "하얀 장갑",
+      "pink_glove_alt": "분홍 장갑",
+      "purple_glove_alt": "보라 장갑",
+      "orange_glove_alt": "주황 장갑",
+      "brown_glove_alt": "갈색 장갑",
+      "green_glove_alt": "초록 장갑",
+      "black_glove_alt": "검은 장갑",
+      "blue_glove_alt": "파란 장갑",
+      "gold_glove_alt": "황금 장갑"
+    },
+    "coconuts_info": {
+      "title": "코코넛 정보",
+      "coco_cost": "{count} 코코넛",
+      "coco_alt": "코코넛",
+      "coco_name": "코코넛",
+      "honeycomb_alt": "벌집",
+      "honeycomb_name": "벌집",
+      "snowball_alt": "눈덩이",
+      "snowball_name": "눈덩이",
+      "garbage_alt": "쓰레기",
+      "garbage_name": "쓰레기",
+      "shoe_alt": "신발",
+      "shoe_name": "신발",
+      "watermelon_alt": "수박",
+      "watermelon_name": "수박",
+      "pie_alt": "파이",
+      "pie_name": "파이",
+      "anvil_alt": "모루",
+      "anvil_name": "모루",
+      "pot_alt": "화분",
+      "pot_name": "화분",
+      "piano_alt": "피아노",
+      "piano_name": "피아노"
+    }
+  },
+  "gacha": {
+    "help": {
+      "main_title": "가챠폰 도움말",
+      "items_title": "사용 가능한 상품",
+      "rarity": "희귀도",
+      "appearance": "등장 확률",
+      "decorations_title": "장식 상품",
+      "compensation": "보상",
+      "comp_silver": "은화 {amount}개",
+      "comp_gold": "금화 {amount}개"
+    },
+    "result": {
+      "title": "상품을 획득했습니다!",
+      "confirm": "확인"
+    },
+    "error": {
+      "title": "오류",
+      "close": "닫기",
+      "default_message": "예상치 못한 오류가 발생했습니다."
+    },
+    "alert": {
+      "title": "플레이하시겠습니까?",
+      "text": "비용은 100크레딧입니다. 계속하시겠습니까?",
+      "confirm": "확인",
+      "cancel": "취소"
+    }
+  },
+  "lobby": {
+    "golden_coins_alt": "금화",
+    "silver_coins_alt": "은화",
+    "islands": {
+      "public_alt": "공개 섬",
+      "public": "공개",
+      "favorites_alt": "즐겨찾는 섬",
+      "favorites": "즐겨찾기",
+      "my_islands_alt": "내 섬",
+      "my_islands": "내 섬",
+      "create_island": "섬 만들기",
+      "create_island_alt": "새 섬 만들기"
+    },
+    "no_favorite_islands": "즐겨찾는 섬이 없습니다.",
+    "gacha": {
+      "machine_alt": "가챠폰 기계",
+      "handle_alt": "가챠폰 손잡이",
+      "title_default": "가챠폰",
+      "price_default": "가격",
+      "title": "가챠폰",
+      "price": "100 크레딧"
+    },
+    "tabs": {
+      "areas": "지역",
+      "games": "게임",
+      "islands": "섬"
+    },
+    "my_islands": {
+      "no_islands": "생성된 섬이 없습니다."
+    },
+    "search": {
+      "not_implemented": "검색 기능이 아직 구현되지 않았습니다."
+    },
+    "ui": {
+      "background_alt": "로비 배경",
+      "flor_alt": "장식용 식물",
+      "foreground_alt": "로비 전경",
+      "marikita_alt": "장식용 무당벌레",
+      "avatar_alt": "사용자 아바타",
+      "logout_alt": "로그아웃",
+      "logout": "나가기",
+      "gachapon": "가챠폰",
+      "credits": "크레딧",
+      "avatar_error": "사용자 아바타를 불러오는 중 오류 발생",
+      "settings": "설정",
+      "settings_alt": "구성"
+    }
+  },
+  "settings": {
+    "main_title": "설정",
+    "save": "저장",
+    "tabs": {
+      "profile": "프로필",
+      "graphics": "그래픽",
+      "sounds": "사운드"
+    },
+    "profile": {
+      "username": "사용자 이름",
+      "username_placeholder": "사용자 이름을 입력하세요",
+      "username_desc": "30일마다 한 번씩 사용자 이름을 변경할 수 있습니다.",
+      "language": "언어",
+      "language_desc": "선호하는 언어를 선택하세요."
+    },
+    "graphics": {
+      "render_type": "렌더링 유형",
+      "render_type_desc": "렌더링 엔진 선택: WEBGL (더 빠름, 고급 효과) 또는 CANVAS (호환성). AUTO는 WebGL을 시도하고 실패하면 Canvas로 대체합니다.",
+      "antialias": "안티앨리어싱",
+      "antialias_desc": "크기 조정/회전 시 텍스처를 부드럽게 합니다. false는 날카로운 픽셀을 남깁니다.",
+      "antialias_gl": "안티앨리어싱 GL",
+      "antialias_gl_desc": "WebGL 생성 시 MSAA(캔버스 가장자리 스무딩)를 활성화합니다. 텍스처는 변경되지 않습니다. ⚠️ 이 설정을 변경하려면 게임을 다시 시작해야 합니다.",
+      "pixel_art": "픽셀 아트",
+      "pixel_art_desc": "안티앨리어싱=false 및 roundPixels=true를 활성화하는 '프리셋'. 모든 것이 더 선명하게 보입니다.",
+      "round_pixels": "픽셀 반올림",
+      "round_pixels_desc": "위치를 가장 가까운 픽셀로 반올림합니다(스프라이트 흐림 방지).",
+      "power_preference": "전원 기본 설정",
+      "power_preference_desc": "사용할 GPU를 브라우저에 제안합니다: high-performance → 전용 GPU 강제 사용(소비 전력 증가). low-power → 배터리 절약."
+    },
+    "sounds": {
+      "scene_sound": "씬 사운드 비활성화",
+      "scene_sound_desc": "현재 씬의 배경 음악을 활성화하거나 비활성화합니다.",
+      "scene_volume": "씬 볼륨",
+      "scene_volume_desc": "씬 배경 음악의 볼륨 레벨을 조정합니다."
+    },
+    "confirm": {
+      "title": "변경 확인",
+      "message": "이 변경 사항을 적용하면 게임이 다시 시작됩니다. 계속하시겠습니까?",
+      "ok": "확인",
+      "cancel": "취소"
+    }
+  },
+  "loading": {
+    "title": "로딩 중..."
+  }
+}

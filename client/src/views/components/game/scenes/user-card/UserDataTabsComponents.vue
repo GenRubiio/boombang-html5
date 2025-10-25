@@ -8,6 +8,7 @@
       >
         <img
           :src="asset_emojis_tab_icon_image"
+          :alt="$t('user_card.tabs.emojis')"
           class="tab-icon"
           :class="{ active: activeTab === 'emojis' }"
         />
@@ -19,18 +20,24 @@
       >
         <img
           :src="asset_statistics_tab_icon_image"
+          :alt="$t('user_card.tabs.statistics')"
           class="tab-icon"
           :class="{ active: activeTab === 'statistics' }"
         />
       </div>
     </div>
-    <component :is="activeTabComponent" :selectedUser="selectedUser" />
+    <component
+      :is="activeTabComponent"
+      :selectedUser="selectedUser"
+      @open-ring-info="$emit('open-ring-info')"
+      @open-coconuts-info="$emit('open-coconuts-info')"
+    />
   </div>
 </template>
 
 <script>
-import asset_emojis_tab_icon_image from "../../../../../assets/game/ficha/tab-cons/user.svg";
-import asset_statistics_tab_icon_image from "../../../../../assets/game/ficha/tab-cons/statistics.svg";
+import asset_emojis_tab_icon_image from "@/assets/game/ficha/tab-cons/user.svg";
+import asset_statistics_tab_icon_image from "@/assets/game/ficha/tab-cons/statistics.svg";
 import EmojisTabComponent from "./tabs/EmojisTabComponent.vue";
 import StatisticsTabComponent from "./tabs/StatisticsTabComponent.vue";
 
@@ -55,13 +62,7 @@ export default {
         : StatisticsTabComponent;
     },
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
-      }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return "user";
+      return this.selectedUser.ficha_color;
     },
   },
   components: {
@@ -78,6 +79,9 @@ export default {
   height: 21px;
   display: flex;
   gap: 3px;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .tabs-container__emojis {
@@ -119,6 +123,8 @@ export default {
     contrast(100%);
 }
 
+/********************************************************************* */
+
 .tabs-container.user .tabs-container__emojis,
 .tabs-container.user .tabs-container__statistics {
   background-color: #005ea3;
@@ -137,5 +143,10 @@ export default {
 .tabs-container__emojis.active,
 .tabs-container__statistics.active {
   background-color: white !important;
+}
+
+.tabs-container.beta .tabs-container__emojis,
+.tabs-container.beta .tabs-container__statistics {
+  background-color: #01a7a7;
 }
 </style>

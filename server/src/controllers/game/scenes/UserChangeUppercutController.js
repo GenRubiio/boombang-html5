@@ -9,6 +9,9 @@ class UserChangeUppercutController {
             if (!user || !user.currentArea) {
                 throw new Error('User not found or not in any area');
             }
+            if (data.uppercut > user.uppercutLevel || data.uppercut < 0) {
+                throw new Error('Invalid uppercut selection');
+            }
             user.uppercutSelected = data.uppercut;
         } catch (err) {
             console.log(err);

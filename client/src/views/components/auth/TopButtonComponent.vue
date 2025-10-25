@@ -3,12 +3,12 @@
     <img
       class="button-top__container-img-left"
       :src="asset_rasta_top_button_image"
-      alt="Rasta"
+      :alt="$t('auth.rasta_alt')"
     />
     <img
       class="button-top__container-img-right"
       :src="asset_lilian_top_button_image"
-      alt="Lilian"
+      :alt="$t('auth.lilian_alt')"
     />
     <div class="button-top__container-title">{{ title }}</div>
     <div class="button-top__container-text">{{ text }}</div>
@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import asset_lilian_top_button_image from "../../../assets/game/auth/lilian-top-button.webp";
-import asset_rasta_top_button_image from "../../../assets/game/auth/rasta-top-button.webp";
+import asset_lilian_top_button_image from "@/assets/game/auth/lilian-top-button.webp";
+import asset_rasta_top_button_image from "@/assets/game/auth/rasta-top-button.webp";
 
 export default {
   props: {

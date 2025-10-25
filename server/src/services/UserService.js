@@ -88,12 +88,12 @@ class UserService {
         }
     }
 
-    static async increaseCoconutsSend(user) {
-        user.coconutsSend += 1;
+    static async increaseCoconutsSent(user) {
+        user.coconutsSent += 1;
         try {
             await UserApiService.increaseStats(user, 'coconuts_sent');
         } catch (error) {
-            console.error('Error increasing coconut send:', error);
+            console.error('Error increasing coconut sent:', error);
         }
     }
 
@@ -103,6 +103,69 @@ class UserService {
             await UserApiService.increaseStats(user, 'coconuts_received');
         } catch (error) {
             console.error('Error increasing coconut received:', error);
+        }
+    }
+
+    static async increaseRingsWon(user) {
+        user.ringsWon += 1;
+        try {
+            await UserApiService.increaseStats(user, 'rings_won');
+        } catch (error) {
+            console.error('Error increasing rings won:', error);
+        }
+    }
+
+    static async updateDescription(user, newDescription) {
+        user.description = newDescription;
+        try {
+            await UserApiService.updateDescription(user, newDescription);
+        } catch (error) {
+            console.error('Error updating user description:', error);
+        }
+    }
+
+    static async changeFicha(user, newFicha) {
+        user.ficha_color = newFicha;
+        try {
+            await UserApiService.changeFicha(user, newFicha);
+        } catch (error) {
+            console.error('Error updating user ficha color:', error);
+        }
+    }
+
+    static async changeChat(user, newChat) {
+        user.chat_color = newChat;
+        try {
+            await UserApiService.changeChat(user, newChat);
+        } catch (error) {
+            console.error('Error updating user chat:', error);
+        }
+    }
+
+    static async changeNameColor(user, newNameColor) {
+        user.name_color = newNameColor;
+        try {
+            await UserApiService.changeNameColor(user, newNameColor);
+        } catch (error) {
+            console.error('Error updating user name color:', error);
+        }
+    }
+
+    static async changeShadowColor(user, newShadowColor) {
+        user.shadow_color = newShadowColor;
+        try {
+            await UserApiService.changeShadowColor(user, newShadowColor);
+        } catch (error) {
+            console.error('Error updating user shadow color:', error);
+        }
+    }
+
+    static async changeAvatar(user, newAvatarId) {
+        user.avatarId = newAvatarId;
+        try {
+            await UserApiService.changeAvatar(user, newAvatarId);
+        } catch (error) {
+            console.error('Error updating user avatar:', error);
         }
     }
 }

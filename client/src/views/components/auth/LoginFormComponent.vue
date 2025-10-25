@@ -1,79 +1,87 @@
 <template>
   <form class="login-form" @submit.prevent="login">
-    <div class="login-form__error" v-if="showUsernameError">
-      <img :src="asset_warning_image" alt="warning" /> {{ usernameError }}
-    </div>
     <div class="login-form__content">
-      <div class="login-form__title">Ya tienes cuenta?</div>
+      <div class="login-form__title">
+        {{ $t("login.already_have_account") }}
+      </div>
       <div class="login-form__input-container">
         <div class="login-form__error" v-if="showUsernameError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('login.warning_alt')" />
           {{ usernameError }}
         </div>
-        <div class="login-form__label">Nombre del Personaje</div>
-        <div class="login-form__input">
+        <div class="login-form__label">{{ $t("login.character_name") }}</div>
+        <div class="login-form__input" @dragover.prevent @drop.prevent>
           <input
             v-model="username"
             ref="username"
             type="text"
-            placeholder="Nombre"
+            :placeholder="$t('login.username_placeholder')"
             required
+            :disabled="loading"
           />
         </div>
       </div>
-      <div class="login-form__label">Contraseña</div>
-      <div class="login-form__input">
+      <div class="login-form__label">{{ $t("login.password") }}</div>
+      <div class="login-form__input" @dragover.prevent @drop.prevent>
         <input
           v-model="password"
           type="password"
-          placeholder="Contraseña"
+          :placeholder="$t('login.password_placeholder')"
           required
+          :disabled="loading"
         />
       </div>
       <div class="login-form__link">
-        <div>Has olvidado tu contraseña?</div>
+        <div>{{ $t("login.forgot_password") }}</div>
       </div>
       <div class="login-form__google">
-        <div class="login-form__google-separator">O</div>
-        <div class="login-form__google-button">
-          <img :src="asset_google_image" alt="Google" /> Continuar con Google
+        <div class="login-form__google-separator">
+          {{ $t("login.separator") }}
         </div>
+        <GoogleLoginComponent @token-received="handleTokenReceived" />
       </div>
     </div>
     <div class="login-form__button-container">
-      <img :src="asset_button_image" alt="Jugar" />
+      <img :src="asset_button_image" :alt="$t('login.play_alt')" />
       <button
         class="login-form__button-container-button"
         type="submit"
         :class="{ 'disabled-button': loading || !isSocketConnected }"
       >
-        Jugar
+        {{ $t("login.play_button") }}
       </button>
     </div>
   </form>
 </template>
 
 <script>
-import socket from "../../../sockets/socket";
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_button_image from "../../../assets/game/auth/login-button-image.webp";
-import asset_google_image from "../../../assets/game/auth/google.webp";
-import asset_warning_image from "../../../assets/game/auth/warning.webp";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import asset_button_image from "@/assets/game/auth/login-button-image.webp";
+import asset_warning_image from "@/assets/game/auth/warning.webp";
+import { useLanguageStore } from "@/stores/languageStore";
+import GoogleLoginComponent from "./GoogleLoginComponent.vue";
 
 export default {
   data() {
     return {
-      username: "Gen",
-      password: "test",
+      username: "",
+      password: "",
       usernameError: "",
       showUsernameError: false,
       loading: false,
       isSocketConnected: socket.connected,
       asset_button_image,
-      asset_google_image,
       asset_warning_image,
     };
+  },
+  components: {
+    GoogleLoginComponent,
+  },
+  setup() {
+    const languageStore = useLanguageStore();
+    return { languageStore };
   },
   methods: {
     login() {
@@ -81,24 +89,9 @@ export default {
       this.resetErrors();
       this.loading = true;
 
-      this.$socket.emit(RequestSocketsEnum.LOGIN, {
+      socket.emit(RequestSocketsEnum.LOGIN, {
         username: this.username,
         password: this.password,
-      });
-
-      this.$socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
-      this.$socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, (data) => {
-        //alert(`Bienvenido, ${data.user.username}`);
-        this.$socket.user = data.user;
-        this.$emit("loginSuccess");
-      });
-
-      this.$socket.off(ResponseSocketsEnum.LOGIN_ERROR);
-      this.$socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
-        if (error.errors) {
-          this.setErrors(error.errors);
-        }
-        this.loading = false;
       });
     },
     resetErrors() {
@@ -111,9 +104,48 @@ export default {
         this.usernameError = errors.email[0];
       }
     },
+    handleTokenReceived(idToken) {
+      socket.emit(RequestSocketsEnum.LOGIN_OAUTH, { authToken: idToken });
+    },
   },
   mounted() {
     this.$refs.username.focus();
+    const token = localStorage.getItem("app_jwt");
+    if (token) {
+      this.loading = true;
+      socket.emit(RequestSocketsEnum.JWT_AUTO_LOGIN, { authJwt: token });
+    }
+
+    socket.off(ResponseSocketsEnum.LOGIN_SUCCESS);
+    socket.on(ResponseSocketsEnum.LOGIN_SUCCESS, async (data) => {
+      if (data.user && data.user.lang) {
+        await this.languageStore.setLocale(data.user.lang);
+      }
+      if (data.user?.authJwt) {
+        localStorage.setItem("app_jwt", data.user.authJwt);
+      }
+      socket.user = data.user;
+      this.$emit("loginSuccess");
+    });
+
+    socket.off(ResponseSocketsEnum.LOGIN_ERROR);
+    socket.on(ResponseSocketsEnum.LOGIN_ERROR, (error) => {
+      console.error("Login error:", error);
+      if (error.errors) {
+        this.setErrors(error.errors);
+      } else if (error.message) {
+        this.showUsernameError = true;
+        this.usernameError = error.message;
+      }
+      this.loading = false;
+    });
+
+    socket.off(ResponseSocketsEnum.JWT_AUTO_LOGIN_INVALID);
+    socket.on(ResponseSocketsEnum.JWT_AUTO_LOGIN_INVALID, () => {
+      localStorage.removeItem("app_jwt");
+      this.loading = false;
+      window.location.reload(true);
+    });
 
     socket.on("connect", () => {
       this.isSocketConnected = true;
@@ -121,6 +153,8 @@ export default {
     socket.on("disconnect", () => {
       this.isSocketConnected = false;
     });
+
+    //this.autoLoginIfPossible();
   },
 };
 </script>
@@ -171,7 +205,6 @@ export default {
   top: 20px;
 }
 
-
 .login-form__error::after {
   content: "";
   position: absolute;
@@ -209,6 +242,7 @@ export default {
 }
 
 .login-form__button-container-button {
+  min-width: 112px;
   font-size: 26px;
   display: inline-block;
   padding: 10px 20px;
@@ -254,25 +288,6 @@ export default {
   z-index: 1;
 }
 
-.login-form__google-button {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  background-color: #003d6c;
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  transition: background-color 0.3s;
-}
-
-.login-form__google-button:hover {
-  background-color: #0d97f1;
-}
-
 .login-form__google-separator {
   display: flex;
   width: 100%;
@@ -308,5 +323,4 @@ export default {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
 </style>

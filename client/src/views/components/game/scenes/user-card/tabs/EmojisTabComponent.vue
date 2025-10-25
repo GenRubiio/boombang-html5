@@ -3,49 +3,49 @@
     <div>
       <img
         :src="asset_laughter_1_image"
-        alt="Laughter 1"
+        :alt="$t('user_card.emojis.laughter_1')"
         @click="sendEmoji(1)"
       />
     </div>
     <div>
       <img
         :src="asset_laughter_2_image"
-        alt="Laughter 2"
+        :alt="$t('user_card.emojis.laughter_2')"
         @click="sendEmoji(2)"
       />
     </div>
     <div>
-      <img :src="asset_cry_image" alt="Cry" @click="sendEmoji(3)" />
+      <img :src="asset_cry_image" :alt="$t('user_card.emojis.cry')" @click="sendEmoji(3)" />
     </div>
     <div>
-      <img :src="asset_love_image" alt="Love" @click="sendEmoji(4)" />
+      <img :src="asset_love_image" :alt="$t('user_card.emojis.love')" @click="sendEmoji(4)" />
     </div>
     <div>
-      <img :src="asset_spit_image" alt="Spit" @click="sendEmoji(5)" />
+      <img :src="asset_spit_image" :alt="$t('user_card.emojis.spit')" @click="sendEmoji(5)" />
     </div>
     <div>
-      <img :src="asset_fart_image" alt="Fart" @click="sendEmoji(6)" />
+      <img :src="asset_fart_image" :alt="$t('user_card.emojis.fart')" @click="sendEmoji(6)" />
     </div>
     <div>
-      <img :src="asset_provoke_image" alt="Provoke" @click="sendEmoji(7)" />
+      <img :src="asset_provoke_image" :alt="$t('user_card.emojis.provoke')" @click="sendEmoji(7)" />
     </div>
     <div>
-      <img :src="asset_fly_image" alt="Fly" @click="sendEmoji(8)" />
+      <img :src="asset_fly_image" :alt="$t('user_card.emojis.fly')" @click="sendEmoji(8)" />
     </div>
   </div>
 </template>
 
 <script>
-import socket from "../../../../../../sockets/socket";
-import RequestSocketsEnum from "../../../../../../enums/RequestSocketsEnum";
-import asset_laughter_1_image from "../../../../../../assets/game/ficha/emojis/laughter_1.png";
-import asset_laughter_2_image from "../../../../../../assets/game/ficha/emojis/laughter_2.png";
-import asset_cry_image from "../../../../../../assets/game/ficha/emojis/cry.png";
-import asset_love_image from "../../../../../../assets/game/ficha/emojis/love.png";
-import asset_spit_image from "../../../../../../assets/game/ficha/emojis/spit.png";
-import asset_fart_image from "../../../../../../assets/game/ficha/emojis/fart.png";
-import asset_provoke_image from "../../../../../../assets/game/ficha/emojis/provoke.png";
-import asset_fly_image from "../../../../../../assets/game/ficha/emojis/fly.png";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import asset_laughter_1_image from "@/assets/game/ficha/emojis/laughter_1.webp";
+import asset_laughter_2_image from "@/assets/game/ficha/emojis/laughter_2.webp";
+import asset_cry_image from "@/assets/game/ficha/emojis/cry.webp";
+import asset_love_image from "@/assets/game/ficha/emojis/love.webp";
+import asset_spit_image from "@/assets/game/ficha/emojis/spit.webp";
+import asset_fart_image from "@/assets/game/ficha/emojis/fart.webp";
+import asset_provoke_image from "@/assets/game/ficha/emojis/provoke.webp";
+import asset_fly_image from "@/assets/game/ficha/emojis/fly.webp";
 
 export default {
   props: {
@@ -75,13 +75,10 @@ export default {
   },
   computed: {
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
+      if (this.selectedUser.ficha_color == "user") {
+        return this.selectedUser.is_selected ? "selected" : "user";
       }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return this.selectedUser.is_selected ? "selected" : "user";
+      return this.selectedUser.ficha_color;
     },
   },
 };
@@ -99,7 +96,7 @@ export default {
   box-sizing: border-box;
   height: 90px;
   position: relative;
-  z-index: 0;
+  z-index: 1;
 }
 
 .container div {

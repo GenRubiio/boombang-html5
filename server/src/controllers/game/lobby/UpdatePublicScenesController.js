@@ -7,7 +7,7 @@ const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCol
 class UpdatePublicScenesController {
     static async main() {
         try {
-            const scenes = await PublicScenesCollection.getAll();
+            const scenes = await PublicScenesCollection.getAllParentIdNull();
             const publicSceneMenuResource = PublicSceneMenuResource.collection(scenes);
             const useNotInArea = ConnectedUsersCollection.getAllNotInArea();
             for (let user of useNotInArea) {

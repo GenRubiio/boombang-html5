@@ -20,9 +20,15 @@ class UserResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        return [
+        $return = [
             'id' => (int)$this->id,
             'username' => $this->username,
+            'lang' => $this->lang,
+            'description' => $this->description,
+            'ficha_color' => $this->ficha_color,
+            'shadow_color' => $this->shadow_color,
+            'chat_color' => $this->chat_color,
+            'name_color' => $this->name_color,
             'email' => $this->email,
             'avatar_id' => $this->avatar,
             'gold_coins' => (int)$this->gold_coins,
@@ -33,6 +39,33 @@ class UserResource extends JsonResource
             'uppercuts_received' => (int)$this->uppercuts_received,
             'coconuts_sent' => (int)$this->coconuts_sent,
             'coconuts_received' => (int)$this->coconuts_received,
+
+            /**
+             * Bot settings
+             */
+            'is_bot' => (bool)$this->is_bot,
+            'bot_settings' => $this->bot_settings,
+
+            'last_update_username_at' => $this->last_update_username_at,
+            'phaser_rendering_type' => $this->phaser_rendering_type,
+            'phaser_antialias' => $this->phaser_antialias,
+            'phaser_antialias_gl' => $this->phaser_antialias_gl,
+            'phaser_pixel_art' => $this->phaser_pixel_art,
+            'phaser_round_pixels' => $this->phaser_round_pixels,
+            'phaser_power_preference' => $this->phaser_power_preference,
+            'phaser_scene_sound_volume' => (int)$this->phaser_scene_sound_volume,
+            'phaser_scene_sound_muted' => (bool)$this->phaser_scene_sound_muted,
+
+            /**
+             * User customizations
+             */
+            'fichas' => $this->enabledFichas(),
+            'chats' => $this->enabledChats(),
+            'colornames' => $this->enabledColorNames(),
+            'shadows' => $this->enabledShadows(),
+            'avatars' => $this->enabledAvatars(),
         ];
+
+        return $return;
     }
 }

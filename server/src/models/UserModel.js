@@ -1,8 +1,16 @@
 const UppercutsEnum = require('../enums/UppercutsEnum');
+const CoconutsEnum = require('../enums/CoconutsEnum');
+const UserCatalogItemModel = require('./UserCatalogItemModel'); // Importar el modelo de UserCatalogItem
 class UserModel {
     constructor(row) {
         this.id = row.id.toString();
         this.username = row.username;
+        this.lang = row.lang;
+        this.description = row.description;
+        this.ficha_color = row.ficha_color; // Ficha del usuario, por defecto es 'user'
+        this.shadow_color = row.shadow_color; // Color de sombra del usuario, por defecto es 'user'
+        this.chat_color = row.chat_color; // Color del chat del usuario, por defecto es
+        this.name_color = row.name_color; // Color del nombre del usuario, por defecto es 'user'
         this.email = row.email;
         this.avatarId = row.avatar_id; // ID del avatar del usuario
         this.goldCoins = row.gold_coins; // Monedas de oro del usuario
@@ -13,6 +21,25 @@ class UserModel {
         this.uppercutsReceived = row.uppercuts_received; // Uppercuts recibidos por el usuario
         this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
+        
+        this.is_bot = row.is_bot || 0; // Indica si el usuario es un bot
+        this.bot_settings = row.bot_settings || {}; // Configuraciones del bot
+
+        this.last_update_username_at = row.last_update_username_at;
+        this.phaser_rendering_type = row.phaser_rendering_type;
+        this.phaser_antialias = row.phaser_antialias;
+        this.phaser_antialias_gl = row.phaser_antialias_gl;
+        this.phaser_pixel_art = row.phaser_pixel_art;
+        this.phaser_round_pixels = row.phaser_round_pixels;
+        this.phaser_power_preference = row.phaser_power_preference;
+        this.phaser_scene_sound_volume = row.phaser_scene_sound_volume;
+        this.phaser_scene_sound_muted = row.phaser_scene_sound_muted;
+
+        this.fichas = row.fichas || []; // Fichas del usuario, por defecto es un array vacío
+        this.chats = row.chats || []; // Colores del chat del usuario, por defecto es un array vacío
+        this.shadows = row.shadows || []; // Colores de sombra del usuario, por defecto es un array vacío
+        this.colornames = row.colornames || []; // Colores de nombre del usuario, por defecto es un array vacío
+        this.avatars = row.avatars || []; // Avatares del usuario, por defecto es un array vacío
 
         this.socket = null; // Socket del usuario
         this.authJwt = null; // JWT de autenticación del usuario
@@ -24,12 +51,19 @@ class UserModel {
         this.uppercutLevel = this.calculateUppercutLevel(); // Nivel del uppercut
         this.uppercutSelected = this.uppercutLevel; // Indica si el usuario ha seleccionado un uppercut
 
-        this.coconutLevel = 9; // Nivel del coco
+        this.coconutLevel = this.calculateCoconutLevel(); // Nivel del coco
         this.coconutSelected = this.coconutLevel; // Indica si el usuario ha seleccionado un coco
 
         this.finalTarget = null; // Destino final del usuario
 
         this.blockedActions = {};
+
+        this.inventory = []; // Inventario del usuario
+
+        this.adminTools = {
+            show_isomap: false,
+            show_object_reserved_tiles: false,
+        };
     }
 
     // Bloquea una acción específica durante 'duration' ms
@@ -76,26 +110,52 @@ class UserModel {
     }
 
     calculateUppercutLevel() {
-        const uppercuts = this.uppercutsSend;
-
-        if (uppercuts >= 2000) {
+        const ringsWon = this.ringsWon;
+        if (ringsWon >= 30000) {
             return UppercutsEnum.GOLD;
-        } else if (uppercuts >= 1000) {
+        } else if (ringsWon >= 10000) {
             return UppercutsEnum.BLACK;
-        } else if (uppercuts >= 500) {
+        } else if (ringsWon >= 5000) {
             return UppercutsEnum.BROWN;
-        } else if (uppercuts >= 300) {
+        } else if (ringsWon >= 2000) {
             return UppercutsEnum.PURPLE;
-        } else if (uppercuts >= 100) {
+        } else if (ringsWon >= 1000) {
+            return UppercutsEnum.WHITE;
+        } else if (ringsWon >= 500) {
             return UppercutsEnum.BLUE;
-        } else if (uppercuts >= 50) {
+        } else if (ringsWon >= 250) {
             return UppercutsEnum.GREEN;
-        } else if (uppercuts >= 25) {
+        } else if (ringsWon >= 100) {
             return UppercutsEnum.ORANGE;
-        } else if (uppercuts >= 10) {
+        } else if (ringsWon >= 10) {
             return UppercutsEnum.PINK;
         } else {
             return UppercutsEnum.RED;
+        }
+    }
+
+    calculateCoconutLevel() {
+        const coconutsCaught = this.coconutsCaught;
+        if (coconutsCaught >= 10000) {
+            return CoconutsEnum.PIANO;
+        } else if (coconutsCaught >= 6665) {
+            return CoconutsEnum.YUNQUE;
+        } else if (coconutsCaught >= 5000) {
+            return CoconutsEnum.SANDIA;
+        } else if (coconutsCaught >= 3335) {
+            return CoconutsEnum.GARBAGE;
+        } else if (coconutsCaught >= 2500) {
+            return CoconutsEnum.AVISPAS;
+        } else if (coconutsCaught >= 1665) {
+            return CoconutsEnum.MACETA;
+        } else if (coconutsCaught >= 835) {
+            return CoconutsEnum.PIE;
+        } else if (coconutsCaught >= 335) {
+            return CoconutsEnum.SHOE;
+        } else if (coconutsCaught >= 165) {
+            return CoconutsEnum.SNOWBALL;
+        } else {
+            return CoconutsEnum.COCO;
         }
     }
 
@@ -127,6 +187,10 @@ class UserModel {
         }
     }
 
+    setInventory(items) {
+        this.inventory = items.map(item => new UserCatalogItemModel(item));
+    }
+
     setSelectedUser(user) {
         this.selectedUser = user;
     }
@@ -150,6 +214,59 @@ class UserModel {
 
     emit(event, data) {
         this.socket.emit(event, data);
+    }
+
+    // Bot settings helper methods
+    getSubscribeRing() {
+        if (!this.is_bot) return false;
+        const value = this.bot_settings.subscribe_ring;
+        return value === true || value === 1 || value === "1";
+    }
+
+    getJoinPublicScenes() {
+        if (!this.is_bot) return [];
+        return this.bot_settings.join_public_scenes || [];
+    }
+
+    canReceiveUppercuts() {
+        if (!this.is_bot) return true; // Regular users can always receive uppercuts
+        const value = this.bot_settings.can_receive_uppercuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canSendUppercuts() {
+        if (!this.is_bot) return true; // Regular users can always send uppercuts
+        const value = this.bot_settings.can_send_uppercuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canReceiveCoconuts() {
+        if (!this.is_bot) return true; // Regular users can always receive coconuts
+        const value = this.bot_settings.can_receive_coconuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canSendCoconuts() {
+        if (!this.is_bot) return true; // Regular users can always send coconuts
+        const value = this.bot_settings.can_send_coconuts;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    canAttackBots() {
+        if (!this.is_bot) return true; // Regular users can always attack bots
+        const value = this.bot_settings.can_attack_bots;
+        // If not configured, default to true. Only false if explicitly set to "0"
+        return value === undefined || value === null || (value !== false && value !== 0 && value !== "0");
+    }
+
+    selectOnlyUsers() {
+        if (!this.is_bot) return false; // Regular users don't have this restriction
+        const value = this.bot_settings.select_only_users;
+        return value === true || value === 1 || value === "1";
     }
 }
 

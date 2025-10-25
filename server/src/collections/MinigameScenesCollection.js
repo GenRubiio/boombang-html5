@@ -14,6 +14,10 @@ class MinigameScenesCollection {
     getAll() {
         return Array.from(this.collection.values());
     }
+
+    getBySceneType(type) {
+        return Array.from(this.collection.values()).filter(item => item.scene_type == type);
+    }
 }
 
 module.exports = new MinigameScenesCollection();

@@ -9,6 +9,9 @@ class UserChangeCoconutController {
             if (!user || !user.currentArea) {
                 throw new Error('User not found or not in any area');
             }
+            if (data.coconut > user.coconutLevel || data.coconut < 0) {
+                throw new Error('Invalid coconut selection');
+            }
             user.coconutSelected = data.coconut;
         } catch (err) {
             console.log(err);

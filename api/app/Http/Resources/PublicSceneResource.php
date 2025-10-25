@@ -20,11 +20,16 @@ class PublicSceneResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        return [
+        $return = [
             'id' => (int)$this->id,
+            'parent_id' => (int)$this->parent_id,
             'name' => $this->name,
             'type' => $this->type,
+            'darkening' => (bool)$this->darkening,
+            'sound' => $this->sound,
+            'sound_url' => urlDocker($this->sound),
             'menu_type' => $this->menu_type,
+            'big_scene' => (bool)$this->big_scene,
             'max_users' => (int)$this->max_users,
             'map_width' => (int)$this->map_width,
             'map_height' => (int)$this->map_height,
@@ -37,7 +42,21 @@ class PublicSceneResource extends JsonResource
                 'y' => (int)$this->start_y,
                 'z' => (int)$this->start_z,
             ],
-            'items' => $this->relationLoaded('items') ? SceneItemResource::collection($this->items) : [],
+            'base_api_url' => config('app.url'),
+            'assets_data' => $this->assets_data ? json_decode($this->assets_data, true) : [],
+            'arrows' => $this->arrows(),
         ];
+
+        if (debug_backtrace()[1]['function'] == "toDTO") {
+            if ($this->relationLoaded('items')) {
+                $return['items'] = SceneItemResource::collectionToDTO($this->whenLoaded('items'));
+                $return['npc'] = (new NpcResource($this->whenLoaded('npc')))->toDTO();
+            }
+        } else {
+            $return['items'] = SceneItemResource::collection($this->whenLoaded('items'));
+            $return['npc'] = (new NpcResource($this->whenLoaded('npc')));
+        }
+
+        return $return;
     }
 }

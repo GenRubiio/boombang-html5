@@ -1,11 +1,29 @@
 <template>
   <div class="game-container">
-    <UserCardComponent ref="userCard" />
+    <UserCardComponent
+      ref="userCard"
+      @open-ring-info="showRingInfoCard"
+      @open-coconuts-info="showCoconutsInfoCard"
+    />
+    <RingInfoCardComponent
+      v-if="isRingInfoCardVisible"
+      @close-ring-info="hideRingInfoCard"
+    />
+    <CoconutsInfoCardComponent
+      v-if="isCoconutsInfoCardVisible"
+      @close-coconuts-info="hideCoconutsInfoCard"
+    />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
-    <NpcComponent
-      v-if="showNpcModal"
-      @close="closeNpcModal"
-      :npcId="npcId"
+    <NpcComponent v-if="showNpcModal" @close="closeNpcModal" :npcId="npcId" />
+    <AvatarSelectionPopup
+      v-if="isAvatarSelectionVisible"
+      :authUser="sceneData.authUser"
+      @close-avatar-selection="hideAvatarSelection"
+    />
+    <RankingsComponent
+      v-if="isRankingsVisible"
+      :authUser="sceneData.authUser"
+      @close-rankings="hideRankings"
     />
   </div>
 </template>
@@ -13,9 +31,13 @@
 <script>
 import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
+import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardComponent.vue";
+import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import NpcComponent from "../../../components/game/scenes/NpcComponent.vue";
+import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
+import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
 
 export default {
   props: {
@@ -31,6 +53,10 @@ export default {
     return {
       showNpcModal: false,
       npcId: null, // usa esto si quieres pasar datos al modal
+      isRingInfoCardVisible: false,
+      isCoconutsInfoCardVisible: false,
+      isAvatarSelectionVisible: false,
+      isRankingsVisible: false,
     };
   },
   created() {
@@ -40,6 +66,10 @@ export default {
     UserCardComponent,
     BaseChatComponent,
     NpcComponent,
+    RingInfoCardComponent,
+    CoconutsInfoCardComponent,
+    AvatarSelectionPopup,
+    RankingsComponent,
   },
   methods: {
     initializeGame() {
@@ -52,17 +82,20 @@ export default {
       });
     },
     exitToLobby() {
-      socket.emit(RequestSocketsEnum.USER_LEAVE_AREA); // Enviar evento para salir de la sala
+      socket.emit(RequestSocketsEnum.USER_LEAVE_SCENE); // Enviar evento para salir de la sala
     },
-    sendMessage(message) {
+    sendMessage(data) {
       socket.emit(RequestSocketsEnum.SEND_CHAT, {
-        message: message,
+        message: data.message,
+        recipient: data.recipient,
       });
     },
     exitToLobbyResponse() {
       // Limpia el juego Phaser antes de salir
-      console.log("Saliendo de la sala...");
-      
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log("Saliendo de la sala...");
+      }
+
       this.$emit("updateLoading", true);
       this.$emit("exitLobby"); // Emite un evento para cambiar la escena
     },
@@ -78,6 +111,32 @@ export default {
     },
     closeNpcModal() {
       this.showNpcModal = false;
+    },
+    showRingInfoCard() {
+      this.isRingInfoCardVisible = true;
+      this.isCoconutsInfoCardVisible = false;
+    },
+    showCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = true;
+      this.isRingInfoCardVisible = false;
+    },
+    hideRingInfoCard() {
+      this.isRingInfoCardVisible = false;
+    },
+    hideCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = false;
+    },
+    showAvatarSelection() {
+      this.isAvatarSelectionVisible = true;
+    },
+    hideAvatarSelection() {
+      this.isAvatarSelectionVisible = false;
+    },
+    showRankings() {
+      this.isRankingsVisible = true;
+    },
+    hideRankings() {
+      this.isRankingsVisible = false;
     },
   },
   mounted() {

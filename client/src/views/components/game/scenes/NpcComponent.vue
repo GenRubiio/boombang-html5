@@ -1,8 +1,8 @@
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
-      <button class="close-btn" @click="$emit('close')">×</button>
-      <RingNpcModalComponent v-if="npcId == NpcEnum.WISE_RING" :npcId="npcId"/>
+      <button class="close-btn" @click="$emit('close')"><i class="las la-times"></i></button>
+      <RingNpcModalComponent v-if="npcId == NpcEnum.WISE_RING" :npcId="npcId" />
     </div>
   </div>
 </template>
@@ -36,25 +36,37 @@ export default {
   display: flex;
   justify-content: end;
   align-items: center;
-  margin: 5px;
+  margin: 0;
   pointer-events: auto;
+  position: relative;
+  z-index: 101;
 }
 .modal-content {
-  width: 336px;
-  height: 450px;
+  width: 360px;
   background: #fffffffa;
   padding: 10px;
-  border-radius: 0.5rem;
+  border-radius: 5px;
   position: relative;
   user-select: none;
+  box-shadow: 3px 3px #0000004d;
+  margin: 5px 11px;
 }
 .close-btn {
   position: absolute;
-  top: 0px;
-  right: 0px;
-  font-size: 1.2rem;
-  background: none;
+  top: 5px;
+  right: 5px;
+  background: #ffffff;
   border: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  box-shadow: 0 2px #0000004d;
+  padding: 0;
+  color: black;
 }
 </style>

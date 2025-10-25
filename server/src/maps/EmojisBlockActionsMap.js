@@ -25,7 +25,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_LAUGHTER_1,
@@ -65,7 +66,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_LAUGHTER_2,
@@ -105,7 +107,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_CRY,
@@ -145,7 +148,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_LOVE,
@@ -185,7 +189,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_SPIT,
@@ -225,7 +230,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_FART,
@@ -265,7 +271,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_PROVOKE,
@@ -305,7 +312,8 @@ class EmojisBlockActionsMap {
                     AnimationEnum.AVATAR_LEFTDOWN_TALK,
                     AnimationEnum.AVATAR_RIGHTDOWN_TALK,
                     AnimationEnum.AVATAR_LEFTUP_TALK,
-                    AnimationEnum.AVATAR_RIGHTUP_TALK
+                    AnimationEnum.AVATAR_RIGHTUP_TALK,
+                    AnimationEnum.UPDATE_AVATAR,
                 ],
                 time: {
                     [AvatarEnum.BOOMER]: AnimationBlockTimerEnum.BOOMER_FLY,

@@ -1,32 +1,71 @@
 <template>
   <div class="container" :class="colorUser">
-    <div class="container__uppers-data">
-      <div class="container__uppers-data__title">Uppercuts</div>
-      <div class="container__uppers-data__data-container">
-        <div class="container__uppers-data__data-container__count">
-          {{ selectedUser.uppercuts_send }}
+    <div class="container__userinfo-data">
+      <div class="container__userinfo-data__title">
+        <span class="fit_label">{{ currentView.title }}</span>
+      </div>
+      <div
+        v-for="stat in currentView.stats"
+        :key="stat.key"
+        class="container__userinfo-data__data-container"
+      >
+        <div class="container__userinfo-data__data-container__count">
+          {{ selectedUser[stat.key] }}
         </div>
-        <div class="container__uppers-data__data-container__title">
-          Enviados
+        <div class="container__userinfo-data__data-container__title">
+          <span class="fit_label">{{ stat.label }}</span>
         </div>
       </div>
-      <div class="container__uppers-data__data-container">
-        <div class="container__uppers-data__data-container__count">
-          {{ selectedUser.uppercuts_received }}
-        </div>
-        <div class="container__uppers-data__data-container__title">
-          Recibidos
-        </div>
-      </div>
+      <button
+        v-if="currentView.id === 3"
+        @click="$emit('open-ring-info')"
+        class="info-button"
+      >
+        <i class="las la-question"></i>
+      </button>
+      <button
+        v-if="currentView.id === 4"
+        @click="$emit('open-coconuts-info')"
+        class="info-button"
+      >
+        <i class="las la-question"></i>
+      </button>
     </div>
-    <div class="container__uppers-right">
-      <img :src="asset_red_upper_image" alt="upper" />
+    <div class="container__userinfo-right">
+      <img :src="currentImage" :alt="currentView.title" />
     </div>
+    <button class="container__cycle-button" @click="cycleStatistic">
+      <i class="la la-chevron-right"></i>
+    </button>
   </div>
 </template>
 
 <script>
-import asset_red_upper_image from "../../../../../../assets/game/ficha/uppercuts/red.png";
+import { useTextFitting } from "@/composables/useTextFitting";
+import asset_stat_ring_image from "@/assets/game/ficha/statistics/ring.webp";
+import asset_stat_coconut_caught_image from "@/assets/game/ficha/statistics/cocos_locos.webp";
+
+import asset_red_upper_image from "@/assets/game/ficha/uppercuts/red.webp";
+import asset_pink_upper_image from "@/assets/game/ficha/uppercuts/pink.webp";
+import asset_orange_upper_image from "@/assets/game/ficha/uppercuts/orange.webp";
+import asset_green_upper_image from "@/assets/game/ficha/uppercuts/green.webp";
+import asset_blue_upper_image from "@/assets/game/ficha/uppercuts/blue.webp";
+import asset_white_upper_image from "@/assets/game/ficha/uppercuts/white.webp";
+import asset_purple_upper_image from "@/assets/game/ficha/uppercuts/purple.webp";
+import asset_brown_upper_image from "@/assets/game/ficha/uppercuts/brown.webp";
+import asset_black_upper_image from "@/assets/game/ficha/uppercuts/black.webp";
+import asset_gold_upper_image from "@/assets/game/ficha/uppercuts/gold.webp";
+
+import asset_cocoCoconutImage from "@/assets/game/ficha/coconuts/coco.webp";
+import asset_snowballCoconutImage from "@/assets/game/ficha/coconuts/snowball.webp";
+import asset_shoeCoconutImage from "@/assets/game/ficha/coconuts/shoe.webp";
+import asset_pieCoconutImage from "@/assets/game/ficha/coconuts/pie.webp";
+import asset_macetaCoconutImage from "@/assets/game/ficha/coconuts/maceta.webp";
+import asset_avispasCoconutImage from "@/assets/game/ficha/coconuts/avispas.webp";
+import asset_garbageCoconutImage from "@/assets/game/ficha/coconuts/garbage.webp";
+import asset_sandiaCoconutImage from "@/assets/game/ficha/coconuts/sandia.webp";
+import asset_yunqueCoconutImage from "@/assets/game/ficha/coconuts/yunque.webp";
+import asset_pianoCoconutImage from "@/assets/game/ficha/coconuts/piano.webp";
 
 export default {
   props: {
@@ -37,28 +76,157 @@ export default {
   },
   data() {
     return {
-      asset_red_upper_image,
+      uppercuts: [
+        asset_red_upper_image,
+        asset_pink_upper_image,
+        asset_orange_upper_image,
+        asset_green_upper_image,
+        asset_blue_upper_image,
+        asset_white_upper_image,
+        asset_purple_upper_image,
+        asset_brown_upper_image,
+        asset_black_upper_image,
+        asset_gold_upper_image,
+      ],
+      coconuts: [
+        asset_cocoCoconutImage,
+        asset_snowballCoconutImage,
+        asset_shoeCoconutImage,
+        asset_pieCoconutImage,
+        asset_macetaCoconutImage,
+        asset_avispasCoconutImage,
+        asset_garbageCoconutImage,
+        asset_sandiaCoconutImage,
+        asset_yunqueCoconutImage,
+        asset_pianoCoconutImage,
+      ],
+      currentViewIndex: 0,
     };
   },
-  methods: {},
+  methods: {
+    cycleStatistic() {
+      this.currentViewIndex =
+        (this.currentViewIndex + 1) % this.statisticsViews.length;
+    },
+    fitLabels() {
+      const { fitAllLabels } = useTextFitting();
+      fitAllLabels(this.$el, ".container__userinfo-data__title", ".fit_label");
+      fitAllLabels(
+        this.$el,
+        ".container__userinfo-data__data-container__title",
+        ".fit_label"
+      );
+    },
+  },
   computed: {
+    statisticsViews() {
+      return [
+        {
+          id: 1,
+          title: this.$t("user_card.statistics.uppercuts.title"),
+          stats: [
+            {
+              key: "uppercuts_send",
+              label: this.$t("user_card.statistics.sent"),
+            },
+            {
+              key: "uppercuts_received",
+              label: this.$t("user_card.statistics.received"),
+            },
+          ],
+        },
+        {
+          id: 2,
+          title: this.$t("user_card.statistics.coconuts.title"),
+          stats: [
+            {
+              key: "coconuts_sent",
+              label: this.$t("user_card.statistics.sent"),
+            },
+            {
+              key: "coconuts_received",
+              label: this.$t("user_card.statistics.received"),
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: this.$t("user_card.statistics.rings.title"),
+          image: asset_stat_ring_image,
+          stats: [
+            {
+              key: "rings_won",
+              label: this.$t("user_card.statistics.rings.won"),
+            },
+          ],
+        },
+        {
+          id: 4,
+          title: this.$t("user_card.statistics.coconuts_locos.title"),
+          image: asset_stat_coconut_caught_image,
+          stats: [
+            {
+              key: "coconuts_caught",
+              label: this.$t("user_card.statistics.coconuts_locos.caught"),
+            },
+          ],
+        },
+      ];
+    },
+    currentView() {
+      return this.statisticsViews[this.currentViewIndex];
+    },
+    currentImage() {
+      const view = this.currentView;
+      if (view.id === 1) {
+        return this.uppercuts[this.selectedUser.uppercut_level];
+      }
+      if (view.id === 2) {
+        return this.coconuts[this.selectedUser.coconut_level];
+      }
+      return view.image;
+    },
     colorUser() {
-      if (this.selectedUser.is_admin) {
-        return "admin";
+      if (this.selectedUser.ficha_color == "user") {
+        return this.selectedUser.is_selected ? "selected" : "user";
       }
-      if (this.selectedUser.is_vip) {
-        return "vip";
-      }
-      return this.selectedUser.is_selected ? "selected" : "user";
+      return this.selectedUser.ficha_color;
     },
   },
   mounted() {
-    console.log("User data received in component:", this.selectedUser);
+    this.$nextTick(() => {
+      this.fitLabels();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(this.fitLabels);
+      }
+    });
+    window.addEventListener("resize", this.fitLabels, { passive: true });
+    if (import.meta.env.VITE_APP_ENV === "local") {
+      console.log("User data received in component:", this.selectedUser);
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.fitLabels);
+  },
+  watch: {
+    "$i18n.locale"() {
+      this.$nextTick(this.fitLabels);
+    },
+    currentViewIndex() {
+      this.$nextTick(this.fitLabels);
+    },
   },
 };
 </script>
 
 <style scoped>
+.fit_label {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  transform-origin: left !important;
+}
+
 .container {
   background-color: white;
   border-radius: 0 8px 8px 8px;
@@ -67,20 +235,32 @@ export default {
   box-sizing: border-box;
   height: 90px;
   position: relative;
-  z-index: 0;
+  z-index: 1;
   display: flex;
 }
 
-.container__uppers-data {
+.container__userinfo-data {
   padding: 8px;
-  width: 120px;
+  width: 135px;
+  box-sizing: border-box;
 }
 
-.container__uppers-right {
+.container__userinfo-right {
   padding-top: 15px;
+  width: calc(100% - 135px);
+  padding-right: 2px;
+  padding-left: 2px;
+  box-sizing: border-box;
+  max-height: 55px;
 }
 
-.container__uppers-data__title {
+.container__userinfo-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.container__userinfo-data__title {
   width: 100%;
   font-size: 18px;
   font-weight: bold;
@@ -89,24 +269,37 @@ export default {
   border-radius: 5px;
   text-align: start;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: start;
 }
 
-.container.user .container__uppers-data__title {
-  background-color: #005491;
+.info-button {
+  border: none;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 0 5px;
+  border-radius: 5px;
+  background: #005491;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  margin-left: 88px;
+  height: 17px;
+  width: 30px;
+  font-size: 11px;
 }
 
-.container.selected .container__uppers-data__title {
-  background-color: #045d03;
-}
-
-.container__uppers-data__data-container {
+.container__userinfo-data__data-container {
   width: 100%;
   margin-top: 5px;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
-.container__uppers-data__data-container__count {
+.container__userinfo-data__data-container__count {
   font-size: 11px;
   font-weight: bold;
   color: white;
@@ -117,15 +310,7 @@ export default {
   width: 33px;
 }
 
-.container.user .container__uppers-data__data-container__count {
-  background-color: #005491;
-}
-
-.container.selected .container__uppers-data__data-container__count {
-  background-color: #045d03;
-}
-
-.container__uppers-data__data-container__title {
+.container__userinfo-data__data-container__title {
   font-size: 11px;
   font-weight: bold;
   color: white;
@@ -134,13 +319,130 @@ export default {
   text-align: start;
   height: 17px;
   width: 63px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.container.user .container__uppers-data__data-container__title {
+.container__cycle-button {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  background-color: white;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container__cycle-button:focus {
+  outline: none;
+}
+
+/********************************************************************* */
+.container.user .container__userinfo-data__title {
   background-color: #005491;
 }
 
-.container.selected .container__uppers-data__data-container__title {
+.container.selected .container__userinfo-data__title {
   background-color: #045d03;
+}
+
+.container.admin .container__userinfo-data__title {
+  background-color: #f59200;
+}
+
+.container.vip .container__userinfo-data__title {
+  background-color: #420143;
+}
+
+.container.beta .container__userinfo-data__title {
+  background-color: #08d1d1;
+}
+
+.container.user .container__userinfo-data__data-container__count {
+  background-color: #005491;
+}
+
+.container.selected .container__userinfo-data__data-container__count {
+  background-color: #045d03;
+}
+
+.container.admin .container__userinfo-data__data-container__count {
+  background-color: #f59200;
+}
+
+.container.vip .container__userinfo-data__data-container__count {
+  background-color: #420143;
+}
+
+.container.beta .container__userinfo-data__data-container__count {
+  background-color: #08d1d1;
+}
+
+.container.user .container__userinfo-data__data-container__title {
+  background-color: #005491;
+}
+
+.container.selected .container__userinfo-data__data-container__title {
+  background-color: #045d03;
+}
+
+.container.admin .container__userinfo-data__data-container__title {
+  background-color: #f59200;
+}
+
+.container.vip .container__userinfo-data__data-container__title {
+  background-color: #420143;
+}
+
+.container.beta .container__userinfo-data__data-container__title {
+  background-color: #08d1d1;
+}
+
+.container.user .container__cycle-button {
+  background-color: #005491;
+}
+
+.container.selected .container__cycle-button {
+  background-color: #045d03;
+}
+
+.container.admin .container__cycle-button {
+  background-color: #f59200;
+}
+
+.container.vip .container__cycle-button {
+  background-color: #420143;
+}
+
+.container.beta .container__cycle-button {
+  background-color: #08d1d1;
+}
+
+.container.user .info-button {
+  background: #005491;
+}
+
+.container.selected .info-button {
+  background: #045d03;
+}
+
+.container.admin .info-button {
+  background: #f59200;
+}
+
+.container.vip .info-button {
+  background: #420143;
+}
+
+.container.beta .info-button {
+  background: #08d1d1;
 }
 </style>

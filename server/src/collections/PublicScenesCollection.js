@@ -11,8 +11,21 @@ class PublicScenesCollection {
         return this.collection.get(uid);
     }
 
+    getById(id) {
+        for (let scene of this.collection.values()) {
+            if (scene.id == id) {
+                return scene;
+            }
+        }
+        return null;
+    }
+
     getAll() {
         return Array.from(this.collection.values());
+    }
+
+    getAllParentIdNull() {
+        return Array.from(this.collection.values()).filter(scene => (scene.parent_id == null || scene.parent_id == 0));
     }
 }
 

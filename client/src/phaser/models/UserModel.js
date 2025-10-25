@@ -2,6 +2,12 @@ export default class UserModel {
     constructor(row, spriteAvatar, spriteShadow, containerUser) {
         this.socketId = row.id;
         this.username = row.username;
+        this.description = row.description;
+        this.ficha_color = row.ficha_color;
+        this.shadow_color = row.shadow_color;
+        this.chat_color = row.chat_color;
+        this.name_color = row.name_color;
+        this.fichas = row.fichas || [];
         this.position = {
             x: row.x,
             y: row.y,

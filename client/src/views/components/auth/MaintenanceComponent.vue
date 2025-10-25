@@ -1,17 +1,15 @@
 <template>
   <div class="maintenance">
     <div class="maintenance__content">
-      <h1 class="maintenance__title">Mantenimiento</h1>
-      <p class="maintenance__description">
-        El servidor está en mantenimiento.<br />Por favor, inténtalo más tarde.
-      </p>
-      <img :src="asset_maintenance_avatar_image" alt="Mantenimiento" />
+      <h1 class="maintenance__title">{{ $t('maintenance.title') }}</h1>
+      <p class="maintenance__description">{{ $t('maintenance.description') }}</p>
+      <img :src="asset_maintenance_avatar_image" :alt="$t('maintenance.alt')" />
     </div>
   </div>
 </template>
 
 <script>
-import asset_maintenance_avatar_image from "../../../assets/game/auth/maintenance-avatar.webp";
+import asset_maintenance_avatar_image from "@/assets/game/auth/maintenance-avatar.webp";
 
 export default {
   data() {
@@ -57,5 +55,6 @@ export default {
 .maintenance__description {
   font-size: 1.2rem;
   color: white;
+  white-space: pre-line;
 }
 </style>

@@ -1,0 +1,425 @@
+{
+  "auth": {
+    "rasta_alt": "拉斯塔",
+    "lilian_alt": "莉莲"
+  },
+  "login": {
+    "title": "登录",
+    "username": "用户名",
+    "password": "密码",
+    "button": "进入",
+    "register": "注册",
+    "already_have_account": "已经有账户了？",
+    "character_name": "角色名称",
+    "username_placeholder": "名字",
+    "password_placeholder": "密码",
+    "forgot_password": "忘记密码？",
+    "separator": "或",
+    "google_login": "使用谷歌登录",
+    "play_button": "玩",
+    "warning_alt": "警告",
+    "play_alt": "玩",
+    "google_alt": "谷歌"
+  },
+  "common": {
+    "close": "X",
+    "delete": "删除",
+    "previous": "上一个",
+    "next": "下一个",
+    "accept": "接受"
+  },
+  "scene": {
+    "tooltip_shop": "商店",
+    "tooltip_avatars": "头像",
+    "tooltip_color": "颜色",
+    "tooltip_move": "移动",
+    "tooltip_inventory": "库存"
+  },
+  "maintenance": {
+    "title": "维护",
+    "description": "服务器正在维护中。\n请稍后再试。",
+    "alt": "维护"
+  },
+  "avatar_select": {
+    "title": "角色",
+    "label": "选择你的角色",
+    "gallery_title": "角色画廊"
+  },
+  "register": {
+    "title": "创建您的帐户",
+    "character_name": "角色名称",
+    "username_placeholder": "名字",
+    "password": "密码",
+    "password_placeholder": "密码",
+    "email": "电子邮件",
+    "email_placeholder": "电子邮件",
+    "terms_agree": "我同意",
+    "terms_and_conditions": "条款和条件",
+    "play_button": "玩",
+    "captcha_required": "请完成 reCAPTCHA。",
+    "captcha_expired": "reCAPTCHA 已过期。请再试一次。",
+    "captcha_error": "加载/验证 reCAPTCHA 时出错。请再试一次。",
+    "captcha_load_error": "无法加载 reCAPTCHA。",
+    "warning_alt": "警告",
+    "play_alt": "玩",
+    "language": "语言"
+  },
+  "auth_screen": {
+    "register_title": "创建您的帐户",
+    "register_text": "注册并选择角色",
+    "login_title": "登录",
+    "login_text": "使用您的帐户登录"
+  },
+  "island_create": {
+    "choose_background": "选择背景",
+    "island_name_placeholder": "岛屿名称",
+    "set_island_name": "给你的岛屿起个名字"
+  },
+  "scene_create": {
+    "choose_scene": "选择场景",
+    "scene_name_placeholder": "房间名称",
+    "set_scene_name": "给你的房间起个名字",
+    "error_no_scenes": "未找到岛屿或没有场景。"
+  },
+  "island": {
+    "locations": "地点",
+    "add_scenario": "添加场景"
+  },
+  "user_card": {
+    "change_ficha_alt": "更改卡片",
+    "edit_button": "编辑",
+    "avatar_alt": "用户头像",
+    "tabs": {
+      "emojis": "表情符号",
+      "statistics": "统计数据",
+      "interactions": "互动"
+    },
+    "emojis": {
+      "laughter_1": "笑声 1",
+      "laughter_2": "笑声 2",
+      "laughter_3": "笑声 3",
+      "love": "爱",
+      "sad": "伤心",
+      "angry": "生气",
+      "wink": "眨眼",
+      "kiss": "吻",
+      "surprise": "惊喜",
+      "sleep": "睡觉",
+      "cool": "酷",
+      "confused": "困惑",
+      "cry": "哭",
+      "spit": "吐",
+      "fart": "放屁",
+      "provoke": "挑衅",
+      "fly": "飞"
+    },
+    "interactions": {
+      "kick": "踢",
+      "bomb": "炸弹",
+      "spit": "吐口水",
+      "tomato": "番茄",
+      "poop": "便便",
+      "flower": "花",
+      "heart": "心",
+      "kiss": "吻",
+      "gift": "礼物",
+      "question": "问题",
+      "exclamation": "感叹",
+      "net": "网",
+      "drink": "喝",
+      "rose": "玫瑰",
+      "upper": "上勾拳",
+      "coco": "椰子",
+      "upper_item": "上勾拳物品",
+      "coco_item": "椰子物品",
+      "waiting_response": "等待回应",
+      "cancel": "取消"
+    },
+    "statistics": {
+      "title": "互动统计",
+      "sent": "已发送",
+      "received": "已接收",
+      "kicks_sent": "已发送的踢",
+      "kicks_received": "已接收的踢",
+      "bombs_sent": "已发送的炸弹",
+      "bombs_received": "已接收的炸弹",
+      "spits_sent": "已发送的吐口水",
+      "spits_received": "已接收的吐口水",
+      "tomatoes_sent": "已发送的番茄",
+      "tomatoes_received": "已接收的番茄",
+      "poops_sent": "已发送的便便",
+      "poops_received": "已接收的便便",
+      "flowers_sent": "已发送的花",
+      "flowers_received": "已接收的花",
+      "kisses_sent": "已发送的吻",
+      "kisses_received": "已接收的吻",
+      "hearts_sent": "已发送的心",
+      "hearts_received": "已接收的心",
+      "gifts_sent": "已发送的礼物",
+      "gifts_received": "已接收的礼物",
+      "questions_sent": "已发送的问题",
+      "questions_received": "已接收的问题",
+      "exclamations_sent": "已发送的感叹",
+      "exclamations_received": "已接收的感叹",
+      "nets_sent": "已发送的网",
+      "nets_received": "已接收的网",
+      "rings": {
+        "title": "拳击场",
+        "red": "红色手套",
+        "white": "白色手套",
+        "pink": "粉色手套",
+        "purple": "紫色手套",
+        "orange": "橙色手套",
+        "brown": "棕色手套",
+        "green": "绿色手套",
+        "black": "黑色手套",
+        "blue": "蓝色手套",
+        "gold": "金色手套",
+        "won": "获胜"
+      },
+      "uppercuts": {
+        "title": "上勾拳"
+      },
+      "coconuts": {
+        "title": "椰子"
+      },
+      "coconuts_locos": {
+        "title": "疯狂椰子",
+        "caught": "已抓住"
+      }
+    }
+  },
+  "ring_npc": {
+    "title": "拳击场智者",
+    "description": "收集所有手套，展示你的力量！",
+    "victories": "{count} 场胜利",
+    "gloves": {
+      "bronze": "青铜手套",
+      "silver": "白银手套",
+      "gold": "黄金手套",
+      "diamond": "钻石手套",
+      "special": "特殊手套"
+    }
+  },
+  "chat": {
+    "base_alt": "聊天底座",
+    "placeholder": "输入消息...",
+    "brujula_alt": "退出到大厅",
+    "public": "公共"
+  },
+  "customization": {
+    "tabs": {
+      "ficha": "卡片",
+      "chat": "聊天",
+      "nombre": "名字",
+      "sombra": "影子"
+    },
+    "title": "自定义 {tab}"
+  },
+  "npc": {
+    "ring": {
+      "welcome": "欢迎来到拳击场",
+      "description": "订阅以与其他用户竞争并赢取奖励！",
+      "searching": "正在寻找对手...",
+      "cancel": "取消搜索",
+      "subscribe": "寻找对手",
+      "unlock_gloves": "通过赢得胜利来解锁手套",
+      "weekly_trophies": "每周奖杯",
+      "trophies_alt": "拳击场奖杯",
+      "gloves": {
+        "red": "{victories} 场胜利",
+        "white": "{victories} 场胜利",
+        "pink": "{victories} 场胜利",
+        "purple": "{victories} 场胜利",
+        "orange": "{victories} 场胜利",
+        "brown": "{victories} 场胜利",
+        "green": "{victories} 场胜利",
+        "black": "{victories} 场胜利",
+        "blue": "{victories} 场胜利",
+        "gold": "{victories} 场胜利",
+        "alt": {
+          "red": "红色手套",
+          "white": "白色手套",
+          "pink": "粉色手套",
+          "purple": "紫色手套",
+          "orange": "橙色手套",
+          "brown": "棕色手套",
+          "green": "绿色手套",
+          "black": "黑色手套",
+          "blue": "蓝色手套",
+          "gold": "金色手套"
+        }
+      }
+    }
+  },
+  "scenes": {
+    "ring_info": {
+      "title": "拳击场信息",
+      "victories": "{count} 场胜利",
+      "red": "红色手套",
+      "white": "白色手套",
+      "pink": "粉色手套",
+      "purple": "紫色手套",
+      "orange": "橙色手套",
+      "brown": "棕色手套",
+      "green": "绿色手套",
+      "black": "黑色手套",
+      "blue": "蓝色手套",
+      "gold": "金色手套",
+      "red_glove_alt": "红色手套",
+      "white_glove_alt": "白色手套",
+      "pink_glove_alt": "粉色手套",
+      "purple_glove_alt": "紫色手套",
+      "orange_glove_alt": "橙色手套",
+      "brown_glove_alt": "棕色手套",
+      "green_glove_alt": "绿色手套",
+      "black_glove_alt": "黑色手套",
+      "blue_glove_alt": "蓝色手套",
+      "gold_glove_alt": "金色手套"
+    },
+    "coconuts_info": {
+      "title": "椰子信息",
+      "coco_cost": "{count} 个椰子",
+      "coco_alt": "椰子",
+      "coco_name": "椰子",
+      "honeycomb_alt": "蜂窝",
+      "honeycomb_name": "蜂窝",
+      "snowball_alt": "雪球",
+      "snowball_name": "雪球",
+      "garbage_alt": "垃圾",
+      "garbage_name": "垃圾",
+      "shoe_alt": "鞋子",
+      "shoe_name": "鞋子",
+      "watermelon_alt": "西瓜",
+      "watermelon_name": "西瓜",
+      "pie_alt": "派",
+      "pie_name": "派",
+      "anvil_alt": "铁砧",
+      "anvil_name": "铁砧",
+      "pot_alt": "花盆",
+      "pot_name": "花盆",
+      "piano_alt": "钢琴",
+      "piano_name": "钢琴"
+    }
+  },
+  "gacha": {
+    "help": {
+      "main_title": "扭蛋机帮助",
+      "items_title": "可用奖品",
+      "rarity": "稀有度",
+      "appearance": "出现率",
+      "decorations_title": "装饰奖品",
+      "compensation": "补偿",
+      "comp_silver": "{amount} 银币",
+      "comp_gold": "{amount} 金币"
+    },
+    "result": {
+      "title": "你中奖了！",
+      "confirm": "接受"
+    },
+    "error": {
+      "title": "错误",
+      "close": "关闭",
+      "default_message": "发生意外错误。"
+    },
+    "alert": {
+      "title": "你想玩吗？",
+      "text": "费用为 100 积分。你想继续吗？",
+      "confirm": "确认",
+      "cancel": "取消"
+    }
+  },
+  "lobby": {
+    "golden_coins_alt": "金币",
+    "silver_coins_alt": "银币",
+    "islands": {
+      "public_alt": "公共岛屿",
+      "public": "公共",
+      "favorites_alt": "收藏的岛屿",
+      "favorites": "收藏",
+      "my_islands_alt": "我的岛屿",
+      "my_islands": "我的岛屿",
+      "create_island": "创建岛屿",
+      "create_island_alt": "创建一个新岛屿"
+    },
+    "no_favorite_islands": "你没有收藏的岛屿。",
+    "gacha": {
+      "machine_alt": "扭蛋机",
+      "handle_alt": "扭蛋机手柄",
+      "title_default": "扭蛋机",
+      "price_default": "价格",
+      "title": "扭蛋机",
+      "price": "100 积分"
+    },
+    "tabs": {
+      "areas": "区域",
+      "games": "游戏",
+      "islands": "岛屿"
+    },
+    "my_islands": {
+      "no_islands": "你没有创建任何岛屿。"
+    },
+    "search": {
+      "not_implemented": "搜索功能尚未实现。"
+    },
+    "ui": {
+      "background_alt": "大厅背景",
+      "flor_alt": "装饰植物",
+      "foreground_alt": "大厅前景",
+      "marikita_alt": "装饰瓢虫",
+      "avatar_alt": "用户头像",
+      "logout_alt": "注销",
+      "logout": "退出",
+      "gachapon": "扭蛋机",
+      "credits": "积分",
+      "avatar_error": "加载用户头像时出错",
+      "settings": "设置",
+      "settings_alt": "配置"
+    }
+  },
+  "settings": {
+    "main_title": "设置",
+    "save": "保存",
+    "tabs": {
+      "profile": "个人资料",
+      "graphics": "图像",
+      "sounds": "声音"
+    },
+    "profile": {
+      "username": "用户名",
+      "username_placeholder": "输入你的用户名",
+      "username_desc": "您每30天可以更改一次用户名。",
+      "language": "语言",
+      "language_desc": "选择您喜欢的语言。"
+    },
+    "graphics": {
+      "render_type": "渲染类型",
+      "render_type_desc": "选择渲染引擎：WEBGL（速度更快，效果更佳）或CANVAS（兼容性好）。AUTO会尝试使用WebGL，如果失败则回退到Canvas。",
+      "antialias": "抗锯齿",
+      "antialias_desc": "在缩放/旋转时平滑纹理。false会保留锐利的像素。",
+      "antialias_gl": "抗锯齿GL",
+      "antialias_gl_desc": "在创建WebGL时激活MSAA（画布边缘平滑）。不会改变纹理。⚠️更改此项需要重启游戏。",
+      "pixel_art": "像素艺术",
+      "pixel_art_desc": "激活antialias=false和roundPixels=true的预设。一切看起来都更清晰。",
+      "round_pixels": "圆整像素",
+      "round_pixels_desc": "将位置四舍五入到最近的像素（防止精灵模糊）。",
+      "power_preference": "电源偏好",
+      "power_preference_desc": "向浏览器建议使用哪个GPU：high-performance → 强制使用独立GPU（功耗更高）。low-power → 节省电池。"
+    },
+    "sounds": {
+      "scene_sound": "禁用场景声音",
+      "scene_sound_desc": "启用或禁用当前场景的背景音乐。",
+      "scene_volume": "场景音量",
+      "scene_volume_desc": "调整场景背景音乐的音量级别。"
+    },
+    "confirm": {
+      "title": "确认更改",
+      "message": "应用这些更改将重新启动游戏。您想继续吗？",
+      "ok": "确定",
+      "cancel": "取消"
+    }
+  },
+  "loading": {
+    "title": "加载中..."
+  }
+}

@@ -11,7 +11,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \Backpack\PermissionManager\app\Http\Controllers\UserCrudController::class,
+            \App\Http\Controllers\Admin\UserCrudController::class
+        );
+
+        $this->app->bind(
+            \Backpack\PermissionManager\app\Http\Controllers\RoleCrudController::class,
+            \App\Http\Controllers\Admin\RoleCrudController::class
+        );
+
+        $this->app->bind(
+            \Backpack\PermissionManager\app\Http\Controllers\PermissionCrudController::class,
+            \App\Http\Controllers\Admin\PermissionCrudController::class
+        );
     }
 
     /**
@@ -19,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Force HTTPS URLs in production
+        if (config('app.env') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }

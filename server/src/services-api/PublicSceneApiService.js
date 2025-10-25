@@ -9,6 +9,19 @@ class PublicSceneApiService {
             throw error;
         }
     }
+
+    static async userCatchItem(user, itemId) {
+        try {
+            const data = {
+                item_id: itemId,
+                scene_id: user.currentArea.id,
+            };
+            return await ApiService.post('api/public-scene/user-catch-item', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al capturar el objeto:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = PublicSceneApiService;

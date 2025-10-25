@@ -4,72 +4,120 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\SceneItemRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
-/**
- * Class SceneItemCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class SceneItemCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use SuperadminProtection;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
-     */
     public function setup()
     {
-        CRUD::setModel(\App\Models\SceneItem::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/scene-item');
-        CRUD::setEntityNameStrings('scene item', 'scene items');
+        $this->applySuperadminProtection();
+
+        $this->crud->setModel(\App\Models\SceneItem::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/scene-item');
+        $this->crud->setEntityNameStrings('elemento de escena', 'elementos de escena');
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        $this->crud->addColumn([
+            'name' => 'id',
+            'label' => 'ID',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'sprite_file',
+            'label' => 'Archivo Sprite',
+            'type' => 'image',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'file_name',
+            'label' => 'Archivo',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'catch_file_name',
+            'label' => 'Archivo de Captura',
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'text',
+            'label' => 'Texto',
+            'type' => 'text',
+            'limit' => 50,
+        ]);
+        $this->crud->addColumn([
+            'name' => 'active',
+            'label' => 'Activo',
+            'type' => 'check',
+        ]);
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(SceneItemRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        $this->crud->setValidation(SceneItemRequest::class);
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $this->crud->addFields([
+            [
+                'name' => 'name',
+                'label' => 'Nombre',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'file_name',
+                'label' => 'Nombre del Sprite',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'sprite_file',
+                'label' => 'Archivo Sprite',
+                'type' => 'image',
+                'upload' => true,
+                'disk' => 'uploads',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'catch_file_name',
+                'label' => 'Nombre del Sprite de Captura',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'catch_sprite_file',
+                'label' => 'Archivo Sprite de Captura',
+                'type' => 'image',
+                'upload' => true,
+                'disk' => 'uploads',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'text',
+                'label' => 'Texto',
+                'type' => 'text',
+                'tab' => 'General'
+            ],
+            [
+                'name' => 'active',
+                'label' => 'Activo',
+                'type' => 'checkbox',
+                'default' => true,
+                'tab' => 'General'
+            ]
+        ]);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

@@ -1,8 +1,8 @@
-import asset_spritesheet0_image from '../../../assets/game/avatars/yayo/animations/spritesheet-0.webp';
-import asset_spritesheet1_image from '../../../assets/game/avatars/yayo/animations/spritesheet-1.webp';
-import asset_atlas_json from '../../../assets/game/avatars/yayo/animations/atlas.json';
-import asset_cara_peque_image from '../../../assets/game/avatars/yayo/cara_peque.svg';
-import asset_cara_media_image from '../../../assets/game/avatars/yayo/cara_media.svg';
+import asset_spritesheet0_image from '@/assets/game/avatars/yayo/animations/spritesheet-0.webp';
+import asset_spritesheet1_image from '@/assets/game/avatars/yayo/animations/spritesheet-1.webp';
+import asset_atlas_json from '@/assets/game/avatars/yayo/animations/atlas.json';
+import asset_cara_peque_image from '@/assets/game/avatars/yayo/cara_peque.svg';
+import asset_cara_media_image from '@/assets/game/avatars/yayo/cara_media.svg';
 
 class AvatarYayoLoad {
     static main(gameScene, avatarId) {
@@ -14,6 +14,7 @@ class AvatarYayoLoad {
         gameScene.load.multiatlas('yayo_atlas', asset_atlas_json);
         gameScene.load.svg((avatarId + "_cara_peque"), asset_cara_peque_image);
         gameScene.load.svg((avatarId + "_cara_media"), asset_cara_media_image);
+        return asset_atlas_json;
     }
 }
 

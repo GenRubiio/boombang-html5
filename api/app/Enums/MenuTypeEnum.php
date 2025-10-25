@@ -10,13 +10,13 @@ enum MenuTypeEnum
     use EnumTrait;
 
     case PUBLIC_SCENE;
-    case GAME;
+    case GAME_SCENE;
 
     public function key(): string
     {
         return match ($this) {
             self::PUBLIC_SCENE => 1,
-            self::GAME => 2,
+            self::GAME_SCENE => 2,
         };
     }
 
@@ -24,7 +24,7 @@ enum MenuTypeEnum
     {
         return match ($key) {
             1 => self::PUBLIC_SCENE,
-            2 => self::GAME,
+            2 => self::GAME_SCENE,
             default => throw new InvalidArgumentException("Invalid key: $key"),
         };
     }
@@ -33,7 +33,7 @@ enum MenuTypeEnum
     {
         return match ($this) {
             self::PUBLIC_SCENE => 'Public Scene',
-            self::GAME => 'Game',
+            self::GAME_SCENE => 'Game',
         };
     }
 

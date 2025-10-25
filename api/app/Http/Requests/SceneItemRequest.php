@@ -25,7 +25,10 @@ class SceneItemRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required',
+            'file_name' => 'required',
+            'sprite_file' => 'required',
+            'text' => 'required',
         ];
     }
 

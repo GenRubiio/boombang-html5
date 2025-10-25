@@ -7,6 +7,7 @@ const AnimationEnum = new Enum({
     WALK: 'WALK',
     LOOK: 'LOOK',
     LEAVE_AREA: 'LEAVE_AREA',
+    UPDATE_DESCRIPTION: 'UPDATE_DESCRIPTION',
     AVATAR_LAUGHTER_1: 'AVATAR_LAUGHTER_1',
     AVATAR_LAUGHTER_2: 'AVATAR_LAUGHTER_2',
     AVATAR_CRY: 'AVATAR_CRY',
@@ -23,6 +24,10 @@ const AnimationEnum = new Enum({
     AVATAR_RIGHTDOWN_TALK: 'rightdown_talk',
     AVATAR_LEFTUP_TALK: 'leftup_talk',
     AVATAR_RIGHTUP_TALK: 'rightup_talk',
+    INTERACTION_KISS: 'kiss',
+    INTERACTION_DRINK: 'drink',
+    INTERACTION_ROSE: 'rose',
+    UPDATE_AVATAR: 'update_avatar'
 });
 
 module.exports = AnimationEnum;

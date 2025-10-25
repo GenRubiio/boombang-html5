@@ -14,6 +14,11 @@ class UserSendUppercutController {
             if (!user || !user.currentArea) return;//throw new Error('User not found or not in any area');
             if (!user.selectedUser) return; //throw new Error('No user selected');
 
+            if (user.currentArea.scene_type == SceneTypesEnum.MINIGAME_RING
+                && !user.currentArea.gameStarted) {
+                return; // No se puede hacer uppercut si el juego no ha comenzado
+            }
+
             const targetUser = ConnectedUsersCollection.getBySocketId(user.selectedUser.socket.id);
             if (!targetUser || targetUser.currentArea.id !== user.currentArea.id) {
                 //throw new Error('Target user not found or not in the same area');
@@ -36,6 +41,24 @@ class UserSendUppercutController {
             const deltaX = user.currentAreaPosition.x - targetUser.currentAreaPosition.x;
             const deltaY = user.currentAreaPosition.y - targetUser.currentAreaPosition.y;
 
+            // Bot validation: check if attacker can send uppercuts
+            if (!user.canSendUppercuts()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to send uppercut but can_send_uppercuts=false`);
+                return;
+            }
+
+            // Bot validation: check if target can receive uppercuts
+            if (!targetUser.canReceiveUppercuts()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to uppercut ${targetUser.username} but target can_receive_uppercuts=false`);
+                return;
+            }
+
+            // Bot validation: check if attacker can attack bots (if target is a bot)
+            if (targetUser.is_bot && !user.canAttackBots()) {
+                //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to uppercut bot ${targetUser.username} but can_attack_bots=false`);
+                return;
+            }
+
             // Comprobar si la posición es la adecuada para el uppercut (ajusta la lógica a tu juego)
             if ((deltaX === -1 && deltaY === 1) || (deltaX === 1 && deltaY === -1)) {
                 if (!user.isActionBlocked(AnimationEnum.UPPERCUT) && !targetUser.isActionBlocked(AnimationEnum.UPPERCUT)) {
@@ -52,14 +75,16 @@ class UserSendUppercutController {
                     UserBlockActionsTask.blockByUppercutSend(user);
                     UserBlockActionsTask.blockByUppercutReceive(targetUser);
 
-                    UserService.increaseUppercutSend(user);
-                    UserService.increaseUppercutReceived(targetUser);
+                    if (user.currentArea.scene_type != SceneTypesEnum.MINIGAME_RING) {
+                        UserService.increaseUppercutSend(user);
+                        UserService.increaseUppercutReceived(targetUser);
+                    }
 
                     // Emitir el uppercut sin esperar que estén quietos
                     user.currentArea.emit(ResponseSocketsEnum.USER_SEND_UPPERCUT, {
                         attacker: user.socket.id,
                         receiver: targetUser.socket.id,
-                        direction: (deltaX === -1 && deltaY === 1) ? 'right' : 'left',
+                        direction: (deltaX === -1 && deltaY === 1) ? 'left' : 'right',
                         uppercutSelected: user.uppercutSelected,
                     });
 

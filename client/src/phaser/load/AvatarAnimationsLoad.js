@@ -1,70 +1,48 @@
-import AvatarEnum from "../../enums/AvatarEnum";
-//import AvatarBoomerLoad from "./avatars/AvatarBoomerLoad";
-//import AvatarBrujitaLoad from "./avatars/AvatarBrujitaLoad";
-//import AvatarCholoLoad from "./avatars/AvatarCholoLoad";
-//import AvatarEmpollonLoad from "./avatars/AvatarEmpollonLoad";
-import AvatarGataLoad from "./avatars/AvatarGataLoad";
-//import AvatarGhostLoad from "./avatars/AvatarGhostLoad";
-//import AvatarIndiaLoad from "./avatars/AvatarIndiaLoad";
-//import AvatarLilianLoad from "./avatars/AvatarLilianLoad";
-//import AvatarMarsuLoad from "./avatars/AvatarMarsuLoad";
-//import AvatarModernLoad from "./avatars/AvatarModernLoad";
-//import AvatarNinjaLoad from "./avatars/AvatarNinjaLoad";
-import AvatarRastaLoad from "./avatars/AvatarRastaLoad";
-//import AvatarSkeletonLoad from "./avatars/AvatarSkeletonLoad";
-//import AvatarWerewolfLoad from "./avatars/AvatarWerewolfLoad";
-//import AvatarWraithLoad from "./avatars/AvatarWraithLoad";
-//import AvatarYayoLoad from "./avatars/AvatarYayoLoad";
-//import AvatarZombieLoad from "./avatars/AvatarZombieLoad";
+import avatarManager from "../managers/AvatarManager";
+import CachedAtlasLoader from "../loaders/CachedAtlasLoader";
 
 class AvatarAnimationsLoad {
     /**
-     * Método principal que se llama en el "preload" de tu escena.
-     * Aquí cargamos todos los ficheros atlas (spritesheet + JSON)
-     * definidos en werewolf_config.
+     * Método optimizado que solo carga avatares prioritarios (Gata y Rasta)
+     * Los demás avatares se cargarán dinámicamente según se necesiten
      */
-    static preload(gameScene) {
-        //AvatarBoomerLoad.main(gameScene, AvatarEnum.BOOMER);
-        //AvatarBrujitaLoad.main(gameScene, AvatarEnum.BRUJITA);
-        //AvatarCholoLoad.main(gameScene, AvatarEnum.CHOLO);
-        //AvatarEmpollonLoad.main(gameScene, AvatarEnum.EMPOLLON);
-        AvatarGataLoad.main(gameScene, AvatarEnum.GATA);
-        //AvatarGhostLoad.main(gameScene, AvatarEnum.GHOST);
-        //AvatarIndiaLoad.main(gameScene, AvatarEnum.INDIA);
-        //AvatarLilianLoad.main(gameScene, AvatarEnum.LILIAN);
-        //AvatarMarsuLoad.main(gameScene, AvatarEnum.MARSU);
-        //AvatarModernLoad.main(gameScene, AvatarEnum.MODERN);
-        //AvatarNinjaLoad.main(gameScene, AvatarEnum.NINJA);
-        AvatarRastaLoad.main(gameScene, AvatarEnum.RASTA);
-        //AvatarSkeletonLoad.main(gameScene, AvatarEnum.SKELETON);
-        //AvatarWerewolfLoad.main(gameScene, AvatarEnum.WEREWOLF);
-        //AvatarWraithLoad.main(gameScene, AvatarEnum.WRAITH);
-        //AvatarYayoLoad.main(gameScene, AvatarEnum.YAYO);
-        //AvatarZombieLoad.main(gameScene, AvatarEnum.ZOMBIE);
+    static async preload(gameScene) {
+        // Registrar el loader personalizado con cache
+        CachedAtlasLoader.registerWithPhaser(gameScene);
+        
+        // Inicializar el manager con la escena actual
+        await avatarManager.init(gameScene);
+        
+        // Cargar solo avatares prioritarios para reducir tiempo de carga inicial
+        avatarManager.loadPriorityAvatars(gameScene);
     }
 
     /**
-     * Método que se llama en el "create" de tu escena.
-     * Aquí creamos las animaciones a partir de los atlases ya cargados.
+     * Método optimizado que solo crea animaciones para avatares cargados
+     * Las animaciones se crean dinámicamente cuando se cargan los avatares
      */
     static create(gameScene) {
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.BOOMER], AvatarEnum.BOOMER);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.BRUJITA], AvatarEnum.BRUJITA);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.CHOLO], AvatarEnum.CHOLO);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.EMPOLLON], AvatarEnum.EMPOLLON);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.GATA], AvatarEnum.GATA);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.GHOST], AvatarEnum.GHOST);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.INDIA], AvatarEnum.INDIA);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.LILIAN], AvatarEnum.LILIAN);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.MARSU], AvatarEnum.MARSU);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.MODERN], AvatarEnum.MODERN);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.NINJA], AvatarEnum.NINJA);
-        this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.RASTA], AvatarEnum.RASTA);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.SKELETON], AvatarEnum.SKELETON);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.WEREWOLF], AvatarEnum.WEREWOLF);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.WRAITH], AvatarEnum.WRAITH);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.YAYO], AvatarEnum.YAYO);
-        //this.createAvatarAnimations(gameScene, window.avatars_config[AvatarEnum.ZOMBIE], AvatarEnum.ZOMBIE);
+        // Las animaciones ahora se crean automáticamente en AvatarManager
+        // cuando se cargan los avatares individuales
+        // Mostrar estadísticas de cache
+        //this.showCacheStats();
+    }
+
+    /**
+     * Muestra estadísticas del cache de avatares
+     */
+    static async showCacheStats() {
+        try {
+            const stats = await CachedAtlasLoader.getAtlaseCacheStats();
+            if (stats) {
+                console.log("📊 Estadísticas de cache de avatares:");
+                console.log(`   Atlas en cache: ${stats.atlasCount} (${(stats.atlasSize / 1024 / 1024).toFixed(2)}MB)`);
+                console.log(`   Spreadsheets en cache: ${stats.spreadsheetCount} (${(stats.spreadsheetSize / 1024 / 1024).toFixed(2)}MB)`);
+                console.log(`   Uso total: ${stats.usagePercentage.toFixed(1)}%`);
+            }
+        } catch (error) {
+            console.warn('⚠️ Error obteniendo estadísticas de cache:', error);
+        }
     }
 
     /**
@@ -79,16 +57,25 @@ class AvatarAnimationsLoad {
             const animKey = `${avatarId}_${animationName}`;
             const atlasKey = animData.atlasKey;
 
-            gameScene.anims.create({
-                key: animKey,
-                frames: gameScene.anims.generateFrameNames(atlasKey, {
-                    start: animData.start,
-                    end: animData.end,
-                    prefix: animData.prefix
-                }),
-                frameRate: animData.frameRate,
-                repeat: animData.repeat
-            });
+            // Verificar si la animación ya existe
+            if (gameScene.anims.exists(animKey)) {
+                return;
+            }
+
+            try {
+                gameScene.anims.create({
+                    key: animKey,
+                    frames: gameScene.anims.generateFrameNames(atlasKey, {
+                        start: animData.start,
+                        end: animData.end,
+                        prefix: animData.prefix
+                    }),
+                    frameRate: animData.frameRate,
+                    repeat: animData.repeat
+                });
+            } catch (error) {
+                // Error creando animación
+            }
         });
     }
 }

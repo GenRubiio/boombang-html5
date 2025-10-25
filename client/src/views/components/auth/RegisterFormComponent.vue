@@ -1,79 +1,102 @@
 <template>
   <form class="register-form" @submit.prevent="register">
     <div class="register-form__content">
-      <div class="register-form__title">Crea tu cuenta</div>
+      <div class="register-form__title">{{ $t("register.title") }}</div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showUsernameError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
           {{ usernameError }}
         </div>
-        <div class="register-form__label">Nombre del Personaje</div>
-        <div class="register-form__input">
+        <div class="register-form__label">
+          {{ $t("register.character_name") }}
+        </div>
+        <div class="register-form__input" @dragover.prevent @drop.prevent>
           <input
             v-model="username"
             ref="username"
             type="text"
-            placeholder="Nombre"
+            :placeholder="$t('register.username_placeholder')"
             required
           />
         </div>
       </div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showPasswordError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
           {{ passwordError }}
         </div>
-        <div class="register-form__label">Contraseña</div>
-        <div class="register-form__input">
+        <div class="register-form__label">{{ $t("register.password") }}</div>
+        <div class="register-form__input" @dragover.prevent @drop.prevent>
           <input
             v-model="password"
             type="password"
-            placeholder="Contraseña"
+            :placeholder="$t('register.password_placeholder')"
             required
           />
         </div>
       </div>
       <div class="register-form__input-container">
         <div class="register-form__error" v-if="showEmailError">
-          <img :src="asset_warning_image" alt="warning" />
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
           {{ emailError }}
         </div>
-        <div class="register-form__label">Email</div>
-        <div class="register-form__input">
-          <input v-model="email" type="email" placeholder="Email" required />
+        <div class="register-form__label">{{ $t("register.email") }}</div>
+        <div class="register-form__input" @dragover.prevent @drop.prevent>
+          <input
+            v-model="email"
+            type="email"
+            :placeholder="$t('register.email_placeholder')"
+            required
+          />
         </div>
       </div>
       <div class="register-form__input-container">
         <div class="register-form__terms">
           <input id="checkbox" type="checkbox" required />
-          <label for="checkbox"> I agree to these</label>
-          <a>Terms and Conditions</a>
+          <label for="checkbox"> {{ $t("register.terms_agree") }}</label>
+          <a :href="termsUrl" target="_blank">{{
+            $t("register.terms_and_conditions")
+          }}</a>
         </div>
+      </div>
+      <!-- Error de captcha -->
+      <div class="register-form__input-container" v-if="showCaptchaError">
+        <div class="register-form__error">
+          <img :src="asset_warning_image" :alt="$t('register.warning_alt')" />
+          {{ captchaError }}
+        </div>
+      </div>
+
+      <!-- Contenedor del reCAPTCHA -->
+      <div class="register-form__input-container g-recaptcha">
+        <div ref="recaptchaEl"></div>
       </div>
     </div>
     <div class="register-form__button-container">
-      <img :src="asset_button_image" alt="Jugar" />
+      <img :src="asset_button_image" :alt="$t('register.play_alt')" />
       <button
         class="register-form__button-container-button"
         type="submit"
         :class="{ 'disabled-button': loading || !isSocketConnected }"
       >
-        Jugar
+        {{ $t("register.play_button") }}
       </button>
     </div>
   </form>
 </template>
 
 <script>
-import socket from "../../../sockets/socket";
-import RequestSocketsEnum from "../../../enums/RequestSocketsEnum";
-import ResponseSocketsEnum from "../../../enums/ResponseSocketsEnum";
-import asset_button_image from "../../../assets/game/auth/login-button-image.webp";
-import asset_warning_image from "../../../assets/game/auth/warning.webp";
+import socket from "@/sockets/socket";
+import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import asset_button_image from "@/assets/game/auth/login-button-image.webp";
+import asset_warning_image from "@/assets/game/auth/warning.webp";
+import { useLanguageStore } from "@/stores/languageStore";
 
 export default {
   props: {
     avatar_id: Number,
+    lang: String,
   },
   data() {
     return {
@@ -86,35 +109,65 @@ export default {
       usernameError: "",
       emailError: "",
       passwordError: "",
+
+      recaptchaWidgetId: null,
+      recaptchaToken: "",
+      showCaptchaError: false,
+      captchaError: "",
+      siteKey: import.meta.env.VITE_RECAPTCHA_SITE_KEY,
+
       loading: false,
       isSocketConnected: socket.connected,
       asset_button_image,
       asset_warning_image,
+      termsUrl: import.meta.env.VITE_WEB_TERMS_URL,
     };
   },
   methods: {
     register() {
       if (this.loading || !this.isSocketConnected) return;
       this.resetErrors();
+
+      // Aseguramos que hay token válido
+      if (!this.recaptchaToken) {
+        this.showCaptchaError = true;
+        this.captchaError = this.$t("register.captcha_required");
+        return;
+      }
+
       this.loading = true;
 
-      this.$socket.emit(RequestSocketsEnum.REGISTER, {
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log("Enviando solicitud de registro..." + this.recaptchaToken);
+      }
+      socket.emit(RequestSocketsEnum.REGISTER, {
         username: this.username,
         email: this.email,
         password: this.password,
         avatar_id: this.avatar_id,
+        lang: this.lang,
+        recaptcha: this.recaptchaToken,
       });
 
-      this.$socket.off(ResponseSocketsEnum.REGISTER_SUCCESS);
-      this.$socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, (data) => {
-        this.$socket.user = data.user;
+      socket.off(ResponseSocketsEnum.REGISTER_SUCCESS);
+      socket.on(ResponseSocketsEnum.REGISTER_SUCCESS, async (data) => {
+        if (data.user && data.user.lang) {
+          await this.languageStore.setLocale(data.user.lang);
+        }
+        if (data.user?.authJwt) {
+          localStorage.setItem("app_jwt", data.user.authJwt);
+        }
+        socket.user = data.user;
         this.$emit("loginSuccess");
       });
 
-      this.$socket.off(ResponseSocketsEnum.REGISTER_ERROR);
-      this.$socket.on(ResponseSocketsEnum.REGISTER_ERROR, (error) => {
+      socket.off(ResponseSocketsEnum.REGISTER_ERROR);
+      socket.on(ResponseSocketsEnum.REGISTER_ERROR, (error) => {
         if (error.errors) {
           this.setErrors(error.errors);
+        }
+        if (import.meta.env.VITE_APP_ENV === "local") {
+          console.log(error);
         }
         this.loading = false;
       });
@@ -123,6 +176,7 @@ export default {
       this.showUsernameError = false;
       this.showEmailError = false;
       this.showPasswordError = false;
+      this.showCaptchaError = false;
       this.usernameError = "";
       this.emailError = "";
       this.passwordError = "";
@@ -140,6 +194,76 @@ export default {
         this.showPasswordError = true;
         this.passwordError = errors.password[0];
       }
+      if (errors.recaptcha) {
+        this.showCaptchaError = true;
+        this.captchaError = errors.recaptcha[0];
+        this.resetRecaptcha();
+      }
+    },
+    // ---- reCAPTCHA helpers ----
+    ensureRecaptchaScript() {
+      return new Promise((resolve, reject) => {
+        if (window.grecaptcha) return resolve();
+
+        const script = document.createElement("script");
+        // hl opcional según idioma actual
+        const lang = (this.$i18n?.locale || "es").split("-")[0];
+        script.src = `https://www.google.com/recaptcha/api.js?onload=___recaptchaOnload&render=explicit&hl=${lang}`;
+        script.async = true;
+        script.defer = true;
+
+        window.___recaptchaOnload = () => resolve();
+        script.onerror = () =>
+          reject(new Error(this.$t("register.captcha_load_error")));
+        document.head.appendChild(script);
+      });
+    },
+
+    async renderRecaptcha() {
+      await this.ensureRecaptchaScript();
+
+      if (this.recaptchaWidgetId !== null) return; // ya renderizado
+
+      this.recaptchaWidgetId = window.grecaptcha.render(
+        this.$refs.recaptchaEl,
+        {
+          sitekey: this.siteKey,
+          theme: "light", // o "dark"
+          callback: this.onRecaptchaVerified, // éxito
+          "expired-callback": this.onRecaptchaExpired,
+          "error-callback": this.onRecaptchaError,
+        }
+      );
+    },
+
+    onRecaptchaVerified(token) {
+      this.recaptchaToken = token;
+      this.showCaptchaError = false;
+      this.captchaError = "";
+    },
+
+    onRecaptchaExpired() {
+      this.recaptchaToken = "";
+      this.showCaptchaError = true;
+      this.captchaError = this.$t("register.captcha_expired");
+    },
+
+    onRecaptchaError() {
+      this.recaptchaToken = "";
+      this.showCaptchaError = true;
+      this.captchaError = this.$t("register.captcha_error");
+    },
+
+    resetRecaptcha() {
+      if (this.recaptchaWidgetId !== null && window.grecaptcha) {
+        window.grecaptcha.reset(this.recaptchaWidgetId);
+      }
+      this.recaptchaToken = "";
+    },
+  },
+  computed: {
+    languageStore() {
+      return useLanguageStore();
     },
   },
   mounted() {
@@ -150,6 +274,12 @@ export default {
     });
     socket.on("disconnect", () => {
       this.isSocketConnected = false;
+    });
+
+    // renderizar captcha
+    this.renderRecaptcha().catch(() => {
+      this.showCaptchaError = true;
+      this.captchaError = this.$t("register.captcha_load_error");
     });
   },
 };
@@ -205,6 +335,7 @@ export default {
 }
 
 .register-form__button-container-button {
+  min-width: 112px;
   font-size: 26px;
   display: inline-block;
   padding: 10px 20px;
@@ -299,5 +430,17 @@ export default {
 
 .register-form__terms input[type="checkbox"] {
   margin-right: 10px;
+}
+
+/* Contenedor responsivo */
+.g-recaptcha {
+  transform: scale(0.89);
+  transform-origin: 0 0;
+  margin-top: 10px;
+}
+
+/* Evita que aparezcan barras de scroll */
+.g-recaptcha iframe {
+  max-width: 100% !important;
 }
 </style>

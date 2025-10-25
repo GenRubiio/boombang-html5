@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\MinigameSceneRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Http\Controllers\Admin\Traits\SuperadminProtection;
 
 /**
  * Class MinigameSceneCrudController
@@ -18,6 +19,7 @@ class MinigameSceneCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use SuperadminProtection;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -26,6 +28,8 @@ class MinigameSceneCrudController extends CrudController
      */
     public function setup()
     {
+                $this->applySuperadminProtection();
+        
         CRUD::setModel(\App\Models\MinigameScene::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/minigame-scene');
         CRUD::setEntityNameStrings('minigame scene', 'minigame scenes');

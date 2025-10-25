@@ -1,4 +1,5 @@
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
+import gameConfig from "@/config/gameConfig.js";
 
 class UserUpdatePositionController {
     static main(gameScene, data) {
@@ -25,26 +26,28 @@ class UserUpdatePositionController {
         user.pathIndex = 0;
 
         // Forzar la posición en el mapa según la lógica isométrica
-        const tileWidth = 65;
-        const tileHeight = 33;
-        const finalX = (user.position.x - user.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const finalY = (user.position.x + user.position.y) * (tileHeight / 2);
+        const tileWidth = 65 * gameConfig.DPI;
+        const tileHeight = 33 * gameConfig.DPI;
+        const finalX = (user.position.x - user.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+        const finalY = (user.position.x + user.position.y) * (tileHeight / gameConfig.DPI);
 
         user.containerUser.setPosition(finalX, finalY);
         user.containerUser.setDepth(finalY);
         //user.spriteShadow.setPosition(0, 0);
         //user.spriteAvatar.setPosition(
         //    0,
-        //    -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15
+        //    -(user.spriteShadow.displayHeight / 2) - (user.spriteAvatar.displayHeight / 2) + 15 * 2
         //);
 
         //console.log(`Updating player ${socketId} position/direction to:`, position);
 
         // Ahora que el jugador está posicionado correctamente, cambiar el frame idle según la dirección
+        // Usar el avatar realmente disponible (fallback) para la animación mientras carga el solicitado
+        const effectiveAvatarId = user.currentAvatarId || user.avatarId;
         UserIdleAnimation.main(
             user.spriteAvatar,
             position.z,
-            user.avatarId
+            effectiveAvatarId
         );
     }
 }

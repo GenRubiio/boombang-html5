@@ -1,7 +1,12 @@
+import InteractionNotificationController from "./InteractionNotificationController";
+
 class RemoveUserController {
     static main(gameScene, socketId) {
         const user = gameScene.users[socketId];
         if (!user) return;
+
+        // Remove any interaction notifications for this user
+        InteractionNotificationController.remove(socketId);
 
         // Detener y eliminar tweens activos
         if (user.currentTween) user.currentTween.stop();

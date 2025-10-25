@@ -8,7 +8,7 @@ import CocoSandiaLoad from "./cocos/CocoSandiaLoad";
 import CocoShoeLoad from "./cocos/CocoShoeLoad";
 import CocoSnowballLoad from "./cocos/CocoSnowballLoad";
 import CocoYunqueLoad from "./cocos/CocoYunqueLoad";
-import asset_config_json from '../../assets/game/scene/cocos/config.json';
+import asset_config_json from '@/assets/game/scene/cocos/config.json';
 
 class EffectAnimationsLoad {
     /**

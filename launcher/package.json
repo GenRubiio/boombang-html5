@@ -1,15 +1,51 @@
 {
-  "name": "electron-app",
+  "name": "boommania-launcher",
   "version": "1.0.0",
+  "description": "BoomMania is an exciting multiplayer game where you can explore virtual worlds, customize your avatar, interact with other players and enjoy a unique gaming experience. Join the fun!",
+  "author": {
+    "name": "BoomMania Team"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . my-electron-app --platform=win32 --arch=x64 --out=release --overwrite"
+    "build": "electron-builder --win"
   },
   "dependencies": {
-    "electron": "^26.0.0"
+    "dotenv": "^17.2.2"
   },
   "devDependencies": {
-    "electron-packager": "^17.1.2"
+    "electron": "^26.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.boommania.launcher",
+    "productName": "BoomMania",
+    "files": [
+      "main.js",
+      "package.json",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "../web/public/favicon/web-app-manifest-512x512.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "displayLanguageSelector": true,
+      "license": "build/licenses/license.txt",
+      "installerSidebar": "build/image.png",
+      "uninstallerSidebar": "build/image.png",
+      "installerLanguages": [
+        "en_US",
+        "es_ES",
+        "ru_RU",
+        "ko_KR",
+        "zh_CN",
+        "ja_JP"
+      ]
+    }
   }
 }

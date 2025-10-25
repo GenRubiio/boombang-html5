@@ -1,36 +1,32 @@
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
-const DisconnectUserController = require('../../connection/DisconnectUserController');
 const Log = require('../../../utils/Log');
 const UserMovimentUtil = require('../../../utils/UserMovimentUtil');
 const UserResource = require('../../../resources/UserResource');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const AnimationEnum = require('../../../enums/AnimationEnum');
+const SceneTypesEnum = require('../../../enums/SceneTypesEnum');
 
 class UserSelectUserController {
     static main(socket, io, data) {
-        try {
-            const user = ConnectedUsersCollection.getBySocketId(socket.id);
-            if (!user || !user.currentArea) {
-                throw new Error('User not found or not in an area');
-            }
-            const selectedUser = ConnectedUsersCollection.getBySocketId(data.socketId);
-            if (!selectedUser || !selectedUser.currentArea) {
-                throw new Error('Selected user not found or not in an area');
-            }
-            if (user.currentArea != selectedUser.currentArea) {
-                throw new Error('Selected user is not in the same area');
-            }
+        const user = ConnectedUsersCollection.getBySocketId(socket.id);
+        if (!user || !user.currentArea) {
+            return;
+        }
 
-            this.selectUser(user, selectedUser);
-            if (!user.isActionBlocked(AnimationEnum.LOOK)) {
-                this.updateUserZPositionInArea(user, selectedUser);
-            }
+        const selectedUser = ConnectedUsersCollection.getBySocketId(data.socketId);
+        if (!selectedUser || !selectedUser.currentArea || user.currentArea !== selectedUser.currentArea) {
+            return;
+        }
 
-        } catch (err) {
-            Log.error('Error in UserSelectUserController: ' + err);
-            console.log(err);
-            DisconnectUserController.main(socket, io);
-            socket.emit('error_critical');
+        // Bot validation: if user is a bot with select_only_users=true, can't select other bots
+        if (user.selectOnlyUsers() && selectedUser.is_bot) {
+            //console.log(`[BOT-VALIDATION] Bot ${user.username} tried to select bot ${selectedUser.username} but has select_only_users=true`);
+            return;
+        }
+
+        this.selectUser(user, selectedUser);
+        if (!user.isActionBlocked(AnimationEnum.LOOK)) {
+            this.updateUserZPositionInArea(user, selectedUser);
         }
     }
 
@@ -48,9 +44,16 @@ class UserSelectUserController {
             updateCard = true;
         }
         if (updateCard) {
+            let pendingInteraction = null;
+            if (user.currentArea.scene_type != SceneTypesEnum.MINIGAME_RING){
+                pendingInteraction = user.currentArea.getInteractionType(user.id, selectedUser.id);
+            }
             user.emit(ResponseSocketsEnum.USER_SELECT_USER, {
                 selected_user: new UserResource(selectedUser).toObject(),
-                auth_user: new UserResource(user).toObject()
+                auth_user: new UserResource(user).toObject(),
+                pending_interaction: pendingInteraction ? {
+                    type: pendingInteraction
+                } : null
             });
         }
     }

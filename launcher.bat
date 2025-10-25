@@ -28,9 +28,10 @@ goto MAIN_MENU
 
 
 :START_ALL
-call :START_SERVER
-call :START_CLIENT
 call :START_API
+call :START_CLIENT
+timeout /t 5 /nobreak
+call :START_SERVER
 pause
 goto MAIN_MENU
 
@@ -56,9 +57,9 @@ goto MAIN_MENU
 
 ::––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 :: Funciones de arrancar
-:START_SERVER
-echo Iniciando servidor...
-start "server" cmd /k "cd /d "%ROOT%server" && node index.js"
+:START_API
+echo Iniciando API...
+start "api" cmd /k "cd /d "%ROOT%api" && php artisan serve"
 goto :eof
 
 :START_CLIENT
@@ -66,11 +67,11 @@ echo Iniciando cliente...
 start "client" cmd /k "cd /d "%ROOT%client" && npm run dev"
 goto :eof
 
-:START_API
-echo Iniciando API...
-start "api" cmd /k "cd /d "%ROOT%api" && php artisan serve"
-goto :eof
 
+:START_SERVER
+echo Iniciando servidor...
+start "server" cmd /k "cd /d "%ROOT%server" && node index.js"
+goto :eof
 
 ::––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 :: Funciones de parar/reiniciar

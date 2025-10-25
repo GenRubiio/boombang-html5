@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    'recaptcha' => [
+        'secret' => env('GRECAPTCHA_PRIVATE'),
+    ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => '',
+    ],
+
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+    ],
+
 ];

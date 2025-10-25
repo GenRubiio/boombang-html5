@@ -1,7 +1,29 @@
 <template>
   <div class="game-container">
-    <UserCardComponent ref="userCard" />
+    <UserCardComponent
+      ref="userCard"
+      @open-ring-info="showRingInfoCard"
+      @open-coconuts-info="showCoconutsInfoCard"
+    />
+    <RingInfoCardComponent
+      v-if="isRingInfoCardVisible"
+      @close-ring-info="hideRingInfoCard"
+    />
+    <CoconutsInfoCardComponent
+      v-if="isCoconutsInfoCardVisible"
+      @close-coconuts-info="hideCoconutsInfoCard"
+    />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
+    <AvatarSelectionPopup
+      v-if="isAvatarSelectionVisible"
+      :authUser="sceneData.authUser"
+      @close-avatar-selection="hideAvatarSelection"
+    />
+    <RankingsComponent
+      v-if="isRankingsVisible"
+      :authUser="sceneData.authUser"
+      @close-rankings="hideRankings"
+    />
   </div>
 </template>
 
@@ -9,7 +31,12 @@
 import socket from "../../../../sockets/socket.js";
 import UserCardComponent from "../../../components/game/scenes/UserCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
+import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardComponent.vue";
+import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
+import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
+import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
+import InteractionNotificationController from "../../../../phaser/controllers/scene/InteractionNotificationController.js";
 
 export default {
   props: {
@@ -22,7 +49,12 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isRingInfoCardVisible: false,
+      isCoconutsInfoCardVisible: false,
+      isAvatarSelectionVisible: false,
+      isRankingsVisible: false,
+    };
   },
   created() {
     this.$emit("updateLoading", true);
@@ -30,8 +62,38 @@ export default {
   components: {
     UserCardComponent,
     BaseChatComponent,
+    RingInfoCardComponent,
+    CoconutsInfoCardComponent,
+    AvatarSelectionPopup,
+    RankingsComponent,
   },
   methods: {
+    showRingInfoCard() {
+      this.isRingInfoCardVisible = true;
+      this.isCoconutsInfoCardVisible = false;
+    },
+    showCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = true;
+      this.isRingInfoCardVisible = false;
+    },
+    hideRingInfoCard() {
+      this.isRingInfoCardVisible = false;
+    },
+    hideCoconutsInfoCard() {
+      this.isCoconutsInfoCardVisible = false;
+    },
+    showAvatarSelection() {
+      this.isAvatarSelectionVisible = true;
+    },
+    hideAvatarSelection() {
+      this.isAvatarSelectionVisible = false;
+    },
+    showRankings() {
+      this.isRankingsVisible = true;
+    },
+    hideRankings() {
+      this.isRankingsVisible = false;
+    },
     initializeGame() {
       const gamePhaser = this.$root.gamePhaser;
 
@@ -42,16 +104,19 @@ export default {
       });
     },
     exitToLobby() {
-      socket.emit(RequestSocketsEnum.USER_LEAVE_AREA); // Enviar evento para salir de la sala
+      socket.emit(RequestSocketsEnum.USER_LEAVE_SCENE); // Enviar evento para salir de la sala
     },
-    sendMessage(message) {
+    sendMessage(data) {
       socket.emit(RequestSocketsEnum.SEND_CHAT, {
-        message: message,
+        message: data.message,
+        recipient: data.recipient,
       });
     },
     exitToLobbyResponse() {
       // Limpia el juego Phaser antes de salir
-      console.log("Saliendo de la sala...");
+      if (import.meta.env.VITE_APP_ENV === "local") {
+        console.log("Saliendo de la sala...");
+      }
       this.$emit("updateLoading", true);
       this.$emit("exitLobby"); // Emite un evento para cambiar la escena
     },
@@ -63,7 +128,10 @@ export default {
   mounted() {
     this.initializeGame();
   },
-  beforeUnmount() {},
+  beforeUnmount() {
+    // Clear all interaction notifications when leaving the scene
+    InteractionNotificationController.clearAll();
+  },
 };
 </script>
 

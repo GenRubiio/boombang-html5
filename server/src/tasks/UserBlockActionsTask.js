@@ -11,6 +11,7 @@ const MoveUserToSceneDoorTask = require('./MoveUserToSceneDoorTask');
 const SceneTypesEnum = require('../enums/SceneTypesEnum');
 const RemoveUserFromSceneTask = require('./RemoveUserFromSceneTask');
 const CoconutsBlockActionsMap = require('../maps/CoconutsBlockActionsMap');
+const InteractionsBlockActionsMap = require('../maps/InteractionsBlockActionsMap');
 
 class UserBlockActionsTask {
     static blockByEmojiSend(user, emojiId) {
@@ -27,6 +28,23 @@ class UserBlockActionsTask {
         catch (err) {
             console.log(err);
             logger.log(`Error blocking by emoji: ${err.message}`, 'error');
+        }
+    }
+
+    static blockByInteraction(user, interactionType) {
+        try {
+            const actionData = InteractionsBlockActionsMap.get(interactionType);
+            if (!actionData) {
+                throw new Error('Invalid interaction type');
+            }
+            const blockTime = actionData.time[user.avatarId];
+            actionData.actions.forEach(action => {
+                user.blockAction(action, blockTime);
+            });
+        }
+        catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by interaction: ${err.message}`, 'error');
         }
     }
 
@@ -74,6 +92,34 @@ class UserBlockActionsTask {
         catch (err) {
             console.log(err);
             logger.log(`Error blocking by uppercut: ${err.message}`, 'error');
+        }
+    }
+
+    static blockByUpdateDescription(user) {
+        try {
+            user.blockAction(AnimationEnum.UPDATE_DESCRIPTION, 2000);
+        } catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by update description: ${err.message}`, 'error');
+        }
+    }
+
+    static blockByUpdateAvatar(user) {
+        try {
+            user.blockAction(AnimationEnum.UPDATE_AVATAR, 2000);
+        } catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by update avatar: ${err.message}`, 'error');
+        }
+    }
+
+    static blockByChat(user) {
+        try {
+            user.blockAction(AnimationEnum.CHAT, 1200);
+        }
+        catch (err) {
+            console.log(err);
+            logger.log(`Error blocking by chat: ${err.message}`, 'error');
         }
     }
 

@@ -1,0 +1,441 @@
+{
+  "auth": {
+    "rasta_alt": "Раста",
+    "lilian_alt": "Лилиан"
+  },
+  "login": {
+    "title": "Войти",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "button": "Войти",
+    "register": "Зарегистрироваться",
+    "already_have_account": "Уже есть аккаунт?",
+    "character_name": "Имя персонажа",
+    "username_placeholder": "Имя",
+    "password_placeholder": "Пароль",
+    "forgot_password": "Забыли пароль?",
+    "separator": "Или",
+    "google_login": "Продолжить с Google",
+    "play_button": "Играть",
+    "warning_alt": "Предупреждение",
+    "play_alt": "Играть",
+    "google_alt": "Google"
+  },
+  "common": {
+    "close": "X",
+    "delete": "Удалить",
+    "previous": "Назад",
+    "next": "Далее",
+    "accept": "Принять"
+  },
+  "scene": {
+    "tooltip_shop": "Магазин",
+    "tooltip_avatars": "Аватары",
+    "tooltip_color": "Раскрасить",
+    "tooltip_move": "Переместить",
+    "tooltip_inventory": "Инвентарь",
+    "tooltip_rankings": "Рейтинги"
+  },
+  "rankings": {
+    "title": "Рейтинги мини-игр",
+    "loading": "Загрузка...",
+    "no_data": "Нет данных",
+    "position": "Позиция",
+    "username": "Пользователь",
+    "score": "Очки",
+    "week": "Неделя",
+    "select_week": "Выбрать неделю",
+    "page": "Страница",
+    "of": "из",
+    "previous_page": "Предыдущая страница",
+    "next_page": "Следующая страница",
+    "error_loading": "Ошибка загрузки данных"
+  },
+  "maintenance": {
+    "title": "Техническое обслуживание",
+    "description": "Сервер находится на техническом обслуживании.\nПожалуйста, попробуйте позже.",
+    "alt": "Техническое обслуживание"
+  },
+  "avatar_select": {
+    "title": "Персонаж",
+    "label": "Выберите своего персонажа",
+    "gallery_title": "Галерея персонажей"
+  },
+  "register": {
+    "title": "Создать аккаунт",
+    "character_name": "Имя персонажа",
+    "username_placeholder": "Имя",
+    "password": "Пароль",
+    "password_placeholder": "Пароль",
+    "email": "Электронная почта",
+    "email_placeholder": "Электронная почта",
+    "terms_agree": "Я принимаю",
+    "terms_and_conditions": "Условия и положения",
+    "play_button": "Играть",
+    "captcha_required": "Пожалуйста, пройдите reCAPTCHA.",
+    "captcha_expired": "Срок действия reCAPTCHA истек. Пожалуйста, отметьте его снова.",
+    "captcha_error": "Ошибка при загрузке/проверке reCAPTCHA. Попробуйте еще раз.",
+    "captcha_load_error": "Не удалось загрузить reCAPTCHA.",
+    "warning_alt": "Предупреждение",
+    "play_alt": "Играть",
+    "language": "Язык"
+  },
+  "auth_screen": {
+    "register_title": "Создать аккаунт",
+    "register_text": "Зарегистрируйтесь и выберите персонажа",
+    "login_title": "Войти",
+    "login_text": "Войдите в свой аккаунт"
+  },
+  "island_create": {
+    "choose_background": "Выберите фон",
+    "island_name_placeholder": "Название острова",
+    "set_island_name": "Дайте имя своему острову"
+  },
+  "scene_create": {
+    "choose_scene": "Выберите сцену",
+    "scene_name_placeholder": "Название комнаты",
+    "set_scene_name": "Дайте имя своей комнате",
+    "error_no_scenes": "Остров не найден или на нем нет сцен."
+  },
+  "island": {
+    "locations": "Локации",
+    "add_scenario": "Добавить сценарий"
+  },
+  "user_card": {
+    "change_ficha_alt": "Изменить карточку",
+    "edit_button": "РЕДАКТИРОВАТЬ",
+    "avatar_alt": "Аватар пользователя",
+    "tabs": {
+      "emojis": "Эмодзи",
+      "statistics": "Статистика",
+      "interactions": "Взаимодействия"
+    },
+    "emojis": {
+      "laughter_1": "Смех 1",
+      "laughter_2": "Смех 2",
+      "laughter_3": "Смех 3",
+      "love": "Любовь",
+      "sad": "Грусть",
+      "angry": "Злость",
+      "wink": "Подмигивание",
+      "kiss": "Поцелуй",
+      "surprise": "Удивление",
+      "sleep": "Сон",
+      "cool": "Круто",
+      "confused": "Смущение",
+      "cry": "Плач",
+      "spit": "Плевок",
+      "fart": "Пук",
+      "provoke": "Провокация",
+      "fly": "Полет"
+    },
+    "interactions": {
+      "kick": "Пинок",
+      "bomb": "Бомба",
+      "spit": "Плевок",
+      "tomato": "Помидор",
+      "poop": "Какашка",
+      "flower": "Цветок",
+      "heart": "Сердце",
+      "kiss": "Поцелуй",
+      "gift": "Подарок",
+      "question": "Вопрос",
+      "exclamation": "Восклицание",
+      "net": "Сеть",
+      "drink": "Напиток",
+      "rose": "Роза",
+      "upper": "Апперкот",
+      "coco": "Кокос",
+      "upper_item": "Предмет Апперкот",
+      "coco_item": "Предмет Кокос",
+      "waiting_response": "Ожидание ответа",
+      "cancel": "Отмена"
+    },
+    "statistics": {
+      "title": "Статистика взаимодействий",
+      "sent": "Отправлено",
+      "received": "Получено",
+      "kicks_sent": "Отправлено пинков",
+      "kicks_received": "Получено пинков",
+      "bombs_sent": "Отправлено бомб",
+      "bombs_received": "Получено бомб",
+      "spits_sent": "Отправлено плевков",
+      "spits_received": "Получено плевков",
+      "tomatoes_sent": "Отправлено помидоров",
+      "tomatoes_received": "Получено помидоров",
+      "poops_sent": "Отправлено какашек",
+      "poops_received": "Получено какашек",
+      "flowers_sent": "Отправлено цветов",
+      "flowers_received": "Получено цветов",
+      "kisses_sent": "Отправлено поцелуев",
+      "kisses_received": "Получено поцелуев",
+      "hearts_sent": "Отправлено сердец",
+      "hearts_received": "Получено сердец",
+      "gifts_sent": "Отправлено подарков",
+      "gifts_received": "Получено подарков",
+      "questions_sent": "Отправлено вопросов",
+      "questions_received": "Получено вопросов",
+      "exclamations_sent": "Отправлено восклицаний",
+      "exclamations_received": "Получено восклицаний",
+      "nets_sent": "Отправлено сетей",
+      "nets_received": "Получено сетей",
+      "rings": {
+        "title": "Ринг",
+        "red": "Красная перчатка",
+        "white": "Белая перчатка",
+        "pink": "Розовая перчатка",
+        "purple": "Фиолетовая перчатка",
+        "orange": "Оранжевая перчатка",
+        "brown": "Коричневая перчатка",
+        "green": "Зеленая перчатка",
+        "black": "Черная перчатка",
+        "blue": "Синяя перчатка",
+        "gold": "Золотая перчатка",
+        "won": "Выиграно"
+      },
+      "uppercuts": {
+        "title": "Апперкоты"
+      },
+      "coconuts": {
+        "title": "Кокосы"
+      },
+      "coconuts_locos": {
+        "title": "Безумные кокосы",
+        "caught": "Поймано"
+      }
+    }
+  },
+  "ring_npc": {
+    "title": "Мудрец ринга",
+    "description": "Собери все перчатки и покажи свою силу!",
+    "victories": "{count} побед",
+    "gloves": {
+      "bronze": "Бронзовая перчатка",
+      "silver": "Серебряная перчатка",
+      "gold": "Золотая перчатка",
+      "diamond": "Бриллиантовая перчатка",
+      "special": "Особая перчатка"
+    }
+  },
+  "chat": {
+    "base_alt": "Основа чата",
+    "placeholder": "Напишите сообщение...",
+    "brujula_alt": "Выйти в лобби",
+    "public": "Общий"
+  },
+  "customization": {
+    "tabs": {
+      "ficha": "Карточка",
+      "chat": "Чат",
+      "nombre": "Имя",
+      "sombra": "Тень"
+    },
+    "title": "НАСТРОЙКА {tab}"
+  },
+  "npc": {
+    "ring": {
+      "welcome": "Добро пожаловать на ринг",
+      "description": "Подпишитесь, чтобы соревноваться с другими пользователями и выигрывать награды!",
+      "searching": "Поиск противника...",
+      "cancel": "Отменить поиск",
+      "subscribe": "Найти противника",
+      "unlock_gloves": "Открывайте перчатки, одерживая победы",
+      "weekly_trophies": "Еженедельные трофеи",
+      "trophies_alt": "Трофеи ринга",
+      "gloves": {
+        "red": "{victories} побед",
+        "white": "{victories} побед",
+        "pink": "{victories} побед",
+        "purple": "{victories} побед",
+        "orange": "{victories} побед",
+        "brown": "{victories} побед",
+        "green": "{victories} побед",
+        "black": "{victories} побед",
+        "blue": "{victories} побед",
+        "gold": "{victories} побед",
+        "alt": {
+          "red": "Красная перчатка",
+          "white": "Белая перчатка",
+          "pink": "Розовая перчатка",
+          "purple": "Фиолетовая перчатка",
+          "orange": "Оранжевая перчатка",
+          "brown": "Коричневая перчатка",
+          "green": "Зеленая перчатка",
+          "black": "Черная перчатка",
+          "blue": "Синяя перчатка",
+          "gold": "Золотая перчатка"
+        }
+      }
+    }
+  },
+  "scenes": {
+    "ring_info": {
+      "title": "ИНФО РИНГ",
+      "victories": "{count} побед",
+      "red": "Красная перчатка",
+      "white": "Белая перчатка",
+      "pink": "Розовая перчатка",
+      "purple": "Фиолетовая перчатка",
+      "orange": "Оранжевая перчатка",
+      "brown": "Коричневая перчатка",
+      "green": "Зеленая перчатка",
+      "black": "Черная перчатка",
+      "blue": "Синяя перчатка",
+      "gold": "Золотая перчатка",
+      "red_glove_alt": "Красная перчатка",
+      "white_glove_alt": "Белая перчатка",
+      "pink_glove_alt": "Розовая перчатка",
+      "purple_glove_alt": "Фиолетовая перчатка",
+      "orange_glove_alt": "Оранжевая перчатка",
+      "brown_glove_alt": "Коричневая перчатка",
+      "green_glove_alt": "Зеленая перчатка",
+      "black_glove_alt": "Черная перчатка",
+      "blue_glove_alt": "Синяя перчатка",
+      "gold_glove_alt": "Золотая перчатка"
+    },
+    "coconuts_info": {
+      "title": "ИНФО КОКОСЫ",
+      "coco_cost": "{count} кокосов",
+      "coco_alt": "Кокос",
+      "coco_name": "Кокос",
+      "honeycomb_alt": "Пчелиные соты",
+      "honeycomb_name": "Пчелиные соты",
+      "snowball_alt": "Снежок",
+      "snowball_name": "Снежок",
+      "garbage_alt": "Мусор",
+      "garbage_name": "Мусор",
+      "shoe_alt": "Ботинок",
+      "shoe_name": "Ботинок",
+      "watermelon_alt": "Арбуз",
+      "watermelon_name": "Арбуз",
+      "pie_alt": "Пирог",
+      "pie_name": "Пирог",
+      "anvil_alt": "Наковальня",
+      "anvil_name": "Наковальня",
+      "pot_alt": "Горшок",
+      "pot_name": "Горшок",
+      "piano_alt": "Пианино",
+      "piano_name": "Пианино"
+    }
+  },
+  "gacha": {
+    "help": {
+      "main_title": "Помощь по Гачапону",
+      "items_title": "Доступные призы",
+      "rarity": "Редкость",
+      "appearance": "Появление",
+      "decorations_title": "Призы-декорации",
+      "compensation": "Компенсация",
+      "comp_silver": "{amount} серебряных монет",
+      "comp_gold": "{amount} золотых монет"
+    },
+    "result": {
+      "title": "Вы выиграли приз!",
+      "confirm": "Принять"
+    },
+    "error": {
+      "title": "Ошибка",
+      "close": "Закрыть",
+      "default_message": "Произошла непредвиденная ошибка."
+    },
+    "alert": {
+      "title": "Хотите сыграть?",
+      "text": "Стоимость 100 кредитов. Хотите продолжить?",
+      "confirm": "Подтвердить",
+      "cancel": "Отмена"
+    }
+  },
+  "lobby": {
+    "golden_coins_alt": "Золотые монеты",
+    "silver_coins_alt": "Серебряные монеты",
+    "islands": {
+      "public_alt": "Общественные острова",
+      "public": "Общественные",
+      "favorites_alt": "Избранные острова",
+      "favorites": "Избранные",
+      "my_islands_alt": "Мои острова",
+      "my_islands": "Мои острова",
+      "create_island": "Создать остров",
+      "create_island_alt": "Создать новый остров"
+    },
+    "no_favorite_islands": "У вас нет избранных островов.",
+    "gacha": {
+      "machine_alt": "Автомат Гачапон",
+      "handle_alt": "Ручка Гачапона",
+      "title_default": "Гачапон",
+      "price_default": "Цена",
+      "title": "Гачапон",
+      "price": "100 кредитов"
+    },
+    "tabs": {
+      "areas": "Зоны",
+      "games": "Игры",
+      "islands": "Острова"
+    },
+    "my_islands": {
+      "no_islands": "У вас нет созданных островов."
+    },
+    "search": {
+      "not_implemented": "Поиск еще не реализован."
+    },
+    "ui": {
+      "background_alt": "Фон лобби",
+      "flor_alt": "Декоративное растение",
+      "foreground_alt": "Передний план лобби",
+      "marikita_alt": "Декоративная божья коровка",
+      "avatar_alt": "Аватар пользователя",
+      "logout_alt": "Выйти из системы",
+      "logout": "Выйти",
+      "gachapon": "Гачапон",
+      "credits": "Кредиты",
+      "avatar_error": "Ошибка загрузки аватара пользователя",
+      "settings": "Настройки",
+      "settings_alt": "Конфигурация"
+    }
+  },
+  "settings": {
+    "main_title": "Настройки",
+    "save": "Сохранить",
+    "tabs": {
+      "profile": "Профиль",
+      "graphics": "Графика",
+      "sounds": "Звуки"
+    },
+    "profile": {
+      "username": "Имя пользователя",
+      "username_placeholder": "Введите ваше имя пользователя",
+      "username_desc": "Вы можете менять свое имя пользователя раз в 30 дней.",
+      "language": "Язык",
+      "language_desc": "Выберите предпочитаемый язык."
+    },
+    "graphics": {
+      "render_type": "Тип рендеринга",
+      "render_type_desc": "Выберите движок рендеринга: WEBGL (быстрее, расширенные эффекты) или CANVAS (совместимость). AUTO пытается использовать WebGL и переключается на Canvas в случае сбоя.",
+      "antialias": "Сглаживание",
+      "antialias_desc": "Сглаживает текстуры при масштабировании/вращении. false оставляет пиксели четкими.",
+      "antialias_gl": "Сглаживание GL",
+      "antialias_gl_desc": "Активирует MSAA (сглаживание краев холста) при создании WebGL. Не изменяет текстуры. ⚠️ Для изменения этого параметра требуется перезапуск игры.",
+      "pixel_art": "Пиксель-арт",
+      "pixel_art_desc": "«Пресет», который активирует antialias=false и roundPixels=true. Все выглядит четче.",
+      "round_pixels": "Округление пикселей",
+      "round_pixels_desc": "Округляет позиции до ближайшего пикселя (предотвращает размытие спрайтов).",
+      "power_preference": "Предпочтение производительности",
+      "power_preference_desc": "Предлагает браузеру, какой GPU использовать: high-performance → принудительно использовать дискретную видеокарту (больше потребление). low-power → экономия батареи."
+    },
+    "sounds": {
+      "scene_sound": "Отключить звук сцены",
+      "scene_sound_desc": "Включить или отключить фоновую музыку для текущей сцены.",
+      "scene_volume": "Громкость сцены",
+      "scene_volume_desc": "Настроить уровень громкости фоновой музыки сцены."
+    },
+    "confirm": {
+      "title": "Подтвердите изменения",
+      "message": "Применение этих изменений приведет к перезапуску игры. Вы хотите продолжить?",
+      "ok": "OK",
+      "cancel": "Отмена"
+    }
+  },
+  "loading": {
+    "title": "Загрузка..."
+  }
+}

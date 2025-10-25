@@ -1,5 +1,6 @@
 import UserIdleAnimation from "../../animations/UserIdleAnimation.js";
 import UserUppercutAnimation from "../../animations/UserUppercutAnimation.js";
+import gameConfig from "@/config/gameConfig.js";
 
 class SendUppercutAnimationController {
     static main(gameScene, data) {
@@ -16,17 +17,17 @@ class SendUppercutAnimationController {
         attacker.path = [];
         attacker.pathIndex = 0;
 
-        const tileWidth = 65;
-        const tileHeight = 33;
-        const attackerFinalX = (attacker.position.x - attacker.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const attackerFinalY = (attacker.position.x + attacker.position.y) * (tileHeight / 2);
+        const tileWidth = 65 * gameConfig.DPI;
+        const tileHeight = 33 * gameConfig.DPI;
+        const attackerFinalX = (attacker.position.x - attacker.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+        const attackerFinalY = (attacker.position.x + attacker.position.y) * (tileHeight / gameConfig.DPI);
 
         attacker.containerUser.setPosition(attackerFinalX, attackerFinalY);
         attacker.containerUser.setDepth(attackerFinalY);
         //attacker.spriteShadow.setPosition(0, 0);
         //attacker.spriteAvatar.setPosition(
         //    0,
-        //    -(attacker.spriteShadow.displayHeight / 2) - (attacker.spriteAvatar.displayHeight / 2) + 15
+        //    -(attacker.spriteShadow.displayHeight / 2) - (attacker.spriteAvatar.displayHeight / 2) + 15 * 2
         //);
 
         // ===== DETENER Y REPOSICIONAR AL RECEPTOR =====
@@ -38,15 +39,15 @@ class SendUppercutAnimationController {
         receiver.path = [];
         receiver.pathIndex = 0;
 
-        const receiverFinalX = (receiver.position.x - receiver.position.y) * (tileWidth / 2) + gameScene.scale.width / 2;
-        const receiverFinalY = (receiver.position.x + receiver.position.y) * (tileHeight / 2);
+        const receiverFinalX = (receiver.position.x - receiver.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
+        const receiverFinalY = (receiver.position.x + receiver.position.y) * (tileHeight / gameConfig.DPI);
 
         receiver.containerUser.setPosition(receiverFinalX, receiverFinalY);
         receiver.containerUser.setDepth(receiverFinalY);
         //receiver.spriteShadow.setPosition(0, 0);
         //receiver.spriteAvatar.setPosition(
         //    0,
-        //    -(receiver.spriteShadow.displayHeight / 2) - (receiver.spriteAvatar.displayHeight / 2) + 15
+        //    -(receiver.spriteShadow.displayHeight / 2) - (receiver.spriteAvatar.displayHeight / 2) + 15 * 2
         //);
 
         // Ahora ambos están forzados a la posición lógica del servidor

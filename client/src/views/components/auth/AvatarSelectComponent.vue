@@ -2,16 +2,29 @@
   <div>
     <div class="select-avatar">
       <div class="select-avatar__container">
-        <div class="select-avatar__title">Personaje</div>
-        <div class="select-avatar__label">Selecciona tu personaje</div>
+        <div class="select-avatar__title">{{ $t("avatar_select.title") }}</div>
+        <div class="select-avatar__label">{{ $t("avatar_select.label") }}</div>
         <div class="select-avatar__slider">
           <div class="slider">
-            <div id="slide-0" data-avatar="5">
+            <div id="slide-0" :data-avatar="AvatarEnum.GATA">
               <img :src="asset_gata_redbull_image" />
             </div>
-            <div id="slide-1" data-avatar="13">
+            <div id="slide-1" :data-avatar="AvatarEnum.RASTA">
               <img :src="asset_rasta_redbull_image" />
             </div>
+          </div>
+        </div>
+        <div class="select-avatar__input-container">
+          <div class="select-avatar__title">{{ $t("register.language") }}</div>
+          <div class="select-avatar__input">
+            <select v-model="lang" @change="onLangChange">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="ru">Русский</option>
+              <option value="zh">简体中文</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+            </select>
           </div>
         </div>
       </div>
@@ -20,8 +33,9 @@
 </template>
 
 <script>
-import asset_gata_redbull_image from "../../../assets/game/auth/gata-redbull.webp";
-import asset_rasta_redbull_image from "../../../assets/game/auth/rasta-redbull.webp";
+import asset_gata_redbull_image from "@/assets/game/auth/gata-redbull.webp";
+import asset_rasta_redbull_image from "@/assets/game/auth/rasta-redbull.webp";
+import AvatarEnum from "@/enums/AvatarEnum";
 
 import $ from "jquery";
 import "slick-carousel";
@@ -31,10 +45,27 @@ export default {
     return {
       asset_gata_redbull_image,
       asset_rasta_redbull_image,
+      AvatarEnum,
+      lang: "en",
     };
   },
-  methods: {},
+  methods: {
+    onLangChange() {
+      this.$emit("changeLang", this.lang);
+    },
+    getBrowserLanguage() {
+      const browserLang = navigator.language.split("-")[0];
+      const supportedLangs = ["en", "es", "ru", "zh", "ja", "ko"];
+      if (supportedLangs.includes(browserLang)) {
+        return browserLang;
+      }
+      return "en"; // Default language
+    },
+  },
   mounted() {
+    this.lang = this.getBrowserLanguage();
+    this.onLangChange(); // Emit initial language
+
     $(".slider").slick({
       infinite: true,
       slidesToShow: 1,
@@ -133,5 +164,32 @@ export default {
   font-weight: bold;
   color: #003d6c;
   line-height: 16px;
+}
+
+.select-avatar__input-container {
+  position: relative;
+}
+
+.select-avatar__input select {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 22px;
+  border-radius: 5px;
+  background-color: #0d97f1;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.select-avatar__input select option {
+  font-size: 18px;
+}
+
+.select-avatar__input select:hover,
+.select-avatar__input select:focus,
+.select-avatar__input select:active {
+  outline: none;
 }
 </style>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat Item Export</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    .chat-item {
+      display: flex;
+      align-items: center;
+      width: 240px;
+      border-radius: 5px;
+      position: relative;
+      padding: 4px 5px;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+
+    .chat-item__icon {
+      position: absolute;
+    }
+
+    .chat-item__icon img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    .chat-item__name {
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 14px;
+      margin-left: 23px;
+      margin-top: 2px;
+    }
+
+    .chat-item__text {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-list"></div>
+
+  <script>
+    const exampleChat = {
+      name: 'God',
+      text: 'I love BoomMania!',
+      icon: 'cara_media.svg',
+      chat_background_color: '#ff0000',
+      chat_color: '#1a1a1a'
+    };
+
+    function createChatItem(chat) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'chat-item';
+      wrapper.style.backgroundColor = chat.chat_background_color || '';
+      wrapper.style.color = chat.chat_color || '';
+
+      const iconWrap = document.createElement('div');
+      iconWrap.className = 'chat-item__icon';
+      const img = document.createElement('img');
+      img.src = chat.icon;
+      img.alt = 'Chat Icon';
+      iconWrap.appendChild(img);
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'chat-item__name';
+      nameEl.textContent = `${chat.name}:`;
+
+      const textEl = document.createElement('div');
+      textEl.className = 'chat-item__text';
+      textEl.textContent = chat.text;
+
+      wrapper.appendChild(iconWrap);
+      wrapper.appendChild(nameEl);
+      wrapper.appendChild(textEl);
+
+      // Evento click para exportar
+      wrapper.addEventListener('click', () => {
+        html2canvas(wrapper, { backgroundColor: null }).then(canvas => {
+          const link = document.createElement('a');
+          link.download = `${chat.name}_chat.webp`;
+          link.href = canvas.toDataURL("image/webp", 1.0);
+          link.click();
+        });
+      });
+
+      return wrapper;
+    }
+
+    const list = document.getElementById('chat-list');
+    list.appendChild(createChatItem(exampleChat));
+  </script>
+</body>
+</html>

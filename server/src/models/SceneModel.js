@@ -3,6 +3,9 @@ const logger = new ConsoleLogger();
 const MovementProcessorInstance = require('../instances/MovementProcessorInstance');
 const SceneItemModel = require('./SceneItemModel');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
+const SceneTypesEnum = require('../enums/SceneTypesEnum');
+const PrivateScenesCollection = require('../collections/PrivateScenesCollection');
+const ConnectedUsersCollection = require('../collections/ConnectedUsersCollection');
 
 class SceneModel {
     constructor(row) {
@@ -31,13 +34,18 @@ class SceneModel {
         // Inicializar el procesador de movimiento
         this.movementProcessorInstance = new MovementProcessorInstance(this);
         this.movementProcessorInstance.startProcessing();
+
+        this.interactions = new Map();
     }
 
     // Método para añadir un usuario
-    addUser(user) {
+    addUser(user, startPosition = null) {
         if (this.users.includes(user)) {
-            logger.log('User already in area', 'error');
-            return;
+            logger.log(`User ${user.username || user.id} already in area ${this.name || this.id}`, 'warn');
+            return false;
+        }
+        if (startPosition){
+            user.currentAreaPosition = { ...startPosition };
         }
         // Inicializamos la posición actual del usuario si no existe
         if (!user.currentAreaPosition) {
@@ -46,11 +54,21 @@ class SceneModel {
         // Propiedad para recordar la casilla reservada previamente
         user.lastReservedTile = null;
         this.users.push(user);
+        this.#refreshUsersChatList();
+        this.#refreshUsers();
+        return true;
     }
 
     // Método para devolver la lista de usuarios
     getUsers() {
         return this.users;
+    }
+
+    // Método para encontrar un usuario en la sala por username
+    findUserByUsername(username) {
+        if (!username) return null;
+        const normalizedUsername = username.toLowerCase();
+        return this.users.find(u => u.username.toLowerCase() === normalizedUsername);
     }
 
     // Método para comprobar si un usuario está en el área
@@ -65,7 +83,108 @@ class SceneModel {
             delete this.reservedTiles[user.lastReservedTile];
         }
         this.users = this.users.filter(u => u !== user);
+        // Si es un área privada y no quedan usuarios, eliminamos la escena
+        if (this.scene_type == SceneTypesEnum.PRIVATE_SCENE
+            && this.users.length == 0
+        ) {
+            // Si no quedan usuarios, eliminamos la escena
+            PrivateScenesCollection.remove(this.id);
+        }
+        this.#removeAllUserInteractions(user);
+        this.#refreshUsersChatList();
+        this.#refreshUsers();
     }
+
+    #refreshUsersChatList() {
+        const players = this.users.map(user => ({
+            uuid: user.socket.id,
+            username: user.username
+        }));
+        this.emit(ResponseSocketsEnum.REFRESH_USERS_SCENE_CHAT_LIST, { players });
+    }
+
+    #refreshUsers() {
+        this.users.forEach(user => {
+            if (user.currentArea != this) {
+                this.removeUser(user);
+            }
+        });
+    }
+
+    /**
+     * Interactions besos, bebidas, rozas
+     */
+    addInteraction(userSenderId, targetUserId, interactionType) {
+        if (!this.interactions.has(userSenderId)) {
+            this.interactions.set(userSenderId, new Map());
+        }
+        this.interactions.get(userSenderId).set(targetUserId, interactionType);
+    }
+
+    removeInteraction(userSenderId, targetUserId) {
+        if (this.interactions.has(userSenderId)) {
+            this.interactions.get(userSenderId).delete(targetUserId);
+        }
+    }
+
+    hasInteraction(userSenderId, targetUserId) {
+        const exists = this.interactions.has(userSenderId) && this.interactions.get(userSenderId).has(targetUserId);
+        return exists;
+    }
+
+    getInteractionType(userSenderId, targetUserId) {
+        if (this.hasInteraction(userSenderId, targetUserId)) {
+            return this.interactions.get(userSenderId).get(targetUserId);
+        }
+        return null;
+    }
+
+    #removeAllUserInteractions(user) {
+        // First, handle interactions initiated by this user (user is the sender)
+        if (this.interactions.has(user.id)) {
+            const targetsMap = this.interactions.get(user.id);
+            targetsMap.forEach((interactionType, targetId) => {
+                // Find the target user and send them the cancellation
+                const targetUser = ConnectedUsersCollection.getByUserId(targetId);
+                if (targetUser) {
+                    targetUser.emit(ResponseSocketsEnum.USER_CANCEL_INTERACTION, {
+                        type: interactionType,
+                        fromUser: user.socket.id,
+                    });
+                }
+            });
+            // Remove all interactions initiated by this user
+            this.interactions.delete(user.id);
+        }
+        
+        // Then, remove any interactions where this user is the target
+        const interactionsToClean = [];
+        this.interactions.forEach((targetsMap, senderId) => {
+            if (targetsMap.has(user.id)) {
+                interactionsToClean.push({
+                    senderId,
+                    interactionType: targetsMap.get(user.id)
+                });
+            }
+        });
+        
+        // Clean up the interactions where this user was the target
+        interactionsToClean.forEach(({ senderId, interactionType }) => {
+            this.interactions.get(senderId).delete(user.id);
+            
+            // Notify the sender that their interaction was cancelled
+            const senderUser = ConnectedUsersCollection.getByUserId(senderId);
+            if (senderUser) {
+                senderUser.emit(ResponseSocketsEnum.USER_SEND_INTERACTION, {
+                    type: interactionType,
+                    user: user.socket.id,
+                    action: "cancel"
+                });
+            }
+        });
+    }
+
+    //****************************************************************************************************** */
 
     // Método para emitir un evento a todos los usuarios del área
     emit(event, data) {
