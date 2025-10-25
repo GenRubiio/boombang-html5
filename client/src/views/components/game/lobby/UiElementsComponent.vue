@@ -175,6 +175,7 @@ export default {
             3: { top: "5px", left: "-20px" },
             5: { top: "2px", left: "-20px" },
             12: { top: "20px", left: "-20px" },
+            13: { top: "5px", left: "-15px" },
             14: { top: "20px", left: "-20px" },
             17: { top: "10px", left: "-15px" }
           };
