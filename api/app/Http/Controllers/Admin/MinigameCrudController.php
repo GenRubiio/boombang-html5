@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\MinigameTypeEnum;
 use App\Http\Requests\MinigameRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -69,6 +70,13 @@ class MinigameCrudController extends CrudController
                 'name' => 'name',
                 'type' => 'text',
                 'label' => 'Name',
+            ],
+            [
+                'name' => 'type',
+                'type' => 'select_from_array',
+                'label' => 'Type',
+                'options' => MinigameTypeEnum::toAssociativeArray(),
+                'allows_null' => false,
             ],
             [
                 'name' => 'description',

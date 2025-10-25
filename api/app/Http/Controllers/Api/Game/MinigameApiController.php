@@ -24,6 +24,9 @@ class MinigameApiController extends Controller implements MinigameApiControllerI
     public function index(): JsonResource
     {
         try {
+            $lang = auth()->user()->lang ?? app()->getLocale();
+            app()->setLocale($lang);
+
             $minigames = Minigame::with(['weeks' => function ($query) {
                 $query->orderBy('year', 'desc')
                       ->orderBy('week_number', 'desc');
