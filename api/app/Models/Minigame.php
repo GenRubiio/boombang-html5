@@ -6,11 +6,14 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+
 
 class Minigame extends Model
 {
     use CrudTrait;
     use HasFactory;
+    use HasTranslations;
 
     /*
     |--------------------------------------------------------------------------
@@ -27,12 +30,20 @@ class Minigame extends Model
         'description',
     ];
     // protected $hidden = [];
+    public $translatable = [
+        'name'
+    ];
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getTranslatable()
+    {
+        return $this->translatable;
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +102,7 @@ class Minigame extends Model
             } catch (\Throwable $e) {
                 // swallow exceptions to avoid breaking creation flow; log if logger available
                 if (function_exists('logger')) {
-                    logger()->error('Failed to create initial MinigameWeek for minigame '.$minigame->id.': '.$e->getMessage());
+                    logger()->error('Failed to create initial MinigameWeek for minigame ' . $minigame->id . ': ' . $e->getMessage());
                 }
             }
         });

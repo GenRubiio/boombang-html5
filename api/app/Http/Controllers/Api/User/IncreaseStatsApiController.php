@@ -6,8 +6,9 @@ use Exception;
 use App\Models\User;
 use App\Models\Minigame;
 use App\Models\MinigameWeek;
-use App\Models\MinigameScore;
 use Illuminate\Http\Request;
+use App\Models\MinigameScore;
+use App\Enums\MinigameTypeEnum;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -37,9 +38,8 @@ class IncreaseStatsApiController extends Controller
                     break;
                 case 'rings_won':
                     $user->update(['rings_won' => DB::raw('rings_won + 1')]);
-                    
                     // Buscar el minijuego Ring
-                    $minigame = Minigame::where('name', 'Ring')->first();
+                    $minigame = Minigame::where('type', MinigameTypeEnum::RING->key())->first();
                     if ($minigame) {
                         // Obtener la semana actual del minijuego
                         $currentWeek = MinigameWeek::where('minigame_id', $minigame->id)
