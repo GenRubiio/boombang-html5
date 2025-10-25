@@ -27,6 +27,7 @@ class Minigame extends Model
     protected $guarded = ['id'];
     protected $fillable = [
         'name',
+        'type',
         'description',
     ];
     // protected $hidden = [];
