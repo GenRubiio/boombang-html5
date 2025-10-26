@@ -15,7 +15,7 @@ const cacheConfig = {
      * Cambia este valor cuando quieras invalidar el caché existente
      * @type {string}
      */
-    assetVersion: '1.1.0'
+    assetVersion: '1.1.2'
 };
 
 export default cacheConfig;
