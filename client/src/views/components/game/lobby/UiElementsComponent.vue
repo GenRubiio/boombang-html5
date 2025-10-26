@@ -172,6 +172,7 @@ export default {
 
           const margins = {
             1: { top: "15px", left: "-25px" },
+            2: { top: "7px", left: "-17px" },
             3: { top: "5px", left: "-20px" },
             5: { top: "2px", left: "-20px" },
             12: { top: "20px", left: "-20px" },

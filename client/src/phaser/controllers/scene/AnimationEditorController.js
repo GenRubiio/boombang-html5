@@ -1,4 +1,4 @@
-import avatarConfig from "@/assets/game/avatars/skeleton/config.json";
+import avatarConfig from "@/assets/game/avatars/brujita/config.json";
 
 class AnimationEditorController {
     static editorInstance = null;
