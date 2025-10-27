@@ -67,6 +67,11 @@ const ResponseSocketsEnum = new Enum({
     GAME_TIME: 'response:game_time',
     MINIGAMES_LIST: 'response:minigames_list',
     MINIGAME_RANKING: 'response:minigame_ranking',
+    ISLAND_NAME_UPDATED: 'response:island_name_updated',
+    ERROR_ISLAND_NAME_UPDATED: 'response:error_island_name_updated',
+    ISLAND_DESCRIPTION_UPDATED: 'response:island_description_updated',
+    ERROR_ISLAND_DESCRIPTION_UPDATED: 'response:error_island_description_updated',
+    
 });
 
 module.exports = ResponseSocketsEnum;

@@ -384,7 +384,6 @@ export default {
   margin-top: 10px;
   overflow-y: auto;
   padding-right: 10px;
-  flex: 1;
   margin-bottom: 10px;
 }
 

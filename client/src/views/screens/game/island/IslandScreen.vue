@@ -6,10 +6,56 @@
       </div>
       <div class="island__info">
         <div class="island__info-name">
-          {{ sceneData.name }}
+          <span v-if="!isEditingName" @click="startEditName">{{ sceneData.name }}</span>
+          <input 
+            v-else 
+            ref="nameInput"
+            v-model="editedName" 
+            @keyup.enter="saveIslandName"
+            @keyup.escape="cancelEditName"
+            @blur="saveIslandName"
+            class="island__info-name-input"
+            maxlength="50"
+          />
+          <i 
+            v-if="!isEditingName && canEditIsland" 
+            class="las la-edit island__info-name-edit" 
+            @click="startEditName"
+            :title="$t('island.edit_name_tooltip')"
+          ></i>
         </div>
-        <div class="island__info-description">
-          {{ sceneData.description }}
+        <div class="island__info-description" @click="startEditDescription">
+          <div v-if="!isEditingDescription" class="description-display">
+            <span v-if="sceneData.description">{{ sceneData.description }}</span>
+            <span v-else class="description-placeholder">
+              {{ canEditIsland ? $t('island.description_placeholder') : $t('island.no_description') }}
+            </span>
+            <i 
+              v-if="canEditIsland" 
+              class="las la-edit description-edit-icon" 
+              @click.stop="startEditDescription"
+              :title="$t('island.edit_description_tooltip')"
+            ></i>
+          </div>
+          <div v-else class="description-edit">
+            <textarea 
+              ref="descriptionInput"
+              v-model="editedDescription" 
+              @keyup.escape="cancelEditDescription"
+              @blur="saveIslandDescription"
+              class="island__info-description-textarea"
+              maxlength="500"
+              :placeholder="$t('island.description_textarea_placeholder')"
+            ></textarea>
+            <div class="description-edit-actions">
+              <button @click="saveIslandDescription" class="save-btn">
+                <i class="las la-check"></i>
+              </button>
+              <button @click="cancelEditDescription" class="cancel-btn">
+                <i class="las la-times"></i>
+              </button>
+            </div>
+          </div>
         </div>
         <!-- Botones de escenario -->
         <div class="scenario-buttons">
@@ -95,6 +141,7 @@
 <script>
 import socket from "@/sockets/socket.js";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
+import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum.js";
 import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
 
 export default {
@@ -111,6 +158,12 @@ export default {
       loadedImages: 0,
       imagesLoaded: false,
       isJoining: false,
+      isEditingName: false,
+      editedName: '',
+      originalName: '',
+      isEditingDescription: false,
+      editedDescription: '',
+      originalDescription: '',
     };
   },
   computed: {
@@ -122,6 +175,10 @@ export default {
         `../../../../assets/game/islands/isla${this.sceneData.type}.webp`,
         import.meta.url
       ).href;
+    },
+    canEditIsland() {
+      return this.sceneData.user_id == this.$socket.user.db_id || 
+             this.sceneData.userId == this.$socket.user.db_id;
     },
   },
   methods: {
@@ -169,9 +226,130 @@ export default {
         this.$emit("createIslandScene", this.sceneData);
       }
     },
+    startEditName() {
+      if (!this.canEditIsland) return;
+      this.isEditingName = true;
+      this.originalName = this.sceneData.name;
+      this.editedName = this.sceneData.name;
+      this.$nextTick(() => {
+        this.$refs.nameInput.focus();
+        this.$refs.nameInput.select();
+      });
+    },
+    cancelEditName() {
+      this.isEditingName = false;
+      this.editedName = '';
+    },
+    async saveIslandName() {
+      if (!this.editedName.trim()) {
+        this.cancelEditName();
+        return;
+      }
+
+      const trimmedName = this.editedName.trim();
+      
+      // Si el nombre no cambió, no hacer nada
+      if (trimmedName === this.originalName) {
+        this.cancelEditName();
+        return;
+      }
+
+      try {
+        socket.emit(RequestSocketsEnum.UPDATE_ISLAND_NAME, {
+          islandId: this.sceneData.id,
+          name: trimmedName
+        });
+        
+        // Actualizar localmente mientras esperamos confirmación del servidor
+        this.sceneData.name = trimmedName;
+        this.isEditingName = false;
+      } catch (error) {
+        console.error('Error updating island name:', error);
+        this.cancelEditName();
+      }
+    },
+    handleIslandNameUpdated(data) {
+      if (data.success && data.islandId === this.sceneData.id) {
+        this.sceneData.name = data.name;
+        this.cancelEditName();
+      }
+    },
+    handleError(data) {
+      console.error('Island name update error:', data.message);
+      // Revertir cambios locales en caso de error
+      this.sceneData.name = this.originalName;
+      this.cancelEditName();
+      
+      // Aquí podrías mostrar una notificación de error al usuario
+      // Por ejemplo: this.$toast.error(data.message);
+    },
+    startEditDescription() {
+      if (!this.canEditIsland) return;
+      this.isEditingDescription = true;
+      this.originalDescription = this.sceneData.description || '';
+      this.editedDescription = this.sceneData.description || '';
+      this.$nextTick(() => {
+        this.$refs.descriptionInput.focus();
+      });
+    },
+    cancelEditDescription() {
+      this.isEditingDescription = false;
+      this.editedDescription = '';
+    },
+    async saveIslandDescription() {
+      const trimmedDescription = this.editedDescription.trim();
+      
+      // Si la descripción no cambió, no hacer nada
+      if (trimmedDescription === (this.originalDescription || '')) {
+        this.cancelEditDescription();
+        return;
+      }
+
+      try {
+        socket.emit(RequestSocketsEnum.UPDATE_ISLAND_DESCRIPTION, {
+          islandId: this.sceneData.id,
+          description: trimmedDescription
+        });
+        
+        // Actualizar localmente mientras esperamos confirmación del servidor
+        this.sceneData.description = trimmedDescription || null;
+        this.isEditingDescription = false;
+      } catch (error) {
+        console.error('Error updating island description:', error);
+        this.cancelEditDescription();
+      }
+    },
+    handleIslandDescriptionUpdated(data) {
+      if (data.success && data.islandId === this.sceneData.id) {
+        this.sceneData.description = data.description;
+        this.cancelEditDescription();
+      }
+    },
+    handleDescriptionError(data) {
+      console.error('Island description update error:', data.message);
+      // Revertir cambios locales en caso de error
+      this.sceneData.description = this.originalDescription;
+      this.cancelEditDescription();
+      
+      // Aquí podrías mostrar una notificación de error al usuario
+      // Por ejemplo: this.$toast.error(data.message);
+    },
   },
   created() {
     this.$emit("updateLoading", true);
+    
+    // Escuchar respuestas del socket
+    socket.on(ResponseSocketsEnum.ISLAND_NAME_UPDATED, this.handleIslandNameUpdated);
+    socket.on(ResponseSocketsEnum.ERROR_ISLAND_NAME_UPDATED, this.handleError);
+    socket.on(ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED, this.handleIslandDescriptionUpdated);
+    socket.on(ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED, this.handleDescriptionError);
+  },
+  beforeUnmount() {
+    // Limpiar listeners
+    socket.off(ResponseSocketsEnum.ISLAND_NAME_UPDATED, this.handleIslandNameUpdated);
+    socket.off(ResponseSocketsEnum.ERROR_ISLAND_NAME_UPDATED, this.handleError);
+    socket.off(ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED, this.handleIslandDescriptionUpdated);
+    socket.off(ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED, this.handleDescriptionError);
   },
   mounted() {
     this.preloadImages();
@@ -244,6 +422,39 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.island__info-name-input {
+  background: #2a3a42;
+  border: 2px solid #5ca8d1;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px 10px;
+  width: 100%;
+  outline: none;
+}
+
+.island__info-name-input:focus {
+  border-color: #69c7ef;
+  box-shadow: 0 0 5px rgba(105, 199, 239, 0.3);
+}
+
+.island__info-name-edit {
+  color: #69c7ef;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.island__info-name-edit:hover {
+  opacity: 1;
 }
 
 .island__user-name h1 {
@@ -264,8 +475,107 @@ export default {
   text-align: start;
   background-color: #3a4b54c9;
   height: 125px;
-  overflow-y: auto;
   border-radius: 5px;
+  padding: 8px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.description-display {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-right: 20px;
+}
+
+.description-placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.description-edit-icon {
+  color: #69c7ef;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.description-edit-icon:hover {
+  opacity: 1;
+}
+
+.description-edit {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.island__info-description-textarea {
+  background: transparent;
+  border: 1px solid #5ca8d1;
+  border-radius: 3px;
+  color: white;
+  font-size: 14px;
+  padding: 5px;
+  width: 100%;
+  height: calc(100% - 30px);
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.island__info-description-textarea:focus {
+  border-color: #69c7ef;
+  box-shadow: 0 0 3px rgba(105, 199, 239, 0.3);
+}
+
+.description-edit-actions {
+  display: flex;
+  gap: 5px;
+  height: 25px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.save-btn, .cancel-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.save-btn {
+  color: #5cb85c;
+}
+
+.save-btn:hover {
+  background-color: rgba(92, 184, 92, 0.2);
+}
+
+.cancel-btn {
+  color: #d9534f;
+}
+
+.cancel-btn:hover {
+  background-color: rgba(217, 83, 79, 0.2);
 }
 
 .scenario-buttons {

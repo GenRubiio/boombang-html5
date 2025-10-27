@@ -3,6 +3,8 @@ const CreateIslandController = require('../../../controllers/game/islands/Create
 const GetMyIslandsController = require('../../../controllers/game/islands/GetMyIslandsController');
 const JoinIslandController = require('../../../controllers/game/islands/JoinIslandController');
 const GetPublicIslandsController = require('../../../controllers/game/islands/GetPublicIslandsController');
+const UpdateIslandNameController = require('../../../controllers/game/islands/UpdateIslandNameController');
+const UpdateIslandDescriptionController = require('../../../controllers/game/islands/UpdateIslandDescriptionController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
@@ -17,5 +19,11 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.GET_PUBLIC_ISLANDS, (data) => {
         GetPublicIslandsController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.UPDATE_ISLAND_NAME, (data) => {
+        UpdateIslandNameController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.UPDATE_ISLAND_DESCRIPTION, (data) => {
+        UpdateIslandDescriptionController.main(socket, io, data);
     });
 };

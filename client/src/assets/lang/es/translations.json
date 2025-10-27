@@ -99,7 +99,12 @@
   },
   "island": {
     "locations": "Localizaciones",
-    "add_scenario": "Añadir escenario"
+    "add_scenario": "Añadir escenario",
+    "edit_name_tooltip": "Editar nombre de isla",
+    "edit_description_tooltip": "Editar descripción de isla",
+    "description_placeholder": "Haz clic para añadir una descripción...",
+    "no_description": "Sin descripción",
+    "description_textarea_placeholder": "Escribe una descripción para tu isla..."
   },
   "user_card": {
     "change_ficha_alt": "Cambiar ficha",

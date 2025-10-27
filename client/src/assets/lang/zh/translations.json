@@ -83,7 +83,12 @@
   },
   "island": {
     "locations": "地点",
-    "add_scenario": "添加场景"
+    "add_scenario": "添加场景",
+    "edit_name_tooltip": "编辑岛屿名称",
+    "edit_description_tooltip": "编辑岛屿描述",
+    "description_placeholder": "点击添加描述...",
+    "no_description": "无描述",
+    "description_textarea_placeholder": "为您的岛屿写一个描述..."
   },
   "user_card": {
     "change_ficha_alt": "更改卡片",
