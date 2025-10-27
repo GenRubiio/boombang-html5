@@ -67,4 +67,93 @@ class IslandApiController extends Controller implements IslandApiControllerInter
             'island' => (new IslandResource($island))->toDTO()
         ]);
     }
+
+    public function updateName(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'islandId' => 'required|integer|exists:islands,id',
+            'name' => 'required|string|max:50',
+        ]);
+
+        $island = Island::find($validated['islandId']);
+        
+        if (!$island) {
+            return $this->errorResponse('Island not found', 404);
+        }
+
+        // Verificar que el usuario es el propietario de la isla
+        if ($island->user_id !== $user->id) {
+            return $this->errorResponse('You are not the owner of this island', 403);
+        }
+
+        $trimmedName = trim($validated['name']);
+        
+        // Si el nombre no cambió, no hacer nada
+        if ($trimmedName === $island->name) {
+            return $this->successResponse([
+                'island' => (new IslandResource($island))->toDTO(),
+                'message' => 'Island name unchanged'
+            ]);
+        }
+
+        // Verificar que el nombre no esté en uso por otra isla
+        $existingIsland = Island::where('name', $trimmedName)
+                                ->where('id', '!=', $island->id)
+                                ->first();
+        
+        if ($existingIsland) {
+            return $this->errorResponse('An island with this name already exists', 422);
+        }
+
+        // Actualizar el nombre
+        $island->name = $trimmedName;
+        $island->save();
+
+        return $this->successResponse([
+            'island' => (new IslandResource($island))->toDTO(),
+            'message' => 'Island name updated successfully'
+        ]);
+    }
+
+    public function updateDescription(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'islandId' => 'required|integer|exists:islands,id',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $island = Island::find($validated['islandId']);
+        
+        if (!$island) {
+            return $this->errorResponse('Island not found', 404);
+        }
+
+        // Verificar que el usuario es el propietario de la isla
+        if ($island->user_id !== $user->id) {
+            return $this->errorResponse('You are not the owner of this island', 403);
+        }
+
+        $trimmedDescription = $validated['description'] ? trim($validated['description']) : '';
+        
+        // Si la descripción no cambió, no hacer nada
+        if ($trimmedDescription === ($island->description ?? '')) {
+            return $this->successResponse([
+                'island' => (new IslandResource($island))->toDTO(),
+                'message' => 'Island description unchanged'
+            ]);
+        }
+
+        // Actualizar la descripción
+        $island->description = $trimmedDescription ?: null;
+        $island->save();
+
+        return $this->successResponse([
+            'island' => (new IslandResource($island))->toDTO(),
+            'message' => 'Island description updated successfully'
+        ]);
+    }
 }

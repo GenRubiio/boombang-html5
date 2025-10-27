@@ -99,7 +99,12 @@
   },
   "island": {
     "locations": "Locations",
-    "add_scenario": "Add scenario"
+    "add_scenario": "Add scenario",
+    "edit_name_tooltip": "Edit island name",
+    "edit_description_tooltip": "Edit island description",
+    "description_placeholder": "Click to add a description...",
+    "no_description": "No description",
+    "description_textarea_placeholder": "Write a description for your island..."
   },
   "user_card": {
     "change_ficha_alt": "Change card",

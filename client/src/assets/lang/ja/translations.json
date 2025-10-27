@@ -83,7 +83,12 @@
   },
   "island": {
     "locations": "場所",
-    "add_scenario": "シナリオを追加"
+    "add_scenario": "シナリオを追加",
+    "edit_name_tooltip": "島の名前を編集",
+    "edit_description_tooltip": "島の説明を編集",
+    "description_placeholder": "クリックして説明を追加...",
+    "no_description": "説明なし",
+    "description_textarea_placeholder": "あなたの島の説明を書いてください..."
   },
   "user_card": {
     "change_ficha_alt": "カードを変更",

@@ -58,6 +58,8 @@ const RequestSocketsEnum = new Enum({
     GAME_TIME: 'request:game_time',
     GET_MINIGAMES: 'request:get_minigames',
     GET_MINIGAME_RANKING: 'request:get_minigame_ranking',
+    UPDATE_ISLAND_NAME: 'request:update_island_name',
+    UPDATE_ISLAND_DESCRIPTION: 'request:update_island_description',
 });
 
 module.exports = RequestSocketsEnum;

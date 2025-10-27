@@ -99,7 +99,12 @@
   },
   "island": {
     "locations": "Локации",
-    "add_scenario": "Добавить сценарий"
+    "add_scenario": "Добавить сценарий",
+    "edit_name_tooltip": "Редактировать название острова",
+    "edit_description_tooltip": "Редактировать описание острова",
+    "description_placeholder": "Нажмите, чтобы добавить описание...",
+    "no_description": "Без описания",
+    "description_textarea_placeholder": "Напишите описание для вашего острова..."
   },
   "user_card": {
     "change_ficha_alt": "Изменить карточку",
