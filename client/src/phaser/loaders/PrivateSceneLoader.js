@@ -2,7 +2,7 @@ import SceneUtils from "@/utils/SceneUtils";
 
 class PrivateSceneLoader {
     static main(gameScene, preload = true) {
-        console.log("PrivateSceneLoader main", gameScene, preload);
+        //console.log("PrivateSceneLoader main", gameScene, preload);
         const sceneId = gameScene.sceneData.scenery.id;
         const assets = gameScene.sceneData.sceneConfig.assets_data.assets_data_repeatable || [];
         const baseApiUrl = gameScene.sceneData.sceneConfig.base_api_url + '/';
@@ -66,7 +66,7 @@ class PrivateSceneLoader {
             return; // Si no se debe mostrar el item, no hacemos nada
         }
         let sprite;
-        const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y);
+        const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y) * item.scale;
         if (SceneUtils.isVideoFile(item.image)) {
             sprite = gameScene.add.video(item.x * item.scale, item.y * item.scale, spriteName)
                 .setOrigin(0.5, 1)
