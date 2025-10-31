@@ -52,7 +52,7 @@ class PrivateSceneModel extends SceneModel {
         return navigationMap;
     }
 
-    async userJoin(user, userInventoryItems) {
+    async userJoin(user, userInventoryItems, sceneConfig) {
         // Usar el mutex global para sincronizar el acceso a la escena
         const release = await sceneMutex.acquire(this.id);
 
@@ -77,6 +77,7 @@ class PrivateSceneModel extends SceneModel {
                     authUser: await new UserResource(user).toObject(),
                     userInventory: user.inventory,
                     myScene: this.user_id == user.id,
+                    sceneConfig: sceneConfig || {},
                 }
             });
             

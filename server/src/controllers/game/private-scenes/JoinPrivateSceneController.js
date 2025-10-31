@@ -33,7 +33,7 @@ class JoinPrivateSceneController {
                 return;
             }
 
-            await scene.userJoin(user, response.user_inventory_items || []);
+            await scene.userJoin(user, response.user_inventory_items || [], response.scene_config || {});
         } catch (err) {
             console.error('Error in JoinPrivateSceneController:', err);
             Log.error('Error in JoinPrivateSceneController: ' + err);

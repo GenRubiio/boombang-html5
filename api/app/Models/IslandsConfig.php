@@ -10,7 +10,8 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\File;
 
-class PrivateSceneConfig extends Model
+
+class IslandsConfig extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -21,29 +22,16 @@ class PrivateSceneConfig extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'private_scene_configs';
+    protected $table = 'islands_config';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     protected $fillable = [
-        'island_type',
-        'max_users',
-        'map_width',
-        'map_height',
-        'map',
-        'start_x',
-        'start_y',
-        'start_z',
-        'default_colors',
         'name',
         'image',
-        'assets_data',
         'active'
     ];
     // protected $hidden = [];
-    protected $fakeColumns = [
-        'assets_data',
-    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -57,9 +45,9 @@ class PrivateSceneConfig extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function islandsConfig()
+    public function privateSceneConfigs()
     {
-        return $this->belongsTo(IslandsConfig::class, 'island_type', 'id');
+        return $this->hasMany(PrivateSceneConfig::class, 'island_type', 'id');
     }
 
     /*
@@ -84,8 +72,8 @@ class PrivateSceneConfig extends Model
     {
         $attribute = 'image';
         $disk = 'uploads'; // Debe existir en config/filesystems.php
-        $folder = Str::slug($this->name ?? 'island-scene');
-        $destinationPath = "uploads/island-scene/{$folder}"; // ¡Ojo! sin 'uploads/' delante
+        $folder = Str::slug($this->name ?? 'island');
+        $destinationPath = "uploads/island/{$folder}"; // ¡Ojo! sin 'uploads/' delante
 
         // Borrar imagen (cuando el campo se limpia en Backpack)
         if ($value === null) {
@@ -144,85 +132,6 @@ class PrivateSceneConfig extends Model
         // Si llega una cadena (ruta existente), la guardamos tal cual
         if (is_string($value)) {
             $this->attributes[$attribute] = $value;
-        }
-    }
-
-    public function setAssetsDataAttribute($value)
-    {
-        if (!empty($value)) {
-            if (is_string($value)) {
-                $value = json_decode($value, true);
-            }
-            $destinationPath = "uploads/island-scene/" . Str::slug($this->name) .  "/assets";
-            $this->processDataRecursively($value, $destinationPath);
-            $this->attributes['assets_data'] = json_encode($value);
-        } else {
-            $this->attributes['assets_data'] = null;
-        }
-    }
-
-    private function processDataRecursively(&$value, $destinationPath = null)
-    {
-        foreach ($value as $key => &$subValue) {
-            if (str_contains($key, 'image') && !is_array($subValue)) {
-                $subValue = $this->saveImgInFakeField($subValue, $destinationPath);
-            } elseif (str_contains($key, 'file') && !is_array($subValue)) {
-                $subValue = $this->saveFileInFakeField($subValue, $destinationPath);
-            } elseif (is_array($subValue)) {
-                $this->processDataRecursively($subValue, $destinationPath);
-            }
-        }
-    }
-
-    public function saveFileInFakeField($value, $destinationPath)
-    {
-        try {
-            $name = Str::random(10);
-            if ($value == null) {
-                return null;
-            }
-            $name = $name . '.' . $value->getClientOriginalExtension();
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0777, true, true);
-            }
-            $value->move($destinationPath, $name);
-            return $destinationPath . '/' . $name;
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    private function saveImgInFakeField($value, $destinationPath)
-    {
-        try {
-            $name = Str::random(10);
-            $disk = "uploads";
-            if ($value == null) {
-                return null;
-            }
-            $filename = Str::slug($name);
-            if (Str::startsWith($value, 'data:image/svg+xml')) {
-                $filename = $filename . '.svg';
-                $value = str_replace('data:image/svg+xml;base64,', '', $value);
-                $value = str_replace(' ', '+', $value);
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath, 0777, true, true);
-                }
-                File::put($destinationPath . '/' . $filename, base64_decode($value));
-                return $destinationPath . '/' . $filename;
-            } elseif (Str::startsWith($value, 'data:image')) {
-                [$meta, $data] = explode(',', $value, 2);
-                $binary = base64_decode($data);
-                $ext = str_contains($meta, 'image/webp') ? 'webp' : (str_contains($meta, 'image/png') ? 'png' : 'jpg');
-                $filename = Str::random(40) . '.' . $ext;
-                $path = "{$destinationPath}/{$filename}";
-
-                Storage::disk($disk)->put($path, $binary);
-                return $path;
-            }
-            return $value;
-        } catch (\Exception $e) {
-            return null;
         }
     }
 }
