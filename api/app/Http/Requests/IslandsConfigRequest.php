@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PrivateSceneConfigRequest extends FormRequest
+class IslandsConfigRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,15 +26,7 @@ class PrivateSceneConfigRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'island_type' => 'required',
-            'image' => 'nullable',
-            'max_users' => 'required|integer|min:1|max:12',
-            'map_width' => 'required|integer',
-            'map_height' => 'required|integer',
-            'map' => 'required|string',
-            'start_x' => 'required|integer|min:0',
-            'start_y' => 'required|integer|min:0',
-            'start_z' => 'required|integer|min:0',
+            'image' => 'required',
         ];
     }
 

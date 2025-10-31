@@ -1,30 +1,33 @@
 class PrivateSceneUpdateColorsService {
     static main(gameScene) {
-        const suffix = '_private_scene_' + gameScene.sceneData.scenery.id;
+        const sceneId = gameScene.sceneData.scenery.id;
         const colors = gameScene.sceneData.scenery.colors;
+        const assets = gameScene.sceneData.sceneConfig.assets_data.assets_data_repeatable || [];
 
-        for (const key in colors) {
-            if (!colors.hasOwnProperty(key)) continue;
+        // Recorrer los assets y buscar aquellos que tienen color_item_key
+        assets.forEach((asset, index) => {
+            // Si el asset tiene color_item_key y existe un color para esa key
+            if (asset.color_item_key && colors[asset.color_item_key]) {
+                const hex = colors[asset.color_item_key];  // «d1bb53»
+                const spriteName = 'private_scene_' + sceneId + '_item_' + index;
+                const sprite = gameScene.children.getByName(spriteName);
 
-            const hex = colors[key];           // «d1bb53»
-            const imageName = key + suffix;    // «item_1_private_scene_7»
-            const sprite = gameScene.children.getByName(imageName);
+                if (!sprite) return;
 
-            if (!sprite) continue;
+                const tint = parseInt(hex, 16);
 
-            const tint = parseInt(hex, 16);
+                // Quita cualquier tint/blend previo
+                sprite.clearTint();
+                sprite.setBlendMode(Phaser.BlendModes.NORMAL);
 
-            // Quita cualquier tint/blend previo
-            sprite.clearTint();
-            sprite.setBlendMode(Phaser.BlendModes.NORMAL);
+                // Aplica el tint "suave" sobre el sprite original
+                sprite.setTint(tint);
 
-            // Aplica el tint “suave” sobre el sprite original
-            sprite.setTint(tint);
-
-            // --- OPCIONAL: si quieres un efecto más “luminoso” en las zonas claras,
-            //    sustituye NORMAL por SCREEN así:
-            // sprite.setBlendMode(Phaser.BlendModes.SCREEN);
-        }
+                // --- OPCIONAL: si quieres un efecto más "luminoso" en las zonas claras,
+                //    sustituye NORMAL por SCREEN así:
+                // sprite.setBlendMode(Phaser.BlendModes.SCREEN);
+            }
+        });
     }
 }
 

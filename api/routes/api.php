@@ -33,6 +33,8 @@ use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserAvatarsApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
 use App\Http\Controllers\Api\Game\MinigameApiController;
+use App\Http\Controllers\Api\Game\Config\IslandsConfigApiController;
+use App\Http\Controllers\Api\Game\Config\PrivateSceneConfigApiController;
 
 Route::prefix('test')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -136,6 +138,17 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::prefix('minigames')->group(function () {
             Route::post('/', [MinigameApiController::class, 'index']);
             Route::post('ranking', [MinigameApiController::class, 'getRanking']);
+        });
+
+        Route::prefix('islands-config')->group(function () {
+            Route::post('/', [IslandsConfigApiController::class, 'index']);
+            Route::post('{id}', [IslandsConfigApiController::class, 'show']);
+        });
+
+        Route::prefix('private-scene-config')->group(function () {
+            Route::post('/', [PrivateSceneConfigApiController::class, 'index']);
+            Route::post('{id}', [PrivateSceneConfigApiController::class, 'show']);
+            Route::post('by-island/{islandConfigId}', [PrivateSceneConfigApiController::class, 'getByIsland']);
         });
     });
 });

@@ -1,28 +1,29 @@
 <template>
   <div id="island-create-screen" class="island-create-screen">
-    <!-- Imagen de la brújula -->
-    <img
-      class="brujula"
-      :class="{ disabled: isCreating }"
-      :src="asset_brujula_image"
-      alt="Brújula"
-      @load="handleImageLoad"
-      @error="handleImageLoad"
-      @click="goBackToLobby"
-    />
-
-    <!-- Vista previa de isla -->
-    <div class="island-preview">
+    <template v-if="dataLoaded && islandsConfig.length > 0">
+      <!-- Imagen de la brújula -->
       <img
-        :src="currentIsland"
-        :alt="`Isla ${currentIndex + 1}`"
+        class="brujula"
+        :class="{ disabled: isCreating }"
+        :src="asset_brujula_image"
+        alt="Brújula"
         @load="handleImageLoad"
         @error="handleImageLoad"
+        @click="goBackToLobby"
       />
-    </div>
 
-    <!-- Controles de navegación -->
-    <div class="controls">
+      <!-- Vista previa de isla -->
+      <div class="island-preview">
+        <img
+          :src="currentIsland"
+          :alt="`Isla ${currentIndex + 1}`"
+          @load="handleImageLoad"
+          @error="handleImageLoad"
+        />
+      </div>
+
+      <!-- Controles de navegación -->
+      <div class="controls">
       <template v-if="step === 1">
         <div class="navigation">
           <div>
@@ -68,6 +69,11 @@
         </div>
       </template>
     </div>
+    </template>
+
+    <div v-else-if="dataLoaded && islandsConfig.length === 0" class="error-message-centered">
+      <p>No se encontraron configuraciones de islas disponibles.</p>
+    </div>
   </div>
 </template>
 
@@ -76,25 +82,14 @@ import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
-import asset_island1_image from "@/assets/game/islands/isla1.webp";
-import asset_island2_image from "@/assets/game/islands/isla2.webp";
-//import asset_island3_image from "@/assets/game/islands/isla3.webp";
-//import asset_island4_image from "@/assets/game/islands/isla4.webp";
-//import asset_island5_image from "@/assets/game/islands/isla5.webp";
 
 export default {
   data() {
     return {
-      islands: [
-        asset_island1_image,
-        asset_island2_image,
-        //asset_island3_image,
-        //asset_island4_image,
-        //asset_island5_image,
-      ],
+      islandsConfig: [],
       asset_brujula_image,
       currentIndex: 0,
-      imagesToLoad: 3, // 5 islas + 1 brújula
+      imagesToLoad: 0,
       loadedImages: 0,
       imagesLoaded: false,
       step: 1,
@@ -102,31 +97,40 @@ export default {
       errorCreateIsland: false,
       errorMessage: "",
       isCreating: false,
+      dataLoaded: false,
     };
   },
   computed: {
     currentIsland() {
-      return this.islands[this.currentIndex];
+      const config = this.islandsConfig[this.currentIndex];
+      if (!config) return "";
+      return this.getImageUrl(config);
+    },
+    currentIslandConfig() {
+      return this.islandsConfig[this.currentIndex] || null;
+    },
+    viteEnv() {
+      return import.meta.env.VITE_APP_ENV;
     },
   },
   methods: {
     prevIsland() {
       this.currentIndex =
-        (this.currentIndex + this.islands.length - 1) % this.islands.length;
+        (this.currentIndex + this.islandsConfig.length - 1) % this.islandsConfig.length;
     },
     nextIsland() {
-      this.currentIndex = (this.currentIndex + 1) % this.islands.length;
+      this.currentIndex = (this.currentIndex + 1) % this.islandsConfig.length;
     },
     goToStep(step) {
       this.step = step;
     },
     createIsland() {
-      if (this.isCreating) return;
+      if (this.isCreating || !this.currentIslandConfig) return;
       this.isCreating = true;
       this.errorCreateIsland = false;
       socket.emit(RequestSocketsEnum.ISLAND_CREATE, {
         name: this.islandName,
-        type: this.currentIndex + 1, // Asumiendo que el tipo de isla es el índice + 1
+        type: this.currentIslandConfig.id,
       });
       socket.off(ResponseSocketsEnum.ISLAND_CREATE_ERROR);
       socket.on(ResponseSocketsEnum.ISLAND_CREATE_ERROR, (response) => {
@@ -147,13 +151,47 @@ export default {
       }
     },
     preloadImages() {
-      const allImages = [...this.islands, this.asset_brujula_image];
+      const allImages = this.islandsConfig.map((config) => this.getImageUrl(config));
+      allImages.push(this.asset_brujula_image);
+      this.imagesToLoad = allImages.length;
 
       allImages.forEach((src) => {
         const img = new Image();
         img.src = src;
         img.onload = this.handleImageLoad;
         img.onerror = this.handleImageLoad;
+      });
+    },
+    getImageUrl(config) {
+      if (!config) return "";
+      // Si estamos en local, usar la ruta relativa (image)
+      // Si no, usar la URL completa (image_url)
+      return this.viteEnv === 'local' ? config.image : config.image_url;
+    },
+    loadIslandsConfig() {
+      // Emitir solicitud para obtener las configuraciones de islas
+      socket.emit(RequestSocketsEnum.GET_ISLANDS_CONFIG);
+
+      // Escuchar respuesta exitosa
+      socket.off(ResponseSocketsEnum.GET_ISLANDS_CONFIG_SUCCESS);
+      socket.on(ResponseSocketsEnum.GET_ISLANDS_CONFIG_SUCCESS, (response) => {
+        if (response.islands_config && response.islands_config.length > 0) {
+          this.islandsConfig = response.islands_config;
+          this.dataLoaded = true;
+          this.preloadImages();
+        } else {
+          console.error("IslandCreateScreen: No se encontraron configuraciones de islas.");
+          this.dataLoaded = true;
+          this.$emit("updateLoading", false);
+        }
+      });
+
+      // Escuchar respuesta de error
+      socket.off(ResponseSocketsEnum.GET_ISLANDS_CONFIG_ERROR);
+      socket.on(ResponseSocketsEnum.GET_ISLANDS_CONFIG_ERROR, (response) => {
+        console.error(`IslandCreateScreen: Error al obtener islas - ${response.message}`);
+        this.dataLoaded = true;
+        this.$emit("updateLoading", false);
       });
     },
     goBackToLobby() {
@@ -164,7 +202,7 @@ export default {
   },
   created() {
     this.$emit("updateLoading", true);
-    this.preloadImages();
+    this.loadIslandsConfig();
   },
   mounted() {
     this.$nextTick(() => {
