@@ -2,6 +2,7 @@
   <div id="island-scene-create-screen" class="island-scene-create-screen">
     <!-- Imagen de la brújula -->
     <img
+      v-if="dataLoaded"
       class="brujula"
       :class="{ disabled: isCreating }"
       :src="asset_brujula_image"
@@ -11,11 +12,11 @@
       @click="goBackToIsland"
     />
 
-    <div v-if="scenes.length">
+    <div v-if="dataLoaded && scenes.length > 0">
       <!-- Vista previa de la escena seleccionada -->
       <div class="island-preview">
         <img
-          :src="currentScene.url"
+          :src="getImageUrl(currentScene)"
           :alt="`Escena ${currentIndex + 1}`"
           @load="handleImageLoad"
           @error="handleImageLoad"
@@ -71,7 +72,7 @@
       </div>
     </div>
 
-    <div v-else class="error-message-centered">
+    <div v-else-if="dataLoaded && scenes.length === 0" class="error-message-centered">
       <p>{{ $t("scene_create.error_no_scenes") }}</p>
     </div>
   </div>
@@ -79,16 +80,9 @@
 
 <script>
 import socket from "@/sockets/socket";
-import islandsData from "@/assets/game/islands/data.json";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
-
-// Importar todas las imágenes de escena
-const sceneImageModules = import.meta.glob(
-  "/src/assets/game/islands/**/scene*.webp",
-  { eager: true, import: "default" }
-);
 
 export default {
   name: "IslandSceneCreateScreen",
@@ -111,11 +105,16 @@ export default {
       errorCreateScene: false,
       errorMessage: "",
       isCreating: false,
+      islandConfig: null,
+      dataLoaded: false,
     };
   },
   computed: {
     currentScene() {
       return this.scenes[this.currentIndex] || {};
+    },
+    viteEnv() {
+      return import.meta.env.VITE_APP_ENV;
     },
   },
   methods: {
@@ -154,12 +153,7 @@ export default {
       }
     },
     preloadImages() {
-      const urls = this.scenes.map((s) => {
-        const key = `/src/assets/${s.image}`;
-        const url = sceneImageModules[key];
-        if (!url) console.error(`Asset no encontrado: ${key}`);
-        return url || "";
-      });
+      const urls = this.scenes.map((s) => this.getImageUrl(s));
       urls.push(this.asset_brujula_image);
       this.imagesToLoad = urls.length;
       urls.forEach((src) => {
@@ -170,35 +164,64 @@ export default {
         img.onerror = this.handleImageLoad;
       });
     },
+    getImageUrl(scene) {
+      if (!scene) return "";
+      // Si estamos en local, usar la ruta relativa (image)
+      // Si no, usar la URL completa (image_url)
+      return this.viteEnv === 'local' ? scene.image : scene.image_url;
+    },
     goBackToIsland() {
       if (this.isCreating) return;
       this.$emit("updateLoading", true);
       this.$emit("joinIsland", this.sceneData);
     },
     loadScenes() {
-      const island = islandsData.find((i) => i.uuid == this.sceneData.type);
-      if (island && island.scenes) {
-        // Añadir URL de imagen importada a cada escena
-        this.scenes = island.scenes.map((s) => ({
-          ...s,
-          url: sceneImageModules[`/src/assets/${s.image}`] || "",
-        }));
-      } else {
+      // Emitir solicitud para obtener las configuraciones de escenas privadas por isla
+      socket.emit(RequestSocketsEnum.GET_PRIVATE_SCENE_CONFIG_BY_ISLAND, {
+        island_config_id: this.sceneData.type,
+      });
+
+      // Escuchar respuesta exitosa
+      socket.off(ResponseSocketsEnum.GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_SUCCESS);
+      socket.on(ResponseSocketsEnum.GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_SUCCESS, (response) => {
+        this.dataLoaded = true;
+        if (response.private_scene_configs && response.private_scene_configs.length > 0) {
+          this.scenes = response.private_scene_configs.map((config) => ({
+            uuid: config.id,
+            image: config.image,
+            image_url: config.image_url,
+            name: config.name,
+          }));
+
+          if (this.scenes.length) {
+            this.preloadImages();
+          } else {
+            this.$emit("updateLoading", false);
+          }
+        } else {
+          console.error(
+            `IslandSceneCreateScreen: No se encontraron escenas para la isla tipo '${this.sceneData.type}'.`
+          );
+          this.scenes = [];
+          this.$emit("updateLoading", false);
+        }
+      });
+
+      // Escuchar respuesta de error
+      socket.off(ResponseSocketsEnum.GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_ERROR);
+      socket.on(ResponseSocketsEnum.GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_ERROR, (response) => {
         console.error(
-          `IslandSceneCreateScreen: Isla con tipo '${this.sceneData.type}' no encontrada o sin escenas.`
+          `IslandSceneCreateScreen: Error al obtener escenas - ${response.message}`
         );
+        this.dataLoaded = true;
         this.scenes = [];
-      }
+        this.$emit("updateLoading", false);
+      });
     },
   },
   created() {
     this.$emit("updateLoading", true);
     this.loadScenes();
-    if (this.scenes.length) {
-      this.preloadImages();
-    } else {
-      this.$emit("updateLoading", false);
-    }
   },
   mounted() {
     this.$nextTick(() => {

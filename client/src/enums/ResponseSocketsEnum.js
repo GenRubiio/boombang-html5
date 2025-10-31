@@ -66,6 +66,10 @@ const ResponseSocketsEnum = new Enum({
     GAME_TIME: 'response:game_time',
     MINIGAME_RANKING: 'response:minigame_ranking',
     MINIGAMES_LIST: 'response:minigames_list',
+    GET_ISLANDS_CONFIG_SUCCESS: 'response:get_islands_config_success',
+    GET_ISLANDS_CONFIG_ERROR: 'response:get_islands_config_error',
+    GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_SUCCESS: 'response:get_private_scene_config_by_island_success',
+    GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_ERROR: 'response:get_private_scene_config_by_island_error',
 });
 
 export default ResponseSocketsEnum;

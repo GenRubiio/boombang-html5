@@ -12,6 +12,10 @@
     <x-backpack::menu-item title="Scene items" icon="la la-question" :link="backpack_url('scene-item')" />
     <x-backpack::menu-item title="Scene arrows" icon="la la-question" :link="backpack_url('scene-arrow')" />
     <x-backpack::menu-item title="Npcs" icon="la la-question" :link="backpack_url('npc')" />
+    <x-backpack::menu-dropdown title="Islands config" icon="la la-puzzle-piece">
+        <x-backpack::menu-item title="Islands" icon="la la-question" :link="backpack_url('islands-config')" />
+        <x-backpack::menu-item title="Scenes" icon="la la-question" :link="backpack_url('private-scene-config')" />
+    </x-backpack::menu-dropdown>
 @endif
 @if (backpack_user()->hasAnyRole(['Superadmin', 'Catalog']))
     <x-backpack::menu-item title="Catalog items" icon="la la-question" :link="backpack_url('catalog-item')" />

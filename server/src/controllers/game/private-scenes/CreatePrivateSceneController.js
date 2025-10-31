@@ -26,7 +26,7 @@ class CreatePrivateSceneController {
             let scene = new PrivateSceneModel(response.scene.id, response.scene);
             PrivateScenesCollection.add(scene.id, scene);
 
-            await scene.userJoin(user, response.user_inventory_items || []);
+            await scene.userJoin(user, response.user_inventory_items || [], response.scene_config || {});
         } catch (error) {
             //console.error('Error in CreateIslandController:', error);
             //Log.error('Error in CreateIslandController: ' + error);

@@ -46,6 +46,560 @@
                 }
             }
         },
+        "/api/islands-config": {
+            "post": {
+                "tags": [
+                    "Islands Config"
+                ],
+                "summary": "Obtener todas las configuraciones de islas activas",
+                "operationId": "84fc80b90717b6e436d1f01b45e5362e",
+                "responses": {
+                    "200": {
+                        "description": "Lista de configuraciones de islas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "islands_config": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Isla Tropical"
+                                                            },
+                                                            "image": {
+                                                                "type": "string",
+                                                                "example": "uploads/island/isla-tropical/xyz.png"
+                                                            },
+                                                            "image_url": {
+                                                                "type": "string",
+                                                                "example": "http://api.boombang.com/uploads/island/isla-tropical/xyz.png"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/islands-config/{id}": {
+            "post": {
+                "tags": [
+                    "Islands Config"
+                ],
+                "summary": "Obtener una configuración de isla específica",
+                "operationId": "9fdd14f4c8d784f10a73bbf1c2e158a9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la configuración de isla",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Configuración de isla encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "island_config": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Isla Tropical"
+                                                        },
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "uploads/island/isla-tropical/xyz.png"
+                                                        },
+                                                        "image_url": {
+                                                            "type": "string",
+                                                            "example": "http://api.boombang.com/uploads/island/isla-tropical/xyz.png"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Configuración de isla no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/private-scene-config/by-island/{islandConfigId}": {
+            "post": {
+                "tags": [
+                    "Private Scene Config"
+                ],
+                "summary": "Obtener configuraciones de escenas privadas por ID de isla",
+                "operationId": "a01171d6500f5058ee482cb87663f7de",
+                "parameters": [
+                    {
+                        "name": "islandConfigId",
+                        "in": "path",
+                        "description": "ID de la configuración de isla",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de configuraciones de escenas privadas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "private_scene_configs": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "island_type": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Escena Principal"
+                                                            },
+                                                            "image": {
+                                                                "type": "string",
+                                                                "example": "uploads/island-scene/escena-principal/xyz.png"
+                                                            },
+                                                            "image_url": {
+                                                                "type": "string",
+                                                                "example": "http://api.boombang.com/uploads/island-scene/escena-principal/xyz.png"
+                                                            },
+                                                            "max_users": {
+                                                                "type": "integer",
+                                                                "example": 20
+                                                            },
+                                                            "map_width": {
+                                                                "type": "integer",
+                                                                "example": 800
+                                                            },
+                                                            "map_height": {
+                                                                "type": "integer",
+                                                                "example": 600
+                                                            },
+                                                            "map": {
+                                                                "type": "string",
+                                                                "example": "xxxxx\\nxxxxx"
+                                                            },
+                                                            "start_x": {
+                                                                "type": "integer",
+                                                                "example": 400
+                                                            },
+                                                            "start_y": {
+                                                                "type": "integer",
+                                                                "example": 300
+                                                            },
+                                                            "start_z": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "start_position": {
+                                                                "properties": {
+                                                                    "x": {
+                                                                        "type": "integer",
+                                                                        "example": 400
+                                                                    },
+                                                                    "y": {
+                                                                        "type": "integer",
+                                                                        "example": 300
+                                                                    },
+                                                                    "z": {
+                                                                        "type": "integer",
+                                                                        "example": 0
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "default_colors": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "example": "#FFFFFF"
+                                                                }
+                                                            },
+                                                            "base_api_url": {
+                                                                "type": "string",
+                                                                "example": "http://api.boombang.com"
+                                                            },
+                                                            "assets_data": {
+                                                                "type": "object",
+                                                                "example": {
+                                                                    "asset1": "value1"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Configuración de isla no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/private-scene-config": {
+            "post": {
+                "tags": [
+                    "Private Scene Config"
+                ],
+                "summary": "Obtener todas las configuraciones de escenas privadas activas",
+                "operationId": "d0bdb8cbbf060d4aed350fac0c9d8ba4",
+                "responses": {
+                    "200": {
+                        "description": "Lista de configuraciones de escenas privadas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "private_scene_configs": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "island_type": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Escena Principal"
+                                                            },
+                                                            "image": {
+                                                                "type": "string",
+                                                                "example": "uploads/island-scene/escena-principal/xyz.png"
+                                                            },
+                                                            "image_url": {
+                                                                "type": "string",
+                                                                "example": "http://api.boombang.com/uploads/island-scene/escena-principal/xyz.png"
+                                                            },
+                                                            "max_users": {
+                                                                "type": "integer",
+                                                                "example": 20
+                                                            },
+                                                            "map_width": {
+                                                                "type": "integer",
+                                                                "example": 800
+                                                            },
+                                                            "map_height": {
+                                                                "type": "integer",
+                                                                "example": 600
+                                                            },
+                                                            "map": {
+                                                                "type": "string",
+                                                                "example": "xxxxx\\nxxxxx"
+                                                            },
+                                                            "start_x": {
+                                                                "type": "integer",
+                                                                "example": 400
+                                                            },
+                                                            "start_y": {
+                                                                "type": "integer",
+                                                                "example": 300
+                                                            },
+                                                            "start_z": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "start_position": {
+                                                                "properties": {
+                                                                    "x": {
+                                                                        "type": "integer",
+                                                                        "example": 400
+                                                                    },
+                                                                    "y": {
+                                                                        "type": "integer",
+                                                                        "example": 300
+                                                                    },
+                                                                    "z": {
+                                                                        "type": "integer",
+                                                                        "example": 0
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "default_colors": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "example": "#FFFFFF"
+                                                                }
+                                                            },
+                                                            "base_api_url": {
+                                                                "type": "string",
+                                                                "example": "http://api.boombang.com"
+                                                            },
+                                                            "assets_data": {
+                                                                "type": "object",
+                                                                "example": {
+                                                                    "asset1": "value1"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/private-scene-config/{id}": {
+            "post": {
+                "tags": [
+                    "Private Scene Config"
+                ],
+                "summary": "Obtener una configuración de escena privada específica",
+                "operationId": "a98501c31019f164ce7568ee1531e720",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la configuración de escena privada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Configuración de escena privada encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "private_scene_config": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "island_type": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Escena Principal"
+                                                        },
+                                                        "image": {
+                                                            "type": "string",
+                                                            "example": "uploads/island-scene/escena-principal/xyz.png"
+                                                        },
+                                                        "image_url": {
+                                                            "type": "string",
+                                                            "example": "http://api.boombang.com/uploads/island-scene/escena-principal/xyz.png"
+                                                        },
+                                                        "max_users": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        },
+                                                        "map_width": {
+                                                            "type": "integer",
+                                                            "example": 800
+                                                        },
+                                                        "map_height": {
+                                                            "type": "integer",
+                                                            "example": 600
+                                                        },
+                                                        "map": {
+                                                            "type": "string",
+                                                            "example": "xxxxx\\nxxxxx"
+                                                        },
+                                                        "start_x": {
+                                                            "type": "integer",
+                                                            "example": 400
+                                                        },
+                                                        "start_y": {
+                                                            "type": "integer",
+                                                            "example": 300
+                                                        },
+                                                        "start_z": {
+                                                            "type": "integer",
+                                                            "example": 0
+                                                        },
+                                                        "start_position": {
+                                                            "properties": {
+                                                                "x": {
+                                                                    "type": "integer",
+                                                                    "example": 400
+                                                                },
+                                                                "y": {
+                                                                    "type": "integer",
+                                                                    "example": 300
+                                                                },
+                                                                "z": {
+                                                                    "type": "integer",
+                                                                    "example": 0
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "default_colors": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "#FFFFFF"
+                                                            }
+                                                        },
+                                                        "base_api_url": {
+                                                            "type": "string",
+                                                            "example": "http://api.boombang.com"
+                                                        },
+                                                        "assets_data": {
+                                                            "type": "object",
+                                                            "example": {
+                                                                "asset1": "value1"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Configuración de escena privada no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
         "/api/minigames": {
             "get": {
                 "tags": [
@@ -775,6 +1329,14 @@
         }
     },
     "tags": [
+        {
+            "name": "Islands Config",
+            "description": "Configuración de islas"
+        },
+        {
+            "name": "Private Scene Config",
+            "description": "Configuración de escenas privadas"
+        },
         {
             "name": "Auth",
             "description": "Auth"
