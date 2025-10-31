@@ -35,12 +35,12 @@ export default class PrivateScene extends Phaser.Scene {
         this.selectedSprite = null;
         /** Blitter for tile overlays */
         this.tileBlitter = null;
-        
+
         // Estado del sistema de avatares
         this.avatarsEssentialReady = false;
         this.allAvatarsReady = false;
         this.avatarLoadingProgress = 0;
-        
+
         // Sistema de buffer de eventos
         this.isSceneReady = false;
         this.eventBuffer = [];
@@ -87,7 +87,7 @@ export default class PrivateScene extends Phaser.Scene {
 
     preload() {
         this.load.setCORS('anonymous');
-        PrivateSceneLoader.main(this, this.sceneType, true);
+        PrivateSceneLoader.main(this, true);
         this.load.image("tile", asset_tile_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
@@ -127,7 +127,7 @@ export default class PrivateScene extends Phaser.Scene {
 
     async create() {
         //console.log("🏠 Inicializando PrivateScene...");
-        
+
         if (!this.plugins.get('rexColorReplacePipeline')) {
             this.plugins.start('rexColorReplacePipeline');
         }
@@ -153,8 +153,8 @@ export default class PrivateScene extends Phaser.Scene {
         SceneRequestSockets.main(this);
         SceneResponseSockets.main(this);
 
-        PrivateSceneLoader.main(this, this.sceneData.scenery.type, false);
-        
+        PrivateSceneLoader.main(this, false);
+
         // Crear usuarios iniciales
         await CreateSceneController.main(this, this.sceneData);
 
@@ -187,10 +187,10 @@ export default class PrivateScene extends Phaser.Scene {
 
         // Marcar escena como lista
         this.isSceneReady = true;
-        
+
         // Obtener eventos capturados por el EarlyEventBuffer
         const earlyEvents = earlyEventBuffer.deactivateAndFlush();
-        
+
         // Agregar eventos tempranos al buffer de la escena
         earlyEvents.forEach(event => {
             this.eventBuffer.push({
@@ -199,7 +199,7 @@ export default class PrivateScene extends Phaser.Scene {
                 callback: () => AddUserController.processUser(this, event.data.user)
             });
         });
-        
+
         // Procesar todos los eventos en buffer con un pequeño delay entre cada uno
         const totalEvents = this.eventBuffer.length;
         if (totalEvents > 0) {
@@ -208,7 +208,7 @@ export default class PrivateScene extends Phaser.Scene {
                     bufferedEvent.callback();
                 }, index * 100); // 100ms de delay entre cada evento
             });
-            
+
             // Limpiar buffer
             this.eventBuffer = [];
         }
@@ -1065,10 +1065,10 @@ export default class PrivateScene extends Phaser.Scene {
         // Limpiar buffer de eventos
         this.eventBuffer = [];
         this.isSceneReady = false;
-        
+
         // Limpiar el buffer global de eventos tempranos
         earlyEventBuffer.clear();
-        
+
         RemovePhaserSocketsUtil.main(socket);
         if (this.chatManager) {
             this.chatManager.destroy();
@@ -1176,7 +1176,7 @@ export default class PrivateScene extends Phaser.Scene {
                     if (slot.group && this.textures.exists(slot.group.sprite_name)) {
                         const texture = this.textures.get(slot.group.sprite_name);
                         const spriteHeight = texture.source[0].height * (slot.group.scale || this.dpiScale);
-                        
+
                         // Ajustar Y para que coincida con el origen (0.5, 0.90) del sprite final
                         dropY = dropY + (spriteHeight * 0.40); // 0.90 - 0.50 = 0.40
                     }

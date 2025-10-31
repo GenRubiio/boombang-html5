@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PrivateSceneResource;
 use App\Http\Resources\UserCatalogItemsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\PrivateSceneConfigResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 use App\Http\Controllers\Api\Game\Scene\Interfaces\PrivateSceneApiControllerInterface;
 
@@ -57,11 +58,13 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             $scene->load(
                 'island',
                 'island.privateScenes',
-                'userCatalogItems'
+                'userCatalogItems',
+                'privateSceneConfig'
             );
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
+                'scene_config' => (new PrivateSceneConfigResource($scene->privateSceneConfig)),
                 'user_inventory_items' => $scene->user_id == Auth::user()->id
                     ? UserCatalogItemsResource::collection(Auth::user()->catalogShowItems) : [],
             ]);
@@ -94,6 +97,7 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
+                'scene_config' => (new PrivateSceneConfigResource($scene->privateSceneConfig)),
                 'user_inventory_items' => $scene->user_id == Auth::user()->id
                     ? UserCatalogItemsResource::collection(Auth::user()->catalogShowItems) : [],
             ]);

@@ -57,6 +57,8 @@ const RequestSocketsEnum = new Enum({
     GET_MINIGAME_RANKING: 'request:get_minigame_ranking',
     UPDATE_ISLAND_NAME: 'request:update_island_name',
     UPDATE_ISLAND_DESCRIPTION: 'request:update_island_description',
+    GET_ISLANDS_CONFIG: 'request:get_islands_config',
+    GET_PRIVATE_SCENE_CONFIG_BY_ISLAND: 'request:get_private_scene_config_by_island',
 });
 
 export default RequestSocketsEnum;

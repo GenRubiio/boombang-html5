@@ -9,7 +9,7 @@ class FloorPulseAnimation {
 
         // Configurar la posición
         pulse.setPosition(x, y);
-        pulse.setDepth(100); // Asegurarse de que esté encima de otros elementos
+        pulse.setDepth(100 * gameConfig.DPI); // Asegurarse de que esté encima de otros elementos
 
         // Crear la animación de expansión y desvanecimiento
         scene.tweens.add({
