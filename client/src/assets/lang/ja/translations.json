@@ -396,7 +396,10 @@
       "no_islands": "作成した島はありません。"
     },
     "search": {
-      "not_implemented": "検索はまだ実装されていません。"
+      "placeholder": "島を検索...",
+      "enter_search": "島の名前を入力して検索",
+      "searching": "検索中...",
+      "no_results": "島が見つかりません"
     },
     "ui": {
       "background_alt": "ロビーの背景",

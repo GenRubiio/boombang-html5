@@ -112,6 +112,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
 
         Route::prefix('islands')->group(function () {
             Route::post('get', [IslandApiController::class, 'getMyIslands']);
+            Route::post('search', [IslandApiController::class, 'search']);
         });
 
         Route::prefix('private-scene')->group(function () {

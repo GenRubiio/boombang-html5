@@ -78,6 +78,7 @@ const ResponseSocketsEnum = new Enum({
     ERROR_PRIVATE_SCENE_NAME_UPDATE: 'response:error_private_scene_name_update',
     PRIVATE_SCENE_DELETED: 'response:private_scene_deleted',
     ERROR_PRIVATE_SCENE_DELETE: 'response:error_private_scene_delete',
+    SEARCH_ISLANDS: 'response:search_islands',
 });
 
 export default ResponseSocketsEnum;

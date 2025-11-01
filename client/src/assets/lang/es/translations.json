@@ -386,7 +386,10 @@
       "no_islands": "No tienes islas creadas."
     },
     "search": {
-      "not_implemented": "La búsqueda aún no está implementada."
+      "placeholder": "Buscar islas...",
+      "enter_search": "Escribe el nombre de una isla para buscar",
+      "searching": "Buscando...",
+      "no_results": "No se encontraron islas"
     },
     "ui": {
       "background_alt": "Fondo del lobby",

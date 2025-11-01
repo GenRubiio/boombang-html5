@@ -73,27 +73,39 @@ export default {
 .lobby__scenes-container__tabs {
   display: flex;
   gap: 3px;
-  justify-content: space-between;
   margin-bottom: 10px;
+  width: 100%;
+  max-width: 235px;
 }
 
 .lobby__scenes-container__tabs-tab {
   background-color: #3a4b54c9;
   color: white;
-  padding: 5px 10px;
+  padding: 5px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-align: center;
   justify-content: center;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .lobby__scenes-container__tabs-tab.selected {
   background-color: #1c2c35ad;
 }
 
+.lobby__scenes-container__tabs-tab:last-child {
+  flex: 0 0 30px;
+  min-width: 30px;
+}
+
 .fixed-width {
-  width: 50px;
+  flex: 1;
+  min-width: 50px;
+  max-width: 65px;
   text-align: center;
   display: flex;
   justify-content: center;

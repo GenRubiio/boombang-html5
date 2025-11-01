@@ -29,7 +29,10 @@
           @create-island="createIsland"
         />
 
-        <SearchTab v-if="activeTab === 'search'" />
+        <SearchTab
+          v-if="activeTab === 'search'"
+          @join-island="joinIsland"
+        />
       </div>
     </div>
   </div>
