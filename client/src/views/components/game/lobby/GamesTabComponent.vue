@@ -3,8 +3,8 @@
     <div class="lobby__scenes-list" ref="scrollContainer">
       <div v-for="gameScene in gameScenes" :key="gameScene.uuid" class="scene-item">
         <button @click="handleClick(gameScene.uuid, MenuTypeEnum.GAME_SCENE)" :disabled="isJoining">
-          {{ gameScene.name }}
-          <span>{{ gameScene.total_users_in }}</span>
+          <span class="scene-name">{{ gameScene.name }}</span>
+          <span class="user-count">{{ gameScene.total_users_in }}</span>
         </button>
       </div>
     </div>
@@ -82,6 +82,7 @@ export default {
   display: inline-flex;
   align-items: center;
   transition: background-color 0.3s ease;
+  gap: 5px;
 }
 
 .lobby__scenes-list button:hover {
@@ -95,11 +96,20 @@ export default {
   opacity: 0.6;
 }
 
-.lobby__scenes-list button span {
+.scene-name {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+
+.user-count {
   margin-left: auto;
   background-color: #3c87b3ad;
   border-radius: 5px;
   padding: 5px 10px;
   font-size: 12px;
+  flex-shrink: 0;
 }
 </style>

@@ -7,15 +7,15 @@
       <div class="island__info">
         <div class="island__info-name">
           <span v-if="!isEditingName" @click="startEditName">{{ sceneData.name }}</span>
-          <input 
-            v-else 
+          <input
+            v-else
             ref="nameInput"
-            v-model="editedName" 
+            v-model="editedName"
+            @input="handleNameInput"
             @keyup.enter="saveIslandName"
             @keyup.escape="cancelEditName"
             @blur="saveIslandName"
             class="island__info-name-input"
-            maxlength="50"
           />
           <i 
             v-if="!isEditingName && canEditIsland" 
@@ -24,27 +24,25 @@
             :title="$t('island.edit_name_tooltip')"
           ></i>
         </div>
-        <div class="island__info-description" @click="startEditDescription">
-          <div v-if="!isEditingDescription" class="description-display">
+        <div class="island__info-description">
+          <div
+            v-if="!isEditingDescription"
+            class="description-display"
+            @click="canEditIsland && startEditDescription()"
+            :style="{ cursor: canEditIsland ? 'pointer' : 'default' }"
+          >
             <span v-if="sceneData.description">{{ sceneData.description }}</span>
             <span v-else class="description-placeholder">
               {{ canEditIsland ? $t('island.description_placeholder') : $t('island.no_description') }}
             </span>
-            <i 
-              v-if="canEditIsland" 
-              class="las la-edit description-edit-icon" 
-              @click.stop="startEditDescription"
-              :title="$t('island.edit_description_tooltip')"
-            ></i>
           </div>
           <div v-else class="description-edit">
-            <textarea 
+            <textarea
               ref="descriptionInput"
-              v-model="editedDescription" 
+              v-model="editedDescription"
+              @input="handleDescriptionInput"
               @keyup.escape="cancelEditDescription"
-              @blur="saveIslandDescription"
               class="island__info-description-textarea"
-              maxlength="500"
               :placeholder="$t('island.description_textarea_placeholder')"
             ></textarea>
             <div class="description-edit-actions">
@@ -161,9 +159,14 @@ export default {
       isEditingName: false,
       editedName: '',
       originalName: '',
+      lastValidName: '', // Último nombre válido según el ancho
       isEditingDescription: false,
       editedDescription: '',
       originalDescription: '',
+      lastValidDescription: '', // Última descripción válida según el ancho
+      MAX_NAME_WIDTH: 215, // Ancho máximo en píxeles para el nombre de la isla
+      MAX_DESCRIPTION_WIDTH: 210, // Ancho máximo en píxeles para cada línea de descripción
+      MAX_DESCRIPTION_HEIGHT: 100, // Altura máxima en píxeles para la descripción
     };
   },
   computed: {
@@ -226,11 +229,64 @@ export default {
         this.$emit("createIslandScene", this.sceneData);
       }
     },
+    /**
+     * Calcula el ancho de un texto en píxeles usando el estilo del input
+     */
+    getTextWidth(text, element) {
+      // Crear un elemento canvas para medir el texto
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      // Obtener el estilo computado del elemento
+      const computedStyle = window.getComputedStyle(element);
+      const fontSize = computedStyle.fontSize;
+      const fontFamily = computedStyle.fontFamily;
+      const fontWeight = computedStyle.fontWeight;
+
+      // Aplicar el estilo al contexto del canvas
+      context.font = `${fontWeight} ${fontSize} ${fontFamily}`;
+
+      // Medir el ancho del texto
+      const metrics = context.measureText(text);
+      return metrics.width;
+    },
+    /**
+     * Maneja el evento input del campo de nombre
+     * Valida que el ancho del texto no supere MAX_NAME_WIDTH píxeles
+     */
+    handleNameInput(event) {
+      const input = event.target;
+      const newValue = input.value;
+
+      // Calcular el ancho del texto
+      const textWidth = this.getTextWidth(newValue, input);
+
+      // Si el ancho supera el máximo, revertir al valor anterior
+      if (textWidth > this.MAX_NAME_WIDTH) {
+        // Guardar posición del cursor antes de revertir
+        const cursorPosition = input.selectionStart - 1;
+
+        // Revertir al último valor válido
+        this.editedName = this.lastValidName;
+
+        // En el siguiente tick, restaurar el cursor
+        this.$nextTick(() => {
+          if (cursorPosition >= 0) {
+            input.setSelectionRange(cursorPosition, cursorPosition);
+          }
+        });
+      } else {
+        // Si el ancho es válido, actualizar tanto editedName como lastValidName
+        this.editedName = newValue;
+        this.lastValidName = newValue;
+      }
+    },
     startEditName() {
       if (!this.canEditIsland) return;
       this.isEditingName = true;
       this.originalName = this.sceneData.name;
       this.editedName = this.sceneData.name;
+      this.lastValidName = this.sceneData.name; // Inicializar con el nombre actual
       this.$nextTick(() => {
         this.$refs.nameInput.focus();
         this.$refs.nameInput.select();
@@ -283,11 +339,117 @@ export default {
       // Aquí podrías mostrar una notificación de error al usuario
       // Por ejemplo: this.$toast.error(data.message);
     },
+    /**
+     * Calcula la altura que ocuparía un texto en el elemento
+     */
+    getTextHeight(text, element) {
+      // Crear un elemento temporal para medir la altura
+      const tempDiv = document.createElement('div');
+      const computedStyle = window.getComputedStyle(element);
+
+      // Obtener padding del elemento
+      const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
+      const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+      const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
+      const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
+
+      // Calcular ancho interior disponible
+      const availableWidth = this.MAX_DESCRIPTION_WIDTH - paddingLeft - paddingRight;
+
+      // Copiar estilos relevantes del textarea
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.visibility = 'hidden';
+      tempDiv.style.width = availableWidth + 'px';
+      tempDiv.style.fontSize = computedStyle.fontSize;
+      tempDiv.style.fontFamily = computedStyle.fontFamily;
+      tempDiv.style.fontWeight = computedStyle.fontWeight;
+      tempDiv.style.lineHeight = computedStyle.lineHeight;
+      tempDiv.style.whiteSpace = 'pre-wrap';
+      tempDiv.style.overflowWrap = 'break-word';
+      tempDiv.style.margin = '0';
+      tempDiv.style.padding = '0';
+
+      // Agregar el texto
+      tempDiv.textContent = text;
+
+      // Agregar al DOM temporalmente
+      document.body.appendChild(tempDiv);
+
+      // Medir la altura del contenido + padding
+      const contentHeight = tempDiv.scrollHeight;
+      const totalHeight = contentHeight + paddingTop + paddingBottom;
+
+      // Remover del DOM
+      document.body.removeChild(tempDiv);
+
+      return totalHeight;
+    },
+    /**
+     * Calcula si el texto de la descripción excede las dimensiones permitidas
+     */
+    isDescriptionTooLarge(text, element) {
+      if (!text) return false;
+
+      const computedStyle = window.getComputedStyle(element);
+      const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
+      const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
+
+      // Calcular ancho disponible para el texto (sin padding)
+      const availableWidth = this.MAX_DESCRIPTION_WIDTH - paddingLeft - paddingRight;
+
+      const lines = text.split('\n');
+
+      // Verificar cada línea individualmente por ancho
+      for (let line of lines) {
+        const lineWidth = this.getTextWidth(line, element);
+        if (lineWidth > availableWidth) {
+          return true;
+        }
+      }
+
+      // Verificar altura total del texto renderizado (incluyendo padding)
+      const textHeight = this.getTextHeight(text, element);
+      if (textHeight > this.MAX_DESCRIPTION_HEIGHT) {
+        return true;
+      }
+
+      return false;
+    },
+    /**
+     * Maneja el evento input del campo de descripción
+     * Valida que el ancho de cada línea no supere MAX_DESCRIPTION_WIDTH píxeles
+     * y que la altura total no supere MAX_DESCRIPTION_HEIGHT píxeles
+     */
+    handleDescriptionInput(event) {
+      const textarea = event.target;
+      const newValue = textarea.value;
+
+      // Verificar si el texto es demasiado grande
+      if (this.isDescriptionTooLarge(newValue, textarea)) {
+        // Guardar posición del cursor antes de revertir
+        const cursorPosition = textarea.selectionStart - 1;
+
+        // Revertir al último valor válido
+        this.editedDescription = this.lastValidDescription;
+
+        // En el siguiente tick, restaurar el cursor
+        this.$nextTick(() => {
+          if (cursorPosition >= 0) {
+            textarea.setSelectionRange(cursorPosition, cursorPosition);
+          }
+        });
+      } else {
+        // Si es válido, actualizar tanto editedDescription como lastValidDescription
+        this.editedDescription = newValue;
+        this.lastValidDescription = newValue;
+      }
+    },
     startEditDescription() {
       if (!this.canEditIsland) return;
       this.isEditingDescription = true;
       this.originalDescription = this.sceneData.description || '';
       this.editedDescription = this.sceneData.description || '';
+      this.lastValidDescription = this.sceneData.description || ''; // Inicializar con la descripción actual
       this.$nextTick(() => {
         this.$refs.descriptionInput.focus();
       });
@@ -418,13 +580,19 @@ export default {
   color: white;
   margin-bottom: 10px;
   text-align: start;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
+}
+
+.island__info-name > span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  flex-shrink: 1;
 }
 
 .island__info-name-input {
@@ -451,6 +619,8 @@ export default {
   opacity: 0.7;
   transition: opacity 0.2s ease;
   flex-shrink: 0;
+  position: relative;
+  z-index: 10;
 }
 
 .island__info-name-edit:hover {
@@ -491,26 +661,13 @@ export default {
   flex-direction: column;
   overflow-y: auto;
   padding-right: 20px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .description-placeholder {
   color: #aaa;
   font-style: italic;
-}
-
-.description-edit-icon {
-  color: #69c7ef;
-  cursor: pointer;
-  font-size: 16px;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-}
-
-.description-edit-icon:hover {
-  opacity: 1;
 }
 
 .description-edit {
@@ -527,12 +684,14 @@ export default {
   color: white;
   font-size: 14px;
   padding: 5px;
-  width: 100%;
-  height: calc(100% - 30px);
+  width: 210px;
+  height: 100px;
   outline: none;
   resize: none;
   font-family: inherit;
   box-sizing: border-box;
+  overflow-y: auto;
+  line-height: 1.4;
 }
 
 .island__info-description-textarea:focus {
