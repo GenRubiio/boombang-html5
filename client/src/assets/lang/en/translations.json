@@ -104,7 +104,12 @@
     "edit_description_tooltip": "Edit island description",
     "description_placeholder": "Click to add a description...",
     "no_description": "No description",
-    "description_textarea_placeholder": "Write a description for your island..."
+    "description_textarea_placeholder": "Write a description for your island...",
+    "edit_scene_name": "Edit scene name",
+    "delete_scene": "Delete scene",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm_delete_scene": "Are you sure you want to delete '{name}'?"
   },
   "user_card": {
     "change_ficha_alt": "Change card",

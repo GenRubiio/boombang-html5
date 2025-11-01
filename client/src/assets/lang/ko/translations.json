@@ -88,7 +88,12 @@
     "edit_description_tooltip": "섬 설명 편집",
     "description_placeholder": "클릭하여 설명 추가...",
     "no_description": "설명 없음",
-    "description_textarea_placeholder": "섬에 대한 설명을 작성하세요..."
+    "description_textarea_placeholder": "섬에 대한 설명을 작성하세요...",
+    "edit_scene_name": "장면 이름 편집",
+    "delete_scene": "장면 삭제",
+    "save": "저장",
+    "cancel": "취소",
+    "confirm_delete_scene": "정말 '{name}'을(를) 삭제하시겠습니까?"
   },
   "user_card": {
     "change_ficha_alt": "카드 변경",

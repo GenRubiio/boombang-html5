@@ -88,7 +88,12 @@
     "edit_description_tooltip": "島の説明を編集",
     "description_placeholder": "クリックして説明を追加...",
     "no_description": "説明なし",
-    "description_textarea_placeholder": "あなたの島の説明を書いてください..."
+    "description_textarea_placeholder": "あなたの島の説明を書いてください...",
+    "edit_scene_name": "シーン名を編集",
+    "delete_scene": "シーンを削除",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm_delete_scene": "本当に'{name}'を削除しますか？"
   },
   "user_card": {
     "change_ficha_alt": "カードを変更",

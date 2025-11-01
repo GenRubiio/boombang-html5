@@ -1,6 +1,6 @@
 <template>
   <div id="island-screen" class="island-screen">
-    <div class="island-card">
+    <div class="island-card" :class="{ 'island-card--owner': canEditIsland && sceneData.scenes && sceneData.scenes.length > 0 }">
       <div class="island__user-name">
         <h1>{{ sceneData.user.username }}</h1>
       </div>
@@ -68,6 +68,7 @@
           >
             <div class="scenario-button__container-left">
               <button
+                v-if="editingSceneId !== scene.id"
                 :key="scene.id"
                 class="scenario-button"
                 @click="handleSceneAction(scene)"
@@ -75,9 +76,53 @@
               >
                 {{ scene.name }}
               </button>
+              <input
+                v-else
+                ref="sceneNameInput"
+                v-model="editedSceneName"
+                @input="handleSceneNameInput"
+                @keyup.enter="saveSceneName(scene)"
+                @keyup.escape="cancelEditSceneName"
+                @blur="saveSceneName(scene)"
+                class="scenario-button-input"
+              />
             </div>
             <div class="scenario-button__container-right">
-              <div class="scenario-button__container-right__count">0</div>
+              <div class="scenario-button__container-right__count">{{ scene.user_count || 0 }}</div>
+              <template v-if="editingSceneId === scene.id">
+                <button
+                  class="scenario-button__action scenario-button__action--save"
+                  @click="saveSceneName(scene)"
+                  :title="$t('island.save')"
+                >
+                  <i class="las la-check"></i>
+                </button>
+                <button
+                  class="scenario-button__action scenario-button__action--cancel"
+                  @click="cancelEditSceneName"
+                  :title="$t('island.cancel')"
+                >
+                  <i class="las la-times"></i>
+                </button>
+              </template>
+              <template v-else>
+                <button
+                  v-if="canEditIsland"
+                  class="scenario-button__action scenario-button__action--edit"
+                  @click="startEditSceneName(scene)"
+                  :title="$t('island.edit_scene_name')"
+                >
+                  <i class="las la-edit"></i>
+                </button>
+                <button
+                  v-if="canEditIsland"
+                  class="scenario-button__action scenario-button__action--delete"
+                  @click="confirmDeleteScene(scene)"
+                  :title="$t('island.delete_scene')"
+                >
+                  <i class="las la-trash"></i>
+                </button>
+              </template>
             </div>
           </div>
 
@@ -133,6 +178,17 @@
         @error="handleImageLoad"
       />
     </div>
+
+    <!-- Popup de confirmación de eliminación -->
+    <ConfirmDeletePopup
+      :visible="showDeleteConfirm"
+      :title="$t('island.delete_scene')"
+      :message="deleteConfirmMessage"
+      :confirmText="$t('gacha.alert.confirm')"
+      :cancelText="$t('gacha.alert.cancel')"
+      @confirm="handleConfirmDelete"
+      @cancel="handleCancelDelete"
+    />
   </div>
 </template>
 
@@ -141,8 +197,12 @@ import socket from "@/sockets/socket.js";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum.js";
 import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
+import ConfirmDeletePopup from "@/views/components/game/island/ConfirmDeletePopup.vue";
 
 export default {
+  components: {
+    ConfirmDeletePopup,
+  },
   props: {
     sceneData: {
       type: Object,
@@ -164,7 +224,15 @@ export default {
       editedDescription: '',
       originalDescription: '',
       lastValidDescription: '', // Última descripción válida según el ancho
+      editingSceneId: null,
+      editedSceneName: '',
+      originalSceneName: '',
+      lastValidSceneName: '',
+      showDeleteConfirm: false,
+      deleteConfirmMessage: '',
+      sceneToDelete: null,
       MAX_NAME_WIDTH: 215, // Ancho máximo en píxeles para el nombre de la isla
+      MAX_SCENE_NAME_WIDTH: 165, // Ancho máximo en píxeles para el nombre de escenario
       MAX_DESCRIPTION_WIDTH: 210, // Ancho máximo en píxeles para cada línea de descripción
       MAX_DESCRIPTION_HEIGHT: 100, // Altura máxima en píxeles para la descripción
     };
@@ -492,19 +560,170 @@ export default {
       // Revertir cambios locales en caso de error
       this.sceneData.description = this.originalDescription;
       this.cancelEditDescription();
-      
+
       // Aquí podrías mostrar una notificación de error al usuario
       // Por ejemplo: this.$toast.error(data.message);
+    },
+    /**
+     * Maneja el evento input del campo de nombre de escenario
+     * Valida que el ancho del texto no supere MAX_SCENE_NAME_WIDTH píxeles
+     */
+    handleSceneNameInput(event) {
+      const input = event.target;
+      const newValue = input.value;
+
+      // Calcular el ancho del texto
+      const textWidth = this.getTextWidth(newValue, input);
+
+      // Si el ancho supera el máximo, revertir al valor anterior
+      if (textWidth > this.MAX_SCENE_NAME_WIDTH) {
+        // Guardar posición del cursor antes de revertir
+        const cursorPosition = input.selectionStart - 1;
+
+        // Revertir al último valor válido
+        this.editedSceneName = this.lastValidSceneName;
+
+        // En el siguiente tick, restaurar el cursor
+        this.$nextTick(() => {
+          if (cursorPosition >= 0) {
+            input.setSelectionRange(cursorPosition, cursorPosition);
+          }
+        });
+      } else {
+        // Si el ancho es válido, actualizar tanto editedSceneName como lastValidSceneName
+        this.editedSceneName = newValue;
+        this.lastValidSceneName = newValue;
+      }
+    },
+    startEditSceneName(scene) {
+      if (!this.canEditIsland) return;
+      this.editingSceneId = scene.id;
+      this.originalSceneName = scene.name;
+      this.editedSceneName = scene.name;
+      this.lastValidSceneName = scene.name;
+      this.$nextTick(() => {
+        if (this.$refs.sceneNameInput) {
+          const input = Array.isArray(this.$refs.sceneNameInput)
+            ? this.$refs.sceneNameInput[0]
+            : this.$refs.sceneNameInput;
+          if (input) {
+            input.focus();
+            input.select();
+          }
+        }
+      });
+    },
+    cancelEditSceneName() {
+      this.editingSceneId = null;
+      this.editedSceneName = '';
+      this.lastValidSceneName = '';
+    },
+    async saveSceneName(scene) {
+      if (!this.editedSceneName.trim()) {
+        this.cancelEditSceneName();
+        return;
+      }
+
+      const trimmedName = this.editedSceneName.trim();
+
+      // Si el nombre no cambió, no hacer nada
+      if (trimmedName === this.originalSceneName) {
+        this.cancelEditSceneName();
+        return;
+      }
+
+      try {
+        socket.emit(RequestSocketsEnum.UPDATE_PRIVATE_SCENE_NAME, {
+          sceneId: scene.id,
+          name: trimmedName
+        });
+
+        // Actualizar localmente mientras esperamos confirmación del servidor
+        const sceneToUpdate = this.sceneData.scenes.find(s => s.id === scene.id);
+        if (sceneToUpdate) {
+          sceneToUpdate.name = trimmedName;
+        }
+        this.cancelEditSceneName();
+      } catch (error) {
+        console.error('Error updating scene name:', error);
+        this.cancelEditSceneName();
+      }
+    },
+    confirmDeleteScene(scene) {
+      if (!this.canEditIsland) return;
+
+      // Mostrar popup de confirmación
+      this.sceneToDelete = scene;
+      this.deleteConfirmMessage = this.$t('island.confirm_delete_scene', { name: scene.name });
+      this.showDeleteConfirm = true;
+    },
+    handleConfirmDelete() {
+      if (this.sceneToDelete) {
+        this.deleteScene(this.sceneToDelete);
+      }
+      this.handleCancelDelete();
+    },
+    handleCancelDelete() {
+      this.showDeleteConfirm = false;
+      this.deleteConfirmMessage = '';
+      this.sceneToDelete = null;
+    },
+    async deleteScene(scene) {
+      try {
+        socket.emit(RequestSocketsEnum.DELETE_PRIVATE_SCENE, {
+          sceneId: scene.id
+        });
+
+        // Remover localmente mientras esperamos confirmación del servidor
+        const sceneIndex = this.sceneData.scenes.findIndex(s => s.id === scene.id);
+        if (sceneIndex !== -1) {
+          this.sceneData.scenes.splice(sceneIndex, 1);
+        }
+      } catch (error) {
+        console.error('Error deleting scene:', error);
+      }
+    },
+    handleSceneNameUpdated(data) {
+      if (data.success) {
+        const sceneToUpdate = this.sceneData.scenes.find(s => s.id === data.sceneId);
+        if (sceneToUpdate) {
+          sceneToUpdate.name = data.name;
+        }
+      }
+    },
+    handleSceneNameUpdateError(data) {
+      console.error('Scene name update error:', data.message);
+      // Revertir cambios locales en caso de error
+      const sceneToRevert = this.sceneData.scenes.find(s => s.id === data.sceneId);
+      if (sceneToRevert && this.originalSceneName) {
+        sceneToRevert.name = this.originalSceneName;
+      }
+    },
+    handleSceneDeleted(data) {
+      if (data.success) {
+        const sceneIndex = this.sceneData.scenes.findIndex(s => s.id === data.sceneId);
+        if (sceneIndex !== -1) {
+          this.sceneData.scenes.splice(sceneIndex, 1);
+        }
+      }
+    },
+    handleSceneDeleteError(data) {
+      console.error('Scene delete error:', data.message);
+      // Aquí podrías mostrar una notificación de error al usuario
     },
   },
   created() {
     this.$emit("updateLoading", true);
-    
+
     // Escuchar respuestas del socket
     socket.on(ResponseSocketsEnum.ISLAND_NAME_UPDATED, this.handleIslandNameUpdated);
     socket.on(ResponseSocketsEnum.ERROR_ISLAND_NAME_UPDATED, this.handleError);
     socket.on(ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED, this.handleIslandDescriptionUpdated);
     socket.on(ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED, this.handleDescriptionError);
+    socket.on(ResponseSocketsEnum.PRIVATE_SCENE_NAME_UPDATED, this.handleSceneNameUpdated);
+    socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE, this.handleSceneNameUpdateError);
+    socket.on(ResponseSocketsEnum.PRIVATE_SCENE_DELETED, this.handleSceneDeleted);
+    socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE, this.handleSceneDeleteError);
   },
   beforeUnmount() {
     // Limpiar listeners
@@ -512,6 +731,10 @@ export default {
     socket.off(ResponseSocketsEnum.ERROR_ISLAND_NAME_UPDATED, this.handleError);
     socket.off(ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED, this.handleIslandDescriptionUpdated);
     socket.off(ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED, this.handleDescriptionError);
+    socket.off(ResponseSocketsEnum.PRIVATE_SCENE_NAME_UPDATED, this.handleSceneNameUpdated);
+    socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE, this.handleSceneNameUpdateError);
+    socket.off(ResponseSocketsEnum.PRIVATE_SCENE_DELETED, this.handleSceneDeleted);
+    socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE, this.handleSceneDeleteError);
   },
   mounted() {
     this.preloadImages();
@@ -551,6 +774,10 @@ export default {
   top: 20px;
 }
 
+.island-card--owner {
+  width: 340px;
+}
+
 .island__user-name {
   font-size: 20px;
   font-weight: bold;
@@ -580,7 +807,7 @@ export default {
   color: white;
   margin-bottom: 10px;
   text-align: start;
-  width: 100%;
+  width: 225px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -645,6 +872,7 @@ export default {
   text-align: start;
   background-color: #3a4b54c9;
   height: 125px;
+  width: 225px;
   border-radius: 5px;
   padding: 8px;
   box-sizing: border-box;
@@ -746,6 +974,7 @@ export default {
 .scenario-button__container {
   display: flex;
   gap: 5px;
+  width: 225px;
 }
 
 .scenario-button__container-left {
@@ -813,6 +1042,73 @@ export default {
   background-color: #2a3a46;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.scenario-button-input {
+  background: #2a3a42;
+  border: 2px solid #5ca8d1;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  padding: 5px;
+  width: 185px;
+  height: 35px;
+  outline: none;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.scenario-button-input:focus {
+  border-color: #69c7ef;
+  box-shadow: 0 0 5px rgba(105, 199, 239, 0.3);
+}
+
+.scenario-button__action {
+  background-color: #3a4b54c9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 16px;
+}
+
+.scenario-button__action--edit {
+  color: #69c7ef;
+}
+
+.scenario-button__action--edit:hover {
+  background-color: #1c2c35ad;
+}
+
+.scenario-button__action--delete {
+  color: #d9534f;
+}
+
+.scenario-button__action--delete:hover {
+  background-color: rgba(217, 83, 79, 0.2);
+}
+
+.scenario-button__action--save {
+  color: #5cb85c;
+}
+
+.scenario-button__action--save:hover {
+  background-color: rgba(92, 184, 92, 0.2);
+}
+
+.scenario-button__action--cancel {
+  color: #d9534f;
+}
+
+.scenario-button__action--cancel:hover {
+  background-color: rgba(217, 83, 79, 0.2);
 }
 
 .brujiula {

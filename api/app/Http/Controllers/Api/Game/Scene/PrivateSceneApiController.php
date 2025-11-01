@@ -176,4 +176,77 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             return $this->handleException($e);
         }
     }
+
+    public function updateName(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'sceneId' => 'required|integer|exists:private_scenes,id',
+                'name' => 'required|string|max:50',
+            ]);
+
+            $user = Auth::user();
+            $scene = PrivateScene::findOrFail($validated['sceneId']);
+
+            // Validate that the user owns the island where this scene belongs
+            $island = $scene->island;
+            if ($island->user_id != $user->id) {
+                throw new Exception('You do not have permission to update this scene.');
+            }
+
+            $scene->update([
+                'name' => $validated['name']
+            ]);
+
+            return $this->successResponse([
+                'success' => true,
+                'message' => 'Scene name updated successfully',
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error updating private scene name: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'sceneId' => $request->input('sceneId'),
+            ]);
+            return $this->handleException($e);
+        }
+    }
+
+    public function delete(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'sceneId' => 'required|integer|exists:private_scenes,id',
+            ]);
+
+            $user = Auth::user();
+            $scene = PrivateScene::findOrFail($validated['sceneId']);
+
+            // Validate that the user owns the island where this scene belongs
+            $island = $scene->island;
+            if ($island->user_id != $user->id) {
+                throw new Exception('You do not have permission to delete this scene.');
+            }
+
+            // Set private_scene_id to null for all objects in this scene
+            UserCatalogItem::where('private_scene_id', $scene->id)
+                ->update([
+                    'private_scene_id' => null,
+                    'occupied_tiles' => '[]'
+                ]);
+
+            // Delete the scene
+            $scene->delete();
+
+            return $this->successResponse([
+                'success' => true,
+                'message' => 'Scene deleted successfully',
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error deleting private scene: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'sceneId' => $request->input('sceneId'),
+            ]);
+            return $this->handleException($e);
+        }
+    }
 }

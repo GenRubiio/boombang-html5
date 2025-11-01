@@ -75,6 +75,10 @@ const ResponseSocketsEnum = new Enum({
     GET_ISLANDS_CONFIG_ERROR: 'response:get_islands_config_error',
     GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_SUCCESS: 'response:get_private_scene_config_by_island_success',
     GET_PRIVATE_SCENE_CONFIG_BY_ISLAND_ERROR: 'response:get_private_scene_config_by_island_error',
+    PRIVATE_SCENE_NAME_UPDATED: 'response:private_scene_name_updated',
+    ERROR_PRIVATE_SCENE_NAME_UPDATE: 'response:error_private_scene_name_update',
+    PRIVATE_SCENE_DELETED: 'response:private_scene_deleted',
+    ERROR_PRIVATE_SCENE_DELETE: 'response:error_private_scene_delete',
 });
 
 module.exports = ResponseSocketsEnum;

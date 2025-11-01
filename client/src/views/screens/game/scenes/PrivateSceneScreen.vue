@@ -91,6 +91,12 @@ export default {
         console.log("Saliendo de la sala...");
       }
       this.$emit("updateLoading", true);
+
+      // Unirse a la room de la isla antes de volver a mostrar la IslandScreen
+      socket.emit(RequestSocketsEnum.JOIN_ISLAND, {
+        islandId: this.sceneData.scenery.island.data.id
+      });
+
       this.$emit("joinIsland", this.sceneData.scenery.island.data);
     },
     updateUserCard(userData) {
