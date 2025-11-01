@@ -386,7 +386,10 @@
       "no_islands": "You have no created islands."
     },
     "search": {
-      "not_implemented": "Search is not yet implemented."
+      "placeholder": "Search islands...",
+      "enter_search": "Enter an island name to search",
+      "searching": "Searching...",
+      "no_results": "No islands found"
     },
     "ui": {
       "background_alt": "Lobby background",

@@ -63,6 +63,15 @@ class IslandApiService {
             throw error;
         }
     }
+
+    static async searchIslands(searchData, user) {
+        try {
+            return await ApiService.post('api/islands/search', searchData, user.authJwt);
+        } catch (error) {
+            console.error('Error al buscar islas:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = IslandApiService;

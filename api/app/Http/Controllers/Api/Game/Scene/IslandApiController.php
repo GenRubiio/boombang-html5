@@ -156,4 +156,24 @@ class IslandApiController extends Controller implements IslandApiControllerInter
             'message' => 'Island description updated successfully'
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $validated = $request->validate([
+            'query' => 'required|string|max:255',
+        ]);
+
+        $query = trim($validated['query']);
+
+        // Buscar islas cuyo nombre contenga el texto de búsqueda
+        // Los visitantes se calculan en el servidor, no en la base de datos
+        $islands = Island::where('name', 'LIKE', "%{$query}%")
+                         ->orderBy('created_at', 'desc')
+                         ->limit(20)
+                         ->get();
+
+        return $this->successResponse([
+            'islands' => IslandResource::collection($islands)
+        ]);
+    }
 }

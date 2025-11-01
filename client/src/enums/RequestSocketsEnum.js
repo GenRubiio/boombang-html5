@@ -61,6 +61,7 @@ const RequestSocketsEnum = new Enum({
     GET_PRIVATE_SCENE_CONFIG_BY_ISLAND: 'request:get_private_scene_config_by_island',
     UPDATE_PRIVATE_SCENE_NAME: 'request:update_private_scene_name',
     DELETE_PRIVATE_SCENE: 'request:delete_private_scene',
+    SEARCH_ISLANDS: 'request:search_islands',
 });
 
 export default RequestSocketsEnum;

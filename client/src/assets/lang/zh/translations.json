@@ -370,7 +370,10 @@
       "no_islands": "你没有创建任何岛屿。"
     },
     "search": {
-      "not_implemented": "搜索功能尚未实现。"
+      "placeholder": "搜索岛屿...",
+      "enter_search": "输入岛屿名称进行搜索",
+      "searching": "搜索中...",
+      "no_results": "未找到岛屿"
     },
     "ui": {
       "background_alt": "大厅背景",
