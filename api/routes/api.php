@@ -120,6 +120,8 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('remove-item', [PrivateSceneApiController::class, 'removeItem']);
             Route::post('put-item', [PrivateSceneApiController::class, 'putItem']);
             Route::post('update-item-position', [PrivateSceneApiController::class, 'updateItemPosition']);
+            Route::post('update-name', [PrivateSceneApiController::class, 'updateName']);
+            Route::post('delete', [PrivateSceneApiController::class, 'delete']);
         });
 
         Route::prefix('public-scene')->group(function () {

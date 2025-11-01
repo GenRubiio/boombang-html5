@@ -62,6 +62,8 @@ const RequestSocketsEnum = new Enum({
     UPDATE_ISLAND_DESCRIPTION: 'request:update_island_description',
     GET_ISLANDS_CONFIG: 'request:get_islands_config',
     GET_PRIVATE_SCENE_CONFIG_BY_ISLAND: 'request:get_private_scene_config_by_island',
+    UPDATE_PRIVATE_SCENE_NAME: 'request:update_private_scene_name',
+    DELETE_PRIVATE_SCENE: 'request:delete_private_scene',
 });
 
 module.exports = RequestSocketsEnum;

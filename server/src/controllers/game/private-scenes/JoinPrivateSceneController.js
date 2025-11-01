@@ -33,6 +33,14 @@ class JoinPrivateSceneController {
                 return;
             }
 
+            // Salir de la room de la isla cuando entra a una escena privada
+            const rooms = Array.from(socket.rooms);
+            rooms.forEach(room => {
+                if (room.startsWith('island_')) {
+                    socket.leave(room);
+                }
+            });
+
             await scene.userJoin(user, response.user_inventory_items || [], response.scene_config || {});
         } catch (err) {
             console.error('Error in JoinPrivateSceneController:', err);

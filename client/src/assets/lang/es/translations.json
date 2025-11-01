@@ -104,7 +104,12 @@
     "edit_description_tooltip": "Editar descripción de isla",
     "description_placeholder": "Haz clic para añadir una descripción...",
     "no_description": "Sin descripción",
-    "description_textarea_placeholder": "Escribe una descripción para tu isla..."
+    "description_textarea_placeholder": "Escribe una descripción para tu isla...",
+    "edit_scene_name": "Editar nombre de escenario",
+    "delete_scene": "Eliminar escenario",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm_delete_scene": "¿Estás seguro de que quieres eliminar '{name}'?"
   },
   "user_card": {
     "change_ficha_alt": "Cambiar ficha",
