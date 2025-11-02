@@ -35,12 +35,11 @@ class ProcessGamesAndEvents extends Command
     {
         $now = Carbon::now();
 
-    DB::beginTransaction();
+        DB::beginTransaction();
         try {
-            // 1) Si es lunes, asegurarse de crear nueva MinigameWeek para cada minigame
-            if ($now->isMonday()) {
-                $this->createWeeklyForMinigames($now);
-            }
+            // 1) Asegurarse de que existe la semana actual para cada minigame
+            // Esto se ejecuta siempre, no solo los lunes, para asegurar que se cree la semana si no existe
+            $this->createWeeklyForMinigames($now);
 
             // 2) Entregar premios de MinigameWeek que han terminado y no hayan sido procesados
             $this->processMinigameWeeks($now);
