@@ -18,3 +18,11 @@ Artisan::command('inspire', function () {
 Schedule::command('queue:work --stop-when-empty')
     ->everyMinute()
     ->withoutOverlapping();
+
+/**
+ * Procesar minijuegos y eventos (crear semanas, distribuir premios)
+ * Se ejecuta cada minuto para asegurar que se procesen los cambios de semana
+ */
+Schedule::command('boombang:process-games-events')
+    ->everyMinute()
+    ->withoutOverlapping();
