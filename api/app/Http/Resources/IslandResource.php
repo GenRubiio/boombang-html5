@@ -34,6 +34,16 @@ class IslandResource extends JsonResource
             ],
         ];
 
+        // Agregar información de la configuración de isla si existe
+        if ($this->islandConfig) {
+            $return['island_config'] = [
+                'id' => $this->islandConfig->id,
+                'name' => $this->islandConfig->name,
+                'image' => $this->islandConfig->image,
+                'image_url' => urlDocker($this->islandConfig->image),
+            ];
+        }
+
         if (debug_backtrace()[1]['function'] == "toDTO") {
             if ($this->relationLoaded('privateScenes')) {
                 $return['scenes'] = PrivateSceneResource::collectionToDTO($this->whenLoaded('privateScenes'));

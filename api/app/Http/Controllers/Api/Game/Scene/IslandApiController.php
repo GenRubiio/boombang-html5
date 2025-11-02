@@ -61,7 +61,7 @@ class IslandApiController extends Controller implements IslandApiControllerInter
         if (!$island) {
             return $this->errorResponse('Island not found', 404);
         }
-        $island->load('privateScenes'); // Load user relationship for the island
+        $island->load(['privateScenes', 'islandConfig']); // Load privateScenes and islandConfig relationships
 
         return $this->successResponse([
             'island' => (new IslandResource($island))->toDTO()

@@ -1,29 +1,30 @@
 <template>
   <div id="island-screen" class="island-screen">
-    <div class="island-card" :class="{ 'island-card--owner': canEditIsland && sceneData.scenes && sceneData.scenes.length > 0 }">
-      <div class="island__user-name">
-        <h1>{{ sceneData.user.username }}</h1>
-      </div>
-      <div class="island__info">
-        <div class="island__info-name">
-          <span v-if="!isEditingName" @click="startEditName">{{ sceneData.name }}</span>
-          <input
-            v-else
-            ref="nameInput"
-            v-model="editedName"
-            @input="handleNameInput"
-            @keyup.enter="saveIslandName"
-            @keyup.escape="cancelEditName"
-            @blur="saveIslandName"
-            class="island__info-name-input"
-          />
-          <i 
-            v-if="!isEditingName && canEditIsland" 
-            class="las la-edit island__info-name-edit" 
-            @click="startEditName"
-            :title="$t('island.edit_name_tooltip')"
-          ></i>
+    <template v-if="dataReady && imagesLoaded">
+      <div class="island-card" :class="{ 'island-card--owner': canEditIsland && sceneData.scenes && sceneData.scenes.length > 0 }">
+        <div class="island__user-name">
+          <h1>{{ sceneData.user.username }}</h1>
         </div>
+        <div class="island__info">
+          <div class="island__info-name">
+            <span v-if="!isEditingName" @click="startEditName">{{ sceneData.name }}</span>
+            <input
+              v-else
+              ref="nameInput"
+              v-model="editedName"
+              @input="handleNameInput"
+              @keyup.enter="saveIslandName"
+              @keyup.escape="cancelEditName"
+              @blur="saveIslandName"
+              class="island__info-name-input"
+            />
+            <i
+              v-if="!isEditingName && canEditIsland"
+              class="las la-edit island__info-name-edit"
+              @click="startEditName"
+              :title="$t('island.edit_name_tooltip')"
+            ></i>
+          </div>
         <div class="island__info-description">
           <div
             v-if="!isEditingDescription"
@@ -157,38 +158,39 @@
           </template>
         </div>
       </div>
-    </div>
+      </div>
 
-    <!-- Imagen de la brújula -->
-    <img
-      class="brujiula"
-      :src="asset_brujula_image"
-      alt="Brújula"
-      @load="handleImageLoad"
-      @error="handleImageLoad"
-      @click="goBackToLobby"
-    />
-
-    <!-- Vista previa de isla -->
-    <div class="island-preview">
+      <!-- Imagen de la brújula -->
       <img
-        :src="islandImage"
-        :alt="`Isla ${sceneData.type}`"
+        class="brujiula"
+        :src="asset_brujula_image"
+        alt="Brújula"
         @load="handleImageLoad"
         @error="handleImageLoad"
+        @click="goBackToLobby"
       />
-    </div>
 
-    <!-- Popup de confirmación de eliminación -->
-    <ConfirmDeletePopup
-      :visible="showDeleteConfirm"
-      :title="$t('island.delete_scene')"
-      :message="deleteConfirmMessage"
-      :confirmText="$t('gacha.alert.confirm')"
-      :cancelText="$t('gacha.alert.cancel')"
-      @confirm="handleConfirmDelete"
-      @cancel="handleCancelDelete"
-    />
+      <!-- Vista previa de isla -->
+      <div class="island-preview">
+        <img
+          :src="islandImage"
+          :alt="`Isla ${sceneData.type}`"
+          @load="handleImageLoad"
+          @error="handleImageLoad"
+        />
+      </div>
+
+      <!-- Popup de confirmación de eliminación -->
+      <ConfirmDeletePopup
+        :visible="showDeleteConfirm"
+        :title="$t('island.delete_scene')"
+        :message="deleteConfirmMessage"
+        :confirmText="$t('gacha.alert.confirm')"
+        :cancelText="$t('gacha.alert.cancel')"
+        @confirm="handleConfirmDelete"
+        @cancel="handleCancelDelete"
+      />
+    </template>
   </div>
 </template>
 
@@ -215,6 +217,7 @@ export default {
       imagesToLoad: 2, // 1 isla + 1 brújula
       loadedImages: 0,
       imagesLoaded: false,
+      dataReady: false, // Nueva bandera para controlar cuando los datos están listos
       isJoining: false,
       isEditingName: false,
       editedName: '',
@@ -239,18 +242,35 @@ export default {
   },
   computed: {
     islandImage() {
-      if (!this.sceneData || !this.sceneData.type) {
+      if (!this.sceneData || !this.sceneData.island_config) {
         return "";
       }
-      return new URL(
-        `../../../../assets/game/islands/isla${this.sceneData.type}.webp`,
-        import.meta.url
-      ).href;
+      // Si estamos en local, usar la ruta relativa (image)
+      // Si no, usar la URL completa (image_url)
+      const viteEnv = import.meta.env.VITE_APP_ENV;
+      return viteEnv === 'local'
+        ? this.sceneData.island_config.image
+        : this.sceneData.island_config.image_url;
     },
     canEditIsland() {
-      return this.sceneData.user_id == this.$socket.user.db_id || 
+      return this.sceneData.user_id == this.$socket.user.db_id ||
              this.sceneData.userId == this.$socket.user.db_id;
     },
+  },
+  watch: {
+    // Observar cuando los datos de sceneData.island_config estén disponibles
+    'sceneData.island_config': {
+      handler(newVal) {
+        if (newVal && !this.dataReady) {
+          this.dataReady = true;
+          this.$nextTick(() => {
+            this.preloadImages();
+          });
+        }
+      },
+      immediate: true,
+      deep: true
+    }
   },
   methods: {
     handleImageLoad() {
@@ -264,6 +284,12 @@ export default {
       }
     },
     preloadImages() {
+      // Verificar que tenemos la URL de la imagen de la isla
+      if (!this.islandImage) {
+        // Si no hay imagen de isla disponible, no podemos cargar
+        return;
+      }
+
       const allImages = [this.islandImage, this.asset_brujula_image];
 
       allImages.forEach((src) => {
@@ -737,7 +763,7 @@ export default {
     socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE, this.handleSceneDeleteError);
   },
   mounted() {
-    this.preloadImages();
+    // La precarga de imágenes ahora se inicia desde el watcher cuando island_config esté disponible
   },
 };
 </script>
