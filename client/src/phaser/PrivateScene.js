@@ -181,8 +181,12 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
 
+        // Crear botones HTML para todos (propietarios y visitantes)
+        this.createHTMLButtons();
+
+        // Solo crear inventario si es el propietario
         if (this.sceneData.myScene) {
-            this.createHTMLButtons();
+            // El inventario ya se crea en la línea 173
         }
 
         // Marcar escena como lista
@@ -409,7 +413,8 @@ export default class PrivateScene extends Phaser.Scene {
 
     createHTMLButtons() {
         // Crear contenedor HTML para los botones
-        const buttonsHTML = ButtonsPrivateSceneHtml.load();
+        const isOwner = this.sceneData.myScene || false;
+        const buttonsHTML = ButtonsPrivateSceneHtml.load(isOwner);
 
         // Crear elemento DOM y añadirlo a la escena
         this.buttonsContainer = this.add.dom(0, 0).createFromHTML(buttonsHTML);

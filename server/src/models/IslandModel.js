@@ -9,6 +9,7 @@ class IslandModel {
         this.visitors = row.visitors || 0;
         this.scenes = row.scenes || [];
         this.user = row.user || null;
+        this.islandConfig = row.island_config || null;
     }
 }
 
