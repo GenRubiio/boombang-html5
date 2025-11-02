@@ -27,7 +27,7 @@ class IslandApiController extends Controller implements IslandApiControllerInter
         $user = Auth::user();
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:islands,name',
-            'type' => 'required|integer|in:1,2', // Assuming types are integers 1-5
+            'type' => 'required|integer|exists:islands_config,id',
         ]);
 
         $island = Island::create([
