@@ -46,6 +46,7 @@ Route::group([
     Route::crud('minigame-score', 'MinigameScoreCrudController');
     Route::crud('reward', 'RewardCrudController');
     Route::crud('islands-config', 'IslandsConfigCrudController');
+    Route::crud('mail', 'MailCrudController');
 }); // this should be the absolute last line of this file
 
 /**

@@ -36,10 +36,10 @@ const initializeApp = async () => {
 
   // Importar socket DESPUÉS de que Pinia esté inicializado
   const { default: socket } = await import("./sockets/socket");
-  
+
   // Configurar los listeners del socket ahora que Pinia está disponible
   await socket.setupListeners();
-  
+
   app.config.globalProperties.$socket = socket;
   
   app.mount("#app");

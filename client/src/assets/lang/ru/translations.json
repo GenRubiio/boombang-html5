@@ -403,7 +403,22 @@
       "credits": "Кредиты",
       "avatar_error": "Ошибка загрузки аватара пользователя",
       "settings": "Настройки",
-      "settings_alt": "Конфигурация"
+      "settings_alt": "Конфигурация",
+      "mail": "Почта",
+      "mail_alt": "Почтовый ящик"
+    },
+    "mail": {
+      "title": "Почта",
+      "loading": "Загрузка писем...",
+      "no_mails": "У вас нет писем",
+      "new": "Новое",
+      "has_rewards": "Есть награды",
+      "rewards_title": "Награды",
+      "gold_credits": "Золотые кредиты",
+      "silver_credits": "Серебряные кредиты",
+      "claim": "Получить",
+      "claiming": "Получение...",
+      "claimed": "Получено"
     }
   },
   "settings": {
