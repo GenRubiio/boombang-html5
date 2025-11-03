@@ -30,8 +30,8 @@ class MailCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/mail');
         $this->crud->setEntityNameStrings('correo', 'correos');
 
-        // Desactivar el procesamiento automático de relaciones
-        $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer']);
+        // Desactivar el procesamiento automático de relaciones que manejamos manualmente
+        $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'rewards', 'user_ids']);
     }
 
     /**
@@ -152,6 +152,8 @@ class MailCrudController extends CrudController
             'allows_multiple' => true,
             'hint' => 'Solo se usa si NO está marcado "Enviar a todos"',
             'tab' => 'Destinatarios',
+            'fake' => true, // Este campo no existe en la tabla, lo manejamos manualmente
+            'store_in' => 'user_ids', // Guardar en un campo temporal
         ]);
 
         // Monedas de oro
@@ -202,6 +204,8 @@ class MailCrudController extends CrudController
             'min_rows' => 0,
             'max_rows' => 10,
             'tab' => 'Recompensas',
+            'fake' => true, // Este campo no existe en la tabla, lo manejamos manualmente
+            'store_in' => 'rewards', // Guardar en un campo temporal
         ]);
     }
 
@@ -254,20 +258,16 @@ class MailCrudController extends CrudController
     public function store()
     {
         $this->crud->hasAccessOrFail('create');
-        $this->crud->validateRequest();
 
-        $request = $this->crud->getRequest();
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
 
-        // Crear el correo con solo los campos del modelo
-        $mail = \App\Models\Mail::create([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'is_active' => $request->input('is_active', false),
-            'send_to_all' => $request->input('send_to_all', false),
-            'is_persistent' => $request->input('is_persistent', false),
-            'gold_coins' => $request->input('gold_coins', 0),
-            'silver_coins' => $request->input('silver_coins', 0),
-        ]);
+        // register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
+
+        // insert item in the db - esto maneja traducciones automáticamente
+        $item = $this->crud->create($this->crud->getStrippedSaveRequest($request));
+        $this->data['entry'] = $this->crud->entry = $item;
 
         // Guardar recompensas (objetos del catálogo)
         $rewards = $request->input('rewards', []);
@@ -275,7 +275,7 @@ class MailCrudController extends CrudController
             foreach ($rewards as $reward) {
                 if (isset($reward['catalog_item_id']) && !empty($reward['catalog_item_id'])) {
                     \App\Models\MailReward::create([
-                        'mail_id' => $mail->id,
+                        'mail_id' => $item->id,
                         'catalog_item_id' => $reward['catalog_item_id'],
                         'quantity' => $reward['quantity'] ?? 1,
                     ]);
@@ -284,12 +284,12 @@ class MailCrudController extends CrudController
         }
 
         // Guardar destinatarios (solo si no es send_to_all)
-        if (!$mail->send_to_all) {
+        if (!$item->send_to_all) {
             $userIds = $request->input('user_ids', []);
             if (is_array($userIds)) {
                 foreach ($userIds as $userId) {
                     \App\Models\MailRecipient::create([
-                        'mail_id' => $mail->id,
+                        'mail_id' => $item->id,
                         'user_id' => $userId,
                         'is_read' => false,
                         'is_claimed' => false,
@@ -298,13 +298,13 @@ class MailCrudController extends CrudController
             }
         }
 
-        $this->crud->entry = $mail;
+        // show a success message
+        \Alert::success(trans('backpack::crud.insert_success'))->flash();
 
-        Alert::success(trans('backpack::crud.insert_success'))->flash();
-
+        // save the redirect choice for next time
         $this->crud->setSaveAction();
 
-        return $this->crud->performSaveAction($mail->getKey());
+        return $this->crud->performSaveAction($item->getKey());
     }
 
     /**
@@ -313,33 +313,31 @@ class MailCrudController extends CrudController
     public function update()
     {
         $this->crud->hasAccessOrFail('update');
-        $this->crud->validateRequest();
 
-        $request = $this->crud->getRequest();
-        $id = $this->crud->getCurrentEntryId();
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
 
-        // Obtener el correo existente
-        $mail = \App\Models\Mail::findOrFail($id);
+        // register any Model Events defined on fields
+        $this->crud->registerFieldEvents();
 
-        // Actualizar el correo con solo los campos del modelo
-        $mail->update([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'is_active' => $request->input('is_active', false),
-            'send_to_all' => $request->input('send_to_all', false),
-            'is_persistent' => $request->input('is_persistent', false),
-            'gold_coins' => $request->input('gold_coins', 0),
-            'silver_coins' => $request->input('silver_coins', 0),
-        ]);
+        // get the ID from the request
+        $id = $this->crud->getCurrentEntryId() ?? $request->get((new \App\Models\Mail)->getKeyName());
+
+        // update the row in the db - esto maneja traducciones automáticamente
+        $item = $this->crud->update(
+            $id,
+            $this->crud->getStrippedSaveRequest($request)
+        );
+        $this->data['entry'] = $this->crud->entry = $item;
 
         // Actualizar recompensas (eliminar las existentes y crear las nuevas)
-        \App\Models\MailReward::where('mail_id', $mail->id)->delete();
+        \App\Models\MailReward::where('mail_id', $item->id)->delete();
         $rewards = $request->input('rewards', []);
         if (is_array($rewards)) {
             foreach ($rewards as $reward) {
                 if (isset($reward['catalog_item_id']) && !empty($reward['catalog_item_id'])) {
                     \App\Models\MailReward::create([
-                        'mail_id' => $mail->id,
+                        'mail_id' => $item->id,
                         'catalog_item_id' => $reward['catalog_item_id'],
                         'quantity' => $reward['quantity'] ?? 1,
                     ]);
@@ -348,15 +346,15 @@ class MailCrudController extends CrudController
         }
 
         // Actualizar destinatarios (solo si no es send_to_all)
-        if (!$mail->send_to_all) {
+        if (!$item->send_to_all) {
             // Eliminar destinatarios existentes
-            \App\Models\MailRecipient::where('mail_id', $mail->id)->delete();
+            \App\Models\MailRecipient::where('mail_id', $item->id)->delete();
 
             $userIds = $request->input('user_ids', []);
             if (is_array($userIds)) {
                 foreach ($userIds as $userId) {
                     \App\Models\MailRecipient::firstOrCreate([
-                        'mail_id' => $mail->id,
+                        'mail_id' => $item->id,
                         'user_id' => $userId,
                     ], [
                         'is_read' => false,
@@ -366,12 +364,12 @@ class MailCrudController extends CrudController
             }
         }
 
-        $this->crud->entry = $mail;
-
+        // show a success message
         Alert::success(trans('backpack::crud.update_success'))->flash();
 
+        // save the redirect choice for next time
         $this->crud->setSaveAction();
 
-        return $this->crud->performSaveAction($mail->getKey());
+        return $this->crud->performSaveAction($item->getKey());
     }
 }
