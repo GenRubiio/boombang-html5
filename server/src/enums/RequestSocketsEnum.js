@@ -65,6 +65,9 @@ const RequestSocketsEnum = new Enum({
     UPDATE_PRIVATE_SCENE_NAME: 'request:update_private_scene_name',
     DELETE_PRIVATE_SCENE: 'request:delete_private_scene',
     SEARCH_ISLANDS: 'request:search_islands',
+    GET_MAIL_INBOX: 'request:get_mail_inbox',
+    CLAIM_MAIL_REWARD: 'request:claim_mail_reward',
+    MARK_MAIL_READ: 'request:mark_mail_read',
 });
 
 module.exports = RequestSocketsEnum;

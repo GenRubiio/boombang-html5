@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserCatalogItem extends Model
+class MailReward extends Model
 {
-    use CrudTrait;
     use HasFactory;
 
     /*
@@ -17,23 +15,17 @@ class UserCatalogItem extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'user_catalog_items';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
+    protected $table = 'mail_rewards';
     protected $guarded = ['id'];
     protected $fillable = [
-        'user_id',
+        'mail_id',
         'catalog_item_id',
         'quantity',
-        'private_scene_id',
-        'occupied_tiles',
-        'show_in_inventory',
-        'expires_at',
-        'rotated',
-        'resize_enabled',
-        'resized',
     ];
-    // protected $hidden = [];
+
+    protected $casts = [
+        'quantity' => 'integer',
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -47,19 +39,20 @@ class UserCatalogItem extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user()
+    /**
+     * Relación con el correo
+     */
+    public function mail()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Mail::class, 'mail_id');
     }
 
+    /**
+     * Relación con el item del catálogo
+     */
     public function catalogItem()
     {
-        return $this->belongsTo(CatalogItem::class);
-    }
-
-    public function privateScene()
-    {
-        return $this->belongsTo(PrivateScene::class, 'private_scene_id');
+        return $this->belongsTo(CatalogItem::class, 'catalog_item_id');
     }
 
     /*

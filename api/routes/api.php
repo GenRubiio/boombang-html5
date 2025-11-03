@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
 use App\Http\Controllers\Api\User\UserChangeAvatarController;
 use App\Http\Controllers\Api\Game\Lobby\GachaponApiController;
+use App\Http\Controllers\Api\Game\Lobby\MailApiController;
 use App\Http\Controllers\Api\User\UserChangeChatApiController;
 use App\Http\Controllers\Api\Bot\BotGenerateResponseController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
@@ -95,6 +96,12 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
                 Route::post('update-lang', [SettingsUpdateApiController::class, 'updateLang']);
                 Route::post('update-graphics', [SettingsUpdateApiController::class, 'updateGraphics']);
                 Route::post('update-sounds', [SettingsUpdateApiController::class, 'updateSounds']);
+            });
+            Route::prefix('mail')->group(function () {
+                Route::post('inbox', [MailApiController::class, 'getInbox']);
+                Route::post('read', [MailApiController::class, 'markAsRead']);
+                Route::post('claim', [MailApiController::class, 'claimReward']);
+                Route::post('unread-count', [MailApiController::class, 'getUnreadCount']);
             });
         });
 

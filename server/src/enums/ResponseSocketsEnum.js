@@ -80,6 +80,11 @@ const ResponseSocketsEnum = new Enum({
     PRIVATE_SCENE_DELETED: 'response:private_scene_deleted',
     ERROR_PRIVATE_SCENE_DELETE: 'response:error_private_scene_delete',
     SEARCH_ISLANDS: 'response:search_islands',
+    GET_MAIL_INBOX: 'response:get_mail_inbox',
+    CLAIM_REWARD_SUCCESS: 'response:claim_reward_success',
+    CLAIM_REWARD_ERROR: 'response:claim_reward_error',
+    MAIL_READ: 'response:mail_read',
+    MAIL_UNREAD_COUNT: 'response:mail_unread_count',
 });
 
 module.exports = ResponseSocketsEnum;
