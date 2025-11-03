@@ -40,6 +40,7 @@ class Mail extends Model
     ];
 
     public $translatable = [
+        'title',
         'description'
     ];
 
