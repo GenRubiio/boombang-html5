@@ -413,7 +413,22 @@
       "credits": "クレジット",
       "avatar_error": "ユーザーアバターの読み込み中にエラーが発生しました",
       "settings": "設定",
-      "settings_alt": "構成"
+      "settings_alt": "構成",
+      "mail": "メール",
+      "mail_alt": "メールボックス"
+    },
+    "mail": {
+      "title": "メール",
+      "loading": "メールを読み込み中...",
+      "no_mails": "メールがありません",
+      "new": "新着",
+      "has_rewards": "報酬があります",
+      "rewards_title": "報酬",
+      "gold_credits": "ゴールドクレジット",
+      "silver_credits": "シルバークレジット",
+      "claim": "受け取る",
+      "claiming": "受け取り中...",
+      "claimed": "受け取り済み"
     }
   },
   "settings": {

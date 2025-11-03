@@ -403,8 +403,36 @@
       "credits": "Credits",
       "settings": "Settings",
       "settings_alt": "Configuration",
-      "avatar_error": "Error loading user avatar"
+      "avatar_error": "Error loading user avatar",
+      "mail": "Mail",
+      "mail_alt": "Mail"
+    },
+    "mail": {
+      "title": "Mail",
+      "loading": "Loading mail...",
+      "no_mails": "You have no mail",
+      "new": "New",
+      "has_rewards": "Has rewards",
+      "rewards_title": "Rewards",
+      "gold_credits": "Gold Credits",
+      "silver_credits": "Silver Credits",
+      "claim": "Claim",
+      "claiming": "Claiming...",
+      "claimed": "Claimed"
     }
+  },
+  "mail": {
+    "title": "Mail",
+    "loading": "Loading mail...",
+    "no_mails": "You have no mail",
+    "new": "New",
+    "has_rewards": "Has rewards",
+    "rewards_title": "Rewards",
+    "gold_credits": "Gold Credits",
+    "silver_credits": "Silver Credits",
+    "claim": "Claim",
+    "claiming": "Claiming...",
+    "claimed": "Claimed"
   },
   "settings": {
     "main_title": "Settings",
