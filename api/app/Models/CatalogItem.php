@@ -92,6 +92,11 @@ class CatalogItem extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function rewards()
+    {
+        return $this->hasMany(Reward::class, 'catalog_item_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

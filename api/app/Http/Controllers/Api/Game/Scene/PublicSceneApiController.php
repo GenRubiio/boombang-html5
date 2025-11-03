@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Game\Scene;
 
 use Exception;
+use Carbon\Carbon;
 use App\Enums\MenuTypeEnum;
 use App\Models\PublicScene;
 use App\Models\Minigame;
@@ -74,25 +75,40 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
                                 ->where('start_date', '<=', now())
                                 ->where('end_date', '>=', now())
                                 ->first();
-                            
-                            if ($currentWeek) {
-                                // Verificar si el usuario ya tiene un score para esta semana
-                                $existingScore = MinigameScore::where('user_id', $user->id)
-                                    ->where('minigame_week_id', $currentWeek->id)
-                                    ->first();
-                                
-                                if ($existingScore) {
-                                    // Actualizar el score sumando los puntos del item
-                                    $existingScore->update(['score' => DB::raw('score + ' . $sceneItem->pivot->sum_points)]);
-                                } else {
-                                    // Crear un nuevo registro con los puntos del item
-                                    MinigameScore::create([
-                                        'user_id' => $user->id,
-                                        'minigame_week_id' => $currentWeek->id,
-                                        'minigame_id' => $minigame->id,
-                                        'score' => $sceneItem->pivot->sum_points
-                                    ]);
-                                }
+
+                            // Si no existe la semana actual, crearla
+                            if (!$currentWeek) {
+                                $now = now();
+                                $start = $now->copy()->startOfWeek(\Carbon\Carbon::MONDAY)->startOfDay();
+                                $end = $start->copy()->addDays(7)->startOfDay();
+                                $weekNumber = $start->isoWeek();
+                                $year = $start->year;
+
+                                $currentWeek = MinigameWeek::create([
+                                    'minigame_id' => $minigame->id,
+                                    'week_number' => $weekNumber,
+                                    'year' => $year,
+                                    'start_date' => $start,
+                                    'end_date' => $end,
+                                ]);
+                            }
+
+                            // Verificar si el usuario ya tiene un score para esta semana
+                            $existingScore = MinigameScore::where('user_id', $user->id)
+                                ->where('minigame_week_id', $currentWeek->id)
+                                ->first();
+
+                            if ($existingScore) {
+                                // Actualizar el score sumando los puntos del item
+                                $existingScore->update(['score' => DB::raw('score + ' . $sceneItem->pivot->sum_points)]);
+                            } else {
+                                // Crear un nuevo registro con los puntos del item
+                                MinigameScore::create([
+                                    'user_id' => $user->id,
+                                    'minigame_week_id' => $currentWeek->id,
+                                    'minigame_id' => $minigame->id,
+                                    'score' => $sceneItem->pivot->sum_points
+                                ]);
                             }
                         }
                     }
