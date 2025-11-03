@@ -30,6 +30,7 @@
 @endif
 @if (backpack_user()->hasRole('Superadmin'))
     <x-backpack::menu-item title="Api keys" icon="la la-question" :link="backpack_url('api-key')" />
+    <x-backpack::menu-item title="Mails" icon="la la-envelope" :link="backpack_url('mail')" />
     <x-backpack::menu-dropdown-item title="Users" icon="la la-user" :link="backpack_url('user')" />
 @endif
 <hr>

@@ -44,11 +44,14 @@
         @click="openSettings"
       />
     </div>
-    <div class="lobby__mail">
+    <div class="lobby__mail" @click="openMailPanel">
       <img :src="asset_mail_image" :alt="$t('lobby.ui.mail_alt')" />
+      <div v-if="mailStore.unreadCount > 0" class="lobby__mail-badge">
+        {{ mailStore.unreadCount }}
+      </div>
     </div>
     <div class="lobby__label mail">
-      <span>Correo</span>
+      <span>{{ $t("lobby.ui.mail") }}</span>
     </div>
     <div class="lobby__label settings">
       <span>{{ $t("lobby.ui.settings") }}</span>
@@ -76,6 +79,7 @@
       v-if="isSettingsVisible"
       @close="isSettingsVisible = false"
     />
+    <MailPanelComponent />
   </div>
 </template>
 
@@ -96,10 +100,17 @@ import ErrorPopup from "./gachapon/ErrorPopup.vue";
 import CreditsComponent from "./CreditsComponent.vue";
 import SettingsPopup from "./SettingsPopup.vue";
 import GameClockComponent from "./GameClockComponent.vue";
+import MailPanelComponent from "./MailPanelComponent.vue";
+import { useMailStore } from "@/stores/MailStore";
 
 export default {
+  setup() {
+    const mailStore = useMailStore();
+    return { mailStore };
+  },
   data() {
     return {
+      mailListenersConfigured: false,
       isGachaAlertVisible: false,
       isHelpCardVisible: false,
       isGachaResultVisible: false,
@@ -236,6 +247,68 @@ export default {
           }
         }, 100);
       });
+
+      // Configurar listeners solo una vez para evitar duplicados
+      if (!this.mailListenersConfigured) {
+        // Limpiar listeners existentes primero
+        socket.off(ResponseSocketsEnum.GET_MAIL_INBOX);
+        socket.off(ResponseSocketsEnum.MAIL_UNREAD_COUNT);
+        socket.off(ResponseSocketsEnum.MAIL_READ);
+        socket.off(ResponseSocketsEnum.CLAIM_REWARD_SUCCESS);
+        socket.off(ResponseSocketsEnum.CLAIM_REWARD_ERROR);
+
+        // Configurar listeners de socket para el sistema de correo
+        socket.on(ResponseSocketsEnum.GET_MAIL_INBOX, (data) => {
+          if (data.success) {
+            this.mailStore.setMails(data.mails || []);
+            this.mailStore.setUnreadCount(data.unread_count || 0);
+            this.mailStore.setLoading(false);
+          } else {
+            this.mailStore.setMails([]);
+            this.mailStore.setUnreadCount(0);
+            this.mailStore.setLoading(false);
+          }
+        });
+
+        socket.on(ResponseSocketsEnum.MAIL_UNREAD_COUNT, (data) => {
+          this.mailStore.setUnreadCount(data.unread_count);
+        });
+
+        socket.on(ResponseSocketsEnum.MAIL_READ, (data) => {
+          if (data.success) {
+            this.mailStore.markMailAsRead(data.mail_id);
+          }
+        });
+
+        socket.on(ResponseSocketsEnum.CLAIM_REWARD_SUCCESS, (data) => {
+          this.mailStore.setClaiming(false);
+          if (data.success) {
+            this.mailStore.markMailAsClaimed(data.mail_id);
+            
+            // Emitir evento para mostrar notificación
+            window.dispatchEvent(
+              new CustomEvent("mail-reward-claimed", {
+                detail: data,
+              })
+            );
+          }
+        });
+
+        socket.on(ResponseSocketsEnum.CLAIM_REWARD_ERROR, (data) => {
+          this.mailStore.setClaiming(false);
+          console.error('Error al reclamar recompensas:', data.message || data);
+          // Mostrar una notificación de error al usuario
+          alert('Error al reclamar recompensas: ' + (data.message || 'Error desconocido'));
+        });
+
+        this.mailListenersConfigured = true;
+
+        // Cargar correos automáticamente al entrar al lobby (DESPUÉS de configurar listeners)
+        setTimeout(() => {
+          this.mailStore.setLoading(true);
+          socket.emit(RequestSocketsEnum.GET_MAIL_INBOX);
+        }, 100);
+      }
     } catch (error) {
       console.error(this.$t("lobby.ui.avatar_error"), error);
     }
@@ -244,6 +317,16 @@ export default {
     if (this.timeUpdateInterval) {
       clearInterval(this.timeUpdateInterval);
     }
+    
+    // Limpiar listeners de socket
+    socket.off(ResponseSocketsEnum.GET_MAIL_INBOX);
+    socket.off(ResponseSocketsEnum.MAIL_UNREAD_COUNT);
+    socket.off(ResponseSocketsEnum.MAIL_READ);
+    socket.off(ResponseSocketsEnum.CLAIM_REWARD_SUCCESS);
+    socket.off(ResponseSocketsEnum.CLAIM_REWARD_ERROR);
+    
+    // Resetear bandera
+    this.mailListenersConfigured = false;
   },
   activated() {
     // Hook llamado cuando el componente se activa después de estar inactivo
@@ -282,6 +365,7 @@ export default {
     CreditsComponent,
     GameClockComponent,
     SettingsPopup,
+    MailPanelComponent,
   },
   methods: {
     getInitialGameTime() {
@@ -350,6 +434,12 @@ export default {
     },
     openSettings() {
       this.isSettingsVisible = true;
+    },
+    openMailPanel() {
+      this.mailStore.openPanel();
+      // Refrescar correos al abrir el panel
+      this.mailStore.setLoading(true);
+      socket.emit(RequestSocketsEnum.GET_MAIL_INBOX);
     },
   },
 };
@@ -537,6 +627,35 @@ export default {
 .lobby__mail img {
   width: 78px;
   height: 75px;
+}
+
+.lobby__mail-badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .lobby__label.settings {

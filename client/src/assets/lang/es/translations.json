@@ -403,8 +403,36 @@
       "credits": "Créditos",
       "settings": "Ajustes",
       "settings_alt": "Configuración",
-      "avatar_error": "Error al cargar el avatar del usuario"
+      "avatar_error": "Error al cargar el avatar del usuario",
+      "mail": "Correo",
+      "mail_alt": "Correo"
+    },
+    "mail": {
+      "title": "Correo",
+      "loading": "Cargando correos...",
+      "no_mails": "No tienes correos",
+      "new": "Nuevo",
+      "has_rewards": "Tiene recompensas",
+      "rewards_title": "Recompensas",
+      "gold_credits": "Créditos de Oro",
+      "silver_credits": "Créditos de Plata",
+      "claim": "Reclamar",
+      "claiming": "Reclamando...",
+      "claimed": "Reclamado"
     }
+  },
+  "mail": {
+    "title": "Correo",
+    "loading": "Cargando correos...",
+    "no_mails": "No tienes correos",
+    "new": "Nuevo",
+    "has_rewards": "Tiene recompensas",
+    "rewards_title": "Recompensas",
+    "gold_credits": "Créditos de Oro",
+    "silver_credits": "Créditos de Plata",
+    "claim": "Reclamar",
+    "claiming": "Reclamando...",
+    "claimed": "Reclamado"
   },
   "settings": {
     "main_title": "Configuración",

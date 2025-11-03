@@ -387,7 +387,22 @@
       "credits": "크레딧",
       "avatar_error": "사용자 아바타를 불러오는 중 오류 발생",
       "settings": "설정",
-      "settings_alt": "구성"
+      "settings_alt": "구성",
+      "mail": "메일",
+      "mail_alt": "우편함"
+    },
+    "mail": {
+      "title": "메일",
+      "loading": "메일을 불러오는 중...",
+      "no_mails": "메일이 없습니다",
+      "new": "새로운",
+      "has_rewards": "보상이 있습니다",
+      "rewards_title": "보상",
+      "gold_credits": "골드 크레딧",
+      "silver_credits": "실버 크레딧",
+      "claim": "받기",
+      "claiming": "받는 중...",
+      "claimed": "받음"
     }
   },
   "settings": {

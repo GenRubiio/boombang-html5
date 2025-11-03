@@ -387,7 +387,22 @@
       "credits": "积分",
       "avatar_error": "加载用户头像时出错",
       "settings": "设置",
-      "settings_alt": "配置"
+      "settings_alt": "配置",
+      "mail": "邮件",
+      "mail_alt": "邮箱"
+    },
+    "mail": {
+      "title": "邮件",
+      "loading": "加载邮件中...",
+      "no_mails": "您没有邮件",
+      "new": "新",
+      "has_rewards": "有奖励",
+      "rewards_title": "奖励",
+      "gold_credits": "金币",
+      "silver_credits": "银币",
+      "claim": "领取",
+      "claiming": "领取中...",
+      "claimed": "已领取"
     }
   },
   "settings": {
