@@ -11,6 +11,7 @@ class UserResource extends Resource {
             authJwt: data.authJwt,
             lang: data.lang,
             username: data.username,
+            show_username: data.show_username !== undefined ? data.show_username : true,
             description: data.description,
             ficha_color: data.ficha_color,
             shadow_color: data.shadow_color,

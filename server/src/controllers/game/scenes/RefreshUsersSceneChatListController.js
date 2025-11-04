@@ -16,6 +16,9 @@ class RefreshUsersSceneChatListController {
             const scene = user.currentArea;
             let players = [];
             for (const user of scene.users) {
+                if (user.show_username == false || user.show_username == 0) {
+                    continue;
+                }
                 players.push({
                     uuid: user.socket.id,
                     username: user.username

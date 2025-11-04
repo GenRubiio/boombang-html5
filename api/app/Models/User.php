@@ -27,6 +27,7 @@ class User extends Authenticatable
         'lang',
         'password',
         'username',
+        'show_username',
         'description',
         'ficha_color',
         'shadow_color',

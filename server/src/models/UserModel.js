@@ -5,6 +5,7 @@ class UserModel {
     constructor(row) {
         this.id = row.id.toString();
         this.username = row.username;
+        this.show_username = row.show_username !== undefined ? row.show_username : true;
         this.lang = row.lang;
         this.description = row.description;
         this.ficha_color = row.ficha_color; // Ficha del usuario, por defecto es 'user'
