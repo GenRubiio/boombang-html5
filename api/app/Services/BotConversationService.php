@@ -145,7 +145,12 @@ class BotConversationService
 
     protected function buildSystemPrompt(User $bot, array $context, string $language): string
     {
-        // NO usar system prompt - Gemini 2.5 gasta tokens pensando
+        // Use the bot's configured system prompt if available
+        if (!empty($bot->bot_system_prompt)) {
+            return $bot->bot_system_prompt;
+        }
+
+        // Fallback to empty if no system prompt configured
         return "";
     }
 

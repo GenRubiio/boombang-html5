@@ -6,13 +6,14 @@ class BotService {
         let connection;
         try {
             connection = await pool.getConnection();
-            const rows = await connection.query('SELECT id, username, is_bot, active FROM users WHERE is_bot = 1 AND active = 1');
+            const rows = await connection.query('SELECT id, username, is_bot, active, bot_system_prompt FROM users WHERE is_bot = 1 AND active = 1');
             return rows.map(row => {
                 return {
                     id: row.id,
                     username: row.username,
                     is_bot: row.is_bot,
-                    active: row.active
+                    active: row.active,
+                    bot_system_prompt: row.bot_system_prompt
                 };
             });
         } catch (err) {
@@ -27,7 +28,7 @@ class BotService {
         let connection;
         try {
             connection = await pool.getConnection();
-            const rows = await connection.query('SELECT id, username, is_bot, active FROM users WHERE id = ? AND is_bot = 1 AND active = 1', [botId]);
+            const rows = await connection.query('SELECT id, username, is_bot, active, bot_system_prompt FROM users WHERE id = ? AND is_bot = 1 AND active = 1', [botId]);
             if (rows.length === 0) {
                 return null;
             }
@@ -35,7 +36,8 @@ class BotService {
                 id: rows[0].id,
                 username: rows[0].username,
                 is_bot: rows[0].is_bot,
-                active: rows[0].active
+                active: rows[0].active,
+                bot_system_prompt: rows[0].bot_system_prompt
             };
         } catch (err) {
             console.error('Database query error:', err);
