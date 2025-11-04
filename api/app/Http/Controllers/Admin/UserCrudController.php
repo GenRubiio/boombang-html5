@@ -364,6 +364,12 @@ class UserCrudController extends CrudController
                 'tab'   => 'Game Stats',
             ],
             [
+                'name'  => 'show_username',
+                'label' => 'Show Username',
+                'type'  => 'checkbox',
+                'tab'   => 'Game Stats',
+            ],
+            [
                 'name' => 'avatar',
                 'label' => 'Avatar',
                 'type' => 'select2_from_array',

@@ -234,6 +234,25 @@ class AddUserController {
     }
 
     static createUserNameText(gameScene, spriteAvatar, userData) {
+        // Si show_username es false, retornar elementos vacíos/invisibles
+        if (userData.show_username === false) {
+            const emptyText = gameScene.add.text(0, 0, "", {
+                fontSize: "20px",
+                color: "#000000",
+                fontFamily: "Arial"
+            }).setOrigin(0.5, 1).setVisible(false);
+
+            const emptyBackground = gameScene.add.image(0, 0, "__WHITE")
+                .setOrigin(0.5, 1)
+                .setDepth(2)
+                .setVisible(false);
+
+            return {
+                background: emptyBackground,
+                name: emptyText
+            };
+        }
+
         // Nombre del usuario
         const userName = userData.username || "Undefined";
 

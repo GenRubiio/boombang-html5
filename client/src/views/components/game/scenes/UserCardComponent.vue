@@ -8,7 +8,7 @@
     @touchstart.stop
   >
     <div class="user-card__header unselectable">
-      {{ selectedUser.username }}
+      {{ selectedUser.show_username !== false ? selectedUser.username : ' ' }}
     </div>
     <div class="user-card__avatar-container">
       <div class="user-card__avatar-container__message-container">
@@ -256,6 +256,9 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 34.5px;
+  width: 180px;
+  box-sizing: border-box;
 }
 
 .user-card__avatar-container {
