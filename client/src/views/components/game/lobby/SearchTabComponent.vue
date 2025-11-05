@@ -16,7 +16,7 @@
         <i class="las la-search"></i>
       </button>
     </div>
-    <div class="lobby__scenes-list">
+    <div class="lobby__scenes-list" ref="scrollContainer">
       <div v-if="!hasSearched">
         <p>{{ $t("lobby.search.enter_search") }}</p>
       </div>
@@ -26,7 +26,7 @@
       <div v-else-if="searchResults.length === 0">
         <p>{{ $t("lobby.search.no_results") }}</p>
       </div>
-      <div v-else v-for="island in searchResults" :key="island.id">
+      <div v-else v-for="island in searchResults" :key="island.id" class="scene-item">
         <button @click="handleClick(island.id)" :disabled="isJoining">
           <span class="scene-name">{{ island.name }}</span>
           <span class="user-count">{{ island.visitors }}</span>
@@ -40,6 +40,8 @@
 import socket from "@/sockets/socket";
 import RequestSocketsEnum from "@/enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
+import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import 'overlayscrollbars/overlayscrollbars.css';
 
 export default {
   data() {
@@ -53,6 +55,10 @@ export default {
   },
   created() {
     socket.on(ResponseSocketsEnum.SEARCH_ISLANDS, this.handleSearchResults);
+  },
+  mounted() {
+    const { initScrollbars } = useOverlayScrollbars();
+    initScrollbars(this.$refs.scrollContainer);
   },
   beforeUnmount() {
     socket.off(ResponseSocketsEnum.SEARCH_ISLANDS, this.handleSearchResults);
@@ -143,6 +149,14 @@ export default {
   gap: 5px;
   max-height: 275px;
   overflow: hidden;
+}
+
+.scene-item {
+  margin-bottom: 5px;
+}
+
+.scene-item:last-child {
+  margin-bottom: 0;
 }
 
 .lobby__scenes-list button {
