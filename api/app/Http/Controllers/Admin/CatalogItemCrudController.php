@@ -288,6 +288,20 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'Configuración'
             ],
             [
+                'name' => 'is_multi_buy',
+                'label' => 'Compra Múltiple',
+                'type' => 'checkbox',
+                'default' => true,
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'is_read_only',
+                'label' => 'Solo Lectura',
+                'type' => 'checkbox',
+                'default' => false,
+                'tab' => 'Configuración'
+            ],
+            [
                 'name' => 'show_in_inventory',
                 'label' => 'Mostrar en Inventario',
                 'type' => 'checkbox',

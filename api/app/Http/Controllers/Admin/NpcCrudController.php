@@ -62,6 +62,9 @@ class NpcCrudController extends CrudController
             'label' => 'Activo',
             'type' => 'check',
         ]);
+
+        // Añadir botón personalizado para NPCs de tipo "objects"
+        $this->crud->addButtonFromModelFunction('line', 'manage_objects', 'getManageObjectsButton', 'beginning');
     }
 
     protected function setupCreateOperation()

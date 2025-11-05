@@ -65,6 +65,9 @@ const RequestSocketsEnum = new Enum({
     GET_MAIL_INBOX: 'request:get_mail_inbox',
     CLAIM_MAIL_REWARD: 'request:claim_mail_reward',
     MARK_MAIL_READ: 'request:mark_mail_read',
+    GET_NPC_CATALOG_ITEMS: 'request:get_npc_catalog_items',
+    CHECK_NPC_REQUIREMENTS: 'request:check_npc_requirements',
+    CLAIM_NPC_ITEM: 'request:claim_npc_item',
 });
 
 export default RequestSocketsEnum;

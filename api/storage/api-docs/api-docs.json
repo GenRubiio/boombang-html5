@@ -920,6 +920,402 @@
                 ]
             }
         },
+        "/api/npc/catalog-items": {
+            "post": {
+                "tags": [
+                    "NPC - Intercambio de Objetos"
+                ],
+                "summary": "Obtener objetos de un NPC",
+                "description": "Obtiene todos los objetos disponibles en un NPC de tipo 'objects' junto con sus requisitos de intercambio",
+                "operationId": "510da31a68b4d56145c5d10a440edb07",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "npc_id"
+                                ],
+                                "properties": {
+                                    "npc_id": {
+                                        "description": "ID del NPC",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Objetos del NPC obtenidos exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "npc": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Comerciante de Objetos"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "objects"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "catalog_items": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Espada Legendaria"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Una espada poderosa"
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": "uploads/catalog/espada.png"
+                                                    },
+                                                    "image_url": {
+                                                        "type": "string",
+                                                        "example": "http://api.boombang.com/uploads/catalog/espada.png"
+                                                    },
+                                                    "sprite_name": {
+                                                        "type": "string",
+                                                        "example": "legendary_sword"
+                                                    },
+                                                    "requirements": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "required_catalog_item_id": {
+                                                                    "type": "integer",
+                                                                    "example": 3
+                                                                },
+                                                                "required_quantity": {
+                                                                    "type": "integer",
+                                                                    "example": 2
+                                                                },
+                                                                "required_gold_coins": {
+                                                                    "type": "integer",
+                                                                    "example": 100
+                                                                },
+                                                                "required_silver_coins": {
+                                                                    "type": "integer",
+                                                                    "example": 0
+                                                                },
+                                                                "required_item": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 3
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "Gema Azul"
+                                                                        },
+                                                                        "image": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "image_url": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "sprite_name": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "NPC no encontrado o parámetros inválidos"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/npc/check-requirements": {
+            "post": {
+                "tags": [
+                    "NPC - Intercambio de Objetos"
+                ],
+                "summary": "Verificar requisitos para un objeto",
+                "description": "Verifica si el usuario cumple con los requisitos necesarios para reclamar un objeto del NPC",
+                "operationId": "221b14fc48c3df7736493bcac3c8dce2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "catalog_item_id"
+                                ],
+                                "properties": {
+                                    "catalog_item_id": {
+                                        "description": "ID del objeto a reclamar",
+                                        "type": "integer",
+                                        "example": 5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Verificación completada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "has_requirements": {
+                                            "description": "true si cumple todos los requisitos",
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "missing_requirements": {
+                                            "description": "Lista de requisitos que faltan (vacío si cumple todos)",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "type": {
+                                                        "description": "Tipo: catalog_item, gold_coins, silver_coins",
+                                                        "type": "string",
+                                                        "example": "catalog_item"
+                                                    },
+                                                    "catalog_item_id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "catalog_item_name": {
+                                                        "type": "string",
+                                                        "example": "Gema Azul"
+                                                    },
+                                                    "required": {
+                                                        "description": "Cantidad requerida",
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "current": {
+                                                        "description": "Cantidad actual",
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "missing": {
+                                                        "description": "Cantidad faltante",
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Objeto no encontrado o parámetros inválidos"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/npc/claim-item": {
+            "post": {
+                "tags": [
+                    "NPC - Intercambio de Objetos"
+                ],
+                "summary": "Reclamar objeto del NPC",
+                "description": "Reclama un objeto del NPC. Verifica requisitos, consume recursos (items y créditos) y entrega el nuevo objeto. Todo en una transacción con rollback automático si falla.",
+                "operationId": "21f0772fb7ffd4ceadcc81bead4d1533",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "catalog_item_id"
+                                ],
+                                "properties": {
+                                    "catalog_item_id": {
+                                        "description": "ID del objeto a reclamar",
+                                        "type": "integer",
+                                        "example": 5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Objeto reclamado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Objeto reclamado exitosamente"
+                                        },
+                                        "claimed_item": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Espada Legendaria"
+                                                },
+                                                "image": {
+                                                    "type": "string"
+                                                },
+                                                "image_url": {
+                                                    "type": "string"
+                                                },
+                                                "sprite_name": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "consumed": {
+                                            "properties": {
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "catalog_item_id": {
+                                                                "type": "integer",
+                                                                "example": 3
+                                                            },
+                                                            "catalog_item_name": {
+                                                                "type": "string",
+                                                                "example": "Gema Azul"
+                                                            },
+                                                            "quantity": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "coins": {
+                                                    "properties": {
+                                                        "gold_coins": {
+                                                            "type": "integer",
+                                                            "example": 100
+                                                        },
+                                                        "silver_coins": {
+                                                            "type": "integer",
+                                                            "example": 0
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "user": {
+                                            "description": "Créditos actuales del usuario después del intercambio",
+                                            "properties": {
+                                                "gold_coins": {
+                                                    "type": "integer",
+                                                    "example": 900
+                                                },
+                                                "silver_coins": {
+                                                    "type": "integer",
+                                                    "example": 500
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No cumple requisitos, objeto no disponible o parámetros inválidos"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/game-scenes": {
             "get": {
                 "tags": [
@@ -1344,6 +1740,10 @@
         {
             "name": "Minigames",
             "description": "Minigames"
+        },
+        {
+            "name": "NPC - Intercambio de Objetos",
+            "description": "NPC - Intercambio de Objetos"
         },
         {
             "name": "Game Scene",

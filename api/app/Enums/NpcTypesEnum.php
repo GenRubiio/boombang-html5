@@ -11,12 +11,14 @@ enum NpcTypesEnum
 
     case DEFAULT;
     case RING;
+    case OBJECTS;
 
     public function key(): string
     {
         return match ($this) {
             self::DEFAULT => 'default',
             self::RING => 'ring',
+            self::OBJECTS => 'objects',
         };
     }
 
@@ -25,6 +27,7 @@ enum NpcTypesEnum
         return match ($key) {
             'default' => self::DEFAULT,
             'ring' => self::RING,
+            'objects' => self::OBJECTS,
             default => throw new InvalidArgumentException("Invalid key: $key"),
         };
     }
@@ -34,6 +37,7 @@ enum NpcTypesEnum
         return match ($this) {
             self::DEFAULT => 'Default',
             self::RING => 'Ring',
+            self::OBJECTS => 'Objects',
         };
     }
 
