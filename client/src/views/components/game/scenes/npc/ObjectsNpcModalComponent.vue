@@ -266,10 +266,10 @@ export default {
         this.successMessage =
           response.message || this.$t("npc.objects.success_claim");
         this.error = null;
-        this.closeItemDetail();
 
-        // Recargar los items después de 2 segundos
+        // Esperar 2 segundos antes de cerrar y recargar
         setTimeout(() => {
+          this.closeItemDetail();
           this.successMessage = null;
           this.loadCatalogItems();
         }, 2000);
