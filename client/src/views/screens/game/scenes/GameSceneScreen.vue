@@ -14,7 +14,12 @@
       @close-coconuts-info="hideCoconutsInfoCard"
     />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
-    <NpcComponent v-if="showNpcModal" @close="closeNpcModal" :npcId="npcId" />
+    <NpcComponent
+      v-if="showNpcModal"
+      @close="closeNpcModal"
+      :npcId="npcId"
+      :npcType="npcType"
+    />
     <AvatarSelectionPopup
       v-if="isAvatarSelectionVisible"
       :authUser="sceneData.authUser"
@@ -35,7 +40,7 @@ import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardC
 import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
-import NpcComponent from "../../../components/game/scenes/NpcComponent.vue";
+import NpcComponent from "../../../components/game/scenes/minigame/NpcComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
 
@@ -53,6 +58,7 @@ export default {
     return {
       showNpcModal: false,
       npcId: null, // usa esto si quieres pasar datos al modal
+      npcType: null,
       isRingInfoCardVisible: false,
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
@@ -103,10 +109,11 @@ export default {
       //console.log("Usuario seleccionado:", userData);
       this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
     },
-    openNpcModal(npcId) {
+    openNpcModal(npcId, npcType) {
       // opcional: carga datos en currentNpcData
       // this.currentNpcData = { /* ... */ };
       this.npcId = npcId; // Guarda el ID del NPC
+      this.npcType = npcType;
       this.showNpcModal = true;
     },
     closeNpcModal() {

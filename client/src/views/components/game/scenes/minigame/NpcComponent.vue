@@ -9,12 +9,16 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import NpcEnum from "../../../../enums/NpcEnum.js";
+import NpcEnum from "../../../../../enums/NpcEnum.js";
 
 export default {
   props: {
     npcId: {
       type: Number,
+      required: true,
+    },
+    npcType: {
+      type: String,
       required: true,
     },
   },
@@ -25,7 +29,7 @@ export default {
   },
   components: {
     RingNpcModalComponent: defineAsyncComponent(() =>
-      import("../scenes/npc/RingNpcModalComponent.vue")
+      import("../npc/RingNpcModalComponent.vue")
     ),
   },
 };

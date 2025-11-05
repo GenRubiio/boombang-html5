@@ -243,6 +243,17 @@
     "title": "CUSTOMIZATION OF {tab}"
   },
   "npc": {
+    "objects": {
+      "loading": "Loading...",
+      "no_items": "This NPC has no available objects",
+      "back": "Back",
+      "obtain": "You will get:",
+      "requirements": "Requirements:",
+      "claim": "Claim",
+      "claiming": "Claiming...",
+      "success_claim": "Object claimed successfully!",
+      "missing_items": "You are missing:"
+    },
     "ring": {
       "welcome": "Welcome to the Ring",
       "description": "Subscribe to compete against other users and win rewards!",

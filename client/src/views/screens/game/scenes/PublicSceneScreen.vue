@@ -24,6 +24,12 @@
       :authUser="sceneData.authUser"
       @close-rankings="hideRankings"
     />
+    <NpcComponent
+      v-if="isNpcModalVisible"
+      :npcId="currentNpcId"
+      :npcType="currentNpcType"
+      @close="closeNpcModal"
+    />
   </div>
 </template>
 
@@ -35,6 +41,7 @@ import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardC
 import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
+import NpcComponent from "../../../components/game/scenes/public/NpcComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import InteractionNotificationController from "../../../../phaser/controllers/scene/InteractionNotificationController.js";
 
@@ -54,6 +61,9 @@ export default {
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
       isRankingsVisible: false,
+      isNpcModalVisible: false,
+      currentNpcId: null,
+      currentNpcType: null,
     };
   },
   created() {
@@ -66,6 +76,7 @@ export default {
     CoconutsInfoCardComponent,
     AvatarSelectionPopup,
     RankingsComponent,
+    NpcComponent,
   },
   methods: {
     showRingInfoCard() {
@@ -123,6 +134,16 @@ export default {
     updateUserCard(userData) {
       //console.log("Usuario seleccionado:", userData);
       this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
+    },
+    openNpcModal(npcId, npcType) {
+      this.currentNpcId = npcId;
+      this.currentNpcType = npcType;
+      this.isNpcModalVisible = true;
+    },
+    closeNpcModal() {
+      this.isNpcModalVisible = false;
+      this.currentNpcId = null;
+      this.currentNpcType = null;
     },
   },
   mounted() {

@@ -84,6 +84,9 @@ const ResponseSocketsEnum = new Enum({
     CLAIM_REWARD_ERROR: 'response:claim_reward_error',
     MAIL_READ: 'response:mail_read',
     MAIL_UNREAD_COUNT: 'response:mail_unread_count',
+    GET_NPC_CATALOG_ITEMS: 'response:get_npc_catalog_items',
+    CHECK_NPC_REQUIREMENTS: 'response:check_npc_requirements',
+    CLAIM_NPC_ITEM: 'response:claim_npc_item',
 });
 
 export default ResponseSocketsEnum;

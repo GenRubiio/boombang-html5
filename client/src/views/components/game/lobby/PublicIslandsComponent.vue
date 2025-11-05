@@ -47,6 +47,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  height: 240px;
+  overflow: hidden;
 }
 
 .lobby__scenes-list button {

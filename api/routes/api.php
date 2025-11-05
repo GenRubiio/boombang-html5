@@ -150,6 +150,12 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('ranking', [MinigameApiController::class, 'getRanking']);
         });
 
+        Route::prefix('npc')->group(function () {
+            Route::post('catalog-items', [\App\Http\Controllers\Api\Game\Npc\NpcCatalogItemApiController::class, 'getNpcCatalogItems']);
+            Route::post('check-requirements', [\App\Http\Controllers\Api\Game\Npc\NpcCatalogItemApiController::class, 'checkRequirements']);
+            Route::post('claim-item', [\App\Http\Controllers\Api\Game\Npc\NpcCatalogItemApiController::class, 'claimItem']);
+        });
+
         Route::prefix('islands-config')->group(function () {
             Route::post('/', [IslandsConfigApiController::class, 'index']);
             Route::post('{id}', [IslandsConfigApiController::class, 'show']);

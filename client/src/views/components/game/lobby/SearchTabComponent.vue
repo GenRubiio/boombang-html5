@@ -8,19 +8,23 @@
         class="search-input"
         @keyup.enter="handleSearch"
       />
-      <button @click="handleSearch" class="search-button" :disabled="isSearching">
+      <button
+        @click="handleSearch"
+        class="search-button"
+        :disabled="isSearching"
+      >
         <i class="las la-search"></i>
       </button>
     </div>
     <div class="lobby__scenes-list">
       <div v-if="!hasSearched">
-        <p>{{ $t('lobby.search.enter_search') }}</p>
+        <p>{{ $t("lobby.search.enter_search") }}</p>
       </div>
       <div v-else-if="isSearching">
-        <p>{{ $t('lobby.search.searching') }}</p>
+        <p>{{ $t("lobby.search.searching") }}</p>
       </div>
       <div v-else-if="searchResults.length === 0">
-        <p>{{ $t('lobby.search.no_results') }}</p>
+        <p>{{ $t("lobby.search.no_results") }}</p>
       </div>
       <div v-else v-for="island in searchResults" :key="island.id">
         <button @click="handleClick(island.id)" :disabled="isJoining">
@@ -40,7 +44,7 @@ import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum";
 export default {
   data() {
     return {
-      searchQuery: '',
+      searchQuery: "",
       searchResults: [],
       isSearching: false,
       isJoining: false,
@@ -61,7 +65,7 @@ export default {
       this.hasSearched = true;
 
       socket.emit(RequestSocketsEnum.SEARCH_ISLANDS, {
-        query: this.searchQuery.trim()
+        query: this.searchQuery.trim(),
       });
     },
     handleSearchResults(data) {
@@ -137,6 +141,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  max-height: 275px;
+  overflow: hidden;
 }
 
 .lobby__scenes-list button {

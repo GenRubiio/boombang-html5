@@ -47,6 +47,7 @@ Route::group([
     Route::crud('reward', 'RewardCrudController');
     Route::crud('islands-config', 'IslandsConfigCrudController');
     Route::crud('mail', 'MailCrudController');
+    Route::crud('npc-catalog-item', 'NpcCatalogItemCrudController');
 }); // this should be the absolute last line of this file
 
 /**

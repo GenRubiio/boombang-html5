@@ -243,6 +243,17 @@
     "title": "PERSONALIZACIÓN DE {tab}"
   },
   "npc": {
+    "objects": {
+      "loading": "Cargando...",
+      "no_items": "Este NPC no tiene objetos disponibles",
+      "back": "Volver",
+      "obtain": "Obtendrás:",
+      "requirements": "Requisitos:",
+      "claim": "Reclamar",
+      "claiming": "Reclamando...",
+      "success_claim": "¡Objeto reclamado con éxito!",
+      "missing_items": "Te faltan:"
+    },
     "ring": {
       "welcome": "Bienvenido al Ring",
       "description": "¡Suscríbete para competir contra otros usuarios y ganar recompensas!",

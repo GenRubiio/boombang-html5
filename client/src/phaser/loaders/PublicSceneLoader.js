@@ -141,7 +141,7 @@ class PublicSceneLoader {
         // 3) Detectar clic y llamar al método de Vue
         sprite.on("pointerdown", () => {
             // Llama a openNpcModal() que definiremos en el componente Vue
-            gameScene.vueComponent.openNpcModal(1); // npcData.type
+            gameScene.vueComponent.openNpcModal(npcData.id, npcData.type);
         });
 
         //SceneUtils.moveItem(gameScene, sprite);
