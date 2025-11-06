@@ -264,10 +264,11 @@ class NpcCatalogItemService
 
             $user->save();
 
-            // Entregar el nuevo CatalogItem al usuario
-            $newUserItem = UserCatalogItem::create([
+            // Entregar el nuevo CatalogItem al usuario con el valor de show_in_inventory del CatalogItem
+            UserCatalogItem::create([
                 'user_id' => $userId,
                 'catalog_item_id' => $catalogItemId,
+                'show_in_inventory' => $catalogItem->show_in_inventory,
             ]);
 
             DB::commit();
@@ -281,6 +282,7 @@ class NpcCatalogItemService
                     'image' => $catalogItem->image,
                     'image_url' => urlDocker($catalogItem->image),
                     'sprite_name' => $catalogItem->sprite_name,
+                    'show_in_inventory' => $catalogItem->show_in_inventory,
                 ],
                 'consumed' => [
                     'items' => $consumedItems,
