@@ -58,19 +58,19 @@ class DarkeningUtils {
         let brightness;
 
         if (totalMinutes >= 0 && totalMinutes < 300) {
-            // 00:00 - 05:00: Noche
-            brightness = 0.30;
+            // 00:00 - 05:00: Noche (aumentado 20% menos oscuro)
+            brightness = 0.44;
         } else if (totalMinutes >= 300 && totalMinutes < 540) {
             // 05:00 - 09:00: Amanecer
             const progress = (totalMinutes - 300) / 240;
-            brightness = 0.30 + 0.70 * progress;
+            brightness = 0.44 + 0.56 * progress;
         } else if (totalMinutes >= 540 && totalMinutes < 1080) {
             // 09:00 - 18:00: Día
             brightness = 1.0;
         } else {
             // 18:00 - 00:00: Atardecer/Noche
             const progress = (totalMinutes - 1080) / 360;
-            brightness = 1.0 - 0.70 * progress;
+            brightness = 1.0 - 0.56 * progress;
         }
 
         return Math.max(0.0, Math.min(1.0, brightness));

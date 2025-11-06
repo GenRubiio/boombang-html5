@@ -326,6 +326,14 @@ class PublicSceneCrudController extends CrudController
                         'model' => "App\Models\Event",
                         'attribute' => 'name',
                         'wrapper' => ['class' => 'form-group col-md-6'],
+                    ],
+                    [
+                        'name' => 'catalog_item_id',
+                        'label' => 'Catalog Item Asociado',
+                        'type' => 'select2',
+                        'model' => "App\Models\CatalogItem",
+                        'attribute' => 'name',
+                        'wrapper' => ['class' => 'form-group col-md-6'],
                     ]
                 ],
                 'new_item_label' => 'Añadir Item',
@@ -484,6 +492,7 @@ class PublicSceneCrudController extends CrudController
                             'sum_points_to_user_attribute' => isset($item['sum_points_to_user_attribute']) ? (bool)$item['sum_points_to_user_attribute'] : false,
                             'user_attribute_name' => $item['user_attribute_name'] ?? null,
                             'event_id' => $item['event_id'] ?? null,
+                            'catalog_item_id' => $item['catalog_item_id'] ?? null,
                         ];
                     }
                 }
@@ -547,6 +556,7 @@ class PublicSceneCrudController extends CrudController
                     'sum_points_to_user_attribute' => $item->pivot->sum_points_to_user_attribute,
                     'user_attribute_name' => $item->pivot->user_attribute_name,
                     'event_id' => $item->pivot->event_id,
+                    'catalog_item_id' => $item->pivot->catalog_item_id,
                 ];
             }
             $duplicate->items()->sync($pivotData);

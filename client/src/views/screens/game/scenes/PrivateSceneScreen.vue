@@ -142,10 +142,19 @@ export default {
   width: 1012px;
   height: 657px;
   margin: auto;
-  position: absolute;
+  position: relative;
   background-color: transparent; /* Para verificar visualmente */
   z-index: 0;
   pointer-events: none; /* Dejar pasar eventos al canvas Phaser */
+}
+
+.game-container > *:not(#html-inventory):not(#html-detail-panel) {
+  pointer-events: auto; /* Permitir eventos en los hijos directos excepto los paneles HTML */
+}
+
+.game-container > #html-inventory,
+.game-container > #html-detail-panel {
+  pointer-events: auto; /* Los paneles HTML sí deben capturar eventos */
 }
 
 .loading-overlay {

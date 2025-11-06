@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Api\Game\Scene;
 
 use Exception;
 use Carbon\Carbon;
-use App\Enums\MenuTypeEnum;
-use App\Models\PublicScene;
 use App\Models\Minigame;
+use App\Enums\MenuTypeEnum;
+use App\Models\CatalogItem;
+use App\Models\PublicScene;
 use App\Models\MinigameWeek;
+use Illuminate\Http\Request;
 use App\Models\MinigameScore;
 use App\Enums\MinigameTypeEnum;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PublicSceneResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
@@ -59,12 +60,34 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
             if (!$sceneItem) {
                 throw new Exception('Item not found in the scene.');
             }
+
+            // Verificar si hay un CatalogItem asociado
+            if ($sceneItem->pivot->catalog_item_id) {
+                $catalogItemId = $sceneItem->pivot->catalog_item_id;
+
+                // Verificar si el usuario ya tiene este item
+                $alreadyOwned = $user->catalogItems()->where('catalog_item_id', $catalogItemId)->exists();
+
+                if (!$alreadyOwned) {
+                    // Obtener el catalog item para acceder a show_in_inventory
+                    $catalogItem = CatalogItem::find($catalogItemId);
+
+                    if ($catalogItem) {
+                        // Dar item al usuario
+                        $user->catalogItems()->create([
+                            'catalog_item_id' => $catalogItem->id,
+                            'show_in_inventory' => $catalogItem->show_in_inventory,
+                        ]);
+                    }
+                }
+            }
+
             if ($sceneItem->pivot->sum_points_to_user_attribute) {
                 $userAttributeName = $sceneItem->pivot->user_attribute_name;
                 if ($userAttributeName) {
                     $user->{$userAttributeName} += $sceneItem->pivot->sum_points;
                     $user->save();
-                    
+
                     // Si el atributo es coconuts_caught, agregar al ranking del minijuego
                     if ($userAttributeName == 'coconuts_caught') {
                         // Buscar el minijuego Crazy Coconuts
