@@ -139,7 +139,9 @@ class PublicSceneLoader {
         });
 
         // 3) Detectar clic y llamar al método de Vue
-        sprite.on("pointerdown", () => {
+        sprite.on("pointerdown", (_pointer, _localX, _localY, event) => {
+            // Detener la propagación del evento para evitar que el personaje se mueva
+            event.stopPropagation();
             // Llama a openNpcModal() que definiremos en el componente Vue
             gameScene.vueComponent.openNpcModal(npcData.id, npcData.type);
         });
