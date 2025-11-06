@@ -75,7 +75,7 @@ class GachaponApiController extends Controller
                 // Dar item al usuario
                 $user->catalogItems()->create([
                     'catalog_item_id' => $item->id,
-                    'show_in_inventory' => $result['type'] != CatalogItemTypesEnum::USER_DECORATION->key()
+                    'show_in_inventory' => $item->show_in_inventory,
                 ]);
             }
 

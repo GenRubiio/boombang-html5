@@ -22,7 +22,7 @@ class InventoryPrivateSceneHtml {
 
         return `
             <div id="html-inventory" style="
-                position: fixed;
+                position: absolute;
                 right: 10px;
                 bottom: 72px;
                 width: ${INV_W}px;
@@ -157,14 +157,28 @@ class InventoryPrivateSceneHtml {
         this.inventoryContainer.setScrollFactor(0);
         this.inventoryContainer.setDepth(10000);
 
+        // Guardar referencia al contenedor antes de moverlo
+        this.htmlInventoryElement = this.inventoryContainer.node.querySelector('#html-inventory');
+
+        // Mover el elemento al contenedor game-container para que aparezca por encima del chat
+        this.moveToGameContainer();
+
         this.createDragShadowElement();
 
         this.setupEventListeners();
         this.updateInventoryUI();
     }
 
+    moveToGameContainer() {
+        const gameContainer = document.querySelector('.game-container');
+
+        if (gameContainer && this.htmlInventoryElement) {
+            gameContainer.appendChild(this.htmlInventoryElement);
+        }
+    }
+
     setupEventListeners() {
-        const container = this.inventoryContainer.node;
+        const container = this.htmlInventoryElement;
 
         // Detener la propagación de eventos para que no interfieran con la escena de Phaser
         const stopPropagation = (event) => event.stopPropagation();
@@ -196,8 +210,7 @@ class InventoryPrivateSceneHtml {
     }
 
     setupDragAndDrop() {
-        const container = this.inventoryContainer.node;
-        const slots = container.querySelectorAll('.inventory-slot');
+        const slots = this.htmlInventoryElement.querySelectorAll('.inventory-slot');
         const dragShadow = document.getElementById('drag-shadow');
         const dragShadowImg = document.getElementById('drag-shadow-img');
 
@@ -371,8 +384,7 @@ class InventoryPrivateSceneHtml {
         }
 
         // Reset slot opacity
-        const container = this.inventoryContainer.node;
-        const slots = container.querySelectorAll('.inventory-slot');
+        const slots = this.htmlInventoryElement.querySelectorAll('.inventory-slot');
         slots.forEach(slot => slot.style.opacity = '1');
 
         this.draggedItem = null;
@@ -424,9 +436,8 @@ class InventoryPrivateSceneHtml {
         if (this.scene.htmlDetailPanel && this.scene.htmlDetailPanel.isVisible) {
             this.scene.htmlDetailPanel.hide();
         }
-        const container = this.inventoryContainer.node.querySelector('#html-inventory');
-        if (container) {
-            container.style.display = 'block';
+        if (this.htmlInventoryElement) {
+            this.htmlInventoryElement.style.display = 'block';
             this.isVisible = true;
             this.updateInventoryUI();
         } else {
@@ -435,9 +446,8 @@ class InventoryPrivateSceneHtml {
     }
 
     hide() {
-        const container = this.inventoryContainer.node.querySelector('#html-inventory');
-        if (container) {
-            container.style.display = 'none';
+        if (this.htmlInventoryElement) {
+            this.htmlInventoryElement.style.display = 'none';
             this.isVisible = false;
         }
     }
@@ -451,9 +461,9 @@ class InventoryPrivateSceneHtml {
     }
 
     updateInventoryUI() {
-        if (!this.inventoryContainer) return;
+        if (!this.htmlInventoryElement) return;
 
-        const container = this.inventoryContainer.node;
+        const container = this.htmlInventoryElement;
         const grouped = this.getGroupedItems();
         const totalPages = Math.max(1, Math.ceil(grouped.length / 9));
 

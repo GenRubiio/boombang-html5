@@ -112,7 +112,8 @@ class PublicScene extends Model
                 'sum_points',
                 'sum_points_to_user_attribute',
                 'user_attribute_name',
-                'event_id'
+                'event_id',
+                'catalog_item_id'
             );
     }
 
@@ -265,6 +266,8 @@ class PublicScene extends Model
                     'sum_points' => $item->pivot->sum_points,
                     'sum_points_to_user_attribute' => $item->pivot->sum_points_to_user_attribute,
                     'user_attribute_name' => $item->pivot->user_attribute_name,
+                    'event_id' => $item->pivot->event_id,
+                    'catalog_item_id' => $item->pivot->catalog_item_id,
                 ];
             }
 
