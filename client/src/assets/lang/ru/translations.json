@@ -34,7 +34,9 @@
     "tooltip_color": "Раскрасить",
     "tooltip_move": "Переместить",
     "tooltip_inventory": "Инвентарь",
-    "tooltip_rankings": "Рейтинги"
+    "tooltip_rankings": "Рейтинги",
+    "inventory": "Инвентарь",
+    "total_items": "Всего"
   },
   "rankings": {
     "title": "Рейтинги мини-игр",

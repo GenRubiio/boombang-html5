@@ -34,7 +34,9 @@
     "tooltip_color": "Colorear",
     "tooltip_move": "Mover",
     "tooltip_inventory": "Inventario",
-    "tooltip_rankings": "Rankings"
+    "tooltip_rankings": "Rankings",
+    "inventory": "Inventario",
+    "total_items": "Total"
   },
   "rankings": {
     "title": "Rankings de Minijuegos",
