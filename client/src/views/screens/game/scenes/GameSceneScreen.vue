@@ -30,6 +30,10 @@
       :authUser="sceneData.authUser"
       @close-rankings="hideRankings"
     />
+    <InventoryPublicSceneComponent
+      v-if="isInventoryVisible"
+      @close-inventory="hideInventory"
+    />
   </div>
 </template>
 
@@ -43,6 +47,7 @@ import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import NpcComponent from "../../../components/game/scenes/minigame/NpcComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
+import InventoryPublicSceneComponent from "../../../components/game/scenes/public/InventoryPublicSceneComponent.vue";
 
 export default {
   props: {
@@ -63,6 +68,7 @@ export default {
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
       isRankingsVisible: false,
+      isInventoryVisible: false,
     };
   },
   created() {
@@ -76,6 +82,7 @@ export default {
     CoconutsInfoCardComponent,
     AvatarSelectionPopup,
     RankingsComponent,
+    InventoryPublicSceneComponent,
   },
   methods: {
     initializeGame() {
@@ -144,6 +151,12 @@ export default {
     },
     hideRankings() {
       this.isRankingsVisible = false;
+    },
+    showInventory() {
+      this.isInventoryVisible = true;
+    },
+    hideInventory() {
+      this.isInventoryVisible = false;
     },
   },
   mounted() {

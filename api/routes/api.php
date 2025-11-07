@@ -166,6 +166,10 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('{id}', [PrivateSceneConfigApiController::class, 'show']);
             Route::post('by-island/{islandConfigId}', [PrivateSceneConfigApiController::class, 'getByIsland']);
         });
+
+        Route::prefix('inventory')->group(function () {
+            Route::post('get-user-inventory', [App\Http\Controllers\Internal\InventoryController::class, 'getUserInventory']);
+        });
     });
 });
 

@@ -87,6 +87,7 @@ const ResponseSocketsEnum = new Enum({
     GET_NPC_CATALOG_ITEMS: 'response:get_npc_catalog_items',
     CHECK_NPC_REQUIREMENTS: 'response:check_npc_requirements',
     CLAIM_NPC_ITEM: 'response:claim_npc_item',
+    PUBLIC_INVENTORY_DATA: 'response:public_inventory_data',
 });
 
 export default ResponseSocketsEnum;

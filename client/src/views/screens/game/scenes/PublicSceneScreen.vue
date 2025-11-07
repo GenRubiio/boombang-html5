@@ -30,6 +30,10 @@
       :npcType="currentNpcType"
       @close="closeNpcModal"
     />
+    <InventoryPublicSceneComponent
+      v-if="isInventoryVisible"
+      @close-inventory="hideInventory"
+    />
   </div>
 </template>
 
@@ -42,6 +46,7 @@ import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsI
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
 import NpcComponent from "../../../components/game/scenes/public/NpcComponent.vue";
+import InventoryPublicSceneComponent from "../../../components/game/scenes/public/InventoryPublicSceneComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import InteractionNotificationController from "../../../../phaser/controllers/scene/InteractionNotificationController.js";
 
@@ -62,6 +67,7 @@ export default {
       isAvatarSelectionVisible: false,
       isRankingsVisible: false,
       isNpcModalVisible: false,
+      isInventoryVisible: false,
       currentNpcId: null,
       currentNpcType: null,
     };
@@ -77,6 +83,7 @@ export default {
     AvatarSelectionPopup,
     RankingsComponent,
     NpcComponent,
+    InventoryPublicSceneComponent,
   },
   methods: {
     showRingInfoCard() {
@@ -144,6 +151,12 @@ export default {
       this.isNpcModalVisible = false;
       this.currentNpcId = null;
       this.currentNpcType = null;
+    },
+    showInventory() {
+      this.isInventoryVisible = true;
+    },
+    hideInventory() {
+      this.isInventoryVisible = false;
     },
   },
   mounted() {

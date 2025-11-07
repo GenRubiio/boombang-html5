@@ -228,7 +228,7 @@ export default class PublicScene extends Phaser.Scene {
                     this.vueComponent.showRankings();
                 }
             });
-            
+
             // Tooltip functionality
             const rankingsTooltip = rankingsButton.querySelector('.tooltip');
             rankingsButton.addEventListener('mouseenter', () => {
@@ -236,6 +236,26 @@ export default class PublicScene extends Phaser.Scene {
             });
             rankingsButton.addEventListener('mouseleave', () => {
                 if (rankingsTooltip) rankingsTooltip.style.opacity = '0';
+            });
+        }
+
+        // Inventory button
+        const inventoryButton = buttonsElement.querySelector('[data-action="inventory"]');
+        if (inventoryButton) {
+            inventoryButton.addEventListener('click', (event) => {
+                // Emit event to Vue component to show inventory popup
+                if (this.vueComponent && this.vueComponent.showInventory) {
+                    this.vueComponent.showInventory();
+                }
+            });
+
+            // Tooltip functionality
+            const inventoryTooltip = inventoryButton.querySelector('.tooltip');
+            inventoryButton.addEventListener('mouseenter', () => {
+                if (inventoryTooltip) inventoryTooltip.style.opacity = '1';
+            });
+            inventoryButton.addEventListener('mouseleave', () => {
+                if (inventoryTooltip) inventoryTooltip.style.opacity = '0';
             });
         }
     }
