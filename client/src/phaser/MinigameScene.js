@@ -100,6 +100,11 @@ export default class MinigameScene extends Phaser.Scene {
             // Limpiar buffer
             this.eventBuffer = [];
         }
+        
+        // Notificar al VisibilityManager que la escena está completamente cargada
+        if (window.visibilityManager) {
+            window.visibilityManager.onSceneLoaded(this);
+        }
     }
 
     /**

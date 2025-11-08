@@ -218,6 +218,11 @@ export default class PrivateScene extends Phaser.Scene {
         }
 
         this.handleSockets();
+        
+        // Notificar al VisibilityManager que la escena está completamente cargada
+        if (window.visibilityManager) {
+            window.visibilityManager.onSceneLoaded(this);
+        }
         // Al recuperar el foco del navegador, refrescar overlays y eventos de mover
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {

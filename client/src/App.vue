@@ -25,6 +25,7 @@ import socket from "./sockets/socket";
 import GameScreensEnum from "./enums/GameScreensEnum";
 import ColorReplacePipelinePlugin from "phaser3-rex-plugins/plugins/colorreplacepipeline-plugin.js";
 import gameConfig from "@/config/gameConfig.js";
+import visibilityManager from "./phaser/managers/VisibilityManager.js";
 
 export default {
   data() {
@@ -141,6 +142,15 @@ export default {
           },
         },
       });
+      
+      // Configurar el VisibilityManager con la instancia de Phaser
+      visibilityManager.setGame(this.gamePhaser);
+      
+      // Hacer gameConfig y visibilityManager disponibles globalmente
+      window.gameConfig = gameConfig;
+      window.socket = socket;
+      window.visibilityManager = visibilityManager;
+      
       // Lanzamos la escena de Preloader para que cargue todo
       this.gamePhaser.scene.start("GlobalPreloaderScene");
 
@@ -163,6 +173,13 @@ export default {
     },
     onUpdateLoading(value) {
       this.loading = value;
+      
+      // Si se está quitando el loading (value = false), sincronizar posiciones
+      if (!value && window.visibilityManager && this.gamePhaser) {
+        setTimeout(() => {
+          window.visibilityManager.syncAllScenes();
+        }, 100); // Delay para asegurar que la escena esté completamente renderizada
+      }
     },
   },
   mounted() {

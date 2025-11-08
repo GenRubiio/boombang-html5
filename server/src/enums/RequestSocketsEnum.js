@@ -72,6 +72,7 @@ const RequestSocketsEnum = new Enum({
     CHECK_NPC_REQUIREMENTS: 'request:check_npc_requirements',
     CLAIM_NPC_ITEM: 'request:claim_npc_item',
     GET_PUBLIC_INVENTORY: 'request:get_public_inventory',
+    REQUEST_USERS_SYNC: 'request:users_sync',
 });
 
 module.exports = RequestSocketsEnum;
