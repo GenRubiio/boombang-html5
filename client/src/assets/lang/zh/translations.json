@@ -449,5 +449,15 @@
   },
   "loading": {
     "title": "加载中..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "{winnerName} 获胜了！",
+      "winner_details": "恭喜拳击场冠军！",
+      "no_min_users_title": "比赛取消",
+      "no_min_users_details": "没有足够的玩家开始比赛",
+      "timeout_title": "时间到",
+      "timeout_details": "时间用完，没有明确的赢家"
+    }
   }
 }
