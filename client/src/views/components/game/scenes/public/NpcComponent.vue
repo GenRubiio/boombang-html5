@@ -1,6 +1,11 @@
 <template>
   <div class="modal-overlay" @pointerdown.stop @mousedown.stop @touchstart.stop>
-    <div class="modal-content">
+    <div
+      class="modal-content"
+      @pointerdown.stop
+      @mousedown.stop
+      @touchstart.stop
+    >
       <button class="close-btn" @click="$emit('close')">
         <i class="las la-times"></i>
       </button>
