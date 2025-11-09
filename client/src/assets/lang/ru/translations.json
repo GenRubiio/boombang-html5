@@ -478,5 +478,15 @@
   },
   "loading": {
     "title": "Загрузка..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "{winnerName} победил!",
+      "winner_details": "Поздравляем победителя ринга!",
+      "no_min_users_title": "Матч отменён",
+      "no_min_users_details": "Недостаточно игроков для начала матча",
+      "timeout_title": "Время вышло",
+      "timeout_details": "Время истекло без явного победителя"
+    }
   }
 }

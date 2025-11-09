@@ -475,5 +475,15 @@
   },
   "loading": {
     "title": "読み込み中..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "{winnerName}が勝ちました！",
+      "winner_details": "リングの勝者におめでとう！",
+      "no_min_users_title": "試合キャンセル",
+      "no_min_users_details": "試合を開始するのに十分なプレイヤーがいません",
+      "timeout_title": "時間切れ",
+      "timeout_details": "明確な勝者がいないまま時間が切れました"
+    }
   }
 }

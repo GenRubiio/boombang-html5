@@ -449,5 +449,15 @@
   },
   "loading": {
     "title": "로딩 중..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "{winnerName}님이 이겼습니다!",
+      "winner_details": "링 우승자를 축하합니다!",
+      "no_min_users_title": "경기 취소됨",
+      "no_min_users_details": "경기를 시작하기에 충분한 플레이어가 없습니다",
+      "timeout_title": "시간 초과",
+      "timeout_details": "명확한 승자 없이 시간이 초과되었습니다"
+    }
   }
 }

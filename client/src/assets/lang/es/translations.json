@@ -491,5 +491,15 @@
   },
   "loading": {
     "title": "Cargando..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "¡{winnerName} ganó!",
+      "winner_details": "¡Felicidades al ganador del ring!",
+      "no_min_users_title": "Partida cancelada",
+      "no_min_users_details": "No hay suficientes jugadores para iniciar la partida",
+      "timeout_title": "Tiempo agotado",
+      "timeout_details": "El tiempo se agotó sin un ganador claro"
+    }
   }
 }
