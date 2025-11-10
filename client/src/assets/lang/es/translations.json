@@ -109,6 +109,8 @@
     "description_textarea_placeholder": "Escribe una descripción para tu isla...",
     "edit_scene_name": "Editar nombre de escenario",
     "delete_scene": "Eliminar escenario",
+    "delete_island": "Eliminar isla",
+    "confirm_delete_island": "¿Estás seguro de que deseas eliminar la isla '{name}'? Se eliminarán todas las escenas y los objetos volverán a tu inventario. Los usuarios en las escenas serán expulsados al lobby.",
     "save": "Guardar",
     "cancel": "Cancelar",
     "confirm_delete_scene": "¿Estás seguro de que quieres eliminar '{name}'?"

@@ -176,4 +176,45 @@ class IslandApiController extends Controller implements IslandApiControllerInter
             'islands' => IslandResource::collection($islands)
         ]);
     }
+
+    public function delete(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'islandId' => 'required|integer|exists:islands,id',
+        ]);
+
+        $island = Island::with(['privateScenes'])->find($validated['islandId']);
+
+        if (!$island) {
+            return $this->errorResponse('Island not found', 404);
+        }
+
+        // Verificar que el usuario es el propietario de la isla
+        if ($island->user_id !== $user->id) {
+            return $this->errorResponse('You are not the owner of this island', 403);
+        }
+
+        // Obtener todas las escenas de la isla
+        $sceneIds = $island->privateScenes->pluck('id')->toArray();
+
+        // Mover todos los items de las escenas de vuelta al inventario (private_scene_id = null)
+        if (!empty($sceneIds)) {
+            \App\Models\UserCatalogItem::whereIn('private_scene_id', $sceneIds)
+                ->update(['private_scene_id' => null, 'occupied_tiles' => null]);
+        }
+
+        // Eliminar todas las escenas de la isla
+        \App\Models\PrivateScene::whereIn('id', $sceneIds)->delete();
+
+        // Eliminar la isla
+        $island->delete();
+
+        return $this->successResponse([
+            'message' => 'Island deleted successfully',
+            'islandId' => $validated['islandId'],
+            'deletedScenes' => $sceneIds
+        ]);
+    }
 }

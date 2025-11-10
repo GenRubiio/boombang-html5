@@ -20,6 +20,7 @@ class PrivateSceneModel extends SceneModel {
         this.max_objects = 20; // Número máximo de objetos permitidos en la escena
         this.objects = row.objects ? row.objects.map(item => new UserCatalogItemModel(item)) : []; // Lista de objetos del catálogo del usuario en la escena
         this.island = new IslandModel(row.island); // Isla asociada a la escena
+        this.island_id = row.island_id; // ID de la isla a la que pertenece la escena
         this.user_id = row.user_id; // ID del usuario propietario de la escena
     }
 

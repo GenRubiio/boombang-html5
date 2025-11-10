@@ -15,6 +15,10 @@ class PrivateScenesCollection {
         return Array.from(this.collection.values());
     }
 
+    getByIslandId(islandId) {
+        return Array.from(this.collection.values()).filter(scene => scene.island_id === islandId);
+    }
+
     remove(id) {
         this.collection.delete(id);
     }

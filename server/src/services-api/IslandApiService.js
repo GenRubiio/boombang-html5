@@ -72,6 +72,15 @@ class IslandApiService {
             throw error;
         }
     }
+
+    static async delete(islandData, user) {
+        try {
+            return await ApiService.post('api/island/delete', islandData, user.authJwt);
+        } catch (error) {
+            console.error('Error al eliminar la isla:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = IslandApiService;
