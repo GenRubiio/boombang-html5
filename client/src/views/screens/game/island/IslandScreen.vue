@@ -157,6 +157,20 @@
             </div>
           </template>
         </div>
+
+        <!-- Botón para eliminar isla (solo si es propietario) - Separado de la lista -->
+        <div
+          v-if="canEditIsland"
+          class="delete-island-section"
+        >
+          <button
+            class="delete-island-button"
+            @click="confirmDeleteIsland"
+          >
+            <i class="las la-trash-alt"></i>
+            {{ $t('island.delete_island') }}
+          </button>
+        </div>
       </div>
       </div>
 
@@ -683,8 +697,20 @@ export default {
       this.deleteConfirmMessage = this.$t('island.confirm_delete_scene', { name: scene.name });
       this.showDeleteConfirm = true;
     },
+    confirmDeleteIsland() {
+      if (!this.canEditIsland) return;
+
+      // Mostrar popup de confirmación para eliminar isla
+      this.sceneToDelete = null; // Usar null para indicar que es la isla
+      this.deleteConfirmMessage = this.$t('island.confirm_delete_island', { name: this.sceneData.name });
+      this.showDeleteConfirm = true;
+    },
     handleConfirmDelete() {
-      if (this.sceneToDelete) {
+      if (this.sceneToDelete === null) {
+        // Eliminar isla completa
+        this.deleteIsland();
+      } else if (this.sceneToDelete) {
+        // Eliminar escena individual
         this.deleteScene(this.sceneToDelete);
       }
       this.handleCancelDelete();
@@ -707,6 +733,16 @@ export default {
         }
       } catch (error) {
         console.error('Error deleting scene:', error);
+      }
+    },
+    async deleteIsland() {
+      try {
+        socket.emit(RequestSocketsEnum.DELETE_ISLAND, {
+          islandId: this.sceneData.id
+        });
+        // El redirect al lobby se manejará cuando recibamos FORCE_LOBBY_REDIRECT
+      } catch (error) {
+        console.error('Error deleting island:', error);
       }
     },
     handleSceneNameUpdated(data) {
@@ -737,6 +773,22 @@ export default {
       console.error('Scene delete error:', data.message);
       // Aquí podrías mostrar una notificación de error al usuario
     },
+    handleIslandDeleted(data) {
+      if (data.success) {
+        // La isla fue eliminada, no necesitamos hacer nada aquí
+        // El redirect se manejará con FORCE_LOBBY_REDIRECT
+        console.log('Island deleted successfully');
+      }
+    },
+    handleIslandDeleteError(data) {
+      console.error('Island delete error:', data.message);
+      // Aquí podrías mostrar una notificación de error al usuario
+    },
+    handleForceLobbyRedirect(data) {
+      // Forzar redirección al lobby
+      console.log('Force redirect to lobby:', data.reason);
+      this.goBackToLobby();
+    },
   },
   created() {
     this.$emit("updateLoading", true);
@@ -750,6 +802,9 @@ export default {
     socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE, this.handleSceneNameUpdateError);
     socket.on(ResponseSocketsEnum.PRIVATE_SCENE_DELETED, this.handleSceneDeleted);
     socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE, this.handleSceneDeleteError);
+    socket.on(ResponseSocketsEnum.ISLAND_DELETED, this.handleIslandDeleted);
+    socket.on(ResponseSocketsEnum.ERROR_ISLAND_DELETE, this.handleIslandDeleteError);
+    socket.on(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
   },
   beforeUnmount() {
     // Limpiar listeners
@@ -761,6 +816,9 @@ export default {
     socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE, this.handleSceneNameUpdateError);
     socket.off(ResponseSocketsEnum.PRIVATE_SCENE_DELETED, this.handleSceneDeleted);
     socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE, this.handleSceneDeleteError);
+    socket.off(ResponseSocketsEnum.ISLAND_DELETED, this.handleIslandDeleted);
+    socket.off(ResponseSocketsEnum.ERROR_ISLAND_DELETE, this.handleIslandDeleteError);
+    socket.off(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
   },
   mounted() {
     // La precarga de imágenes ahora se inicia desde el watcher cuando island_config esté disponible
@@ -1037,6 +1095,10 @@ export default {
   color: #3687b3;
 }
 
+.scenario-button__container-right__icon--delete {
+  color: #d9534f;
+}
+
 .scenario-button {
   background-color: #3a4b54c9;
   color: white;
@@ -1053,10 +1115,48 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 .scenario-button--add {
   color: #3687b3;
+}
+
+.delete-island-section {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 2px solid #3a4b5466;
+}
+
+.delete-island-button {
+  background-color: #3a4b54c9;
+  color: #d9534f;
+  border: 2px solid #d9534f;
+  border-radius: 5px;
+  padding: 8px 15px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.delete-island-button:hover {
+  background-color: #1c2c35ad;
+  border-color: #c9302c;
+  color: #c9302c;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(217, 83, 79, 0.3);
+}
+
+.delete-island-button i {
+  font-size: 16px;
 }
 
 .scenario-button:hover {

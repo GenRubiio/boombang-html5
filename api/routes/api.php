@@ -115,6 +115,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('join', [IslandApiController::class, 'join']);
             Route::post('update-name', [IslandApiController::class, 'updateName']);
             Route::post('update-description', [IslandApiController::class, 'updateDescription']);
+            Route::post('delete', [IslandApiController::class, 'delete']);
         });
 
         Route::prefix('islands')->group(function () {

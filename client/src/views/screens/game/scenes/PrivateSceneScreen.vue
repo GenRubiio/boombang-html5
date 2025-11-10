@@ -36,6 +36,7 @@ import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
+import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum.js";
 
 export default {
   props: {
@@ -129,11 +130,38 @@ export default {
     hideRankings() {
       this.isRankingsVisible = false;
     },
+    handleForceLobbyRedirect(data) {
+      // NO emitir USER_LEAVE_SCENE porque el servidor ya nos sacó de la escena
+      // Detener la escena de Phaser
+      const gamePhaser = this.$root.gamePhaser;
+      if (gamePhaser) {
+        gamePhaser.scene.stop("PrivateScene");
+      }
+
+      // Usar un timeout para asegurar que Phaser se detenga antes de cambiar la vista
+      setTimeout(() => {
+        // Buscar el componente GameScreens en la jerarquía
+        let parent = this.$parent;
+        while (parent && !parent.onExitLobby) {
+          parent = parent.$parent;
+        }
+
+        if (parent && typeof parent.onExitLobby === 'function') {
+          parent.onExitLobby();
+        }
+      }, 100);
+    },
   },
   mounted() {
     this.initializeGame();
+
+    // Escuchar evento de redirección forzada al lobby
+    socket.on(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
   },
-  beforeUnmount() {},
+  beforeUnmount() {
+    // Remover listener al desmontar el componente
+    socket.off(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
+  },
 };
 </script>
 

@@ -19,6 +19,7 @@
       :sceneData="sceneData"
       @updateLoading="onUpdateLoading"
       @joinIsland="onJoinIsland"
+      @exitLobby="onExitLobby"
     />
     <GameSceneScreen
       v-else-if="currentScreen === GameScreensEnum.GAME_SCENE"
