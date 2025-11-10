@@ -204,6 +204,15 @@
         @confirm="handleConfirmDelete"
         @cancel="handleCancelDelete"
       />
+
+      <!-- Popup de error para sala no encontrada -->
+      <ErrorAlertPopup
+        :visible="showErrorAlert"
+        :title="$t('island.error_title')"
+        :message="errorAlertMessage"
+        :acceptText="$t('common.accept')"
+        @close="handleCloseErrorAlert"
+      />
     </template>
   </div>
 </template>
@@ -214,10 +223,12 @@ import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
 import ResponseSocketsEnum from "@/enums/ResponseSocketsEnum.js";
 import asset_brujula_image from "@/assets/game/basechat/brujula.webp";
 import ConfirmDeletePopup from "@/views/components/game/island/ConfirmDeletePopup.vue";
+import ErrorAlertPopup from "@/views/components/game/island/ErrorAlertPopup.vue";
 
 export default {
   components: {
     ConfirmDeletePopup,
+    ErrorAlertPopup,
   },
   props: {
     sceneData: {
@@ -248,6 +259,8 @@ export default {
       showDeleteConfirm: false,
       deleteConfirmMessage: '',
       sceneToDelete: null,
+      showErrorAlert: false,
+      errorAlertMessage: '',
       MAX_NAME_WIDTH: 215, // Ancho máximo en píxeles para el nombre de la isla
       MAX_SCENE_NAME_WIDTH: 165, // Ancho máximo en píxeles para el nombre de escenario
       MAX_DESCRIPTION_WIDTH: 210, // Ancho máximo en píxeles para cada línea de descripción
@@ -789,6 +802,16 @@ export default {
       console.log('Force redirect to lobby:', data.reason);
       this.goBackToLobby();
     },
+    handlePrivateSceneNotFound() {
+      // Mostrar popup de error cuando la sala no existe
+      this.errorAlertMessage = this.$t('island.error_scene_not_found');
+      this.showErrorAlert = true;
+      this.isJoining = false;
+    },
+    handleCloseErrorAlert() {
+      this.showErrorAlert = false;
+      this.errorAlertMessage = '';
+    },
   },
   created() {
     this.$emit("updateLoading", true);
@@ -805,6 +828,7 @@ export default {
     socket.on(ResponseSocketsEnum.ISLAND_DELETED, this.handleIslandDeleted);
     socket.on(ResponseSocketsEnum.ERROR_ISLAND_DELETE, this.handleIslandDeleteError);
     socket.on(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
+    socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND, this.handlePrivateSceneNotFound);
   },
   beforeUnmount() {
     // Limpiar listeners
@@ -819,6 +843,7 @@ export default {
     socket.off(ResponseSocketsEnum.ISLAND_DELETED, this.handleIslandDeleted);
     socket.off(ResponseSocketsEnum.ERROR_ISLAND_DELETE, this.handleIslandDeleteError);
     socket.off(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
+    socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND, this.handlePrivateSceneNotFound);
   },
   mounted() {
     // La precarga de imágenes ahora se inicia desde el watcher cuando island_config esté disponible

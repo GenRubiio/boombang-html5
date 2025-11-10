@@ -113,7 +113,10 @@
     "confirm_delete_island": "Are you sure you want to delete the island '{name}'? All scenes will be deleted and objects will be returned to your inventory. Users in the scenes will be expelled to the lobby.",
     "save": "Save",
     "cancel": "Cancel",
-    "confirm_delete_scene": "Are you sure you want to delete '{name}'?"
+    "confirm_delete_scene": "Are you sure you want to delete '{name}'?",
+    "error_title": "Error",
+    "error_island_not_found": "This island no longer exists.",
+    "error_scene_not_found": "This room no longer exists."
   },
   "user_card": {
     "change_ficha_alt": "Change card",

@@ -92,6 +92,8 @@ const ResponseSocketsEnum = new Enum({
     CHECK_NPC_REQUIREMENTS: 'response:check_npc_requirements',
     CLAIM_NPC_ITEM: 'response:claim_npc_item',
     PUBLIC_INVENTORY_DATA: 'response:public_inventory_data',
+    ERROR_ISLAND_NOT_FOUND: 'response:error_island_not_found',
+    ERROR_PRIVATE_SCENE_NOT_FOUND: 'response:error_private_scene_not_found',
 });
 
 module.exports = ResponseSocketsEnum;

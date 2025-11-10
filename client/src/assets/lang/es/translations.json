@@ -113,7 +113,10 @@
     "confirm_delete_island": "¿Estás seguro de que deseas eliminar la isla '{name}'? Se eliminarán todas las escenas y los objetos volverán a tu inventario. Los usuarios en las escenas serán expulsados al lobby.",
     "save": "Guardar",
     "cancel": "Cancelar",
-    "confirm_delete_scene": "¿Estás seguro de que quieres eliminar '{name}'?"
+    "confirm_delete_scene": "¿Estás seguro de que quieres eliminar '{name}'?",
+    "error_title": "Error",
+    "error_island_not_found": "Esta isla ya no existe.",
+    "error_scene_not_found": "Esta sala ya no existe."
   },
   "user_card": {
     "change_ficha_alt": "Cambiar ficha",
