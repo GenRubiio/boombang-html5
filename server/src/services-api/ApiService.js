@@ -28,7 +28,10 @@ class ApiService {
         } catch (error) {
             // Si axios captura un error HTTP (4xx, 5xx), intentar extraer los datos de error
             if (error.response && error.response.data) {
-                return error.response.data;
+                return {
+                    ...error.response.data,
+                    statusCode: error.response.status
+                };
             }
             throw error;
         }
@@ -55,13 +58,16 @@ class ApiService {
             if (response.data.data) {
                 return response.data.data;
             }
-            
+
             // Si no, devolver directamente response.data (para casos de error)
             return response.data;
         } catch (error) {
             // Si axios captura un error HTTP (4xx, 5xx), intentar extraer los datos de error
             if (error.response && error.response.data) {
-                return error.response.data;
+                return {
+                    ...error.response.data,
+                    statusCode: error.response.status
+                };
             }
             throw error;
         }

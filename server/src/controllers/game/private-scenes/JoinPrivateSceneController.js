@@ -20,7 +20,11 @@ class JoinPrivateSceneController {
             }, user);
 
             if (!response.success) {
-                throw new Error('Failed to join private scene');
+                //throw new Error('Failed to join private scene');
+                socket.emit(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND, {
+                    message: 'Private scene not found'
+                });
+                return;
             };
 
             let scene = PrivateScenesCollection.getById(data.sceneId);

@@ -34,8 +34,14 @@ class JoinIslandController {
             let responseIsland = await IslandApiService.joinIsland({
                 islandId: data.islandId
             }, user);
+
             if (!responseIsland.success) {
-                throw new Error('Error joining island');
+                //console.log('Response success is false, statusCode:', responseIsland.statusCode);
+                //throw new Error('Error joining island');
+                socket.emit(ResponseSocketsEnum.ERROR_ISLAND_NOT_FOUND, {
+                    message: 'Island not found'
+                });
+                return;
             }
             const island = new IslandModel(responseIsland.island);
 
