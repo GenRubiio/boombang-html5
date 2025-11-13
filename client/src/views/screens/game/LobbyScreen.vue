@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       activeIslandTab: "public",
-      publicScenes: [],
+      publicScenes: null,
       favoriteIslands: [],
       myIslands: [],
     };
