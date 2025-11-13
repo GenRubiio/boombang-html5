@@ -1,7 +1,8 @@
 <template>
   <div class="lobby__scenes-tab">
     <div class="lobby__scenes-list" ref="scrollContainer">
-      <div v-for="gameScene in gameScenes" :key="gameScene.uuid" class="scene-item">
+      <SpinnerComponent v-if="isLoading" />
+      <div v-else v-for="gameScene in gameScenes" :key="gameScene.uuid" class="scene-item">
         <button @click="handleClick(gameScene.uuid, MenuTypeEnum.GAME_SCENE)" :disabled="isJoining">
           <span class="scene-name">{{ gameScene.name }}</span>
           <span class="user-count">{{ gameScene.total_users_in }}</span>
@@ -17,14 +18,19 @@ import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
 import MenuTypeEnum from "../../../../enums/MenuTypeEnum";
 import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import SpinnerComponent from '../../common/SpinnerComponent.vue';
 import 'overlayscrollbars/overlayscrollbars.css';
 
 export default {
+  components: {
+    SpinnerComponent,
+  },
   data() {
     return {
       MenuTypeEnum,
       isJoining: false,
       gameScenes: [],
+      isLoading: true,
     };
   },
   created() {
@@ -41,10 +47,12 @@ export default {
       this.$emit("join-scene", sceneUuid, menuType);
     },
     loadGames() {
+      this.isLoading = true;
       socket.emit(RequestSocketsEnum.GET_GAME_SCENES);
       socket.off(ResponseSocketsEnum.UPDATE_GAME_SCENES);
       socket.on(ResponseSocketsEnum.UPDATE_GAME_SCENES, (gameScenes) => {
         this.gameScenes = gameScenes;
+        this.isLoading = false;
       });
     },
   },

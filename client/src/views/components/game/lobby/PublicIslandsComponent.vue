@@ -1,6 +1,7 @@
 <template>
   <div class="lobby__scenes-list">
-    <div v-for="island in islands" :key="island.id">
+    <SpinnerComponent v-if="isLoading" />
+    <div v-else v-for="island in islands" :key="island.id">
       <button @click="handleClick(island.id)" :disabled="isJoining">
         <span class="scene-name">{{ island.name }}</span>
         <span class="user-count">{{ island.visitors }}</span>
@@ -13,12 +14,17 @@
 import socket from "../../../../sockets/socket";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
+import SpinnerComponent from '../../common/SpinnerComponent.vue';
 
 export default {
+  components: {
+    SpinnerComponent,
+  },
   data() {
     return {
       islands: [],
       isJoining: false,
+      isLoading: true,
     };
   },
   async created() {
@@ -31,10 +37,12 @@ export default {
       this.$emit("join-island", islandId);
     },
     loadIslands() {
+      this.isLoading = true;
       socket.emit(RequestSocketsEnum.GET_PUBLIC_ISLANDS);
       socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS);
       socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS, (data) => {
         this.islands = data.islands;
+        this.isLoading = false;
       });
     },
   },

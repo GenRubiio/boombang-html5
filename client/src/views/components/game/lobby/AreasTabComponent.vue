@@ -1,7 +1,8 @@
 <template>
   <div class="lobby__scenes-tab">
     <div class="lobby__scenes-list" ref="scrollContainer">
-      <div v-for="publicScene in publicScenes" :key="publicScene.uuid" class="scene-item">
+      <SpinnerComponent v-if="isLoading" />
+      <div v-else v-for="publicScene in publicScenes" :key="publicScene.uuid" class="scene-item">
         <button
           @click="handleClick(publicScene.uuid, MenuTypeEnum.PUBLIC_SCENE)"
           :disabled="isJoining"
@@ -17,17 +18,29 @@
 <script>
 import MenuTypeEnum from "../../../../enums/MenuTypeEnum";
 import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import SpinnerComponent from '../../common/SpinnerComponent.vue';
 import 'overlayscrollbars/overlayscrollbars.css';
 
 export default {
+  components: {
+    SpinnerComponent,
+  },
   props: {
-    publicScenes: Array,
+    publicScenes: {
+      type: Array,
+      default: null,
+    },
   },
   data() {
     return {
       MenuTypeEnum,
       isJoining: false,
     };
+  },
+  computed: {
+    isLoading() {
+      return this.publicScenes === null;
+    },
   },
   mounted() {
     const { initScrollbars } = useOverlayScrollbars();
