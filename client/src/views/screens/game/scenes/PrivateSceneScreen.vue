@@ -24,6 +24,12 @@
       :authUser="sceneData.authUser"
       @close-rankings="hideRankings"
     />
+    <ShopComponent
+      v-if="isShopVisible"
+      :authUser="sceneData.authUser"
+      @close-shop="hideShop"
+      @purchase-success="handlePurchaseSuccess"
+    />
   </div>
 </template>
 
@@ -35,6 +41,7 @@ import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsI
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
+import ShopComponent from "../../../components/game/scenes/ShopComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum.js";
 
@@ -54,6 +61,7 @@ export default {
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
       isRankingsVisible: false,
+      isShopVisible: false,
     };
   },
   created() {
@@ -66,6 +74,7 @@ export default {
     CoconutsInfoCardComponent,
     AvatarSelectionPopup,
     RankingsComponent,
+    ShopComponent,
   },
   methods: {
     initializeGame() {
@@ -129,6 +138,26 @@ export default {
     },
     hideRankings() {
       this.isRankingsVisible = false;
+    },
+    showShop() {
+      // Cerrar el inventario HTML si está abierto
+      const gamePhaser = this.$root.gamePhaser;
+      const privateScene = gamePhaser?.scene?.getScene('PrivateScene');
+      if (privateScene?.htmlInventory?.isVisible) {
+        privateScene.htmlInventory.hide();
+      }
+
+      this.isShopVisible = true;
+    },
+    hideShop() {
+      this.isShopVisible = false;
+    },
+    handlePurchaseSuccess(userData) {
+      // Actualizar el oro/plata del usuario en el componente padre
+      if (this.sceneData && this.sceneData.authUser) {
+        this.sceneData.authUser.gold = userData.gold;
+        this.sceneData.authUser.silver = userData.silver;
+      }
     },
     handleForceLobbyRedirect(data) {
       // NO emitir USER_LEAVE_SCENE porque el servidor ya nos sacó de la escena

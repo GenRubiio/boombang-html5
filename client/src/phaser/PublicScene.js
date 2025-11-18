@@ -189,8 +189,12 @@ export default class PublicScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de tienda pulsado');
                 }
+                // Emit event to Vue component to show shop
+                if (this.vueComponent && this.vueComponent.showShop) {
+                    this.vueComponent.showShop();
+                }
             });
-            
+
             // Tooltip functionality
             const shopTooltip = shopButton.querySelector('.tooltip');
             shopButton.addEventListener('mouseenter', () => {

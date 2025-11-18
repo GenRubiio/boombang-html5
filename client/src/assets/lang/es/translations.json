@@ -53,6 +53,18 @@
     "next_page": "Página siguiente",
     "error_loading": "Error al cargar datos"
   },
+  "shop": {
+    "title": "Tienda",
+    "loading": "Cargando...",
+    "no_items": "No hay artículos disponibles",
+    "buy": "Comprar",
+    "quantity": "Cantidad",
+    "purchase_success": "¡Compra realizada con éxito!",
+    "purchase_error": "Error al comprar el artículo",
+    "error_loading": "Error al cargar el catálogo",
+    "insufficient_gold": "Oro insuficiente",
+    "insufficient_silver": "Plata insuficiente"
+  },
   "maintenance": {
     "title": "Mantenimiento",
     "description": "El servidor está en mantenimiento.\nPor favor, inténtalo más tarde.",

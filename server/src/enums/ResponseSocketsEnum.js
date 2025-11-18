@@ -94,6 +94,8 @@ const ResponseSocketsEnum = new Enum({
     PUBLIC_INVENTORY_DATA: 'response:public_inventory_data',
     ERROR_ISLAND_NOT_FOUND: 'response:error_island_not_found',
     ERROR_PRIVATE_SCENE_NOT_FOUND: 'response:error_private_scene_not_found',
+    SHOP_CATALOG: 'response:shop_catalog',
+    SHOP_PURCHASE: 'response:shop_purchase',
 });
 
 module.exports = ResponseSocketsEnum;
