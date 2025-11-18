@@ -53,6 +53,18 @@
     "next_page": "Next page",
     "error_loading": "Error loading data"
   },
+  "shop": {
+    "title": "Shop",
+    "loading": "Loading...",
+    "no_items": "No items available",
+    "buy": "Buy",
+    "quantity": "Quantity",
+    "purchase_success": "Purchase successful!",
+    "purchase_error": "Error purchasing item",
+    "error_loading": "Error loading catalog",
+    "insufficient_gold": "Insufficient gold",
+    "insufficient_silver": "Insufficient silver"
+  },
   "maintenance": {
     "title": "Maintenance",
     "description": "The server is under maintenance.\nPlease try again later.",

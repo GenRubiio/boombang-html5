@@ -16,6 +16,9 @@ class UserModel {
         this.avatarId = row.avatar_id; // ID del avatar del usuario
         this.goldCoins = row.gold_coins; // Monedas de oro del usuario
         this.silverCoins = row.silver_coins; // Monedas de plata del usuario
+        // Aliases para compatibilidad con la API
+        this.gold = row.gold !== undefined ? row.gold : row.gold_coins;
+        this.silver = row.silver !== undefined ? row.silver : row.silver_coins;
         this.ringsWon = row.rings_won; // Anillos ganados por el usuario
         this.coconutsCaught = row.coconuts_caught; // Cocos atrapados por el usuario
         this.uppercutsSend = row.uppercuts_sent; // Uppercuts enviados por el usuario

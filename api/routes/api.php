@@ -2,14 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyEmulatorToken;
+use App\Http\Controllers\Internal\BotController;
+use App\Http\Controllers\Internal\ShopController;
 use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\Auth\LogoutApiController;
 use App\Http\Controllers\Api\Bot\BotContextController;
+use App\Http\Controllers\Internal\InventoryController;
 use App\Http\Controllers\Api\Bot\BotMessagesController;
 use App\Http\Controllers\Api\Auth\BotLoginApiController;
 use App\Http\Controllers\Api\Auth\RegisterApiController;
+use App\Http\Controllers\Api\Game\MinigameApiController;
 use App\Http\Controllers\Api\Bot\BotAllowReplyController;
 use App\Http\Controllers\Api\Bot\BotCacheClearController;
+use App\Http\Controllers\Api\Game\Lobby\MailApiController;
 use App\Http\Controllers\Api\Auth\LoginGoogleApiController;
 use App\Http\Controllers\Api\Bot\AIProviderStatsController;
 use App\Http\Controllers\Api\Bot\BotConsumeQuotaController;
@@ -17,7 +22,6 @@ use App\Http\Controllers\Api\Game\Scene\IslandApiController;
 use App\Http\Controllers\Api\User\IncreaseStatsApiController;
 use App\Http\Controllers\Api\User\UserChangeAvatarController;
 use App\Http\Controllers\Api\Game\Lobby\GachaponApiController;
-use App\Http\Controllers\Api\Game\Lobby\MailApiController;
 use App\Http\Controllers\Api\User\UserChangeChatApiController;
 use App\Http\Controllers\Api\Bot\BotGenerateResponseController;
 use App\Http\Controllers\Api\Game\Scene\GameSceneApiController;
@@ -25,17 +29,17 @@ use App\Http\Controllers\Api\User\UserChangeFichaApiController;
 use App\Http\Controllers\Api\Auth\GetBotByUsernameApiController;
 use App\Http\Controllers\Api\Game\Scene\PublicSceneApiController;
 use App\Http\Controllers\Api\User\UpdateDescriptionApiController;
+use App\Http\Controllers\Api\Game\Npc\NpcCatalogItemApiController;
 use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeShadowColorController;
 use App\Http\Controllers\Api\Game\Object\RotateObjectApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeColornameApiController;
+use App\Http\Controllers\Api\Game\Config\IslandsConfigApiController;
 use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserAvatarsApiController;
-use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
-use App\Http\Controllers\Api\Game\MinigameApiController;
-use App\Http\Controllers\Api\Game\Config\IslandsConfigApiController;
 use App\Http\Controllers\Api\Game\Config\PrivateSceneConfigApiController;
+use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
 
 Route::prefix('test')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -152,9 +156,9 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         });
 
         Route::prefix('npc')->group(function () {
-            Route::post('catalog-items', [\App\Http\Controllers\Api\Game\Npc\NpcCatalogItemApiController::class, 'getNpcCatalogItems']);
-            Route::post('check-requirements', [\App\Http\Controllers\Api\Game\Npc\NpcCatalogItemApiController::class, 'checkRequirements']);
-            Route::post('claim-item', [\App\Http\Controllers\Api\Game\Npc\NpcCatalogItemApiController::class, 'claimItem']);
+            Route::post('catalog-items', [NpcCatalogItemApiController::class, 'getNpcCatalogItems']);
+            Route::post('check-requirements', [NpcCatalogItemApiController::class, 'checkRequirements']);
+            Route::post('claim-item', [NpcCatalogItemApiController::class, 'claimItem']);
         });
 
         Route::prefix('islands-config')->group(function () {
@@ -169,14 +173,19 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         });
 
         Route::prefix('inventory')->group(function () {
-            Route::post('get-user-inventory', [App\Http\Controllers\Internal\InventoryController::class, 'getUserInventory']);
+            Route::post('get-user-inventory', [InventoryController::class, 'getUserInventory']);
+        });
+
+        Route::prefix('shop')->group(function () {
+            Route::post('catalog', [ShopController::class, 'getCatalog']);
+            Route::post('purchase', [ShopController::class, 'purchaseItem']);
         });
     });
 });
 
 Route::prefix('internal')->group(function () {
     Route::prefix('bots')->group(function () {
-        Route::post('generate-token', [App\Http\Controllers\Internal\BotController::class, 'generateToken']);
+        Route::post('generate-token', [BotController::class, 'generateToken']);
     });
 });
 

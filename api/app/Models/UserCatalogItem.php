@@ -24,7 +24,6 @@ class UserCatalogItem extends Model
     protected $fillable = [
         'user_id',
         'catalog_item_id',
-        'quantity',
         'private_scene_id',
         'occupied_tiles',
         'show_in_inventory',

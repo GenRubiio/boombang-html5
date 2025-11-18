@@ -472,6 +472,9 @@ export default class PrivateScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de tienda pulsado');
                 }
+                if (this.vueComponent && this.vueComponent.showShop) {
+                    this.vueComponent.showShop();
+                }
                 break;
 
             case 'avatars':
@@ -498,6 +501,10 @@ export default class PrivateScene extends Phaser.Scene {
                     //console.log('Botón de inventario pulsado', this.htmlInventory);
                 }
                 if (this.htmlInventory) {
+                    // Cerrar la tienda Vue si está abierta
+                    if (this.vueComponent && this.vueComponent.isShopVisible) {
+                        this.vueComponent.hideShop();
+                    }
                     this.htmlInventory.toggle();
                 } else {
                     //console.error('htmlInventory no está inicializado');
