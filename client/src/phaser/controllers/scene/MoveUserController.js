@@ -54,10 +54,12 @@ class MoveUserController {
         // Ajusta según tu grid isométrico
         const tileWidth = 65 * gameConfig.DPI;
         const tileHeight = 33 * gameConfig.DPI;
+        const halfTileWidth = tileWidth / gameConfig.DPI;
+        const halfTileHeight = tileHeight / gameConfig.DPI;
 
         // Calcula la posición en pantalla
-        const centerX = (step.x - step.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
-        const centerY = (step.x + step.y) * (tileHeight / gameConfig.DPI);
+        const centerX = (step.x - step.y) * halfTileWidth + gameScene.scale.width / gameConfig.DPI;
+        const centerY = (step.x + step.y) * halfTileHeight;
 
         // Actualiza posición lógica del jugador
         user.position = { x: step.x, y: step.y, z: step.z };

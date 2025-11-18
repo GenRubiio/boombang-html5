@@ -36,13 +36,16 @@ function ensureNameTagTexture(gameScene, texKey, w, h, bgColor, alpha) {
     g.fillStyle(bgColor, alpha);
     g.fillRoundedRect(0, 0, w, h, 8 * gameConfig.DPI);
     // punta inferior
+    const halfW = w / gameConfig.DPI;
+    const triangleOffset = 5 * gameConfig.DPI;
+    const triangleHeight = 6 * gameConfig.DPI;
     g.fillTriangle(
-        w / gameConfig.DPI - 5 * gameConfig.DPI, h,
-        w / gameConfig.DPI + 5 * gameConfig.DPI, h,
-        w / gameConfig.DPI, h + 6 * gameConfig.DPI
+        halfW - triangleOffset, h,
+        halfW + triangleOffset, h,
+        halfW, h + triangleHeight
     );
     // incluye la punta en la textura
-    g.generateTexture(texKey, w, h + 6 * gameConfig.DPI);
+    g.generateTexture(texKey, w, h + triangleHeight);
     g.destroy();
     nameTagStyleHash.set(texKey, hash);
 }
@@ -292,7 +295,8 @@ class AddUserController {
         ensureNameTagTexture(gameScene, textureKey, textWidth, textHeight, backgroundColor, alpha);
 
         // 5) Crear imagen de fondo usando la textura
-        const yBg = -spriteAvatar.displayHeight / gameConfig.DPI - textHeight - 8 * gameConfig.DPI;
+        const namePadding = 8 * gameConfig.DPI;
+        const yBg = -spriteAvatar.displayHeight / gameConfig.DPI - textHeight - namePadding;
         const textBackground = gameScene.add.image(0, yBg, textureKey)
             .setOrigin(0.5, 1)
             .setDepth(2);

@@ -82,9 +82,9 @@ class UserReceiveEffectController {
         const baseX = 10, baseY = 60, size = 30, pad = 5;
         const botones = [
             { label: '↑', dx: 0, dy: -1, x: baseX + size + pad, y: baseY },
-            { label: '↓', dx: 0, dy: +1, x: baseX + size + pad, y: baseY + size * 2 },
+            { label: '↓', dx: 0, dy: +1, x: baseX + size + pad, y: baseY + size * gameConfig.DPI },
             { label: '←', dx: -1, dy: 0, x: baseX, y: baseY + size },
-            { label: '→', dx: +1, dy: 0, x: baseX + size * 2 + pad * 2, y: baseY + size }
+            { label: '→', dx: +1, dy: 0, x: baseX + size * gameConfig.DPI + pad * gameConfig.DPI, y: baseY + size }
         ];
 
         botones.forEach(btn => {

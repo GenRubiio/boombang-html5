@@ -1,13 +1,15 @@
+import gameConfig from "@/config/gameConfig";
+
 class SceneUtils {
     static loadNpc(col, row, gameScene, name, npcId) {
-        const tileWidth = 65 * 2;
-        const tileHeight = 33 * 2;
-        const halfTileWidth = tileWidth / 2;
-        const halfTileHeight = tileHeight / 2;
-        const centerX = gameScene.scale.width / 2;
+        const tileWidth = 65 * gameConfig.DPI;
+        const tileHeight = 33 * gameConfig.DPI;
+        const halfTileWidth = tileWidth / gameConfig.DPI;
+        const halfTileHeight = tileHeight / gameConfig.DPI;
+        const centerX = gameScene.scale.width / gameConfig.DPI;
 
-        const x = (col - row) * halfTileWidth + centerX + 40 * 2;
-        const y = (col + row) * halfTileHeight + 253 * 2;
+        const x = (col - row) * halfTileWidth + centerX + 40 * gameConfig.DPI;
+        const y = (col + row) * halfTileHeight + 253 * gameConfig.DPI;
 
         const npc = gameScene.add.image(x, y, name);
         npc.setOrigin(0.5, 1);
@@ -57,9 +59,9 @@ class SceneUtils {
         const baseX = 10, baseY = 60, size = 30, pad = 5;
         const botones = [
             { label: '↑', dx: 0, dy: -1, x: baseX + size + pad, y: baseY },
-            { label: '↓', dx: 0, dy: +1, x: baseX + size + pad, y: baseY + size * 2 },
+            { label: '↓', dx: 0, dy: +1, x: baseX + size + pad, y: baseY + size * gameConfig.DPI },
             { label: '←', dx: -1, dy: 0, x: baseX, y: baseY + size },
-            { label: '→', dx: +1, dy: 0, x: baseX + size * 2 + pad * 2, y: baseY + size }
+            { label: '→', dx: +1, dy: 0, x: baseX + size * gameConfig.DPI + pad * gameConfig.DPI, y: baseY + size }
         ];
 
         botones.forEach(btn => {
