@@ -47,7 +47,7 @@ class CreateSceneController {
 
     const W = gameScene.scale.width;
     const H = gameScene.scale.height;
-    const centerX = W / 2;
+    const centerX = W / gameConfig.DPI;
 
     const blitter = gameScene.add.blitter(0, 0, "tile");
     blitter.setDepth(100);
@@ -156,9 +156,9 @@ class CreateSceneController {
 
       // Inversión iso
       const colFloat =
-        ((mx - centerX) / halfTileWidth + my / halfTileHeight) / 2;
+        ((mx - centerX) / halfTileWidth + my / halfTileHeight) / gameConfig.DPI;
       const rowFloat =
-        (my / halfTileHeight - (mx - centerX) / halfTileWidth) / 2;
+        (my / halfTileHeight - (mx - centerX) / halfTileWidth) / gameConfig.DPI;
 
       const col = Math.round(colFloat);
       const row = Math.round(rowFloat);
@@ -301,9 +301,9 @@ class CreateSceneController {
         const my = pointer.worldY;
 
         const colFloat =
-          ((mx - centerX) / halfTileWidth + my / halfTileHeight) / 2;
+          ((mx - centerX) / halfTileWidth + my / halfTileHeight) / gameConfig.DPI;
         const rowFloat =
-          (my / halfTileHeight - (mx - centerX) / halfTileWidth) / 2;
+          (my / halfTileHeight - (mx - centerX) / halfTileWidth) / gameConfig.DPI;
 
         const col = Math.round(colFloat);
         const row = Math.round(rowFloat);
@@ -359,7 +359,7 @@ class CreateSceneController {
     const halfTileHeight = tileHeight / gameConfig.DPI;
 
     const W = gameScene.scale.width;
-    const centerX = W / 2;
+    const centerX = W / gameConfig.DPI;
 
     for (const arrow of gameScene.sceneData.scenery.arrows) {
       // Check if sprite was loaded properly
@@ -383,7 +383,7 @@ class CreateSceneController {
         .setOrigin(0.5, 1) // Center the arrow
         .setDepth(0) // Place arrows above tiles and other objects
         .setName(spriteName)
-        .setScale(arrow.scale || 2); // Apply scale if provided, default to 1
+        .setScale(arrow.scale || gameConfig.DPI); // Apply scale if provided, default to DPI
     }
   }
 

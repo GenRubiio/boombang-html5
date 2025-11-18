@@ -1,5 +1,7 @@
 import AnimationUtils from "../../utils/AnimationUtils.js";
 import UserEmojiAnimation from "./UserEmojiAnimation.js";
+import gameConfig from "@/config/gameConfig.js";
+
 class UserUppercutAnimation {
     static main(spriteAvatar, direction, attacker, avatarId, gameScene) {
         if (UserEmojiAnimation.isFlying(spriteAvatar)) {
@@ -43,9 +45,10 @@ class UserUppercutAnimation {
         if (!spriteAvatar.scene) return;
 
         // Aplicamos un tween para que el personaje salga volando hacia arriba
+        const uppercutDistance = 500 * gameConfig.DPI;
         spriteAvatar.scene.tweens.add({
             targets: spriteAvatar,
-            y: spriteAvatar.y - (500 * 2), // Mueve 500px hacia arriba
+            y: spriteAvatar.y - uppercutDistance, // Mueve hacia arriba según DPI
             duration: 800, // Duración de la animación
             ease: 'Power2', // Efecto de aceleración suave
             onComplete: () => {

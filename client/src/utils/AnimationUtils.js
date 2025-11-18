@@ -23,8 +23,8 @@ class AnimationUtils {
             animationData.positionX * gameConfig.DPI,
             animationData.positionY * gameConfig.DPI
         );
-        //TODO: Nuevo rederizado * 2
-        spriteAvatar.setScale(gameConfig.DPI / 2);
+        // Escala normalizada: para assets de alta resolución (DPI=2) → escala=1, para assets normales (DPI=1) → escala=1
+        spriteAvatar.setScale(1);
     }
 }
 
