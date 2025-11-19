@@ -134,6 +134,13 @@ export default {
       this.isAvatarSelectionVisible = false;
     },
     showRankings() {
+      // Cerrar el inventario HTML si está abierto
+      const gamePhaser = this.$root.gamePhaser;
+      const privateScene = gamePhaser?.scene?.getScene('PrivateScene');
+      if (privateScene?.htmlInventory?.isVisible) {
+        privateScene.htmlInventory.hide();
+      }
+
       this.isRankingsVisible = true;
     },
     hideRankings() {
