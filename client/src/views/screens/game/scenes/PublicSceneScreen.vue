@@ -116,6 +116,8 @@ export default {
       this.isAvatarSelectionVisible = false;
     },
     showRankings() {
+      // Cerrar el inventario si está abierto
+      this.isInventoryVisible = false;
       this.isRankingsVisible = true;
     },
     hideRankings() {
