@@ -88,8 +88,11 @@ class UserEmojiAnimation {
         // Guardar posición local original
         sprite._flyOriginalLocalY = sprite.y;
 
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = scene.sceneScaleFactor || 1;
+
         // Margen superior para no pasar del viewport
-        const marginTop = 10 * gameConfig.DPI;
+        const marginTop = 10 * gameConfig.DPI * scaleFactor;
         const worldTopY = scene.cameras.main.worldView.y + (sprite.displayHeight / gameConfig.DPI) + marginTop;
         const localTopY = worldTopY - container.y;
 
