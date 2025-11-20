@@ -82,10 +82,14 @@ class PublicSceneLoader {
         if (!item.show_item) {
             return; // Si no se debe mostrar el item, no hacemos nada
         }
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const finalScale = item.scale * scaleFactor;
+
         let sprite;
-        const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y) * item.scale;
+        const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y) * finalScale;
         if (SceneUtils.isVideoFile(item.image)) {
-            sprite = gameScene.add.video(item.x * item.scale, item.y * item.scale, spriteName)
+            sprite = gameScene.add.video(item.x * finalScale, item.y * finalScale, spriteName)
                 .setOrigin(0.5, 1)
                 .setDepth(depth)
                 .setName(spriteName);
@@ -94,12 +98,12 @@ class PublicSceneLoader {
             sprite.play(true);
         }
         else {
-            sprite = gameScene.add.image(item.x * item.scale, item.y * item.scale, spriteName)
+            sprite = gameScene.add.image(item.x * finalScale, item.y * finalScale, spriteName)
                 .setOrigin(0.5, 1)
                 .setDepth(depth)
                 .setName(spriteName);
         }
-        sprite.setScale(item.scale);
+        sprite.setScale(finalScale);
 
         // El oscurecimiento ahora es global por escena, no por sprite
 
@@ -116,22 +120,26 @@ class PublicSceneLoader {
         if (!npcData || !npcData.active) {
             return; // Si no hay NPC o no está activo, no hacemos nada
         }
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const finalScale = npcData.scale * scaleFactor;
+
         const spriteName = 'public_scene_' + areaId + '_npc_' + npcData.spriteName;
         let sprite;
 
         if (SceneUtils.isVideoFile(npcData.image)) {
-            sprite = gameScene.add.video(npcData.positionX * npcData.scale, npcData.positionY * npcData.scale, spriteName);
+            sprite = gameScene.add.video(npcData.positionX * finalScale, npcData.positionY * finalScale, spriteName);
             sprite.setOrigin(0.5, 1);
-            sprite.setDepth(npcData.depth || npcData.positionY * npcData.scale);
+            sprite.setDepth(npcData.depth || npcData.positionY * finalScale);
             sprite.setLoop(true);
             sprite.play(true);
         }
         else {
-            sprite = gameScene.add.image(npcData.positionX * npcData.scale, npcData.positionY * npcData.scale, spriteName);
+            sprite = gameScene.add.image(npcData.positionX * finalScale, npcData.positionY * finalScale, spriteName);
             sprite.setOrigin(0.5, 1);
-            sprite.setDepth(npcData.depth || npcData.positionY * npcData.scale);
+            sprite.setDepth(npcData.depth || npcData.positionY * finalScale);
         }
-        sprite.setScale(npcData.scale);
+        sprite.setScale(finalScale);
 
         sprite.setInteractive({
             cursor: 'pointer',

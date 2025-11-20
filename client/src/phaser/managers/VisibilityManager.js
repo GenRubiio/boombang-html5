@@ -64,8 +64,10 @@ class VisibilityManager {
 
         try {
             const gameConfig = window.gameConfig || { DPI: 2 };
-            const tileWidth = 65 * gameConfig.DPI;
-            const tileHeight = 33 * gameConfig.DPI;
+            // Aplicar factor de escala para big_scene
+            const scaleFactor = scene.sceneScaleFactor || 1;
+            const tileWidth = 65 * gameConfig.DPI * scaleFactor;
+            const tileHeight = 33 * gameConfig.DPI * scaleFactor;
 
             // Calcular posición esperada
             const expectedX = (user.position.x - user.position.y) * (tileWidth / gameConfig.DPI) + scene.scale.width / gameConfig.DPI;

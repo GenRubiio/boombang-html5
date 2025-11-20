@@ -14,6 +14,8 @@ class CreateSceneController {
     const sceneryData = data.scenery;
     const authUserData = data.authUser;
 
+    // El sceneScaleFactor ya fue inicializado en PublicScene.create()
+
     // Inicializar sistema de oscurecimiento dinámico ANTES de cargar assets
     // para que el background pueda registrarse correctamente
     if (sceneryData.darkening && sceneryData.game_time) {
@@ -40,8 +42,12 @@ class CreateSceneController {
   }
 
   static createTile(gameScene, map, rows, cols) {
-    const tileWidth = 65 * gameConfig.DPI;
-    const tileHeight = 33 * gameConfig.DPI;
+    // Aplicar factor de escala para big_scene (0.5 si es big_scene, 1 si no)
+    const scaleFactor = gameScene.sceneScaleFactor || 1;
+
+    // Dimensiones base sin escalar (el blitter se encargará de escalar)
+    const tileWidth = 65 * scaleFactor  * gameConfig.DPI;
+    const tileHeight = 33 * scaleFactor * gameConfig.DPI;
     const halfTileWidth = tileWidth / gameConfig.DPI;
     const halfTileHeight = tileHeight / gameConfig.DPI;
 
@@ -49,7 +55,7 @@ class CreateSceneController {
     const H = gameScene.scale.height;
     const centerX = W / gameConfig.DPI;
 
-    const blitter = gameScene.add.blitter(0, 0, "tile");
+    const blitter = gameScene.add.blitter(0, 0, scaleFactor == 1 ? "tile" : "tile_small");
     blitter.setDepth(100);
 
     // Si quieres seguir guardando referencias solo para los tiles visibles:
@@ -115,6 +121,7 @@ class CreateSceneController {
     }
 
     // Rombo local para test de click fino
+    // halfTileWidth y halfTileHeight ya incluyen scaleFactor
     const diamondPolygon = new Phaser.Geom.Polygon([
       { x: -halfTileWidth, y: 0 },
       { x: 0, y: -halfTileHeight },
@@ -154,7 +161,7 @@ class CreateSceneController {
       const mx = pointer.worldX;
       const my = pointer.worldY;
 
-      // Inversión iso
+      // Inversión iso (usando dimensiones ajustadas por scaleFactor)
       const colFloat =
         ((mx - centerX) / halfTileWidth + my / halfTileHeight) / gameConfig.DPI;
       const rowFloat =
@@ -165,7 +172,7 @@ class CreateSceneController {
 
       if (col < 0 || col >= cols || row < 0 || row >= rows) return;
 
-      // Centro del tile
+      // Centro del tile (usando dimensiones ajustadas)
       const tileCenterX = (col - row) * halfTileWidth + centerX;
       const tileCenterY = (col + row) * halfTileHeight;
       const localX = mx - tileCenterX;
@@ -353,10 +360,12 @@ class CreateSceneController {
     }
 
     // Use the same tile dimensions as in createTile method
-    const tileWidth = 65 * gameConfig.DPI;
-    const tileHeight = 33 * gameConfig.DPI;
-    const halfTileWidth = tileWidth / gameConfig.DPI;
-    const halfTileHeight = tileHeight / gameConfig.DPI;
+    // Aplicar factor de escala para big_scene
+    const scaleFactor = gameScene.sceneScaleFactor || 1;
+    const tileWidth = 65 * gameConfig.DPI * scaleFactor;
+    const tileHeight = 33 * gameConfig.DPI * scaleFactor;
+    const halfTileWidth = (tileWidth / gameConfig.DPI);
+    const halfTileHeight = (tileHeight / gameConfig.DPI);
 
     const W = gameScene.scale.width;
     const centerX = W / gameConfig.DPI;
@@ -378,12 +387,13 @@ class CreateSceneController {
 
       // Create the arrow sprite at the converted screen position
       // Adjust positioning to center on tile - use same origin as tiles and add small offset
+      const arrowScale = (arrow.scale || gameConfig.DPI) * scaleFactor;
       gameScene.add
         .image(screenX, screenY + halfTileHeight, spriteName)
         .setOrigin(0.5, 1) // Center the arrow
         .setDepth(0) // Place arrows above tiles and other objects
         .setName(spriteName)
-        .setScale(arrow.scale || gameConfig.DPI); // Apply scale if provided, default to DPI
+        .setScale(arrowScale); // Apply scale with big_scene factor
     }
   }
 

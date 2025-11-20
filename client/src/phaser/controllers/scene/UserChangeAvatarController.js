@@ -43,8 +43,10 @@ class UserChangeAvatarController {
         user.pathIndex = 0;
 
         // Forzar la posición en el mapa según la lógica isométrica
-        const tileWidth = 65 * gameConfig.DPI;
-        const tileHeight = 33 * gameConfig.DPI;
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const tileWidth = 65 * gameConfig.DPI * scaleFactor;
+        const tileHeight = 33 * gameConfig.DPI * scaleFactor;
         const finalX = (user.position.x - user.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
         const finalY = (user.position.x + user.position.y) * (tileHeight / gameConfig.DPI);
 
@@ -141,6 +143,10 @@ class UserChangeAvatarController {
             newSpriteAvatar._avatarId = newAvatarId;
             newSpriteAvatar._z = storedZ;
             newSpriteAvatar.setDepth(currentDepth);
+
+            // Aplicar factor de escala para big_scene
+            const scaleFactor = gameScene.sceneScaleFactor || 1;
+            newSpriteAvatar.setScale(scaleFactor);
 
             // Aplicar animación idle
             UserIdleAnimation.main(newSpriteAvatar, storedZ, newAvatarId);

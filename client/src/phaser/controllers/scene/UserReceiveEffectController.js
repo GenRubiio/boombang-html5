@@ -22,13 +22,15 @@ class UserReceiveEffectController {
         );
 
         // Crear sprite del efecto en la posición inicial
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
         const effect = gameScene.add.sprite(
-            container.x + effectData.effect.positionOffset.x * gameConfig.DPI,
-            container.y + effectData.effect.positionOffset.y * gameConfig.DPI,
+            container.x + effectData.effect.positionOffset.x * gameConfig.DPI * scaleFactor,
+            container.y + effectData.effect.positionOffset.y * gameConfig.DPI * scaleFactor,
             data.effect
         );
         effect.setDepth(container.depth + 1);
-        effect.setScale(gameConfig.DPI);
+        effect.setScale(gameConfig.DPI * scaleFactor);
 
         // El oscurecimiento ahora es global por escena, no por sprite
 

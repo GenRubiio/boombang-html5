@@ -3,6 +3,7 @@ import socket from "../sockets/socket"; // Conexión Socket.io
 import asset_shadow_image from "@/assets/game/avatar/shadow.webp"; // Imagen de la sombra
 import asset_shadow_selected_image from "@/assets/game/avatar/shadow_selected.webp"; // Imagen de la sombra seleccionada
 import asset_tile_image from "@/assets/game/scene/tile.webp"; // Imagen del suelo
+import asset_tile_small_image from "@/assets/game/scene/tile_small.png"; // Imagen del suelo pequeño
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
@@ -56,6 +57,7 @@ export default class PublicScene extends Phaser.Scene {
     preload() {
         PublicSceneLoader.main(this, true); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tile_image);
+        this.load.image("tile_small", asset_tile_small_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
         this.load.image("asset_ui_shop_image", asset_ui_shop_image);
@@ -97,6 +99,10 @@ export default class PublicScene extends Phaser.Scene {
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicSceneResponse.main(this); // Respuesta de la escena pública
+
+        // Inicializar factor de escala para big_scene ANTES de cargar assets
+        this.bigSceneMode = this.sceneData.scenery.big_scene || false;
+        this.sceneScaleFactor = this.bigSceneMode ? 0.5 : 1;
 
         // Inicializar darkeningData ANTES de cargar el background
         if (this.sceneData.scenery.darkening && this.sceneData.scenery.game_time) {

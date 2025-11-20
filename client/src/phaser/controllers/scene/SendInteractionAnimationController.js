@@ -17,8 +17,10 @@ class SendInteractionAnimationController {
         receiverUser.path = [];
         receiverUser.pathIndex = 0;
 
-        const tileWidth = 65 * gameConfig.DPI;
-        const tileHeight = 33 * gameConfig.DPI;
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const tileWidth = 65 * gameConfig.DPI * scaleFactor;
+        const tileHeight = 33 * gameConfig.DPI * scaleFactor;
         const receiverUserFinalX = (receiverUser.position.x - receiverUser.position.y) * (tileWidth / gameConfig.DPI) + gameScene.scale.width / gameConfig.DPI;
         const receiverUserFinalY = (receiverUser.position.x + receiverUser.position.y) * (tileHeight / gameConfig.DPI);
 

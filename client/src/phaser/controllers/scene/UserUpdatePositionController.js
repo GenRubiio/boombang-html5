@@ -26,10 +26,12 @@ class UserUpdatePositionController {
         user.pathIndex = 0;
 
         // Forzar la posición en el mapa según la lógica isométrica
-        const tileWidth = 65 * gameConfig.DPI;
-        const tileHeight = 33 * gameConfig.DPI;
-        const halfTileWidth = tileWidth / gameConfig.DPI;
-        const halfTileHeight = tileHeight / gameConfig.DPI;
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const tileWidth = 65 * gameConfig.DPI * scaleFactor;
+        const tileHeight = 33 * gameConfig.DPI * scaleFactor;
+        const halfTileWidth = (tileWidth / gameConfig.DPI);
+        const halfTileHeight = (tileHeight / gameConfig.DPI);
         const finalX = (user.position.x - user.position.y) * halfTileWidth + gameScene.scale.width / gameConfig.DPI;
         const finalY = (user.position.x + user.position.y) * halfTileHeight;
 

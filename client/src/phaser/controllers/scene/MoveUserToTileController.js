@@ -2,10 +2,12 @@ import gameConfig from "@/config/gameConfig.js";
 
 class MoveUserToTileController {
     static main(gameScene, user) {
-        const tileWidth = 65 * gameConfig.DPI;
-        const tileHeight = 33 * gameConfig.DPI;
-        const halfTileWidth = tileWidth / gameConfig.DPI;
-        const halfTileHeight = tileHeight / gameConfig.DPI;
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const tileWidth = 65 * gameConfig.DPI * scaleFactor;
+        const tileHeight = 33 * gameConfig.DPI * scaleFactor;
+        const halfTileWidth = (tileWidth / gameConfig.DPI);
+        const halfTileHeight = (tileHeight / gameConfig.DPI);
 
         // Calcular posición en pantalla en la cuadrícula isométrica
         const centerX = (user.position.x - user.position.y) * halfTileWidth + gameScene.scale.width / gameConfig.DPI;

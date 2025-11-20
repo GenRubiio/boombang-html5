@@ -44,11 +44,14 @@ class UserUppercutAnimation {
         // Verificamos que el sprite pertenezca a una escena
         if (!spriteAvatar.scene) return;
 
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = spriteAvatar.scene.sceneScaleFactor || 1;
+
         // Aplicamos un tween para que el personaje salga volando hacia arriba
-        const uppercutDistance = 500 * gameConfig.DPI;
+        const uppercutDistance = 500 * gameConfig.DPI * scaleFactor;
         spriteAvatar.scene.tweens.add({
             targets: spriteAvatar,
-            y: spriteAvatar.y - uppercutDistance, // Mueve hacia arriba según DPI
+            y: spriteAvatar.y - uppercutDistance, // Mueve hacia arriba según DPI y scale factor
             duration: 800, // Duración de la animación
             ease: 'Power2', // Efecto de aceleración suave
             onComplete: () => {
