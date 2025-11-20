@@ -174,9 +174,14 @@ class DetailPanelPrivateSceneHtml {
     }
 
     show(item) {
+        // Cerrar otros paneles antes de abrir el panel de detalles
         if (this.scene.htmlInventory && this.scene.htmlInventory.isVisible) {
             this.scene.htmlInventory.hide();
         }
+        if (this.scene.htmlColorPanel && this.scene.htmlColorPanel.isVisible) {
+            this.scene.htmlColorPanel.hide();
+        }
+
         this.currentItem = item;
 
         const nameElement = this.htmlDetailPanelElement.querySelector('#detail-item-name');

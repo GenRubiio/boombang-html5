@@ -33,7 +33,9 @@
     "tooltip_avatars": "アバター",
     "tooltip_color": "色付け",
     "tooltip_move": "移動",
-    "tooltip_inventory": "インベントリ"
+    "tooltip_inventory": "インベントリ",
+    "color_panel_title": "シーンの色付け",
+    "color_panel_save": "保存"
   },
   "maintenance": {
     "title": "メンテナンス",

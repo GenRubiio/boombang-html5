@@ -433,9 +433,14 @@ class InventoryPrivateSceneHtml {
     }
 
     show() {
+        // Cerrar otros paneles antes de abrir el inventario
         if (this.scene.htmlDetailPanel && this.scene.htmlDetailPanel.isVisible) {
             this.scene.htmlDetailPanel.hide();
         }
+        if (this.scene.htmlColorPanel && this.scene.htmlColorPanel.isVisible) {
+            this.scene.htmlColorPanel.hide();
+        }
+
         if (this.htmlInventoryElement) {
             this.htmlInventoryElement.style.display = 'block';
             this.isVisible = true;

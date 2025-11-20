@@ -7,7 +7,7 @@ import backpackIcon from "@/assets/game/scene/ui/backpack.webp";
 import rankingsIcon from "@/assets/game/scene/ui/ranking.webp"; // Reutilizando el ícono por ahora
 
 class ButtonsPrivateSceneHtml {
-    static load(isOwner = false) {
+    static load(isOwner = false, hasColorableAssets = false) {
         // Botones comunes para todos los usuarios (shop, avatars, rankings)
         const commonButtons = `
             <div class="scene-button" data-action="shop" style="
@@ -140,8 +140,8 @@ class ButtonsPrivateSceneHtml {
             </div>
         `;
 
-        // Botones solo para el propietario (color, move, inventory)
-        const ownerButtons = `
+        // Botón de colorear solo si hay assets coloreables
+        const colorButton = hasColorableAssets ? `
             <div class="scene-button" data-action="color" style="
                 width: 45px;
                 height: 45px;
@@ -184,7 +184,10 @@ class ButtonsPrivateSceneHtml {
                     "></div>
                 </div>
             </div>
+        ` : '';
 
+        // Botones solo para el propietario (move, inventory)
+        const ownerButtons = `
             <div class="scene-button" data-action="move" id="move-button" style="
                 width: 45px;
                 height: 45px;
@@ -284,6 +287,7 @@ class ButtonsPrivateSceneHtml {
                 pointer-events: auto;
             ">
                 ${commonButtons}
+                ${isOwner ? colorButton : ''}
                 ${isOwner ? ownerButtons : ''}
             </div>
         `;

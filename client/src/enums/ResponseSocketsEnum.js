@@ -95,6 +95,8 @@ const ResponseSocketsEnum = new Enum({
     ERROR_PRIVATE_SCENE_NOT_FOUND: 'response:error_private_scene_not_found',
     SHOP_CATALOG: 'response:shop_catalog',
     SHOP_PURCHASE: 'response:shop_purchase',
+    PRIVATE_SCENE_COLORS_UPDATED: 'response:private_scene_colors_updated',
+    ERROR_PRIVATE_SCENE_COLORS_UPDATE: 'response:error_private_scene_colors_update',
 });
 
 export default ResponseSocketsEnum;

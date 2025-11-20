@@ -33,7 +33,9 @@
     "tooltip_avatars": "아바타",
     "tooltip_color": "색상",
     "tooltip_move": "이동",
-    "tooltip_inventory": "인벤토리"
+    "tooltip_inventory": "인벤토리",
+    "color_panel_title": "장면 색상",
+    "color_panel_save": "저장"
   },
   "maintenance": {
     "title": "점검",

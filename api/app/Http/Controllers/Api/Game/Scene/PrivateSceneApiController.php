@@ -249,4 +249,47 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             return $this->handleException($e);
         }
     }
+
+    public function updateColors(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'sceneId' => 'required|integer|exists:private_scenes,id',
+                'colors' => 'required|array',
+            ]);
+
+            $user = Auth::user();
+            $scene = PrivateScene::findOrFail($validated['sceneId']);
+
+            // Validate that the user owns the island where this scene belongs
+            $island = $scene->island;
+            if ($island->user_id != $user->id) {
+                throw new Exception('You do not have permission to update this scene.');
+            }
+
+            // Validar que los colores sean hexadecimales válidos
+            foreach ($validated['colors'] as $key => $value) {
+                if (!preg_match('/^[0-9a-fA-F]{6}$/', $value)) {
+                    throw new Exception("Invalid color format for {$key}: {$value}");
+                }
+            }
+
+            // Actualizar los colores en formato JSON
+            $scene->update([
+                'colors' => json_encode($validated['colors'])
+            ]);
+
+            return $this->successResponse([
+                'success' => true,
+                'message' => 'Scene colors updated successfully',
+                'colors' => $validated['colors']
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error updating private scene colors: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'sceneId' => $request->input('sceneId'),
+            ]);
+            return $this->handleException($e);
+        }
+    }
 }

@@ -36,7 +36,9 @@
     "tooltip_inventory": "Inventory",
     "tooltip_rankings": "Rankings",
     "inventory": "Inventory",
-    "total_items": "Total"
+    "total_items": "Total",
+    "color_panel_title": "Color Scene",
+    "color_panel_save": "Save"
   },
   "rankings": {
     "title": "Minigame Rankings",

@@ -60,6 +60,15 @@ class PrivateSceneApiService {
             throw error;
         }
     }
+
+    static async updateColors(sceneData, user) {
+        try {
+            return await ApiService.post('api/private-scene/update-colors', sceneData, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar los colores de la escena:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = PrivateSceneApiService;

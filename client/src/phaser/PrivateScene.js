@@ -17,6 +17,7 @@ import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
 import ButtonsPrivateSceneHtml from "@/phaser/html/private-scene/ButtonsPrivateSceneHtml";
 import InventoryPrivateSceneHtml from "@/phaser/html/private-scene/InventoryPrivateSceneHtml";
 import DetailPanelPrivateSceneHtml from "@/phaser/html/private-scene/DetailPanelPrivateSceneHtml";
+import ColorPanelPrivateSceneHtml from "@/phaser/html/private-scene/ColorPanelPrivateSceneHtml";
 import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
 import asset_kiss_image from "@/assets/game/scene/interactions/kiss.webp";
 import asset_drink_image from "@/assets/game/scene/interactions/drink.webp";
@@ -172,6 +173,7 @@ export default class PrivateScene extends Phaser.Scene {
         if (this.sceneData.myScene) {
             this.createHTMLInventory();
             this.createHTMLDetailPanel(); // Initialize the detail panel
+            this.createHTMLColorPanel(); // Initialize the color panel
         }
 
         this.chatManager = new OverheadChatAnimation(this);
@@ -395,6 +397,19 @@ export default class PrivateScene extends Phaser.Scene {
                 this.htmlDetailPanel.enableButtons();
             }
         });
+
+        socket.on(ResponseSocketsEnum.PRIVATE_SCENE_COLORS_UPDATED, (data) => {
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                //console.log('Socket event received:', ResponseSocketsEnum.PRIVATE_SCENE_COLORS_UPDATED);
+            }
+            if (data.colors && data.sceneId === this.sceneData.scenery.id) {
+                // Actualizar los colores en los datos de la escena
+                this.sceneData.scenery.colors = data.colors;
+
+                // Aplicar los nuevos colores a la escena
+                PrivateSceneUpdateColorsService.main(this);
+            }
+        });
     }
 
     initializeTileGrid() {
@@ -419,7 +434,12 @@ export default class PrivateScene extends Phaser.Scene {
     createHTMLButtons() {
         // Crear contenedor HTML para los botones
         const isOwner = this.sceneData.myScene || false;
-        const buttonsHTML = ButtonsPrivateSceneHtml.load(isOwner);
+
+        // Verificar si hay colores disponibles para mostrar el botón de colorear
+        const assets = this.sceneData.sceneConfig.assets_data?.assets_data_repeatable || [];
+        const hasColorableAssets = assets.some(asset => asset.color_item_key);
+
+        const buttonsHTML = ButtonsPrivateSceneHtml.load(isOwner, hasColorableAssets);
 
         // Crear elemento DOM y añadirlo a la escena
         this.buttonsContainer = this.add.dom(0, 0).createFromHTML(buttonsHTML);
@@ -466,12 +486,29 @@ export default class PrivateScene extends Phaser.Scene {
         });
     }
 
+    /**
+     * Cerrar todos los paneles HTML de Phaser
+     */
+    closeAllHTMLPanels() {
+        if (this.htmlInventory && this.htmlInventory.isVisible) {
+            this.htmlInventory.hide();
+        }
+        if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
+            this.htmlDetailPanel.hide();
+        }
+        if (this.htmlColorPanel && this.htmlColorPanel.isVisible) {
+            this.htmlColorPanel.hide();
+        }
+    }
+
     handleButtonClick(action) {
         switch (action) {
             case 'shop':
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de tienda pulsado');
                 }
+                // Cerrar todos los paneles HTML antes de abrir la tienda
+                this.closeAllHTMLPanels();
                 if (this.vueComponent && this.vueComponent.showShop) {
                     this.vueComponent.showShop();
                 }
@@ -481,6 +518,8 @@ export default class PrivateScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de avatares pulsado');
                 }
+                // Cerrar todos los paneles HTML antes de abrir avatares
+                this.closeAllHTMLPanels();
                 if (this.vueComponent && this.vueComponent.showAvatarSelection) {
                     this.vueComponent.showAvatarSelection();
                 }
@@ -489,6 +528,21 @@ export default class PrivateScene extends Phaser.Scene {
             case 'color':
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Boton de colorear pulsado');
+                }
+                if (this.htmlColorPanel) {
+                    // Si está abierto, solo cerrarlo
+                    if (this.htmlColorPanel.isVisible) {
+                        this.htmlColorPanel.toggle();
+                    } else {
+                        // Si está cerrado, cerrar otros paneles y abrirlo
+                        if (this.htmlInventory && this.htmlInventory.isVisible) {
+                            this.htmlInventory.hide();
+                        }
+                        if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
+                            this.htmlDetailPanel.hide();
+                        }
+                        this.htmlColorPanel.toggle();
+                    }
                 }
                 break;
 
@@ -501,11 +555,19 @@ export default class PrivateScene extends Phaser.Scene {
                     //console.log('Botón de inventario pulsado', this.htmlInventory);
                 }
                 if (this.htmlInventory) {
-                    // Cerrar la tienda Vue si está abierta
-                    if (this.vueComponent && this.vueComponent.isShopVisible) {
-                        this.vueComponent.hideShop();
+                    // Si está abierto, solo cerrarlo
+                    if (this.htmlInventory.isVisible) {
+                        this.htmlInventory.toggle();
+                    } else {
+                        // Si está cerrado, cerrar otros paneles y abrirlo
+                        if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
+                            this.htmlDetailPanel.hide();
+                        }
+                        if (this.htmlColorPanel && this.htmlColorPanel.isVisible) {
+                            this.htmlColorPanel.hide();
+                        }
+                        this.htmlInventory.toggle();
                     }
-                    this.htmlInventory.toggle();
                 } else {
                     //console.error('htmlInventory no está inicializado');
                 }
@@ -515,6 +577,8 @@ export default class PrivateScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de rankings pulsado');
                 }
+                // Cerrar todos los paneles HTML antes de abrir rankings
+                this.closeAllHTMLPanels();
                 if (this.vueComponent && this.vueComponent.showRankings) {
                     this.vueComponent.showRankings();
                 }
@@ -1097,6 +1161,11 @@ export default class PrivateScene extends Phaser.Scene {
             this.htmlInventory = null;
         }
 
+        if (this.htmlColorPanel) {
+            this.htmlColorPanel.destroy();
+            this.htmlColorPanel = null;
+        }
+
         const p = this.plugins.get('rexColorReplacePipeline');
         if (p) {
             this.plugins.stop('rexColorReplacePipeline');
@@ -1121,6 +1190,14 @@ export default class PrivateScene extends Phaser.Scene {
     createHTMLDetailPanel() {
         this.htmlDetailPanel = new DetailPanelPrivateSceneHtml(this);
         this.htmlDetailPanel.create();
+    }
+
+    /**
+     * Crear panel de coloración HTML
+     */
+    createHTMLColorPanel() {
+        this.htmlColorPanel = new ColorPanelPrivateSceneHtml(this);
+        this.htmlColorPanel.create();
     }
 
     /**
