@@ -36,7 +36,9 @@
     "tooltip_inventory": "Inventario",
     "tooltip_rankings": "Rankings",
     "inventory": "Inventario",
-    "total_items": "Total"
+    "total_items": "Total",
+    "color_panel_title": "Colorear Escena",
+    "color_panel_save": "Guardar"
   },
   "rankings": {
     "title": "Rankings de Minijuegos",

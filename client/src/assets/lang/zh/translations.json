@@ -33,7 +33,9 @@
     "tooltip_avatars": "头像",
     "tooltip_color": "颜色",
     "tooltip_move": "移动",
-    "tooltip_inventory": "库存"
+    "tooltip_inventory": "库存",
+    "color_panel_title": "场景着色",
+    "color_panel_save": "保存"
   },
   "maintenance": {
     "title": "维护",

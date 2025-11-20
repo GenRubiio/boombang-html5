@@ -36,7 +36,9 @@
     "tooltip_inventory": "Инвентарь",
     "tooltip_rankings": "Рейтинги",
     "inventory": "Инвентарь",
-    "total_items": "Всего"
+    "total_items": "Всего",
+    "color_panel_title": "Раскрасить сцену",
+    "color_panel_save": "Сохранить"
   },
   "rankings": {
     "title": "Рейтинги мини-игр",

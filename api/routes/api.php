@@ -134,6 +134,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('put-item', [PrivateSceneApiController::class, 'putItem']);
             Route::post('update-item-position', [PrivateSceneApiController::class, 'updateItemPosition']);
             Route::post('update-name', [PrivateSceneApiController::class, 'updateName']);
+            Route::post('update-colors', [PrivateSceneApiController::class, 'updateColors']);
             Route::post('delete', [PrivateSceneApiController::class, 'delete']);
         });
 
