@@ -40,6 +40,12 @@ class UserResource extends JsonResource
             'uppercuts_received' => (int)$this->uppercuts_received,
             'coconuts_sent' => (int)$this->coconuts_sent,
             'coconuts_received' => (int)$this->coconuts_received,
+            'kisses_sent' => (int)$this->kisses_sent,
+            'kisses_received' => (int)$this->kisses_received,
+            'drinks_sent' => (int)$this->drinks_sent,
+            'drinks_received' => (int)$this->drinks_received,
+            'roses_sent' => (int)$this->roses_sent,
+            'roses_received' => (int)$this->roses_received,
 
             /**
              * Bot settings

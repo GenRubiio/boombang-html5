@@ -233,6 +233,12 @@
       "coconuts_locos": {
         "title": "Безумные кокосы",
         "caught": "Поймано"
+      },
+      "interactions": {
+        "title": "Взаимодействия",
+        "kisses": "Поцелуи",
+        "drinks": "Напитки",
+        "roses": "Розы"
       }
     }
   },

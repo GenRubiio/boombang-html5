@@ -198,6 +198,12 @@
       "coconuts_locos": {
         "title": "疯狂椰子",
         "caught": "已抓住"
+      },
+      "interactions": {
+        "title": "互动",
+        "kisses": "吻",
+        "drinks": "饮料",
+        "roses": "玫瑰"
       }
     }
   },

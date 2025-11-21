@@ -233,6 +233,12 @@
       "coconuts_locos": {
         "title": "Cocos Locos",
         "caught": "Atrapados"
+      },
+      "interactions": {
+        "title": "Interacciones",
+        "kisses": "Besos",
+        "drinks": "Bebidas",
+        "roses": "Rosas"
       }
     }
   },

@@ -106,6 +106,60 @@ class UserService {
         }
     }
 
+    static async increaseKissesSent(user) {
+        user.kissesSent += 1;
+        try {
+            await UserApiService.increaseStats(user, 'kisses_sent');
+        } catch (error) {
+            console.error('Error increasing kisses sent:', error);
+        }
+    }
+
+    static async increaseKissesReceived(user) {
+        user.kissesReceived += 1;
+        try {
+            await UserApiService.increaseStats(user, 'kisses_received');
+        } catch (error) {
+            console.error('Error increasing kisses received:', error);
+        }
+    }
+
+    static async increaseDrinksSent(user) {
+        user.drinksSent += 1;
+        try {
+            await UserApiService.increaseStats(user, 'drinks_sent');
+        } catch (error) {
+            console.error('Error increasing drinks sent:', error);
+        }
+    }
+
+    static async increaseDrinksReceived(user) {
+        user.drinksReceived += 1;
+        try {
+            await UserApiService.increaseStats(user, 'drinks_received');
+        } catch (error) {
+            console.error('Error increasing drinks received:', error);
+        }
+    }
+
+    static async increaseRosesSent(user) {
+        user.rosesSent += 1;
+        try {
+            await UserApiService.increaseStats(user, 'roses_sent');
+        } catch (error) {
+            console.error('Error increasing roses sent:', error);
+        }
+    }
+
+    static async increaseRosesReceived(user) {
+        user.rosesReceived += 1;
+        try {
+            await UserApiService.increaseStats(user, 'roses_received');
+        } catch (error) {
+            console.error('Error increasing roses received:', error);
+        }
+    }
+
     static async increaseRingsWon(user) {
         user.ringsWon += 1;
         try {
