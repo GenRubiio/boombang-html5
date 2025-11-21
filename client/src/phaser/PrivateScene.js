@@ -534,12 +534,9 @@ export default class PrivateScene extends Phaser.Scene {
                     if (this.htmlColorPanel.isVisible) {
                         this.htmlColorPanel.toggle();
                     } else {
-                        // Si está cerrado, cerrar otros paneles y abrirlo
-                        if (this.htmlInventory && this.htmlInventory.isVisible) {
-                            this.htmlInventory.hide();
-                        }
-                        if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
-                            this.htmlDetailPanel.hide();
+                        // Si está cerrado, cerrar todos los paneles y abrirlo
+                        if (this.vueComponent && this.vueComponent.closeAllPanels) {
+                            this.vueComponent.closeAllPanels();
                         }
                         this.htmlColorPanel.toggle();
                     }
@@ -559,12 +556,9 @@ export default class PrivateScene extends Phaser.Scene {
                     if (this.htmlInventory.isVisible) {
                         this.htmlInventory.toggle();
                     } else {
-                        // Si está cerrado, cerrar otros paneles y abrirlo
-                        if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
-                            this.htmlDetailPanel.hide();
-                        }
-                        if (this.htmlColorPanel && this.htmlColorPanel.isVisible) {
-                            this.htmlColorPanel.hide();
+                        // Si está cerrado, cerrar todos los paneles y abrirlo
+                        if (this.vueComponent && this.vueComponent.closeAllPanels) {
+                            this.vueComponent.closeAllPanels();
                         }
                         this.htmlInventory.toggle();
                     }
