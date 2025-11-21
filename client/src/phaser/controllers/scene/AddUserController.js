@@ -306,8 +306,14 @@ class AddUserController {
         ensureNameTagTexture(gameScene, textureKey, textWidth, textHeight, backgroundColor, alpha);
 
         // 5) Crear imagen de fondo usando la textura
-        const namePadding = 8 * gameConfig.DPI;
-        const yBg = -spriteAvatar.displayHeight / gameConfig.DPI - textHeight - namePadding;
+        // Obtener el frame actual para calcular la altura real del avatar
+        const currentFrame = spriteAvatar.frame;
+        const avatarHeight = currentFrame.height * spriteAvatar.scaleY;
+
+        const namePadding = 3 * gameConfig.DPI;
+        // Posicionar el nombre completamente por encima del avatar
+        // Ajuste para bajar un poco el nombre (valores más positivos = más abajo)
+        const yBg = -avatarHeight + namePadding;
         const textBackground = gameScene.add.image(0, yBg, textureKey)
             .setOrigin(0.5, 1)
             .setDepth(2);
