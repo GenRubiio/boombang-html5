@@ -17,14 +17,14 @@
         </div>
       </div>
       <button
-        v-if="currentView.id === 3"
+        v-if="currentView.id === 6"
         @click="$emit('open-ring-info')"
         class="info-button"
       >
         <i class="las la-question"></i>
       </button>
       <button
-        v-if="currentView.id === 4"
+        v-if="currentView.id === 7"
         @click="$emit('open-coconuts-info')"
         class="info-button"
       >
@@ -44,6 +44,10 @@
 import { useTextFitting } from "@/composables/useTextFitting";
 import asset_stat_ring_image from "@/assets/game/ficha/statistics/ring.webp";
 import asset_stat_coconut_caught_image from "@/assets/game/ficha/statistics/cocos_locos.webp";
+
+import asset_kiss_image from "@/assets/game/ficha/interactions/kiss.webp";
+import asset_drink_image from "@/assets/game/ficha/interactions/drink.webp";
+import asset_rose_image from "@/assets/game/ficha/interactions/rose.webp";
 
 import asset_red_upper_image from "@/assets/game/ficha/uppercuts/red.webp";
 import asset_pink_upper_image from "@/assets/game/ficha/uppercuts/pink.webp";
@@ -123,6 +127,51 @@ export default {
       return [
         {
           id: 1,
+          title: this.$t("user_card.statistics.interactions.kisses"),
+          image: asset_kiss_image,
+          stats: [
+            {
+              key: "kisses_sent",
+              label: this.$t("user_card.statistics.sent"),
+            },
+            {
+              key: "kisses_received",
+              label: this.$t("user_card.statistics.received"),
+            },
+          ],
+        },
+        {
+          id: 2,
+          title: this.$t("user_card.statistics.interactions.drinks"),
+          image: asset_drink_image,
+          stats: [
+            {
+              key: "drinks_sent",
+              label: this.$t("user_card.statistics.sent"),
+            },
+            {
+              key: "drinks_received",
+              label: this.$t("user_card.statistics.received"),
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: this.$t("user_card.statistics.interactions.roses"),
+          image: asset_rose_image,
+          stats: [
+            {
+              key: "roses_sent",
+              label: this.$t("user_card.statistics.sent"),
+            },
+            {
+              key: "roses_received",
+              label: this.$t("user_card.statistics.received"),
+            },
+          ],
+        },
+        {
+          id: 4,
           title: this.$t("user_card.statistics.uppercuts.title"),
           stats: [
             {
@@ -136,7 +185,7 @@ export default {
           ],
         },
         {
-          id: 2,
+          id: 5,
           title: this.$t("user_card.statistics.coconuts.title"),
           stats: [
             {
@@ -150,7 +199,7 @@ export default {
           ],
         },
         {
-          id: 3,
+          id: 6,
           title: this.$t("user_card.statistics.rings.title"),
           image: asset_stat_ring_image,
           stats: [
@@ -161,7 +210,7 @@ export default {
           ],
         },
         {
-          id: 4,
+          id: 7,
           title: this.$t("user_card.statistics.coconuts_locos.title"),
           image: asset_stat_coconut_caught_image,
           stats: [
@@ -178,10 +227,10 @@ export default {
     },
     currentImage() {
       const view = this.currentView;
-      if (view.id === 1) {
+      if (view.id === 4) {
         return this.uppercuts[this.selectedUser.uppercut_level];
       }
-      if (view.id === 2) {
+      if (view.id === 5) {
         return this.coconuts[this.selectedUser.coconut_level];
       }
       return view.image;

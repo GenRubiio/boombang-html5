@@ -37,6 +37,24 @@ class IncreaseStatsApiController extends Controller
                 case 'coconuts_received':
                     $user->update(['coconuts_received' => DB::raw('coconuts_received + 1')]);
                     break;
+                case 'kisses_sent':
+                    $user->update(['kisses_sent' => DB::raw('kisses_sent + 1')]);
+                    break;
+                case 'kisses_received':
+                    $user->update(['kisses_received' => DB::raw('kisses_received + 1')]);
+                    break;
+                case 'drinks_sent':
+                    $user->update(['drinks_sent' => DB::raw('drinks_sent + 1')]);
+                    break;
+                case 'drinks_received':
+                    $user->update(['drinks_received' => DB::raw('drinks_received + 1')]);
+                    break;
+                case 'roses_sent':
+                    $user->update(['roses_sent' => DB::raw('roses_sent + 1')]);
+                    break;
+                case 'roses_received':
+                    $user->update(['roses_received' => DB::raw('roses_received + 1')]);
+                    break;
                 case 'rings_won':
                     $user->update(['rings_won' => DB::raw('rings_won + 1')]);
                     // Buscar el minijuego Ring

@@ -198,6 +198,12 @@
       "coconuts_locos": {
         "title": "미친 코코넛",
         "caught": "잡음"
+      },
+      "interactions": {
+        "title": "상호작용",
+        "kisses": "키스",
+        "drinks": "음료",
+        "roses": "장미"
       }
     }
   },

@@ -233,6 +233,12 @@
       "coconuts_locos": {
         "title": "Crazy Coconuts",
         "caught": "Caught"
+      },
+      "interactions": {
+        "title": "Interactions",
+        "kisses": "Kisses",
+        "drinks": "Drinks",
+        "roses": "Roses"
       }
     }
   },

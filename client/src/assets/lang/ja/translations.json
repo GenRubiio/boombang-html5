@@ -224,6 +224,12 @@
       "coconuts_locos": {
         "title": "狂ったココナッツ",
         "caught": "捕獲"
+      },
+      "interactions": {
+        "title": "インタラクション",
+        "kisses": "キス",
+        "drinks": "飲み物",
+        "roses": "バラ"
       }
     }
   },
