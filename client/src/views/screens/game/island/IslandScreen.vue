@@ -1,13 +1,21 @@
 <template>
   <div id="island-screen" class="island-screen">
     <template v-if="dataReady && imagesLoaded">
-      <div class="island-card" :class="{ 'island-card--owner': canEditIsland && sceneData.scenes && sceneData.scenes.length > 0 }">
+      <div
+        class="island-card"
+        :class="{
+          'island-card--owner':
+            canEditIsland && sceneData.scenes && sceneData.scenes.length > 0,
+        }"
+      >
         <div class="island__user-name">
           <h1>{{ sceneData.user.username }}</h1>
         </div>
         <div class="island__info">
           <div class="island__info-name">
-            <span v-if="!isEditingName" @click="startEditName">{{ sceneData.name }}</span>
+            <span v-if="!isEditingName" @click="startEditName">{{
+              sceneData.name
+            }}</span>
             <input
               v-else
               ref="nameInput"
@@ -19,159 +27,172 @@
               class="island__info-name-input"
             />
             <i
-              v-if="!isEditingName && canEditIsland"
+              v-if="!isEditingName && canEditIsland && !isJoining"
               class="las la-edit island__info-name-edit"
               @click="startEditName"
               :title="$t('island.edit_name_tooltip')"
             ></i>
           </div>
-        <div class="island__info-description">
-          <div
-            v-if="!isEditingDescription"
-            class="description-display"
-            @click="canEditIsland && startEditDescription()"
-            :style="{ cursor: canEditIsland ? 'pointer' : 'default' }"
-          >
-            <span v-if="sceneData.description">{{ sceneData.description }}</span>
-            <span v-else class="description-placeholder">
-              {{ canEditIsland ? $t('island.description_placeholder') : $t('island.no_description') }}
-            </span>
-          </div>
-          <div v-else class="description-edit">
-            <textarea
-              ref="descriptionInput"
-              v-model="editedDescription"
-              @input="handleDescriptionInput"
-              @keyup.escape="cancelEditDescription"
-              class="island__info-description-textarea"
-              :placeholder="$t('island.description_textarea_placeholder')"
-            ></textarea>
-            <div class="description-edit-actions">
-              <button @click="saveIslandDescription" class="save-btn">
-                <i class="las la-check"></i>
-              </button>
-              <button @click="cancelEditDescription" class="cancel-btn">
-                <i class="las la-times"></i>
-              </button>
+          <div class="island__info-description">
+            <div
+              v-if="!isEditingDescription"
+              class="description-display"
+              @click="canEditIsland && !isJoining && startEditDescription()"
+              :style="{
+                cursor: canEditIsland && !isJoining ? 'pointer' : 'default',
+              }"
+            >
+              <span v-if="sceneData.description">{{
+                sceneData.description
+              }}</span>
+              <span v-else class="description-placeholder">
+                {{
+                  canEditIsland
+                    ? $t("island.description_placeholder")
+                    : $t("island.no_description")
+                }}
+              </span>
             </div>
-          </div>
-        </div>
-        <!-- Botones de escenario -->
-        <div class="scenario-buttons">
-          <div class="scenario-button__list">
-            <div class="scenario-button__list-title">{{ $t('island.locations') }}</div>
-          </div>
-          <!-- Botones para escenarios existentes -->
-          <div
-            v-for="scene in sceneData.scenes"
-            :key="scene.id"
-            class="scenario-button__container"
-          >
-            <div class="scenario-button__container-left">
-              <button
-                v-if="editingSceneId !== scene.id"
-                :key="scene.id"
-                class="scenario-button"
-                @click="handleSceneAction(scene)"
-                :disabled="isJoining"
-              >
-                {{ scene.name }}
-              </button>
-              <input
-                v-else
-                ref="sceneNameInput"
-                v-model="editedSceneName"
-                @input="handleSceneNameInput"
-                @keyup.enter="saveSceneName(scene)"
-                @keyup.escape="cancelEditSceneName"
-                @blur="saveSceneName(scene)"
-                class="scenario-button-input"
-              />
-            </div>
-            <div class="scenario-button__container-right">
-              <div class="scenario-button__container-right__count">{{ scene.user_count || 0 }}</div>
-              <template v-if="editingSceneId === scene.id">
-                <button
-                  class="scenario-button__action scenario-button__action--save"
-                  @click="saveSceneName(scene)"
-                  :title="$t('island.save')"
-                >
+            <div v-else class="description-edit">
+              <textarea
+                ref="descriptionInput"
+                v-model="editedDescription"
+                @input="handleDescriptionInput"
+                @keyup.escape="cancelEditDescription"
+                class="island__info-description-textarea"
+                :placeholder="$t('island.description_textarea_placeholder')"
+              ></textarea>
+              <div class="description-edit-actions">
+                <button @click="saveIslandDescription" class="save-btn">
                   <i class="las la-check"></i>
                 </button>
-                <button
-                  class="scenario-button__action scenario-button__action--cancel"
-                  @click="cancelEditSceneName"
-                  :title="$t('island.cancel')"
-                >
+                <button @click="cancelEditDescription" class="cancel-btn">
                   <i class="las la-times"></i>
                 </button>
-              </template>
-              <template v-else>
-                <button
-                  v-if="canEditIsland"
-                  class="scenario-button__action scenario-button__action--edit"
-                  @click="startEditSceneName(scene)"
-                  :title="$t('island.edit_scene_name')"
-                >
-                  <i class="las la-edit"></i>
-                </button>
-                <button
-                  v-if="canEditIsland"
-                  class="scenario-button__action scenario-button__action--delete"
-                  @click="confirmDeleteScene(scene)"
-                  :title="$t('island.delete_scene')"
-                >
-                  <i class="las la-trash"></i>
-                </button>
-              </template>
+              </div>
             </div>
           </div>
-
-          <!-- Botones para añadir nuevos escenarios (solo si es mi isla) -->
-          <template
-            v-if="
-              sceneData.user_id == $socket.user.db_id ||
-              sceneData.userId == $socket.user.db_id
-            "
-          >
+          <!-- Botones de escenario -->
+          <div class="scenario-buttons">
+            <div class="scenario-button__list">
+              <div class="scenario-button__list-title">
+                {{ $t("island.locations") }}
+              </div>
+            </div>
+            <!-- Botones para escenarios existentes -->
             <div
-              v-for="n in 5 - (sceneData.scenes ? sceneData.scenes.length : 0)"
-              :key="'add-' + n"
+              v-for="scene in sceneData.scenes"
+              :key="scene.id"
               class="scenario-button__container"
             >
               <div class="scenario-button__container-left">
                 <button
-                  :key="'add-' + n"
-                  class="scenario-button scenario-button--add"
-                  @click="handleSceneAction(null)"
+                  v-if="editingSceneId !== scene.id"
+                  :key="scene.id"
+                  class="scenario-button"
+                  @click="handleSceneAction(scene)"
                   :disabled="isJoining"
                 >
-                  {{ $t('island.add_scenario') }}
+                  {{ scene.name }}
                 </button>
+                <input
+                  v-else
+                  ref="sceneNameInput"
+                  v-model="editedSceneName"
+                  @input="handleSceneNameInput"
+                  @keyup.enter="saveSceneName(scene)"
+                  @keyup.escape="cancelEditSceneName"
+                  @blur="saveSceneName(scene)"
+                  class="scenario-button-input"
+                />
               </div>
               <div class="scenario-button__container-right">
-                <div class="scenario-button__container-right__icon">
-                  <i class="las la-angle-double-right"></i>
+                <div class="scenario-button__container-right__count">
+                  {{ scene.user_count || 0 }}
                 </div>
+                <template v-if="editingSceneId === scene.id">
+                  <button
+                    class="scenario-button__action scenario-button__action--save"
+                    @click="saveSceneName(scene)"
+                    :title="$t('island.save')"
+                  >
+                    <i class="las la-check"></i>
+                  </button>
+                  <button
+                    class="scenario-button__action scenario-button__action--cancel"
+                    @click="cancelEditSceneName"
+                    :title="$t('island.cancel')"
+                  >
+                    <i class="las la-times"></i>
+                  </button>
+                </template>
+                <template v-else>
+                  <button
+                    v-if="canEditIsland"
+                    class="scenario-button__action scenario-button__action--edit"
+                    @click="startEditSceneName(scene)"
+                    :title="$t('island.edit_scene_name')"
+                    :disabled="isJoining"
+                  >
+                    <i class="las la-edit"></i>
+                  </button>
+                  <button
+                    v-if="canEditIsland"
+                    class="scenario-button__action scenario-button__action--delete"
+                    @click="confirmDeleteScene(scene)"
+                    :title="$t('island.delete_scene')"
+                    :disabled="isJoining"
+                  >
+                    <i class="las la-trash"></i>
+                  </button>
+                </template>
               </div>
             </div>
-          </template>
-        </div>
 
-        <!-- Botón para eliminar isla (solo si es propietario) - Separado de la lista -->
-        <div
-          v-if="canEditIsland"
-          class="delete-island-section"
-        >
-          <button
-            class="delete-island-button"
-            @click="confirmDeleteIsland"
-          >
-            <i class="las la-trash-alt"></i>
-            {{ $t('island.delete_island') }}
-          </button>
+            <!-- Botones para añadir nuevos escenarios (solo si es mi isla) -->
+            <template
+              v-if="
+                sceneData.user_id == $socket.user.db_id ||
+                sceneData.userId == $socket.user.db_id
+              "
+            >
+              <div
+                v-for="n in 5 -
+                (sceneData.scenes ? sceneData.scenes.length : 0)"
+                :key="'add-' + n"
+                class="scenario-button__container"
+              >
+                <div class="scenario-button__container-left">
+                  <button
+                    :key="'add-' + n"
+                    class="scenario-button scenario-button--add"
+                    @click="handleSceneAction(null)"
+                    :disabled="isJoining"
+                  >
+                    {{ $t("island.add_scenario") }}
+                  </button>
+                </div>
+                <div class="scenario-button__container-right">
+                  <div class="scenario-button__container-right__icon">
+                    <i class="las la-angle-double-right"></i>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Botón para eliminar isla (solo si es propietario) - Separado de la lista -->
+          <div v-if="canEditIsland" class="delete-island-section">
+            <button
+              class="delete-island-button"
+              @click="confirmDeleteIsland"
+              :disabled="isJoining"
+            >
+              <i class="las la-trash-alt"></i>
+              {{ $t("island.delete_island") }}
+            </button>
+          </div>
         </div>
-      </div>
       </div>
 
       <!-- Imagen de la brújula -->
@@ -245,22 +266,22 @@ export default {
       dataReady: false, // Nueva bandera para controlar cuando los datos están listos
       isJoining: false,
       isEditingName: false,
-      editedName: '',
-      originalName: '',
-      lastValidName: '', // Último nombre válido según el ancho
+      editedName: "",
+      originalName: "",
+      lastValidName: "", // Último nombre válido según el ancho
       isEditingDescription: false,
-      editedDescription: '',
-      originalDescription: '',
-      lastValidDescription: '', // Última descripción válida según el ancho
+      editedDescription: "",
+      originalDescription: "",
+      lastValidDescription: "", // Última descripción válida según el ancho
       editingSceneId: null,
-      editedSceneName: '',
-      originalSceneName: '',
-      lastValidSceneName: '',
+      editedSceneName: "",
+      originalSceneName: "",
+      lastValidSceneName: "",
       showDeleteConfirm: false,
-      deleteConfirmMessage: '',
+      deleteConfirmMessage: "",
       sceneToDelete: null,
       showErrorAlert: false,
-      errorAlertMessage: '',
+      errorAlertMessage: "",
       MAX_NAME_WIDTH: 215, // Ancho máximo en píxeles para el nombre de la isla
       MAX_SCENE_NAME_WIDTH: 165, // Ancho máximo en píxeles para el nombre de escenario
       MAX_DESCRIPTION_WIDTH: 210, // Ancho máximo en píxeles para cada línea de descripción
@@ -275,18 +296,20 @@ export default {
       // Si estamos en local, usar la ruta relativa (image)
       // Si no, usar la URL completa (image_url)
       const viteEnv = import.meta.env.VITE_APP_ENV;
-      return viteEnv === 'local'
+      return viteEnv === "local"
         ? this.sceneData.island_config.image
         : this.sceneData.island_config.image_url;
     },
     canEditIsland() {
-      return this.sceneData.user_id == this.$socket.user.db_id ||
-             this.sceneData.userId == this.$socket.user.db_id;
+      return (
+        this.sceneData.user_id == this.$socket.user.db_id ||
+        this.sceneData.userId == this.$socket.user.db_id
+      );
     },
   },
   watch: {
     // Observar cuando los datos de sceneData.island_config estén disponibles
-    'sceneData.island_config': {
+    "sceneData.island_config": {
       handler(newVal) {
         if (newVal && !this.dataReady) {
           this.dataReady = true;
@@ -296,8 +319,8 @@ export default {
         }
       },
       immediate: true,
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     handleImageLoad() {
@@ -355,8 +378,8 @@ export default {
      */
     getTextWidth(text, element) {
       // Crear un elemento canvas para medir el texto
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
 
       // Obtener el estilo computado del elemento
       const computedStyle = window.getComputedStyle(element);
@@ -415,7 +438,7 @@ export default {
     },
     cancelEditName() {
       this.isEditingName = false;
-      this.editedName = '';
+      this.editedName = "";
     },
     async saveIslandName() {
       if (!this.editedName.trim()) {
@@ -424,7 +447,7 @@ export default {
       }
 
       const trimmedName = this.editedName.trim();
-      
+
       // Si el nombre no cambió, no hacer nada
       if (trimmedName === this.originalName) {
         this.cancelEditName();
@@ -434,14 +457,14 @@ export default {
       try {
         socket.emit(RequestSocketsEnum.UPDATE_ISLAND_NAME, {
           islandId: this.sceneData.id,
-          name: trimmedName
+          name: trimmedName,
         });
-        
+
         // Actualizar localmente mientras esperamos confirmación del servidor
         this.sceneData.name = trimmedName;
         this.isEditingName = false;
       } catch (error) {
-        console.error('Error updating island name:', error);
+        console.error("Error updating island name:", error);
         this.cancelEditName();
       }
     },
@@ -452,11 +475,11 @@ export default {
       }
     },
     handleError(data) {
-      console.error('Island name update error:', data.message);
+      console.error("Island name update error:", data.message);
       // Revertir cambios locales en caso de error
       this.sceneData.name = this.originalName;
       this.cancelEditName();
-      
+
       // Aquí podrías mostrar una notificación de error al usuario
       // Por ejemplo: this.$toast.error(data.message);
     },
@@ -465,7 +488,7 @@ export default {
      */
     getTextHeight(text, element) {
       // Crear un elemento temporal para medir la altura
-      const tempDiv = document.createElement('div');
+      const tempDiv = document.createElement("div");
       const computedStyle = window.getComputedStyle(element);
 
       // Obtener padding del elemento
@@ -475,20 +498,21 @@ export default {
       const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
 
       // Calcular ancho interior disponible
-      const availableWidth = this.MAX_DESCRIPTION_WIDTH - paddingLeft - paddingRight;
+      const availableWidth =
+        this.MAX_DESCRIPTION_WIDTH - paddingLeft - paddingRight;
 
       // Copiar estilos relevantes del textarea
-      tempDiv.style.position = 'absolute';
-      tempDiv.style.visibility = 'hidden';
-      tempDiv.style.width = availableWidth + 'px';
+      tempDiv.style.position = "absolute";
+      tempDiv.style.visibility = "hidden";
+      tempDiv.style.width = availableWidth + "px";
       tempDiv.style.fontSize = computedStyle.fontSize;
       tempDiv.style.fontFamily = computedStyle.fontFamily;
       tempDiv.style.fontWeight = computedStyle.fontWeight;
       tempDiv.style.lineHeight = computedStyle.lineHeight;
-      tempDiv.style.whiteSpace = 'pre-wrap';
-      tempDiv.style.overflowWrap = 'break-word';
-      tempDiv.style.margin = '0';
-      tempDiv.style.padding = '0';
+      tempDiv.style.whiteSpace = "pre-wrap";
+      tempDiv.style.overflowWrap = "break-word";
+      tempDiv.style.margin = "0";
+      tempDiv.style.padding = "0";
 
       // Agregar el texto
       tempDiv.textContent = text;
@@ -516,9 +540,10 @@ export default {
       const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
 
       // Calcular ancho disponible para el texto (sin padding)
-      const availableWidth = this.MAX_DESCRIPTION_WIDTH - paddingLeft - paddingRight;
+      const availableWidth =
+        this.MAX_DESCRIPTION_WIDTH - paddingLeft - paddingRight;
 
-      const lines = text.split('\n');
+      const lines = text.split("\n");
 
       // Verificar cada línea individualmente por ancho
       for (let line of lines) {
@@ -568,22 +593,22 @@ export default {
     startEditDescription() {
       if (!this.canEditIsland) return;
       this.isEditingDescription = true;
-      this.originalDescription = this.sceneData.description || '';
-      this.editedDescription = this.sceneData.description || '';
-      this.lastValidDescription = this.sceneData.description || ''; // Inicializar con la descripción actual
+      this.originalDescription = this.sceneData.description || "";
+      this.editedDescription = this.sceneData.description || "";
+      this.lastValidDescription = this.sceneData.description || ""; // Inicializar con la descripción actual
       this.$nextTick(() => {
         this.$refs.descriptionInput.focus();
       });
     },
     cancelEditDescription() {
       this.isEditingDescription = false;
-      this.editedDescription = '';
+      this.editedDescription = "";
     },
     async saveIslandDescription() {
       const trimmedDescription = this.editedDescription.trim();
-      
+
       // Si la descripción no cambió, no hacer nada
-      if (trimmedDescription === (this.originalDescription || '')) {
+      if (trimmedDescription === (this.originalDescription || "")) {
         this.cancelEditDescription();
         return;
       }
@@ -591,14 +616,14 @@ export default {
       try {
         socket.emit(RequestSocketsEnum.UPDATE_ISLAND_DESCRIPTION, {
           islandId: this.sceneData.id,
-          description: trimmedDescription
+          description: trimmedDescription,
         });
-        
+
         // Actualizar localmente mientras esperamos confirmación del servidor
         this.sceneData.description = trimmedDescription || null;
         this.isEditingDescription = false;
       } catch (error) {
-        console.error('Error updating island description:', error);
+        console.error("Error updating island description:", error);
         this.cancelEditDescription();
       }
     },
@@ -609,7 +634,7 @@ export default {
       }
     },
     handleDescriptionError(data) {
-      console.error('Island description update error:', data.message);
+      console.error("Island description update error:", data.message);
       // Revertir cambios locales en caso de error
       this.sceneData.description = this.originalDescription;
       this.cancelEditDescription();
@@ -668,8 +693,8 @@ export default {
     },
     cancelEditSceneName() {
       this.editingSceneId = null;
-      this.editedSceneName = '';
-      this.lastValidSceneName = '';
+      this.editedSceneName = "";
+      this.lastValidSceneName = "";
     },
     async saveSceneName(scene) {
       if (!this.editedSceneName.trim()) {
@@ -688,17 +713,19 @@ export default {
       try {
         socket.emit(RequestSocketsEnum.UPDATE_PRIVATE_SCENE_NAME, {
           sceneId: scene.id,
-          name: trimmedName
+          name: trimmedName,
         });
 
         // Actualizar localmente mientras esperamos confirmación del servidor
-        const sceneToUpdate = this.sceneData.scenes.find(s => s.id === scene.id);
+        const sceneToUpdate = this.sceneData.scenes.find(
+          (s) => s.id === scene.id
+        );
         if (sceneToUpdate) {
           sceneToUpdate.name = trimmedName;
         }
         this.cancelEditSceneName();
       } catch (error) {
-        console.error('Error updating scene name:', error);
+        console.error("Error updating scene name:", error);
         this.cancelEditSceneName();
       }
     },
@@ -707,7 +734,9 @@ export default {
 
       // Mostrar popup de confirmación
       this.sceneToDelete = scene;
-      this.deleteConfirmMessage = this.$t('island.confirm_delete_scene', { name: scene.name });
+      this.deleteConfirmMessage = this.$t("island.confirm_delete_scene", {
+        name: scene.name,
+      });
       this.showDeleteConfirm = true;
     },
     confirmDeleteIsland() {
@@ -715,7 +744,9 @@ export default {
 
       // Mostrar popup de confirmación para eliminar isla
       this.sceneToDelete = null; // Usar null para indicar que es la isla
-      this.deleteConfirmMessage = this.$t('island.confirm_delete_island', { name: this.sceneData.name });
+      this.deleteConfirmMessage = this.$t("island.confirm_delete_island", {
+        name: this.sceneData.name,
+      });
       this.showDeleteConfirm = true;
     },
     handleConfirmDelete() {
@@ -730,120 +761,188 @@ export default {
     },
     handleCancelDelete() {
       this.showDeleteConfirm = false;
-      this.deleteConfirmMessage = '';
+      this.deleteConfirmMessage = "";
       this.sceneToDelete = null;
     },
     async deleteScene(scene) {
       try {
         socket.emit(RequestSocketsEnum.DELETE_PRIVATE_SCENE, {
-          sceneId: scene.id
+          sceneId: scene.id,
         });
 
         // Remover localmente mientras esperamos confirmación del servidor
-        const sceneIndex = this.sceneData.scenes.findIndex(s => s.id === scene.id);
+        const sceneIndex = this.sceneData.scenes.findIndex(
+          (s) => s.id === scene.id
+        );
         if (sceneIndex !== -1) {
           this.sceneData.scenes.splice(sceneIndex, 1);
         }
       } catch (error) {
-        console.error('Error deleting scene:', error);
+        console.error("Error deleting scene:", error);
       }
     },
     async deleteIsland() {
       try {
         socket.emit(RequestSocketsEnum.DELETE_ISLAND, {
-          islandId: this.sceneData.id
+          islandId: this.sceneData.id,
         });
         // El redirect al lobby se manejará cuando recibamos FORCE_LOBBY_REDIRECT
       } catch (error) {
-        console.error('Error deleting island:', error);
+        console.error("Error deleting island:", error);
       }
     },
     handleSceneNameUpdated(data) {
       if (data.success) {
-        const sceneToUpdate = this.sceneData.scenes.find(s => s.id === data.sceneId);
+        const sceneToUpdate = this.sceneData.scenes.find(
+          (s) => s.id === data.sceneId
+        );
         if (sceneToUpdate) {
           sceneToUpdate.name = data.name;
         }
       }
     },
     handleSceneNameUpdateError(data) {
-      console.error('Scene name update error:', data.message);
+      console.error("Scene name update error:", data.message);
       // Revertir cambios locales en caso de error
-      const sceneToRevert = this.sceneData.scenes.find(s => s.id === data.sceneId);
+      const sceneToRevert = this.sceneData.scenes.find(
+        (s) => s.id === data.sceneId
+      );
       if (sceneToRevert && this.originalSceneName) {
         sceneToRevert.name = this.originalSceneName;
       }
     },
     handleSceneDeleted(data) {
       if (data.success) {
-        const sceneIndex = this.sceneData.scenes.findIndex(s => s.id === data.sceneId);
+        const sceneIndex = this.sceneData.scenes.findIndex(
+          (s) => s.id === data.sceneId
+        );
         if (sceneIndex !== -1) {
           this.sceneData.scenes.splice(sceneIndex, 1);
         }
       }
     },
     handleSceneDeleteError(data) {
-      console.error('Scene delete error:', data.message);
+      console.error("Scene delete error:", data.message);
       // Aquí podrías mostrar una notificación de error al usuario
     },
     handleIslandDeleted(data) {
       if (data.success) {
         // La isla fue eliminada, no necesitamos hacer nada aquí
         // El redirect se manejará con FORCE_LOBBY_REDIRECT
-        console.log('Island deleted successfully');
+        console.log("Island deleted successfully");
       }
     },
     handleIslandDeleteError(data) {
-      console.error('Island delete error:', data.message);
+      console.error("Island delete error:", data.message);
       // Aquí podrías mostrar una notificación de error al usuario
     },
     handleForceLobbyRedirect(data) {
       // Forzar redirección al lobby
-      console.log('Force redirect to lobby:', data.reason);
+      console.log("Force redirect to lobby:", data.reason);
       this.goBackToLobby();
     },
     handlePrivateSceneNotFound() {
       // Mostrar popup de error cuando la sala no existe
-      this.errorAlertMessage = this.$t('island.error_scene_not_found');
+      this.errorAlertMessage = this.$t("island.error_scene_not_found");
       this.showErrorAlert = true;
       this.isJoining = false;
     },
     handleCloseErrorAlert() {
       this.showErrorAlert = false;
-      this.errorAlertMessage = '';
+      this.errorAlertMessage = "";
     },
   },
   created() {
     this.$emit("updateLoading", true);
 
     // Escuchar respuestas del socket
-    socket.on(ResponseSocketsEnum.ISLAND_NAME_UPDATED, this.handleIslandNameUpdated);
+    socket.on(
+      ResponseSocketsEnum.ISLAND_NAME_UPDATED,
+      this.handleIslandNameUpdated
+    );
     socket.on(ResponseSocketsEnum.ERROR_ISLAND_NAME_UPDATED, this.handleError);
-    socket.on(ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED, this.handleIslandDescriptionUpdated);
-    socket.on(ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED, this.handleDescriptionError);
-    socket.on(ResponseSocketsEnum.PRIVATE_SCENE_NAME_UPDATED, this.handleSceneNameUpdated);
-    socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE, this.handleSceneNameUpdateError);
-    socket.on(ResponseSocketsEnum.PRIVATE_SCENE_DELETED, this.handleSceneDeleted);
-    socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE, this.handleSceneDeleteError);
+    socket.on(
+      ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED,
+      this.handleIslandDescriptionUpdated
+    );
+    socket.on(
+      ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED,
+      this.handleDescriptionError
+    );
+    socket.on(
+      ResponseSocketsEnum.PRIVATE_SCENE_NAME_UPDATED,
+      this.handleSceneNameUpdated
+    );
+    socket.on(
+      ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE,
+      this.handleSceneNameUpdateError
+    );
+    socket.on(
+      ResponseSocketsEnum.PRIVATE_SCENE_DELETED,
+      this.handleSceneDeleted
+    );
+    socket.on(
+      ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE,
+      this.handleSceneDeleteError
+    );
     socket.on(ResponseSocketsEnum.ISLAND_DELETED, this.handleIslandDeleted);
-    socket.on(ResponseSocketsEnum.ERROR_ISLAND_DELETE, this.handleIslandDeleteError);
-    socket.on(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
-    socket.on(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND, this.handlePrivateSceneNotFound);
+    socket.on(
+      ResponseSocketsEnum.ERROR_ISLAND_DELETE,
+      this.handleIslandDeleteError
+    );
+    socket.on(
+      ResponseSocketsEnum.FORCE_LOBBY_REDIRECT,
+      this.handleForceLobbyRedirect
+    );
+    socket.on(
+      ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND,
+      this.handlePrivateSceneNotFound
+    );
   },
   beforeUnmount() {
     // Limpiar listeners
-    socket.off(ResponseSocketsEnum.ISLAND_NAME_UPDATED, this.handleIslandNameUpdated);
+    socket.off(
+      ResponseSocketsEnum.ISLAND_NAME_UPDATED,
+      this.handleIslandNameUpdated
+    );
     socket.off(ResponseSocketsEnum.ERROR_ISLAND_NAME_UPDATED, this.handleError);
-    socket.off(ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED, this.handleIslandDescriptionUpdated);
-    socket.off(ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED, this.handleDescriptionError);
-    socket.off(ResponseSocketsEnum.PRIVATE_SCENE_NAME_UPDATED, this.handleSceneNameUpdated);
-    socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE, this.handleSceneNameUpdateError);
-    socket.off(ResponseSocketsEnum.PRIVATE_SCENE_DELETED, this.handleSceneDeleted);
-    socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE, this.handleSceneDeleteError);
+    socket.off(
+      ResponseSocketsEnum.ISLAND_DESCRIPTION_UPDATED,
+      this.handleIslandDescriptionUpdated
+    );
+    socket.off(
+      ResponseSocketsEnum.ERROR_ISLAND_DESCRIPTION_UPDATED,
+      this.handleDescriptionError
+    );
+    socket.off(
+      ResponseSocketsEnum.PRIVATE_SCENE_NAME_UPDATED,
+      this.handleSceneNameUpdated
+    );
+    socket.off(
+      ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NAME_UPDATE,
+      this.handleSceneNameUpdateError
+    );
+    socket.off(
+      ResponseSocketsEnum.PRIVATE_SCENE_DELETED,
+      this.handleSceneDeleted
+    );
+    socket.off(
+      ResponseSocketsEnum.ERROR_PRIVATE_SCENE_DELETE,
+      this.handleSceneDeleteError
+    );
     socket.off(ResponseSocketsEnum.ISLAND_DELETED, this.handleIslandDeleted);
-    socket.off(ResponseSocketsEnum.ERROR_ISLAND_DELETE, this.handleIslandDeleteError);
-    socket.off(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
-    socket.off(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND, this.handlePrivateSceneNotFound);
+    socket.off(
+      ResponseSocketsEnum.ERROR_ISLAND_DELETE,
+      this.handleIslandDeleteError
+    );
+    socket.off(
+      ResponseSocketsEnum.FORCE_LOBBY_REDIRECT,
+      this.handleForceLobbyRedirect
+    );
+    socket.off(
+      ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND,
+      this.handlePrivateSceneNotFound
+    );
   },
   mounted() {
     // La precarga de imágenes ahora se inicia desde el watcher cuando island_config esté disponible
@@ -1044,7 +1143,8 @@ export default {
   justify-content: flex-end;
 }
 
-.save-btn, .cancel-btn {
+.save-btn,
+.cancel-btn {
   background: none;
   border: none;
   color: white;
@@ -1180,6 +1280,16 @@ export default {
   box-shadow: 0 2px 8px rgba(217, 83, 79, 0.3);
 }
 
+.delete-island-button:disabled {
+  background-color: #2a3a46;
+  border-color: #2a3a46;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
 .delete-island-button i {
   font-size: 16px;
 }
@@ -1260,6 +1370,12 @@ export default {
 
 .scenario-button__action--cancel:hover {
   background-color: rgba(217, 83, 79, 0.2);
+}
+
+.scenario-button__action:disabled {
+  background-color: #2a3a46;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .brujiula {
