@@ -77,6 +77,30 @@ export default {
     ShopComponent,
   },
   methods: {
+    /**
+     * Cierra todos los paneles abiertos (Vue y HTML de Phaser)
+     */
+    closeAllPanels() {
+      // Cerrar paneles Vue
+      this.isAvatarSelectionVisible = false;
+      this.isRankingsVisible = false;
+      this.isShopVisible = false;
+
+      // Cerrar paneles HTML de Phaser
+      const gamePhaser = this.$root.gamePhaser;
+      const privateScene = gamePhaser?.scene?.getScene('PrivateScene');
+      if (privateScene) {
+        if (privateScene.htmlInventory?.isVisible) {
+          privateScene.htmlInventory.hide();
+        }
+        if (privateScene.htmlDetailPanel?.isVisible) {
+          privateScene.htmlDetailPanel.hide();
+        }
+        if (privateScene.htmlColorPanel?.isVisible) {
+          privateScene.htmlColorPanel.hide();
+        }
+      }
+    },
     initializeGame() {
       const gamePhaser = this.$root.gamePhaser;
 
@@ -128,32 +152,21 @@ export default {
       this.isCoconutsInfoCardVisible = false;
     },
     showAvatarSelection() {
+      this.closeAllPanels();
       this.isAvatarSelectionVisible = true;
     },
     hideAvatarSelection() {
       this.isAvatarSelectionVisible = false;
     },
     showRankings() {
-      // Cerrar el inventario HTML si está abierto
-      const gamePhaser = this.$root.gamePhaser;
-      const privateScene = gamePhaser?.scene?.getScene('PrivateScene');
-      if (privateScene?.htmlInventory?.isVisible) {
-        privateScene.htmlInventory.hide();
-      }
-
+      this.closeAllPanels();
       this.isRankingsVisible = true;
     },
     hideRankings() {
       this.isRankingsVisible = false;
     },
     showShop() {
-      // Cerrar el inventario HTML si está abierto
-      const gamePhaser = this.$root.gamePhaser;
-      const privateScene = gamePhaser?.scene?.getScene('PrivateScene');
-      if (privateScene?.htmlInventory?.isVisible) {
-        privateScene.htmlInventory.hide();
-      }
-
+      this.closeAllPanels();
       this.isShopVisible = true;
     },
     hideShop() {

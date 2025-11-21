@@ -95,6 +95,15 @@ export default {
     ShopComponent,
   },
   methods: {
+    /**
+     * Cierra todos los paneles abiertos
+     */
+    closeAllPanels() {
+      this.isAvatarSelectionVisible = false;
+      this.isRankingsVisible = false;
+      this.isInventoryVisible = false;
+      this.isShopVisible = false;
+    },
     showRingInfoCard() {
       this.isRingInfoCardVisible = true;
       this.isCoconutsInfoCardVisible = false;
@@ -110,14 +119,14 @@ export default {
       this.isCoconutsInfoCardVisible = false;
     },
     showAvatarSelection() {
+      this.closeAllPanels();
       this.isAvatarSelectionVisible = true;
     },
     hideAvatarSelection() {
       this.isAvatarSelectionVisible = false;
     },
     showRankings() {
-      // Cerrar el inventario si está abierto
-      this.isInventoryVisible = false;
+      this.closeAllPanels();
       this.isRankingsVisible = true;
     },
     hideRankings() {
@@ -164,16 +173,14 @@ export default {
       this.currentNpcType = null;
     },
     showInventory() {
-      // Cerrar la tienda si está abierta
-      this.isShopVisible = false;
+      this.closeAllPanels();
       this.isInventoryVisible = true;
     },
     hideInventory() {
       this.isInventoryVisible = false;
     },
     showShop() {
-      // Cerrar el inventario si está abierto
-      this.isInventoryVisible = false;
+      this.closeAllPanels();
       this.isShopVisible = true;
     },
     hideShop() {
