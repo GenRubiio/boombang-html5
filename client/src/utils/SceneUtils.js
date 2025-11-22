@@ -218,13 +218,13 @@ class SceneUtils {
      * among those marked with show_controller=Yes in the API.
      */
     static setupPublicMoveController(gameScene) {
-        // Ensure there are items registered and that there is more than one to justify a dropdown
-        if (!gameScene.activeItems || gameScene.activeItems.size < 2) return;
+        // Ensure there are items registered
+        if (!gameScene.activeItems || gameScene.activeItems.size === 0) return;
 
         // Create UI container with dropdown and arrow/depth buttons
         const names = Array.from(gameScene.activeItems.keys());
         const uiHTML = `
-            <div id="public-scene-controller" style="position: fixed; top: 10px; left: 70px; z-index: 10002; font-family: Arial, sans-serif; font-size: 14px; color: white; pointer-events: auto;">
+            <div id="public-scene-controller" style="position: fixed; top: 10px; left: 70px; z-index: 10002; font-family: Arial, sans-serif; font-size: 14px; color: white; pointer-events: auto; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;">
                 <div style="display:flex; align-items:center; gap:6px;">
                     <label style="margin-right: 6px;">Controller:</label>
                     <select id="public-controller-select" style="padding: 2px;">
@@ -254,8 +254,8 @@ class SceneUtils {
         uiElement.setScrollFactor(0);
         uiElement.setDepth(10000);
 
-        // On-screen info text
-        const infoText = gameScene.add.text(10, 120, 'Select object', {
+        // On-screen info text (debajo del controlador)
+        const infoText = gameScene.add.text(10, 660, 'Select object', {
             font: '16px Arial',
             backgroundColor: '#000000AA',
             color: '#ffffff',
@@ -289,7 +289,7 @@ class SceneUtils {
                 infoText.setText('Select object');
                 return;
             }
-            infoText.setText(`Sprite: ${sprite.name}\nX: ${Math.round(sprite.x)}, Y: ${Math.round(sprite.y)}\nDepth: ${Math.round(sprite.depth)}`);
+            infoText.setText(`Sprite: ${sprite.name}\nX: ${Math.round(sprite.x / 2)}, Y: ${Math.round(sprite.y / 2)}\nDepth: ${Math.round(sprite.depth / 2)}`);
         };
 
         const focusCanvas = () => {
