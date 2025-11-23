@@ -22,6 +22,18 @@ class PublicSceneApiService {
             throw error;
         }
     }
+
+    static async getTraps(sceneId) {
+        try {
+            const data = {
+                scene_id: sceneId,
+            };
+            return await ApiService.post('api/public-scene/get-traps', data);
+        } catch (error) {
+            console.error('Error al obtener las trampas de la escena:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = PublicSceneApiService;
