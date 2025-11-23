@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PublicSceneResource;
+use App\Http\Resources\PublicSceneTrapResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 use App\Http\Controllers\Api\Game\Scene\Interfaces\PublicSceneApiControllerInterface;
@@ -27,7 +28,7 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
     public function get(Request $request): JsonResource
     {
         try {
-            $items = PublicScene::with('items', 'npc')
+            $items = PublicScene::with('items', 'npc', 'traps')
                 ->where('menu_type', MenuTypeEnum::PUBLIC_SCENE->key())
                 ->active()
                 ->ordered()
@@ -141,6 +142,30 @@ class PublicSceneApiController extends Controller implements PublicSceneApiContr
             }
 
             return $this->successResponse(['message' => 'Item caught successfully.']);
+        } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function getTraps(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'scene_id' => 'required|integer',
+            ]);
+
+            $sceneId = $validated['scene_id'];
+            $publicScene = PublicScene::find($sceneId);
+
+            if (!$publicScene) {
+                throw new Exception('Scene not found.');
+            }
+
+            $traps = $publicScene->traps()->where('active', true)->get();
+
+            return $this->successResponse([
+                'traps' => PublicSceneTrapResource::collection($traps)
+            ]);
         } catch (Exception $e) {
             return $this->handleException($e);
         }

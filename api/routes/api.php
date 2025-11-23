@@ -61,6 +61,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
      */
     Route::prefix('public-scene')->group(function () {
         Route::post('get', [PublicSceneApiController::class, 'get']);
+        Route::post('get-traps', [PublicSceneApiController::class, 'getTraps']);
     });
 
     Route::prefix('game-scene')->group(function () {

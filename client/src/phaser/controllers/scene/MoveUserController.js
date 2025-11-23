@@ -14,6 +14,7 @@ class MoveUserController {
         const socketId = data.id;
         const path = data.path;
         const isLastStep = data.isLastStep;
+        const isTeleport = data.isTeleport;
         const user = gameScene.users[socketId];
 
         if (!path || !user) {
@@ -22,6 +23,12 @@ class MoveUserController {
 
         if (path.length === 0) {
             UserMoveDeniedController.main(gameScene, socketId);
+            return;
+        }
+
+        // Si es una teleportación, mover instantáneamente
+        if (isTeleport) {
+            this.teleportUser(gameScene, socketId, path[0]);
             return;
         }
 
@@ -40,6 +47,52 @@ class MoveUserController {
 
         // Iniciar movimiento al siguiente paso
         this.moveToNextStep(gameScene, socketId, isLastStep);
+    }
+
+    /**
+     * Teleporta al usuario instantáneamente a una posición
+     */
+    static teleportUser(gameScene, socketId, step) {
+        const user = gameScene.users[socketId];
+        if (!user) return;
+
+        // Detener cualquier animación o tween existente
+        if (user.currentTween) {
+            user.currentTween.stop();
+        }
+        gameScene.tweens.killTweensOf(user.containerUser);
+        user.spriteAvatar.stop();
+
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const tileWidth = 65 * gameConfig.DPI * scaleFactor;
+        const tileHeight = 33 * gameConfig.DPI * scaleFactor;
+        const halfTileWidth = (tileWidth / gameConfig.DPI);
+        const halfTileHeight = (tileHeight / gameConfig.DPI);
+
+        // Calcula la posición en pantalla
+        const centerX = (step.x - step.y) * halfTileWidth + gameScene.scale.width / gameConfig.DPI;
+        const centerY = (step.x + step.y) * halfTileHeight;
+
+        // Actualiza posición lógica del jugador
+        user.position = { x: step.x, y: step.y, z: step.z };
+        user.currentAreaPosition = { x: step.x, y: step.y };
+
+        // Mueve instantáneamente el contenedor del usuario
+        user.containerUser.setPosition(centerX, centerY);
+        user.containerUser.setDepth(user.containerUser.y);
+
+        // Actualizar profundidad de overlays si existe el método
+        if (gameScene.updateWalkableOverlayDepths) {
+            gameScene.updateWalkableOverlayDepths();
+        }
+
+        // Limpiar el path
+        user.path = null;
+        user.pathIndex = 0;
+
+        // Ejecutar el controlador de movimiento denegado para detener cualquier acción
+        UserMoveDeniedController.main(gameScene, socketId);
     }
 
     /**

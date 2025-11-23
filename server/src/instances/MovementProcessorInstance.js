@@ -8,6 +8,7 @@ const UserBlockActionsTask = require('../tasks/UserBlockActionsTask');
 const ResponseSocketsEnum = require('../enums/ResponseSocketsEnum');
 const PublicSceneService = require('../services/PublicSceneService');
 const SendUserToSceneController = require('../controllers/game/scenes/SendUserToSceneController');
+const CocoEffectEnum = require('../enums/CocoEffectEnum');
 
 class MovementProcessorInstance {
     constructor(scene) {
@@ -103,16 +104,28 @@ class MovementProcessorInstance {
             UserBlockActionsTask.blockByWalk(user);
             this.scene.emit(ResponseSocketsEnum.USER_MOVE, movementData);
 
-            if (isFinalStep) {
+            // Validar si la posición coincide con alguna trampa (en cada paso)
+            const trap = this.#getTrapAtPosition(nextStep.x, nextStep.y);
+            if (trap) {
+                // Cancelar el objetivo final porque pisó una trampa
                 user.finalTarget = null;
+                // Esperar un momento para que la animación de caminar termine antes de aplicar el efecto
+                setTimeout(() => {
+                    this.#applyTrapEffect(user, trap);
+                }, AnimationBlockTimerEnum.WALK);
+                return;
             }
 
-            // Validar si la posición coincide con alguna flecha
-            const arrow = this.#getArrowAtPosition(nextStep.x, nextStep.y);
-            if (arrow) {
-                this.#clearUserReservation(user);
+            if (isFinalStep) {
                 user.finalTarget = null;
-                await SendUserToSceneController.main(user, arrow);
+
+                // Validar si la posición coincide con alguna flecha (solo en destino final)
+                const arrow = this.#getArrowAtPosition(nextStep.x, nextStep.y);
+                if (arrow) {
+                    this.#clearUserReservation(user);
+                    await SendUserToSceneController.main(user, arrow);
+                    return;
+                }
             }
         } catch (err) {
             console.log(err);
@@ -175,6 +188,104 @@ class MovementProcessorInstance {
 
             return arrowX === x && arrowY === y;
         });
+    }
+
+    #getTrapAtPosition(x, y) {
+        if (!this.scene.traps || !Array.isArray(this.scene.traps) || this.scene.traps.length === 0) {
+            return null;
+        }
+
+        return this.scene.traps.find(trap => {
+            const trapX = parseInt(trap.position_x) || 0;
+            const trapY = parseInt(trap.position_y) || 0;
+
+            return trapX === x && trapY === y && trap.active;
+        });
+    }
+
+    #applyTrapEffect(user, trap) {
+        try {
+            // Cancelar movimiento del usuario
+            user.cancelMovement();
+            this.#clearUserReservation(user);
+            user.finalTarget = null;
+
+            // Bloquear acciones del usuario por el coco
+            UserBlockActionsTask.blockByCoconutReceive(user, trap.coconut_type);
+
+            // Determinar el efecto según el tipo de coco
+            let effect = CocoEffectEnum.COCO;
+            let effectDuration = AnimationBlockTimerEnum.COCO_COCO;
+
+            switch (trap.coconut_type) {
+                case 0:
+                    effect = CocoEffectEnum.COCO;
+                    effectDuration = AnimationBlockTimerEnum.COCO_COCO;
+                    break;
+                case 1:
+                    effect = CocoEffectEnum.SNOWBALL;
+                    effectDuration = AnimationBlockTimerEnum.COCO_SHOWBALL;
+                    break;
+                case 2:
+                    effect = CocoEffectEnum.SHOE;
+                    effectDuration = AnimationBlockTimerEnum.COCO_SHOE;
+                    break;
+                case 3:
+                    effect = CocoEffectEnum.PIE;
+                    effectDuration = AnimationBlockTimerEnum.COCO_PIE;
+                    break;
+                case 4:
+                    effect = CocoEffectEnum.MACETA;
+                    effectDuration = AnimationBlockTimerEnum.COCO_MACETA;
+                    break;
+                case 5:
+                    effect = CocoEffectEnum.AVISPAS;
+                    effectDuration = AnimationBlockTimerEnum.COCO_AVISPAS;
+                    break;
+                case 6:
+                    effect = CocoEffectEnum.GARBAGE;
+                    effectDuration = AnimationBlockTimerEnum.COCO_GARBAGE;
+                    break;
+                case 7:
+                    effect = CocoEffectEnum.SANDIA;
+                    effectDuration = AnimationBlockTimerEnum.COCO_SANDIA;
+                    break;
+                case 8:
+                    effect = CocoEffectEnum.YUNQUE;
+                    effectDuration = AnimationBlockTimerEnum.COCO_YUNQUE;
+                    break;
+                case 9:
+                    effect = CocoEffectEnum.PIANO;
+                    effectDuration = AnimationBlockTimerEnum.COCO_PIANO;
+                    break;
+            }
+
+            // Emitir efecto del coco a todos los usuarios de la escena
+            this.scene.emit(ResponseSocketsEnum.USER_RECEIVE_EFFECT, {
+                'user_socket': user.socket.id,
+                'effect': effect,
+            });
+
+            //logger.log(`User ${user.username} stepped on trap at (${trap.position_x}, ${trap.position_y}) with coconut type ${trap.coconut_type}`, 'info');
+
+            // Esperar a que termine la animación del coco antes de teleportar
+            setTimeout(() => {
+                // Teleportar al usuario a la posición de entrada
+                const startPosition = this.scene.startPosition;
+                user.currentAreaPosition = { ...startPosition };
+
+                // Emitir movimiento inmediato a la posición de entrada
+                this.scene.emit(ResponseSocketsEnum.USER_MOVE, {
+                    id: user.socket.id,
+                    path: [{ x: startPosition.x, y: startPosition.y, z: startPosition.z }],
+                    isLastStep: true,
+                    isTeleport: true
+                });
+            }, effectDuration);
+        } catch (err) {
+            console.error('Error applying trap effect:', err);
+            logger.log(`Error applying trap effect: ${err.message}`, 'error');
+        }
     }
 
     stopProcessing() {
