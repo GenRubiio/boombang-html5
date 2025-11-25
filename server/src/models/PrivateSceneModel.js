@@ -14,6 +14,7 @@ class PrivateSceneModel extends SceneModel {
         this.uuid = uuid; // UUID único de la escena
         this.max_users = row.max_users; // Número máximo de usuarios permitidos en el área
         this.scene_type = SceneTypesEnum.PRIVATE_SCENE;// Tipo de modelo
+        this.big_scene = row.big_scene; // Indica si la escena es grande
         this.colors = row.colors; // Colores personalizados de la escena
         this.has_password = row.has_password || null; // Contraseña de la escena privada
         //this.objects = row.objects ? row.objects.map(item => new SceneItemModel(item)) : []; // Lista de objetos activos en la escena
@@ -39,7 +40,7 @@ class PrivateSceneModel extends SceneModel {
                         const [x, y] = tile;
                         if (navigationMap[y] && navigationMap[y][x] !== undefined) {
                             // Only block navigation if the object is NOT WALKABLE or WALKABLE_OVERLAY
-                            if (object.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE && 
+                            if (object.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE &&
                                 object.type_of_behavior !== CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY) {
                                 navigationMap[y][x] = 1; // Mark as unwalkable
                             }
@@ -62,13 +63,13 @@ class PrivateSceneModel extends SceneModel {
             user.setArea(this);
             user.setInventory(userInventoryItems || []);
             this.addUser(user);
-            
+
             // Obtener la lista actualizada de usuarios
             let sceneUsers = [];
             for (const sceneUser of this.users) {
                 sceneUsers.push(await new UserResource(sceneUser).toObject());
             }
-            
+
             // Enviar respuesta al usuario que se está uniendo
             user.socket.emit(ResponseSocketsEnum.JOIN_PRIVATE_SCENE, {
                 success: true,
@@ -81,15 +82,15 @@ class PrivateSceneModel extends SceneModel {
                     sceneConfig: sceneConfig || {},
                 }
             });
-            
+
             // Pequeño delay antes de notificar a otros usuarios
             await new Promise(resolve => setTimeout(resolve, 50));
-            
+
             // Notificar a todos los demás usuarios
             this.emitToAllExcept(ResponseSocketsEnum.NEW_USER_JOIN_SCENE, {
                 user: await new UserResource(user).toObject(),
             }, user);
-            
+
         } finally {
             // Liberar el mutex
             release();

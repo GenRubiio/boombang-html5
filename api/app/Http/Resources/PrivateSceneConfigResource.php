@@ -23,6 +23,7 @@ class PrivateSceneConfigResource extends JsonResource
         $return = [
             'id' => (int)$this->id,
             'island_type' => (int)$this->island_type,
+            'big_scene' => (bool)$this->big_scene,
             'name' => $this->name,
             'image' => $this->image,
             'image_url' => urlDocker($this->image),
