@@ -140,6 +140,14 @@ class PrivateSceneConfigCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'big_scene',
+            'label' => 'Escena Grande',
+            'type' => 'checkbox',
+            'default' => false,
+            'tab' => 'Map'
+        ]);
+
+        CRUD::addField([
             'name' => 'map',
             'label' => 'Configuración del mapa',
             'type' => 'textarea',

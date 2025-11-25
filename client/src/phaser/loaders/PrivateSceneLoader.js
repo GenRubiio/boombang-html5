@@ -66,7 +66,7 @@ class PrivateSceneLoader {
             return; // Si no se debe mostrar el item, no hacemos nada
         }
         let sprite;
-        const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y) * item.scale;
+        const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y);
         if (SceneUtils.isVideoFile(item.image)) {
             sprite = gameScene.add.video(item.x * item.scale, item.y * item.scale, spriteName)
                 .setOrigin(0.5, 1)

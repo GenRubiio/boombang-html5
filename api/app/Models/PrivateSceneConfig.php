@@ -27,6 +27,7 @@ class PrivateSceneConfig extends Model
     protected $guarded = ['id'];
     protected $fillable = [
         'island_type',
+        'big_scene',
         'max_users',
         'map_width',
         'map_height',
