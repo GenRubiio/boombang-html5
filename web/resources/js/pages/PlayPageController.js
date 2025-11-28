@@ -9,7 +9,8 @@ const PlayPageController = {
         if (Utils.checkSection(this.attr.page)) {
             this.removeHeader();
             this.setListeners();
-            this.rescaleIframe();
+            // Esperar un poco para que el iframe esté en el DOM
+            setTimeout(() => this.rescaleIframe(), 100);
         }
     },
 
@@ -30,6 +31,9 @@ const PlayPageController = {
         const iframe = document.querySelector(`${this.attr.page} iframe`);
         if (iframe) {
             iframe.style.transform = `scale(${scale})`;
+            console.log(`[PlayPage] Iframe scaled to: ${scale.toFixed(2)} (window: ${window.innerWidth}x${window.innerHeight})`);
+        } else {
+            console.warn('[PlayPage] Iframe not found');
         }
     },
 
