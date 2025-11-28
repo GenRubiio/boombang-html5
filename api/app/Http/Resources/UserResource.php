@@ -71,6 +71,8 @@ class UserResource extends JsonResource
             'colornames' => $this->enabledColorNames(),
             'shadows' => $this->enabledShadows(),
             'avatars' => $this->enabledAvatars(),
+
+            'tutorial_completed' => (bool)$this->lobby_tutorial,
         ];
 
         return $return;

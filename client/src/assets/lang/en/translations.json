@@ -526,5 +526,34 @@
       "timeout_title": "Time's up",
       "timeout_details": "Time ran out with no clear winner"
     }
+  },
+  "tutorial": {
+    "story": {
+      "title": "Welcome to BoomMania Island!",
+      "intro1": "You were traveling on a plane when an accident happened and you crashed on an island called BoomMania. You and many other people are now stranded living on this island.",
+      "intro2": "This island has many locations, minigames, and you can even create your own island where you can have fun with other survivors.",
+      "intro3": "You can enter areas to chat with other people, participate in events and multiplayer minigames. Let me show you around the lobby!"
+    },
+    "lobby": {
+      "scenes_title": "Scenes Panel", 
+      "scenes_text": "This panel allows you to go to Areas, Games, and Islands with a list of available rooms to join.",
+      "scene_item_title": "Scene Item",
+      "scene_item_text": "This is a scene you can enter. Click on it to join and explore!",
+      "user_count_title": "User Count",
+      "user_count_text": "This shows how many people are currently in this scene.",
+      "credits_title": "Credits & Silver",
+      "credits_text": "This shows your current amount of credits and silver coins. You can use these to buy decorations for your island or spend on various activities. Credits can be obtained by catching chests that fall in Areas throughout BoomMania.",
+      "gachapon_title": "Gachapon Machine",
+      "gachapon_text": "This is the gachapon machine where you can randomly obtain objects by spending credits.",
+      "mail_title": "Mail & News",
+      "mail_text": "Here you can view news and mail where you can claim rewards or stay informed about important updates.",
+      "settings_title": "Settings",
+      "settings_text": "Click this button to change game settings like graphics options.",
+      "logout_title": "Logout",
+      "logout_text": "Click this button to log out of your account."
+    },
+    "previous": "Previous",
+    "next": "Next", 
+    "finish": "Finish Tutorial"
   }
 }

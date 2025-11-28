@@ -238,8 +238,8 @@ export default {
   top: 10px;
   right: 10px;
   border: 1px solid #e1e1e1;
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 15px;
+  padding: 8px;
   width: 180px;
   pointer-events: auto;
 }
@@ -447,12 +447,7 @@ export default {
 }
 
 .user-card.beta {
-  top: 10px;
-  right: 10px;
   border: 1px solid #e1e1e1;
-  border-radius: 5px;
-  padding: 10px;
-  width: 180px;
   pointer-events: auto;
   background: #08d1d1; /* o el que uses */
 }

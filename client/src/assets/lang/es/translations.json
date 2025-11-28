@@ -526,5 +526,34 @@
       "timeout_title": "Tiempo agotado",
       "timeout_details": "El tiempo se agotó sin un ganador claro"
     }
+  },
+  "tutorial": {
+    "story": {
+      "title": "¡Bienvenido a la Isla BoomMania!",
+      "intro1": "Ibas viajando en un avión cuando ocurrió un accidente y caíste en una isla llamada BoomMania. Tú y muchas otras personas quedasteis a vivir en esta isla.",
+      "intro2": "Esta isla cuenta con muchas ubicaciones, minijuegos, y puedes crear tu propia isla donde puedes divertirte con otros supervivientes.",
+      "intro3": "Puedes entrar a chatear a escenarios con otras personas, participar en eventos y minijuegos multijugador. ¡Déjame mostrarte el lobby!"
+    },
+    "lobby": {
+      "scenes_title": "Panel de Escenarios",
+      "scenes_text": "En este panel puedes ir a Áreas, Juegos e Islas con una lista de salas disponibles para unirte.",
+      "scene_item_title": "Elemento de Escenario", 
+      "scene_item_text": "Este es un escenario al cual puedes entrar. ¡Haz clic para unirte y explorar!",
+      "user_count_title": "Contador de Usuarios",
+      "user_count_text": "Indica las personas que hay actualmente en este escenario.",
+      "credits_title": "Créditos y Plata",
+      "credits_text": "Indica la cantidad de créditos y plata que tienes actualmente con los cuales puedes comprar diferentes objetos como decoraciones para tu isla o gastar en diferentes actividades. Los créditos se pueden obtener atrapando cofres que caen en las Áreas de todo BoomMania.",
+      "gachapon_title": "Máquina de Gachapon",
+      "gachapon_text": "Máquina de gachapon donde puedes aleatoriamente obtener objetos gastando créditos.",
+      "mail_title": "Correo y Noticias",
+      "mail_text": "Aquí puedes ver las noticias y correo donde podrás reclamar recompensas o informarte de las noticias importantes.",
+      "settings_title": "Configuración",
+      "settings_text": "Botón donde podrás cambiar la configuración del juego como gráficos.",
+      "logout_title": "Cerrar Sesión",
+      "logout_text": "Botón para cerrar sesión de tu cuenta."
+    },
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "finish": "Finalizar Tutorial"
   }
 }
