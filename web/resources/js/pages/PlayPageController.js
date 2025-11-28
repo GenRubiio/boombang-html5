@@ -9,11 +9,28 @@ const PlayPageController = {
         if (Utils.checkSection(this.attr.page)) {
             this.removeHeader();
             this.setListeners();
+            this.rescaleIframe();
         }
     },
 
     setListeners() {
-        
+        window.addEventListener('resize', () => this.rescaleIframe());
+    },
+
+    rescaleIframe() {
+        const baseWidth = 1012;
+        const baseHeight = 657;
+
+        const scaleX = window.innerWidth / baseWidth;
+        const scaleY = window.innerHeight / baseHeight;
+
+        // Usa el menor para que siempre quepa sin salirse, máximo 1 (tamaño original)
+        const scale = Math.min(scaleX, scaleY, 1);
+
+        const iframe = document.querySelector(`${this.attr.page} iframe`);
+        if (iframe) {
+            iframe.style.transform = `scale(${scale})`;
+        }
     },
 
     removeHeader() {
