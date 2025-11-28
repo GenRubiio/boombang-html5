@@ -61,9 +61,6 @@
             const iframe = document.querySelector('#page-play iframe');
             if (iframe) {
                 iframe.style.transform = `scale(${scale})`;
-                console.log(`[PlayPage] Iframe scaled to: ${scale.toFixed(2)} (window: ${window.innerWidth}x${window.innerHeight})`);
-            } else {
-                console.warn('[PlayPage] Iframe not found');
             }
         }
 
