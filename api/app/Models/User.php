@@ -62,6 +62,7 @@ class User extends Authenticatable
         'bot_language_mode',
         'bot_settings',
         'active',
+        'lobby_tutorial',
     ];
 
     protected $hidden = [

@@ -65,6 +65,8 @@ class UserResource extends Resource {
             animations: [],
 
             admin_tools: data.adminTools,
+
+            lobby_tutorial: data.lobbyTutorial
         };
     }
 }

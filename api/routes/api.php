@@ -35,6 +35,7 @@ use App\Http\Controllers\Api\User\UserChangeShadowColorController;
 use App\Http\Controllers\Api\Game\Object\RotateObjectApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeColornameApiController;
+use App\Http\Controllers\Api\User\UpdateLobbyTutorialApiController;
 use App\Http\Controllers\Api\Game\Config\IslandsConfigApiController;
 use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserAvatarsApiController;
@@ -89,6 +90,7 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('change-colorname', [UserChangeColornameApiController::class, 'index']);
             Route::post('change-shadowcolor', [UserChangeShadowColorController::class, 'index']);
             Route::post('change-avatar', [UserChangeAvatarController::class, 'index']);
+            Route::post('update-lobby-tutorial', [UpdateLobbyTutorialApiController::class, 'index']);
         });
 
         Route::prefix('lobby')->group(function () {

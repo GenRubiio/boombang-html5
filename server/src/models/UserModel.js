@@ -74,6 +74,8 @@ class UserModel {
             show_isomap: false,
             show_object_reserved_tiles: false,
         };
+
+        this.lobbyTutorial = row.tutorial_completed || false; // Indica si el usuario ha completado el tutorial del lobby
     }
 
     // Bloquea una acción específica durante 'duration' ms

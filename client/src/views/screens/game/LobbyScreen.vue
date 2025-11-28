@@ -44,6 +44,9 @@
       :acceptText="$t('common.accept')"
       @close="$emit('closeIslandError')"
     />
+
+    <!-- Componente del tutorial del lobby -->
+    <LobbyTutorialComponent />
   </div>
 </template>
 
@@ -58,6 +61,7 @@ import GamesTab from "../../components/game/lobby/GamesTabComponent.vue";
 import IslandsTab from "../../components/game/lobby/IslandsTabComponent.vue";
 import SearchTab from "../../components/game/lobby/SearchTabComponent.vue";
 import ErrorAlertPopup from "../../components/game/island/ErrorAlertPopup.vue";
+import LobbyTutorialComponent from "../../components/game/lobby/LobbyTutorialComponent.vue";
 import { useLobbyStore } from "@/stores/LobbyStore";
 import { mapActions, mapState } from "pinia";
 
@@ -70,6 +74,7 @@ export default {
     IslandsTab,
     SearchTab,
     ErrorAlertPopup,
+    LobbyTutorialComponent,
   },
   props: {
     showIslandError: {

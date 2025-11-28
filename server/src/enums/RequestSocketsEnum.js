@@ -77,6 +77,7 @@ const RequestSocketsEnum = new Enum({
     GET_SHOP_CATALOG: 'request:get_shop_catalog',
     PURCHASE_SHOP_ITEM: 'request:purchase_shop_item',
     UPDATE_PRIVATE_SCENE_COLORS: 'request:update_private_scene_colors',
+    COMPLETE_LOBBY_TUTORIAL: 'request:complete_lobby_tutorial',
 });
 
 module.exports = RequestSocketsEnum;
