@@ -8,7 +8,7 @@
     "src": "public/images/cursors/white.cur"
   },
   "resources/js/app.js": {
-    "file": "assets/app-Dm5R03GT.js",
+    "file": "assets/app-DxUOZ4F3.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
@@ -19,7 +19,7 @@
     "isEntry": true
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-CKaOCu_9.css",
+    "file": "assets/app-CEJauZMP.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   }
