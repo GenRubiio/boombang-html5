@@ -1,19 +1,21 @@
 <template>
-  <div id="game">
-    <div id="phaser-container"></div>
-    <LoadingScreen v-if="loading" />
-    <div id="game-screens">
-      <AuthScreen
-        v-if="!isAuthenticated"
-        @loginSuccess="onLoginSuccess"
-        @registerSuccess="onRegisterSuccess"
-        @goToRegister="onGoToRegister"
-      />
-      <GameScreens
-        v-else
-        :gamePhaser="gamePhaser"
-        @updateLoading="onUpdateLoading"
-      />
+  <div id="game-container">
+    <div id="game">
+      <div id="phaser-container"></div>
+      <LoadingScreen v-if="loading" />
+      <div id="game-screens">
+        <AuthScreen
+          v-if="!isAuthenticated"
+          @loginSuccess="onLoginSuccess"
+          @registerSuccess="onRegisterSuccess"
+          @goToRegister="onGoToRegister"
+        />
+        <GameScreens
+          v-else
+          :gamePhaser="gamePhaser"
+          @updateLoading="onUpdateLoading"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -181,6 +183,21 @@ export default {
         }, 100); // Delay para asegurar que la escena esté completamente renderizada
       }
     },
+    rescaleGame() {
+      const baseWidth = gameConfig.GAME_WIDTH;
+      const baseHeight = gameConfig.GAME_HEIGHT;
+
+      const scaleX = window.innerWidth / baseWidth;
+      const scaleY = window.innerHeight / baseHeight;
+
+      // Usa el menor para que siempre quepa sin salirse, máximo 1 (tamaño original)
+      const scale = Math.min(scaleX, scaleY, 1);
+
+      const gameElement = document.getElementById("game");
+      if (gameElement) {
+        gameElement.style.transform = `scale(${scale})`;
+      }
+    },
   },
   mounted() {
     // Detectar desconexión del socket
@@ -192,22 +209,37 @@ export default {
     });
 
     socket.on("error_critical", this.handleDisconnect);
+
+    // Inicializar auto-escalado del juego
+    this.rescaleGame();
+    window.addEventListener("resize", this.rescaleGame);
   },
   beforeUnmount() {
     // Remover listeners de socket para evitar fugas de memoria
     socket.off("disconnect", this.handleDisconnect);
     socket.off("connect");
     socket.off("error_critical", this.handleDisconnect);
+    
+    // Remover listener de resize
+    window.removeEventListener("resize", this.rescaleGame);
   },
 };
 </script>
 
 <style>
+#game-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+}
+
 #game {
   width: 1012px;
   height: 657px;
   position: relative;
   overflow: hidden;
+  transform-origin: top left;
 }
 
 #phaser-container {
