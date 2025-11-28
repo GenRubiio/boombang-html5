@@ -184,6 +184,11 @@ export default {
       }
     },
     rescaleGame() {
+      // Si estamos dentro de un iframe, no escalamos (lo hace el padre)
+      if (window.self !== window.top) {
+        return;
+      }
+
       const baseWidth = gameConfig.GAME_WIDTH;
       const baseHeight = gameConfig.GAME_HEIGHT;
 
