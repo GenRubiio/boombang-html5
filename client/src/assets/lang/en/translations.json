@@ -65,7 +65,12 @@
     "purchase_error": "Error purchasing item",
     "error_loading": "Error loading catalog",
     "insufficient_gold": "Insufficient gold",
-    "insufficient_silver": "Insufficient silver"
+    "insufficient_silver": "Insufficient silver",
+    "rewards": "Rewards",
+    "gold_coins": "Gold Coins",
+    "silver_coins": "Silver Coins",
+    "stripe_payment": "Real Money Payment",
+    "processing_payment": "Processing payment..."
   },
   "maintenance": {
     "title": "Maintenance",

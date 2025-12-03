@@ -52,8 +52,12 @@ logger.log('Starting server...', 'success');
     // Inicializar el servidor
     const { app, io, authorizedBotTokens } = server(port);
 
-    // Configurar rutas (si es necesario)
+    // Configurar middleware para JSON
+    app.use(require('express').json());
+
+    // Configurar rutas
     app.get('/', (req, res) => res.send('Game Server Running'));
+    app.use('/api', require('./src/routes/apiRoutes'));
 
     // Configurar sockets
     sockets(io, authorizedBotTokens);

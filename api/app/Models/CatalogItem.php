@@ -58,7 +58,13 @@ class CatalogItem extends Model
         'parent_id',
         'lft',
         'rgt',
-        'depth'
+        'depth',
+        'stripe_price_usd',
+        'reward_type',
+        'reward_golden_coins',
+        'reward_silver_coins',
+        'min_purchase_quantity',
+        'max_purchase_quantity'
     ];
 
     public $translatable = [

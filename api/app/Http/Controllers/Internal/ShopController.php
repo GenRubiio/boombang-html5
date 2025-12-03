@@ -102,6 +102,31 @@ class ShopController extends Controller
             ], 400);
         }
 
+        // Verificar límites de cantidad
+        if ($quantity < $catalogItem->min_purchase_quantity) {
+            return response()->json([
+                'success' => false,
+                'error' => "Minimum quantity is {$catalogItem->min_purchase_quantity}",
+            ], 400);
+        }
+
+        if ($quantity > $catalogItem->max_purchase_quantity) {
+            return response()->json([
+                'success' => false,
+                'error' => "Maximum quantity is {$catalogItem->max_purchase_quantity}",
+            ], 400);
+        }
+
+        // Manejar pagos con Stripe
+        if ($catalogItem->price_type === 'stripe_payment') {
+            return response()->json([
+                'success' => false,
+                'error' => 'Stripe payments must be processed through the web interface',
+                'stripe_price' => $catalogItem->stripe_price_usd,
+                'redirect_to_stripe' => true,
+            ], 400);
+        }
+
         // Calcular el precio total
         $totalPrice = $catalogItem->price * $quantity;
 
@@ -149,13 +174,8 @@ class ShopController extends Controller
                 $user->save();
             }
 
-            for ($i = 0; $i < $quantity; $i++) {
-                UserCatalogItem::create([
-                    'user_id' => $user->id,
-                    'catalog_item_id' => $catalogItem->id,
-                    'show_in_inventory' => $catalogItem->show_in_inventory ?? true,
-                ]);
-            }
+            // Entregar recompensas según el tipo configurado
+            $this->deliverRewards($user, $catalogItem, $quantity);
 
             DB::commit();
 
@@ -177,6 +197,78 @@ class ShopController extends Controller
                 'success' => false,
                 'error' => 'Failed to purchase item: ' . $e->getMessage(),
             ], 500);
+        }
+    }
+
+    /**
+     * Deliver rewards based on the item's reward type
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\CatalogItem  $catalogItem
+     * @param  int  $quantity
+     * @return void
+     */
+    private function deliverRewards(User $user, CatalogItem $catalogItem, int $quantity)
+    {
+        switch ($catalogItem->reward_type) {
+            case 'item':
+                // Entregar el item al inventario
+                for ($i = 0; $i < $quantity; $i++) {
+                    UserCatalogItem::create([
+                        'user_id' => $user->id,
+                        'catalog_item_id' => $catalogItem->id,
+                        'show_in_inventory' => $catalogItem->show_in_inventory ?? true,
+                    ]);
+                }
+                break;
+
+            case 'golden_coins':
+                // Entregar créditos de oro
+                $goldToGive = $catalogItem->reward_golden_coins * $quantity;
+                $user->gold_coins += $goldToGive;
+                $user->save();
+                break;
+
+            case 'silver_coins':
+                // Entregar créditos de plata
+                $silverToGive = $catalogItem->reward_silver_coins * $quantity;
+                $user->silver_coins += $silverToGive;
+                $user->save();
+                break;
+
+            case 'mixed':
+                // Entregar tanto créditos como item
+                for ($i = 0; $i < $quantity; $i++) {
+                    UserCatalogItem::create([
+                        'user_id' => $user->id,
+                        'catalog_item_id' => $catalogItem->id,
+                        'show_in_inventory' => $catalogItem->show_in_inventory ?? true,
+                    ]);
+                }
+                
+                if ($catalogItem->reward_golden_coins > 0) {
+                    $goldToGive = $catalogItem->reward_golden_coins * $quantity;
+                    $user->gold_coins += $goldToGive;
+                }
+                
+                if ($catalogItem->reward_silver_coins > 0) {
+                    $silverToGive = $catalogItem->reward_silver_coins * $quantity;
+                    $user->silver_coins += $silverToGive;
+                }
+                
+                $user->save();
+                break;
+
+            default:
+                // Por defecto, entregar el item (comportamiento original)
+                for ($i = 0; $i < $quantity; $i++) {
+                    UserCatalogItem::create([
+                        'user_id' => $user->id,
+                        'catalog_item_id' => $catalogItem->id,
+                        'show_in_inventory' => $catalogItem->show_in_inventory ?? true,
+                    ]);
+                }
+                break;
         }
     }
 }

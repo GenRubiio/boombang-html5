@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyEmulatorToken;
 use App\Http\Controllers\Internal\BotController;
 use App\Http\Controllers\Internal\ShopController;
+use App\Http\Controllers\Internal\StripeController;
 use App\Http\Controllers\Api\Auth\LoginApiController;
 use App\Http\Controllers\Api\Auth\LogoutApiController;
 use App\Http\Controllers\Api\Bot\BotContextController;
@@ -34,8 +35,8 @@ use App\Http\Controllers\Api\Game\Scene\PrivateSceneApiController;
 use App\Http\Controllers\Api\User\UserChangeShadowColorController;
 use App\Http\Controllers\Api\Game\Object\RotateObjectApiController;
 use App\Http\Controllers\Api\Game\Scene\MinigameSceneApiController;
-use App\Http\Controllers\Api\User\UserChangeColornameApiController;
 use App\Http\Controllers\Api\User\UpdateLobbyTutorialApiController;
+use App\Http\Controllers\Api\User\UserChangeColornameApiController;
 use App\Http\Controllers\Api\Game\Config\IslandsConfigApiController;
 use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserAvatarsApiController;
@@ -183,6 +184,11 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
         Route::prefix('shop')->group(function () {
             Route::post('catalog', [ShopController::class, 'getCatalog']);
             Route::post('purchase', [ShopController::class, 'purchaseItem']);
+        });
+
+        Route::prefix('stripe')->group(function () {
+            Route::post('create-checkout-session', [StripeController::class, 'createCheckoutSession']);
+            Route::post('payment-success', [StripeController::class, 'handlePaymentSuccess']);
         });
     });
 });

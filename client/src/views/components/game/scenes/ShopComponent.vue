@@ -6,7 +6,7 @@
     @touchstart.stop
   >
     <div class="shop">
-      <button class="close-button" @click="$emit('close-shop')">
+      <button class="close-button" @click="closeShop">
         <i class="las la-times"></i>
       </button>
       <div class="shop__container">
@@ -86,16 +86,29 @@
               <div class="quantity-selector">
                 <label for="quantity">{{ $t("shop.quantity") }}:</label>
                 <select id="quantity" v-model="selectedQuantity" class="quantity-select">
-                  <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                  <option 
+                    v-for="n in quantityOptions" 
+                    :key="n" 
+                    :value="n"
+                  >
+                    {{ n }}
+                  </option>
                 </select>
               </div>
 
+              <!-- Precio del item -->
               <div class="item-price">
-                <i
-                  :class="selectedItem.price_type === 'golden_coins' ? 'las la-coins' : 'las la-circle'"
-                  :style="{ color: selectedItem.price_type === 'golden_coins' ? '#FFD700' : '#C0C0C0' }"
-                ></i>
-                <span>{{ totalPrice }}</span>
+                <template v-if="selectedItem.price_type === 'stripe_payment'">
+                  <i class="las la-dollar-sign" style="color: #28a745;"></i>
+                  <span>${{ ((selectedItem.stripe_price_usd || 0) * selectedQuantity).toFixed(2) }} USD</span>
+                </template>
+                <template v-else>
+                  <i
+                    :class="selectedItem.price_type === 'golden_coins' ? 'las la-coins' : 'las la-circle'"
+                    :style="{ color: selectedItem.price_type === 'golden_coins' ? '#FFD700' : '#C0C0C0' }"
+                  ></i>
+                  <span>{{ totalPrice }}</span>
+                </template>
               </div>
 
               <!-- Mensaje de estado -->
@@ -156,7 +169,13 @@ export default {
     },
     totalPrice() {
       if (!this.selectedItem) return 0;
-      let total = this.selectedItem.price * this.selectedQuantity;
+      
+      // Para items de Stripe, no mostrar precio en monedas
+      if (this.selectedItem.price_type === 'stripe_payment') {
+        return 0;
+      }
+      
+      let total = (this.selectedItem.price || 0) * this.selectedQuantity;
 
       // Aplicar descuento si existe
       if (this.selectedItem.discount > 0) {
@@ -164,6 +183,19 @@ export default {
       }
 
       return Math.round(total);
+    },
+    quantityOptions() {
+      if (!this.selectedItem) return [1];
+      
+      const min = this.selectedItem.min_purchase_quantity || 1;
+      const max = this.selectedItem.max_purchase_quantity || 10;
+      
+      const options = [];
+      for (let i = min; i <= max; i++) {
+        options.push(i);
+      }
+      
+      return options;
     },
   },
   mounted() {
@@ -177,11 +209,13 @@ export default {
     setupSocketListeners() {
       socket.on(ResponseSocketsEnum.SHOP_CATALOG, this.handleCatalogResponse);
       socket.on(ResponseSocketsEnum.SHOP_PURCHASE, this.handlePurchaseResponse);
+      socket.on(ResponseSocketsEnum.REFRESH_USER_CREDITS, this.handleCreditsUpdate);
     },
 
     removeSocketListeners() {
       socket.off(ResponseSocketsEnum.SHOP_CATALOG, this.handleCatalogResponse);
       socket.off(ResponseSocketsEnum.SHOP_PURCHASE, this.handlePurchaseResponse);
+      socket.off(ResponseSocketsEnum.REFRESH_USER_CREDITS, this.handleCreditsUpdate);
     },
 
     loadCatalog() {
@@ -217,7 +251,9 @@ export default {
 
     selectItem(item) {
       this.selectedItem = item;
-      this.selectedQuantity = 1;
+      // Ajustar cantidad según los límites del item
+      const minQuantity = item.min_purchase_quantity || 1;
+      this.selectedQuantity = minQuantity;
       this.purchaseMessage = null;
     },
 
@@ -227,9 +263,22 @@ export default {
       this.purchaseMessage = null;
     },
 
+    closeShop() {
+      this.purchaseMessage = null;
+      this.purchaseMessageType = null;
+      this.$emit('close-shop');
+    },
+
     purchaseItem() {
       if (!this.selectedItem || this.purchasing) return;
 
+      // Manejar pagos con Stripe
+      if (this.selectedItem.price_type === 'stripe_payment') {
+        this.handleStripePayment();
+        return;
+      }
+
+      // Manejar pagos normales (oro/plata)
       this.purchasing = true;
       this.purchaseMessage = null;
 
@@ -245,6 +294,167 @@ export default {
       socket.emit(RequestSocketsEnum.PURCHASE_SHOP_ITEM, {
         catalog_item_id: this.selectedItem.id,
         quantity: this.selectedQuantity,
+      });
+    },
+
+    async handleStripePayment() {
+      try {
+        this.purchasing = true;
+        this.purchaseMessage = this.$t("shop.processing_payment");
+
+        // Crear checkout session con la API
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+        const jwtToken = localStorage.getItem("app_jwt");
+        
+        if (!jwtToken) {
+          throw new Error('No se encontró token de autenticación. Por favor, inicia sesión nuevamente.');
+        }
+        
+        const response = await fetch(`${apiBaseUrl}/api/stripe/create-checkout-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`,
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            catalog_item_id: this.selectedItem.id,
+            quantity: this.selectedQuantity,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('API Error:', response.status, errorText);
+          throw new Error(`API Error: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.error || 'Error al crear sesión de pago');
+        }
+
+        // Abrir Stripe Checkout en nueva ventana
+        console.log('Opening Stripe Checkout:', data.checkout_url);
+        const stripeWindow = window.open(data.checkout_url, '_blank', 'width=800,height=700');
+        
+        if (!stripeWindow) {
+          throw new Error('No se pudo abrir la ventana de pago. Por favor, permite las ventanas emergentes.');
+        }
+
+        // Escuchar el mensaje de retorno de la ventana de pago
+        const messageListener = (event) => {
+          // Permitir tanto localhost:8000 como el dominio configurado
+          const allowedOrigins = [
+            'http://localhost:8000',
+            'http://127.0.0.1:8000',
+            import.meta.env.VITE_WEB_BASE_URL
+          ].filter(Boolean);
+          
+          if (!allowedOrigins.some(origin => event.origin === origin)) {
+            return;
+          }
+
+          if (event.data.type === 'request_jwt_for_stripe') {
+            // La ventana de Stripe solicita el JWT para procesar el pago
+            const jwtToken = localStorage.getItem("app_jwt");
+            
+            if (jwtToken && event.source) {
+              event.source.postMessage({
+                type: 'jwt_response',
+                jwt: jwtToken
+              }, event.origin);
+            } else {
+              event.source.postMessage({
+                type: 'jwt_not_found'
+              }, event.origin);
+            }
+
+          } else if (event.data.type === 'stripe_payment_success') {
+            this.purchasing = false;
+            this.purchaseMessage = this.$t("shop.purchase_success");
+            this.purchaseMessageType = "success";
+            
+            // Actualizar créditos del usuario si es necesario
+            if (event.data.user) {
+              this.$emit("purchase-success", event.data.user);
+            }
+
+            // Resetear cantidad
+            this.selectedQuantity = 1;
+
+            // Cerrar ventana de Stripe si sigue abierta
+            if (stripeWindow && !stripeWindow.closed) {
+              stripeWindow.close();
+            }
+
+            // Ocultar mensaje después de 3 segundos
+            setTimeout(() => {
+              this.purchaseMessage = null;
+            }, 3000);
+
+          } else if (event.data.type === 'stripe_payment_cancel') {
+            this.purchasing = false;
+            this.purchaseMessage = "Pago cancelado";
+            this.purchaseMessageType = "error";
+
+            // Cerrar ventana de Stripe si sigue abierta
+            if (stripeWindow && !stripeWindow.closed) {
+              stripeWindow.close();
+            }
+
+            setTimeout(() => {
+              this.purchaseMessage = null;
+            }, 3000);
+
+          } else if (event.data.type === 'stripe_payment_retry') {
+            this.purchasing = false;
+            // Reiniciar el proceso de pago
+            setTimeout(() => {
+              this.handleStripePayment();
+            }, 500);
+
+          } else if (event.data.type === 'stripe_payment_error') {
+            this.purchasing = false;
+            this.purchaseMessage = event.data.message || this.$t("shop.purchase_error");
+            this.purchaseMessageType = "error";
+
+            // Cerrar ventana de Stripe si sigue abierta
+            if (stripeWindow && !stripeWindow.closed) {
+              stripeWindow.close();
+            }
+
+            setTimeout(() => {
+              this.purchaseMessage = null;
+            }, 5000);
+          }
+        };
+
+        window.addEventListener('message', messageListener);
+
+        // Limpiar listener cuando la ventana se cierre
+        const checkClosed = setInterval(() => {
+          if (stripeWindow.closed) {
+            window.removeEventListener('message', messageListener);
+            clearInterval(checkClosed);
+            this.purchasing = false;
+          }
+        }, 1000);
+
+      } catch (error) {
+        console.error('Error al procesar pago Stripe:', error);
+        this.purchasing = false;
+        this.purchaseMessage = this.$t("shop.purchase_error");
+        this.purchaseMessageType = "error";
+      }
+    },
+
+    handleCreditsUpdate(data) {
+      // Actualizar créditos del usuario desde socket
+      this.$emit("purchase-success", {
+        gold: data.gold,
+        silver: data.silver
       });
     },
 

@@ -18,6 +18,7 @@ return [
     'emulator_api_token' => env('EMULATOR_API_TOKEN'),
     'emulator_docker_url' => env('EMULATOR_DOCKER_URL'),
     'redirect_frontend_url' => env('REDIRECT_FRONTEND_URL'),
+    'socket_server_url' => env('SOCKET_SERVER_URL', 'http://localhost:3000'),
 
     /*
     |--------------------------------------------------------------------------

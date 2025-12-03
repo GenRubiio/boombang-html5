@@ -90,6 +90,35 @@ class CatalogItemCrudController extends CrudController
             'type' => 'number',
         ]);
         $this->crud->addColumn([
+            'name' => 'price_type',
+            'label' => 'Tipo de Precio',
+            'type' => 'select_from_array',
+            'options' => [
+                'golden_coins' => 'Monedas Doradas',
+                'silver_coins' => 'Monedas Plateadas',
+                'stripe_payment' => 'Pago Real (Stripe)',
+            ],
+        ]);
+        $this->crud->addColumn([
+            'name' => 'stripe_price_usd',
+            'label' => 'Precio USD',
+            'type' => 'closure',
+            'function' => function($entry) {
+                return $entry->stripe_price_usd ? '$' . number_format($entry->stripe_price_usd, 2) : '-';
+            }
+        ]);
+        $this->crud->addColumn([
+            'name' => 'reward_type',
+            'label' => 'Tipo de Recompensa',
+            'type' => 'select_from_array',
+            'options' => [
+                'item' => 'Entregar Item',
+                'golden_coins' => 'Créditos de Oro',
+                'silver_coins' => 'Créditos de Plata',
+                'mixed' => 'Mixto'
+            ],
+        ]);
+        $this->crud->addColumn([
             'name' => 'is_active',
             'label' => 'Activo',
             'type' => 'btnToggle',
@@ -202,6 +231,7 @@ class CatalogItemCrudController extends CrudController
                 'options' => [
                     'golden_coins' => 'Monedas Doradas',
                     'silver_coins' => 'Monedas Plateadas',
+                    'stripe_payment' => 'Pago Real (Stripe)',
                 ],
                 'tab' => 'Precios'
             ],
@@ -210,6 +240,15 @@ class CatalogItemCrudController extends CrudController
                 'label' => 'Descuento',
                 'type' => 'number',
                 'default' => 0,
+                'tab' => 'Precios'
+            ],
+            [
+                'name' => 'stripe_price_usd',
+                'label' => 'Precio en USD (Stripe)',
+                'type' => 'number',
+                'attributes' => ["step" => "0.01", "min" => "0"],
+                'prefix' => '$',
+                'hint' => 'Precio en dólares estadounidenses para pagos con Stripe. Solo requerido si el tipo de precio es "Pago Real (Stripe)".',
                 'tab' => 'Precios'
             ],
             [
@@ -295,6 +334,24 @@ class CatalogItemCrudController extends CrudController
                 'tab' => 'Configuración'
             ],
             [
+                'name' => 'min_purchase_quantity',
+                'label' => 'Cantidad Mínima de Compra',
+                'type' => 'number',
+                'default' => 1,
+                'attributes' => ['min' => 1],
+                'hint' => 'Cantidad mínima que se puede comprar de este artículo.',
+                'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'max_purchase_quantity',
+                'label' => 'Cantidad Máxima de Compra',
+                'type' => 'number',
+                'default' => 10,
+                'attributes' => ['min' => 1, 'max' => 999],
+                'hint' => 'Cantidad máxima que se puede comprar de este artículo de una vez.',
+                'tab' => 'Configuración'
+            ],
+            [
                 'name' => 'is_read_only',
                 'label' => 'Solo Lectura',
                 'type' => 'checkbox',
@@ -327,6 +384,35 @@ class CatalogItemCrudController extends CrudController
                 'type' => 'checkbox',
                 'default' => true,
                 'tab' => 'Configuración'
+            ],
+            [
+                'name' => 'reward_type',
+                'label' => 'Tipo de Recompensa',
+                'type' => 'select_from_array',
+                'options' => [
+                    'item' => 'Entregar Item al Inventario',
+                    'golden_coins' => 'Créditos de Oro',
+                    'silver_coins' => 'Créditos de Plata',
+                    'mixed' => 'Mixto (Créditos + Item)'
+                ],
+                'hint' => 'Determina qué recibe el usuario al comprar este item. "Item" entrega el objeto al inventario, "Créditos" suma monedas a la cuenta.',
+                'tab' => 'Recompensas'
+            ],
+            [
+                'name' => 'reward_golden_coins',
+                'label' => 'Créditos de Oro a Entregar',
+                'type' => 'number',
+                'default' => 0,
+                'hint' => 'Cantidad de monedas de oro que se agregarán a la cuenta del usuario. Solo aplica si el tipo de recompensa incluye créditos.',
+                'tab' => 'Recompensas'
+            ],
+            [
+                'name' => 'reward_silver_coins',
+                'label' => 'Créditos de Plata a Entregar',
+                'type' => 'number',
+                'default' => 0,
+                'hint' => 'Cantidad de monedas de plata que se agregarán a la cuenta del usuario. Solo aplica si el tipo de recompensa incluye créditos.',
+                'tab' => 'Recompensas'
             ]
         ]);
 
@@ -534,6 +620,39 @@ class CatalogItemCrudController extends CrudController
             'label' => 'Comprable',
         ], false, function () {
             $this->crud->addClause('where', 'is_purchasable', 1);
+        });
+
+        $this->crud->addFilter([
+            'name' => 'price_type',
+            'type' => 'select2_multiple',
+            'label' => 'Tipo de Precio',
+        ], [
+            'golden_coins' => 'Monedas Doradas',
+            'silver_coins' => 'Monedas Plateadas',
+            'stripe_payment' => 'Pago Real (Stripe)',
+        ], function ($values) {
+            $this->crud->addClause('whereIn', 'price_type', json_decode($values));
+        });
+
+        $this->crud->addFilter([
+            'name' => 'reward_type',
+            'type' => 'select2_multiple',
+            'label' => 'Tipo de Recompensa',
+        ], [
+            'item' => 'Entregar Item',
+            'golden_coins' => 'Créditos de Oro',
+            'silver_coins' => 'Créditos de Plata',
+            'mixed' => 'Mixto'
+        ], function ($values) {
+            $this->crud->addClause('whereIn', 'reward_type', json_decode($values));
+        });
+
+        $this->crud->addFilter([
+            'type' => 'simple',
+            'name' => 'stripe_items',
+            'label' => 'Solo Items de Stripe',
+        ], false, function () {
+            $this->crud->addClause('where', 'price_type', 'stripe_payment');
         });
     }
 }
