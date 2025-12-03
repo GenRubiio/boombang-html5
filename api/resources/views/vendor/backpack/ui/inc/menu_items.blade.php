@@ -18,7 +18,10 @@
     </x-backpack::menu-dropdown>
 @endif
 @if (backpack_user()->hasAnyRole(['Superadmin', 'Catalog']))
-    <x-backpack::menu-item title="Catalog items" icon="la la-question" :link="backpack_url('catalog-item')" />
+    <x-backpack::menu-dropdown title="Catalog" icon="la la-puzzle-piece">
+        <x-backpack::menu-item title="Items" icon="la la-question" :link="backpack_url('catalog-item')" />
+        <x-backpack::menu-item title="Categories" icon="la la-question" :link="backpack_url('catalog-category')" />
+    </x-backpack::menu-dropdown>
     <x-backpack::menu-dropdown title="Ranking" icon="la la-puzzle-piece">
         <x-backpack::menu-item title="Events" icon="la la-question" :link="backpack_url('event')" />
         {{-- <x-backpack::menu-item title="Event scores" icon="la la-question" :link="backpack_url('event-score')" /> --}}
@@ -34,11 +37,6 @@
     <x-backpack::menu-dropdown-item title="Users" icon="la la-user" :link="backpack_url('user')" />
 @endif
 <hr>
-<x-backpack::menu-dropdown title="Catalog" icon="la la-puzzle-piece">
-    @if (backpack_user()->hasRole('Superadmin'))
-        <x-backpack::menu-item title="Catalog categories" icon="la la-question" :link="backpack_url('catalog-category')" />
-    @endif
-</x-backpack::menu-dropdown>
 
 @if (backpack_user()->hasRole('Superadmin'))
     <x-backpack::menu-dropdown title="Add-ons" icon="la la-puzzle-piece">

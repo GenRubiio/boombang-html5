@@ -37,9 +37,15 @@ class CatalogItemResource extends JsonResource
             'price' => $this->price,
             'price_type' => $this->price_type,
             'discount' => $this->discount,
+            'stripe_price_usd' => $this->stripe_price_usd,
+            'reward_type' => $this->reward_type,
+            'reward_golden_coins' => $this->reward_golden_coins,
+            'reward_silver_coins' => $this->reward_silver_coins,
             'stars' => $this->stars,
             'type_of_behavior' => $this->type_of_behavior,
             'scale' => $this->scale,
+            'min_purchase_quantity' => $this->min_purchase_quantity,
+            'max_purchase_quantity' => $this->max_purchase_quantity,
         ];
 
         if (debug_backtrace()[1]['function'] == "toDTO") {
