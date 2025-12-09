@@ -312,14 +312,14 @@ export default class PrivateScene extends Phaser.Scene {
             }
         });
         socket.on(ResponseSocketsEnum.SCENE_PUT_ITEM, (data) => {
-            console.log('📦 SCENE_PUT_ITEM received:', data);
+            //console.log('📦 SCENE_PUT_ITEM received:', data);
             if (data.item) {
                 const existingItem = this.sceneItems.find(i => i.id === data.item.id);
-                console.log('  Existing item?', existingItem ? 'YES (moving)' : 'NO (new item)');
+                //console.log('  Existing item?', existingItem ? 'YES (moving)' : 'NO (new item)');
 
                 if (existingItem) {
                     // It's a move, just update the tiles
-                    console.log('  Updating existing item tiles');
+                    //console.log('  Updating existing item tiles');
                     existingItem.occupied_tiles = data.item.occupied_tiles;
                     this.markOccupiedTiles();
                     this.renderSceneObjects();
@@ -336,7 +336,7 @@ export default class PrivateScene extends Phaser.Scene {
                     // Check if asset already exists (image or video)
                     const assetExists = isVideo ? this.cache.video.exists(textureName) : this.textures.exists(textureName);
 
-                    console.log('  Item details:', {
+                    //console.log('  Item details:', {
                         textureName,
                         assetSrc,
                         isVideo,
@@ -344,7 +344,7 @@ export default class PrivateScene extends Phaser.Scene {
                     });
 
                     if (assetExists) {
-                        console.log('  ✅ Asset exists, adding item to scene');
+                        //console.log('  ✅ Asset exists, adding item to scene');
                         this.sceneItems.push(item);
                         this.markOccupiedTiles();
                         this.renderSceneObjects();
@@ -352,12 +352,12 @@ export default class PrivateScene extends Phaser.Scene {
                             this.prepareObjectsForMoving();
                         }
                     } else {
-                        console.log('  ⏳ Asset does not exist, loading...');
+                        //console.log('  ⏳ Asset does not exist, loading...');
                         // Asset doesn't exist, load it first
                         if (isVideo) {
                             this.load.video(textureName, assetSrc);
                             this.load.once(`filecomplete-video-${textureName}`, () => {
-                                console.log('  ✅ Video loaded, adding item to scene');
+                                //console.log('  ✅ Video loaded, adding item to scene');
                                 this.sceneItems.push(item);
                                 this.markOccupiedTiles();
                                 this.renderSceneObjects();
@@ -368,7 +368,7 @@ export default class PrivateScene extends Phaser.Scene {
                         } else {
                             this.load.image(textureName, assetSrc);
                             this.load.once(`filecomplete-image-${textureName}`, () => {
-                                console.log('  ✅ Image loaded, adding item to scene');
+                                //console.log('  ✅ Image loaded, adding item to scene');
                                 this.sceneItems.push(item);
                                 this.markOccupiedTiles();
                                 this.renderSceneObjects();
@@ -382,7 +382,7 @@ export default class PrivateScene extends Phaser.Scene {
                     }
                 }
             } else {
-                console.log('  ❌ No item in response data');
+                //console.log('  ❌ No item in response data');
             }
         });
         socket.on(ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY, (data) => {
@@ -841,26 +841,26 @@ export default class PrivateScene extends Phaser.Scene {
         const cols = this.sceneData.scenery.map_cols;
         const gameMap = this.sceneData.scenery.game_map;
 
-        console.log('🔍 Validating position:', { rows, cols, newTiles });
+        //console.log('🔍 Validating position:', { rows, cols, newTiles });
 
         for (const [col, row] of newTiles) {
-            console.log(`  Checking tile [${col}, ${row}]`);
+            //console.log(`  Checking tile [${col}, ${row}]`);
 
             // Verificar límites
             if (row < 0 || row >= rows || col < 0 || col >= cols) {
-                console.log(`    ❌ Out of bounds (rows: ${rows}, cols: ${cols})`);
+                //console.log(`    ❌ Out of bounds (rows: ${rows}, cols: ${cols})`);
                 return false;
             }
 
             // No se puede posicionar si el piso no es transitable según el mapa base
             if (gameMap && gameMap[row] && typeof gameMap[row][col] !== 'undefined' && gameMap[row][col] !== 0) {
-                console.log(`    ❌ Not walkable (gameMap value: ${gameMap[row][col]})`);
+                //console.log(`    ❌ Not walkable (gameMap value: ${gameMap[row][col]})`);
                 return false;
             }
 
             // Check if tile is occupied by another object
             if (this.tileGrid[row][col].occupied && this.tileGrid[row][col].objectId !== currentObjectId) {
-                console.log(`    ⚠️ Occupied by object ${this.tileGrid[row][col].objectId}`);
+                //console.log(`    ⚠️ Occupied by object ${this.tileGrid[row][col].objectId}`);
                 // Find the occupying object
                 const occupyingObject = this.sceneItems.find(item => item.id === this.tileGrid[row][col].objectId);
 
@@ -873,21 +873,21 @@ export default class PrivateScene extends Phaser.Scene {
                     // If placing a WALKABLE/WALKABLE_OVERLAY item on another WALKABLE/WALKABLE_OVERLAY item, reject
                     if (currentObject && (currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE ||
                         currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
-                        console.log(`    ❌ Cannot place WALKABLE on WALKABLE`);
+                        //console.log(`    ❌ Cannot place WALKABLE on WALKABLE`);
                         return false;
                     }
-                    console.log(`    ✅ Can place on WALKABLE item`);
+                    //console.log(`    ✅ Can place on WALKABLE item`);
                     // Otherwise allow placement on WALKABLE/WALKABLE_OVERLAY items
                 } else {
-                    console.log(`    ❌ Occupied by non-WALKABLE object`);
+                    //console.log(`    ❌ Occupied by non-WALKABLE object`);
                     return false; // Occupied by non-WALKABLE object
                 }
             } else {
-                console.log(`    ✅ Tile is free`);
+                //console.log(`    ✅ Tile is free`);
             }
         }
 
-        console.log('  ✅ All tiles valid');
+        //console.log('  ✅ All tiles valid');
         return true;
     }
 
@@ -994,7 +994,7 @@ export default class PrivateScene extends Phaser.Scene {
      */
     // Dentro de la clase PrivateScene, modifica el método renderSceneObjects
     renderSceneObjects() {
-        console.log('🎨 renderSceneObjects called, items count:', this.sceneItems.length);
+        //console.log('🎨 renderSceneObjects called, items count:', this.sceneItems.length);
 
         // Aplicar sceneScaleFactor a las dimensiones de los tiles
         const tileWidth = 65 * this.dpiScale * this.sceneScaleFactor;
@@ -1004,7 +1004,7 @@ export default class PrivateScene extends Phaser.Scene {
         const centerX = this.scale.width / 2;
 
         this.sceneItems.forEach((item, index) => {
-            console.log(`  Rendering item ${index}:`, item.sprite_name, item.occupied_tiles);
+            //console.log(`  Rendering item ${index}:`, item.sprite_name, item.occupied_tiles);
             // Calcular la posición promedio
             let sumX = 0;
             let maxRowColSum = -Infinity;
