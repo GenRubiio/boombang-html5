@@ -288,10 +288,6 @@ class MovementProcessorInstance {
         }
     }
 
-    stopProcessing() {
-        this.processing = false;
-    }
-
     #clearUserReservation(user) {
         if (user.lastReservedTile) {
             delete this.scene.reservedTiles[user.lastReservedTile];
@@ -348,6 +344,7 @@ class MovementProcessorInstance {
         this.processing = false;
         if (this.cleanupInterval) {
             clearInterval(this.cleanupInterval);
+            this.cleanupInterval = null;
         }
     }
 }

@@ -20,7 +20,7 @@ class MatchMakerInstance {
         this.rooms = new Map();
         this.notifiedUsers = new Map();
 
-        setInterval(() => {
+        this.matchCheckInterval = setInterval(() => {
             for (const [sceneType, queue] of this.waitingLists.entries()) {
                 if (queue.length >= this.requiredPlayers) {
                     const players = queue.splice(0, this.requiredPlayers);
@@ -190,6 +190,17 @@ class MatchMakerInstance {
                 this.notifiedUsers.delete(type);
             }
         }
+    }
+
+    cleanup() {
+        if (this.matchCheckInterval) {
+            clearInterval(this.matchCheckInterval);
+            this.matchCheckInterval = null;
+        }
+        this.waitingLists.clear();
+        this.rooms.clear();
+        this.notifiedUsers.clear();
+        console.log('MatchMakerInstance cleaned up');
     }
 }
 

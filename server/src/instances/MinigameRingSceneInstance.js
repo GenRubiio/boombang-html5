@@ -39,6 +39,7 @@ class MinigameRingSceneInstance {
         this.intervalStartGame = null;
         this.intervalEndGame = null;
         this.intervalRemoveUsers = null;
+        this.finalCountdownTimer = null;
 
         // Inicializar el procesador de movimiento
         this.movementProcessorInstance = new MovementProcessorInstance(this);
@@ -117,6 +118,10 @@ class MinigameRingSceneInstance {
                 clearInterval(this.intervalEndGame);
                 this.intervalEndGame = null;
             }
+            if (this.finalCountdownTimer) {
+                clearInterval(this.finalCountdownTimer);
+                this.finalCountdownTimer = null;
+            }
 
             // Detener el procesador de movimiento de forma segura
             if (this.movementProcessorInstance && typeof this.movementProcessorInstance.stopProcessing === 'function') {
@@ -128,11 +133,12 @@ class MinigameRingSceneInstance {
             let countdown = this.removeUserInSeconds;
 
             // Iniciar un nuevo temporizador para la cuenta atrás final
-            const finalCountdownTimer = setInterval(() => {
+            this.finalCountdownTimer = setInterval(() => {
                 countdown--;
                 this.usersUpdateCounter(countdown);
                 if (countdown <= 0) {
-                    clearInterval(finalCountdownTimer);
+                    clearInterval(this.finalCountdownTimer);
+                    this.finalCountdownTimer = null;
 
                     // Expulsar a todos los usuarios de forma segura
                     // Hacemos una copia del array porque RemoveUserFromSceneTask lo modifica
