@@ -337,11 +337,11 @@ export default class PrivateScene extends Phaser.Scene {
                     const assetExists = isVideo ? this.cache.video.exists(textureName) : this.textures.exists(textureName);
 
                     //console.log('  Item details:', {
-                        textureName,
-                        assetSrc,
-                        isVideo,
-                        assetExists
-                    });
+                    //    textureName,
+                    //    assetSrc,
+                    //    isVideo,
+                    //    assetExists
+                    //});
 
                     if (assetExists) {
                         //console.log('  ✅ Asset exists, adding item to scene');
