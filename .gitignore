@@ -1,5 +1,13 @@
 .env
+.env.production
+.env.local
+.env.*.local
 NUL
 CLAUDE.md
 .claude
 logs/
+
+# Credential files - never commit these
+**/auth.json
+**/.env.production
+**/.env.local
