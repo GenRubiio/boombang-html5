@@ -22,13 +22,15 @@ class UserReceiveEffectController {
         );
 
         // Crear sprite del efecto en la posición inicial
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
         const effect = gameScene.add.sprite(
-            container.x + effectData.effect.positionOffset.x * gameConfig.DPI,
-            container.y + effectData.effect.positionOffset.y * gameConfig.DPI,
+            container.x + effectData.effect.positionOffset.x * gameConfig.DPI * scaleFactor,
+            container.y + effectData.effect.positionOffset.y * gameConfig.DPI * scaleFactor,
             data.effect
         );
         effect.setDepth(container.depth + 1);
-        effect.setScale(gameConfig.DPI);
+        effect.setScale(gameConfig.DPI * scaleFactor);
 
         // El oscurecimiento ahora es global por escena, no por sprite
 
@@ -82,9 +84,9 @@ class UserReceiveEffectController {
         const baseX = 10, baseY = 60, size = 30, pad = 5;
         const botones = [
             { label: '↑', dx: 0, dy: -1, x: baseX + size + pad, y: baseY },
-            { label: '↓', dx: 0, dy: +1, x: baseX + size + pad, y: baseY + size * 2 },
+            { label: '↓', dx: 0, dy: +1, x: baseX + size + pad, y: baseY + size * gameConfig.DPI },
             { label: '←', dx: -1, dy: 0, x: baseX, y: baseY + size },
-            { label: '→', dx: +1, dy: 0, x: baseX + size * 2 + pad * 2, y: baseY + size }
+            { label: '→', dx: +1, dy: 0, x: baseX + size * gameConfig.DPI + pad * gameConfig.DPI, y: baseY + size }
         ];
 
         botones.forEach(btn => {

@@ -326,6 +326,14 @@ class PublicSceneCrudController extends CrudController
                         'model' => "App\Models\Event",
                         'attribute' => 'name',
                         'wrapper' => ['class' => 'form-group col-md-6'],
+                    ],
+                    [
+                        'name' => 'catalog_item_id',
+                        'label' => 'Catalog Item Asociado',
+                        'type' => 'select2',
+                        'model' => "App\Models\CatalogItem",
+                        'attribute' => 'name',
+                        'wrapper' => ['class' => 'form-group col-md-6'],
                     ]
                 ],
                 'new_item_label' => 'Añadir Item',
@@ -400,6 +408,64 @@ class PublicSceneCrudController extends CrudController
                 'reorder' => true,
                 'tab' => 'Arrows',
             ],
+            [
+                'name' => 'traps_data',
+                'label' => 'Trampas de la Escena',
+                'type' => 'repeatable',
+                'fake' => true,
+                'store_in' => 'traps_data',
+                'subfields' => [
+                    [
+                        'name' => 'position_x',
+                        'label' => 'Posición X',
+                        'type' => 'number',
+                        'default' => 11,
+                        'hint' => 'Posición en el eje X de la trampa',
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'position_y',
+                        'label' => 'Posición Y',
+                        'type' => 'number',
+                        'default' => 11,
+                        'hint' => 'Posición en el eje Y de la trampa',
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'coconut_type',
+                        'label' => 'Tipo de Coco',
+                        'type' => 'select_from_array',
+                        'options' => [
+                            0 => 'Coco',
+                            1 => 'Bola de nieve',
+                            2 => 'Zapato',
+                            3 => 'Pastel',
+                            4 => 'Maceta',
+                            5 => 'Avispas',
+                            6 => 'Basura',
+                            7 => 'Sandía',
+                            8 => 'Yunque',
+                            9 => 'Piano',
+                        ],
+                        'default' => 0,
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                    ],
+                    [
+                        'name' => 'active',
+                        'label' => 'Activo',
+                        'type' => 'radio',
+                        'options' => [
+                            1 => trans('backpack::crud.yes'),
+                            0 => trans('backpack::crud.no')
+                        ],
+                        'default' => 1,
+                        'inline' => true,
+                    ]
+                ],
+                'new_item_label' => 'Añadir Trampa',
+                'reorder' => true,
+                'tab' => 'Trampas',
+            ],
         ]);
     }
 
@@ -424,6 +490,9 @@ class PublicSceneCrudController extends CrudController
 
         // Handle scene_items_pivot relationship
         $this->handleSceneItemsPivot($item, $request);
+
+        // Handle traps relationship
+        $this->handlePublicSceneTraps($item, $request);
 
         // Show a success message
         Alert::success(trans('backpack::crud.insert_success'))->flash();
@@ -453,6 +522,9 @@ class PublicSceneCrudController extends CrudController
 
         // Handle scene_items_pivot relationship
         $this->handleSceneItemsPivot($item, $request);
+
+        // Handle traps relationship
+        $this->handlePublicSceneTraps($item, $request);
 
         // Show a success message
         Alert::success(trans('backpack::crud.update_success'))->flash();
@@ -484,6 +556,7 @@ class PublicSceneCrudController extends CrudController
                             'sum_points_to_user_attribute' => isset($item['sum_points_to_user_attribute']) ? (bool)$item['sum_points_to_user_attribute'] : false,
                             'user_attribute_name' => $item['user_attribute_name'] ?? null,
                             'event_id' => $item['event_id'] ?? null,
+                            'catalog_item_id' => $item['catalog_item_id'] ?? null,
                         ];
                     }
                 }
@@ -494,6 +567,33 @@ class PublicSceneCrudController extends CrudController
         } else {
             // Si no hay datos, limpiar la relación
             $publicScene->items()->sync([]);
+        }
+    }
+
+    private function handlePublicSceneTraps($publicScene, $request)
+    {
+        $trapsData = $request->get('traps_data');
+
+        // Primero eliminamos todas las trampas existentes
+        $publicScene->traps()->delete();
+
+        if (!empty($trapsData)) {
+            if (is_string($trapsData)) {
+                $trapsData = json_decode($trapsData, true);
+            }
+
+            if (is_array($trapsData)) {
+                foreach ($trapsData as $trapData) {
+                    if (isset($trapData['position_x']) && isset($trapData['position_y'])) {
+                        $publicScene->traps()->create([
+                            'position_x' => $trapData['position_x'],
+                            'position_y' => $trapData['position_y'],
+                            'coconut_type' => $trapData['coconut_type'] ?? 0,
+                            'active' => isset($trapData['active']) ? (bool)$trapData['active'] : true,
+                        ]);
+                    }
+                }
+            }
         }
     }
 
@@ -547,9 +647,22 @@ class PublicSceneCrudController extends CrudController
                     'sum_points_to_user_attribute' => $item->pivot->sum_points_to_user_attribute,
                     'user_attribute_name' => $item->pivot->user_attribute_name,
                     'event_id' => $item->pivot->event_id,
+                    'catalog_item_id' => $item->pivot->catalog_item_id,
                 ];
             }
             $duplicate->items()->sync($pivotData);
+        }
+
+        // Handle traps - duplicate traps
+        if ($original->traps()->exists()) {
+            foreach ($original->traps as $trap) {
+                $duplicate->traps()->create([
+                    'position_x' => $trap->position_x,
+                    'position_y' => $trap->position_y,
+                    'coconut_type' => $trap->coconut_type,
+                    'active' => $trap->active,
+                ]);
+            }
         }
 
         Alert::success('Registro duplicado exitosamente')->flash();

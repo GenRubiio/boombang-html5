@@ -11,7 +11,8 @@ class IslandResource extends Resource {
             user_id: data.userId,
             visitors: data.visitors || 0, // Default to 0 if not provided
             scenes: data.scenes || [], // Default to empty array if not provided
-            user: data.user || null
+            user: data.user || null,
+            island_config: data.islandConfig || data.island_config || null // Island configuration with image info
         };
     }
 }

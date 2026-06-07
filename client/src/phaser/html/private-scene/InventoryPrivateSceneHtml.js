@@ -22,7 +22,7 @@ class InventoryPrivateSceneHtml {
 
         return `
             <div id="html-inventory" style="
-                position: fixed;
+                position: absolute;
                 right: 10px;
                 bottom: 72px;
                 width: ${INV_W}px;
@@ -157,14 +157,28 @@ class InventoryPrivateSceneHtml {
         this.inventoryContainer.setScrollFactor(0);
         this.inventoryContainer.setDepth(10000);
 
+        // Guardar referencia al contenedor antes de moverlo
+        this.htmlInventoryElement = this.inventoryContainer.node.querySelector('#html-inventory');
+
+        // Mover el elemento al contenedor game-container para que aparezca por encima del chat
+        this.moveToGameContainer();
+
         this.createDragShadowElement();
 
         this.setupEventListeners();
         this.updateInventoryUI();
     }
 
+    moveToGameContainer() {
+        const gameContainer = document.querySelector('.game-container');
+
+        if (gameContainer && this.htmlInventoryElement) {
+            gameContainer.appendChild(this.htmlInventoryElement);
+        }
+    }
+
     setupEventListeners() {
-        const container = this.inventoryContainer.node;
+        const container = this.htmlInventoryElement;
 
         // Detener la propagación de eventos para que no interfieran con la escena de Phaser
         const stopPropagation = (event) => event.stopPropagation();
@@ -196,8 +210,7 @@ class InventoryPrivateSceneHtml {
     }
 
     setupDragAndDrop() {
-        const container = this.inventoryContainer.node;
-        const slots = container.querySelectorAll('.inventory-slot');
+        const slots = this.htmlInventoryElement.querySelectorAll('.inventory-slot');
         const dragShadow = document.getElementById('drag-shadow');
         const dragShadowImg = document.getElementById('drag-shadow-img');
 
@@ -228,36 +241,25 @@ class InventoryPrivateSceneHtml {
         // Setup shadow image
         let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? slotData.group.image : slotData.group.image_url;
         dragShadowImg.src = imageSrc;
-        
-        // Aplicar dimensiones personalizadas al drag shadow si están definidas
-        if (slotData.group.width != null || slotData.group.height != null) {
-            const tempImg = new Image();
-            tempImg.onload = () => {
-                const originalWidth = tempImg.naturalWidth;
-                const originalHeight = tempImg.naturalHeight;
-                
-                let targetWidth = slotData.group.width || originalWidth;
-                let targetHeight = slotData.group.height || originalHeight;
-                
-                // Calcular escala para mantener aspect ratio (contain)
-                const scaleX = targetWidth / originalWidth;
-                const scaleY = targetHeight / originalHeight;
-                const scale = Math.min(scaleX, scaleY);
-                
-                // Aplicar las dimensiones escaladas al drag shadow
-                const finalWidth = originalWidth * scale;
-                const finalHeight = originalHeight * scale;
-                
-                dragShadowImg.style.width = finalWidth + 'px';
-                dragShadowImg.style.height = finalHeight + 'px';
-            };
-            tempImg.src = imageSrc;
-        } else {
-            // Resetear estilos por defecto
-            dragShadowImg.style.width = '';
-            dragShadowImg.style.height = '';
-        }
-        
+
+        // Obtener el factor de escala de la escena (0.5 para big_scene, 1 para normal)
+        const sceneScaleFactor = this.scene.sceneScaleFactor || 1;
+
+        // Aplicar solo sceneScaleFactor al drag shadow (no usar item.scale)
+        const tempImg = new Image();
+        tempImg.onload = () => {
+            const originalWidth = tempImg.naturalWidth;
+            const originalHeight = tempImg.naturalHeight;
+
+            // Solo aplicar sceneScaleFactor, no el scale del objeto
+            const finalWidth = originalWidth * sceneScaleFactor;
+            const finalHeight = originalHeight * sceneScaleFactor;
+
+            dragShadowImg.style.width = finalWidth + 'px';
+            dragShadowImg.style.height = finalHeight + 'px';
+        };
+        tempImg.src = imageSrc;
+
         dragShadow.style.display = 'block';
         dragShadow.style.left = e.clientX + 'px';
         dragShadow.style.top = e.clientY + 'px';
@@ -290,19 +292,22 @@ class InventoryPrivateSceneHtml {
         const worldX = (clientX - rect.left) * scaleX;
         let worldY = (clientY - rect.top) * scaleY;
 
+        const sceneScaleFactor = this.scene.sceneScaleFactor || 1;
+
         // Ajustar la posición para compensar el origen del sprite (0.5, 0.90)
         if (this.draggedItem.group && this.scene.textures.exists(this.draggedItem.group.sprite_name)) {
             const texture = this.scene.textures.get(this.draggedItem.group.sprite_name);
-            const dpiScale = this.scene.dpiScale || 2;
-            const spriteHeight = texture.source[0].height * (this.draggedItem.group.scale || dpiScale);
-            
+            // Usar solo sceneScaleFactor para que coincida con el drag shadow visual
+            const spriteHeight = texture.source[0].height * sceneScaleFactor;
+
             // Ajustar Y para que coincida con el origen (0.5, 0.90) del sprite final
             worldY = worldY + (spriteHeight * 0.40); // 0.90 - 0.50 = 0.40
         }
 
-        // Calculate tile position
-        const TILE_WIDTH = 65 * (this.scene.dpiScale || 2);
-        const TILE_HEIGHT = 33 * (this.scene.dpiScale || 2);
+        // Calculate tile position (tiles también se escalan en big_scene)
+        const dpiScale = this.scene.dpiScale || 2;
+        const TILE_WIDTH = 65 * dpiScale * sceneScaleFactor;
+        const TILE_HEIGHT = 33 * dpiScale * sceneScaleFactor;
         const HALF_TILE_WIDTH = TILE_WIDTH / 2;
         const HALF_TILE_HEIGHT = TILE_HEIGHT / 2;
         const CENTER_X = this.scene.scale.width / 2;
@@ -371,15 +376,14 @@ class InventoryPrivateSceneHtml {
         }
 
         // Reset slot opacity
-        const container = this.inventoryContainer.node;
-        const slots = container.querySelectorAll('.inventory-slot');
+        const slots = this.htmlInventoryElement.querySelectorAll('.inventory-slot');
         slots.forEach(slot => slot.style.opacity = '1');
 
         this.draggedItem = null;
     }
 
     handleDropOnScene(e, rect) {
-        const dpiScale = this.scene.dpiScale || 2;
+        const sceneScaleFactor = this.scene.sceneScaleFactor || 1;
         const scaleX = this.scene.scale.width / rect.width;
         const scaleY = this.scene.scale.height / rect.height;
         let worldX = (e.clientX - rect.left) * scaleX;
@@ -388,14 +392,17 @@ class InventoryPrivateSceneHtml {
         // Ajustar la posición para compensar el origen del sprite (0.5, 0.90)
         if (this.draggedItem.group && this.scene.textures.exists(this.draggedItem.group.sprite_name)) {
             const texture = this.scene.textures.get(this.draggedItem.group.sprite_name);
-            const spriteHeight = texture.source[0].height * (this.draggedItem.group.scale || dpiScale);
-            
+            // Usar solo sceneScaleFactor para que coincida con el drag shadow visual
+            const spriteHeight = texture.source[0].height * sceneScaleFactor;
+
             // Ajustar Y para que coincida con el origen (0.5, 0.90) del sprite final
             worldY = worldY + (spriteHeight * 0.40); // 0.90 - 0.50 = 0.40
         }
 
-        const TILE_WIDTH = 65 * (this.scene.dpiScale || 2);
-        const TILE_HEIGHT = 33 * (this.scene.dpiScale || 2);
+        // Calculate tile position (tiles también se escalan en big_scene)
+        const dpiScale = this.scene.dpiScale || 2;
+        const TILE_WIDTH = 65 * dpiScale * sceneScaleFactor;
+        const TILE_HEIGHT = 33 * dpiScale * sceneScaleFactor;
         const HALF_TILE_WIDTH = TILE_WIDTH / 2;
         const HALF_TILE_HEIGHT = TILE_HEIGHT / 2;
         const CENTER_X = this.scene.scale.width / 2;
@@ -405,6 +412,16 @@ class InventoryPrivateSceneHtml {
             CENTER_X, HALF_TILE_WIDTH, HALF_TILE_HEIGHT
         );
 
+        console.log('🎯 Drop attempt:', {
+            worldX, worldY,
+            sceneScaleFactor,
+            itemScale: this.draggedItem.group.scale,
+            tileWidth: TILE_WIDTH,
+            tileHeight: TILE_HEIGHT,
+            newTiles,
+            isValid: this.scene.isPositionValid(newTiles, null)
+        });
+
         if (this.scene.isPositionValid(newTiles, null)) {
             // Find item instance and emit socket event
             const itemInstance = this.scene.inventoryItemsList.find(
@@ -412,21 +429,28 @@ class InventoryPrivateSceneHtml {
             );
 
             if (itemInstance) {
+                console.log('✅ Position valid, placing item');
                 socket.emit(RequestSocketsEnum.SCENE_PUT_ITEM, {
                     user_catalog_item_id: itemInstance.id,
                     occupied_tiles: newTiles
                 });
             }
+        } else {
+            console.log('❌ Position invalid');
         }
     }
 
     show() {
+        // Cerrar otros paneles antes de abrir el inventario
         if (this.scene.htmlDetailPanel && this.scene.htmlDetailPanel.isVisible) {
             this.scene.htmlDetailPanel.hide();
         }
-        const container = this.inventoryContainer.node.querySelector('#html-inventory');
-        if (container) {
-            container.style.display = 'block';
+        if (this.scene.htmlColorPanel && this.scene.htmlColorPanel.isVisible) {
+            this.scene.htmlColorPanel.hide();
+        }
+
+        if (this.htmlInventoryElement) {
+            this.htmlInventoryElement.style.display = 'block';
             this.isVisible = true;
             this.updateInventoryUI();
         } else {
@@ -435,9 +459,8 @@ class InventoryPrivateSceneHtml {
     }
 
     hide() {
-        const container = this.inventoryContainer.node.querySelector('#html-inventory');
-        if (container) {
-            container.style.display = 'none';
+        if (this.htmlInventoryElement) {
+            this.htmlInventoryElement.style.display = 'none';
             this.isVisible = false;
         }
     }
@@ -451,9 +474,9 @@ class InventoryPrivateSceneHtml {
     }
 
     updateInventoryUI() {
-        if (!this.inventoryContainer) return;
+        if (!this.htmlInventoryElement) return;
 
-        const container = this.inventoryContainer.node;
+        const container = this.htmlInventoryElement;
         const grouped = this.getGroupedItems();
         const totalPages = Math.max(1, Math.ceil(grouped.length / 9));
 

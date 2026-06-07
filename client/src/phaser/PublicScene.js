@@ -3,6 +3,7 @@ import socket from "../sockets/socket"; // Conexión Socket.io
 import asset_shadow_image from "@/assets/game/avatar/shadow.webp"; // Imagen de la sombra
 import asset_shadow_selected_image from "@/assets/game/avatar/shadow_selected.webp"; // Imagen de la sombra seleccionada
 import asset_tile_image from "@/assets/game/scene/tile.webp"; // Imagen del suelo
+import asset_tile_small_image from "@/assets/game/scene/tile_small.png"; // Imagen del suelo pequeño
 import SceneRequestSockets from "./sockets/SceneRequestSockets"; // Controladores de sockets
 import SceneResponseSockets from "./sockets/SceneResponseSockets"; // Controladores de sockets
 import OverheadChatAnimation from "./animations/OverheadChatAnimation"; // Animación de chat
@@ -56,6 +57,7 @@ export default class PublicScene extends Phaser.Scene {
     preload() {
         PublicSceneLoader.main(this, true); // Precargar imágenes específicas de la sala
         this.load.image("tile", asset_tile_image);
+        this.load.image("tile_small", asset_tile_small_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
         this.load.image("asset_ui_shop_image", asset_ui_shop_image);
@@ -97,6 +99,10 @@ export default class PublicScene extends Phaser.Scene {
         SceneRequestSockets.main(this); // Solicitar datos iniciales de la sala
         SceneResponseSockets.main(this); // Inicializar controladores de sockets
         PublicSceneResponse.main(this); // Respuesta de la escena pública
+
+        // Inicializar factor de escala para big_scene ANTES de cargar assets
+        this.bigSceneMode = this.sceneData.scenery.big_scene || false;
+        this.sceneScaleFactor = this.bigSceneMode ? 0.5 : 1;
 
         // Inicializar darkeningData ANTES de cargar el background
         if (this.sceneData.scenery.darkening && this.sceneData.scenery.game_time) {
@@ -157,6 +163,11 @@ export default class PublicScene extends Phaser.Scene {
             // Limpiar buffer
             this.eventBuffer = [];
         }
+        
+        // Notificar al VisibilityManager que la escena está completamente cargada
+        if (window.visibilityManager) {
+            window.visibilityManager.onSceneLoaded(this);
+        }
     }
 
     createHTMLButtons() {
@@ -184,8 +195,12 @@ export default class PublicScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de tienda pulsado');
                 }
+                // Emit event to Vue component to show shop
+                if (this.vueComponent && this.vueComponent.showShop) {
+                    this.vueComponent.showShop();
+                }
             });
-            
+
             // Tooltip functionality
             const shopTooltip = shopButton.querySelector('.tooltip');
             shopButton.addEventListener('mouseenter', () => {
@@ -228,7 +243,7 @@ export default class PublicScene extends Phaser.Scene {
                     this.vueComponent.showRankings();
                 }
             });
-            
+
             // Tooltip functionality
             const rankingsTooltip = rankingsButton.querySelector('.tooltip');
             rankingsButton.addEventListener('mouseenter', () => {
@@ -236,6 +251,26 @@ export default class PublicScene extends Phaser.Scene {
             });
             rankingsButton.addEventListener('mouseleave', () => {
                 if (rankingsTooltip) rankingsTooltip.style.opacity = '0';
+            });
+        }
+
+        // Inventory button
+        const inventoryButton = buttonsElement.querySelector('[data-action="inventory"]');
+        if (inventoryButton) {
+            inventoryButton.addEventListener('click', (event) => {
+                // Emit event to Vue component to show inventory popup
+                if (this.vueComponent && this.vueComponent.showInventory) {
+                    this.vueComponent.showInventory();
+                }
+            });
+
+            // Tooltip functionality
+            const inventoryTooltip = inventoryButton.querySelector('.tooltip');
+            inventoryButton.addEventListener('mouseenter', () => {
+                if (inventoryTooltip) inventoryTooltip.style.opacity = '1';
+            });
+            inventoryButton.addEventListener('mouseleave', () => {
+                if (inventoryTooltip) inventoryTooltip.style.opacity = '0';
             });
         }
     }

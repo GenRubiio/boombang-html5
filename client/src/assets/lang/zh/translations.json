@@ -33,7 +33,9 @@
     "tooltip_avatars": "头像",
     "tooltip_color": "颜色",
     "tooltip_move": "移动",
-    "tooltip_inventory": "库存"
+    "tooltip_inventory": "库存",
+    "color_panel_title": "场景着色",
+    "color_panel_save": "保存"
   },
   "maintenance": {
     "title": "维护",
@@ -83,7 +85,17 @@
   },
   "island": {
     "locations": "地点",
-    "add_scenario": "添加场景"
+    "add_scenario": "添加场景",
+    "edit_name_tooltip": "编辑岛屿名称",
+    "edit_description_tooltip": "编辑岛屿描述",
+    "description_placeholder": "点击添加描述...",
+    "no_description": "无描述",
+    "description_textarea_placeholder": "为您的岛屿写一个描述...",
+    "edit_scene_name": "编辑场景名称",
+    "delete_scene": "删除场景",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm_delete_scene": "您确定要删除'{name}'吗？"
   },
   "user_card": {
     "change_ficha_alt": "更改卡片",
@@ -186,6 +198,12 @@
       "coconuts_locos": {
         "title": "疯狂椰子",
         "caught": "已抓住"
+      },
+      "interactions": {
+        "title": "互动",
+        "kisses": "吻",
+        "drinks": "饮料",
+        "roses": "玫瑰"
       }
     }
   },
@@ -360,7 +378,10 @@
       "no_islands": "你没有创建任何岛屿。"
     },
     "search": {
-      "not_implemented": "搜索功能尚未实现。"
+      "placeholder": "搜索岛屿...",
+      "enter_search": "输入岛屿名称进行搜索",
+      "searching": "搜索中...",
+      "no_results": "未找到岛屿"
     },
     "ui": {
       "background_alt": "大厅背景",
@@ -374,7 +395,22 @@
       "credits": "积分",
       "avatar_error": "加载用户头像时出错",
       "settings": "设置",
-      "settings_alt": "配置"
+      "settings_alt": "配置",
+      "mail": "邮件",
+      "mail_alt": "邮箱"
+    },
+    "mail": {
+      "title": "邮件",
+      "loading": "加载邮件中...",
+      "no_mails": "您没有邮件",
+      "new": "新",
+      "has_rewards": "有奖励",
+      "rewards_title": "奖励",
+      "gold_credits": "金币",
+      "silver_credits": "银币",
+      "claim": "领取",
+      "claiming": "领取中...",
+      "claimed": "已领取"
     }
   },
   "settings": {
@@ -421,5 +457,15 @@
   },
   "loading": {
     "title": "加载中..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "{winnerName} 获胜了！",
+      "winner_details": "恭喜拳击场冠军！",
+      "no_min_users_title": "比赛取消",
+      "no_min_users_details": "没有足够的玩家开始比赛",
+      "timeout_title": "时间到",
+      "timeout_details": "时间用完，没有明确的赢家"
+    }
   }
 }

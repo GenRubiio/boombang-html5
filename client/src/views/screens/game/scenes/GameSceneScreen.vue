@@ -14,7 +14,12 @@
       @close-coconuts-info="hideCoconutsInfoCard"
     />
     <BaseChatComponent @exitLobby="exitToLobby" @sendMessage="sendMessage" />
-    <NpcComponent v-if="showNpcModal" @close="closeNpcModal" :npcId="npcId" />
+    <NpcComponent
+      v-if="showNpcModal"
+      @close="closeNpcModal"
+      :npcId="npcId"
+      :npcType="npcType"
+    />
     <AvatarSelectionPopup
       v-if="isAvatarSelectionVisible"
       :authUser="sceneData.authUser"
@@ -24,6 +29,16 @@
       v-if="isRankingsVisible"
       :authUser="sceneData.authUser"
       @close-rankings="hideRankings"
+    />
+    <InventoryPublicSceneComponent
+      v-if="isInventoryVisible"
+      @close-inventory="hideInventory"
+    />
+    <ShopComponent
+      v-if="isShopVisible"
+      :authUser="sceneData.authUser"
+      @close-shop="hideShop"
+      @purchase-success="handlePurchaseSuccess"
     />
   </div>
 </template>
@@ -35,9 +50,11 @@ import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardC
 import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
-import NpcComponent from "../../../components/game/scenes/NpcComponent.vue";
+import NpcComponent from "../../../components/game/scenes/minigame/NpcComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
+import InventoryPublicSceneComponent from "../../../components/game/scenes/public/InventoryPublicSceneComponent.vue";
+import ShopComponent from "../../../components/game/scenes/ShopComponent.vue";
 
 export default {
   props: {
@@ -53,10 +70,13 @@ export default {
     return {
       showNpcModal: false,
       npcId: null, // usa esto si quieres pasar datos al modal
+      npcType: null,
       isRingInfoCardVisible: false,
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
       isRankingsVisible: false,
+      isInventoryVisible: false,
+      isShopVisible: false,
     };
   },
   created() {
@@ -70,6 +90,8 @@ export default {
     CoconutsInfoCardComponent,
     AvatarSelectionPopup,
     RankingsComponent,
+    InventoryPublicSceneComponent,
+    ShopComponent,
   },
   methods: {
     initializeGame() {
@@ -103,10 +125,11 @@ export default {
       //console.log("Usuario seleccionado:", userData);
       this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
     },
-    openNpcModal(npcId) {
+    openNpcModal(npcId, npcType) {
       // opcional: carga datos en currentNpcData
       // this.currentNpcData = { /* ... */ };
       this.npcId = npcId; // Guarda el ID del NPC
+      this.npcType = npcType;
       this.showNpcModal = true;
     },
     closeNpcModal() {
@@ -137,6 +160,29 @@ export default {
     },
     hideRankings() {
       this.isRankingsVisible = false;
+    },
+    showInventory() {
+      // Cerrar la tienda si está abierta
+      this.isShopVisible = false;
+      this.isInventoryVisible = true;
+    },
+    hideInventory() {
+      this.isInventoryVisible = false;
+    },
+    showShop() {
+      // Cerrar el inventario si está abierto
+      this.isInventoryVisible = false;
+      this.isShopVisible = true;
+    },
+    hideShop() {
+      this.isShopVisible = false;
+    },
+    handlePurchaseSuccess(userData) {
+      // Actualizar el oro/plata del usuario en el componente padre
+      if (this.sceneData && this.sceneData.authUser) {
+        this.sceneData.authUser.gold = userData.gold;
+        this.sceneData.authUser.silver = userData.silver;
+      }
     },
   },
   mounted() {

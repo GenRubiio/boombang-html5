@@ -1,13 +1,14 @@
 <template>
   <div class="lobby__scenes-tab">
     <div class="lobby__scenes-list" ref="scrollContainer">
-      <div v-for="publicScene in publicScenes" :key="publicScene.uuid" class="scene-item">
+      <SpinnerComponent v-if="isLoading" />
+      <div v-else v-for="publicScene in publicScenes" :key="publicScene.uuid" class="scene-item">
         <button
           @click="handleClick(publicScene.uuid, MenuTypeEnum.PUBLIC_SCENE)"
           :disabled="isJoining"
         >
-          {{ publicScene.name }}
-          <span>{{ publicScene.total_users_in }}</span>
+          <span class="scene-name">{{ publicScene.name }}</span>
+          <span class="user-count">{{ publicScene.total_users_in }}</span>
         </button>
       </div>
     </div>
@@ -17,17 +18,29 @@
 <script>
 import MenuTypeEnum from "../../../../enums/MenuTypeEnum";
 import { useOverlayScrollbars } from '@/composables/useOverlayScrollbars';
+import SpinnerComponent from '../../common/SpinnerComponent.vue';
 import 'overlayscrollbars/overlayscrollbars.css';
 
 export default {
+  components: {
+    SpinnerComponent,
+  },
   props: {
-    publicScenes: Array,
+    publicScenes: {
+      type: Array,
+      default: null,
+    },
   },
   data() {
     return {
       MenuTypeEnum,
       isJoining: false,
     };
+  },
+  computed: {
+    isLoading() {
+      return this.publicScenes === null;
+    },
   },
   mounted() {
     const { initScrollbars } = useOverlayScrollbars();
@@ -74,9 +87,7 @@ export default {
   display: inline-flex;
   align-items: center;
   transition: background-color 0.3s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  gap: 5px;
 }
 
 .lobby__scenes-list button:hover {
@@ -90,11 +101,20 @@ export default {
   opacity: 0.6;
 }
 
-.lobby__scenes-list button span {
+.scene-name {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+
+.user-count {
   margin-left: auto;
   background-color: #3c87b3ad;
   border-radius: 5px;
   padding: 5px 10px;
   font-size: 12px;
+  flex-shrink: 0;
 }
 </style>

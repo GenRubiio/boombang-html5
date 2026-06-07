@@ -5,6 +5,9 @@
       @joinPublicScene="onJoinPublicScene"
       @updateLoading="onUpdateLoading"
       @createIsland="onCreateIsland"
+      :showIslandError="showIslandErrorAlert"
+      :islandErrorMessage="islandErrorMessage"
+      @closeIslandError="handleCloseIslandError"
     />
     <PublicSceneScreen
       v-else-if="currentScreen === GameScreensEnum.PUBLIC_SCENE"
@@ -19,6 +22,7 @@
       :sceneData="sceneData"
       @updateLoading="onUpdateLoading"
       @joinIsland="onJoinIsland"
+      @exitLobby="onExitLobby"
     />
     <GameSceneScreen
       v-else-if="currentScreen === GameScreensEnum.GAME_SCENE"
@@ -78,6 +82,8 @@ export default {
       sceneData: null,
       GameScreensEnum,
       showMinigameNotification: false,
+      showIslandErrorAlert: false,
+      islandErrorMessage: '',
     };
   },
   components: {
@@ -158,6 +164,10 @@ export default {
         this.gamePhaser.scene.stop("MinigameScene");
       }
     },
+    handleCloseIslandError() {
+      this.showIslandErrorAlert = false;
+      this.islandErrorMessage = '';
+    },
   },
   mounted() {
     socket.off(ResponseSocketsEnum.MINIGAME_JOIN);
@@ -221,8 +231,16 @@ export default {
         "Error al unirse a la sala privada. Por favor, inténtalo de nuevo."
       );
     });
+
+    socket.off(ResponseSocketsEnum.ERROR_ISLAND_NOT_FOUND);
+    socket.on(ResponseSocketsEnum.ERROR_ISLAND_NOT_FOUND, () => {
+      this.showIslandErrorAlert = true;
+      this.islandErrorMessage = this.$t('island.error_island_not_found');
+    });
   },
-  beforeUnmount() {},
+  beforeUnmount() {
+    socket.off(ResponseSocketsEnum.ERROR_ISLAND_NOT_FOUND);
+  },
 };
 </script>
 

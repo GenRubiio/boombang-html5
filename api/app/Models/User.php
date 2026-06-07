@@ -27,6 +27,7 @@ class User extends Authenticatable
         'lang',
         'password',
         'username',
+        'show_username',
         'description',
         'ficha_color',
         'shadow_color',
@@ -41,6 +42,12 @@ class User extends Authenticatable
         'uppercuts_received',
         'coconuts_sent',
         'coconuts_received',
+        'kisses_sent',
+        'kisses_received',
+        'drinks_sent',
+        'drinks_received',
+        'roses_sent',
+        'roses_received',
         'last_update_username_at',
         'phaser_rendering_type',
         'phaser_antialias',
@@ -55,6 +62,7 @@ class User extends Authenticatable
         'bot_language_mode',
         'bot_settings',
         'active',
+        'lobby_tutorial',
     ];
 
     protected $hidden = [

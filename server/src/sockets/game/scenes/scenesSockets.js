@@ -19,6 +19,7 @@ const GetUserDecorationsController = require('../../../controllers/game/scenes/G
 const InteractionRequestController = require('../../../controllers/game/interactions/InteractionRequestController');
 const GetUserAvatarsController = require('../../../controllers/game/scenes/GetUserAvatarsController');
 const UserChangeAvatarController = require('../../../controllers/game/scenes/UserChangeAvatarController');
+const UserSyncController = require('../../../controllers/game/scenes/UserSyncController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
 module.exports = (socket, io) => {
@@ -90,5 +91,8 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.USER_CHANGE_AVATAR, (data) => {
         UserChangeAvatarController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.REQUEST_USERS_SYNC, () => {
+        UserSyncController.main(socket, io);
     });
 };

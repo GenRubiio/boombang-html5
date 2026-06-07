@@ -33,7 +33,9 @@
     "tooltip_avatars": "アバター",
     "tooltip_color": "色付け",
     "tooltip_move": "移動",
-    "tooltip_inventory": "インベントリ"
+    "tooltip_inventory": "インベントリ",
+    "color_panel_title": "シーンの色付け",
+    "color_panel_save": "保存"
   },
   "maintenance": {
     "title": "メンテナンス",
@@ -83,7 +85,17 @@
   },
   "island": {
     "locations": "場所",
-    "add_scenario": "シナリオを追加"
+    "add_scenario": "シナリオを追加",
+    "edit_name_tooltip": "島の名前を編集",
+    "edit_description_tooltip": "島の説明を編集",
+    "description_placeholder": "クリックして説明を追加...",
+    "no_description": "説明なし",
+    "description_textarea_placeholder": "あなたの島の説明を書いてください...",
+    "edit_scene_name": "シーン名を編集",
+    "delete_scene": "シーンを削除",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm_delete_scene": "本当に'{name}'を削除しますか？"
   },
   "user_card": {
     "change_ficha_alt": "カードを変更",
@@ -212,6 +224,12 @@
       "coconuts_locos": {
         "title": "狂ったココナッツ",
         "caught": "捕獲"
+      },
+      "interactions": {
+        "title": "インタラクション",
+        "kisses": "キス",
+        "drinks": "飲み物",
+        "roses": "バラ"
       }
     }
   },
@@ -386,7 +404,10 @@
       "no_islands": "作成した島はありません。"
     },
     "search": {
-      "not_implemented": "検索はまだ実装されていません。"
+      "placeholder": "島を検索...",
+      "enter_search": "島の名前を入力して検索",
+      "searching": "検索中...",
+      "no_results": "島が見つかりません"
     },
     "ui": {
       "background_alt": "ロビーの背景",
@@ -400,7 +421,22 @@
       "credits": "クレジット",
       "avatar_error": "ユーザーアバターの読み込み中にエラーが発生しました",
       "settings": "設定",
-      "settings_alt": "構成"
+      "settings_alt": "構成",
+      "mail": "メール",
+      "mail_alt": "メールボックス"
+    },
+    "mail": {
+      "title": "メール",
+      "loading": "メールを読み込み中...",
+      "no_mails": "メールがありません",
+      "new": "新着",
+      "has_rewards": "報酬があります",
+      "rewards_title": "報酬",
+      "gold_credits": "ゴールドクレジット",
+      "silver_credits": "シルバークレジット",
+      "claim": "受け取る",
+      "claiming": "受け取り中...",
+      "claimed": "受け取り済み"
     }
   },
   "settings": {
@@ -447,5 +483,15 @@
   },
   "loading": {
     "title": "読み込み中..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "{winnerName}が勝ちました！",
+      "winner_details": "リングの勝者におめでとう！",
+      "no_min_users_title": "試合キャンセル",
+      "no_min_users_details": "試合を開始するのに十分なプレイヤーがいません",
+      "timeout_title": "時間切れ",
+      "timeout_details": "明確な勝者がいないまま時間が切れました"
+    }
   }
 }

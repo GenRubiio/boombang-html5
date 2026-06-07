@@ -5,6 +5,7 @@ class UserModel {
     constructor(row) {
         this.id = row.id.toString();
         this.username = row.username;
+        this.show_username = row.show_username !== undefined ? row.show_username : true;
         this.lang = row.lang;
         this.description = row.description;
         this.ficha_color = row.ficha_color; // Ficha del usuario, por defecto es 'user'
@@ -15,13 +16,22 @@ class UserModel {
         this.avatarId = row.avatar_id; // ID del avatar del usuario
         this.goldCoins = row.gold_coins; // Monedas de oro del usuario
         this.silverCoins = row.silver_coins; // Monedas de plata del usuario
+        // Aliases para compatibilidad con la API
+        this.gold = row.gold !== undefined ? row.gold : row.gold_coins;
+        this.silver = row.silver !== undefined ? row.silver : row.silver_coins;
         this.ringsWon = row.rings_won; // Anillos ganados por el usuario
         this.coconutsCaught = row.coconuts_caught; // Cocos atrapados por el usuario
         this.uppercutsSend = row.uppercuts_sent; // Uppercuts enviados por el usuario
         this.uppercutsReceived = row.uppercuts_received; // Uppercuts recibidos por el usuario
         this.coconutsSent = row.coconuts_sent; // Cocos enviados por el usuario
         this.coconutsReceived = row.coconuts_received; // Cocos recibidos por el usuario
-        
+        this.kissesSent = row.kisses_sent; // Besos enviados por el usuario
+        this.kissesReceived = row.kisses_received; // Besos recibidos por el usuario
+        this.drinksSent = row.drinks_sent; // Bebidas enviadas por el usuario
+        this.drinksReceived = row.drinks_received; // Bebidas recibidas por el usuario
+        this.rosesSent = row.roses_sent; // Rosas enviadas por el usuario
+        this.rosesReceived = row.roses_received; // Rosas recibidas por el usuario
+
         this.is_bot = row.is_bot || 0; // Indica si el usuario es un bot
         this.bot_settings = row.bot_settings || {}; // Configuraciones del bot
 
@@ -64,6 +74,8 @@ class UserModel {
             show_isomap: false,
             show_object_reserved_tiles: false,
         };
+
+        this.lobbyTutorial = row.tutorial_completed || false; // Indica si el usuario ha completado el tutorial del lobby
     }
 
     // Bloquea una acción específica durante 'duration' ms

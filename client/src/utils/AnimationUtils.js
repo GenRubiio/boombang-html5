@@ -19,12 +19,17 @@ class AnimationUtils {
         //    animationData.originX + (animationData.offsetX / animationData.frameWidth),
         //    animationData.originY + (animationData.offsetY / animationData.frameHeight)
         //);
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = spriteAvatar.scene.sceneScaleFactor || 1;
+
+        // La posición dentro del contenedor debe escalar proporcionalmente
         spriteAvatar.setPosition(
-            animationData.positionX * gameConfig.DPI,
-            animationData.positionY * gameConfig.DPI
+            animationData.positionX * gameConfig.DPI * scaleFactor,
+            animationData.positionY * gameConfig.DPI * scaleFactor
         );
-        //TODO: Nuevo rederizado * 2
-        spriteAvatar.setScale(gameConfig.DPI / 2);
+        // Escala normalizada: para assets de alta resolución (DPI=2) → escala=1, para assets normales (DPI=1) → escala=1
+        // Aplicar scaleFactor para big_scene
+        spriteAvatar.setScale(scaleFactor);
     }
 }
 

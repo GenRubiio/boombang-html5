@@ -56,6 +56,11 @@ class Island extends Model
         return $this->hasMany(PrivateScene::class);
     }
 
+    public function islandConfig(): BelongsTo
+    {
+        return $this->belongsTo(IslandsConfig::class, 'type', 'id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

@@ -82,6 +82,7 @@ class PublicSceneLoader {
         if (!item.show_item) {
             return; // Si no se debe mostrar el item, no hacemos nada
         }
+
         let sprite;
         const depth = item.custom_depth == 0 ? 0 : (item.custom_depth || item.y) * item.scale;
         if (SceneUtils.isVideoFile(item.image)) {
@@ -116,22 +117,26 @@ class PublicSceneLoader {
         if (!npcData || !npcData.active) {
             return; // Si no hay NPC o no está activo, no hacemos nada
         }
+        // Aplicar factor de escala para big_scene (los NPCs sí se escalan)
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const finalScale = npcData.scale * scaleFactor;
+
         const spriteName = 'public_scene_' + areaId + '_npc_' + npcData.spriteName;
         let sprite;
 
         if (SceneUtils.isVideoFile(npcData.image)) {
-            sprite = gameScene.add.video(npcData.positionX * npcData.scale, npcData.positionY * npcData.scale, spriteName);
+            sprite = gameScene.add.video(npcData.positionX * scaleFactor, npcData.positionY * scaleFactor, spriteName);
             sprite.setOrigin(0.5, 1);
-            sprite.setDepth(npcData.depth || npcData.positionY * npcData.scale);
+            sprite.setDepth(npcData.depth || npcData.positionY * scaleFactor);
             sprite.setLoop(true);
             sprite.play(true);
         }
         else {
-            sprite = gameScene.add.image(npcData.positionX * npcData.scale, npcData.positionY * npcData.scale, spriteName);
+            sprite = gameScene.add.image(npcData.positionX * scaleFactor, npcData.positionY * scaleFactor, spriteName);
             sprite.setOrigin(0.5, 1);
-            sprite.setDepth(npcData.depth || npcData.positionY * npcData.scale);
+            sprite.setDepth(npcData.depth || npcData.positionY * scaleFactor);
         }
-        sprite.setScale(npcData.scale);
+        sprite.setScale(finalScale);
 
         sprite.setInteractive({
             cursor: 'pointer',
@@ -139,9 +144,11 @@ class PublicSceneLoader {
         });
 
         // 3) Detectar clic y llamar al método de Vue
-        sprite.on("pointerdown", () => {
+        sprite.on("pointerdown", (_pointer, _localX, _localY, event) => {
+            // Detener la propagación del evento para evitar que el personaje se mueva
+            event.stopPropagation();
             // Llama a openNpcModal() que definiremos en el componente Vue
-            gameScene.vueComponent.openNpcModal(1); // npcData.type
+            gameScene.vueComponent.openNpcModal(npcData.id, npcData.type);
         });
 
         //SceneUtils.moveItem(gameScene, sprite);

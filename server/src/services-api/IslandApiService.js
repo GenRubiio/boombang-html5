@@ -45,6 +45,42 @@ class IslandApiService {
             throw error;
         }
     }
+
+    static async updateName(islandData, user) {
+        try {
+            return await ApiService.post('api/island/update-name', islandData, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar el nombre de la isla:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async updateDescription(islandData, user) {
+        try {
+            return await ApiService.post('api/island/update-description', islandData, user.authJwt);
+        } catch (error) {
+            console.error('Error al actualizar la descripción de la isla:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async searchIslands(searchData, user) {
+        try {
+            return await ApiService.post('api/islands/search', searchData, user.authJwt);
+        } catch (error) {
+            console.error('Error al buscar islas:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async delete(islandData, user) {
+        try {
+            return await ApiService.post('api/island/delete', islandData, user.authJwt);
+        } catch (error) {
+            console.error('Error al eliminar la isla:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
 }
 
 module.exports = IslandApiService;

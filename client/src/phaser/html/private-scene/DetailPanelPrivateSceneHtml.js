@@ -23,7 +23,7 @@ class DetailPanelPrivateSceneHtml {
 
         return `
             <div id="html-detail-panel" style="
-                position: fixed;
+                position: absolute;
                 right: 10px;
                 bottom: 72px;
                 width: 179px;
@@ -124,11 +124,25 @@ class DetailPanelPrivateSceneHtml {
         this.detailContainer.setScrollFactor(0);
         this.detailContainer.setDepth(10000);
 
+        // Guardar referencia al contenedor antes de moverlo
+        this.htmlDetailPanelElement = this.detailContainer.node.querySelector('#html-detail-panel');
+
+        // Mover el elemento al contenedor game-container para que aparezca por encima del chat
+        this.moveToGameContainer();
+
         this.setupEventListeners();
     }
 
+    moveToGameContainer() {
+        const gameContainer = document.querySelector('.game-container');
+
+        if (gameContainer && this.htmlDetailPanelElement) {
+            gameContainer.appendChild(this.htmlDetailPanelElement);
+        }
+    }
+
     setupEventListeners() {
-        const container = this.detailContainer.node;
+        const container = this.htmlDetailPanelElement;
 
         // Detener la propagación de eventos para que no interfieran con la escena de Phaser
         const stopPropagation = (event) => event.stopPropagation();
@@ -160,23 +174,27 @@ class DetailPanelPrivateSceneHtml {
     }
 
     show(item) {
+        // Cerrar otros paneles antes de abrir el panel de detalles
         if (this.scene.htmlInventory && this.scene.htmlInventory.isVisible) {
             this.scene.htmlInventory.hide();
         }
+        if (this.scene.htmlColorPanel && this.scene.htmlColorPanel.isVisible) {
+            this.scene.htmlColorPanel.hide();
+        }
+
         this.currentItem = item;
-        
-        const container = this.detailContainer.node.querySelector('#html-detail-panel');
-        const nameElement = this.detailContainer.node.querySelector('#detail-item-name');
-        const iconElement = this.detailContainer.node.querySelector('#detail-item-icon');
-        
-        if (container && nameElement && iconElement) {
+
+        const nameElement = this.htmlDetailPanelElement.querySelector('#detail-item-name');
+        const iconElement = this.htmlDetailPanelElement.querySelector('#detail-item-icon');
+
+        if (this.htmlDetailPanelElement && nameElement && iconElement) {
             // Update content
             nameElement.textContent = item.display_name;
             let imageSrc = import.meta.env.VITE_APP_ENV == 'local' ? item.image : item.image_url;
             iconElement.src = imageSrc;
 
             // Show panel
-            container.style.display = 'block';
+            this.htmlDetailPanelElement.style.display = 'block';
             this.isVisible = true;
         } else {
             console.error('HTML detail panel elements not found');
@@ -184,22 +202,20 @@ class DetailPanelPrivateSceneHtml {
     }
 
     hide() {
-        const container = this.detailContainer.node.querySelector('#html-detail-panel');
-        if (container) {
-            container.style.display = 'none';
+        if (this.htmlDetailPanelElement) {
+            this.htmlDetailPanelElement.style.display = 'none';
             this.isVisible = false;
             this.currentItem = null;
         }
-        
+
         // Also call the scene's deselect method to clean up selection
         this.scene.deselectObject();
     }
 
     disableButtons() {
-        const container = this.detailContainer.node;
-        const deleteBtn = container.querySelector('#detail-delete-btn');
-        const rotateBtn = container.querySelector('#detail-rotate-btn');
-        
+        const deleteBtn = this.htmlDetailPanelElement.querySelector('#detail-delete-btn');
+        const rotateBtn = this.htmlDetailPanelElement.querySelector('#detail-rotate-btn');
+
         if (deleteBtn) {
             deleteBtn.disabled = true;
             deleteBtn.style.opacity = '0.5';
@@ -213,9 +229,8 @@ class DetailPanelPrivateSceneHtml {
     }
 
     enableButtons() {
-        const container = this.detailContainer.node;
-        const deleteBtn = container.querySelector('#detail-delete-btn');
-        const rotateBtn = container.querySelector('#detail-rotate-btn');
+        const deleteBtn = this.htmlDetailPanelElement.querySelector('#detail-delete-btn');
+        const rotateBtn = this.htmlDetailPanelElement.querySelector('#detail-rotate-btn');
         
         if (deleteBtn) {
             deleteBtn.disabled = false;

@@ -3,6 +3,7 @@ const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const SceneTypesEnum = require('../../../enums/SceneTypesEnum');
 const AnimationEnum = require('../../../enums/AnimationEnum');
 const UserBlockActionsTask = require('../../../tasks/UserBlockActionsTask');
+const UserService = require('../../../services/UserService');
 
 class InteractionRequestController {
     static send(socket, io, data) {
@@ -125,8 +126,21 @@ class InteractionRequestController {
                 UserBlockActionsTask.blockByInteraction(user, interactionType);
                 UserBlockActionsTask.blockByInteraction(fromUser, interactionType);
 
-                //UserService.increaseUppercutSend(user);
-                //UserService.increaseUppercutReceived(fromUser);
+                // Incrementar estadísticas según el tipo de interacción
+                switch (interactionType) {
+                    case 'kiss':
+                        UserService.increaseKissesSent(fromUser);
+                        UserService.increaseKissesReceived(user);
+                        break;
+                    case 'drink':
+                        UserService.increaseDrinksSent(fromUser);
+                        UserService.increaseDrinksReceived(user);
+                        break;
+                    case 'rose':
+                        UserService.increaseRosesSent(fromUser);
+                        UserService.increaseRosesReceived(user);
+                        break;
+                }
 
                 user.currentArea.removeInteraction(fromUser.id, user.id);
 

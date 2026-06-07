@@ -25,7 +25,16 @@ class PrivateSceneConfigRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required',
+            'island_type' => 'required',
+            'image' => 'nullable',
+            'max_users' => 'required|integer|min:1|max:12',
+            'map_width' => 'required|integer',
+            'map_height' => 'required|integer',
+            'map' => 'required|string',
+            'start_x' => 'required|integer|min:0',
+            'start_y' => 'required|integer|min:0',
+            'start_z' => 'required|integer|min:0',
         ];
     }
 

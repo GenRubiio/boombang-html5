@@ -187,6 +187,22 @@ class UserApiService {
             return { success: false, message: 'Bot not found' };
         }
     }
+
+    static async updateLobbyTutorial(user, tutorialCompleted) {
+        try {
+            const data = {
+                user_id: user.id,
+                lobby_tutorial: tutorialCompleted
+            };
+            return await ApiService.post('api/user/update-lobby-tutorial', data, user.authJwt);
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                return error.response.data;
+            }
+            console.error('Error updating lobby tutorial:', error.response ? error.response.data : error.message);
+            return { success: false, message: 'Failed to update lobby tutorial' };
+        }
+    }
 }
 
 module.exports = UserApiService;

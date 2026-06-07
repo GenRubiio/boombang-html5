@@ -29,8 +29,8 @@ COPY dev-php.ini /usr/local/etc/php/conf.d/custom.ini
 # Dependencias PHP (Laravel)
 RUN composer install --no-interaction --prefer-dist --no-dev
 
-# Node.js 18 (si tu API realmente necesita compilar assets)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+# Node.js 20 LTS (si tu API realmente necesita compilar assets)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get update && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

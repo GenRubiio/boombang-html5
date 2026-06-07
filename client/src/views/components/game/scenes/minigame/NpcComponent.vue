@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-content" @pointerdown.stop @mousedown.stop @touchstart.stop>
       <button class="close-btn" @click="$emit('close')"><i class="las la-times"></i></button>
       <RingNpcModalComponent v-if="npcId == NpcEnum.WISE_RING" :npcId="npcId" />
     </div>
@@ -9,12 +9,16 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import NpcEnum from "../../../../enums/NpcEnum.js";
+import NpcEnum from "../../../../../enums/NpcEnum.js";
 
 export default {
   props: {
     npcId: {
       type: Number,
+      required: true,
+    },
+    npcType: {
+      type: String,
       required: true,
     },
   },
@@ -25,13 +29,13 @@ export default {
   },
   components: {
     RingNpcModalComponent: defineAsyncComponent(() =>
-      import("../scenes/npc/RingNpcModalComponent.vue")
+      import("../npc/RingNpcModalComponent.vue")
     ),
   },
 };
 </script>
 
-<style>
+<style scoped>
 .modal-overlay {
   display: flex;
   justify-content: end;

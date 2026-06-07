@@ -29,9 +29,24 @@
           @create-island="createIsland"
         />
 
-        <SearchTab v-if="activeTab === 'search'" />
+        <SearchTab
+          v-if="activeTab === 'search'"
+          @join-island="joinIsland"
+        />
       </div>
     </div>
+
+    <!-- Popup de error para isla no encontrada -->
+    <ErrorAlertPopup
+      :visible="showIslandError"
+      :title="$t('island.error_title')"
+      :message="islandErrorMessage"
+      :acceptText="$t('common.accept')"
+      @close="$emit('closeIslandError')"
+    />
+
+    <!-- Componente del tutorial del lobby -->
+    <LobbyTutorialComponent />
   </div>
 </template>
 
@@ -45,6 +60,8 @@ import AreasTab from "../../components/game/lobby/AreasTabComponent.vue";
 import GamesTab from "../../components/game/lobby/GamesTabComponent.vue";
 import IslandsTab from "../../components/game/lobby/IslandsTabComponent.vue";
 import SearchTab from "../../components/game/lobby/SearchTabComponent.vue";
+import ErrorAlertPopup from "../../components/game/island/ErrorAlertPopup.vue";
+import LobbyTutorialComponent from "../../components/game/lobby/LobbyTutorialComponent.vue";
 import { useLobbyStore } from "@/stores/LobbyStore";
 import { mapActions, mapState } from "pinia";
 
@@ -56,11 +73,23 @@ export default {
     GamesTab,
     IslandsTab,
     SearchTab,
+    ErrorAlertPopup,
+    LobbyTutorialComponent,
+  },
+  props: {
+    showIslandError: {
+      type: Boolean,
+      default: false,
+    },
+    islandErrorMessage: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       activeIslandTab: "public",
-      publicScenes: [],
+      publicScenes: null,
       favoriteIslands: [],
       myIslands: [],
     };

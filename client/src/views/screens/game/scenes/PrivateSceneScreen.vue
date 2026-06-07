@@ -24,6 +24,12 @@
       :authUser="sceneData.authUser"
       @close-rankings="hideRankings"
     />
+    <ShopComponent
+      v-if="isShopVisible"
+      :authUser="sceneData.authUser"
+      @close-shop="hideShop"
+      @purchase-success="handlePurchaseSuccess"
+    />
   </div>
 </template>
 
@@ -35,7 +41,9 @@ import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsI
 import BaseChatComponent from "../../../components/game/scenes/BaseChatComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
+import ShopComponent from "../../../components/game/scenes/ShopComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
+import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum.js";
 
 export default {
   props: {
@@ -53,6 +61,7 @@ export default {
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
       isRankingsVisible: false,
+      isShopVisible: false,
     };
   },
   created() {
@@ -65,8 +74,33 @@ export default {
     CoconutsInfoCardComponent,
     AvatarSelectionPopup,
     RankingsComponent,
+    ShopComponent,
   },
   methods: {
+    /**
+     * Cierra todos los paneles abiertos (Vue y HTML de Phaser)
+     */
+    closeAllPanels() {
+      // Cerrar paneles Vue
+      this.isAvatarSelectionVisible = false;
+      this.isRankingsVisible = false;
+      this.isShopVisible = false;
+
+      // Cerrar paneles HTML de Phaser
+      const gamePhaser = this.$root.gamePhaser;
+      const privateScene = gamePhaser?.scene?.getScene('PrivateScene');
+      if (privateScene) {
+        if (privateScene.htmlInventory?.isVisible) {
+          privateScene.htmlInventory.hide();
+        }
+        if (privateScene.htmlDetailPanel?.isVisible) {
+          privateScene.htmlDetailPanel.hide();
+        }
+        if (privateScene.htmlColorPanel?.isVisible) {
+          privateScene.htmlColorPanel.hide();
+        }
+      }
+    },
     initializeGame() {
       const gamePhaser = this.$root.gamePhaser;
 
@@ -91,6 +125,12 @@ export default {
         console.log("Saliendo de la sala...");
       }
       this.$emit("updateLoading", true);
+
+      // Unirse a la room de la isla antes de volver a mostrar la IslandScreen
+      socket.emit(RequestSocketsEnum.JOIN_ISLAND, {
+        islandId: this.sceneData.scenery.island.data.id
+      });
+
       this.$emit("joinIsland", this.sceneData.scenery.island.data);
     },
     updateUserCard(userData) {
@@ -112,22 +152,65 @@ export default {
       this.isCoconutsInfoCardVisible = false;
     },
     showAvatarSelection() {
+      this.closeAllPanels();
       this.isAvatarSelectionVisible = true;
     },
     hideAvatarSelection() {
       this.isAvatarSelectionVisible = false;
     },
     showRankings() {
+      this.closeAllPanels();
       this.isRankingsVisible = true;
     },
     hideRankings() {
       this.isRankingsVisible = false;
     },
+    showShop() {
+      this.closeAllPanels();
+      this.isShopVisible = true;
+    },
+    hideShop() {
+      this.isShopVisible = false;
+    },
+    handlePurchaseSuccess(userData) {
+      // Actualizar el oro/plata del usuario en el componente padre
+      if (this.sceneData && this.sceneData.authUser) {
+        this.sceneData.authUser.gold = userData.gold;
+        this.sceneData.authUser.silver = userData.silver;
+      }
+    },
+    handleForceLobbyRedirect(data) {
+      // NO emitir USER_LEAVE_SCENE porque el servidor ya nos sacó de la escena
+      // Detener la escena de Phaser
+      const gamePhaser = this.$root.gamePhaser;
+      if (gamePhaser) {
+        gamePhaser.scene.stop("PrivateScene");
+      }
+
+      // Usar un timeout para asegurar que Phaser se detenga antes de cambiar la vista
+      setTimeout(() => {
+        // Buscar el componente GameScreens en la jerarquía
+        let parent = this.$parent;
+        while (parent && !parent.onExitLobby) {
+          parent = parent.$parent;
+        }
+
+        if (parent && typeof parent.onExitLobby === 'function') {
+          parent.onExitLobby();
+        }
+      }, 100);
+    },
   },
   mounted() {
     this.initializeGame();
+
+    // Escuchar evento de redirección forzada al lobby
+    socket.on(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
   },
-  beforeUnmount() {},
+  beforeUnmount() {
+    // Remover listener al desmontar el componente
+    socket.off(ResponseSocketsEnum.FORCE_LOBBY_REDIRECT, this.handleForceLobbyRedirect);
+  },
 };
 </script>
 
@@ -136,10 +219,19 @@ export default {
   width: 1012px;
   height: 657px;
   margin: auto;
-  position: absolute;
+  position: relative;
   background-color: transparent; /* Para verificar visualmente */
   z-index: 0;
   pointer-events: none; /* Dejar pasar eventos al canvas Phaser */
+}
+
+.game-container > *:not(#html-inventory):not(#html-detail-panel) {
+  pointer-events: auto; /* Permitir eventos en los hijos directos excepto los paneles HTML */
+}
+
+.game-container > #html-inventory,
+.game-container > #html-detail-panel {
+  pointer-events: auto; /* Los paneles HTML sí deben capturar eventos */
 }
 
 .loading-overlay {

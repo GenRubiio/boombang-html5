@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96e26e53f894bab54b4f178b0d8d3eb1",
+    "content-hash": "52f978d33604f4527258925da0724a4a",
     "packages": [
         {
             "name": "backpack/basset",
@@ -5785,6 +5785,65 @@
             "time": "2025-02-20T15:51:22+00:00"
         },
         {
+            "name": "stripe/stripe-php",
+            "version": "v19.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "8f868a7825d2680e917f89839e4b67851dad96e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/8f868a7825d2680e917f89839e4b67851dad96e2",
+                "reference": "8f868a7825d2680e917f89839e4b67851dad96e2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.72.0",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v19.0.0"
+            },
+            "time": "2025-11-18T18:50:16+00:00"
+        },
+        {
             "name": "studio-42/elfinder",
             "version": "2.1.66",
             "source": {
@@ -8820,6 +8879,76 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "ziming/json-field-for-backpack",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ziming/json-field-for-backpack.git",
+                "reference": "80caf675981f36822350cfa1f6a43c53fb61ec23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ziming/json-field-for-backpack/zipball/80caf675981f36822350cfa1f6a43c53fb61ec23",
+                "reference": "80caf675981f36822350cfa1f6a43c53fb61ec23",
+                "shasum": ""
+            },
+            "require": {
+                "backpack/crud": "^4.1.0|^5.0|^6.0",
+                "ext-json": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ziming\\JsonFieldForBackpack\\AddonServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ziming\\JsonFieldForBackpack\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ziming",
+                    "email": "ziming.opensource@gmail.com"
+                },
+                {
+                    "name": "vesper8"
+                },
+                {
+                    "name": "stephanus-stuff"
+                }
+            ],
+            "description": "A Json Editor Field for Backpack",
+            "homepage": "https://github.com/ziming/json-field-for-backpack",
+            "keywords": [
+                "Backpack for Laravel",
+                "addon",
+                "admin panel",
+                "backpack",
+                "field",
+                "json",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/ziming/json-field-for-backpack/issues",
+                "source": "https://github.com/ziming/json-field-for-backpack/tree/1.3.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ziming",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-23T18:03:40+00:00"
         },
         {
             "name": "zircote/swagger-php",

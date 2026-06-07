@@ -1,19 +1,21 @@
 <template>
-  <div id="game">
-    <div id="phaser-container"></div>
-    <LoadingScreen v-if="loading" />
-    <div id="game-screens">
-      <AuthScreen
-        v-if="!isAuthenticated"
-        @loginSuccess="onLoginSuccess"
-        @registerSuccess="onRegisterSuccess"
-        @goToRegister="onGoToRegister"
-      />
-      <GameScreens
-        v-else
-        :gamePhaser="gamePhaser"
-        @updateLoading="onUpdateLoading"
-      />
+  <div id="game-container">
+    <div id="game">
+      <div id="phaser-container"></div>
+      <LoadingScreen v-if="loading" />
+      <div id="game-screens">
+        <AuthScreen
+          v-if="!isAuthenticated"
+          @loginSuccess="onLoginSuccess"
+          @registerSuccess="onRegisterSuccess"
+          @goToRegister="onGoToRegister"
+        />
+        <GameScreens
+          v-else
+          :gamePhaser="gamePhaser"
+          @updateLoading="onUpdateLoading"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -25,6 +27,7 @@ import socket from "./sockets/socket";
 import GameScreensEnum from "./enums/GameScreensEnum";
 import ColorReplacePipelinePlugin from "phaser3-rex-plugins/plugins/colorreplacepipeline-plugin.js";
 import gameConfig from "@/config/gameConfig.js";
+import visibilityManager from "./phaser/managers/VisibilityManager.js";
 
 export default {
   data() {
@@ -141,6 +144,15 @@ export default {
           },
         },
       });
+      
+      // Configurar el VisibilityManager con la instancia de Phaser
+      visibilityManager.setGame(this.gamePhaser);
+      
+      // Hacer gameConfig y visibilityManager disponibles globalmente
+      window.gameConfig = gameConfig;
+      window.socket = socket;
+      window.visibilityManager = visibilityManager;
+      
       // Lanzamos la escena de Preloader para que cargue todo
       this.gamePhaser.scene.start("GlobalPreloaderScene");
 
@@ -163,6 +175,33 @@ export default {
     },
     onUpdateLoading(value) {
       this.loading = value;
+      
+      // Si se está quitando el loading (value = false), sincronizar posiciones
+      if (!value && window.visibilityManager && this.gamePhaser) {
+        setTimeout(() => {
+          window.visibilityManager.syncAllScenes();
+        }, 100); // Delay para asegurar que la escena esté completamente renderizada
+      }
+    },
+    rescaleGame() {
+      // Si estamos dentro de un iframe, no escalamos (lo hace el padre)
+      if (window.self !== window.top) {
+        return;
+      }
+
+      const baseWidth = gameConfig.GAME_WIDTH;
+      const baseHeight = gameConfig.GAME_HEIGHT;
+
+      const scaleX = window.innerWidth / baseWidth;
+      const scaleY = window.innerHeight / baseHeight;
+
+      // Usa el menor para que siempre quepa sin salirse, máximo 1 (tamaño original)
+      const scale = Math.min(scaleX, scaleY, 1);
+
+      const gameElement = document.getElementById("game");
+      if (gameElement) {
+        gameElement.style.transform = `scale(${scale})`;
+      }
     },
   },
   mounted() {
@@ -175,22 +214,37 @@ export default {
     });
 
     socket.on("error_critical", this.handleDisconnect);
+
+    // Inicializar auto-escalado del juego
+    this.rescaleGame();
+    window.addEventListener("resize", this.rescaleGame);
   },
   beforeUnmount() {
     // Remover listeners de socket para evitar fugas de memoria
     socket.off("disconnect", this.handleDisconnect);
     socket.off("connect");
     socket.off("error_critical", this.handleDisconnect);
+    
+    // Remover listener de resize
+    window.removeEventListener("resize", this.rescaleGame);
   },
 };
 </script>
 
 <style>
+#game-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+}
+
 #game {
   width: 1012px;
   height: 657px;
   position: relative;
   overflow: hidden;
+  transform-origin: top left;
 }
 
 #phaser-container {

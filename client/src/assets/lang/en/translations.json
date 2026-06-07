@@ -34,7 +34,11 @@
     "tooltip_color": "Color",
     "tooltip_move": "Move",
     "tooltip_inventory": "Inventory",
-    "tooltip_rankings": "Rankings"
+    "tooltip_rankings": "Rankings",
+    "inventory": "Inventory",
+    "total_items": "Total",
+    "color_panel_title": "Color Scene",
+    "color_panel_save": "Save"
   },
   "rankings": {
     "title": "Minigame Rankings",
@@ -50,6 +54,23 @@
     "previous_page": "Previous page",
     "next_page": "Next page",
     "error_loading": "Error loading data"
+  },
+  "shop": {
+    "title": "Shop",
+    "loading": "Loading...",
+    "no_items": "No items available",
+    "buy": "Buy",
+    "quantity": "Quantity",
+    "purchase_success": "Purchase successful!",
+    "purchase_error": "Error purchasing item",
+    "error_loading": "Error loading catalog",
+    "insufficient_gold": "Insufficient gold",
+    "insufficient_silver": "Insufficient silver",
+    "rewards": "Rewards",
+    "gold_coins": "Gold Coins",
+    "silver_coins": "Silver Coins",
+    "stripe_payment": "Real Money Payment",
+    "processing_payment": "Processing payment..."
   },
   "maintenance": {
     "title": "Maintenance",
@@ -99,7 +120,22 @@
   },
   "island": {
     "locations": "Locations",
-    "add_scenario": "Add scenario"
+    "add_scenario": "Add scenario",
+    "edit_name_tooltip": "Edit island name",
+    "edit_description_tooltip": "Edit island description",
+    "description_placeholder": "Click to add a description...",
+    "no_description": "No description",
+    "description_textarea_placeholder": "Write a description for your island...",
+    "edit_scene_name": "Edit scene name",
+    "delete_scene": "Delete scene",
+    "delete_island": "Delete island",
+    "confirm_delete_island": "Are you sure you want to delete the island '{name}'? All scenes will be deleted and objects will be returned to your inventory. Users in the scenes will be expelled to the lobby.",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm_delete_scene": "Are you sure you want to delete '{name}'?",
+    "error_title": "Error",
+    "error_island_not_found": "This island no longer exists.",
+    "error_scene_not_found": "This room no longer exists."
   },
   "user_card": {
     "change_ficha_alt": "Change card",
@@ -202,6 +238,12 @@
       "coconuts_locos": {
         "title": "Crazy Coconuts",
         "caught": "Caught"
+      },
+      "interactions": {
+        "title": "Interactions",
+        "kisses": "Kisses",
+        "drinks": "Drinks",
+        "roses": "Roses"
       }
     }
   },
@@ -233,6 +275,17 @@
     "title": "CUSTOMIZATION OF {tab}"
   },
   "npc": {
+    "objects": {
+      "loading": "Loading...",
+      "no_items": "This NPC has no available objects",
+      "back": "Back",
+      "obtain": "You will get:",
+      "requirements": "Requirements:",
+      "claim": "Claim",
+      "claiming": "Claiming...",
+      "success_claim": "Object claimed successfully!",
+      "missing_items": "You are missing:"
+    },
     "ring": {
       "welcome": "Welcome to the Ring",
       "description": "Subscribe to compete against other users and win rewards!",
@@ -376,7 +429,10 @@
       "no_islands": "You have no created islands."
     },
     "search": {
-      "not_implemented": "Search is not yet implemented."
+      "placeholder": "Search islands...",
+      "enter_search": "Enter an island name to search",
+      "searching": "Searching...",
+      "no_results": "No islands found"
     },
     "ui": {
       "background_alt": "Lobby background",
@@ -390,8 +446,36 @@
       "credits": "Credits",
       "settings": "Settings",
       "settings_alt": "Configuration",
-      "avatar_error": "Error loading user avatar"
+      "avatar_error": "Error loading user avatar",
+      "mail": "Mail",
+      "mail_alt": "Mail"
+    },
+    "mail": {
+      "title": "Mail",
+      "loading": "Loading mail...",
+      "no_mails": "You have no mail",
+      "new": "New",
+      "has_rewards": "Has rewards",
+      "rewards_title": "Rewards",
+      "gold_credits": "Gold Credits",
+      "silver_credits": "Silver Credits",
+      "claim": "Claim",
+      "claiming": "Claiming...",
+      "claimed": "Claimed"
     }
+  },
+  "mail": {
+    "title": "Mail",
+    "loading": "Loading mail...",
+    "no_mails": "You have no mail",
+    "new": "New",
+    "has_rewards": "Has rewards",
+    "rewards_title": "Rewards",
+    "gold_credits": "Gold Credits",
+    "silver_credits": "Silver Credits",
+    "claim": "Claim",
+    "claiming": "Claiming...",
+    "claimed": "Claimed"
   },
   "settings": {
     "main_title": "Settings",
@@ -437,5 +521,44 @@
   },
   "loading": {
     "title": "Loading..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "{winnerName} won!",
+      "winner_details": "Congratulations to the ring winner!",
+      "no_min_users_title": "Match cancelled",
+      "no_min_users_details": "Not enough players to start the match",
+      "timeout_title": "Time's up",
+      "timeout_details": "Time ran out with no clear winner"
+    }
+  },
+  "tutorial": {
+    "story": {
+      "title": "Welcome to BoomMania Island!",
+      "intro1": "You were traveling on a plane when an accident happened and you crashed on an island called BoomMania. You and many other people are now stranded living on this island.",
+      "intro2": "This island has many locations, minigames, and you can even create your own island where you can have fun with other survivors.",
+      "intro3": "You can enter areas to chat with other people, participate in events and multiplayer minigames. Let me show you around the lobby!"
+    },
+    "lobby": {
+      "scenes_title": "Scenes Panel", 
+      "scenes_text": "This panel allows you to go to Areas, Games, and Islands with a list of available rooms to join.",
+      "scene_item_title": "Scene Item",
+      "scene_item_text": "This is a scene you can enter. Click on it to join and explore!",
+      "user_count_title": "User Count",
+      "user_count_text": "This shows how many people are currently in this scene.",
+      "credits_title": "Credits & Silver",
+      "credits_text": "This shows your current amount of credits and silver coins. You can use these to buy decorations for your island or spend on various activities. Credits can be obtained by catching chests that fall in Areas throughout BoomMania.",
+      "gachapon_title": "Gachapon Machine",
+      "gachapon_text": "This is the gachapon machine where you can randomly obtain objects by spending credits.",
+      "mail_title": "Mail & News",
+      "mail_text": "Here you can view news and mail where you can claim rewards or stay informed about important updates.",
+      "settings_title": "Settings",
+      "settings_text": "Click this button to change game settings like graphics options.",
+      "logout_title": "Logout",
+      "logout_text": "Click this button to log out of your account."
+    },
+    "previous": "Previous",
+    "next": "Next", 
+    "finish": "Finish Tutorial"
   }
 }

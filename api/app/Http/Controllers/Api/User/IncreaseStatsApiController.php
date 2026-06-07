@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Minigame;
 use App\Models\MinigameWeek;
@@ -36,6 +37,24 @@ class IncreaseStatsApiController extends Controller
                 case 'coconuts_received':
                     $user->update(['coconuts_received' => DB::raw('coconuts_received + 1')]);
                     break;
+                case 'kisses_sent':
+                    $user->update(['kisses_sent' => DB::raw('kisses_sent + 1')]);
+                    break;
+                case 'kisses_received':
+                    $user->update(['kisses_received' => DB::raw('kisses_received + 1')]);
+                    break;
+                case 'drinks_sent':
+                    $user->update(['drinks_sent' => DB::raw('drinks_sent + 1')]);
+                    break;
+                case 'drinks_received':
+                    $user->update(['drinks_received' => DB::raw('drinks_received + 1')]);
+                    break;
+                case 'roses_sent':
+                    $user->update(['roses_sent' => DB::raw('roses_sent + 1')]);
+                    break;
+                case 'roses_received':
+                    $user->update(['roses_received' => DB::raw('roses_received + 1')]);
+                    break;
                 case 'rings_won':
                     $user->update(['rings_won' => DB::raw('rings_won + 1')]);
                     // Buscar el minijuego Ring
@@ -46,25 +65,40 @@ class IncreaseStatsApiController extends Controller
                             ->where('start_date', '<=', now())
                             ->where('end_date', '>=', now())
                             ->first();
-                        
-                        if ($currentWeek) {
-                            // Verificar si el usuario ya tiene un score para esta semana
-                            $existingScore = MinigameScore::where('user_id', $user->id)
-                                ->where('minigame_week_id', $currentWeek->id)
-                                ->first();
-                            
-                            if ($existingScore) {
-                                // Actualizar el score sumando 1 punto
-                                $existingScore->update(['score' => DB::raw('score + 1')]);
-                            } else {
-                                // Crear un nuevo registro con 1 punto
-                                MinigameScore::create([
-                                    'user_id' => $user->id,
-                                    'minigame_week_id' => $currentWeek->id,
-                                    'minigame_id' => $minigame->id,
-                                    'score' => 1
-                                ]);
-                            }
+
+                        // Si no existe la semana actual, crearla
+                        if (!$currentWeek) {
+                            $now = now();
+                            $start = $now->copy()->startOfWeek(Carbon::MONDAY)->startOfDay();
+                            $end = $start->copy()->addDays(7)->startOfDay();
+                            $weekNumber = $start->isoWeek();
+                            $year = $start->year;
+
+                            $currentWeek = MinigameWeek::create([
+                                'minigame_id' => $minigame->id,
+                                'week_number' => $weekNumber,
+                                'year' => $year,
+                                'start_date' => $start,
+                                'end_date' => $end,
+                            ]);
+                        }
+
+                        // Verificar si el usuario ya tiene un score para esta semana
+                        $existingScore = MinigameScore::where('user_id', $user->id)
+                            ->where('minigame_week_id', $currentWeek->id)
+                            ->first();
+
+                        if ($existingScore) {
+                            // Actualizar el score sumando 1 punto
+                            $existingScore->update(['score' => DB::raw('score + 1')]);
+                        } else {
+                            // Crear un nuevo registro con 1 punto
+                            MinigameScore::create([
+                                'user_id' => $user->id,
+                                'minigame_week_id' => $currentWeek->id,
+                                'minigame_id' => $minigame->id,
+                                'score' => 1
+                            ]);
                         }
                     }
                     break;

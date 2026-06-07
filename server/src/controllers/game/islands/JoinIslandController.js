@@ -13,15 +13,50 @@ class JoinIslandController {
             if (!user) {
                 throw new Error('User not found');
             }
-            if (user.currentArea) return;
+
+            // Salir de cualquier room de isla anterior primero
+            const rooms = Array.from(socket.rooms);
+            rooms.forEach(room => {
+                if (room.startsWith('island_')) {
+                    socket.leave(room);
+                }
+            });
+
+            // Unirse a la room de la isla siempre (incluso si ya tiene currentArea)
+            const roomName = `island_${data.islandId}`;
+            socket.join(roomName);
+
+            // Si el usuario ya está en un área, solo hacer join a la room sin llamar a la API
+            if (user.currentArea) {
+                return;
+            }
 
             let responseIsland = await IslandApiService.joinIsland({
                 islandId: data.islandId
             }, user);
+
             if (!responseIsland.success) {
-                throw new Error('Error joining island');
+                //console.log('Response success is false, statusCode:', responseIsland.statusCode);
+                //throw new Error('Error joining island');
+                socket.emit(ResponseSocketsEnum.ERROR_ISLAND_NOT_FOUND, {
+                    message: 'Island not found'
+                });
+                return;
             }
             const island = new IslandModel(responseIsland.island);
+
+            // Enriquecer las escenas con el conteo de usuarios conectados en tiempo real
+            if (island.scenes && island.scenes.length > 0) {
+                const PrivateScenesCollection = require('../../../collections/PrivateScenesCollection');
+                island.scenes = island.scenes.map(scene => {
+                    const liveScene = PrivateScenesCollection.getById(scene.id);
+                    return {
+                        ...scene,
+                        user_count: liveScene && liveScene.users ? liveScene.users.length : 0
+                    };
+                });
+            }
+
             const islandResource = new IslandResource(island);
 
             socket.emit(ResponseSocketsEnum.JOIN_ISLAND, {

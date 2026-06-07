@@ -1,7 +1,5 @@
 const express = require('express');
-const fs = require('fs');
 const http = require('http');
-const https = require('https');
 const { Server } = require('socket.io');
 const ConsoleLogger = require('../utils/ConsoleLogger');
 const logger = new ConsoleLogger();
@@ -11,15 +9,10 @@ const authorizedBotTokens = new Set();
 
 module.exports = (port) => {
     const app = express();
-    const useHttps = process.env.APP_ENV == 'production';
-    const server = useHttps
-        ? https.createServer({
-            key: fs.readFileSync('/etc/nginx/certs/server.boommania.com.key'),
-            cert: fs.readFileSync('/etc/nginx/certs/server.boommania.com.crt'),
-        }, app)
-        : http.createServer(app);
+    // SSL is terminated by the reverse proxy (nginx-proxy), so always use HTTP here.
+    const server = http.createServer(app);
 
-    console.log(`Using ${useHttps ? 'HTTPS' : 'HTTP'} server.`);
+    console.log(`Using HTTP server (SSL terminated by reverse proxy).`);
     console.log(`Server will run on port ${port}.`);
     console.log(`CORS origin set to: ${process.env.CLIENT_URL}`);
     // Middleware to parse JSON bodies

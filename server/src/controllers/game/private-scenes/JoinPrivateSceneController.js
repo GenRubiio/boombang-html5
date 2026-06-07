@@ -20,7 +20,11 @@ class JoinPrivateSceneController {
             }, user);
 
             if (!response.success) {
-                throw new Error('Failed to join private scene');
+                //throw new Error('Failed to join private scene');
+                socket.emit(ResponseSocketsEnum.ERROR_PRIVATE_SCENE_NOT_FOUND, {
+                    message: 'Private scene not found'
+                });
+                return;
             };
 
             let scene = PrivateScenesCollection.getById(data.sceneId);
@@ -33,7 +37,15 @@ class JoinPrivateSceneController {
                 return;
             }
 
-            await scene.userJoin(user, response.user_inventory_items || []);
+            // Salir de la room de la isla cuando entra a una escena privada
+            const rooms = Array.from(socket.rooms);
+            rooms.forEach(room => {
+                if (room.startsWith('island_')) {
+                    socket.leave(room);
+                }
+            });
+
+            await scene.userJoin(user, response.user_inventory_items || [], response.scene_config || {});
         } catch (err) {
             console.error('Error in JoinPrivateSceneController:', err);
             Log.error('Error in JoinPrivateSceneController: ' + err);

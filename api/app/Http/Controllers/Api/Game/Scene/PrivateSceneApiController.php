@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PrivateSceneResource;
 use App\Http\Resources\UserCatalogItemsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\PrivateSceneConfigResource;
 use App\Http\Controllers\Api\Traits\ResponseApiControllerTrait;
 use App\Http\Controllers\Api\Game\Scene\Interfaces\PrivateSceneApiControllerInterface;
 
@@ -57,11 +58,13 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             $scene->load(
                 'island',
                 'island.privateScenes',
-                'userCatalogItems'
+                'userCatalogItems',
+                'privateSceneConfig'
             );
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
+                'scene_config' => (new PrivateSceneConfigResource($scene->privateSceneConfig)),
                 'user_inventory_items' => $scene->user_id == Auth::user()->id
                     ? UserCatalogItemsResource::collection(Auth::user()->catalogShowItems) : [],
             ]);
@@ -94,6 +97,7 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
             return $this->successResponse([
                 'success' => true,
                 'scene' => (new PrivateSceneResource($scene))->toDTO(),
+                'scene_config' => (new PrivateSceneConfigResource($scene->privateSceneConfig)),
                 'user_inventory_items' => $scene->user_id == Auth::user()->id
                     ? UserCatalogItemsResource::collection(Auth::user()->catalogShowItems) : [],
             ]);
@@ -169,6 +173,122 @@ class PrivateSceneApiController extends Controller implements PrivateSceneApiCon
                 throw new Exception('Item does not belong to the current user or does not exist.');
             }
         } catch (Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function updateName(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'sceneId' => 'required|integer|exists:private_scenes,id',
+                'name' => 'required|string|max:50',
+            ]);
+
+            $user = Auth::user();
+            $scene = PrivateScene::findOrFail($validated['sceneId']);
+
+            // Validate that the user owns the island where this scene belongs
+            $island = $scene->island;
+            if ($island->user_id != $user->id) {
+                throw new Exception('You do not have permission to update this scene.');
+            }
+
+            $scene->update([
+                'name' => $validated['name']
+            ]);
+
+            return $this->successResponse([
+                'success' => true,
+                'message' => 'Scene name updated successfully',
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error updating private scene name: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'sceneId' => $request->input('sceneId'),
+            ]);
+            return $this->handleException($e);
+        }
+    }
+
+    public function delete(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'sceneId' => 'required|integer|exists:private_scenes,id',
+            ]);
+
+            $user = Auth::user();
+            $scene = PrivateScene::findOrFail($validated['sceneId']);
+
+            // Validate that the user owns the island where this scene belongs
+            $island = $scene->island;
+            if ($island->user_id != $user->id) {
+                throw new Exception('You do not have permission to delete this scene.');
+            }
+
+            // Set private_scene_id to null for all objects in this scene
+            UserCatalogItem::where('private_scene_id', $scene->id)
+                ->update([
+                    'private_scene_id' => null,
+                    'occupied_tiles' => '[]'
+                ]);
+
+            // Delete the scene
+            $scene->delete();
+
+            return $this->successResponse([
+                'success' => true,
+                'message' => 'Scene deleted successfully',
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error deleting private scene: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'sceneId' => $request->input('sceneId'),
+            ]);
+            return $this->handleException($e);
+        }
+    }
+
+    public function updateColors(Request $request): JsonResource
+    {
+        try {
+            $validated = $request->validate([
+                'sceneId' => 'required|integer|exists:private_scenes,id',
+                'colors' => 'required|array',
+            ]);
+
+            $user = Auth::user();
+            $scene = PrivateScene::findOrFail($validated['sceneId']);
+
+            // Validate that the user owns the island where this scene belongs
+            $island = $scene->island;
+            if ($island->user_id != $user->id) {
+                throw new Exception('You do not have permission to update this scene.');
+            }
+
+            // Validar que los colores sean hexadecimales válidos
+            foreach ($validated['colors'] as $key => $value) {
+                if (!preg_match('/^[0-9a-fA-F]{6}$/', $value)) {
+                    throw new Exception("Invalid color format for {$key}: {$value}");
+                }
+            }
+
+            // Actualizar los colores en formato JSON
+            $scene->update([
+                'colors' => json_encode($validated['colors'])
+            ]);
+
+            return $this->successResponse([
+                'success' => true,
+                'message' => 'Scene colors updated successfully',
+                'colors' => $validated['colors']
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error updating private scene colors: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'sceneId' => $request->input('sceneId'),
+            ]);
             return $this->handleException($e);
         }
     }

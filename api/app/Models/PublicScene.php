@@ -50,7 +50,8 @@ class PublicScene extends Model
     protected $fakeColumns = [
         'assets_data',
         'scene_items_pivot',
-        'arrows'
+        'arrows',
+        'traps_data'
     ];
 
     /*
@@ -112,8 +113,14 @@ class PublicScene extends Model
                 'sum_points',
                 'sum_points_to_user_attribute',
                 'user_attribute_name',
-                'event_id'
+                'event_id',
+                'catalog_item_id'
             );
+    }
+
+    public function traps()
+    {
+        return $this->hasMany(PublicSceneTrap::class, 'public_scene_id');
     }
 
     /*
@@ -265,10 +272,51 @@ class PublicScene extends Model
                     'sum_points' => $item->pivot->sum_points,
                     'sum_points_to_user_attribute' => $item->pivot->sum_points_to_user_attribute,
                     'user_attribute_name' => $item->pivot->user_attribute_name,
+                    'event_id' => $item->pivot->event_id,
+                    'catalog_item_id' => $item->pivot->catalog_item_id,
                 ];
             }
 
             return $pivotData;
+        }
+
+        return [];
+    }
+
+    public function setTrapsDataAttribute($value)
+    {
+        if (!empty($value)) {
+            if (is_string($value)) {
+                $value = json_decode($value, true);
+            }
+            $this->attributes['traps_data'] = json_encode($value);
+        } else {
+            $this->attributes['traps_data'] = null;
+        }
+    }
+
+    public function getTrapsDataAttribute($value)
+    {
+        // Si hay un valor guardado en el campo fake, lo usamos
+        if (!empty($value)) {
+            return json_decode($value, true);
+        }
+
+        // Si no hay valor en el campo fake, cargamos desde la relación
+        if ($this->exists) {
+            $traps = $this->traps()->get();
+            $trapsData = [];
+
+            foreach ($traps as $trap) {
+                $trapsData[] = [
+                    'position_x' => $trap->position_x,
+                    'position_y' => $trap->position_y,
+                    'coconut_type' => $trap->coconut_type,
+                    'active' => $trap->active,
+                ];
+            }
+
+            return $trapsData;
         }
 
         return [];

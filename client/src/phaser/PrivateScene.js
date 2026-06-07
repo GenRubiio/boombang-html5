@@ -3,6 +3,7 @@ import socket from "../sockets/socket";
 import asset_shadow_image from "@/assets/game/avatar/shadow.webp";
 import asset_shadow_selected_image from "@/assets/game/avatar/shadow_selected.webp";
 import asset_tile_image from "@/assets/game/scene/tile.webp";
+import asset_tile_small_image from "@/assets/game/scene/tile_small.png"; // Imagen del suelo pequeño
 import SceneRequestSockets from "./sockets/SceneRequestSockets";
 import SceneResponseSockets from "./sockets/SceneResponseSockets";
 import OverheadChatAnimation from "./animations/OverheadChatAnimation";
@@ -17,6 +18,7 @@ import ResponseSocketsEnum from "../enums/ResponseSocketsEnum";
 import ButtonsPrivateSceneHtml from "@/phaser/html/private-scene/ButtonsPrivateSceneHtml";
 import InventoryPrivateSceneHtml from "@/phaser/html/private-scene/InventoryPrivateSceneHtml";
 import DetailPanelPrivateSceneHtml from "@/phaser/html/private-scene/DetailPanelPrivateSceneHtml";
+import ColorPanelPrivateSceneHtml from "@/phaser/html/private-scene/ColorPanelPrivateSceneHtml";
 import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
 import asset_kiss_image from "@/assets/game/scene/interactions/kiss.webp";
 import asset_drink_image from "@/assets/game/scene/interactions/drink.webp";
@@ -35,12 +37,12 @@ export default class PrivateScene extends Phaser.Scene {
         this.selectedSprite = null;
         /** Blitter for tile overlays */
         this.tileBlitter = null;
-        
+
         // Estado del sistema de avatares
         this.avatarsEssentialReady = false;
         this.allAvatarsReady = false;
         this.avatarLoadingProgress = 0;
-        
+
         // Sistema de buffer de eventos
         this.isSceneReady = false;
         this.eventBuffer = [];
@@ -87,8 +89,9 @@ export default class PrivateScene extends Phaser.Scene {
 
     preload() {
         this.load.setCORS('anonymous');
-        PrivateSceneLoader.main(this, this.sceneType, true);
+        PrivateSceneLoader.main(this, true);
         this.load.image("tile", asset_tile_image);
+        this.load.image("tile_small", asset_tile_small_image);
         this.load.image("shadow", asset_shadow_image);
         this.load.image("shadow_selected", asset_shadow_selected_image);
         this.load.image("asset_interaction_background_image", asset_interaction_background_image);
@@ -127,7 +130,7 @@ export default class PrivateScene extends Phaser.Scene {
 
     async create() {
         //console.log("🏠 Inicializando PrivateScene...");
-        
+
         if (!this.plugins.get('rexColorReplacePipeline')) {
             this.plugins.start('rexColorReplacePipeline');
         }
@@ -153,8 +156,12 @@ export default class PrivateScene extends Phaser.Scene {
         SceneRequestSockets.main(this);
         SceneResponseSockets.main(this);
 
-        PrivateSceneLoader.main(this, this.sceneData.scenery.type, false);
-        
+        // Inicializar factor de escala para big_scene ANTES de cargar assets
+        this.bigSceneMode = this.sceneData.sceneConfig.big_scene || false;
+        this.sceneScaleFactor = this.bigSceneMode ? 0.5 : 1;
+
+        PrivateSceneLoader.main(this, false);
+
         // Crear usuarios iniciales
         await CreateSceneController.main(this, this.sceneData);
 
@@ -172,6 +179,7 @@ export default class PrivateScene extends Phaser.Scene {
         if (this.sceneData.myScene) {
             this.createHTMLInventory();
             this.createHTMLDetailPanel(); // Initialize the detail panel
+            this.createHTMLColorPanel(); // Initialize the color panel
         }
 
         this.chatManager = new OverheadChatAnimation(this);
@@ -181,16 +189,20 @@ export default class PrivateScene extends Phaser.Scene {
         this.scene.pauseOnBlur = false;
         this.scene.pauseOnHide = false;
 
+        // Crear botones HTML para todos (propietarios y visitantes)
+        this.createHTMLButtons();
+
+        // Solo crear inventario si es el propietario
         if (this.sceneData.myScene) {
-            this.createHTMLButtons();
+            // El inventario ya se crea en la línea 173
         }
 
         // Marcar escena como lista
         this.isSceneReady = true;
-        
+
         // Obtener eventos capturados por el EarlyEventBuffer
         const earlyEvents = earlyEventBuffer.deactivateAndFlush();
-        
+
         // Agregar eventos tempranos al buffer de la escena
         earlyEvents.forEach(event => {
             this.eventBuffer.push({
@@ -199,7 +211,7 @@ export default class PrivateScene extends Phaser.Scene {
                 callback: () => AddUserController.processUser(this, event.data.user)
             });
         });
-        
+
         // Procesar todos los eventos en buffer con un pequeño delay entre cada uno
         const totalEvents = this.eventBuffer.length;
         if (totalEvents > 0) {
@@ -208,12 +220,17 @@ export default class PrivateScene extends Phaser.Scene {
                     bufferedEvent.callback();
                 }, index * 100); // 100ms de delay entre cada evento
             });
-            
+
             // Limpiar buffer
             this.eventBuffer = [];
         }
 
         this.handleSockets();
+
+        // Notificar al VisibilityManager que la escena está completamente cargada
+        if (window.visibilityManager) {
+            window.visibilityManager.onSceneLoaded(this);
+        }
         // Al recuperar el foco del navegador, refrescar overlays y eventos de mover
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
@@ -295,13 +312,14 @@ export default class PrivateScene extends Phaser.Scene {
             }
         });
         socket.on(ResponseSocketsEnum.SCENE_PUT_ITEM, (data) => {
-            if (import.meta.env.VITE_APP_ENV === "local") {
-                //console.log('Socket event received:', ResponseSocketsEnum.SCENE_PUT_ITEM);
-            }
+            //console.log('📦 SCENE_PUT_ITEM received:', data);
             if (data.item) {
                 const existingItem = this.sceneItems.find(i => i.id === data.item.id);
+                //console.log('  Existing item?', existingItem ? 'YES (moving)' : 'NO (new item)');
+
                 if (existingItem) {
                     // It's a move, just update the tiles
+                    //console.log('  Updating existing item tiles');
                     existingItem.occupied_tiles = data.item.occupied_tiles;
                     this.markOccupiedTiles();
                     this.renderSceneObjects();
@@ -318,7 +336,15 @@ export default class PrivateScene extends Phaser.Scene {
                     // Check if asset already exists (image or video)
                     const assetExists = isVideo ? this.cache.video.exists(textureName) : this.textures.exists(textureName);
 
+                    //console.log('  Item details:', {
+                    //    textureName,
+                    //    assetSrc,
+                    //    isVideo,
+                    //    assetExists
+                    //});
+
                     if (assetExists) {
+                        //console.log('  ✅ Asset exists, adding item to scene');
                         this.sceneItems.push(item);
                         this.markOccupiedTiles();
                         this.renderSceneObjects();
@@ -326,10 +352,12 @@ export default class PrivateScene extends Phaser.Scene {
                             this.prepareObjectsForMoving();
                         }
                     } else {
+                        //console.log('  ⏳ Asset does not exist, loading...');
                         // Asset doesn't exist, load it first
                         if (isVideo) {
                             this.load.video(textureName, assetSrc);
                             this.load.once(`filecomplete-video-${textureName}`, () => {
+                                //console.log('  ✅ Video loaded, adding item to scene');
                                 this.sceneItems.push(item);
                                 this.markOccupiedTiles();
                                 this.renderSceneObjects();
@@ -340,6 +368,7 @@ export default class PrivateScene extends Phaser.Scene {
                         } else {
                             this.load.image(textureName, assetSrc);
                             this.load.once(`filecomplete-image-${textureName}`, () => {
+                                //console.log('  ✅ Image loaded, adding item to scene');
                                 this.sceneItems.push(item);
                                 this.markOccupiedTiles();
                                 this.renderSceneObjects();
@@ -352,6 +381,8 @@ export default class PrivateScene extends Phaser.Scene {
                         this.load.start();
                     }
                 }
+            } else {
+                //console.log('  ❌ No item in response data');
             }
         });
         socket.on(ResponseSocketsEnum.REMOVE_ITEM_FROM_INVENTORY, (data) => {
@@ -386,6 +417,19 @@ export default class PrivateScene extends Phaser.Scene {
                 this.htmlDetailPanel.enableButtons();
             }
         });
+
+        socket.on(ResponseSocketsEnum.PRIVATE_SCENE_COLORS_UPDATED, (data) => {
+            if (import.meta.env.VITE_APP_ENV === "local") {
+                //console.log('Socket event received:', ResponseSocketsEnum.PRIVATE_SCENE_COLORS_UPDATED);
+            }
+            if (data.colors && data.sceneId === this.sceneData.scenery.id) {
+                // Actualizar los colores en los datos de la escena
+                this.sceneData.scenery.colors = data.colors;
+
+                // Aplicar los nuevos colores a la escena
+                PrivateSceneUpdateColorsService.main(this);
+            }
+        });
     }
 
     initializeTileGrid() {
@@ -409,7 +453,13 @@ export default class PrivateScene extends Phaser.Scene {
 
     createHTMLButtons() {
         // Crear contenedor HTML para los botones
-        const buttonsHTML = ButtonsPrivateSceneHtml.load();
+        const isOwner = this.sceneData.myScene || false;
+
+        // Verificar si hay colores disponibles para mostrar el botón de colorear
+        const assets = this.sceneData.sceneConfig.assets_data?.assets_data_repeatable || [];
+        const hasColorableAssets = assets.some(asset => asset.color_item_key);
+
+        const buttonsHTML = ButtonsPrivateSceneHtml.load(isOwner, hasColorableAssets);
 
         // Crear elemento DOM y añadirlo a la escena
         this.buttonsContainer = this.add.dom(0, 0).createFromHTML(buttonsHTML);
@@ -456,11 +506,31 @@ export default class PrivateScene extends Phaser.Scene {
         });
     }
 
+    /**
+     * Cerrar todos los paneles HTML de Phaser
+     */
+    closeAllHTMLPanels() {
+        if (this.htmlInventory && this.htmlInventory.isVisible) {
+            this.htmlInventory.hide();
+        }
+        if (this.htmlDetailPanel && this.htmlDetailPanel.isVisible) {
+            this.htmlDetailPanel.hide();
+        }
+        if (this.htmlColorPanel && this.htmlColorPanel.isVisible) {
+            this.htmlColorPanel.hide();
+        }
+    }
+
     handleButtonClick(action) {
         switch (action) {
             case 'shop':
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de tienda pulsado');
+                }
+                // Cerrar todos los paneles HTML antes de abrir la tienda
+                this.closeAllHTMLPanels();
+                if (this.vueComponent && this.vueComponent.showShop) {
+                    this.vueComponent.showShop();
                 }
                 break;
 
@@ -468,6 +538,8 @@ export default class PrivateScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de avatares pulsado');
                 }
+                // Cerrar todos los paneles HTML antes de abrir avatares
+                this.closeAllHTMLPanels();
                 if (this.vueComponent && this.vueComponent.showAvatarSelection) {
                     this.vueComponent.showAvatarSelection();
                 }
@@ -476,6 +548,18 @@ export default class PrivateScene extends Phaser.Scene {
             case 'color':
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Boton de colorear pulsado');
+                }
+                if (this.htmlColorPanel) {
+                    // Si está abierto, solo cerrarlo
+                    if (this.htmlColorPanel.isVisible) {
+                        this.htmlColorPanel.toggle();
+                    } else {
+                        // Si está cerrado, cerrar todos los paneles y abrirlo
+                        if (this.vueComponent && this.vueComponent.closeAllPanels) {
+                            this.vueComponent.closeAllPanels();
+                        }
+                        this.htmlColorPanel.toggle();
+                    }
                 }
                 break;
 
@@ -488,7 +572,16 @@ export default class PrivateScene extends Phaser.Scene {
                     //console.log('Botón de inventario pulsado', this.htmlInventory);
                 }
                 if (this.htmlInventory) {
-                    this.htmlInventory.toggle();
+                    // Si está abierto, solo cerrarlo
+                    if (this.htmlInventory.isVisible) {
+                        this.htmlInventory.toggle();
+                    } else {
+                        // Si está cerrado, cerrar todos los paneles y abrirlo
+                        if (this.vueComponent && this.vueComponent.closeAllPanels) {
+                            this.vueComponent.closeAllPanels();
+                        }
+                        this.htmlInventory.toggle();
+                    }
                 } else {
                     //console.error('htmlInventory no está inicializado');
                 }
@@ -498,6 +591,8 @@ export default class PrivateScene extends Phaser.Scene {
                 if (import.meta.env.VITE_APP_ENV === "local") {
                     //console.log('Botón de rankings pulsado');
                 }
+                // Cerrar todos los paneles HTML antes de abrir rankings
+                this.closeAllHTMLPanels();
                 if (this.vueComponent && this.vueComponent.showRankings) {
                     this.vueComponent.showRankings();
                 }
@@ -692,8 +787,8 @@ export default class PrivateScene extends Phaser.Scene {
         const sprite = item.sprite;
         this.input.setDraggable(sprite, true);
 
-        const tileWidth = 65 * this.dpiScale;
-        const tileHeight = 33 * this.dpiScale;
+        const tileWidth = 65 * this.dpiScale * this.sceneScaleFactor;
+        const tileHeight = 33 * this.dpiScale * this.sceneScaleFactor;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
@@ -746,19 +841,26 @@ export default class PrivateScene extends Phaser.Scene {
         const cols = this.sceneData.scenery.map_cols;
         const gameMap = this.sceneData.scenery.game_map;
 
+        //console.log('🔍 Validating position:', { rows, cols, newTiles });
+
         for (const [col, row] of newTiles) {
+            //console.log(`  Checking tile [${col}, ${row}]`);
+
             // Verificar límites
             if (row < 0 || row >= rows || col < 0 || col >= cols) {
+                //console.log(`    ❌ Out of bounds (rows: ${rows}, cols: ${cols})`);
                 return false;
             }
 
             // No se puede posicionar si el piso no es transitable según el mapa base
             if (gameMap && gameMap[row] && typeof gameMap[row][col] !== 'undefined' && gameMap[row][col] !== 0) {
+                //console.log(`    ❌ Not walkable (gameMap value: ${gameMap[row][col]})`);
                 return false;
             }
 
             // Check if tile is occupied by another object
             if (this.tileGrid[row][col].occupied && this.tileGrid[row][col].objectId !== currentObjectId) {
+                //console.log(`    ⚠️ Occupied by object ${this.tileGrid[row][col].objectId}`);
                 // Find the occupying object
                 const occupyingObject = this.sceneItems.find(item => item.id === this.tileGrid[row][col].objectId);
 
@@ -771,15 +873,21 @@ export default class PrivateScene extends Phaser.Scene {
                     // If placing a WALKABLE/WALKABLE_OVERLAY item on another WALKABLE/WALKABLE_OVERLAY item, reject
                     if (currentObject && (currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE ||
                         currentObject.type_of_behavior === CatalogItemTypeOfBehaviorEnum.WALKABLE_OVERLAY)) {
+                        //console.log(`    ❌ Cannot place WALKABLE on WALKABLE`);
                         return false;
                     }
+                    //console.log(`    ✅ Can place on WALKABLE item`);
                     // Otherwise allow placement on WALKABLE/WALKABLE_OVERLAY items
                 } else {
+                    //console.log(`    ❌ Occupied by non-WALKABLE object`);
                     return false; // Occupied by non-WALKABLE object
                 }
+            } else {
+                //console.log(`    ✅ Tile is free`);
             }
         }
 
+        //console.log('  ✅ All tiles valid');
         return true;
     }
 
@@ -886,13 +994,17 @@ export default class PrivateScene extends Phaser.Scene {
      */
     // Dentro de la clase PrivateScene, modifica el método renderSceneObjects
     renderSceneObjects() {
-        const tileWidth = 65 * this.dpiScale;
-        const tileHeight = 33 * this.dpiScale;
+        //console.log('🎨 renderSceneObjects called, items count:', this.sceneItems.length);
+
+        // Aplicar sceneScaleFactor a las dimensiones de los tiles
+        const tileWidth = 65 * this.dpiScale * this.sceneScaleFactor;
+        const tileHeight = 33 * this.dpiScale * this.sceneScaleFactor;
         const halfTileWidth = tileWidth / 2;
         const halfTileHeight = tileHeight / 2;
         const centerX = this.scale.width / 2;
 
-        this.sceneItems.forEach(item => {
+        this.sceneItems.forEach((item, index) => {
+            //console.log(`  Rendering item ${index}:`, item.sprite_name, item.occupied_tiles);
             // Calcular la posición promedio
             let sumX = 0;
             let maxRowColSum = -Infinity;
@@ -917,9 +1029,10 @@ export default class PrivateScene extends Phaser.Scene {
 
                 if (isVideo && this.cache.video.exists(item.sprite_name)) {
                     // Crear video sprite
+                    const baseScale = item.scale || this.dpiScale;
                     item.sprite = this.add.video(avgX, y, item.sprite_name)
                         .setOrigin(0.5, 0.90)
-                        .setScale(item.scale || this.dpiScale);
+                        .setScale(baseScale * this.sceneScaleFactor);
 
                     // Configurar el video para que se reproduzca en bucle
                     item.sprite.setLoop(true);
@@ -929,9 +1042,10 @@ export default class PrivateScene extends Phaser.Scene {
                     item.isVideo = true;
                 } else if (this.textures.exists(item.sprite_name)) {
                     // Crear imagen sprite
+                    const baseScale = item.scale || this.dpiScale;
                     item.sprite = this.add.image(avgX, y, item.sprite_name)
                         .setOrigin(0.5, 0.90)
-                        .setScale(item.scale || this.dpiScale);
+                        .setScale(baseScale * this.sceneScaleFactor);
 
                     item.isVideo = false;
                 }
@@ -966,10 +1080,11 @@ export default class PrivateScene extends Phaser.Scene {
                     const scaleY = targetHeight / originalHeight;
                     const scale = Math.min(scaleX, scaleY);
 
-                    item.sprite.setScale(scale);
+                    item.sprite.setScale(scale * this.sceneScaleFactor);
                 } else if (item.sprite) {
                     // Si no hay dimensiones personalizadas, aplicar solo el escalado DPI
-                    item.sprite.setScale(item.scale || this.dpiScale);
+                    const baseScale = item.scale || this.dpiScale;
+                    item.sprite.setScale(baseScale * this.sceneScaleFactor);
                 }
 
                 // Aplicar rotación si el atributo rotated es true
@@ -1065,10 +1180,10 @@ export default class PrivateScene extends Phaser.Scene {
         // Limpiar buffer de eventos
         this.eventBuffer = [];
         this.isSceneReady = false;
-        
+
         // Limpiar el buffer global de eventos tempranos
         earlyEventBuffer.clear();
-        
+
         RemovePhaserSocketsUtil.main(socket);
         if (this.chatManager) {
             this.chatManager.destroy();
@@ -1078,6 +1193,11 @@ export default class PrivateScene extends Phaser.Scene {
         if (this.htmlInventory) {
             this.htmlInventory.destroy();
             this.htmlInventory = null;
+        }
+
+        if (this.htmlColorPanel) {
+            this.htmlColorPanel.destroy();
+            this.htmlColorPanel = null;
         }
 
         const p = this.plugins.get('rexColorReplacePipeline');
@@ -1104,6 +1224,14 @@ export default class PrivateScene extends Phaser.Scene {
     createHTMLDetailPanel() {
         this.htmlDetailPanel = new DetailPanelPrivateSceneHtml(this);
         this.htmlDetailPanel.create();
+    }
+
+    /**
+     * Crear panel de coloración HTML
+     */
+    createHTMLColorPanel() {
+        this.htmlColorPanel = new ColorPanelPrivateSceneHtml(this);
+        this.htmlColorPanel.create();
     }
 
     /**
@@ -1176,7 +1304,7 @@ export default class PrivateScene extends Phaser.Scene {
                     if (slot.group && this.textures.exists(slot.group.sprite_name)) {
                         const texture = this.textures.get(slot.group.sprite_name);
                         const spriteHeight = texture.source[0].height * (slot.group.scale || this.dpiScale);
-                        
+
                         // Ajustar Y para que coincida con el origen (0.5, 0.90) del sprite final
                         dropY = dropY + (spriteHeight * 0.40); // 0.90 - 0.50 = 0.40
                     }

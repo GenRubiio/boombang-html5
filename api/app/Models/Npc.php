@@ -56,11 +56,44 @@ class Npc extends Model
         return $this->translatable;
     }
 
+    public function getManageObjectsButton($crud = false)
+    {
+        // Solo mostrar el botón para NPCs de tipo "objects"
+        if ($this->type !== 'objects') {
+            return '';
+        }
+
+        $url = backpack_url('npc-catalog-item') . '?npc_id=' . $this->id;
+        return '<a class="btn btn-sm btn-link" href="' . $url . '" target="_blank">
+            <i class="la la-cube"></i> Gestionar Objetos
+        </a>';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function npcCatalogItems()
+    {
+        return $this->hasMany(NpcCatalogItem::class, 'npc_id');
+    }
+
+    public function catalogItems()
+    {
+        return $this->belongsToMany(CatalogItem::class, 'npc_catalog_items', 'npc_id', 'catalog_item_id')
+            ->withPivot('active')
+            ->withTimestamps();
+    }
+
+    public function activeCatalogItems()
+    {
+        return $this->belongsToMany(CatalogItem::class, 'npc_catalog_items', 'npc_id', 'catalog_item_id')
+            ->wherePivot('active', true)
+            ->withPivot('active')
+            ->withTimestamps();
+    }
 
     /*
     |--------------------------------------------------------------------------

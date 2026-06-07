@@ -20,12 +20,15 @@ class InteractionNotificationController {
             return this.notifications.get(senderSocketId).container;
         }
 
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+
         // Create notification container
         const notificationContainer = gameScene.add.container(0, 0);
 
         // Create background using the loaded image
         const background = gameScene.add.image(0, 0, 'asset_interaction_background_image');
-        background.setScale(0.9); // Adjust scale as needed
+        background.setScale(0.9 * scaleFactor); // Adjust scale as needed
         background.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
 
         // Orange circle removed as requested
@@ -34,25 +37,25 @@ class InteractionNotificationController {
         let interactionImage;
         switch (type) {
             case 'kiss':
-                interactionImage = gameScene.add.image(-15 * gameConfig.DPI, -5 * gameConfig.DPI, 'asset_kiss_image');
+                interactionImage = gameScene.add.image(-15 * gameConfig.DPI * scaleFactor, -5 * gameConfig.DPI * scaleFactor, 'asset_kiss_image');
                 break;
             case 'drink':
-                interactionImage = gameScene.add.image(-15 * gameConfig.DPI, -5 * gameConfig.DPI, 'asset_drink_image');
+                interactionImage = gameScene.add.image(-15 * gameConfig.DPI * scaleFactor, -5 * gameConfig.DPI * scaleFactor, 'asset_drink_image');
                 break;
             case 'rose':
-                interactionImage = gameScene.add.image(-15 * gameConfig.DPI, -5 * gameConfig.DPI, 'asset_rose_image');
+                interactionImage = gameScene.add.image(-15 * gameConfig.DPI * scaleFactor, -5 * gameConfig.DPI * scaleFactor, 'asset_rose_image');
                 break;
             default:
-                interactionImage = gameScene.add.image(-15 * gameConfig.DPI, -5 * gameConfig.DPI, 'asset_kiss_image');
+                interactionImage = gameScene.add.image(-15 * gameConfig.DPI * scaleFactor, -5 * gameConfig.DPI * scaleFactor, 'asset_kiss_image');
         }
 
         // Apply anti-aliasing and smooth scaling to fix pixelation
-        interactionImage.setScale(1);
+        interactionImage.setScale(scaleFactor);
         interactionImage.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
 
         // Create Accept button using image asset
-        const acceptButton = gameScene.add.image(30 * gameConfig.DPI, -15 * gameConfig.DPI, 'asset_accept_image');
-        acceptButton.setScale(1);
+        const acceptButton = gameScene.add.image(30 * gameConfig.DPI * scaleFactor, -15 * gameConfig.DPI * scaleFactor, 'asset_accept_image');
+        acceptButton.setScale(scaleFactor);
         acceptButton.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         acceptButton.setInteractive();
         acceptButton.setDepth(1000);
@@ -60,12 +63,12 @@ class InteractionNotificationController {
         // Add hover effects for accept button
         acceptButton.on('pointerover', () => {
             gameScene.input.setDefaultCursor('pointer');
-            acceptButton.setScale(1);
+            acceptButton.setScale(scaleFactor);
         });
 
         acceptButton.on('pointerout', () => {
             gameScene.input.setDefaultCursor('default');
-            acceptButton.setScale(1);
+            acceptButton.setScale(scaleFactor);
         });
 
         acceptButton.on('pointerdown', () => {
@@ -74,8 +77,8 @@ class InteractionNotificationController {
         });
 
         // Create Reject button using image asset
-        const rejectButton = gameScene.add.image(30 * gameConfig.DPI, 10 * gameConfig.DPI, 'asset_reject_image');
-        rejectButton.setScale(1);
+        const rejectButton = gameScene.add.image(30 * gameConfig.DPI * scaleFactor, 10 * gameConfig.DPI * scaleFactor, 'asset_reject_image');
+        rejectButton.setScale(scaleFactor);
         rejectButton.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         rejectButton.setInteractive();
         rejectButton.setDepth(1000);
@@ -83,12 +86,12 @@ class InteractionNotificationController {
         // Add hover effects for reject button
         rejectButton.on('pointerover', () => {
             gameScene.input.setDefaultCursor('pointer');
-            rejectButton.setScale(1);
+            rejectButton.setScale(scaleFactor);
         });
 
         rejectButton.on('pointerout', () => {
             gameScene.input.setDefaultCursor('default');
-            rejectButton.setScale(1);
+            rejectButton.setScale(scaleFactor);
         });
 
         rejectButton.on('pointerdown', () => {
@@ -108,7 +111,7 @@ class InteractionNotificationController {
 
             // Position relative to the container (higher and behind name text)
             notificationContainer.x = 0; // Centered on user
-            notificationContainer.y = -160 * gameConfig.DPI; // Higher position, behind name text
+            notificationContainer.y = -160 * gameConfig.DPI * scaleFactor; // Higher position, behind name text
             notificationContainer.setDepth(-1); // Behind name text
         } else {
             // If sender sprite doesn't exist, clean up and return

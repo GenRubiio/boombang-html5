@@ -24,6 +24,22 @@
       :authUser="sceneData.authUser"
       @close-rankings="hideRankings"
     />
+    <NpcComponent
+      v-if="isNpcModalVisible"
+      :npcId="currentNpcId"
+      :npcType="currentNpcType"
+      @close="closeNpcModal"
+    />
+    <InventoryPublicSceneComponent
+      v-if="isInventoryVisible"
+      @close-inventory="hideInventory"
+    />
+    <ShopComponent
+      v-if="isShopVisible"
+      :authUser="sceneData.authUser"
+      @close-shop="hideShop"
+      @purchase-success="handlePurchaseSuccess"
+    />
   </div>
 </template>
 
@@ -35,6 +51,9 @@ import RingInfoCardComponent from "../../../components/game/scenes/RingInfoCardC
 import CoconutsInfoCardComponent from "../../../components/game/scenes/CoconutsInfoCardComponent.vue";
 import AvatarSelectionPopup from "../../../components/game/scenes/AvatarSelectionPopup.vue";
 import RankingsComponent from "../../../components/game/scenes/RankingsComponent.vue";
+import NpcComponent from "../../../components/game/scenes/public/NpcComponent.vue";
+import InventoryPublicSceneComponent from "../../../components/game/scenes/public/InventoryPublicSceneComponent.vue";
+import ShopComponent from "../../../components/game/scenes/ShopComponent.vue";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum.js";
 import InteractionNotificationController from "../../../../phaser/controllers/scene/InteractionNotificationController.js";
 
@@ -54,6 +73,11 @@ export default {
       isCoconutsInfoCardVisible: false,
       isAvatarSelectionVisible: false,
       isRankingsVisible: false,
+      isNpcModalVisible: false,
+      isInventoryVisible: false,
+      isShopVisible: false,
+      currentNpcId: null,
+      currentNpcType: null,
     };
   },
   created() {
@@ -66,8 +90,20 @@ export default {
     CoconutsInfoCardComponent,
     AvatarSelectionPopup,
     RankingsComponent,
+    NpcComponent,
+    InventoryPublicSceneComponent,
+    ShopComponent,
   },
   methods: {
+    /**
+     * Cierra todos los paneles abiertos
+     */
+    closeAllPanels() {
+      this.isAvatarSelectionVisible = false;
+      this.isRankingsVisible = false;
+      this.isInventoryVisible = false;
+      this.isShopVisible = false;
+    },
     showRingInfoCard() {
       this.isRingInfoCardVisible = true;
       this.isCoconutsInfoCardVisible = false;
@@ -83,12 +119,14 @@ export default {
       this.isCoconutsInfoCardVisible = false;
     },
     showAvatarSelection() {
+      this.closeAllPanels();
       this.isAvatarSelectionVisible = true;
     },
     hideAvatarSelection() {
       this.isAvatarSelectionVisible = false;
     },
     showRankings() {
+      this.closeAllPanels();
       this.isRankingsVisible = true;
     },
     hideRankings() {
@@ -123,6 +161,37 @@ export default {
     updateUserCard(userData) {
       //console.log("Usuario seleccionado:", userData);
       this.$refs.userCard.updateData(userData); // Llamar al método del componente hijo
+    },
+    openNpcModal(npcId, npcType) {
+      this.currentNpcId = npcId;
+      this.currentNpcType = npcType;
+      this.isNpcModalVisible = true;
+    },
+    closeNpcModal() {
+      this.isNpcModalVisible = false;
+      this.currentNpcId = null;
+      this.currentNpcType = null;
+    },
+    showInventory() {
+      this.closeAllPanels();
+      this.isInventoryVisible = true;
+    },
+    hideInventory() {
+      this.isInventoryVisible = false;
+    },
+    showShop() {
+      this.closeAllPanels();
+      this.isShopVisible = true;
+    },
+    hideShop() {
+      this.isShopVisible = false;
+    },
+    handlePurchaseSuccess(userData) {
+      // Actualizar el oro/plata del usuario en el componente padre
+      if (this.sceneData && this.sceneData.authUser) {
+        this.sceneData.authUser.gold = userData.gold;
+        this.sceneData.authUser.silver = userData.silver;
+      }
     },
   },
   mounted() {

@@ -13,6 +13,8 @@ class Bot {
         this.jwtToken = null;
         this.uppercutInterval = null;
         this.sceneCheckInterval = null;
+        this.selectUserInterval = null; // Nuevo: para almacenar el interval de selectUser
+        this.moveInterval = null;
         this.hasLoggedSceneError = false;
         this.hasLoggedLobbyStay = false;
         this.api_url = process.env.API_URL;
@@ -267,7 +269,12 @@ class Bot {
     }
 
     selectUser() {
-        setInterval(() => {
+        // Limpiar interval existente para prevenir memory leaks
+        if (this.selectUserInterval) {
+            clearInterval(this.selectUserInterval);
+        }
+
+        this.selectUserInterval = setInterval(() => {
             const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
             if (!user || !user.currentArea) {
                 return;
@@ -285,10 +292,14 @@ class Bot {
     }
 
     moveRandomly() {
+        if (this.moveInterval) {
+            clearInterval(this.moveInterval);
+        }
+
         // Intervalos de tiempo aleatorios
         const arrayInterval = [2000, 3000, 5000, 8000];
 
-        const moveInterval = setInterval(() => {
+        this.moveInterval = setInterval(() => {
             const user = ConnectedUsersCollection.getBySocketId(this.socket.id);
             if (!user || !user.currentArea) {
                 //console.log('\x1b[31m' + "Usuario o área no encontrados: " + this.socket.user.username + '\x1b[0m');
@@ -334,12 +345,22 @@ class Bot {
             clearInterval(this.uppercutInterval);
             this.uppercutInterval = null;
         }
-        
+
         if (this.sceneCheckInterval) {
             clearInterval(this.sceneCheckInterval);
             this.sceneCheckInterval = null;
         }
-        
+
+        if (this.selectUserInterval) {
+            clearInterval(this.selectUserInterval);
+            this.selectUserInterval = null;
+        }
+
+        if (this.moveInterval) {
+            clearInterval(this.moveInterval);
+            this.moveInterval = null;
+        }
+
         // Limpiar otros intervalos si los hay
         // Esto previene memory leaks
         //console.log(`Bot ${this.username}: Limpieza de recursos completada.`);

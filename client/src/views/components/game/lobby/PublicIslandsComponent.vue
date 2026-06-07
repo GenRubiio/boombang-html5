@@ -1,9 +1,10 @@
 <template>
   <div class="lobby__scenes-list">
-    <div v-for="island in islands" :key="island.id">
+    <SpinnerComponent v-if="isLoading" />
+    <div v-else v-for="island in islands" :key="island.id">
       <button @click="handleClick(island.id)" :disabled="isJoining">
-        {{ island.name }}
-        <span>{{ island.visitors }}</span>
+        <span class="scene-name">{{ island.name }}</span>
+        <span class="user-count">{{ island.visitors }}</span>
       </button>
     </div>
   </div>
@@ -13,12 +14,17 @@
 import socket from "../../../../sockets/socket";
 import RequestSocketsEnum from "../../../../enums/RequestSocketsEnum";
 import ResponseSocketsEnum from "../../../../enums/ResponseSocketsEnum";
+import SpinnerComponent from '../../common/SpinnerComponent.vue';
 
 export default {
+  components: {
+    SpinnerComponent,
+  },
   data() {
     return {
       islands: [],
       isJoining: false,
+      isLoading: true,
     };
   },
   async created() {
@@ -31,10 +37,12 @@ export default {
       this.$emit("join-island", islandId);
     },
     loadIslands() {
+      this.isLoading = true;
       socket.emit(RequestSocketsEnum.GET_PUBLIC_ISLANDS);
       socket.off(ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS);
       socket.on(ResponseSocketsEnum.UPDATE_PUBLIC_ISLANDS, (data) => {
         this.islands = data.islands;
+        this.isLoading = false;
       });
     },
   },
@@ -47,6 +55,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  height: 240px;
+  overflow: hidden;
 }
 
 .lobby__scenes-list button {
@@ -62,6 +72,7 @@ export default {
   display: inline-flex;
   align-items: center;
   transition: background-color 0.3s ease;
+  gap: 5px;
 }
 
 .lobby__scenes-list button:hover {
@@ -75,11 +86,20 @@ export default {
   opacity: 0.6;
 }
 
-.lobby__scenes-list button span {
+.scene-name {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+
+.user-count {
   margin-left: auto;
   background-color: #3c87b3ad;
   border-radius: 5px;
   padding: 5px 10px;
   font-size: 12px;
+  flex-shrink: 0;
 }
 </style>

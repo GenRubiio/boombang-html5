@@ -48,11 +48,14 @@ export default {
   },
   computed: {
     filteredUsers() {
+      // Filtrar primero usuarios con show_username true (o undefined para retrocompatibilidad)
+      const visibleUsers = this.users.filter((user) => user.show_username !== false);
+
       if (!this.searchQuery) {
-        return this.users;
+        return visibleUsers;
       }
       const query = this.searchQuery.toLowerCase();
-      return this.users.filter((user) =>
+      return visibleUsers.filter((user) =>
         user.username.toLowerCase().startsWith(query)
       );
     },

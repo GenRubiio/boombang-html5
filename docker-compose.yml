@@ -32,27 +32,7 @@ services:
       - db
     networks:
       - boombang
-
-  proxy:
-    image: nginxproxy/nginx-proxy:latest
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    environment:
-        - PROXY_TIMEOUT=300
-        - PROXY_READ_TIMEOUT=300
-        - PROXY_CONNECT_TIMEOUT=300
-        - CLIENT_MAX_BODY_SIZE=100M
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./docker/ssl:/etc/nginx/certs:ro
-      - ./docker/nginx/gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
-      - ./docker/nginx/www.boommania.com:/etc/nginx/vhost.d/www.boommania.com:ro
-      - ./docker/nginx/boommania.com:/etc/nginx/vhost.d/boommania.com:ro
-      - ./docker/nginx/api-cors.conf:/etc/nginx/vhost.d/api.boommania.com_location:ro
-    networks:
-      - boombang
+      - proxy-network
 
   api:
     build: ./api
@@ -83,29 +63,23 @@ services:
       REDIRECT_FRONTEND_URL: ${API_REDIRECT_FRONTEND_URL}
     depends_on:
       - db
-      - proxy
     ports:
       - "8000:80"
     expose:
       - "80"
-    labels:
-      - "VIRTUAL_HOST=${API_VIRTUAL_HOST}"
     command: sh -c "php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
         aliases:
           - ${API_VIRTUAL_HOST}
+      proxy-network: {}
 
   web:
     build: ./web
     volumes:
-      # Volumen para el código de la aplicación (bind mount)
       - ./web:/var/www/html
-      # Volumen persistente para storage (gestionado por Docker)
       - web_storage:/var/www/html/storage
-      # Volumen persistente para uploads (gestionado por Docker)
       - web_uploads:/var/www/html/public/uploads
-      # Excepción para node_modules y vendor, para que use los de la imagen
       - /var/www/html/node_modules
       - /var/www/html/vendor
       - /var/www/html/public/build
@@ -130,18 +104,16 @@ services:
       DB_PASSWORD: ${WEB_DB_PASSWORD}
     depends_on:
       - db
-      - proxy
     ports:
       - "8001:80"
     expose:
       - "80"
-    labels:
-      - "VIRTUAL_HOST=${WEB_VIRTUAL_HOST}"
     command: sh -c "cron && php artisan storage:link --force && php -S 0.0.0.0:80 -t public"
     networks:
       boombang:
         aliases:
           - ${WEB_VIRTUAL_HOST}
+      proxy-network: {}
 
   server:
     build:
@@ -149,9 +121,8 @@ services:
       args:
         NODE_ENV: development
     volumes:
-      - ./server:/app           # Solo útil si usas nodemon y modo desarrollo
-      - /app/node_modules       # Evita sobrescribir node_modules del contenedor
-      - ./docker/ssl:/etc/nginx/certs:ro
+      - ./server:/app
+      - /app/node_modules
     env_file:
       - ./server/.env
     environment:
@@ -173,17 +144,15 @@ services:
     depends_on:
       - db
       - api
-      - proxy
     ports:
       - "3000:3000"
     expose:
       - "3000"
-    labels:
-      - "VIRTUAL_HOST=${SERVER_VIRTUAL_HOST}"
     networks:
       boombang:
         aliases:
           - ${SERVER_VIRTUAL_HOST}
+      proxy-network: {}
 
   client:
     build: ./client
@@ -200,15 +169,13 @@ services:
       VIRTUAL_PROTO: ${CLIENT_VIRTUAL_PROTO}
     depends_on:
       - server
-      - proxy
     expose:
       - "80"
-    labels:
-      - "VIRTUAL_HOST=${CLIENT_VIRTUAL_HOST}"
     networks:
       boombang:
         aliases:
           - ${CLIENT_VIRTUAL_HOST}
+      proxy-network: {}
 
 volumes:
   dbdata:
@@ -219,3 +186,6 @@ volumes:
 
 networks:
   boombang:
+  proxy-network:
+    external: true
+    name: proxy-network

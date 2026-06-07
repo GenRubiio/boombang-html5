@@ -51,12 +51,20 @@ class CatalogItem extends Model
         'scale',
         'in_lobby_gacha',
         'show_in_inventory',
+        'is_multi_buy',
+        'is_read_only',
         'is_purchasable',
         'is_active',
         'parent_id',
         'lft',
         'rgt',
-        'depth'
+        'depth',
+        'stripe_price_usd',
+        'reward_type',
+        'reward_golden_coins',
+        'reward_silver_coins',
+        'min_purchase_quantity',
+        'max_purchase_quantity'
     ];
 
     public $translatable = [
@@ -90,6 +98,33 @@ class CatalogItem extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function rewards()
+    {
+        return $this->hasMany(Reward::class, 'catalog_item_id');
+    }
+
+    public function npcCatalogItems()
+    {
+        return $this->hasMany(NpcCatalogItem::class, 'catalog_item_id');
+    }
+
+    public function npcs()
+    {
+        return $this->belongsToMany(Npc::class, 'npc_catalog_items', 'catalog_item_id', 'npc_id')
+            ->withPivot('active')
+            ->withTimestamps();
+    }
+
+    public function requirements()
+    {
+        return $this->hasMany(CatalogItemRequirement::class, 'catalog_item_id');
+    }
+
+    public function requiredBy()
+    {
+        return $this->hasMany(CatalogItemRequirement::class, 'required_catalog_item_id');
     }
 
     /*

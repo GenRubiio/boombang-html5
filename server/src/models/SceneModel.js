@@ -96,7 +96,7 @@ class SceneModel {
     }
 
     #refreshUsersChatList() {
-        const players = this.users.map(user => ({
+        const players = this.users.filter(user => user.show_username !== false).map(user => ({
             uuid: user.socket.id,
             username: user.username
         }));

@@ -27,7 +27,7 @@ class IslandApiController extends Controller implements IslandApiControllerInter
         $user = Auth::user();
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:islands,name',
-            'type' => 'required|integer|in:1,2', // Assuming types are integers 1-5
+            'type' => 'required|integer|exists:islands_config,id',
         ]);
 
         $island = Island::create([
@@ -61,10 +61,160 @@ class IslandApiController extends Controller implements IslandApiControllerInter
         if (!$island) {
             return $this->errorResponse('Island not found', 404);
         }
-        $island->load('privateScenes'); // Load user relationship for the island
+        $island->load(['privateScenes', 'islandConfig']); // Load privateScenes and islandConfig relationships
 
         return $this->successResponse([
             'island' => (new IslandResource($island))->toDTO()
+        ]);
+    }
+
+    public function updateName(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'islandId' => 'required|integer|exists:islands,id',
+            'name' => 'required|string|max:50',
+        ]);
+
+        $island = Island::find($validated['islandId']);
+        
+        if (!$island) {
+            return $this->errorResponse('Island not found', 404);
+        }
+
+        // Verificar que el usuario es el propietario de la isla
+        if ($island->user_id !== $user->id) {
+            return $this->errorResponse('You are not the owner of this island', 403);
+        }
+
+        $trimmedName = trim($validated['name']);
+        
+        // Si el nombre no cambió, no hacer nada
+        if ($trimmedName === $island->name) {
+            return $this->successResponse([
+                'island' => (new IslandResource($island))->toDTO(),
+                'message' => 'Island name unchanged'
+            ]);
+        }
+
+        // Verificar que el nombre no esté en uso por otra isla
+        $existingIsland = Island::where('name', $trimmedName)
+                                ->where('id', '!=', $island->id)
+                                ->first();
+        
+        if ($existingIsland) {
+            return $this->errorResponse('An island with this name already exists', 422);
+        }
+
+        // Actualizar el nombre
+        $island->name = $trimmedName;
+        $island->save();
+
+        return $this->successResponse([
+            'island' => (new IslandResource($island))->toDTO(),
+            'message' => 'Island name updated successfully'
+        ]);
+    }
+
+    public function updateDescription(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'islandId' => 'required|integer|exists:islands,id',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $island = Island::find($validated['islandId']);
+        
+        if (!$island) {
+            return $this->errorResponse('Island not found', 404);
+        }
+
+        // Verificar que el usuario es el propietario de la isla
+        if ($island->user_id !== $user->id) {
+            return $this->errorResponse('You are not the owner of this island', 403);
+        }
+
+        $trimmedDescription = $validated['description'] ? trim($validated['description']) : '';
+        
+        // Si la descripción no cambió, no hacer nada
+        if ($trimmedDescription === ($island->description ?? '')) {
+            return $this->successResponse([
+                'island' => (new IslandResource($island))->toDTO(),
+                'message' => 'Island description unchanged'
+            ]);
+        }
+
+        // Actualizar la descripción
+        $island->description = $trimmedDescription ?: null;
+        $island->save();
+
+        return $this->successResponse([
+            'island' => (new IslandResource($island))->toDTO(),
+            'message' => 'Island description updated successfully'
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $validated = $request->validate([
+            'query' => 'required|string|max:255',
+        ]);
+
+        $query = trim($validated['query']);
+
+        // Buscar islas cuyo nombre contenga el texto de búsqueda
+        // Los visitantes se calculan en el servidor, no en la base de datos
+        $islands = Island::where('name', 'LIKE', "%{$query}%")
+                         ->orderBy('created_at', 'desc')
+                         ->limit(20)
+                         ->get();
+
+        return $this->successResponse([
+            'islands' => IslandResource::collection($islands)
+        ]);
+    }
+
+    public function delete(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'islandId' => 'required|integer|exists:islands,id',
+        ]);
+
+        $island = Island::with(['privateScenes'])->find($validated['islandId']);
+
+        if (!$island) {
+            return $this->errorResponse('Island not found', 404);
+        }
+
+        // Verificar que el usuario es el propietario de la isla
+        if ($island->user_id !== $user->id) {
+            return $this->errorResponse('You are not the owner of this island', 403);
+        }
+
+        // Obtener todas las escenas de la isla
+        $sceneIds = $island->privateScenes->pluck('id')->toArray();
+
+        // Mover todos los items de las escenas de vuelta al inventario (private_scene_id = null)
+        if (!empty($sceneIds)) {
+            \App\Models\UserCatalogItem::whereIn('private_scene_id', $sceneIds)
+                ->update(['private_scene_id' => null, 'occupied_tiles' => null]);
+        }
+
+        // Eliminar todas las escenas de la isla
+        \App\Models\PrivateScene::whereIn('id', $sceneIds)->delete();
+
+        // Eliminar la isla
+        $island->delete();
+
+        return $this->successResponse([
+            'message' => 'Island deleted successfully',
+            'islandId' => $validated['islandId'],
+            'deletedScenes' => $sceneIds
         ]);
     }
 }

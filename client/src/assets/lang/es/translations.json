@@ -34,7 +34,11 @@
     "tooltip_color": "Colorear",
     "tooltip_move": "Mover",
     "tooltip_inventory": "Inventario",
-    "tooltip_rankings": "Rankings"
+    "tooltip_rankings": "Rankings",
+    "inventory": "Inventario",
+    "total_items": "Total",
+    "color_panel_title": "Colorear Escena",
+    "color_panel_save": "Guardar"
   },
   "rankings": {
     "title": "Rankings de Minijuegos",
@@ -50,6 +54,18 @@
     "previous_page": "Página anterior",
     "next_page": "Página siguiente",
     "error_loading": "Error al cargar datos"
+  },
+  "shop": {
+    "title": "Tienda",
+    "loading": "Cargando...",
+    "no_items": "No hay artículos disponibles",
+    "buy": "Comprar",
+    "quantity": "Cantidad",
+    "purchase_success": "¡Compra realizada con éxito!",
+    "purchase_error": "Error al comprar el artículo",
+    "error_loading": "Error al cargar el catálogo",
+    "insufficient_gold": "Oro insuficiente",
+    "insufficient_silver": "Plata insuficiente"
   },
   "maintenance": {
     "title": "Mantenimiento",
@@ -99,7 +115,22 @@
   },
   "island": {
     "locations": "Localizaciones",
-    "add_scenario": "Añadir escenario"
+    "add_scenario": "Añadir escenario",
+    "edit_name_tooltip": "Editar nombre de isla",
+    "edit_description_tooltip": "Editar descripción de isla",
+    "description_placeholder": "Haz clic para añadir una descripción...",
+    "no_description": "Sin descripción",
+    "description_textarea_placeholder": "Escribe una descripción para tu isla...",
+    "edit_scene_name": "Editar nombre de escenario",
+    "delete_scene": "Eliminar escenario",
+    "delete_island": "Eliminar isla",
+    "confirm_delete_island": "¿Estás seguro de que deseas eliminar la isla '{name}'? Se eliminarán todas las escenas y los objetos volverán a tu inventario. Los usuarios en las escenas serán expulsados al lobby.",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm_delete_scene": "¿Estás seguro de que quieres eliminar '{name}'?",
+    "error_title": "Error",
+    "error_island_not_found": "Esta isla ya no existe.",
+    "error_scene_not_found": "Esta sala ya no existe."
   },
   "user_card": {
     "change_ficha_alt": "Cambiar ficha",
@@ -202,6 +233,12 @@
       "coconuts_locos": {
         "title": "Cocos Locos",
         "caught": "Atrapados"
+      },
+      "interactions": {
+        "title": "Interacciones",
+        "kisses": "Besos",
+        "drinks": "Bebidas",
+        "roses": "Rosas"
       }
     }
   },
@@ -233,6 +270,17 @@
     "title": "PERSONALIZACIÓN DE {tab}"
   },
   "npc": {
+    "objects": {
+      "loading": "Cargando...",
+      "no_items": "Este NPC no tiene objetos disponibles",
+      "back": "Volver",
+      "obtain": "Obtendrás:",
+      "requirements": "Requisitos:",
+      "claim": "Reclamar",
+      "claiming": "Reclamando...",
+      "success_claim": "¡Objeto reclamado con éxito!",
+      "missing_items": "Te faltan:"
+    },
     "ring": {
       "welcome": "Bienvenido al Ring",
       "description": "¡Suscríbete para competir contra otros usuarios y ganar recompensas!",
@@ -376,7 +424,10 @@
       "no_islands": "No tienes islas creadas."
     },
     "search": {
-      "not_implemented": "La búsqueda aún no está implementada."
+      "placeholder": "Buscar islas...",
+      "enter_search": "Escribe el nombre de una isla para buscar",
+      "searching": "Buscando...",
+      "no_results": "No se encontraron islas"
     },
     "ui": {
       "background_alt": "Fondo del lobby",
@@ -390,8 +441,36 @@
       "credits": "Créditos",
       "settings": "Ajustes",
       "settings_alt": "Configuración",
-      "avatar_error": "Error al cargar el avatar del usuario"
+      "avatar_error": "Error al cargar el avatar del usuario",
+      "mail": "Correo",
+      "mail_alt": "Correo"
+    },
+    "mail": {
+      "title": "Correo",
+      "loading": "Cargando correos...",
+      "no_mails": "No tienes correos",
+      "new": "Nuevo",
+      "has_rewards": "Tiene recompensas",
+      "rewards_title": "Recompensas",
+      "gold_credits": "Créditos de Oro",
+      "silver_credits": "Créditos de Plata",
+      "claim": "Reclamar",
+      "claiming": "Reclamando...",
+      "claimed": "Reclamado"
     }
+  },
+  "mail": {
+    "title": "Correo",
+    "loading": "Cargando correos...",
+    "no_mails": "No tienes correos",
+    "new": "Nuevo",
+    "has_rewards": "Tiene recompensas",
+    "rewards_title": "Recompensas",
+    "gold_credits": "Créditos de Oro",
+    "silver_credits": "Créditos de Plata",
+    "claim": "Reclamar",
+    "claiming": "Reclamando...",
+    "claimed": "Reclamado"
   },
   "settings": {
     "main_title": "Configuración",
@@ -437,5 +516,44 @@
   },
   "loading": {
     "title": "Cargando..."
+  },
+  "minigame": {
+    "alert": {
+      "winner": "¡{winnerName} ganó!",
+      "winner_details": "¡Felicidades al ganador del ring!",
+      "no_min_users_title": "Partida cancelada",
+      "no_min_users_details": "No hay suficientes jugadores para iniciar la partida",
+      "timeout_title": "Tiempo agotado",
+      "timeout_details": "El tiempo se agotó sin un ganador claro"
+    }
+  },
+  "tutorial": {
+    "story": {
+      "title": "¡Bienvenido a la Isla BoomMania!",
+      "intro1": "Ibas viajando en un avión cuando ocurrió un accidente y caíste en una isla llamada BoomMania. Tú y muchas otras personas quedasteis a vivir en esta isla.",
+      "intro2": "Esta isla cuenta con muchas ubicaciones, minijuegos, y puedes crear tu propia isla donde puedes divertirte con otros supervivientes.",
+      "intro3": "Puedes entrar a chatear a escenarios con otras personas, participar en eventos y minijuegos multijugador. ¡Déjame mostrarte el lobby!"
+    },
+    "lobby": {
+      "scenes_title": "Panel de Escenarios",
+      "scenes_text": "En este panel puedes ir a Áreas, Juegos e Islas con una lista de salas disponibles para unirte.",
+      "scene_item_title": "Elemento de Escenario", 
+      "scene_item_text": "Este es un escenario al cual puedes entrar. ¡Haz clic para unirte y explorar!",
+      "user_count_title": "Contador de Usuarios",
+      "user_count_text": "Indica las personas que hay actualmente en este escenario.",
+      "credits_title": "Créditos y Plata",
+      "credits_text": "Indica la cantidad de créditos y plata que tienes actualmente con los cuales puedes comprar diferentes objetos como decoraciones para tu isla o gastar en diferentes actividades. Los créditos se pueden obtener atrapando cofres que caen en las Áreas de todo BoomMania.",
+      "gachapon_title": "Máquina de Gachapon",
+      "gachapon_text": "Máquina de gachapon donde puedes aleatoriamente obtener objetos gastando créditos.",
+      "mail_title": "Correo y Noticias",
+      "mail_text": "Aquí puedes ver las noticias y correo donde podrás reclamar recompensas o informarte de las noticias importantes.",
+      "settings_title": "Configuración",
+      "settings_text": "Botón donde podrás cambiar la configuración del juego como gráficos.",
+      "logout_title": "Cerrar Sesión",
+      "logout_text": "Botón para cerrar sesión de tu cuenta."
+    },
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "finish": "Finalizar Tutorial"
   }
 }

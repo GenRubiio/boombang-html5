@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Run every minute as requested
-        $schedule->command('boombang:process-games-events')->everyMinute();
+        // Las tareas programadas se definen en routes/console.php (Laravel 11+)
+        // Este método se mantiene por compatibilidad pero ya no se usa
     }
 
     /**

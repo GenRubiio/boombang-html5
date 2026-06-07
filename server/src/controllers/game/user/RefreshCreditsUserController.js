@@ -1,5 +1,3 @@
-
-const DisconnectUserController = require('../../connection/DisconnectUserController');
 const ConnectedUsersCollection = require('../../../collections/ConnectedUsersCollection');
 const ResponseSocketsEnum = require('../../../enums/ResponseSocketsEnum');
 const GameClock = require('../../../utils/GameClock');
@@ -10,7 +8,9 @@ class RefreshCreditsUserController {
         try {
             const user = ConnectedUsersCollection.getBySocketId(socket.id);
             if (!user) {
-                throw new Error('User not found');
+                // Usuario no encontrado, simplemente logear y no hacer nada más
+                Log.warning(`RefreshCreditsUserController: User not found for socket ${socket.id}`);
+                return;
             }
             
             socket.emit(ResponseSocketsEnum.REFRESH_USER_CREDITS, {
@@ -19,10 +19,8 @@ class RefreshCreditsUserController {
                 game_time: GameClock.getCurrentGameTime()
             });
         } catch (err) {
-            console.log(err);
             Log.error('Error in RefreshCreditsUserController: ' + err);
-            DisconnectUserController.main(socket, io);
-            socket.emit('error_critical');
+            // No desconectar al usuario por este error, solo logearlo
         }
     }
 }

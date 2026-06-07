@@ -10,6 +10,11 @@ const lobbySockets = require('./game/lobbySockets');
 const objectSockets = require('./game/objectSockets');
 const adminSockets = require('./game/admin/adminSockets');
 const minigameSockets = require('./game/minigameSockets');
+const configSockets = require('./game/config/configSockets');
+const mailSockets = require('./game/mailSockets');
+const npcSockets = require('./game/npcSockets');
+const inventorySockets = require('./game/inventorySockets');
+const shopSockets = require('./game/shopSockets');
 const MinigamesEnum = require('../enums/MinigamesEnum');
 const MatchMakerInstance = require('../instances/MatchMakerInstance');
 
@@ -33,5 +38,10 @@ module.exports = (io, authorizedBotTokens) => {
         objectSockets(socket, io);
         adminSockets(socket, io);
         minigameSockets(socket, io);
+        configSockets(socket, io);
+        mailSockets(socket, io);
+        npcSockets(socket, io);
+        inventorySockets(socket, io);
+        shopSockets(socket, io);
     });
 };

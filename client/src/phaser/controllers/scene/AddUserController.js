@@ -36,13 +36,16 @@ function ensureNameTagTexture(gameScene, texKey, w, h, bgColor, alpha) {
     g.fillStyle(bgColor, alpha);
     g.fillRoundedRect(0, 0, w, h, 8 * gameConfig.DPI);
     // punta inferior
+    const halfW = w / gameConfig.DPI;
+    const triangleOffset = 5 * gameConfig.DPI;
+    const triangleHeight = 6 * gameConfig.DPI;
     g.fillTriangle(
-        w / gameConfig.DPI - 5 * gameConfig.DPI, h,
-        w / gameConfig.DPI + 5 * gameConfig.DPI, h,
-        w / gameConfig.DPI, h + 6 * gameConfig.DPI
+        halfW - triangleOffset, h,
+        halfW + triangleOffset, h,
+        halfW, h + triangleHeight
     );
     // incluye la punta en la textura
-    g.generateTexture(texKey, w, h + 6 * gameConfig.DPI);
+    g.generateTexture(texKey, w, h + triangleHeight);
     g.destroy();
     nameTagStyleHash.set(texKey, hash);
 }
@@ -96,6 +99,7 @@ class AddUserController {
         const modifiedUserData = { ...userData, avatar_id: avatarSelection.avatarId };
 
         const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
+
         // Importante: pasar los datos modificados para que UserModel.avatarId sea el realmente usado (fallback si aplica)
         const user = new UserModel(modifiedUserData, spriteAvatar, spriteShadow, containerUser);
 
@@ -150,7 +154,9 @@ class AddUserController {
 
     static createShadowSprite(gameScene, userData) {
         //TODO: Nuevo rederizado * 2
-        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54 * gameConfig.DPI, 20 * gameConfig.DPI);
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const spriteShadow = gameScene.add.image(0, 0, "shadow").setDisplaySize(54 * gameConfig.DPI * scaleFactor, 20 * gameConfig.DPI * scaleFactor);
         spriteShadow.setDepth(0);
         spriteShadow.setInteractive({ useHandCursor: true });
 
@@ -216,6 +222,10 @@ class AddUserController {
         spriteAvatar._avatarId = userData.avatar_id;
         spriteAvatar._z = userData.z;
 
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        spriteAvatar.setScale(scaleFactor);
+
         // Aplicar animación idle
         UserIdleAnimation.main(
             spriteAvatar,
@@ -234,6 +244,25 @@ class AddUserController {
     }
 
     static createUserNameText(gameScene, spriteAvatar, userData) {
+        // Si show_username es false, retornar elementos vacíos/invisibles
+        if (userData.show_username === false) {
+            const emptyText = gameScene.add.text(0, 0, "", {
+                fontSize: "20px",
+                color: "#000000",
+                fontFamily: "Arial"
+            }).setOrigin(0.5, 1).setVisible(false);
+
+            const emptyBackground = gameScene.add.image(0, 0, "__WHITE")
+                .setOrigin(0.5, 1)
+                .setDepth(2)
+                .setVisible(false);
+
+            return {
+                background: emptyBackground,
+                name: emptyText
+            };
+        }
+
         // Nombre del usuario
         const userName = userData.username || "Undefined";
 
@@ -253,15 +282,19 @@ class AddUserController {
                 break;
         }
 
+        // Aplicar factor de escala para big_scene
+        const scaleFactor = gameScene.sceneScaleFactor || 1;
+        const baseFontSize = 20; // Mantener el tamaño de fuente fijo
+
         // 1) Crear el texto para medir y reutilizarlo
         const userNameText = gameScene.add.text(0, 0, userName, {
-            fontSize: "20px",
+            fontSize: `${baseFontSize}px`,
             color: textColor,
             fontFamily: "Arial",
             padding: { x: 0, y: 0 }
         }).setOrigin(0.5, 1);
 
-        // 2) Medidas con padding visual
+        // 2) Medidas con padding visual (sin escalar)
         const textWidth = Math.ceil(userNameText.width) + 12 * gameConfig.DPI;  // margen extra
         const textHeight = Math.ceil(userNameText.height) + 10 * gameConfig.DPI; // padding vertical
 
@@ -273,7 +306,14 @@ class AddUserController {
         ensureNameTagTexture(gameScene, textureKey, textWidth, textHeight, backgroundColor, alpha);
 
         // 5) Crear imagen de fondo usando la textura
-        const yBg = -spriteAvatar.displayHeight / gameConfig.DPI - textHeight - 8 * gameConfig.DPI;
+        // Obtener el frame actual para calcular la altura real del avatar
+        const currentFrame = spriteAvatar.frame;
+        const avatarHeight = currentFrame.height * spriteAvatar.scaleY;
+
+        const namePadding = 3 * gameConfig.DPI;
+        // Posicionar el nombre completamente por encima del avatar
+        // Ajuste para bajar un poco el nombre (valores más positivos = más abajo)
+        const yBg = -avatarHeight + namePadding;
         const textBackground = gameScene.add.image(0, yBg, textureKey)
             .setOrigin(0.5, 1)
             .setDepth(2);
@@ -353,6 +393,10 @@ class AddUserController {
             newSpriteAvatar._avatarId = newAvatarId;
             newSpriteAvatar._z = currentZ;
             newSpriteAvatar.setDepth(currentDepth);
+
+            // Aplicar factor de escala para big_scene
+            const scaleFactor = gameScene.sceneScaleFactor || 1;
+            newSpriteAvatar.setScale(scaleFactor);
 
             // Aplicar animación idle
             UserIdleAnimation.main(newSpriteAvatar, currentZ, newAvatarId);
@@ -560,6 +604,10 @@ class AddUserController {
             newSpriteAvatar._avatarId = newAvatarId;
             newSpriteAvatar._z = currentZ;
             newSpriteAvatar.setDepth(currentDepth);
+
+            // Aplicar factor de escala para big_scene
+            const scaleFactor = gameScene.sceneScaleFactor || 1;
+            newSpriteAvatar.setScale(scaleFactor);
 
             // Aplicar animación idle
             UserIdleAnimation.main(newSpriteAvatar, currentZ, newAvatarId);
