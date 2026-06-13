@@ -22,3 +22,5 @@ yarn-error.log
 /.vscode
 /.zed
 .gemini.command
+# Local Claude SDD runtime state
+.claude/state/

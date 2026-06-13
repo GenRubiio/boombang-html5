@@ -18,6 +18,7 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $userId = DB::table('users')->insertGetId([
+            'id' => 1,
             'name' => 'Admin',
             'email' => 'admin@test.com',
             'username' => 'God',
