@@ -63,7 +63,7 @@ class SceneArrowCrudController extends CrudController
         $this->crud->addField([
             'name' => 'image',
             'label' => 'Imagen',
-            'type' => 'image',
+            'type' => 'upload',
             'upload' => true,
             'disk' => 'uploads', // in case you need to show images from
         ]);

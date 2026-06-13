@@ -85,7 +85,7 @@ class PublicSceneCrudController extends CrudController
             [
                 'name' => 'npc_id',
                 'label' => 'NPC Asociado',
-                'type' => 'select2',
+                'type' => 'select',
                 'entity' => 'npc',
                 'model' => "App\Models\Npc",
                 'attribute' => 'name',
@@ -165,7 +165,8 @@ class PublicSceneCrudController extends CrudController
             [
                 'name' => 'assets_data_repeatable',
                 'label' => 'Assets',
-                'type' => 'repeatable',
+                'type' => 'json',
+                'view_namespace' => 'json-field-for-backpack::fields',
                 'subfields' => [
                     [
                         'name' => 'position_x',
@@ -191,7 +192,7 @@ class PublicSceneCrudController extends CrudController
                     [
                         'name' => 'image',
                         'label' => 'Image',
-                        'type' => 'image',
+                        'type' => 'upload',
                         'disk'  => 'uploads',
                         'upload' => true,
                     ],
@@ -259,14 +260,15 @@ class PublicSceneCrudController extends CrudController
             [
                 'name' => 'scene_items_pivot',
                 'label' => 'Items de la Escena',
-                'type' => 'repeatable',
+                'type' => 'json',
+                'view_namespace' => 'json-field-for-backpack::fields',
                 'fake' => true,
                 'store_in' => 'scene_items_pivot',
                 'subfields' => [
                     [
                         'name' => 'scene_item_id',
                         'label' => 'Item',
-                        'type' => 'select2',
+                        'type' => 'select',
                         'model' => "App\Models\SceneItem",
                         'attribute' => 'name',
                         'wrapper' => ['class' => 'form-group col-md-12'],
@@ -322,7 +324,7 @@ class PublicSceneCrudController extends CrudController
                     [
                         'name' => 'event_id',
                         'label' => 'Evento Asociado',
-                        'type' => 'select2',
+                        'type' => 'select',
                         'model' => "App\Models\Event",
                         'attribute' => 'name',
                         'wrapper' => ['class' => 'form-group col-md-6'],
@@ -330,7 +332,7 @@ class PublicSceneCrudController extends CrudController
                     [
                         'name' => 'catalog_item_id',
                         'label' => 'Catalog Item Asociado',
-                        'type' => 'select2',
+                        'type' => 'select',
                         'model' => "App\Models\CatalogItem",
                         'attribute' => 'name',
                         'wrapper' => ['class' => 'form-group col-md-6'],
@@ -343,14 +345,15 @@ class PublicSceneCrudController extends CrudController
             [
                 'name' => 'arrows_data',
                 'label' => 'Flechas de la Escena',
-                'type' => 'repeatable',
+                'type' => 'json',
+                'view_namespace' => 'json-field-for-backpack::fields',
                 'fake' => true,
                 'store_in' => 'arrows',
                 'subfields' => [
                     [
                         'name' => 'scene_arrow_id',
                         'label' => 'Flecha',
-                        'type' => 'select2',
+                        'type' => 'select',
                         'model' => "App\Models\SceneArrow",
                         'attribute' => 'name',
                         'wrapper' => ['class' => 'form-group col-md-4'],
@@ -374,7 +377,7 @@ class PublicSceneCrudController extends CrudController
                     [
                         'name' => 'public_scene_id',
                         'label' => 'Escena Destino',
-                        'type' => 'select2',
+                        'type' => 'select',
                         'model' => "App\Models\PublicScene",
                         'attribute' => 'name',
                         'wrapper' => ['class' => 'form-group col-md-12'],
@@ -411,7 +414,8 @@ class PublicSceneCrudController extends CrudController
             [
                 'name' => 'traps_data',
                 'label' => 'Trampas de la Escena',
-                'type' => 'repeatable',
+                'type' => 'json',
+                'view_namespace' => 'json-field-for-backpack::fields',
                 'fake' => true,
                 'store_in' => 'traps_data',
                 'subfields' => [

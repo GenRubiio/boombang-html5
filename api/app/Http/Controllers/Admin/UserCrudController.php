@@ -81,53 +81,6 @@ class UserCrudController extends CrudController
             ],
         ]);
 
-        if (backpack_pro()) {
-            // Role Filter
-            $this->crud->addFilter(
-                [
-                    'name'  => 'role',
-                    'type'  => 'dropdown',
-                    'label' => trans('backpack::permissionmanager.role'),
-                ],
-                config('permission.models.role')::all()->pluck('name', 'id')->toArray(),
-                function ($value) { // if the filter is active
-                    $this->crud->addClause('whereHas', 'roles', function ($query) use ($value) {
-                        $query->where('role_id', '=', $value);
-                    });
-                }
-            );
-
-            // Extra Permission Filter
-            $this->crud->addFilter(
-                [
-                    'name'  => 'permissions',
-                    'type'  => 'select2',
-                    'label' => trans('backpack::permissionmanager.extra_permissions'),
-                ],
-                config('permission.models.permission')::all()->pluck('name', 'id')->toArray(),
-                function ($value) { // if the filter is active
-                    $this->crud->addClause('whereHas', 'permissions', function ($query) use ($value) {
-                        $query->where('permission_id', '=', $value);
-                    });
-                }
-            );
-
-            // Bot Filter
-            $this->crud->addFilter(
-                [
-                    'name'  => 'is_bot',
-                    'type'  => 'dropdown',
-                    'label' => 'Bot Status',
-                ],
-                [
-                    1 => 'Bots Only',
-                    0 => 'Users Only'
-                ],
-                function ($value) { // if the filter is active
-                    $this->crud->addClause('where', 'is_bot', '=', $value);
-                }
-            );
-        }
     }
 
     public function setupCreateOperation()
@@ -372,7 +325,7 @@ class UserCrudController extends CrudController
             [
                 'name' => 'avatar',
                 'label' => 'Avatar',
-                'type' => 'select2_from_array',
+                'type' => 'select_from_array',
                 'options' => AvatarEnum::toAssociativeArray(),
                 'tab'   => 'Game Stats',
             ],
@@ -529,7 +482,7 @@ class UserCrudController extends CrudController
             [
                 'name' => 'join_public_scenes',
                 'label' => 'Join Public Scenes',
-                'type' => 'select2_multiple',
+                'type' => 'select_multiple',
                 'tab' => 'Bot Settings',
                 'fake' => true,
                 'store_in' => 'bot_settings',

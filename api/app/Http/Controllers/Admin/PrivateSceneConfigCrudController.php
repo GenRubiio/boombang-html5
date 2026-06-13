@@ -88,7 +88,7 @@ class PrivateSceneConfigCrudController extends CrudController
         CRUD::addField([
             'name' => 'island_type',
             'label' => 'Isla',
-            'type' => 'select2',
+            'type' => 'select',
             'entity' => 'islandsConfig',
             'attribute' => 'name',
             'model' => "App\\Models\\IslandsConfig",
@@ -105,7 +105,7 @@ class PrivateSceneConfigCrudController extends CrudController
         CRUD::addField([
             'name' => 'image',
             'label' => 'Imagen',
-            'type' => 'image',
+            'type' => 'upload',
             'disk'  => 'uploads',
             'upload' => true,
             'hint' => 'Imagen representativa de la escena.',
@@ -194,7 +194,8 @@ class PrivateSceneConfigCrudController extends CrudController
         CRUD::addField([
             'name' => 'assets_data_repeatable',
             'label' => 'Assets',
-            'type' => 'repeatable',
+            'type' => 'json',
+            'view_namespace' => 'json-field-for-backpack::fields',
             'subfields' => [
                 [
                     'name' => 'position_x',
@@ -227,7 +228,7 @@ class PrivateSceneConfigCrudController extends CrudController
                 [
                     'name' => 'image',
                     'label' => 'Image',
-                    'type' => 'image',
+                    'type' => 'upload',
                     'disk'  => 'uploads',
                     'upload' => true,
                 ],

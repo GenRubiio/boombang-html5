@@ -83,7 +83,7 @@ class SceneItemCrudController extends CrudController
             [
                 'name' => 'sprite_file',
                 'label' => 'Archivo Sprite',
-                'type' => 'image',
+                'type' => 'upload',
                 'upload' => true,
                 'disk' => 'uploads',
                 'tab' => 'General'
@@ -97,7 +97,7 @@ class SceneItemCrudController extends CrudController
             [
                 'name' => 'catch_sprite_file',
                 'label' => 'Archivo Sprite de Captura',
-                'type' => 'image',
+                'type' => 'upload',
                 'upload' => true,
                 'disk' => 'uploads',
                 'tab' => 'General'

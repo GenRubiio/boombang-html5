@@ -30,7 +30,7 @@ class ApiKeyCrudController extends CrudController
         $this->crud->addColumn([
             'name' => 'user_id',
             'label' => 'User',
-            'type' => 'relationship',
+            'type' => 'select',
             'entity' => 'user',
             'attribute' => 'name',
             'model' => \App\Models\User::class,

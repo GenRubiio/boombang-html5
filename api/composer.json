@@ -12,7 +12,6 @@
         "php": "^8.2",
         "backpack/filemanager": "^3.0",
         "backpack/permissionmanager": "*",
-        "backpack/pro": "^2.2",
         "backpack/theme-coreuiv4": "^1.1",
         "darkaonline/l5-swagger": "^9.0",
         "intervention/image": "^3.11",
@@ -87,11 +86,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": {
-        "backpack": {
-            "type": "composer",
-            "url": "https://repo.backpackforlaravel.com/"
-        }
-    }
+    "prefer-stable": true
 }

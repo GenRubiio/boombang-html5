@@ -79,7 +79,7 @@ class NpcCatalogItemCrudController extends CrudController
             [
                 'name' => 'npc_id',
                 'label' => 'NPC',
-                'type' => 'select2',
+                'type' => 'select',
                 'entity' => 'npc',
                 'attribute' => 'name',
                 'model' => 'App\Models\Npc',
@@ -92,7 +92,7 @@ class NpcCatalogItemCrudController extends CrudController
             [
                 'name' => 'catalog_item_id',
                 'label' => 'Objeto del Catálogo',
-                'type' => 'select2',
+                'type' => 'select',
                 'entity' => 'catalogItem',
                 'attribute' => 'name',
                 'model' => 'App\Models\CatalogItem',
@@ -111,12 +111,13 @@ class NpcCatalogItemCrudController extends CrudController
         $this->crud->addField([
             'name' => 'requirements',
             'label' => 'Requisitos para Reclamar este Objeto',
-            'type' => 'repeatable',
+            'type' => 'json',
+            'view_namespace' => 'json-field-for-backpack::fields',
             'fields' => [
                 [
                     'name' => 'required_catalog_item_id',
                     'label' => 'Objeto Requerido (opcional)',
-                    'type' => 'select2',
+                    'type' => 'select',
                     'model' => 'App\Models\CatalogItem',
                     'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-6'],

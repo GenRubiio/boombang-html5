@@ -54,8 +54,6 @@ class CatalogItemCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->addFilters();
-
         $this->crud->addColumn([
             'name' => 'id',
             'label' => 'ID',
@@ -151,13 +149,13 @@ class CatalogItemCrudController extends CrudController
             [
                 'name' => 'description',
                 'label' => 'Descripción',
-                'type' => 'ckeditor',
+                'type' => 'summernote',
                 'tab' => 'General'
             ],
             [
                 'name' => 'category_id',
                 'label' => 'Categoría',
-                'type' => 'select2',
+                'type' => 'select',
                 'entity' => 'category',
                 'attribute' => 'name',
                 'model' => "App\Models\CatalogCategory",
@@ -173,7 +171,7 @@ class CatalogItemCrudController extends CrudController
             [
                 'name' => 'image',
                 'label' => 'Imagen',
-                'type' => 'image',
+                'type' => 'upload',
                 'disk'  => 'uploads',
                 'upload' => true,
                 'hint' => 'Esta imagen se usará como vista previa en el catálogo.',
@@ -542,117 +540,4 @@ class CatalogItemCrudController extends CrudController
         abort(403, 'No tienes permisos para eliminar artículos de catálogo.');
     }
 
-    protected function addFilters()
-    {
-        $this->crud->addFilter([
-            'name' => 'category_id',
-            'type' => 'select2_multiple',
-            'label' => 'Categoría',
-        ], function () {
-            return \App\Models\CatalogCategory::all()->pluck('name', 'id')->toArray();
-        }, function ($values) {
-            $this->crud->addClause('whereIn', 'category_id', json_decode($values));
-        });
-
-        $this->crud->addFilter([
-            'name' => 'type_of_behavior',
-            'type' => 'select2_multiple',
-            'label' => 'Tipo de Comportamiento',
-        ], CatalogItemTypeOfBehaviorEnum::toAssociativeArray(), function ($values) {
-            $this->crud->addClause('whereIn', 'type_of_behavior', json_decode($values));
-        });
-
-        $this->crud->addFilter([
-            'name' => 'type',
-            'type' => 'select2_multiple',
-            'label' => 'Tipo',
-        ], CatalogItemTypesEnum::toAssociativeArray(), function ($values) {
-            $this->crud->addClause('whereIn', 'type', json_decode($values));
-        });
-
-        $this->crud->addFilter([
-            'name' => 'stars',
-            'type' => 'select2_multiple',
-            'label' => 'Estrellas',
-        ], [
-            1 => '1 Estrella',
-            2 => '2 Estrellas',
-            3 => '3 Estrellas',
-            4 => '4 Estrellas',
-            5 => '5 Estrellas',
-        ], function ($values) {
-            $this->crud->addClause('whereIn', 'stars', json_decode($values));
-        });
-
-        $this->crud->addFilter([
-            'name' => 'user_decoration_type',
-            'type' => 'select2_multiple',
-            'label' => 'Tipo de Decoración',
-        ], [
-            'ficha' => 'Ficha',
-            'chat' => 'Chat',
-            'name' => 'Name',
-            'shadow' => 'Shadow',
-            'avatar' => 'Avatar'
-        ], function ($values) {
-            $this->crud->addClause('whereIn', 'user_decoration_type', json_decode($values));
-        });
-
-        $this->crud->addFilter([
-            'type' => 'simple',
-            'name' => 'in_lobby_gacha',
-            'label' => 'En Lobby Gacha',
-        ], false, function () {
-            $this->crud->addClause('where', 'in_lobby_gacha', 1);
-        });
-
-        $this->crud->addFilter([
-            'type' => 'simple',
-            'name' => 'show_in_inventory',
-            'label' => 'Mostrar en Inventario',
-        ], false, function () {
-            $this->crud->addClause('where', 'show_in_inventory', 1);
-        });
-
-        $this->crud->addFilter([
-            'type' => 'simple',
-            'name' => 'is_purchasable',
-            'label' => 'Comprable',
-        ], false, function () {
-            $this->crud->addClause('where', 'is_purchasable', 1);
-        });
-
-        $this->crud->addFilter([
-            'name' => 'price_type',
-            'type' => 'select2_multiple',
-            'label' => 'Tipo de Precio',
-        ], [
-            'golden_coins' => 'Monedas Doradas',
-            'silver_coins' => 'Monedas Plateadas',
-            'stripe_payment' => 'Pago Real (Stripe)',
-        ], function ($values) {
-            $this->crud->addClause('whereIn', 'price_type', json_decode($values));
-        });
-
-        $this->crud->addFilter([
-            'name' => 'reward_type',
-            'type' => 'select2_multiple',
-            'label' => 'Tipo de Recompensa',
-        ], [
-            'item' => 'Entregar Item',
-            'golden_coins' => 'Créditos de Oro',
-            'silver_coins' => 'Créditos de Plata',
-            'mixed' => 'Mixto'
-        ], function ($values) {
-            $this->crud->addClause('whereIn', 'reward_type', json_decode($values));
-        });
-
-        $this->crud->addFilter([
-            'type' => 'simple',
-            'name' => 'stripe_items',
-            'label' => 'Solo Items de Stripe',
-        ], false, function () {
-            $this->crud->addClause('where', 'price_type', 'stripe_payment');
-        });
-    }
 }

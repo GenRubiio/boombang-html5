@@ -45,16 +45,6 @@ class UserCatalogItemCrudController extends CrudController
     {
         $this->crud->removeButton('create');
         $this->crud->addButtonFromView('top', 'create_item_for_user', 'create_item_for_user', 'beginning');
-        $this->crud->addFilter([
-            'name'  => 'user_id',
-            'type'  => 'select2',
-            'label' => 'User',
-        ], function () {
-            return \App\Models\User::all()->pluck('username', 'id')->toArray();
-        }, function ($value) {
-            $this->crud->addClause('where', 'user_id', $value);
-        });
-
         $this->crud->addColumn([
             'name' => 'id',
             'label' => 'ID',
@@ -96,7 +86,7 @@ class UserCatalogItemCrudController extends CrudController
             [
                 'name' => 'user_id_display',
                 'label' => 'User',
-                'type' => 'select2',
+                'type' => 'select',
                 'entity' => 'user',
                 'attribute' => 'username',
                 'model' => "App\\Models\\User",
@@ -114,7 +104,7 @@ class UserCatalogItemCrudController extends CrudController
             [
                 'name' => 'catalog_item_id',
                 'label' => 'Catalog Item',
-                'type' => 'select2',
+                'type' => 'select',
                 'entity' => 'catalogItem',
                 'attribute' => 'name',
                 'model' => "App\\Models\\CatalogItem",

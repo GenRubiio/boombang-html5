@@ -53,12 +53,12 @@ class RewardCrudController extends CrudController
          */
             CRUD::addColumn([
                 'name' => 'event',
-                'type' => 'relationship',
+                'type' => 'select',
                 'label' => 'Event',
             ]);
             CRUD::addColumn([
                 'name' => 'minigame',
-                'type' => 'relationship',
+                'type' => 'select',
                 'label' => 'Minigame',
             ]);
     }
@@ -76,7 +76,7 @@ class RewardCrudController extends CrudController
         CRUD::addFields([
             [
                 'label' => 'Minigame',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'minigame_id',
                 'entity' => 'minigame',
                 'attribute' => 'name',
@@ -84,7 +84,7 @@ class RewardCrudController extends CrudController
             ],
             [
                 'label' => 'Event',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'event_id',
                 'entity' => 'event',
                 'attribute' => 'name',
@@ -92,7 +92,7 @@ class RewardCrudController extends CrudController
             ],
             [
                 'label' => 'Catalog Item',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'catalog_item_id',
                 'entity' => 'catalogItem',
                 'attribute' => 'name',
@@ -119,16 +119,6 @@ class RewardCrudController extends CrudController
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
          */
-            CRUD::addField([
-                'name' => 'event',
-                'type' => 'relationship',
-                'label' => 'Event',
-            ]);
-            CRUD::addField([
-                'name' => 'minigame',
-                'type' => 'relationship',
-                'label' => 'Minigame',
-            ]);
     }
 
     /**

@@ -50,7 +50,7 @@ class MinigameCrudController extends CrudController
 
             CRUD::addColumn([
                 'name' => 'weeks',
-                'type' => 'relationship',
+                'type' => 'select_multiple',
                 'label' => 'Minigame Weeks',
             ]);
     }

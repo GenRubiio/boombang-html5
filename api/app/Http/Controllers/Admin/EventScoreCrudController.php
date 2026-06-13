@@ -51,7 +51,7 @@ class EventScoreCrudController extends CrudController
          */
             CRUD::addColumn([
                 'name' => 'event',
-                'type' => 'relationship',
+                'type' => 'select',
                 'label' => 'Event',
             ]);
     }
@@ -69,7 +69,7 @@ class EventScoreCrudController extends CrudController
         CRUD::addFields([
             [
                 'label' => 'User',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'user_id',
                 'entity' => 'user',
                 'attribute' => 'username',
@@ -77,7 +77,7 @@ class EventScoreCrudController extends CrudController
             ],
             [
                 'label' => 'Event',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'event_id',
                 'entity' => 'event',
                 'attribute' => 'name',

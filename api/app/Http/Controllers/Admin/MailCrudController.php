@@ -113,7 +113,7 @@ class MailCrudController extends CrudController
         $this->crud->addField([
             'name' => 'description',
             'label' => 'Descripción (con formato HTML)',
-            'type' => 'ckeditor',
+            'type' => 'summernote',
             'tab' => 'Información básica',
         ]);
 
@@ -147,7 +147,7 @@ class MailCrudController extends CrudController
         $this->crud->addField([
             'name' => 'user_ids',
             'label' => 'Usuarios destinatarios',
-            'type' => 'select2_from_array',
+            'type' => 'select_from_array',
             'options' => \App\Models\User::pluck('username', 'id')->toArray(),
             'allows_multiple' => true,
             'hint' => 'Solo se usa si NO está marcado "Enviar a todos"',
@@ -178,11 +178,12 @@ class MailCrudController extends CrudController
         $this->crud->addField([
             'name' => 'rewards',
             'label' => 'Objetos del catálogo',
-            'type' => 'repeatable',
+            'type' => 'json',
+            'view_namespace' => 'json-field-for-backpack::fields',
             'fields' => [
                 [
                     'name' => 'catalog_item_id',
-                    'type' => 'select2_from_array',
+                    'type' => 'select_from_array',
                     'label' => 'Objeto',
                     'options' => \App\Models\CatalogItem::pluck('name', 'id')->toArray(),
                     'wrapper' => [

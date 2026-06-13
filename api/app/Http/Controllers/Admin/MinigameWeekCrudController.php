@@ -50,7 +50,7 @@ class MinigameWeekCrudController extends CrudController
 
             CRUD::addColumn([
                 'name' => 'minigame',
-                'type' => 'relationship',
+                'type' => 'select',
                 'label' => 'Minigame',
             ]);
     }
@@ -68,7 +68,7 @@ class MinigameWeekCrudController extends CrudController
         CRUD::addFields([
             [
                 'label' => 'Minigame',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'minigame_id',
                 'entity' => 'minigame',
                 'attribute' => 'name',

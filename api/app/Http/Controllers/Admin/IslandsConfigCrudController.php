@@ -79,7 +79,7 @@ class IslandsConfigCrudController extends CrudController
             [
                 'name' => 'image',
                 'label' => 'Imagen',
-                'type' => 'image',
+                'type' => 'upload',
                 'disk'  => 'uploads',
                 'upload' => true,
                 'hint' => '',

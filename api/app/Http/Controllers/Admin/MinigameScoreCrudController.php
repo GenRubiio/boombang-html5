@@ -51,7 +51,7 @@ class MinigameScoreCrudController extends CrudController
          */
             CRUD::addColumn([
                 'name' => 'minigame',
-                'type' => 'relationship',
+                'type' => 'select',
                 'label' => 'Minigame',
             ]);
     }
@@ -69,7 +69,7 @@ class MinigameScoreCrudController extends CrudController
         CRUD::addFields([
             [
                 'label' => 'User',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'user_id',
                 'entity' => 'user',
                 'attribute' => 'username',
@@ -77,7 +77,7 @@ class MinigameScoreCrudController extends CrudController
             ],
             [
                 'label' => 'Minigame Week',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'minigame_week_id',
                 'entity' => 'minigameWeek',
                 'attribute' => 'week_number',
@@ -85,7 +85,7 @@ class MinigameScoreCrudController extends CrudController
             ],
             [
                 'label' => 'Minigame',
-                'type' => 'select2',
+                'type' => 'select',
                 'name' => 'minigame_id',
                 'entity' => 'minigame',
                 'attribute' => 'name',

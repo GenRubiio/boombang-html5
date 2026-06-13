@@ -49,7 +49,7 @@ class EventCrudController extends CrudController
 
             CRUD::addColumn([
                 'name' => 'scores',
-                'type' => 'relationship',
+                'type' => 'select_multiple',
                 'label' => 'Event Scores',
             ]);
             // debug column: show the appended status string

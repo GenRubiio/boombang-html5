@@ -81,7 +81,7 @@ class NpcCrudController extends CrudController
             [
                 'name' => 'description',
                 'label' => 'Descripción',
-                'type' => 'ckeditor',
+                'type' => 'summernote',
                 'tab' => 'General'
             ],
             [
@@ -100,7 +100,7 @@ class NpcCrudController extends CrudController
             [
                 'name' => 'image',
                 'label' => 'Imagen',
-                'type' => 'image',
+                'type' => 'upload',
                 'disk'  => 'uploads',
                 'upload' => true,
                 'tab' => 'General'
