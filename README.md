@@ -242,4 +242,4 @@ La carpeta [`doc/`](doc/) contiene documentación adicional sobre el sistema de 
 
 Copyright © 2025 Evgeny Lyubeznyy. Todos los derechos reservados.
 
-Consulta [`LICENSE.txt`](LICENSE.txt) para conocer las condiciones y restricciones de uso. Para solicitar autorización o una licencia, contacta con **#genrubio** mediante Discord.
+Consulta [`LICENSE.txt`](LICENSE.txt) para conocer las condiciones y restricciones de uso.
