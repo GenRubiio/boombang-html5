@@ -1,0 +1,57 @@
+strict_tdd: true
+context: |
+  client is a Node.js/TypeScript ESM, Vue, Node.js/TypeScript project.
+  Detected markers: client/package.json, client/npm package manager, launcher/package.json, launcher/npm package manager, server/package.json, server/npm package manager, server/src/packages/objects-maker/package.json, server/src/packages/objects-maker/npm package manager, server/src/packages/textures_maker/package.json, server/src/packages/textures_maker/npm package manager.
+  Package managers: npm.
+  Primary test command: cd server/src/packages/objects-maker && npm test.
+  Unit tests: package script (cd server/src/packages/objects-maker && npm test); package script (cd server/src/packages/textures_maker && npm test).
+  Integration tests: none.
+  E2E tests: none.
+rules:
+  proposal:
+    require_problem_statement: true
+  spec:
+    require_acceptance_criteria: true
+  design:
+    require_tradeoffs: true
+  tasks:
+    protect_review_workload: true
+  apply:
+    test_command: "cd server/src/packages/objects-maker && npm test"
+  verify:
+    test_command: "cd server/src/packages/objects-maker && npm test"
+testing:
+  detected: "2026-08-02"
+  runner:
+    command: "cd server/src/packages/objects-maker && npm test"
+    framework: "package script"
+  layers:
+    unit: "package script, package script"
+    integration: ""
+    e2e: ""
+  commands:
+    unit:
+      - scope: "server/src/packages/objects-maker"
+        command: "cd server/src/packages/objects-maker && npm test"
+        framework: "package script"
+      - scope: "server/src/packages/textures_maker"
+        command: "cd server/src/packages/textures_maker && npm test"
+        framework: "package script"
+    integration:
+      []
+    e2e:
+      []
+  coverage:
+    command: ""
+    commands:
+      []
+quality:
+  lint: ""
+  lint_commands:
+    []
+  typecheck: ""
+  typecheck_commands:
+    []
+  format: ""
+  format_commands:
+    []

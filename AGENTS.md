@@ -12,6 +12,8 @@ BoomBang HTML5 is a multiplayer game recreation with a microservices architectur
 - **client/** - HTML5 game client using Vue 3, Vite, and Phaser (game rendering and UI)
 - **launcher/** - Desktop launcher built with Electron
 
+Repository structure, per-service internals, and inter-service communication are documented authoritatively in [CLAUDE.md](CLAUDE.md); this file covers Codex-specific workflow conventions.
+
 ## Docker Development Environment
 
 All services run via Docker Compose. Essential commands:
@@ -355,7 +357,7 @@ When creating a new entity, always create:
 - **Client ↔ Server**: Socket.IO (WebSocket)
 - **Server ↔ API**: HTTP/HTTPS with `EMULATOR_API_TOKEN` authentication
 - **Web ↔ API**: Standard Laravel HTTP/API calls
-- **Client ↔ API**: Direct HTTP/HTTPS calls for non-real-time data
+- **Client ↔ API**: One path only — a JWT-authenticated `POST` to `/api/stripe/create-checkout-session` from `ShopComponent.vue`; all other client traffic is gameplay and goes over Socket.IO
 
 ### Git Workflow
 

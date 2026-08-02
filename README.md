@@ -238,6 +238,8 @@ Para limpiar completamente los recursos Docker del proyecto en Windows:
 
 La carpeta [`doc/`](doc/) contiene documentación adicional sobre el sistema de avatares, bots conversacionales, caché, optimización y control de versiones del cliente.
 
+El mapa técnico y estructural del repositorio (directorios, stacks, comandos y comunicación entre servicios) está en [`CLAUDE.md`](CLAUDE.md).
+
 ## Licencia
 
 Copyright © 2025 Evgeny Lyubeznyy. Todos los derechos reservados.

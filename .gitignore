@@ -3,7 +3,6 @@
 .env.local
 .env.*.local
 NUL
-CLAUDE.md
 .claude
 logs/
 
