@@ -1,0 +1,58 @@
+# Local development override (OrbStack / macOS).
+# Auto-loaded by `docker compose`, so plain `docker compose up -d` works.
+#
+# What it changes versus docker-compose.yml:
+#   - `web` is put behind an inactive profile: the web/ directory is not in this
+#     repository, so its build context and env_file do not exist.
+#   - `client`, `phpmyadmin` and `db` get published host ports, so no
+#     /etc/hosts entries are needed.
+#   - `api-proxy` replaces nginx-proxy in front of the API on :8000.
+#   - `api` serves public/uploads from the host instead of a named volume.
+#   - `db` gets a healthcheck that works on mariadb:11.
+#
+# Enable the web service again with: docker compose --profile web up -d
+
+services:
+  web:
+    profiles:
+      - web
+
+  api:
+    volumes:
+      # Replaces the api_uploads named volume (same mount target) so the files
+      # extracted into api/public/uploads on the host are the ones served.
+      - ./api/public/uploads:/var/www/html/public/uploads
+    # api-proxy takes over :8000; the raw PHP server stays reachable on :8002.
+    ports: !override
+      - "8002:80"
+
+  # Stands in for nginx-proxy, which is what adds the CORS headers in production.
+  api-proxy:
+    image: nginx:alpine
+    depends_on:
+      - api
+    ports:
+      - "8000:80"
+    volumes:
+      - ./docker/nginx/local-api.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - boombang
+
+  client:
+    ports:
+      - "8080:80"
+
+  phpmyadmin:
+    ports:
+      - "8081:80"
+
+  db:
+    ports:
+      - "3307:3306"
+    # mariadb:11 no longer ships `mysqladmin`, so the healthcheck in
+    # docker-compose.yml always reports unhealthy. Use the image's own script.
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
