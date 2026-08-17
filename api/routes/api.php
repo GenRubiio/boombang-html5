@@ -42,6 +42,8 @@ use App\Http\Controllers\Api\Game\Lobby\SettingsUpdateApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserAvatarsApiController;
 use App\Http\Controllers\Api\Game\Config\PrivateSceneConfigApiController;
 use App\Http\Controllers\Api\Game\Scene\SceneUserDecorationsApiController;
+use App\Http\Controllers\Api\User\UserChangePaletteApiController;
+use App\Http\Controllers\Api\User\UserAccessoryApiController;
 
 Route::prefix('test')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -92,6 +94,9 @@ Route::middleware(VerifyEmulatorToken::class)->group(function () {
             Route::post('change-shadowcolor', [UserChangeShadowColorController::class, 'index']);
             Route::post('change-avatar', [UserChangeAvatarController::class, 'index']);
             Route::post('update-lobby-tutorial', [UpdateLobbyTutorialApiController::class, 'index']);
+            Route::post('change-palette', [UserChangePaletteApiController::class, 'index']);
+            Route::post('accessories', [UserAccessoryApiController::class, 'list']);
+            Route::post('change-accessory', [UserAccessoryApiController::class, 'change']);
         });
 
         Route::prefix('lobby')->group(function () {

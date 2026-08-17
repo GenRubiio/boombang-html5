@@ -34,6 +34,9 @@ class User extends Authenticatable
         'chat_color',
         'name_color',
         'avatar',
+        'avatar_hat',
+        'avatar_pet',
+        'avatar_aura',
         'gold_coins',
         'silver_coins',
         'rings_won',
@@ -162,6 +165,69 @@ class User extends Authenticatable
             ->filter()
             ->unique()
             ->values()
+            ->toArray();
+    }
+
+    // Three copies of enabledAvatars()'s body, deliberately not DRY'd (design.md §6 — the
+    // file already holds four near-identical enabled*() methods; ACC3: ownership reuses the
+    // existing decoration model with new user_decoration_type values, no catalog_items
+    // migration, no purchase/currency flow).
+    public function enabledHats(): array
+    {
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'avatar_hat')
+            ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    public function enabledPets(): array
+    {
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'avatar_pet')
+            ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    public function enabledAuras(): array
+    {
+        return DB::table('user_catalog_items as uci')
+            ->join('catalog_items as ci', 'ci.id', '=', 'uci.catalog_item_id')
+            ->where('uci.user_id', $this->id)
+            ->whereNull('uci.private_scene_id')
+            ->whereNotNull('ci.user_decoration_type')
+            ->where('ci.user_decoration_type', 'avatar_aura')
+            ->pluck('ci.user_decoration_value')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * All of this user's persisted layered-avatar palettes, keyed by avatar id (PAL4: scoped
+     * per (user, avatar), so switching avatars must not lose another avatar's palette). Read
+     * path for PROTO4 (persists across the full client-server-API chain) — the write path is
+     * UserAvatarPaletteService::changePalette().
+     */
+    public function avatarPalettes(): array
+    {
+        return UserAvatarPalette::where('user_id', $this->id)
+            ->get()
+            ->mapWithKeys(fn ($row) => [(string) $row->avatar_id => $row->palette])
             ->toArray();
     }
 

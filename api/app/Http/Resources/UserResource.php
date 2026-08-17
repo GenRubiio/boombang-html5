@@ -71,6 +71,18 @@ class UserResource extends JsonResource
             'colornames' => $this->enabledColorNames(),
             'shadows' => $this->enabledShadows(),
             'avatars' => $this->enabledAvatars(),
+            'avatar_palettes' => $this->avatarPalettes(),
+
+            /**
+             * Accessories (avatar-color-accessory-system, ACC3): owned catalog values plus
+             * the currently equipped one per kind, mirroring the avatar ownership shape above.
+             */
+            'owned_hats' => $this->enabledHats(),
+            'owned_pets' => $this->enabledPets(),
+            'owned_auras' => $this->enabledAuras(),
+            'avatar_hat' => $this->avatar_hat,
+            'avatar_pet' => $this->avatar_pet,
+            'avatar_aura' => $this->avatar_aura,
 
             'tutorial_completed' => (bool)$this->lobby_tutorial,
         ];
