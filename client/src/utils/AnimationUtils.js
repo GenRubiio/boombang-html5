@@ -5,6 +5,11 @@
 import gameConfig from '@/config/gameConfig.js';
 class AnimationUtils {
     static setSpriteConfig(spriteAvatar, avatarId, textureKey) {
+        // Layered avatars carry their own per-frame origin/scale (design.md §5) — they have no
+        // entry in window.avatars_config at all, so this MUST branch before that lookup.
+        if (spriteAvatar.isLayered) {
+            return spriteAvatar.applyClipConfig(textureKey);
+        }
         // Supone que tienes un objeto global con la config de cada avatar y animación
         // (window.avatars_config[avatarId][textureKey])
         const animationData = window.avatars_config[avatarId][textureKey];

@@ -11,7 +11,10 @@ class UserIdleAnimation {
         const animKey = avatarId + "_" + textureKey;
         // Si la animación aún no existe (atlas no cargado), usar un frame por defecto o salir silenciosamente
         const scene = spriteAvatar.scene;
-        if (!scene || !scene.anims || !scene.anims.exists(animKey)) {
+        // Layered avatars never register Phaser anims (design.md §5: own frame-index player,
+        // not scene.anims) so scene.anims.exists(animKey) is always false for them — guard
+        // this early-return so a layered avatar reaches play() below like every other class.
+        if (!spriteAvatar.isLayered && (!scene || !scene.anims || !scene.anims.exists(animKey))) {
             // Placeholder: mostrar sprite invisible para no romper, se hará play cuando exista
             // Opcional: podríamos setear un frame neutral si existiera
             return;

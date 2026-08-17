@@ -33,6 +33,26 @@ class AssetVersionManager {
         // Configuración de versioning
         this.versionKey = 'boombang_asset_versions';
         this.forceUpdateKey = 'boombang_force_update';
+
+        // Three sibling version dictionaries for the new artifact classes (design.md §2),
+        // keyed by STRING artifact key — a disjoint keyspace from the numeric `avatars` dict
+        // above. Kept separate rather than folded into avatarVersions/versionKey: rollback of
+        // this whole feature must not touch the code protecting 17 avatars' cached assets.
+        this.layeredVersions = {
+            base: '1.0.0',
+            characters: { rasta: '1.0.0' },
+        };
+        this.accessoryVersions = {
+            base: '1.0.0',
+            accessories: { minnieHat: '1.0.0', pet09: '1.0.0' },
+        };
+        this.auraVersions = {
+            base: '1.0.0',
+            auras: { auraElectrica: '1.0.0' },
+        };
+        // Separate localStorage key (never boombang_asset_versions) so a client rollback of
+        // this feature leaves it as an ignored orphan instead of erasing it (design.md §2).
+        this.artifactVersionKey = 'boombang_look_asset_versions';
     }
 
     /**
@@ -40,6 +60,105 @@ class AssetVersionManager {
      */
     init() {
         this.checkForUpdates();
+        this.checkArtifactUpdates();
+    }
+
+    /**
+     * Resolves the version dictionary + group key for one of the three new artifact classes.
+     */
+    _resolveArtifactDict(artifactClass) {
+        switch (artifactClass) {
+            case 'layered':
+                return { dict: this.layeredVersions, groupKey: 'characters' };
+            case 'accessory':
+                return { dict: this.accessoryVersions, groupKey: 'accessories' };
+            case 'aura':
+                return { dict: this.auraVersions, groupKey: 'auras' };
+            default:
+                throw new Error(`AssetVersionManager: unknown artifact class "${artifactClass}"`);
+        }
+    }
+
+    /**
+     * `${classBase}_${entryVersion}` — the same two-part shape as getAvatarVersion().
+     */
+    getArtifactVersion(artifactClass, key) {
+        const { dict, groupKey } = this._resolveArtifactDict(artifactClass);
+        const entryVersion = dict[groupKey]?.[key] || dict.base;
+        return `${dict.base}_${entryVersion}`;
+    }
+
+    /**
+     * Independent check pass for the three new artifact classes, against their own
+     * boombang_look_asset_versions key — NEVER reads or writes boombang_asset_versions
+     * (design.md §2). A full per-artifact diff/clear mirrors checkForUpdates() and lands when
+     * an actual version bump needs to invalidate a specific character/accessory/aura.
+     */
+    checkArtifactUpdates() {
+        try {
+            const stored = localStorage.getItem(this.artifactVersionKey);
+            if (!stored) {
+                this.saveArtifactVersions();
+                return;
+            }
+            JSON.parse(stored);
+            this.saveArtifactVersions();
+        } catch (error) {
+            this.clearArtifactVersionData();
+            this.saveArtifactVersions();
+        }
+    }
+
+    /**
+     * Persists the three artifact-version dictionaries under their own key.
+     */
+    saveArtifactVersions() {
+        try {
+            const versionData = {
+                layered: { ...this.layeredVersions },
+                accessories: { ...this.accessoryVersions },
+                auras: { ...this.auraVersions },
+                timestamp: Date.now(),
+            };
+            localStorage.setItem(this.artifactVersionKey, JSON.stringify(versionData));
+        } catch (error) {
+            //console.warn('⚠️ Error guardando versiones de artifacts:', error);
+        }
+    }
+
+    /**
+     * Clears only the new artifact-version key — boombang_asset_versions is untouched.
+     */
+    clearArtifactVersionData() {
+        try {
+            localStorage.removeItem(this.artifactVersionKey);
+        } catch (error) {
+            //console.warn('⚠️ Error limpiando datos de versiones de artifacts:', error);
+        }
+    }
+
+    /**
+     * Clears every cached page/manifest for one layered character (lay.* keys only).
+     */
+    async clearLayeredCache(cacheManager, character) {
+        await cacheManager.removeByPrefix(`lay.${character}_`, cacheManager.stores.ATLAS);
+        await cacheManager.removeByPrefix(`lay.${character}_`, cacheManager.stores.CONFIG);
+    }
+
+    /**
+     * Clears every cached page/manifest for one accessory package (acc.* keys only).
+     */
+    async clearAccessoryCache(cacheManager, kind, key) {
+        await cacheManager.removeByPrefix(`acc.${kind}.${key}_`, cacheManager.stores.ATLAS);
+        await cacheManager.removeByPrefix(`acc.${kind}.${key}_`, cacheManager.stores.CONFIG);
+    }
+
+    /**
+     * Clears every cached page/manifest for one aura sheet (aur.* keys only).
+     */
+    async clearAuraCache(cacheManager, key) {
+        await cacheManager.removeByPrefix(`aur.${key}_`, cacheManager.stores.ATLAS);
+        await cacheManager.removeByPrefix(`aur.${key}_`, cacheManager.stores.CONFIG);
     }
 
     /**
@@ -132,6 +251,8 @@ class AssetVersionManager {
             localStorage.removeItem(this.forceUpdateKey);
             this.clearVersionData();
             this.saveCurrentVersions();
+            this.clearArtifactVersionData();
+            this.saveArtifactVersions();
             
             //console.log('✅ Actualización forzada completada');
             

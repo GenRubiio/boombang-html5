@@ -8,6 +8,8 @@ import RequestSocketsEnum from "@/enums/RequestSocketsEnum.js";
 import ShadowColorsEnum from "@/enums/ShadowColorsEnum.js";
 import NameColorsEnum from "@/enums/NameColorsEnum.js";
 import smartAvatarSystem from "../../managers/SmartAvatarSystem.js";
+import avatarManager from "../../managers/AvatarManager.js";
+import accessoryManager from "../../managers/AccessoryManager.js";
 import AvatarEnum from "@/enums/AvatarEnum.js";
 import gameConfig from "@/config/gameConfig.js";
 //import SceneUtils from "../../../utils/SceneUtils.js";
@@ -98,7 +100,7 @@ class AddUserController {
         // Usar el avatar seleccionado (original o fallback)
         const modifiedUserData = { ...userData, avatar_id: avatarSelection.avatarId };
 
-        const { containerUser, spriteAvatar, spriteShadow } = this.createContainerUser(gameScene, modifiedUserData);
+        const { containerUser, spriteAvatar, spriteShadow } = await this.createContainerUser(gameScene, modifiedUserData);
 
         // Importante: pasar los datos modificados para que UserModel.avatarId sea el realmente usado (fallback si aplica)
         const user = new UserModel(modifiedUserData, spriteAvatar, spriteShadow, containerUser);
@@ -129,27 +131,114 @@ class AddUserController {
         // UserEmojiAnimation.main(user, 8");
     }
 
-    static createContainerUser(gameScene, userData) {
+    static async createContainerUser(gameScene, userData) {
         // Crear sombra
         const spriteShadow = this.createShadowSprite(gameScene, userData);
         // Crear personaje
-        const spriteAvatar = this.createAvatarSprite(gameScene, userData);
+        const spriteAvatar = await this.createAvatarSprite(gameScene, userData);
         // Crear texto del nombre
         const userNameContainer = this.createUserNameText(gameScene, spriteAvatar, userData);
+
+        // Accesorios (design.md §1 z-order table). Hat requires the layered renderer (its
+        // anchoring math reads the body's own per-frame origin data, which baked characters
+        // don't expose); aura is layered-body agnostic (ACC2). Absent entirely with the flag
+        // off (no avatar_id carries a non-empty `accessories` payload unless equipped).
+        const accessoryChildren = await this.createAccessoryChildren(gameScene, userData, spriteAvatar);
 
         // Crear contenedor
         const containerUser = gameScene.add.container(0, 0, [
             spriteShadow,
+            ...accessoryChildren,
             spriteAvatar,
             userNameContainer.background,
             userNameContainer.name
         ]);
         containerUser.setSize(spriteAvatar.width, spriteAvatar.height + spriteShadow.height);
 
+        // Live-validation defects 5/6 fix (z-order): Container renders `this.list` in plain
+        // insertion order, never by `.depth` — see the docblock on
+        // LayeredAvatar._updateAllAccessories() for the full finding. Insertion order above
+        // put every accessory BEFORE spriteAvatar, so without this explicit sort every
+        // accessory rendered behind the body regardless of its intended depth. A one-time sort
+        // right after construction guarantees correct order from the very first frame;
+        // LayeredAvatar re-sorts on every subsequent frame update for depths that change
+        // dynamically (pet flip, hat zBias). Skipped entirely when there are no accessories —
+        // the baked/no-accessory container is already in depth order (0/1/2/3), so this never
+        // executes on that path (LR6 flag-off parity).
+        if (accessoryChildren.length > 0) {
+            containerUser.sort('depth');
+        }
+
         //MovementControlsController.createMovementControls(gameScene, spriteAvatar, userData.avatar_id + "_" + "down_beber");
         // AvatarOriginSpriteModal.main(gameScene, spriteAvatar);
         // AvatarPositionSpriteModal.main(gameScene, spriteAvatar);
         return { containerUser, spriteAvatar, spriteShadow };
+    }
+
+    /**
+     * Accessory children (aura at depth 0.2, hat/pet driven from the layered body's own
+     * clock). LR6's "flag off" scenario is explicit: no accessory child sprites are created
+     * at all when VITE_LAYERED_AVATARS is off, matching today's four-element container
+     * byte-for-byte even for a user who has an accessory equipped — this whole visible
+     * surface, including the character-independent aura (ACC2), ships behind the one flag.
+     */
+    static async createAccessoryChildren(gameScene, userData, spriteAvatar) {
+        const children = [];
+        if (!gameConfig.LAYERED_AVATARS) {
+            return children;
+        }
+
+        const auraKey = userData.accessories?.aura;
+        if (auraKey && accessoryManager.hasPackage('aura', auraKey)) {
+            try {
+                const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
+                await accessoryManager.load(gameScene, 'aura', auraKey);
+                const manifest = accessoryManager.getManifest('aura', auraKey);
+                const atlasKey = accessoryManager.getAtlasKey('aura', auraKey);
+                if (manifest) {
+                    children.push(AccessoryLayer.createAura(gameScene, atlasKey, manifest));
+                }
+            } catch (err) {
+                // Best-effort: a failed accessory load must never block avatar creation.
+                console.warn('[AddUserController] failed to load aura accessory', auraKey, err);
+            }
+        }
+
+        const hatKey = userData.accessories?.hat;
+        if (hatKey && accessoryManager.hasPackage('hat', hatKey) && spriteAvatar?.isLayered) {
+            try {
+                const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
+                await accessoryManager.load(gameScene, 'hat', hatKey);
+                const manifest = accessoryManager.getManifest('hat', hatKey);
+                const atlasKey = accessoryManager.getAtlasKey('hat', hatKey);
+                if (manifest) {
+                    const hatSprite = AccessoryLayer.createHatPlaceholder(gameScene, atlasKey);
+                    spriteAvatar.attachAccessory('hat', hatSprite, manifest, atlasKey);
+                    children.push(hatSprite);
+                }
+            } catch (err) {
+                console.warn('[AddUserController] failed to load hat accessory', hatKey, err);
+            }
+        }
+
+        const petKey = userData.accessories?.pet;
+        if (petKey && accessoryManager.hasPackage('pet', petKey) && spriteAvatar?.isLayered) {
+            try {
+                const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
+                await accessoryManager.load(gameScene, 'pet', petKey);
+                const manifest = accessoryManager.getManifest('pet', petKey);
+                const atlasKey = accessoryManager.getAtlasKey('pet', petKey);
+                if (manifest) {
+                    const petSprite = AccessoryLayer.createPetPlaceholder(gameScene, atlasKey);
+                    spriteAvatar.attachAccessory('pet', petSprite, manifest, atlasKey);
+                    children.push(petSprite);
+                }
+            } catch (err) {
+                console.warn('[AddUserController] failed to load pet accessory', petKey, err);
+            }
+        }
+
+        return children;
     }
 
     static createShadowSprite(gameScene, userData) {
@@ -201,7 +290,55 @@ class AddUserController {
         return spriteShadow;
     }
 
-    static createAvatarSprite(gameScene, userData) {
+    static async createAvatarSprite(gameScene, userData) {
+        // Strategy branch (design.md §4/§5): both gates required, checked by
+        // avatarManager.isLayeredAvatar(). LayeredAvatar/LayeredAvatarRegistry are reached
+        // only via dynamic import() inside this branch so they never enter the main chunk
+        // with the flag off (LR6). If the manifest is not yet resolved in-memory (the
+        // background/priority loader has not finished for this avatarId), this falls through
+        // to the baked path below exactly like "atlas not found" does today.
+        if (avatarManager.isLayeredAvatar(userData.avatar_id)) {
+            const manifest = avatarManager.getLayeredManifest(userData.avatar_id);
+            if (manifest) {
+                const { default: LayeredAvatar } = await import("../../layered/LayeredAvatar.js");
+                const { default: LayeredAvatarRegistry } = await import("../../layered/LayeredAvatarRegistry.js");
+
+                const atlasKey = avatarManager.getLayeredAtlasKey(userData.avatar_id);
+                const scaleFactor = gameScene.sceneScaleFactor || 1;
+                // Live-validation defect 3 fix: thread the persisted palette for THIS
+                // (user, avatarId) pair into construction, for both the local user and every
+                // remote user (this method is the single path createContainerUser() uses for
+                // any avatar — there is no separate "remote user" construction path). Server's
+                // UserResource.js emits `avatar_palette` as a map keyed by avatarId
+                // (`{[avatarId]: {slotKey: value}}`), passed straight through on
+                // NEW_USER_JOIN_SCENE / scene-join player-list payloads.
+                const savedPalette = (userData.avatar_palette || {})[userData.avatar_id];
+                const layeredAvatar = new LayeredAvatar(gameScene, 0, 0, {
+                    manifest,
+                    atlasKey,
+                    avatarId: userData.avatar_id,
+                    sceneScaleFactor: scaleFactor,
+                    palette: savedPalette,
+                });
+                layeredAvatar._z = userData.z;
+                layeredAvatar.setDepth(1);
+
+                if (!gameScene.layeredAvatarRegistry) {
+                    gameScene.layeredAvatarRegistry = new LayeredAvatarRegistry();
+                    gameScene.events.on("update", (time, delta) => {
+                        gameScene.layeredAvatarRegistry.update(time, delta);
+                    });
+                }
+                gameScene.layeredAvatarRegistry.register(layeredAvatar);
+                layeredAvatar.once("destroy", () => {
+                    gameScene.layeredAvatarRegistry.unregister(layeredAvatar);
+                });
+
+                UserIdleAnimation.main(layeredAvatar, userData.z, userData.avatar_id);
+                return layeredAvatar;
+            }
+        }
+
         // Obtener el atlas key correcto para el avatar
         const avatarName = this.avatarName(userData.avatar_id);
         const atlasKey = `${avatarName}_atlas`;
@@ -428,6 +565,12 @@ class AddUserController {
      * Aplica tints de forma segura verificando el estado del ColorReplacePipeline
      */
     static safeApplyTint(gameScene, sprite, uppercutSelected) {
+        // Layered avatars paint colorGuante as an ordinary palette slot via applyPalette()
+        // (design.md §5); the global-tint uppercut mechanism below is superseded only for
+        // them. With the flag off isLayered is never true, so this is a pure no-op addition.
+        if (sprite && sprite.isLayered) {
+            return;
+        }
         if (!uppercutSelected || !gameScene.tintMgr || !sprite) {
             return;
         }
@@ -542,14 +685,22 @@ class AddUserController {
     static setupSmartAvatarUpdateListener(gameScene, user) {
         // Escuchar cuando el avatar original esté listo
         const onAvatarReady = (data) => {
-            if (data.userId === user.username && data.avatarId === user.originalAvatarId) {
+            // Bug fix (proposal.md risk 3): avatars are registered by socket id
+            // (AddUserController.js:116, UserResource.js:8) and SmartAvatarSystem's
+            // activeAvatars map is keyed by that same socket id (getAvatarForUser(userData.id, ...)
+            // called with userData.id === socket id), but this comparison used to check
+            // user.username instead — so a fallback-path avatar-ready upgrade never applied.
+            // The fix is general (not flag-gated): it changes nothing observable for a baked
+            // avatar (same upgrade eventually applies, just correctly triggered) while making
+            // the new layered-look broadcast (Slice 5+) able to rely on the same fallback path.
+            if (data.userId === user.socketId && data.avatarId === user.originalAvatarId) {
                 //console.log(`🔄 Actualizando avatar de ${user.username} de ${data.previousId} a ${data.avatarId}`);
 
                 // Actualizar el avatar del usuario
                 this.updateUserAvatarSmart(gameScene, user, data.avatarId);
 
                 // Actualizar información en el sistema
-                smartAvatarSystem.updateUserAvatar(user.username, data.avatarId);
+                smartAvatarSystem.updateUserAvatar(user.socketId, data.avatarId);
 
                 // Marcar como no-fallback
                 user.isFallbackAvatar = false;

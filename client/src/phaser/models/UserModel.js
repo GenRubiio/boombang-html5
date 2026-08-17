@@ -26,5 +26,10 @@ export default class UserModel {
         this.uppercuts_received = row.uppercutsReceived;
         this.coconuts_sent = row.coconutsSent;
         this.coconuts_received = row.coconutsReceived;
+        // avatar-color-accessory-system: mirrors the server's avatarPalettes map
+        // (server/src/models/UserModel.js) for the local session's use — map avatarId ->
+        // {slotKey: resolvedColour}. Populated from row.avatar_palette on join/select and
+        // updated live by UserChangePaletteController.js on a broadcast.
+        this.avatarPalettes = row.avatar_palette || {};
     }
 }

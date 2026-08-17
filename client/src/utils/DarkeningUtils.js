@@ -77,6 +77,21 @@ class DarkeningUtils {
     }
 
     /**
+     * VITE_FORCE_DAYLIGHT (dev/validation-only affordance, not part of any frozen spec): when
+     * `forceDaylight` is true, always resolves to full brightness regardless of game time —
+     * otherwise defers to the existing calculateBrightness() unchanged. This is the one
+     * decision point PublicScene.js's update() delegates to, so "flag off" behaviour stays
+     * byte-for-byte identical to calculateBrightness() alone.
+     * @param {string} gameTime - Hora en formato "HH:mm"
+     * @param {boolean} [forceDaylight=false]
+     * @returns {number} Valor de brightness (0.0 - 1.0)
+     */
+    static resolveBrightness(gameTime, forceDaylight = false) {
+        if (forceDaylight) return 1.0;
+        return this.calculateBrightness(gameTime);
+    }
+
+    /**
      * Crea/reutiliza un overlay pantalla en modo MULTIPLY
      * @param {Phaser.Scene} scene - La escena de Phaser
      * @returns {Phaser.GameObjects.Graphics} El overlay
@@ -129,12 +144,29 @@ class DarkeningUtils {
     /**
      * Aplica oscurecimiento global a la escena SIN tocar sprites individuales.
      * Llamar 1 vez por frame/cambio de hora de juego.
+     *
+     * `forceDaylight` is the VITE_FORCE_DAYLIGHT dev/validation-only affordance (added at the
+     * user's direct request during live validation — not part of any frozen spec). Default
+     * `false` keeps this method byte-for-byte identical to its pre-existing behaviour: the
+     * flag must be explicitly threaded through by the caller (PublicScene.js) for anything to
+     * change. When true, the darkening overlay is skipped entirely (and any existing overlay
+     * is cleared) rather than drawn as a no-op white multiply layer — GameClock.js and every
+     * room's stored `darkening` data are untouched either way.
      * @param {Phaser.Scene} scene - La escena de Phaser
      * @param {string} gameTime - Hora en formato "HH:mm"
+     * @param {boolean} [forceDaylight=false]
      */
-    static applySceneDarkening(scene, gameTime) {
-        const brightness = this.calculateBrightness(gameTime);
+    static applySceneDarkening(scene, gameTime, forceDaylight = false) {
+        const brightness = this.resolveBrightness(gameTime, forceDaylight);
         this._lastBrightness = brightness;
+
+        if (forceDaylight) {
+            if (this._overlay && !this._overlay.destroyed) {
+                this._overlay.clear();
+            }
+            return;
+        }
+
         this.ensureOverlay(scene);
         this.redrawOverlay(scene, brightness);
     }

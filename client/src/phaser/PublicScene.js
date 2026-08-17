@@ -14,6 +14,7 @@ import TintManager from "./managers/TintManager"; // Gestor de tintes
 import PublicSceneResponse from "./sockets/PublicSceneResponse"; // Respuesta de escena pública
 import AvatarSystemController from "./controllers/AvatarSystemController.js"; // Nuevo sistema de avatares
 import DarkeningUtils from "../utils/DarkeningUtils.js"; // Utilidad de oscurecimiento
+import gameConfig from "@/config/gameConfig.js"; // Feature flags (incl. dev-only VITE_FORCE_DAYLIGHT)
 import asset_ui_shop_image from "@/assets/game/scene/ui/shop.webp";
 import asset_ui_avatars_image from "@/assets/game/scene/ui/avatars.webp";
 import asset_interaction_background_image from "@/assets/game/scene/ui/interaction.png";
@@ -404,7 +405,9 @@ export default class PublicScene extends Phaser.Scene {
                 this.sceneData.scenery.game_time = currentGameTime;
             }
             
-            DarkeningUtils.applySceneDarkening(this, currentGameTime);
+            // VITE_FORCE_DAYLIGHT: dev/validation-only affordance (default false, then this
+            // call is byte-for-byte identical to before). Not part of any frozen spec.
+            DarkeningUtils.applySceneDarkening(this, currentGameTime, gameConfig.FORCE_DAYLIGHT);
         } else {
             // Limpiar overlay cuando no haya darkening
             if (DarkeningUtils._overlay && !DarkeningUtils._overlay.destroyed) {

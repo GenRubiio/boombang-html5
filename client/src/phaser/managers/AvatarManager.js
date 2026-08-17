@@ -1,6 +1,7 @@
 import AvatarEnum from "@/enums/AvatarEnum";
 import cacheManager from "./CacheManager";
 import assetVersionManager from "./AssetVersionManager";
+import gameConfig from "@/config/gameConfig.js";
 import AvatarBoomerLoad from "../load/avatars/AvatarBoomerLoad";
 import AvatarBrujitaLoad from "../load/avatars/AvatarBrujitaLoad";
 import AvatarCholoLoad from "../load/avatars/AvatarCholoLoad";
@@ -18,6 +19,23 @@ import AvatarWerewolfLoad from "../load/avatars/AvatarWerewolfLoad";
 import AvatarWraithLoad from "../load/avatars/AvatarWraithLoad";
 import AvatarYayoLoad from "../load/avatars/AvatarYayoLoad";
 import AvatarZombieLoad from "../load/avatars/AvatarZombieLoad";
+
+// Layered-package catalog (design.md §4): which avatarIds have a compiled layered package at
+// all, independent of the feature flag. Every entry's loader uses a dynamic `import()` — with
+// the flag off `isLayeredAvatar()` never returns true so these chunks are never requested,
+// keeping them out of the main bundle (LR6). Add one entry per character as more are compiled.
+const LAYERED_CHARACTERS = {
+    [AvatarEnum.RASTA]: "rasta",
+};
+const LAYERED_MANIFEST_LOADERS = {
+    [AvatarEnum.RASTA]: () => import("@/assets/game/avatars/rasta/layers/rasta.layers.manifest.json"),
+};
+const LAYERED_ATLAS_LOADERS = {
+    [AvatarEnum.RASTA]: () => import("@/assets/game/avatars/rasta/layers/rasta.layers.atlas.json"),
+};
+const LAYERED_WEBP_LOADERS = {
+    [AvatarEnum.RASTA]: () => import("@/assets/game/avatars/rasta/layers/rasta.layers.webp"),
+};
 
 class AvatarManager {
     constructor() {
@@ -61,6 +79,95 @@ class AvatarManager {
         
         // Referencia a la escena actual
         this.currentScene = null;
+
+        // Layered-rendering strategy state (design.md §4/§5). Manifests are cached in-memory
+        // once loaded; layered atlas loads are in-flight-guarded the same way baked ones are.
+        this.layeredManifests = new Map();
+        this.inFlightLayeredLoads = new Set();
+    }
+
+    /**
+     * Both gates required (design.md §4): the flag AND a compiled package for this avatarId.
+     */
+    isLayeredAvatar(avatarId) {
+        return !!gameConfig.LAYERED_AVATARS && Object.prototype.hasOwnProperty.call(LAYERED_CHARACTERS, avatarId);
+    }
+
+    getLayeredAtlasKey(avatarId) {
+        return `${LAYERED_CHARACTERS[avatarId]}_layers_atlas`;
+    }
+
+    getLayeredManifest(avatarId) {
+        return this.layeredManifests.get(avatarId) || null;
+    }
+
+    /**
+     * Loads the compiled layered package (manifest + multiatlas) for one character. Reaches
+     * the layered modules only via dynamic import() (LR6) — with the flag off this method is
+     * never called (isLayeredAvatar() gates the call site in loadAvatar()).
+     */
+    async loadLayeredAvatar(scene, avatarId) {
+        const atlasKey = this.getLayeredAtlasKey(avatarId);
+
+        if (scene.textures.exists(atlasKey)) {
+            this.loadedAvatars.add(avatarId);
+            return Promise.resolve();
+        }
+        if (this.inFlightLayeredLoads.has(atlasKey)) {
+            return new Promise((resolve) => {
+                const check = () => {
+                    if (scene.textures.exists(atlasKey)) {
+                        resolve();
+                    } else {
+                        setTimeout(check, 50);
+                    }
+                };
+                check();
+            });
+        }
+
+        const manifestLoader = LAYERED_MANIFEST_LOADERS[avatarId];
+        const atlasLoader = LAYERED_ATLAS_LOADERS[avatarId];
+        const webpLoader = LAYERED_WEBP_LOADERS[avatarId];
+        if (!manifestLoader || !atlasLoader || !webpLoader) {
+            return Promise.reject(new Error(`No layered package registered for avatar ${avatarId}`));
+        }
+
+        this.inFlightLayeredLoads.add(atlasKey);
+
+        const [manifestModule, atlasModule, webpModule] = await Promise.all([
+            manifestLoader(),
+            atlasLoader(),
+            webpLoader(),
+        ]);
+        const manifest = manifestModule.default;
+        const atlasJson = atlasModule.default;
+        const webpUrl = webpModule.default;
+
+        this.layeredManifests.set(avatarId, manifest);
+
+        // Same "patch texture.image to the Vite-fingerprinted URL" trick AvatarRastaLoad.js
+        // already uses for the baked multiatlas (design.md §3.1 step 4 — zero new loader
+        // plumbing). Single-page packages only need the one entry patched.
+        atlasJson.textures.forEach((texture) => {
+            texture.image = webpUrl;
+        });
+
+        return new Promise((resolve, reject) => {
+            scene.load.once("complete", () => {
+                this.inFlightLayeredLoads.delete(atlasKey);
+                this.loadedAvatars.add(avatarId);
+                resolve();
+            });
+            scene.load.once("loaderror", (file) => {
+                this.inFlightLayeredLoads.delete(atlasKey);
+                reject(file);
+            });
+            scene.load.multiatlas(atlasKey, atlasJson);
+            if (!scene.load.isLoading()) {
+                scene.load.start();
+            }
+        });
     }
 
     // Calcula una firma corta del multiatlas para diferenciar calidades/variantes (x1, high_quality, etc.)
@@ -127,6 +234,13 @@ class AvatarManager {
     async loadAvatar(scene, avatarId) {
         if (this.loadedAvatars.has(avatarId)) {
             return Promise.resolve();
+        }
+
+        // Strategy branch (design.md §4): both gates required. With the flag off or no
+        // compiled package for this avatarId, execution falls straight through to the
+        // existing baked path below, byte-for-byte (LR6 "flag off" scenario).
+        if (this.isLayeredAvatar(avatarId)) {
+            return this.loadLayeredAvatar(scene, avatarId);
         }
 
         const loader = this.avatarLoaders[avatarId];

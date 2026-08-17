@@ -178,6 +178,11 @@ class UserChangeAvatarController {
      * Aplica tints de forma segura verificando el estado del ColorReplacePipeline
      */
     static safeApplyTint(gameScene, sprite, uppercutSelected) {
+        // Layered avatars paint colorGuante as an ordinary palette slot via applyPalette()
+        // (design.md §5); with the flag off isLayered is never true, so this is a no-op add.
+        if (sprite && sprite.isLayered) {
+            return;
+        }
         if (!uppercutSelected || !gameScene.tintMgr || !sprite) {
             return;
         }
@@ -294,14 +299,17 @@ class UserChangeAvatarController {
      */
     static setupSmartAvatarChangeListener(gameScene, user, originalAvatarId, position) {
         const onAvatarReady = (data) => {
-            if (data.userId === user.username && data.avatarId === originalAvatarId) {
+            // Bug fix (proposal.md risk 3): SmartAvatarSystem's activeAvatars map is keyed by
+            // socket id (getAvatarForUser(socketId, ...) at :20 above), not username — see the
+            // matching fix in AddUserController.js:545/552.
+            if (data.userId === user.socketId && data.avatarId === originalAvatarId) {
                 //console.log(`🔄 Avatar ${originalAvatarId} listo para cambio de ${user.username}`);
-                
+
                 // Actualizar el avatar del usuario
                 this.updateUserAvatarChange(gameScene, user, originalAvatarId, position);
-                
+
                 // Actualizar información en el sistema
-                smartAvatarSystem.updateUserAvatar(user.username, originalAvatarId);
+                smartAvatarSystem.updateUserAvatar(user.socketId, originalAvatarId);
                 
                 // Actualizar referencias del usuario
                 user.isFallbackAvatar = false;
