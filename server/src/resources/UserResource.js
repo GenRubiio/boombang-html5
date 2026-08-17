@@ -52,6 +52,11 @@ class UserResource extends Resource {
             uppercut_selected: data.uppercutSelected,
             coconut_level: data.coconutLevel,
             coconut_selected: data.coconutSelected,
+            // avatar-color-accessory-system (design.md §6, proposal.md risk 9): deliberately
+            // placed here, not between the duplicate avatar_id assignments above (:31/:36).
+            avatar_palette: data.avatarPalettes || {},
+            accessories: data.accessories || { hat: null, pet: null, aura: null },
+            owned_accessories: data.ownedAccessories || { hat: [], pet: [], aura: [] },
 
             phaser_rendering_type: data.phaser_rendering_type,
             phaser_antialias: data.phaser_antialias,

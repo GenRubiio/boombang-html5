@@ -157,6 +157,40 @@ class UserApiService {
         }
     }
 
+    static async changePalette(user, avatarId, slots) {
+        try {
+            const data = {
+                avatar_id: avatarId,
+                slots
+            };
+            // The user's own JWT, matching changeAvatar() above — not the emulator token
+            // (design.md §6).
+            return await ApiService.post('api/user/change-palette', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al cambiar la paleta del avatar del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async getAccessories(user) {
+        try {
+            return await ApiService.post('api/user/accessories', {}, user.authJwt);
+        } catch (error) {
+            console.error('Error al obtener los accesorios del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
+    static async changeAccessory(user, kind, value) {
+        try {
+            const data = { kind, value };
+            return await ApiService.post('api/user/change-accessory', data, user.authJwt);
+        } catch (error) {
+            console.error('Error al cambiar el accesorio del usuario:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
     static async botLogin(username, botToken) {
         try {
             const data = {

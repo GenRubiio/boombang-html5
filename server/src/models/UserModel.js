@@ -50,6 +50,23 @@ class UserModel {
         this.shadows = row.shadows || []; // Colores de sombra del usuario, por defecto es un array vacío
         this.colornames = row.colornames || []; // Colores de nombre del usuario, por defecto es un array vacío
         this.avatars = row.avatars || []; // Avatares del usuario, por defecto es un array vacío
+        // avatar-color-accessory-system (design.md §6): map avatarId -> {slotKey: hexOrPresetHex}.
+        // Missing entries resolve to manifest defaults client-side (PAL5); the glove slot is
+        // seeded from uppercutSelected on first resolution (PAL9, UserPaletteService.resolveForUser).
+        this.avatarPalettes = row.avatar_palettes || {};
+        // avatar-color-accessory-system (design.md §6, ACC3): currently equipped accessory
+        // per kind, and the catalog values this user owns for each kind (admin-grant only,
+        // no purchase flow). Populated from the API's UserResource fields on login/select.
+        this.accessories = {
+            hat: row.avatar_hat || null,
+            pet: row.avatar_pet || null,
+            aura: row.avatar_aura || null,
+        };
+        this.ownedAccessories = {
+            hat: row.owned_hats || [],
+            pet: row.owned_pets || [],
+            aura: row.owned_auras || [],
+        };
 
         this.socket = null; // Socket del usuario
         this.authJwt = null; // JWT de autenticación del usuario

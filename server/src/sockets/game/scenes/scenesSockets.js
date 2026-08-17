@@ -19,6 +19,8 @@ const GetUserDecorationsController = require('../../../controllers/game/scenes/G
 const InteractionRequestController = require('../../../controllers/game/interactions/InteractionRequestController');
 const GetUserAvatarsController = require('../../../controllers/game/scenes/GetUserAvatarsController');
 const UserChangeAvatarController = require('../../../controllers/game/scenes/UserChangeAvatarController');
+const UserChangePaletteController = require('../../../controllers/game/scenes/UserChangePaletteController');
+const UserChangeAccessoryController = require('../../../controllers/game/scenes/UserChangeAccessoryController');
 const UserSyncController = require('../../../controllers/game/scenes/UserSyncController');
 const RequestSocketsEnum = require('../../../enums/RequestSocketsEnum');
 
@@ -91,6 +93,15 @@ module.exports = (socket, io) => {
     });
     socket.on(RequestSocketsEnum.USER_CHANGE_AVATAR, (data) => {
         UserChangeAvatarController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.USER_CHANGE_PALETTE, (data) => {
+        UserChangePaletteController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.USER_CHANGE_ACCESSORY, (data) => {
+        UserChangeAccessoryController.main(socket, io, data);
+    });
+    socket.on(RequestSocketsEnum.GET_USER_ACCESSORIES, (data) => {
+        UserChangeAccessoryController.getAccessories(socket, io, data);
     });
     socket.on(RequestSocketsEnum.REQUEST_USERS_SYNC, () => {
         UserSyncController.main(socket, io);

@@ -78,6 +78,11 @@ const RequestSocketsEnum = new Enum({
     PURCHASE_SHOP_ITEM: 'request:purchase_shop_item',
     UPDATE_PRIVATE_SCENE_COLORS: 'request:update_private_scene_colors',
     COMPLETE_LOBBY_TUTORIAL: 'request:complete_lobby_tutorial',
+    // avatar-color-accessory-system: `palette`/`accessory` naming avoids the `look` namespace
+    // already used by CHANGE_LOOK (gaze direction, design.md finding A).
+    USER_CHANGE_PALETTE: 'request:user_change_palette',
+    USER_CHANGE_ACCESSORY: 'request:user_change_accessory',
+    GET_USER_ACCESSORIES: 'request:get_user_accessories',
 });
 
 module.exports = RequestSocketsEnum;

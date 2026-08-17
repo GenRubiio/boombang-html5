@@ -98,6 +98,13 @@ const ResponseSocketsEnum = new Enum({
     SHOP_PURCHASE: 'response:shop_purchase',
     PRIVATE_SCENE_COLORS_UPDATED: 'response:private_scene_colors_updated',
     ERROR_PRIVATE_SCENE_COLORS_UPDATE: 'response:error_private_scene_colors_update',
+    // avatar-color-accessory-system (design.md §6 events table): broadcast/ack pair mirrors
+    // USER_CHANGE_AVATAR/USER_CHANGE_AVATAR_POPUP.
+    USER_CHANGE_PALETTE: 'response:user_change_palette',
+    USER_CHANGE_PALETTE_ACK: 'response:user_change_palette_ack',
+    USER_CHANGE_ACCESSORY: 'response:user_change_accessory',
+    USER_CHANGE_ACCESSORY_ACK: 'response:user_change_accessory_ack',
+    GET_USER_ACCESSORIES: 'response:get_user_accessories',
 });
 
 module.exports = ResponseSocketsEnum;
