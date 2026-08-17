@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .env
+
+# Offline asset-compiler input staging (design.md §3): decrypted source archives, never a
+# committed artifact. Compiled output lives under src/assets/game/{avatars,accessories}/.
+.assets-src/

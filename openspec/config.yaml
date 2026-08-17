@@ -2,9 +2,19 @@ strict_tdd: true
 context: |
   client is a Node.js/TypeScript ESM, Vue, Node.js/TypeScript project.
   Detected markers: client/package.json, client/npm package manager, launcher/package.json, launcher/npm package manager, server/package.json, server/npm package manager, server/src/packages/objects-maker/package.json, server/src/packages/objects-maker/npm package manager, server/src/packages/textures_maker/package.json, server/src/packages/textures_maker/npm package manager.
-  Package managers: npm.
-  Primary test command: cd server/src/packages/objects-maker && npm test.
-  Unit tests: package script (cd server/src/packages/objects-maker && npm test); package script (cd server/src/packages/textures_maker && npm test).
+  Package managers: npm (client, server, launcher, objects-maker, textures_maker), composer (api).
+  Primary test command: cd api && ./vendor/bin/phpunit.
+  NOTE (verified 2026-08-17): server/src/packages/objects-maker's "npm test" script is literally
+  "node index.js" (identical to its "start" script) and server/src/packages/textures_maker has no
+  real "test" script either (npm default placeholder that exits 1). Neither is a test runner; both
+  are one-off asset-generation tools and must never be used as the strict_tdd gate. They have been
+  removed from the unit test commands below.
+  As of 2026-08-17, client/ (client/package.json: dev, build, preview, jsonmin, jsonunmin only) and
+  server/ (server/package.json: start, dev only) have NO test runner at all. This is a real gap, not
+  an undetected one. The in-flight change `avatar-color-accessory-system` explicitly scopes adding a
+  test runner for client/ (vitest, matching its Vite 6 toolchain) as one of its tasks.
+  Unit tests: real runner only for api/ (cd api && ./vendor/bin/phpunit, api/tests/ present); client/
+  and server/ intentionally left empty pending the above task.
   Integration tests: none.
   E2E tests: none.
 rules:
@@ -17,26 +27,29 @@ rules:
   tasks:
     protect_review_workload: true
   apply:
-    test_command: "cd server/src/packages/objects-maker && npm test"
+    test_command: "cd api && ./vendor/bin/phpunit"
   verify:
-    test_command: "cd server/src/packages/objects-maker && npm test"
+    test_command: "cd api && ./vendor/bin/phpunit"
 testing:
-  detected: "2026-08-02"
+  detected: "2026-08-17"
   runner:
-    command: "cd server/src/packages/objects-maker && npm test"
-    framework: "package script"
+    command: "cd api && ./vendor/bin/phpunit"
+    framework: "phpunit"
   layers:
-    unit: "package script, package script"
+    unit: "phpunit (api only); client and server have no test runner as of 2026-08-17"
     integration: ""
     e2e: ""
   commands:
     unit:
-      - scope: "server/src/packages/objects-maker"
-        command: "cd server/src/packages/objects-maker && npm test"
-        framework: "package script"
-      - scope: "server/src/packages/textures_maker"
-        command: "cd server/src/packages/textures_maker && npm test"
-        framework: "package script"
+      - scope: "api"
+        command: "cd api && ./vendor/bin/phpunit"
+        framework: "phpunit"
+      - scope: "client"
+        command: ""
+        framework: "none (no test runner as of 2026-08-17; adding vitest is scoped in avatar-color-accessory-system)"
+      - scope: "server"
+        command: ""
+        framework: "none (no test runner as of 2026-08-17)"
     integration:
       []
     e2e:
@@ -52,6 +65,7 @@ quality:
   typecheck: ""
   typecheck_commands:
     []
-  format: ""
+  format: "cd api && ./vendor/bin/pint"
   format_commands:
-    []
+    - scope: "api"
+      command: "cd api && ./vendor/bin/pint"
