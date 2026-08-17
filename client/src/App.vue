@@ -16,6 +16,7 @@
           @updateLoading="onUpdateLoading"
         />
       </div>
+      <AvatarLookDebugPanel v-if="isAuthenticated && avatarLookDebugEnabled" />
     </div>
   </div>
 </template>
@@ -35,6 +36,9 @@ export default {
       gamePhaser: null,
       loading: false,
       isAuthenticated: false, // Nueva bandera de autenticación
+      // VITE_AVATAR_LOOK_DEBUG (design.md §9): developer-grade colour/accessory panel proving
+      // the round trip live. Never the product wizard (proposal.md non-goals).
+      avatarLookDebugEnabled: import.meta.env.VITE_AVATAR_LOOK_DEBUG === "true",
     };
   },
   created() {
@@ -52,6 +56,9 @@ export default {
     ),
     GameScreens: defineAsyncComponent(() =>
       import("./views/screens/game/GameScreens.vue")
+    ),
+    AvatarLookDebugPanel: defineAsyncComponent(() =>
+      import("./views/components/game/debug/AvatarLookDebugPanel.vue")
     ),
   },
   methods: {
@@ -147,12 +154,19 @@ export default {
       
       // Configurar el VisibilityManager con la instancia de Phaser
       visibilityManager.setGame(this.gamePhaser);
-      
+
       // Hacer gameConfig y visibilityManager disponibles globalmente
       window.gameConfig = gameConfig;
       window.socket = socket;
       window.visibilityManager = visibilityManager;
-      
+
+      // PerfHarness (VITE_PERF_HARNESS) reads the active scene through window.game — expose it
+      // only behind the flag so it never enters the always-on globals with the flag off.
+      if (gameConfig.PERF_HARNESS) {
+        window.game = this.gamePhaser;
+        import("./phaser/debug/PerfHarness.js");
+      }
+
       // Lanzamos la escena de Preloader para que cargue todo
       this.gamePhaser.scene.start("GlobalPreloaderScene");
 
