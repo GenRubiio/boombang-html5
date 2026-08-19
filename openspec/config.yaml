@@ -9,14 +9,19 @@ context: |
   real "test" script either (npm default placeholder that exits 1). Neither is a test runner; both
   are one-off asset-generation tools and must never be used as the strict_tdd gate. They have been
   removed from the unit test commands below.
-  As of 2026-08-17, client/ (client/package.json: dev, build, preview, jsonmin, jsonunmin only) and
-  server/ (server/package.json: start, dev only) have NO test runner at all. This is a real gap, not
-  an undetected one. The in-flight change `avatar-color-accessory-system` explicitly scopes adding a
-  test runner for client/ (vitest, matching its Vite 6 toolchain) as one of its tasks.
-  Unit tests: real runner only for api/ (cd api && ./vendor/bin/phpunit, api/tests/ present); client/
-  and server/ intentionally left empty pending the above task.
+  UPDATED (verified 2026-08-17, avatar-system-multichar-fixes PR1): client/package.json:12 and
+  server/package.json:20 each declare a real "test": "vitest run" script (vitest 3.2.7), with
+  passing suites already checked in (client: src/**/*.test.js and scripts/**/*.test.cjs, 19 files,
+  195 tests; server: src/**/*.test.js, 3 files, 13 tests). The earlier "no test runner at all" note
+  for client/server is stale and has been removed. client also adds
+  "test:e2e": "playwright test" once the Playwright resolved-state harness lands
+  (avatar-system-multichar-fixes PR2) — see specs/avatar-layered-rendering and
+  specs/avatar-accessories for the requirements it gates.
+  Unit tests: real runners for api/ (cd api && ./vendor/bin/phpunit, api/tests/ present), client/
+  (cd client && npm run test, vitest) and server/ (cd server && npm run test, vitest).
   Integration tests: none.
-  E2E tests: none.
+  E2E tests: client/ adds one, cd client && npm run test:e2e (Playwright), from
+  avatar-system-multichar-fixes PR2 onward.
 rules:
   proposal:
     require_problem_statement: true
@@ -27,33 +32,35 @@ rules:
   tasks:
     protect_review_workload: true
   apply:
-    test_command: "cd api && ./vendor/bin/phpunit"
+    test_command: "cd client && npm run test"
   verify:
-    test_command: "cd api && ./vendor/bin/phpunit"
+    test_command: "cd client && npm run test"
 testing:
   detected: "2026-08-17"
   runner:
-    command: "cd api && ./vendor/bin/phpunit"
-    framework: "phpunit"
+    command: "cd client && npm run test"
+    framework: "vitest"
   layers:
-    unit: "phpunit (api only); client and server have no test runner as of 2026-08-17"
+    unit: "vitest (client, server), phpunit (api)"
     integration: ""
-    e2e: ""
+    e2e: "playwright (client, from avatar-system-multichar-fixes PR2 onward)"
   commands:
     unit:
       - scope: "api"
         command: "cd api && ./vendor/bin/phpunit"
         framework: "phpunit"
       - scope: "client"
-        command: ""
-        framework: "none (no test runner as of 2026-08-17; adding vitest is scoped in avatar-color-accessory-system)"
+        command: "cd client && npm run test"
+        framework: "vitest"
       - scope: "server"
-        command: ""
-        framework: "none (no test runner as of 2026-08-17)"
+        command: "cd server && npm run test"
+        framework: "vitest"
     integration:
       []
     e2e:
-      []
+      - scope: "client"
+        command: "cd client && npm run test:e2e"
+        framework: "playwright"
   coverage:
     command: ""
     commands:
