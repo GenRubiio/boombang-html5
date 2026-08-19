@@ -52,7 +52,10 @@ class UserModel {
         this.avatars = row.avatars || []; // Avatares del usuario, por defecto es un array vacío
         // avatar-color-accessory-system (design.md §6): map avatarId -> {slotKey: hexOrPresetHex}.
         // Missing entries resolve to manifest defaults client-side (PAL5); the glove slot is
-        // seeded from uppercutSelected on first resolution (PAL9, UserPaletteService.resolveForUser).
+        // seeded — randomly among every preset unlocked at uppercutLevel, stable per user id —
+        // on first resolution (PAL9, UserPaletteService.seedPaletteForResource, called from
+        // UserResource.transform(); gameplay defect fix 2026-08-19, see
+        // openspec/changes/avatar-system-multichar-fixes/apply-progress.md).
         this.avatarPalettes = row.avatar_palettes || {};
         // avatar-color-accessory-system (design.md §6, ACC3): currently equipped accessory
         // per kind, and the catalog values this user owns for each kind (admin-grant only,

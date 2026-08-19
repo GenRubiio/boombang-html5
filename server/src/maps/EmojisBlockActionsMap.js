@@ -4,6 +4,13 @@ const AnimationEnum = require('../enums/AnimationEnum');
 const AvatarEmojisEnum = require('../enums/AvatarEmojisEnum');
 const AnimationBlockTimerEnum = require('../enums/AnimationBlockTimerEnum');
 
+// avatar-system-multichar-fixes slice 10 (design.md §15): sally gained a `time` entry in
+// every one of this map's 8 real emoji-keyed blocks (LAUGHTER_1, LAUGHTER_2, CRY, LOVE, SPIT,
+// FART, PROVOKE, FLY). tasks.md's own wording anticipated "12 entries" (matching
+// AnimationBlockTimerEnum's 11-per-character constant count plus a rounding slip) — the actual
+// file structure has 8 top-level emoji blocks, not 11/12 (KISS/DRINK/ROSE are NOT separate
+// blocks here); disclosed rather than silently reconciled, since the real file is authoritative
+// over an estimate made before this file was read.
 class EmojisBlockActionsMap {
     static get(emojiId) {
         const data = {
@@ -46,6 +53,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_LAUGHTER_1,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_LAUGHTER_1,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_LAUGHTER_1,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_LAUGHTER_1,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_LAUGHTER_1,
                 }
             },
             [AvatarEmojisEnum.LAUGHTER_2]: {
@@ -87,6 +96,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_LAUGHTER_2,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_LAUGHTER_2,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_LAUGHTER_2,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_LAUGHTER_2,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_LAUGHTER_2,
                 }
             },
             [AvatarEmojisEnum.CRY]: {
@@ -128,6 +139,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_CRY,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_CRY,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_CRY,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_CRY,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_CRY,
                 }
             },
             [AvatarEmojisEnum.LOVE]: {
@@ -169,6 +182,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_LOVE,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_LOVE,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_LOVE,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_LOVE,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_LOVE,
                 }
             },
             [AvatarEmojisEnum.SPIT]: {
@@ -210,6 +225,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_SPIT,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_SPIT,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_SPIT,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_SPIT,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_SPIT,
                 }
             },
             [AvatarEmojisEnum.FART]: {
@@ -251,6 +268,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_FART,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_FART,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_FART,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_FART,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_FART,
                 }
             },
             [AvatarEmojisEnum.PROVOKE]: {
@@ -292,6 +311,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_PROVOKE,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_PROVOKE,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_PROVOKE,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_PROVOKE,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_PROVOKE,
                 }
             },
             [AvatarEmojisEnum.FLY]: {
@@ -333,6 +354,8 @@ class EmojisBlockActionsMap {
                     [AvatarEnum.WRAITH]: AnimationBlockTimerEnum.WRAITH_FLY,
                     [AvatarEnum.YAYO]: AnimationBlockTimerEnum.YAYO_FLY,
                     [AvatarEnum.ZOMBIE]: AnimationBlockTimerEnum.ZOMBIE_FLY,
+                    [AvatarEnum.SALLY]: AnimationBlockTimerEnum.SALLY_FLY,
+                    [AvatarEnum.GOD]: AnimationBlockTimerEnum.GOD_FLY,
                 }
             },
         };

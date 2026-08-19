@@ -1,5 +1,5 @@
 const { getLayeredManifest } = require('../data/layeredCharacterManifests');
-const { getPresetByIndex, getPresetByName } = require('../enums/GlovePresetsEnum');
+const { GLOVE_PRESETS, getPresetByIndex, getPresetByName } = require('../enums/GlovePresetsEnum');
 const UserApiService = require('../services-api/UserApiService');
 
 const HEX_COLOR_PATTERN = /^#?[0-9a-fA-F]{6}$/;
@@ -55,14 +55,51 @@ function validateSlotUpdate({ avatarId, slotKey, value, uppercutLevel }) {
 }
 
 /**
- * PAL9: the first time the glove slot is resolved with no saved value, seed it from the
- * user's CURRENT progression tier (uppercutSelected) — not the raw manifest default — then
- * persist. Once an explicit choice exists, it is never recomputed from tier again.
+ * FNV-1a-style string hash — pure, deterministic, no external dependency. Used only to turn a
+ * stable identifier (a user id) into a stable pseudo-random index; not a cryptographic hash.
+ * @param {string} str
+ * @returns {number} an unsigned 32-bit integer
+ */
+function hashSeedKey(str) {
+    let hash = 0x811c9dc5; // FNV offset basis
+    for (let i = 0; i < str.length; i++) {
+        hash ^= str.charCodeAt(i);
+        hash = Math.imul(hash, 0x01000193); // FNV prime
+    }
+    return hash >>> 0;
+}
+
+/**
+ * Gameplay defect fix (2026-08-19): picks a glove-preset index in [0, maxIndex] that is
+ * RANDOM across different seed keys but STABLE for the same one — so a bot (or a human who
+ * never explicitly chose a glove colour) keeps the same glove colour every time it is resolved
+ * in the same session, instead of re-rolling on every resolution (which would make the glove
+ * change colour mid-fight, a new bug). `seedKey` should be something stable about the account,
+ * e.g. the user's own id.
  *
- * @param {{avatarId:number, savedSlots:Record<string,string>, uppercutSelected:number}} params
+ * @param {string|number} seedKey
+ * @param {number} maxIndex the highest unlocked preset index (0-based, inclusive)
+ * @returns {number}
+ */
+function pickStableGloveIndex(seedKey, maxIndex) {
+    if (!Number.isFinite(maxIndex) || maxIndex <= 0) {
+        return 0;
+    }
+    return hashSeedKey(String(seedKey)) % (maxIndex + 1);
+}
+
+/**
+ * PAL9 (gameplay defect fix, 2026-08-19): the first time the glove slot is resolved with no
+ * saved value, seed it with a preset picked RANDOMLY among every preset unlocked at the user's
+ * CURRENT progression tier (uppercutLevel) — not merely that tier's own single index, and not
+ * the raw manifest default — then persist. The pick is stable per user id (pickStableGloveIndex)
+ * so it never changes across resolutions for the same account. Once an explicit choice exists
+ * (a real saved value), it is never recomputed from tier again.
+ *
+ * @param {{avatarId:number, savedSlots:Record<string,string>, uppercutLevel:number, userId:string|number}} params
  * @returns {{slots:Record<string,string>, seeded:boolean}}
  */
-function resolveGlovePalette({ avatarId, savedSlots, uppercutSelected }) {
+function resolveGlovePalette({ avatarId, savedSlots, uppercutLevel, userId }) {
     const manifest = getLayeredManifest(avatarId);
     const slots = { ...savedSlots };
     if (!manifest || !manifest.gloveSlot) {
@@ -71,7 +108,9 @@ function resolveGlovePalette({ avatarId, savedSlots, uppercutSelected }) {
     if (slots[manifest.gloveSlot] !== undefined) {
         return { slots, seeded: false };
     }
-    const preset = getPresetByIndex(uppercutSelected) || getPresetByIndex(0);
+    const maxIndex = Math.max(0, Math.min(uppercutLevel ?? 0, GLOVE_PRESETS.length - 1));
+    const index = pickStableGloveIndex(userId, maxIndex);
+    const preset = getPresetByIndex(index) || getPresetByIndex(0);
     slots[manifest.gloveSlot] = preset.hex;
     return { slots, seeded: true };
 }
@@ -108,30 +147,39 @@ class UserPaletteService {
     }
 
     /**
-     * Resolves the effective palette for (user, avatarId): saved slots, glove-seeded if
-     * needed (PAL9, persisting the seed on first resolution).
+     * Gameplay defect fix (2026-08-19): the real production wiring point for PAL9. Called
+     * synchronously from `UserResource.transform()` — the single choke point every user (bot
+     * or human) is serialized through, on login, scene join, sync and every user-change-*
+     * broadcast (server/src/resources/UserResource.js) — so it mutates `user.avatarPalettes`
+     * IN-MEMORY before the very first payload naming this (user, avatarId) pair is ever sent,
+     * meaning the client never has a chance to fall through to the manifest's raw default hex.
+     * Persistence to the API is deliberately fire-and-forget best-effort here (never awaited by
+     * the synchronous resource transform) — the in-memory value is already correct for this
+     * session even if the write fails or has not completed by the time this payload goes out.
      */
-    static async resolveForUser(user, avatarId) {
+    static seedPaletteForResource(user, avatarId) {
+        if (avatarId === undefined || avatarId === null || !user || !user.avatarPalettes) {
+            return;
+        }
         const savedSlots = user.avatarPalettes[avatarId] || {};
         const { slots, seeded } = resolveGlovePalette({
             avatarId,
             savedSlots,
-            uppercutSelected: user.uppercutSelected,
+            uppercutLevel: user.uppercutLevel,
+            userId: user.id,
         });
         user.avatarPalettes[avatarId] = slots;
         if (seeded) {
-            try {
-                await UserApiService.changePalette(user, avatarId, slots);
-            } catch (error) {
-                // Seeding is best-effort persistence; the in-memory value is already correct
-                // for this session even if the write fails.
-            }
+            UserApiService.changePalette(user, avatarId, slots).catch(() => {
+                // Seeding is best-effort persistence; the in-memory value (already assigned
+                // above) is correct for this session even if the write fails.
+            });
         }
-        return slots;
     }
 }
 
 module.exports = UserPaletteService;
 module.exports.validateSlotUpdate = validateSlotUpdate;
 module.exports.resolveGlovePalette = resolveGlovePalette;
+module.exports.pickStableGloveIndex = pickStableGloveIndex;
 module.exports.isValidHexColor = isValidHexColor;

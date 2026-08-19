@@ -1,8 +1,16 @@
 const Resource = require('./Resource');
 const GameClock = require('../utils/GameClock');
+const UserPaletteService = require('../services/UserPaletteService');
 
 class UserResource extends Resource {
     transform(data) {
+        // Gameplay defect fix (2026-08-19): UserResource is the SINGLE choke point every user
+        // (bot or human) is serialized through — login, scene join, sync, and every
+        // user-change-* broadcast — so seeding the glove slot here, before this payload is
+        // built, guarantees no client ever falls through to the manifest's raw default hex
+        // (root cause: PAL9's seeding step existed but was never called from any production
+        // code path — see apply-progress.md).
+        UserPaletteService.seedPaletteForResource(data, data.avatarId);
         return {
             game_time: GameClock.getCurrentGameTime(),
             id: data.socket.id,

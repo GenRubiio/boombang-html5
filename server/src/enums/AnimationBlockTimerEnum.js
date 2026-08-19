@@ -193,6 +193,38 @@ const AnimationBlockTimerEnum = new Enum({
     ZOMBIE_KISS: 5000,
     ZOMBIE_DRINK: 5000,
     ZOMBIE_ROSE: 5000,
+    // avatar-system-multichar-fixes slice 10 (design.md §15): sally, a new client character.
+    // Flat 5000ms defaults (matching BOOMER/ZOMBIE/YAYO's own convention above) — no bespoke
+    // per-action timing has been authored for her yet; her asset compile is deferred past this
+    // change's branch point, so no live gameplay currently reaches these values.
+    SALLY_LAUGHTER_1: 5000,
+    SALLY_LAUGHTER_2: 5000,
+    SALLY_CRY: 5000,
+    SALLY_LOVE: 5000,
+    SALLY_SPIT: 5000,
+    SALLY_FART: 5000,
+    SALLY_PROVOKE: 5000,
+    SALLY_FLY: 5000,
+    SALLY_KISS: 5000,
+    SALLY_DRINK: 5000,
+    SALLY_ROSE: 5000,
+    // god apply pass (2026-08-19): a new client character, same treatment as SALLY above. Flat
+    // 5000ms defaults — no bespoke per-action timing authored yet. Unlike sally, god's own
+    // source package DOES carry real emote-shaped action data (down_llorar, down_risa1,
+    // down_coco, left_beso, left_beber, leftup_pedo, ...) — these constants exist so the block
+    // mechanism has somewhere to point once/if a future pass wires per-emote timing; they are
+    // not yet consulted anywhere beyond the same 8 EmojisBlockActionsMap.js entries sally has.
+    GOD_LAUGHTER_1: 5000,
+    GOD_LAUGHTER_2: 5000,
+    GOD_CRY: 5000,
+    GOD_LOVE: 5000,
+    GOD_SPIT: 5000,
+    GOD_FART: 5000,
+    GOD_PROVOKE: 5000,
+    GOD_FLY: 5000,
+    GOD_KISS: 5000,
+    GOD_DRINK: 5000,
+    GOD_ROSE: 5000,
     COCO_COCO: 6180,
     COCO_SHOWBALL: 2810,
     COCO_SHOE: 10000,
