@@ -9,10 +9,13 @@
     "preview": "vite preview",
     "jsonmin": "node scripts/jsonmin.cjs",
     "jsonunmin": "node scripts/jsonunmin.cjs",
+    "emit-gzip-siblings": "node scripts/emit-gzip-siblings.cjs dist",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "fflate": "^0.8.3",
     "gsap": "^3.13.0",
     "jquery": "^3.7.1",
     "overlayscrollbars": "^2.12.0",
@@ -26,6 +29,7 @@
     "vue-i18n": "^11.1.10"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "sass-embedded": "^1.90.0",

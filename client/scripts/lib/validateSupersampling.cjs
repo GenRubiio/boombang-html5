@@ -7,19 +7,22 @@
  * @param {{w: number, h: number}} declared logical dimensions from _frames.json
  * @param {{width: number, height: number}} actual pixel dimensions of the extracted raster
  * @param {number} [ss] supersampling factor, defaults to 2 per the project-wide contract
+ * @param {number} [tolerance] design.md §5.4: action runs get a ±1px tolerance — librsvg
+ *   rounds a run's own computed bounds (unlike the base compiler's PNG-sourced pieces, which
+ *   measure exactly). Defaults to 0 (exact match), the base-pack contract.
  */
-function validateSupersampling(declared, actual, ss = 2) {
+function validateSupersampling(declared, actual, ss = 2, tolerance = 0) {
   const expectedWidth = declared.w * ss
   const expectedHeight = declared.h * ss
 
-  if (actual.width !== expectedWidth) {
+  if (Math.abs(actual.width - expectedWidth) > tolerance) {
     throw new Error(
-      `validateSupersampling: width mismatch — expected ${expectedWidth} (${declared.w} * ${ss}), got ${actual.width}`
+      `validateSupersampling: width mismatch — expected ${expectedWidth} (${declared.w} * ${ss}, ±${tolerance}), got ${actual.width}`
     )
   }
-  if (actual.height !== expectedHeight) {
+  if (Math.abs(actual.height - expectedHeight) > tolerance) {
     throw new Error(
-      `validateSupersampling: height mismatch — expected ${expectedHeight} (${declared.h} * ${ss}), got ${actual.height}`
+      `validateSupersampling: height mismatch — expected ${expectedHeight} (${declared.h} * ${ss}, ±${tolerance}), got ${actual.height}`
     )
   }
 }
