@@ -176,8 +176,8 @@ class AddUserController {
     }
 
     /**
-     * Accessory children (aura at depth 0.2, hat/pet driven from the layered body's own
-     * clock). LR6's "flag off" scenario is explicit: no accessory child sprites are created
+     * Accessory children (aura at depth 1.80, design.md §2 decision 7 — hat/pet driven from
+     * the layered body's own clock). LR6's "flag off" scenario is explicit: no accessory child sprites are created
      * at all when VITE_LAYERED_AVATARS is off, matching today's four-element container
      * byte-for-byte even for a user who has an accessory equipped — this whole visible
      * surface, including the character-independent aura (ACC2), ships behind the one flag.
@@ -188,13 +188,20 @@ class AddUserController {
             return children;
         }
 
+        // design.md §4/§7: the accessory registry is character-scoped — the same key
+        // (`Custom6Hat`) resolves a different package per character. The wearer's character
+        // name is passed into every call; auras resolve through the registry's
+        // character-independent `'*'` tier regardless of which character name is passed
+        // (ACC2), so no branch here needs to special-case that.
+        const character = avatarManager.getAvatarName(userData.avatar_id);
+
         const auraKey = userData.accessories?.aura;
-        if (auraKey && accessoryManager.hasPackage('aura', auraKey)) {
+        if (auraKey && accessoryManager.hasPackage(character, 'aura', auraKey)) {
             try {
                 const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
-                await accessoryManager.load(gameScene, 'aura', auraKey);
-                const manifest = accessoryManager.getManifest('aura', auraKey);
-                const atlasKey = accessoryManager.getAtlasKey('aura', auraKey);
+                await accessoryManager.load(gameScene, character, 'aura', auraKey);
+                const manifest = accessoryManager.getManifest(character, 'aura', auraKey);
+                const atlasKey = accessoryManager.getAtlasKey(character, 'aura', auraKey);
                 if (manifest) {
                     children.push(AccessoryLayer.createAura(gameScene, atlasKey, manifest));
                 }
@@ -205,12 +212,12 @@ class AddUserController {
         }
 
         const hatKey = userData.accessories?.hat;
-        if (hatKey && accessoryManager.hasPackage('hat', hatKey) && spriteAvatar?.isLayered) {
+        if (hatKey && accessoryManager.hasPackage(character, 'hat', hatKey) && spriteAvatar?.isLayered) {
             try {
                 const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
-                await accessoryManager.load(gameScene, 'hat', hatKey);
-                const manifest = accessoryManager.getManifest('hat', hatKey);
-                const atlasKey = accessoryManager.getAtlasKey('hat', hatKey);
+                await accessoryManager.load(gameScene, character, 'hat', hatKey);
+                const manifest = accessoryManager.getManifest(character, 'hat', hatKey);
+                const atlasKey = accessoryManager.getAtlasKey(character, 'hat', hatKey);
                 if (manifest) {
                     const hatSprite = AccessoryLayer.createHatPlaceholder(gameScene, atlasKey);
                     spriteAvatar.attachAccessory('hat', hatSprite, manifest, atlasKey);
@@ -222,12 +229,12 @@ class AddUserController {
         }
 
         const petKey = userData.accessories?.pet;
-        if (petKey && accessoryManager.hasPackage('pet', petKey) && spriteAvatar?.isLayered) {
+        if (petKey && accessoryManager.hasPackage(character, 'pet', petKey) && spriteAvatar?.isLayered) {
             try {
                 const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
-                await accessoryManager.load(gameScene, 'pet', petKey);
-                const manifest = accessoryManager.getManifest('pet', petKey);
-                const atlasKey = accessoryManager.getAtlasKey('pet', petKey);
+                await accessoryManager.load(gameScene, character, 'pet', petKey);
+                const manifest = accessoryManager.getManifest(character, 'pet', petKey);
+                const atlasKey = accessoryManager.getAtlasKey(character, 'pet', petKey);
                 if (manifest) {
                     const petSprite = AccessoryLayer.createPetPlaceholder(gameScene, atlasKey);
                     spriteAvatar.attachAccessory('pet', petSprite, manifest, atlasKey);
@@ -305,6 +312,21 @@ class AddUserController {
 
                 const atlasKey = avatarManager.getLayeredAtlasKey(userData.avatar_id);
                 const scaleFactor = gameScene.sceneScaleFactor || 1;
+                // design.md §13.3 (tasks.md slice 15): per-key action packs, loaded reactively
+                // ONLY when `play()` first resolves a key backed by a not-yet-loaded pack — the
+                // always-on `requestIdleCallback` prefetch this method used to schedule for
+                // EVERY layered avatar is REMOVED (mandatory per design §13.3): it used to spend
+                // 8.7 MB of bandwidth and 245 MB of texture memory on an action nobody had
+                // triggered. `onActionPackNeeded(packId)` resolves to that pack's atlas key on
+                // success, `null` on failure, never throws into the caller.
+                const onActionPackNeeded = async (packId) => {
+                    try {
+                        return await avatarManager.loadLayeredActionKey(gameScene, userData.avatar_id, packId);
+                    } catch (err) {
+                        console.warn("[AddUserController] failed to load action pack", userData.avatar_id, packId, err);
+                        return null;
+                    }
+                };
                 // Live-validation defect 3 fix: thread the persisted palette for THIS
                 // (user, avatarId) pair into construction, for both the local user and every
                 // remote user (this method is the single path createContainerUser() uses for
@@ -315,10 +337,11 @@ class AddUserController {
                 const savedPalette = (userData.avatar_palette || {})[userData.avatar_id];
                 const layeredAvatar = new LayeredAvatar(gameScene, 0, 0, {
                     manifest,
-                    atlasKey,
+                    atlasKeys: { base: atlasKey, actions: new Map() },
                     avatarId: userData.avatar_id,
                     sceneScaleFactor: scaleFactor,
                     palette: savedPalette,
+                    onActionPackNeeded,
                 });
                 layeredAvatar._z = userData.z;
                 layeredAvatar.setDepth(1);
@@ -675,6 +698,12 @@ class AddUserController {
             case AvatarEnum.WRAITH: return "wraith";
             case AvatarEnum.YAYO: return "yayo";
             case AvatarEnum.ZOMBIE: return "zombie";
+            // avatar-system-multichar-fixes slice 10 (design.md §15): sally is a new client
+            // character, registered here so every window.avatars_config-adjacent consumer
+            // resolves a real name instead of "unknown".
+            case AvatarEnum.SALLY: return "sally";
+            // god apply pass (2026-08-19): a new client character, same treatment as sally.
+            case AvatarEnum.GOD: return "god";
             default: return "unknown";
         }
     }

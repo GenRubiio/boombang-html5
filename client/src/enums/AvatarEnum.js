@@ -18,6 +18,14 @@ const AvatarEnum = new Enum({
     WRAITH: 15,
     YAYO: 16,
     ZOMBIE: 17,
+    // avatar-system-multichar-fixes slice 10 (design.md §15): sally becomes a playable client
+    // character (new id). Parallel by convention to server/src/enums/AvatarEnum.js.
+    SALLY: 18,
+    // god apply pass (2026-08-19): a genuinely new character, same treatment as SALLY —
+    // `god.bb`'s own meta.json declares "raster": true (no vector/colormeta data at all), so
+    // she compiles via `compile-raster-avatar.cjs`, not the vector pipeline. Parallel by
+    // convention to server/src/enums/AvatarEnum.js.
+    GOD: 19,
 });
 
 export default AvatarEnum;

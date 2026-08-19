@@ -26,7 +26,15 @@ class AssetVersionManager {
                 14: '1.0.0', // WEREWOLF
                 15: '1.0.0', // WRAITH
                 16: '1.0.0', // YAYO
-                17: '1.0.1'  // ZOMBIE - Actualizada para reflejar cambios recientes
+                17: '1.0.1', // ZOMBIE - Actualizada para reflejar cambios recientes
+                // avatar-system-multichar-fixes slice 10 (design.md §15): sally, a new client
+                // character. No baked art exists for her (LAYERED_ONLY_CHARACTERS), so this entry
+                // is version-tracking metadata only.
+                18: '1.0.0', // SALLY
+                // god apply pass (2026-08-19): a new client character, same treatment as SALLY.
+                // No baked art exists for her either (LAYERED_ONLY_CHARACTERS) — version-
+                // tracking metadata only.
+                19: '1.0.0'  // GOD
             }
         };
 
@@ -40,11 +48,57 @@ class AssetVersionManager {
         // this whole feature must not touch the code protecting 17 avatars' cached assets.
         this.layeredVersions = {
             base: '1.0.0',
-            characters: { rasta: '1.0.0' },
+            characters: {
+                rasta: '1.0.0',
+                // avatar-system-multichar-fixes slice 10 (design.md §15): registered now so the
+                // version dict already carries her entry; the directory this key tracks appears
+                // once the deferred asset compile lands (glob-discovered, tasks.md slice 9).
+                sally: '1.0.0',
+                // avatar-system-multichar-fixes tasks.md slice 24 (design.md §15's slice 23):
+                // body-only compile — accessories for these four land in slice 28.
+                brujita: '1.0.0',
+                cholo: '1.0.0',
+                empollon: '1.0.0',
+                gata: '1.0.0',
+                // tasks.md slice 25 (design.md §15's slice 24): second body-only batch.
+                india: '1.0.0',
+                lilian: '1.0.0',
+                marsu: '1.0.0',
+                modern: '1.0.0',
+                // tasks.md slice 26 (design.md §15's slice 25): third body-only batch.
+                ninja: '1.0.0',
+                werewolf: '1.0.0',
+                yayo: '1.0.0',
+                boomer: '1.0.0',
+                // tasks.md slice 27 (design.md §15's slice 26): fourth (final) body-only batch.
+                skeleton: '1.0.0',
+                zombie: '1.0.0',
+                // god apply pass (2026-08-19): compiled via `compile-raster-avatar.cjs` (a
+                // raster-only source, no vector/colormeta data) rather than the vector pipeline
+                // every other entry above went through — base pack only (idle/talk/walk x 5
+                // directions; her 26 other source `meta.anims` keys are NOT compiled, disclosed
+                // in apply-progress.md's own "god" section).
+                god: '1.0.0',
+            },
         };
+        // Rekeyed to `char:kind:key` (design.md §7, avatar-system-multichar-fixes PR4) — this
+        // dict already said `minnieHat` (the correct name — it matches the staged package's
+        // own `meta.json.key` and the real source file `personajes/rasta/hat/minnieHat.bb`)
+        // while AccessoryManager's own registry key was the archived cycle's arbitrary
+        // `hat_minnie` directory name, so a lookup by either name never actually matched the
+        // other. AccessoryManager (and the compiled output directory) are the ones corrected
+        // to `minnieHat` in this PR — this dict's bare name was never wrong, only mismatched.
+        // No production call site consumed either bare-name key yet (getArtifactVersion is not
+        // wired to any accessory load path today), so this rename changes no observable
+        // behaviour; it fixes the mismatch before anything starts depending on it.
         this.accessoryVersions = {
             base: '1.0.0',
-            accessories: { minnieHat: '1.0.0', pet09: '1.0.0' },
+            accessories: {
+                'rasta:hat:minnieHat': '1.0.0',
+                'rasta:pet:pet09': '1.0.0',
+                'rasta:hat:Custom6Hat': '1.0.0',
+                'rasta:pet:pet10': '1.0.0',
+            },
         };
         this.auraVersions = {
             base: '1.0.0',

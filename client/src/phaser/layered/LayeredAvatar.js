@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
-import { resolveFallbackKey, accessoryFollows } from './fallback.js';
+import { computeMaxPoolSize } from './computeMaxPoolSize.js';
+import { resolveAnimationKey, accessoryFollows, resolveAccessoryFrameId } from './fallback.js';
+import { computeActionBackedKeys } from './actionPack.js';
 import { expandSequence } from './sequence.js';
 import {
     resolveRenderPosition,
@@ -7,9 +9,15 @@ import {
     resolveAccessoryPlacement,
     reflectSpan,
     computeBodyBoundsX,
-    clearBodySilhouetteX,
+    resolvePetSideX,
+    resolvePieceSs,
 } from './pivot.js';
-import { resolvePalette } from './paletteResolve.js';
+import { resolvePalette, resolveTintHex } from './paletteResolve.js';
+import { resolveAccessoryDepth } from './depths.js';
+import { advanceSequence } from './sequenceClock.js';
+import { report as reportDegrade } from './degradeReporter.js';
+import { resolveAtlasKeyForPiece } from './atlasKeyResolve.js';
+import { isCanvasRenderer, getOrCreateTintedTexture } from './canvasTintCache.js';
 
 /**
  * Drop-in replacement for `spriteAvatar` at container index 1, depth 1.0 (design.md §5).
@@ -27,21 +35,50 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
      * @param {Phaser.Scene} scene
      * @param {number} x
      * @param {number} y
-     * @param {{manifest: object, atlasKey: string, avatarId: number, sceneScaleFactor?: number, palette?: Record<string,string>}} config
+     * @param {{manifest: object, atlasKeys: {base: string, actions?: Map<string,string>}, avatarId: number, sceneScaleFactor?: number, palette?: Record<string,string>, onActionPackNeeded?: (packId: string) => Promise<string|null>}} config
      *   `palette` is the persisted (saved) slot map for this (user, avatarId) — e.g.
      *   `userData.avatar_palette?.[avatarId]` — or undefined/null when nothing was ever saved.
+     *   `atlasKeys.actions` (design.md §13.3, tasks.md slice 15) is a `Map<packId, atlasKey>` —
+     *   empty when no per-key action pack has loaded yet, gaining one entry per key once its
+     *   own pack finishes loading. `onActionPackNeeded(packId)`, if provided, is invoked (once
+     *   per distinct packId) the first time `play()` resolves a key backed by a not-yet-loaded
+     *   pack, and must resolve to that pack's own atlas key once it has finished loading (or
+     *   `null` on failure).
      */
-    constructor(scene, x, y, { manifest, atlasKey, avatarId, sceneScaleFactor = 1, palette }) {
+    constructor(scene, x, y, { manifest, atlasKeys, avatarId, sceneScaleFactor = 1, palette, onActionPackNeeded }) {
         super(scene, x, y);
 
         this.isLayered = true;
         this._manifest = manifest;
-        this._atlasKey = atlasKey;
+        // Correction 2 (apply-progress.md's "Correction 2"): computed ONCE per avatar, not
+        // per-frame — the WebGL hot path (`_tintChild`, called every `_applyFrame`) pays for
+        // exactly one already-cached boolean read, never a fresh renderer-type lookup.
+        this._isCanvasRenderer = isCanvasRenderer(scene);
+        this._atlasKeys = { base: atlasKeys.base, actions: atlasKeys.actions || new Map() };
         this._avatarId = avatarId;
+        // design.md §13.3: which sequence/alias/mirror keys are backed by an action pack,
+        // mapped to the SPECIFIC packId that backs each one — computed once, independent of
+        // load state.
+        this._actionBackedKeys = computeActionBackedKeys(manifest);
+        this._onActionPackNeeded = onActionPackNeeded || null;
+        // design.md §13.3: per-packId request guard (was a single boolean) — different keys
+        // need different packs requested independently, each with its own idempotent request.
+        this._actionPackRequestedFor = new Set();
+        // design.md §6: a monotonically increasing token, bumped on every play() call — the
+        // staleness guard for a deferred (pack-loading) replay: the original key is only
+        // re-played once the pack arrives if NO later play() has happened meanwhile.
+        this._playToken = 0;
         this._z = null;
         this._sceneScaleFactor = sceneScaleFactor;
         this._palette = {};
         this._seqKey = null;
+        // The key exactly as REQUESTED by the caller (design.md §9), e.g. "left_punch_rec" —
+        // distinct from `_seqKey`, which may be alias/mirror-resolved (e.g.
+        // "leftdown_punch_rec"). Every emitted `animationupdate`/`animationcomplete` `anim.key`
+        // and the `anims.currentAnim` getter use THIS, because existing listeners
+        // (UserUppercutAnimation.js:23-27) compare against the key they asked for — emitting
+        // the resolved key would leave such a listener permanently dead.
+        this._requestedKey = null;
         // The UNMIRRORED (canonical) key actually used to look up `sequences`/`frames` — e.g.
         // "leftdown_walk" when `_seqKey` is the mirrored "rightdown_walk". Accessories never
         // get synthesized mirror entries of their own (their compiled `anims{}` only has the
@@ -71,8 +108,10 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
         // own state, matching what those call sites actually read.
         const self = this;
         this.anims = {
+            // design.md §9: keyed on the REQUESTED key, not the alias/mirror-resolved
+            // `_seqKey` — see `_requestedKey`'s field comment above.
             get currentAnim() {
-                return self._seqKey ? { key: `${self._avatarId}_${self._seqKey}` } : null;
+                return self._requestedKey ? { key: `${self._avatarId}_${self._requestedKey}` } : null;
             },
             get isPlaying() {
                 return self._playing;
@@ -85,7 +124,10 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
         const maxPoolSize = LayeredAvatar.computeMaxPoolSize(manifest);
         this._pool = [];
         for (let i = 0; i < maxPoolSize; i++) {
-            const child = scene.add.image(0, 0, atlasKey);
+            // Placeholder texture only — every pool child's real texture is set per-frame in
+            // `_applyFrame` (resolved per-piece via `resolveAtlasKeyForPiece`) before it is
+            // ever made visible, so which key is used here is immaterial.
+            const child = scene.add.image(0, 0, this._atlasKeys.base);
             child.setOrigin(0, 0);
             child.setVisible(false);
             this.add(child);
@@ -121,12 +163,16 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
         this.applyPalette(resolvePalette(manifest, palette));
     }
 
+    /**
+     * Live defect fix (tasks.md slice 26): delegates to the standalone, unit-tested
+     * `computeMaxPoolSize.js` (see its own docblock for the full defect account this closes —
+     * this static method used to scan `manifest.frames` directly, which at construction time
+     * holds ONLY the base pack's frames, silently under-sizing the pool for any action key
+     * needing more pieces per frame than the base pack ever did). Kept as a static method for
+     * API-surface stability — nothing about the class's own public contract changes.
+     */
     static computeMaxPoolSize(manifest) {
-        let max = 0;
-        for (const fid of Object.keys(manifest.frames || {})) {
-            max = Math.max(max, manifest.frames[fid].L.length);
-        }
-        return max;
+        return computeMaxPoolSize(manifest);
     }
 
     static hexToInt(hex) {
@@ -173,6 +219,17 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
      * resolves position/scale/flip from the manifest for every frame.
      */
     applyClipConfig(_textureKey) {
+        return this;
+    }
+
+    /**
+     * design.md §13.3 (tasks.md slice 15): called once ONE specific per-key action pack has
+     * finished loading (by the deferred-play callback below). Idempotent; a redundant call for
+     * the same packId is harmless — `Map.set` on an already-loaded pack is a no-op overwrite
+     * with the same value.
+     */
+    setActionsAtlasKey(packId, atlasKey) {
+        this._atlasKeys.actions.set(packId, atlasKey);
         return this;
     }
 
@@ -237,8 +294,29 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
             child.clearTint();
             return;
         }
-        const hex = this._palette[piece.slot] ?? this._manifest.defaults[piece.slot];
-        if (hex) child.setTint(LayeredAvatar.hexToInt(hex));
+        // Live defect fix (tasks.md slice 26): `resolveTintHex` never returns falsy (see its own
+        // docblock, paletteResolve.js) — a piece can be slot-tagged with neither a saved palette
+        // value nor a manifest default (ninja/werewolf's own shape), and the old `if (!hex)
+        // return` left such a piece showing its own raw, untinted grayscale-mask pixels instead
+        // of any real colour.
+        const hex = resolveTintHex(this._palette, this._manifest.defaults, piece.slot);
+
+        // Correction 2 (apply-progress.md's "Correction 2"): under Phaser's Canvas renderer,
+        // `setTint()` is a documented no-op (`CanvasRenderer#batchSprite` draws via a plain
+        // `ctx.drawImage`, never reading `tint`/`tintTopLeft`) — a real player with no WebGL, or
+        // with the `phaser_type: "canvas"` per-user setting `App.vue` reads, would otherwise see
+        // every slotted run as its raw, untinted white mask. The WebGL path below is BYTE-FOR-
+        // BYTE unchanged (still one `setTint()` call, zero extra pipeline cost) — this branch
+        // only ever runs for a renderer that already cannot use `setTint()` at all.
+        if (this._isCanvasRenderer) {
+            const atlasKey = resolveAtlasKeyForPiece(this._atlasKeys, piece.pack);
+            const tintedKey = getOrCreateTintedTexture(this.scene, atlasKey, pieceId, hex);
+            if (tintedKey) {
+                child.setTexture(tintedKey);
+            }
+            return;
+        }
+        child.setTint(LayeredAvatar.hexToInt(hex));
     }
 
     /**
@@ -282,7 +360,16 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
             return;
         }
 
-        const accFid = manifest.anims[this._sourceKey].frames[this._seqIndex];
+        // Live-reported defect fix (user: hat/pet disappearing and reappearing mid-animation,
+        // see fallback.js's resolveAccessoryFrameId docblock for the full root-cause account
+        // and the real compiled-data evidence): the accessory's OWN frame array is frequently
+        // SHORTER than the body's for a given key (compile-accessory.cjs derives it from the
+        // accessory's own source data, independent of the body's frame count) — indexing it
+        // directly with the body's `_seqIndex` used to return `undefined` past the accessory's
+        // own last frame, hiding it for the remainder of that animation. Clamping (never
+        // cycling back to index 0 — see the docblock for why) keeps the accessory visible,
+        // holding its own last authored frame for the rest of the body's cycle.
+        const accFid = resolveAccessoryFrameId(this._seqIndex, manifest.anims[this._sourceKey].frames);
         const accFrame = manifest.frames[String(accFid)];
         if (!accFrame) {
             sprite.setVisible(false);
@@ -318,6 +405,17 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
         // "pet is different" branch was tried and found wrong live, see its docblock's "Root
         // -cause correction 2"); the only kind-specific behaviour left is the depth-flip sign
         // and the two pet-only corrections (ground contact, silhouette clearing) applied below.
+        //
+        // Live-reported defect fix (user: "cuando me pegan la animacion el pet tambien se mueve
+        // de posicion" — the pet/hat desyncs from the body while the local player is on the
+        // receiving end of a punch): `this.x`/`this.y` are threaded through as the container
+        // offset (pivot.js's own docblock has the full root-cause account and the live numeric
+        // trace that proved it) — every hat/pet position was silently assuming this Container's
+        // own transform always sits at (0, 0), which `UserUppercutAnimation.launchUpwards`
+        // violates by tweening `spriteAvatar.y` directly to fly the body upward on knockback.
+        // The body's pooled pieces are real children of THIS Container so they move with it for
+        // free; the accessory sprites are siblings in `containerUser`, so without this term they
+        // stayed frozen at the ground position while the body flew away from them.
         const { x, y, scale, relativeY, originX, originY, flipX } = resolveAccessoryPlacement(
             manifest.kind,
             accFrame,
@@ -326,15 +424,28 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
             manifest.base && manifest.base.scale,
             this._mirrored,
             { width: sprite.frame.width, height: sprite.frame.height },
-            manifest.base && manifest.base.groundOffsetY
+            manifest.base && manifest.base.groundOffsetY,
+            undefined,
+            this.x,
+            this.y
         );
 
         let finalX = x;
 
         if (accessoryKind === 'pet') {
-            // Live-validation defect 12 fix: the pet was rendering entirely inside the body's
-            // own silhouette ("appears under the leg"). Clear it against THIS frame's actual
-            // body extent (not a global constant), mirrored consistently with the body itself.
+            // Live-validation defect 12 fix, now design.md §8's unconditional per-side clamp
+            // (decision 6, a deliberate reversal — see resolvePetSideX's docblock): the pet
+            // must remain on its manifest-DECLARED canonical side across all 8 directions, not
+            // "whichever side it is already closer to". `base.side` is written by
+            // compile-accessory.cjs's pet-side derivation for every pet package compiled after
+            // this change; a package compiled before it (or missing `side` for any reason)
+            // fails loudly here rather than silently defaulting to one side.
+            const side = manifest.base && manifest.base.side;
+            if (side !== 'left' && side !== 'right') {
+                throw new Error(
+                    `LayeredAvatar: pet accessory manifest is missing a valid base.side ("left"|"right") — recompile with the pet-side derivation (design.md §8).`
+                );
+            }
             const bodyBounds = computeBodyBoundsX(
                 bodyFrame.L,
                 this._manifest.pieces,
@@ -343,7 +454,13 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
                 this._mirrored
             );
             const halfWidth = (sprite.frame.width * scale) / 2;
-            finalX = clearBodySilhouetteX(x, halfWidth, bodyBounds.minX, bodyBounds.maxX);
+            // `x` above already carries `this.x` (the container-offset fix); `bodyBounds` does
+            // not (computeBodyBoundsX has no such term, since the body's own pieces are real
+            // children of this Container and never need one) — shifting the clamp bounds by the
+            // SAME `this.x` keeps both sides of the comparison in the same coordinate space, so
+            // the clamp still holds during a horizontal container offset, not just the vertical
+            // one the live-reported defect above was proven against.
+            finalX = resolvePetSideX(x, halfWidth, bodyBounds.minX + this.x, bodyBounds.maxX + this.x, side);
         }
 
         sprite.setOrigin(originX, originY);
@@ -352,18 +469,20 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
         sprite.setScale(scale);
 
         if (accessoryKind === 'pet') {
-            // ACC5/design.md §1: petDepth = (resolvedRegY >= 0) ? 1.5 : 0.5 — computed from
-            // the same registration point pivot.js already resolves, no extra state. A pet
-            // "below" the body's anchor (further from camera-up, i.e. nearer the viewer in
-            // this isometric convention) draws in front; otherwise behind. Decision (defect 12,
-            // documented in apply-progress.md): the pet stays behind (0.5) or in front (1.5) per
-            // this SAME existing rule once it no longer overlaps the body horizontally — being
-            // behind is fine, and probably correct, for a pet standing slightly further from the
-            // camera; what was wrong was the overlap itself (fixed above), not the depth choice.
-            sprite.setDepth(relativeY >= 0 ? 1.5 : 0.5);
+            // ACC5/design.md §2: petDepth = resolveAccessoryDepth('pet', {relativeY}) — 1.60
+            // in front, 0.5 behind (was 1.5/0.5; 1.5 collided with the hat's 1.0+zBias band
+            // before zBias was clamped, design.md §2). Computed from the same registration
+            // point pivot.js already resolves, no extra state. A pet "below" the body's anchor
+            // (further from camera-up, i.e. nearer the viewer in this isometric convention)
+            // draws in front; otherwise behind. Decision (defect 12, documented in
+            // apply-progress.md): the pet stays behind or in front per this SAME existing rule
+            // once it no longer overlaps the body horizontally — being behind is fine, and
+            // probably correct, for a pet standing slightly further from the camera; what was
+            // wrong was the overlap itself (fixed above), not the depth choice.
+            sprite.setDepth(resolveAccessoryDepth('pet', { relativeY }));
         } else {
             const zBias = accFrame.zBias ?? (manifest.base && manifest.base.zBias) ?? 0;
-            sprite.setDepth(1.0 + zBias);
+            sprite.setDepth(resolveAccessoryDepth('hat', { zBias }));
         }
         sprite.setVisible(true);
     }
@@ -393,29 +512,93 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
      * with) through sequence.js + fallback.js, then applies the first resolved frame.
      */
     play(key, ignoreIfPlaying = false) {
+        this._playToken += 1;
+        const myPlayToken = this._playToken;
+
         const prefix = `${this._avatarId}_`;
         const textureKey = key.startsWith(prefix) ? key.slice(prefix.length) : key;
         const direction = textureKey.split('_')[0];
+        // design.md §13.3: per-key granularity — a key is "unloaded" only while ITS OWN
+        // specific pack has not finished loading, not merely "some pack". resolveAnimationKey
+        // degrades those to the fallback chain with the distinguishable `reason: 'pack-loading'`
+        // instead of a silent no-op.
+        const unloadedKeys = new Set();
+        for (const [backedKey, packId] of this._actionBackedKeys) {
+            if (!this._atlasKeys.actions.has(packId)) unloadedKeys.add(backedKey);
+        }
         // Live-validation defect 4/7 fix: `mirrors` must be passed through so a synthesized
         // right-facing key (never a member of `sequences`) is recognised as covered instead of
         // falling all the way through to the static `down_idle` — see fallback.js's
-        // resolveFallbackKey docblock for the full root-cause account.
-        const resolvedKey = resolveFallbackKey(
+        // resolveAnimationKey docblock for the full root-cause account. `aliases` (design.md
+        // §5.5, fact I) resolves a direction-less emote name (e.g. "risa1") to its authored
+        // sequence (e.g. "down_risa1") BEFORE the fallback chain. `degraded`/`reason` make the
+        // substitution observable (design.md §9 success criterion 3) instead of a silent key
+        // swap.
+        const { resolvedKey, degraded, reason } = resolveAnimationKey(
             this._manifest.sequences,
             textureKey,
             direction,
-            this._manifest.mirrors
+            this._manifest.mirrors,
+            this._manifest.aliases,
+            unloadedKeys
         );
+
+        if (degraded) {
+            reportDegrade({ avatarId: this._avatarId, requestedKey: textureKey, resolvedKey, reason });
+        }
+
+        // design.md §13.3: deferred play + staleness guard, per PACK now rather than a single
+        // global gate. Start the load for THIS SPECIFIC pack (once per packId — idempotent via
+        // `_actionPackRequestedFor`), play the degraded fallback meanwhile (below, unchanged),
+        // and replay the ORIGINAL requested key once the pack arrives — but ONLY if no later
+        // play() call has happened in the meantime (`_playToken` no longer matches).
+        //
+        // Live-discovered defect fix: `resolvedKey` has ALREADY been overwritten to the
+        // fallback key (e.g. "down_idle") by the pack-loading override above, by the time this
+        // runs — looking `_actionBackedKeys` up by `resolvedKey` here always misses (a base
+        // fallback key is never action-backed), so `onActionPackNeeded` was silently never
+        // called. `textureKey` (the RAW requested key, pre-resolution) is itself always one of
+        // `_actionBackedKeys`' three key forms (a direct sequence key, an alias key, or a
+        // mirror key all self-index that map) whenever `reason === 'pack-loading'` can fire at
+        // all, so it is the correct lookup — confirmed live via a real (Playwright) load-race
+        // reproduction before this fix (R8/R12 hung waiting on a pack that was never requested).
+        if (reason === 'pack-loading' && this._onActionPackNeeded) {
+            const packId = this._actionBackedKeys.get(textureKey);
+            if (packId && !this._actionPackRequestedFor.has(packId)) {
+                this._actionPackRequestedFor.add(packId);
+                Promise.resolve(this._onActionPackNeeded(packId))
+                    .then((actionsAtlasKey) => {
+                        if (!actionsAtlasKey) return;
+                        this.setActionsAtlasKey(packId, actionsAtlasKey);
+                        if (this._playToken === myPlayToken) {
+                            this.play(key, false);
+                        }
+                    })
+                    .catch(() => {
+                        // Best-effort: a failed action-pack load must never throw into the
+                        // caller; the avatar simply stays on its degraded fallback.
+                    });
+            }
+        }
 
         if (ignoreIfPlaying && this._playing && this._seqKey === resolvedKey) {
             return this;
         }
 
+        // sourceKey is the canonical `sequences` key `resolvedKey` actually plays: a mirror
+        // resolves to its `from` source, an alias resolves to the sequence it names, and a
+        // direct match/fallback is already a `sequences` key.
         const mirrorInfo = this._manifest.mirrors ? this._manifest.mirrors[resolvedKey] : undefined;
-        const sourceKey = mirrorInfo ? mirrorInfo.from : resolvedKey;
+        const aliasSource = this._manifest.aliases ? this._manifest.aliases[resolvedKey] : undefined;
+        const sourceKey = mirrorInfo ? mirrorInfo.from : aliasSource || resolvedKey;
         const seqMeta = this._manifest.sequences[sourceKey];
         const frames = expandSequence(this._manifest.sequences, sourceKey) || [];
 
+        // design.md §9: recorded BEFORE any fallback/alias/mirror resolution touches
+        // `resolvedKey` — this is the raw key the caller asked for, textureKey (post
+        // avatarId-prefix-stripping), used verbatim by every emitted event and by
+        // `anims.currentAnim` above.
+        this._requestedKey = textureKey;
         this._seqKey = resolvedKey;
         this._sourceKey = sourceKey;
         this._seqFrames = frames;
@@ -438,26 +621,42 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
 
     /**
      * Advances the animation clock by `delta` ms. Driven by LayeredAvatarRegistry's single
-     * scene-level tick (design.md §5 cost 3), not a per-avatar timer.
+     * scene-level tick (design.md §5 cost 3), not a per-avatar timer. The frame-advance math
+     * itself lives in the pure `advanceSequence` (sequenceClock.js, unit-tested there); this
+     * method applies each visited frame and emits the two animation events (design.md §9).
      */
     tick(delta) {
         if (!this._playing || this._seqFrames.length <= 1) return;
-        this._accum += delta;
-        const frameDuration = 1000 / this._fps;
-        while (this._accum >= frameDuration) {
-            this._accum -= frameDuration;
-            const nextIndex = this._seqIndex + 1;
-            if (nextIndex >= this._seqFrames.length) {
-                if (this._repeat === 0) {
-                    this._playing = false;
-                    return;
-                }
-                this._seqIndex = 0;
-            } else {
-                this._seqIndex = nextIndex;
-            }
-            this._applyFrame(this._seqFrames[this._seqIndex]);
+
+        const result = advanceSequence(
+            {
+                seqIndex: this._seqIndex,
+                accum: this._accum,
+                fps: this._fps,
+                repeat: this._repeat,
+                frameCount: this._seqFrames.length,
+            },
+            delta
+        );
+        this._accum = result.accum;
+
+        const emitKey = { key: `${this._avatarId}_${this._requestedKey}` };
+
+        if (result.completed) {
+            // design.md §9: emitted AFTER `_playing = false`, so a listener that calls play()
+            // from inside the handler re-enters a consistent (not-playing) state.
+            this._playing = false;
+            this.emit('animationcomplete', emitKey, { index: this._seqIndex + 1 }, this);
+            return;
         }
+
+        result.visited.forEach((visitedIndex) => {
+            this._seqIndex = visitedIndex;
+            this._applyFrame(this._seqFrames[this._seqIndex]);
+            // 1-based frame.index, matching Phaser — what the existing `frame.index === 160`
+            // check depends on.
+            this.emit('animationupdate', emitKey, { index: this._seqIndex + 1 }, this);
+        });
     }
 
     /**
@@ -507,14 +706,32 @@ class LayeredAvatar extends Phaser.GameObjects.Container {
             if (!child) return;
             const piece = this._manifest.pieces[l.p];
             if (!piece) return;
+            // design.md §13.7 (tasks.md slice 20): a piece compiled at ss:1 (the measurement-
+            // driven override for an over-budget action key) occupies the SAME on-screen size
+            // and position an ss:2 piece would — only its own native raster density is lower.
+            // `pieceSs` resolves that per PIECE (via its own `pack`), never per character, since
+            // one compiled character can mix ss:2 and ss:1 pieces across different action keys.
+            const pieceSs = resolvePieceSs(this._manifest.ssOverrides, piece.pack, ss);
             const dx = this._mirrored
-                ? reflectSpan(l.dx, piece.frame.w / ss, origin[0])
+                ? reflectSpan(l.dx, piece.frame.w / pieceSs, origin[0])
                 : l.dx;
             const [x, y] = resolveRenderPosition([dx, l.dy], origin, ss);
-            child.setTexture(this._atlasKey, l.p);
+            // design.md §13.3 (tasks.md slice 15): resolved per piece — `piece.pack` is
+            // `'base'` or a specific per-key action packId (`compile-layered-avatar.cjs`), so
+            // each compiled action key can live in its own Phaser atlas without any other
+            // change to this method. `page` is not part of this resolution — Phaser's own
+            // `setTexture(atlasKey, frameName)` disambiguates by frame name within one atlas
+            // key regardless of how many physical pages compose it.
+            child.setTexture(resolveAtlasKeyForPiece(this._atlasKeys, piece.pack), l.p);
             child.setPosition(x, y);
             child.setFlipX(this._mirrored);
-            child.setScale(1);
+            // design.md §13.7: an ss:1 piece's native texture is HALF the pixel count an ss:2
+            // piece of the same logical size would be — `ss / pieceSs` (1 normally, 2 for an
+            // ss:1 piece) upsamples it back to the project's shared ss:2 real-pixel-space
+            // convention so its ON-SCREEN size and position stay identical to what an ss:2
+            // raster would show; only its own crispness is lower (the accepted density
+            // tradeoff, design.md §13.7/tasks.md slice 20 task 6 — not a size change).
+            child.setScale(ss / pieceSs);
             child.setVisible(true);
             child.setDepth(i);
             child.setData('pieceId', l.p);

@@ -150,6 +150,12 @@ function scaleBodyBounds(bodyBounds, ss) {
  * @param {number} ss the accessory manifest's declared supersampling factor
  * @param {number} [baseScale=1] the accessory package's own base scale correction
  *   (`manifest.base.scale`), resolved `accFrame.scale ?? baseScale ?? 1`
+ * @param {number} [referenceSs=ACCESSORY_REFERENCE_SS] the ss every already-shipped accessory
+ *   package was compiled at before the whole-package ss:1 rule existed (design.md §13.7,
+ *   resolved 2026-08-19) — the fixed baseline `ss` is compared against, NOT the current
+ *   character's own body `ss` (a hat can be worn by any character regardless of that
+ *   character's own body supersampling, and the body itself is never compiled wholesale at
+ *   ss:1). Only ever needs overriding by a test.
  * @param {boolean} [mirrored=false] whether the body is currently playing a mirrored key —
  *   applied identically for hat and pet (a hat/pet sprite is anchored via a FRACTIONAL
  *   `setOrigin(originX, originY)`, not a corner, so reflecting the registration point itself
@@ -199,9 +205,40 @@ function scaleBodyBounds(bodyBounds, ss) {
  *   so applying it makes the worst-case frame's bottom land at ~-0.5 (just at/above ground) and
  *   every other frame float a few px above it, never below. `hat_minnie` declares no such field
  *   (defaults to 0), so this is scoped to the one package actually measured to need it.
+ *
+ * ss-compensated scale (design.md §13.7, resolved 2026-08-19 — the accessory whole-package
+ * ss:1 rule): `_applyFrame` renders every piece, hat and pet included, at NATIVE scale — the
+ * game's own art space is ss:2 native, so a raster's pixel dimensions ARE its on-screen size
+ * once the authoring `scale` correction is applied. Before this fix `scale` carried only the
+ * authoring correction (`accFrame.scale ?? baseScale ?? 1`), with no ss term — correct only by
+ * coincidence, because every accessory ever compiled was ss:2 until this rule existed. An
+ * ss:1 package's raster is HALF the native pixel dimensions of an ss:2 package depicting the
+ * same visual size, so it must be upscaled 2x on screen to match — `ACCESSORY_REFERENCE_SS / ss`
+ * is that compensation factor (1 at ss:2, a no-op; 2 at ss:1).
+ *
+ * @param {number} [containerOffsetX=0] live-reported defect fix ("cuando me pegan la animacion
+ *   el pet tambien se mueve de posicion" — the pet/hat visibly desyncs from the body while the
+ *   player is on the receiving end of a punch): `x`/`y` here were ALWAYS resolved purely from
+ *   the body's own per-frame origin (`bodyOrigin`), silently assuming the LayeredAvatar
+ *   Container's OWN `x`/`y` transform sits at `(0, 0)` — true for ordinary play(), but NOT true
+ *   during `UserUppercutAnimation.launchUpwards`, which tweens `spriteAvatar.y` (the Container's
+ *   own transform) directly to fly the body upward on knockback. The body's pooled pieces are
+ *   real Phaser children of that Container, so they move with it automatically; the hat/pet
+ *   sprites are SIBLINGS in `containerUser` (`AddUserController.createContainerUser`), not
+ *   children of the Container being tweened, so without this term their `x`/`y` stayed frozen
+ *   at the ground position while the body flew away — proven live (God/rasta/minnieHat/pet09,
+ *   the real `leftdown_punch_rec` pack): stepping `spriteAvatar.y` from 0 to -1000 across 5
+ *   `tick()` calls left every recomputed hat/pet `x`/`y` bit-for-bit identical. Passing the
+ *   LayeredAvatar's own current `this.x`/`this.y` here re-anchors the accessory to wherever the
+ *   body's own Container transform currently is, exactly like a real Phaser child would.
+ *   Defaults to 0 — every pre-existing call site (ordinary play(), never touching `this.x/y`)
+ *   is unaffected.
+ * @param {number} [containerOffsetY=0] see `containerOffsetX`.
  */
-function resolveAccessoryPlacement(kind, accFrame, bodyOrigin, ss, baseScale = 1, mirrored = false, nativeSize, baseGroundOffsetY = 0) {
-  const scale = accFrame.scale ?? baseScale ?? 1;
+const ACCESSORY_REFERENCE_SS = 2;
+
+function resolveAccessoryPlacement(kind, accFrame, bodyOrigin, ss, baseScale = 1, mirrored = false, nativeSize, baseGroundOffsetY = 0, referenceSs = ACCESSORY_REFERENCE_SS, containerOffsetX = 0, containerOffsetY = 0) {
+  const scale = (accFrame.scale ?? baseScale ?? 1) * (referenceSs / ss);
   const regX = mirrored ? reflectPoint(accFrame.regX, bodyOrigin[0]) : accFrame.regX;
   const originXRaw = mirrored ? 1 - accFrame.originX : accFrame.originX;
   const widthLogical = nativeSize.width / ss;
@@ -209,11 +246,19 @@ function resolveAccessoryPlacement(kind, accFrame, bodyOrigin, ss, baseScale = 1
   const groundOffsetY = accFrame.groundOffsetY ?? baseGroundOffsetY ?? 0;
   const regY = accFrame.regY - groundOffsetY;
 
-  const [x, y] = resolveRenderPosition([centerXLogical, regY], bodyOrigin, ss);
+  // Position is resolved into REAL-PIXEL space using `referenceSs`, NOT this package's own `ss`
+  // — real-pixel space is the project-wide ss:2 render space the body's own pieces always live
+  // in (the body is never compiled wholesale at ss:1), so an ss:1 accessory's anchor must land
+  // at the SAME real-pixel coordinate an ss:2 package of the same author-space geometry would.
+  // `centerXLogical`/`regY` are already author-space (ss-independent: `widthLogical` above
+  // divides this package's OWN native pixels by its OWN `ss`, undoing exactly what its OWN
+  // raster density did) — only the LOGICAL-to-REAL-PIXEL step needs the fixed reference, not the
+  // NATIVE-to-LOGICAL step.
+  const [x, y] = resolveRenderPosition([centerXLogical, regY], bodyOrigin, referenceSs);
 
   return {
-    x,
-    y,
+    x: x + containerOffsetX,
+    y: y + containerOffsetY,
     scale,
     relativeY: accFrame.regY,
     originX: 0.5,
@@ -250,30 +295,55 @@ function computeBodyBoundsX(bodyFrameL, pieces, bodyOrigin, ss, mirrored) {
 }
 
 /**
- * Live-validation defect 12 fix: the pet was rendering ENTIRELY INSIDE the body's own
- * silhouette (its whole horizontal span sat inside the body's, starting only a few px right of
- * the body's own centre for `down_idle`) — "appears under the leg", per the reported symptom.
- * Pushes a centred box (`center` ± `halfWidth`) OUTSIDE a body's `[bodyMinX, bodyMaxX]` range,
- * on whichever side it is ALREADY closer to (so a naturally left-leaning pose clears to the
- * left, a right-leaning one clears to the right — preserving the antisymmetric-under-mirroring
- * property the coordinator asked to keep, since `center`/`bodyMinX`/`bodyMaxX` are all already
- * mirror-consistent by construction). Does nothing (returns `center` unchanged) if the box
- * already clears — this is a MINIMAL correction, not an unconditional push.
+ * design.md §8 (decision 6, a deliberate reversal of `clearBodySilhouetteX`'s antisymmetric-
+ * under-mirroring rule — proposal.md item 2, ACC1's "pet stays on its declared side across all
+ * 8 directions" requirement): an UNCONDITIONAL clamp to the pet package's manifest-declared
+ * canonical side, not a nearest-side nudge. For `side: "right"` the pet's whole box lands right
+ * of the body silhouette in EVERY direction, including poses where the raw (uncorrected) centre
+ * naturally sits left of the body — that is exactly what "remain on that declared side across
+ * all 8 directions" requires and what `clearBodySilhouetteX`'s "whichever side it is already
+ * closer to" rule did not guarantee. Deleted `clearBodySilhouetteX` rather than kept-but-
+ * uncalled (design.md §8: "a superseded implementation left in place as inert data is a trap");
+ * its approval-tested behaviour is documented in apply-progress.md's PR3 section, not carried
+ * forward as dead code.
  *
  * @param {number} center the pet's own (uncorrected) centre X
  * @param {number} halfWidth half the pet's own displayed width
  * @param {number} bodyMinX
  * @param {number} bodyMaxX
+ * @param {'left'|'right'} side the pet package's manifest-declared canonical side
+ *   (`manifest.base.side`, compile-accessory.cjs's `derivePetSide` — design.md §8)
  * @param {number} [margin=4] a small additional gap so the pet's edge does not touch the body's
  *   silhouette edge exactly (real px)
- * @returns {number} the corrected centre X
+ * @returns {number} the corrected centre X, unconditionally clamped to the declared side
  */
-function clearBodySilhouetteX(center, halfWidth, bodyMinX, bodyMaxX, margin = 4) {
-  const bodyCenter = (bodyMinX + bodyMaxX) / 2;
-  if (center >= bodyCenter) {
-    return Math.max(center, bodyMaxX + halfWidth + margin);
+function resolvePetSideX(center, halfWidth, bodyMinX, bodyMaxX, side, margin = 4) {
+  return side === 'right'
+    ? Math.max(center, bodyMaxX + halfWidth + margin)
+    : Math.min(center, bodyMinX - halfWidth - margin);
+}
+
+/**
+ * design.md §13.7 (tasks.md slice 20): a piece's OWN raster supersampling factor — 1 for an
+ * action key the compiler selected for the ss:1 override (design.md §13.7's measurement rule,
+ * resolved by user decision 2026-08-18: `ss:1` ONLY for whichever action key's own packed
+ * transfer exceeds the M3 worst-key gate budget), the manifest's global `ss` (2, the project-
+ * wide contract) for every other piece — including every base-pack piece, since `pack: 'base'`
+ * is never a key in `ssOverrides` (only ACTION keys are eligible per that decision).
+ * `LayeredAvatar._applyFrame` needs this per PIECE (via its own `pack`), not per character,
+ * because one compiled character can mix ss:2 and ss:1 pieces across different action keys.
+ *
+ * @param {Record<string, number>|undefined} ssOverrides `manifest.ssOverrides` — may be absent
+ *   entirely on a manifest compiled before this slice, or empty when no key needed the override.
+ * @param {string} pack the piece's own `pack` field (`'base'`, or an action-key packId).
+ * @param {number} defaultSs the manifest's global `ss` (design.md's project-wide contract).
+ * @returns {number}
+ */
+function resolvePieceSs(ssOverrides, pack, defaultSs) {
+  if (ssOverrides && Object.prototype.hasOwnProperty.call(ssOverrides, pack)) {
+    return ssOverrides[pack];
   }
-  return Math.min(center, bodyMinX - halfWidth - margin);
+  return defaultSs;
 }
 
 export {
@@ -285,5 +355,7 @@ export {
   reflectSpan,
   resolveAccessoryPlacement,
   computeBodyBoundsX,
-  clearBodySilhouetteX,
+  resolvePetSideX,
+  resolvePieceSs,
+  ACCESSORY_REFERENCE_SS,
 };

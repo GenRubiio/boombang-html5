@@ -1,5 +1,7 @@
 import accessoryManager from "../../managers/AccessoryManager.js";
+import avatarManager from "../../managers/AvatarManager.js";
 import gameConfig from "@/config/gameConfig.js";
+import { report as reportDegrade } from "../../layered/degradeReporter.js";
 
 /**
  * Applies an accepted accessory-change broadcast in-room, without a full sprite replacement
@@ -40,15 +42,19 @@ class UserChangeAccessoryController {
             container.remove(existing, true);
         }
 
-        if (!petKey || !accessoryManager.hasPackage('pet', petKey)) {
+        // design.md §4/§7: character-scoped registry — resolve against the wearer's own
+        // character, matching AddUserController.createAccessoryChildren.
+        const character = avatarManager.getAvatarName(user.avatarId);
+
+        if (!petKey || !accessoryManager.hasPackage(character, 'pet', petKey)) {
             return;
         }
 
         try {
             const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
-            await accessoryManager.load(gameScene, 'pet', petKey);
-            const manifest = accessoryManager.getManifest('pet', petKey);
-            const atlasKey = accessoryManager.getAtlasKey('pet', petKey);
+            await accessoryManager.load(gameScene, character, 'pet', petKey);
+            const manifest = accessoryManager.getManifest(character, 'pet', petKey);
+            const atlasKey = accessoryManager.getAtlasKey(character, 'pet', petKey);
             if (manifest) {
                 const petSprite = AccessoryLayer.createPetPlaceholder(gameScene, atlasKey);
                 spriteAvatar.attachAccessory('pet', petSprite, manifest, atlasKey);
@@ -76,15 +82,31 @@ class UserChangeAccessoryController {
             container.remove(existing, true);
         }
 
-        if (!hatKey || !accessoryManager.hasPackage('hat', hatKey)) {
+        const character = avatarManager.getAvatarName(user.avatarId);
+
+        if (!hatKey) return;
+
+        // Never-silent (design.md §9): equipping something the client cannot resolve into a
+        // compiled package used to return here with no trace at all — the exact class of bug
+        // that hid the `hat_minnie` vs `minnieHat` key mismatch (owned/equipped data using a
+        // key the compiled registry never had) until it was diagnosed by hand. Report through
+        // the same degradeReporter used for animation-key degradation so it is observable but
+        // still deduped per distinct tuple, never spamming the console.
+        if (!accessoryManager.hasPackage(character, 'hat', hatKey)) {
+            reportDegrade({
+                avatarId: user.avatarId,
+                requestedKey: hatKey,
+                resolvedKey: 'none',
+                reason: `no compiled "hat" package for character "${character}"`,
+            });
             return;
         }
 
         try {
             const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
-            await accessoryManager.load(gameScene, 'hat', hatKey);
-            const manifest = accessoryManager.getManifest('hat', hatKey);
-            const atlasKey = accessoryManager.getAtlasKey('hat', hatKey);
+            await accessoryManager.load(gameScene, character, 'hat', hatKey);
+            const manifest = accessoryManager.getManifest(character, 'hat', hatKey);
+            const atlasKey = accessoryManager.getAtlasKey(character, 'hat', hatKey);
             if (manifest) {
                 const hatSprite = AccessoryLayer.createHatPlaceholder(gameScene, atlasKey);
                 spriteAvatar.attachAccessory('hat', hatSprite, manifest, atlasKey);
@@ -105,15 +127,20 @@ class UserChangeAccessoryController {
             container.remove(existing, true);
         }
 
-        if (!auraKey || !accessoryManager.hasPackage('aura', auraKey)) {
+        // Auras resolve through the registry's character-independent '*' tier (ACC2) — the
+        // character name is passed for API consistency with hat/pet, but does not change
+        // which package is found.
+        const character = avatarManager.getAvatarName(user.avatarId);
+
+        if (!auraKey || !accessoryManager.hasPackage(character, 'aura', auraKey)) {
             return;
         }
 
         try {
             const { default: AccessoryLayer } = await import("../../layered/AccessoryLayer.js");
-            await accessoryManager.load(gameScene, 'aura', auraKey);
-            const manifest = accessoryManager.getManifest('aura', auraKey);
-            const atlasKey = accessoryManager.getAtlasKey('aura', auraKey);
+            await accessoryManager.load(gameScene, character, 'aura', auraKey);
+            const manifest = accessoryManager.getManifest(character, 'aura', auraKey);
+            const atlasKey = accessoryManager.getAtlasKey(character, 'aura', auraKey);
             if (manifest) {
                 const sprite = AccessoryLayer.createAura(gameScene, atlasKey, manifest);
                 container.add(sprite);

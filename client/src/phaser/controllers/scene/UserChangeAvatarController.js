@@ -290,6 +290,11 @@ class UserChangeAvatarController {
             case AvatarEnum.WRAITH: return "wraith";
             case AvatarEnum.YAYO: return "yayo";
             case AvatarEnum.ZOMBIE: return "zombie";
+            // avatar-system-multichar-fixes slice 10 (design.md §15): sally is a new client
+            // character.
+            case AvatarEnum.SALLY: return "sally";
+            // god apply pass (2026-08-19): a new client character, same treatment as sally.
+            case AvatarEnum.GOD: return "god";
             default: return "unknown";
         }
     }

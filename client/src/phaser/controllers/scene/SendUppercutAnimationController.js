@@ -71,7 +71,21 @@ class SendUppercutAnimationController {
             attacker.avatarId,
             gameScene
         );
-        gameScene.tintMgr.changeUppercutColor(attackerSprite, data.uppercutSelected);
+        // Gameplay defect fix (2026-08-19): the legacy global-tint uppercut mechanism only ever
+        // did anything for a baked (non-layered) sprite — it replaces a fixed placeholder hex
+        // (0x11051C) baked into the OLD flat atlas art, which no layered avatar's pixels ever
+        // contain, so this call was already a visual no-op for every migrated character
+        // (AddUserController.safeApplyTint already skips it for the same reason on spawn: "the
+        // global-tint uppercut mechanism below is superseded" for layered avatars, which paint
+        // colorGuante as an ordinary palette slot in LayeredAvatar._applyFrame/_tintChild
+        // instead). Guarded here too — same `isLayered` check `safeApplyTint` already uses —
+        // because leaving it unguarded still attached one more rexColorReplacePipeline
+        // post-pipeline instance to the Container on every single punch thrown (never cleared;
+        // `TintManager.clearPart` is never called for the 'uppercut' part), an unbounded leak
+        // over a long bot-fight session even though it never changed what was rendered.
+        if (!attackerSprite || !attackerSprite.isLayered) {
+            gameScene.tintMgr.changeUppercutColor(attackerSprite, data.uppercutSelected);
+        }
 
         attackerSprite.once("animationcomplete", () => {
             UserIdleAnimation.main(

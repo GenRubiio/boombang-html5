@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { resolveLabel, resolveDefault, resolvePalette } from './paletteResolve.js'
+import { resolveLabel, resolveDefault, resolvePalette, resolveTintHex } from './paletteResolve.js'
 
 // Real rasta manifest shape (client/src/assets/game/avatars/rasta/layers/*.manifest.json,
 // Slice 1): color4 has a declared default but no declared label — the exact PAL3 scenario.
@@ -69,5 +69,30 @@ describe('paletteResolve: resolvePalette (PAL5)', () => {
     expect(result.color1).toBe('#00cc44')
     expect(result.color2).toBe('ff9900')
     expect(result.colorGuante).toBe('ff0000')
+  })
+})
+
+// Real defect found live (tasks.md slice 26, ninja/werewolf — see computeManifestSlots.cjs's
+// own docblock for the full account): a piece CAN be tagged with a recolour slot that has
+// neither a player-saved palette entry NOR a manifest-declared default (an empty vector-`.bb`
+// colormeta does not imply zero slot-tagged base pieces). `LayeredAvatar._tintChild` used to
+// leave such a piece completely untinted (`if (!hex) return`), which shows the piece's own raw
+// authored pixel data — a grayscale mask meant ONLY as a multiply-tint target, never as a
+// final displayed colour (confirmed live: ninja's own masks average ~230/255, rendering a
+// washed-out near-white ninja against a legacy baked reference sprite that is solid black).
+// `resolveTintHex` always returns a real hex, falling back to a neutral black rather than
+// exposing the internal tinting-mask colour — verified live to render ninja indistinguishable
+// from her own baked reference when applied.
+describe('paletteResolve: resolveTintHex never returns falsy (tasks.md slice 26 defect fix)', () => {
+  it('prefers a player-saved palette value over the manifest default', () => {
+    expect(resolveTintHex({ color1: '#00cc44' }, { color1: 'b88a5c' }, 'color1')).toBe('#00cc44')
+  })
+
+  it('falls back to the manifest default when no player-saved value exists', () => {
+    expect(resolveTintHex({}, { color1: 'b88a5c' }, 'color1')).toBe('b88a5c')
+  })
+
+  it('falls back to a neutral black when NEITHER a saved value nor a manifest default exists for this slot (the ninja/werewolf shape)', () => {
+    expect(resolveTintHex({}, {}, 'color1')).toBe('000000')
   })
 })

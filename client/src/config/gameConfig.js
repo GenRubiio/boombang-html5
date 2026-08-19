@@ -14,6 +14,13 @@ const gameConfig = {
     // false, AvatarManager.isLayeredAvatar() always returns false and every avatar renders
     // via the existing baked-atlas path, unchanged (LR6 "flag off" scenario).
     LAYERED_AVATARS: import.meta.env.VITE_LAYERED_AVATARS === "true",
+    // AVATAR_BUNDLES gates the .bb delivery-bundle load path (design.md §9.2, tasks.md slice
+    // 16). With this false (default), every layered package loads per-file via Vite's own
+    // `import.meta.glob`, unchanged. With this true, the base pack loads as ONE `/bundles/
+    // <char>.layers.bb` fetch, unpacked in memory via `fflate` — a request-count reduction now
+    // that compression is already on at the origin (slice 13), per design's own honest framing:
+    // with bytes already compressed, bundling's remaining win is request count, not bytes.
+    AVATAR_BUNDLES: import.meta.env.VITE_AVATAR_BUNDLES === "true",
     // FORCE_DAYLIGHT: a temporary, client-side, dev/validation-only affordance requested by
     // the user during live validation of avatar-color-accessory-system — NOT part of any
     // frozen spec for that change. With this false (default), behaviour is byte-for-byte

@@ -11,6 +11,17 @@ import asset_marsu_json from "@/assets/game/avatars/marsu/config.json";
 import asset_modern_json from "@/assets/game/avatars/modern/config.json";
 import asset_ninja_json from "@/assets/game/avatars/ninja/config.json";
 import asset_rasta_json from "@/assets/game/avatars/rasta/config.json";
+// tasks.md slice 22 (design.md §16): sally's asset compile was deferred past slice 10's
+// registration-only scope (this static import needed a real file, which did not exist until
+// `compile-layered-avatar.cjs sally --emit-config-shim` ran) — this is the one-line wiring
+// that compile unblocks. `asset_sally_json` is a generated shim (`atlasKey: null`, no baked
+// atlas exists for a layered-only character) built by `buildConfigShim.cjs` from her real
+// compiled manifest, not hand-authored data.
+import asset_sally_json from "@/assets/game/avatars/sally/config.json";
+// god apply pass (2026-08-19): same treatment — a generated shim (`atlasKey: null`, no baked
+// atlas for a layered-only character) built by `compile-raster-avatar.cjs --emit-config-shim`
+// from her real compiled (base-pack-only, idle/talk/walk) manifest, not hand-authored data.
+import asset_god_json from "@/assets/game/avatars/god/config.json";
 import asset_skeleton_json from "@/assets/game/avatars/skeleton/config.json";
 import asset_werewolf_json from "@/assets/game/avatars/werewolf/config.json";
 import asset_wraith_json from "@/assets/game/avatars/wraith/config.json";
@@ -32,6 +43,8 @@ class AvatarsDataPreload {
             [AvatarEnum.MODERN]: asset_modern_json,
             [AvatarEnum.NINJA]: asset_ninja_json,
             [AvatarEnum.RASTA]: asset_rasta_json,
+            [AvatarEnum.SALLY]: asset_sally_json,
+            [AvatarEnum.GOD]: asset_god_json,
             [AvatarEnum.SKELETON]: asset_skeleton_json,
             [AvatarEnum.WEREWOLF]: asset_werewolf_json,
             [AvatarEnum.WRAITH]: asset_wraith_json,

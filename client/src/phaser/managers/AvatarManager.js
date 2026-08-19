@@ -19,23 +19,67 @@ import AvatarWerewolfLoad from "../load/avatars/AvatarWerewolfLoad";
 import AvatarWraithLoad from "../load/avatars/AvatarWraithLoad";
 import AvatarYayoLoad from "../load/avatars/AvatarYayoLoad";
 import AvatarZombieLoad from "../load/avatars/AvatarZombieLoad";
+import { groupLayeredLoadersByCharacter, buildLayeredCharacterRegistry } from "./buildLayeredAvatarRegistry.js";
+import { shouldRejectAsLayeredOnly } from "./layeredOnlyCharacters.js";
+import { groupLayeredActionKeyLoaders } from "./groupLayeredActionKeyLoaders.js";
+import { expandCompactAtlas } from "../../shared/assetPipeline/compactAtlas.js";
+import { expandCompactManifest } from "../../shared/assetPipeline/compactManifest.js";
+import { parseBundleEntries } from "./parseBundleEntries.js";
 
-// Layered-package catalog (design.md §4): which avatarIds have a compiled layered package at
-// all, independent of the feature flag. Every entry's loader uses a dynamic `import()` — with
-// the flag off `isLayeredAvatar()` never returns true so these chunks are never requested,
-// keeping them out of the main bundle (LR6). Add one entry per character as more are compiled.
-const LAYERED_CHARACTERS = {
-    [AvatarEnum.RASTA]: "rasta",
-};
-const LAYERED_MANIFEST_LOADERS = {
-    [AvatarEnum.RASTA]: () => import("@/assets/game/avatars/rasta/layers/rasta.layers.manifest.json"),
-};
-const LAYERED_ATLAS_LOADERS = {
-    [AvatarEnum.RASTA]: () => import("@/assets/game/avatars/rasta/layers/rasta.layers.atlas.json"),
-};
-const LAYERED_WEBP_LOADERS = {
-    [AvatarEnum.RASTA]: () => import("@/assets/game/avatars/rasta/layers/rasta.layers.webp"),
-};
+// design.md §14 cost 14 (tasks.md slice 9): layered-package catalog, now DISCOVERED from the
+// compiled output directory layout instead of 5 hand-maintained literal maps (one used to
+// need adding by hand per migrated character). Every entry's loader is still a lazy
+// `import.meta.glob` closure — with the flag off `isLayeredAvatar()` never returns true so
+// these chunks are never requested, keeping them out of the main bundle (LR6), exactly the
+// guarantee the hand-written maps gave.
+const layeredManifestByCharacter = groupLayeredLoadersByCharacter(
+    import.meta.glob("@/assets/game/avatars/*/layers/*.layers.manifest.json")
+);
+const layeredAtlasByCharacter = groupLayeredLoadersByCharacter(
+    import.meta.glob("@/assets/game/avatars/*/layers/*.layers.atlas.json")
+);
+const layeredWebpByCharacter = groupLayeredLoadersByCharacter(
+    import.meta.glob("@/assets/game/avatars/*/layers/*.layers.webp")
+);
+// design.md §13.3 (tasks.md slice 15): per-KEY action packs — one atlas/webp(+pages)/manifest
+// triple per compiled action key, superseding the single whole-pack-per-character form slices
+// 6/14 shipped. `LAYERED_ACTION_KEY_LOADERS[avatarId][key]` gives `{atlas, manifest, webp:[]}`;
+// a character/key combination with nothing compiled simply has no entry. Loaded lazily by
+// `loadLayeredActionKey`, one key at a time, never the whole set — the entire point of this
+// slice (design §13.3: a cold trigger of any key fetches only that key's page, not all of them).
+const layeredActionKeyLoadersByCharacter = groupLayeredActionKeyLoaders(
+    import.meta.glob("@/assets/game/avatars/*/layers/*.actions.*.{atlas.json,manifest.json,webp}")
+);
+
+const LAYERED_CHARACTERS = buildLayeredCharacterRegistry(Object.keys(layeredManifestByCharacter), AvatarEnum);
+
+// design.md §15 (tasks.md slice 10): sally has NO baked art at all — with the layered flag
+// off, or her compiled package failing to load, `loadAvatar` must reject immediately rather
+// than falling through to a baked loader that was never registered for her (an explicit rule,
+// not an accident of a missing `avatarLoaders` entry).
+// god apply pass (2026-08-19): same treatment as SALLY above — no baked art exists for her
+// either (her own source package is raster-only, compiled via `compile-raster-avatar.cjs`, not
+// the vector pipeline).
+const LAYERED_ONLY_CHARACTERS = new Set([AvatarEnum.SALLY, AvatarEnum.GOD]);
+
+function singleLoaderFor(loadersByCharacter, character) {
+    const loaders = loadersByCharacter[character];
+    return loaders && loaders.length > 0 ? loaders[0] : undefined;
+}
+
+const LAYERED_MANIFEST_LOADERS = {};
+const LAYERED_ATLAS_LOADERS = {};
+const LAYERED_WEBP_LOADERS = {};
+// design.md §13.3: avatarId -> character name, so `loadLayeredActionKey` can resolve
+// `layeredActionKeyLoadersByCharacter[character][packId]` per call without re-deriving the
+// character name from LAYERED_CHARACTERS every time.
+const LAYERED_ACTION_CHARACTER_BY_ID = {};
+for (const [avatarId, character] of Object.entries(LAYERED_CHARACTERS)) {
+    LAYERED_MANIFEST_LOADERS[avatarId] = singleLoaderFor(layeredManifestByCharacter, character);
+    LAYERED_ATLAS_LOADERS[avatarId] = singleLoaderFor(layeredAtlasByCharacter, character);
+    LAYERED_WEBP_LOADERS[avatarId] = singleLoaderFor(layeredWebpByCharacter, character);
+    LAYERED_ACTION_CHARACTER_BY_ID[avatarId] = character;
+}
 
 class AvatarManager {
     constructor() {
@@ -84,6 +128,9 @@ class AvatarManager {
         // once loaded; layered atlas loads are in-flight-guarded the same way baked ones are.
         this.layeredManifests = new Map();
         this.inFlightLayeredLoads = new Set();
+        // design.md §6: the action pack's own in-flight guard, separate from the base pack's
+        // (`inFlightLayeredLoads`) — the two load independently and on different schedules.
+        this.inFlightLayeredActionsLoads = new Set();
     }
 
     /**
@@ -102,10 +149,70 @@ class AvatarManager {
     }
 
     /**
+     * avatar-system-multichar-fixes (coordinator addendum, character-switcher): resolves a
+     * character's manifest (slots/labels/defaults/gloveSlot) WITHOUT loading its atlas/webp —
+     * no `scene` argument, so this can run before any Phaser scene exists (the debug panel
+     * mounts as soon as the user is authenticated, which can be before the game scene boots).
+     * Reuses the SAME `LAYERED_MANIFEST_LOADERS` glob-derived map `loadLayeredAvatar` uses
+     * internally, and caches into the SAME `layeredManifests` map `getLayeredManifest` reads,
+     * so a later real `loadLayeredAvatar` call for this avatarId is not a wasted re-fetch.
+     */
+    async getOrLoadLayeredManifest(avatarId) {
+        const cached = this.layeredManifests.get(avatarId);
+        if (cached) {
+            return cached;
+        }
+
+        const manifestLoader = LAYERED_MANIFEST_LOADERS[avatarId];
+        if (!manifestLoader) {
+            return null;
+        }
+
+        const manifestModule = await manifestLoader();
+        const manifest = expandCompactManifest(manifestModule.default);
+        this.layeredManifests.set(avatarId, manifest);
+        return manifest;
+    }
+
+    /**
      * Loads the compiled layered package (manifest + multiatlas) for one character. Reaches
      * the layered modules only via dynamic import() (LR6) — with the flag off this method is
      * never called (isLayeredAvatar() gates the call site in loadAvatar()).
      */
+    /**
+     * design.md §9.2 (tasks.md slice 16 task 3): fetches one `.bb` bundle
+     * (`client/scripts/bundle-avatar-packages.cjs`'s own output, served statically from
+     * `dist/bundles/` — a plain `fetch()`, not `import.meta.glob`, since these are a
+     * build-time-only, unhashed output Vite's asset pipeline never sees) and unpacks it in
+     * memory via `fflate`'s `unzipSync`. Each webp page becomes a `Blob` object URL, the same
+     * "patch texture.image to a URL" trick every other layered load path already uses.
+     * Manifest/atlas are expanded (compaction is orthogonal to bundling — a bundle's own JSON
+     * members are still emitted compact by the compiler).
+     *
+     * @param {string} bundleName e.g. `"rasta.layers"` or `"rasta.actions.down_llorar"`
+     * @returns {Promise<{manifest: object, atlasJson: object, webpUrls: string[]}>}
+     */
+    async _loadBundle(bundleName) {
+        const { unzipSync } = await import("fflate");
+        const response = await fetch(`/bundles/${bundleName}.bb`);
+        if (!response.ok) {
+            throw new Error(`_loadBundle: failed to fetch /bundles/${bundleName}.bb (${response.status})`);
+        }
+        const buffer = new Uint8Array(await response.arrayBuffer());
+        const entries = unzipSync(buffer);
+        const { manifestEntry, atlasEntry, webpEntries } = parseBundleEntries(entries);
+
+        const decoder = new TextDecoder();
+        const manifest = expandCompactManifest(JSON.parse(decoder.decode(entries[manifestEntry])));
+        const atlasJson = expandCompactAtlas(JSON.parse(decoder.decode(entries[atlasEntry])));
+        const webpUrls = webpEntries.map((name) => {
+            const blob = new Blob([entries[name]], { type: "image/webp" });
+            return URL.createObjectURL(blob);
+        });
+
+        return { manifest, atlasJson, webpUrls };
+    }
+
     async loadLayeredAvatar(scene, avatarId) {
         const atlasKey = this.getLayeredAtlasKey(avatarId);
 
@@ -126,32 +233,62 @@ class AvatarManager {
             });
         }
 
-        const manifestLoader = LAYERED_MANIFEST_LOADERS[avatarId];
-        const atlasLoader = LAYERED_ATLAS_LOADERS[avatarId];
-        const webpLoader = LAYERED_WEBP_LOADERS[avatarId];
-        if (!manifestLoader || !atlasLoader || !webpLoader) {
-            return Promise.reject(new Error(`No layered package registered for avatar ${avatarId}`));
+        let manifest;
+        let atlasJson;
+
+        // design.md §9.2 (tasks.md slice 16 task 3): the base pack loads as ONE `/bundles/
+        // <char>.layers.bb` fetch instead of 3 per-file requests when the flag is on. Gated so
+        // the per-file path (default) is byte-for-byte unchanged with the flag off.
+        // design.md §9.2 (tasks.md slice 16 task 4): `window.__FORCE_AVATAR_BUNDLES`, when set,
+        // overrides the build-time flag — a narrow, disclosed test seam (matching
+        // `FORCE_DAYLIGHT`'s own precedent) letting R15's e2e equivalence test drive BOTH the
+        // bundle-on and bundle-off load paths against the SAME running dev server, which bakes
+        // `VITE_AVATAR_BUNDLES` once at server start and cannot otherwise be toggled per test.
+        const useBundles =
+            typeof window !== "undefined" && window.__FORCE_AVATAR_BUNDLES != null
+                ? window.__FORCE_AVATAR_BUNDLES
+                : gameConfig.AVATAR_BUNDLES;
+        if (useBundles) {
+            this.inFlightLayeredLoads.add(atlasKey);
+            const character = LAYERED_CHARACTERS[avatarId];
+            const bundled = await this._loadBundle(`${character}.layers`);
+            manifest = bundled.manifest;
+            atlasJson = bundled.atlasJson;
+            atlasJson.textures.forEach((texture, i) => {
+                texture.image = bundled.webpUrls[i];
+            });
+        } else {
+            const manifestLoader = LAYERED_MANIFEST_LOADERS[avatarId];
+            const atlasLoader = LAYERED_ATLAS_LOADERS[avatarId];
+            const webpLoader = LAYERED_WEBP_LOADERS[avatarId];
+            if (!manifestLoader || !atlasLoader || !webpLoader) {
+                return Promise.reject(new Error(`No layered package registered for avatar ${avatarId}`));
+            }
+
+            this.inFlightLayeredLoads.add(atlasKey);
+
+            const [manifestModule, atlasModule, webpModule] = await Promise.all([
+                manifestLoader(),
+                atlasLoader(),
+                webpLoader(),
+            ]);
+            // design.md §9.1 (tasks.md slice 16): the compiler emits compact JSON by default —
+            // expand once, here, immediately after fetch, so nothing downstream (Phaser's
+            // multiatlas loader, LayeredAvatar's piece lookups) ever needs to know compaction
+            // exists. Idempotent on an already-verbose file (a character compiled with
+            // `--emit-verbose`), so this call is always safe regardless of on-disk form.
+            manifest = expandCompactManifest(manifestModule.default);
+            atlasJson = expandCompactAtlas(atlasModule.default);
+            const webpUrl = webpModule.default;
+
+            // Same "patch texture.image to the Vite-fingerprinted URL" trick AvatarRastaLoad.js
+            // already uses for the baked multiatlas (design.md §3.1 step 4 — zero new loader
+            // plumbing). Single-page packages only need the one entry patched.
+            atlasJson.textures.forEach((texture) => {
+                texture.image = webpUrl;
+            });
         }
-
-        this.inFlightLayeredLoads.add(atlasKey);
-
-        const [manifestModule, atlasModule, webpModule] = await Promise.all([
-            manifestLoader(),
-            atlasLoader(),
-            webpLoader(),
-        ]);
-        const manifest = manifestModule.default;
-        const atlasJson = atlasModule.default;
-        const webpUrl = webpModule.default;
-
         this.layeredManifests.set(avatarId, manifest);
-
-        // Same "patch texture.image to the Vite-fingerprinted URL" trick AvatarRastaLoad.js
-        // already uses for the baked multiatlas (design.md §3.1 step 4 — zero new loader
-        // plumbing). Single-page packages only need the one entry patched.
-        atlasJson.textures.forEach((texture) => {
-            texture.image = webpUrl;
-        });
 
         return new Promise((resolve, reject) => {
             scene.load.once("complete", () => {
@@ -168,6 +305,117 @@ class AvatarManager {
                 scene.load.start();
             }
         });
+    }
+
+    /**
+     * design.md §13.3 (tasks.md slice 15): one atlas key PER (character, packId) pair — a
+     * character with 26 compiled action keys has 26 distinct action-pack atlas keys, none
+     * shared, so loading one never pulls in another's bytes or texture memory.
+     */
+    getLayeredActionKeyAtlasKey(avatarId, packId) {
+        return `${LAYERED_ACTION_CHARACTER_BY_ID[avatarId]}_layers_actions_${packId}_atlas`;
+    }
+
+    /**
+     * @returns {boolean} true once this specific (avatarId, packId) pack has finished loading
+     *   into the given scene's texture manager.
+     */
+    hasLoadedLayeredActionKey(scene, avatarId, packId) {
+        return scene.textures.exists(this.getLayeredActionKeyAtlasKey(avatarId, packId));
+    }
+
+    /**
+     * design.md §13.3: replaces `loadLayeredActions` — loads exactly ONE compiled action key's
+     * pack (atlas/webp/manifest), not the whole action set. Same in-flight-guard/cache-key
+     * class as `loadLayeredAvatar`/the old `loadLayeredActions`, now keyed per (avatarId,
+     * packId) so concurrent requests for DIFFERENT keys never block each other, and concurrent
+     * requests for the SAME key never double-fetch. A key with nothing compiled resolves to
+     * `null` rather than rejecting — the deferred-play callback treats that as "nothing to
+     * attach", not an error.
+     */
+    async loadLayeredActionKey(scene, avatarId, packId) {
+        const atlasKey = this.getLayeredActionKeyAtlasKey(avatarId, packId);
+        const character = LAYERED_ACTION_CHARACTER_BY_ID[avatarId];
+        const keyLoaders = character && layeredActionKeyLoadersByCharacter[character]
+            ? layeredActionKeyLoadersByCharacter[character][packId]
+            : undefined;
+        if (!keyLoaders || !keyLoaders.atlas || keyLoaders.webp.length === 0) {
+            return null;
+        }
+
+        if (scene.textures.exists(atlasKey)) {
+            return atlasKey;
+        }
+        if (this.inFlightLayeredActionsLoads.has(atlasKey)) {
+            return new Promise((resolve) => {
+                const check = () => {
+                    if (scene.textures.exists(atlasKey)) {
+                        resolve(atlasKey);
+                    } else {
+                        setTimeout(check, 50);
+                    }
+                };
+                check();
+            });
+        }
+
+        this.inFlightLayeredActionsLoads.add(atlasKey);
+
+        // design.md §13.2/§13.3: this key's own manifest slice (pieces/frames for THIS key
+        // only) is fetched alongside its atlas/webp and merged into the SAME manifest object
+        // every LayeredAvatar of this character already references (`getLayeredManifest`
+        // returns a live reference, not a copy) — completed BEFORE `scene.load.multiatlas` even
+        // starts, so no caller can observe `scene.textures.exists(atlasKey) === true` before
+        // the merge has happened.
+        const [atlasModule, actionsManifestModule, ...webpModules] = await Promise.all([
+            keyLoaders.atlas(),
+            keyLoaders.manifest ? keyLoaders.manifest() : Promise.resolve(null),
+            ...keyLoaders.webp.map((load) => load()),
+        ]);
+        // design.md §9.1 (tasks.md slice 16): same unconditional expand as the base pack above.
+        const atlasJson = expandCompactAtlas(atlasModule.default);
+        const webpUrls = webpModules.map((m) => m.default);
+        atlasJson.textures.forEach((texture, i) => {
+            texture.image = webpUrls[i];
+        });
+
+        if (actionsManifestModule) {
+            const keyManifest = expandCompactManifest(actionsManifestModule.default);
+            const baseManifest = this.layeredManifests.get(avatarId);
+            if (baseManifest) {
+                Object.assign(baseManifest.pieces, keyManifest.pieces);
+                Object.assign(baseManifest.frames, keyManifest.frames);
+            }
+        }
+
+        return new Promise((resolve, reject) => {
+            scene.load.once("complete", () => {
+                this.inFlightLayeredActionsLoads.delete(atlasKey);
+                resolve(atlasKey);
+            });
+            scene.load.once("loaderror", (file) => {
+                this.inFlightLayeredActionsLoads.delete(atlasKey);
+                reject(file);
+            });
+            scene.load.multiatlas(atlasKey, atlasJson);
+            if (!scene.load.isLoading()) {
+                scene.load.start();
+            }
+        });
+    }
+
+    /**
+     * design.md §13.3 (tasks.md slice 15 task 8): idle page eviction — releases a per-key
+     * action pack's texture from the scene once nothing has used it for `thresholdMs`. Callers
+     * (e.g. a periodic scene timer) are responsible for tracking `lastUsedAt` per packId and
+     * calling this only when `shouldEvictPage` (actionPageEviction.js) says it is time; this
+     * method is the I/O shell that actually performs the release.
+     */
+    evictLayeredActionKey(scene, avatarId, packId) {
+        const atlasKey = this.getLayeredActionKeyAtlasKey(avatarId, packId);
+        if (scene.textures.exists(atlasKey)) {
+            scene.textures.remove(atlasKey);
+        }
     }
 
     // Calcula una firma corta del multiatlas para diferenciar calidades/variantes (x1, high_quality, etc.)
@@ -239,8 +487,15 @@ class AvatarManager {
         // Strategy branch (design.md §4): both gates required. With the flag off or no
         // compiled package for this avatarId, execution falls straight through to the
         // existing baked path below, byte-for-byte (LR6 "flag off" scenario).
-        if (this.isLayeredAvatar(avatarId)) {
+        const isLayeredUsable = this.isLayeredAvatar(avatarId);
+        if (isLayeredUsable) {
             return this.loadLayeredAvatar(scene, avatarId);
+        }
+
+        if (shouldRejectAsLayeredOnly(avatarId, isLayeredUsable, LAYERED_ONLY_CHARACTERS)) {
+            return Promise.reject(
+                new Error(`AvatarManager: avatarId ${avatarId} is layered-only and the layered path is unavailable (flag off, or its compiled package failed to load)`)
+            );
         }
 
         const loader = this.avatarLoaders[avatarId];
@@ -827,7 +1082,13 @@ class AvatarManager {
             [AvatarEnum.WEREWOLF]: "werewolf",
             [AvatarEnum.WRAITH]: "wraith",
             [AvatarEnum.YAYO]: "yayo",
-            [AvatarEnum.ZOMBIE]: "zombie"
+            [AvatarEnum.ZOMBIE]: "zombie",
+            // Disclosed pre-existing gap (design.md §16/slice 34's own note), closed here at
+            // the source in the god apply pass (2026-08-19): SALLY (slice 10) never got an
+            // entry, so every caller of this method — not just the debug panel's own
+            // `characterNameForAvatarId` workaround — reported her as "unknown".
+            [AvatarEnum.SALLY]: "sally",
+            [AvatarEnum.GOD]: "god"
         };
         return avatarNames[avatarId] || "unknown";
     }

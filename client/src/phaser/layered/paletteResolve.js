@@ -32,4 +32,22 @@ function resolvePalette(manifest, savedPalette) {
   return resolved;
 }
 
-export { resolveDefault, resolveLabel, resolvePalette };
+// Live defect fix (tasks.md slice 26): see paletteResolve.test.js's own docblock for the full
+// defect account (ninja/werewolf's base pieces reference a recolour slot with neither a saved
+// palette value nor a manifest-declared default). Falls back to a neutral black rather than
+// ever returning falsy — the caller (`LayeredAvatar._tintChild`) used to skip tinting entirely
+// in that case, which exposes the piece's own raw grayscale-mask pixel data (never meant to be
+// shown untinted) instead of a real, if generic, colour.
+const UNRESOLVED_SLOT_FALLBACK_HEX = '000000';
+
+/**
+ * @param {Record<string,string>} palette a saved/player palette (may be empty).
+ * @param {Record<string,string>} defaults manifest.defaults (may be empty).
+ * @param {string} slotKey
+ * @returns {string} always a real hex string — never falsy.
+ */
+function resolveTintHex(palette, defaults, slotKey) {
+  return (palette && palette[slotKey]) ?? (defaults && defaults[slotKey]) ?? UNRESOLVED_SLOT_FALLBACK_HEX;
+}
+
+export { resolveDefault, resolveLabel, resolvePalette, resolveTintHex };

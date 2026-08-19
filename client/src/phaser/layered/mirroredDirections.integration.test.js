@@ -1,11 +1,19 @@
 import { describe, it, expect } from 'vitest'
 import { resolveFallbackKey, accessoryFollows } from './fallback.js'
-import { resolveAccessoryPlacement, reflectSpan, reflectPoint, computeBodyBoundsX, clearBodySilhouetteX } from './pivot.js'
-import bodyManifest from '../../assets/game/avatars/rasta/layers/rasta.layers.manifest.json'
-import hatManifest from '../../assets/game/accessories/hat/hat_minnie/hat_minnie.accessory.json'
-import petManifest from '../../assets/game/accessories/pet/pet09/pet09.accessory.json'
-import hatAtlas from '../../assets/game/accessories/hat/hat_minnie/hat_minnie.hat.atlas.json'
-import petAtlas from '../../assets/game/accessories/pet/pet09/pet09.pet.atlas.json'
+import { resolveAccessoryPlacement, reflectSpan, reflectPoint, computeBodyBoundsX, resolvePetSideX, ACCESSORY_REFERENCE_SS } from './pivot.js'
+import rawBodyManifest from '../../assets/game/avatars/rasta/layers/rasta.layers.manifest.json'
+import { expandCompactManifest } from '../../shared/assetPipeline/compactManifest.js'
+
+// design.md §9.1 (tasks.md slice 16): the real compiled manifest on disk is COMPACT by default
+// now (`frames[].L` entries are `[pieceIndex, dx, dy]` tuples, not `{p, dx, dy}` objects) — this
+// test drives the REAL production pure functions the same way the REAL runtime does, which
+// always expands once, immediately after fetch (AvatarManager.js's `loadLayeredAvatar`/
+// `loadLayeredActionKey`). Expanding here keeps every existing assertion below unchanged.
+const bodyManifest = expandCompactManifest(rawBodyManifest)
+import hatManifest from '../../assets/game/accessories/hat/rasta/minnieHat/minnieHat.accessory.json'
+import petManifest from '../../assets/game/accessories/pet/rasta/pet09/pet09.accessory.json'
+import hatAtlas from '../../assets/game/accessories/hat/rasta/minnieHat/minnieHat.hat.atlas.json'
+import petAtlas from '../../assets/game/accessories/pet/rasta/pet09/pet09.pet.atlas.json'
 import auraManifest from '../../assets/game/accessories/aura/auraElectrica/auraElectrica.accessory.json'
 import auraAtlas from '../../assets/game/accessories/aura/auraElectrica/auraElectrica.aura.atlas.json'
 
@@ -13,7 +21,7 @@ import auraAtlas from '../../assets/game/accessories/aura/auraElectrica/auraElec
 // verification script into the permanent suite so this exact class of bug (mirrored
 // directions falling through to a frozen single-frame fallback, hat/pet losing direction
 // tracking on the mirrored side) cannot silently reappear. Runs the REAL production pure
-// functions against the REAL compiled rasta body + hat_minnie + pet09 manifests — not a
+// functions against the REAL compiled rasta body + minnieHat + pet09 manifests — not a
 // hand-rolled fixture.
 const ALL_EIGHT_DIRECTIONS = ['down', 'left', 'leftdown', 'leftup', 'up', 'right', 'rightdown', 'rightup']
 const MIRRORED_DIRECTIONS = ['right', 'rightdown', 'rightup']
@@ -45,7 +53,7 @@ describe('mirrored-direction regression (defect 4): body never falls through to 
 })
 
 describe('mirrored-direction regression (defect 7): hat and pet track every direction, mirrored included', () => {
-  it.each(ALL_EIGHT_DIRECTIONS)('hat_minnie follows the body for %s_walk with a real multi-frame sequence', (direction) => {
+  it.each(ALL_EIGHT_DIRECTIONS)('minnieHat follows the body for %s_walk with a real multi-frame sequence', (direction) => {
     const { sourceKey } = resolveSourceKey(direction)
     expect(accessoryFollows(hatManifest.anims, sourceKey)).toBe(true)
     expect(hatManifest.anims[sourceKey].frames.length).toBeGreaterThan(1)
@@ -63,7 +71,7 @@ describe('mirrored-direction regression (defect 7): hat and pet track every dire
 // hat rendered nearly as large as the whole avatar, floating detached to the side, and a pet
 // floating at name-tag height instead of on the ground. These assertions exercise the REAL
 // resolved geometry (position, scale, resulting display width) against the REAL compiled
-// rasta + hat_minnie + pet09 manifests, for both a mirrored and a non-mirrored direction, so
+// rasta + minnieHat + pet09 manifests, for both a mirrored and a non-mirrored direction, so
 // this exact class of bug cannot silently reappear behind a passing test count.
 function findAtlasFrame(atlas, fid) {
   for (const texture of atlas.textures) {
@@ -141,7 +149,7 @@ describe('accessory placement regression (defect 8): pet resolves to ground leve
 })
 
 describe('accessory placement regression (defect 8): hat resolves within the body head region', () => {
-  it.each(DIRECTIONS_UNDER_TEST)('%s: hat_minnie resolved y falls in the upper half of the body, not below ground', (requestedKey) => {
+  it.each(DIRECTIONS_UNDER_TEST)('%s: minnieHat resolved y falls in the upper half of the body, not below ground', (requestedKey) => {
     const { placement } = resolveAccessoryFixture(requestedKey, 'hat')
     expect(placement.y).toBeLessThan(-bodyRenderHeight / 2)
     expect(placement.y).toBeGreaterThan(-bodyRenderHeight)
@@ -155,13 +163,13 @@ describe('accessory placement regression (defect 8): hat resolves within the bod
 // is a stale compensation constant. See apply-progress.md "hat scale: 0.5 -> 0.75" for the full
 // reference-game-comparison evidence this value is based on.
 describe('hat scale (deliberate aesthetic value, not a positioning-bug fudge factor)', () => {
-  it('hat_minnie base.scale is 0.75, chosen against the reference game after the anchoring fix', () => {
+  it('minnieHat base.scale is 0.75, chosen against the reference game after the anchoring fix', () => {
     expect(hatManifest.base.scale).toBe(0.75)
   })
 })
 
 describe('accessory placement regression (defect 8): resolved display width is a sensible fraction of the body, not ~95% of it', () => {
-  it.each(DIRECTIONS_UNDER_TEST)('%s: hat_minnie resolved display width is well under the body render width', (requestedKey) => {
+  it.each(DIRECTIONS_UNDER_TEST)('%s: minnieHat resolved display width is well under the body render width', (requestedKey) => {
     const { displayWidth } = resolveAccessoryFixture(requestedKey, 'hat')
     // Threshold raised from 0.6 to 0.85 for a deliberate reason, not loosened to make this
     // pass: the user chose `scale: 0.75` over the original `0.5` after comparing against the
@@ -248,7 +256,7 @@ describe('body mirror regression (defect 8 root cause): mirroring reflects about
 })
 
 describe('accessory mirror regression (defect 8 root cause): a hat reflects its registration point about the body\'s own origin', () => {
-  it.each(['rightdown_walk', 'right_walk', 'rightup_walk'])('%s: hat_minnie resolved x uses reflectPoint about the body\'s o.x, not a bodyBounds-centre reflection', (requestedKey) => {
+  it.each(['rightdown_walk', 'right_walk', 'rightup_walk'])('%s: minnieHat resolved x uses reflectPoint about the body\'s o.x, not a bodyBounds-centre reflection', (requestedKey) => {
     const { placement } = resolveAccessoryFixture(requestedKey, 'hat')
     const direction = requestedKey.split('_')[0]
     const resolvedKey = resolveFallbackKey(bodyManifest.sequences, requestedKey, direction, bodyManifest.mirrors)
@@ -269,7 +277,12 @@ describe('accessory mirror regression (defect 8 root cause): a hat reflects its 
     const mirroredOriginX = 1 - accFrame.originX
     const widthLogical = atlasFrame.frame.w / ss
     const centerXLogical = reflectedRegX + (0.5 - mirroredOriginX) * widthLogical
-    const expectedX = (centerXLogical - bodyOriginX) * ss
+    // ss-compensated position (design.md §13.7, resolved 2026-08-19): the LOGICAL-to-REAL-PIXEL
+    // step uses the FIXED project reference ss (2), not this package's own `ss` — real-pixel
+    // space is anchored to the body's own ss:2 render space regardless of which ss an individual
+    // accessory package happens to be compiled at (see pivot.js's own docblock on
+    // `resolveAccessoryPlacement`'s "ss-compensated scale" section for the full rationale).
+    const expectedX = (centerXLogical - bodyOriginX) * ACCESSORY_REFERENCE_SS
     expect(placement.x).toBeCloseTo(expectedX, 6)
   })
 })
@@ -281,7 +294,7 @@ describe('accessory mirror regression (defect 8 root cause): a hat reflects its 
 // was a deliberate (but wrong) back-facing zBias correction (`compile-accessory.cjs`'s
 // `BACK_FACING_ANIMS`/`BACK_FACING_Z_BIAS = -0.4`), not a coordinate bug — the same
 // `_updateAccessory` depth resolution (`accFrame.zBias ?? manifest.base.zBias ?? 0`) computed
-// against the REAL compiled `hat_minnie` manifest.
+// against the REAL compiled `minnieHat` manifest.
 const BODY_DEPTH = 1.0
 
 function resolveHatDepth(requestedKey) {
@@ -296,7 +309,7 @@ function resolveHatDepth(requestedKey) {
 }
 
 describe('accessory depth regression (defect 9): an equipped hat is never fully occluded by the body', () => {
-  it.each(ALL_EIGHT_DIRECTIONS)('%s_idle: hat_minnie resolved depth is greater than the body\'s own depth (1.0), in every direction', (direction) => {
+  it.each(ALL_EIGHT_DIRECTIONS)('%s_idle: minnieHat resolved depth is greater than the body\'s own depth (1.0), in every direction', (direction) => {
     const depth = resolveHatDepth(`${direction}_idle`)
     expect(depth).toBeGreaterThan(BODY_DEPTH)
   })
@@ -318,7 +331,7 @@ describe('accessory depth check (defect 9, pet): pet09 has no static back-facing
 
 // Regression test for live-validation defect 10: the hat is not centred on the head. Root
 // cause (see apply-progress.md "Defect 10" for the full account): Phaser's setScale() scales a
-// sprite AROUND ITS OWN ORIGIN POINT, not around its geometric centre. hat_minnie's own
+// sprite AROUND ITS OWN ORIGIN POINT, not around its geometric centre. minnieHat's own
 // registration point sits far from its geometric centre (originX as low as 0.098 — near the
 // LEFT edge of its own drawn bounds), so applying the package's `scale: 0.5` correction (fix 5
 // round 1) shrank the sprite toward that off-centre point, dragging the DISPLAYED centre ~30px
@@ -352,7 +365,7 @@ function computeHeadRegion(sourceKey, mirrored) {
 }
 
 describe('accessory placement regression (defect 10): the hat is centred on the head, not offset to one side', () => {
-  it.each(ALL_EIGHT_DIRECTIONS)('%s_idle: hat_minnie resolved centre lines up with the head region (independently derived), within tolerance', (direction) => {
+  it.each(ALL_EIGHT_DIRECTIONS)('%s_idle: minnieHat resolved centre lines up with the head region (independently derived), within tolerance', (direction) => {
     const requestedKey = `${direction}_idle`
     const { centerX, sourceKey, mirrored } = resolveAccessoryFixture(requestedKey, 'hat')
     const head = computeHeadRegion(sourceKey, mirrored)
@@ -381,7 +394,7 @@ describe('accessory placement regression (defect 10): the hat is centred on the 
 // final display size, never the anchor's own position), so the resolved `x` must be identical
 // regardless of which scale value is in effect.
 describe('accessory placement regression (defect 10, scale-independence): hat centring does not move when scale changes', () => {
-  it.each(ALL_EIGHT_DIRECTIONS)('%s_idle: hat_minnie resolved centre X is identical at scale 0.5, 0.75 and 1.0', (direction) => {
+  it.each(ALL_EIGHT_DIRECTIONS)('%s_idle: minnieHat resolved centre X is identical at scale 0.5, 0.75 and 1.0', (direction) => {
     const requestedKey = `${direction}_idle`
     const dir = requestedKey.split('_')[0]
     const resolvedKey = resolveFallbackKey(bodyManifest.sequences, requestedKey, dir, bodyManifest.mirrors)
@@ -427,10 +440,12 @@ describe('accessory placement regression (defect 11): the aura bottom meets the 
 
 // Regression test for live-validation defect 12: the pet rendered ENTIRELY INSIDE the body's
 // own horizontal silhouette ("appears under the leg" — the reported symptom, made worse by the
-// pet's depth of 0.5, behind the body's 1.0). `clearBodySilhouetteX` (pivot.js) is the fix; this
-// documents the historical bug (the RAW, uncorrected pet box genuinely does overlap the body for
-// the exact reported pose) and proves the production fix clears it, for both a non-mirrored and
-// a mirrored direction.
+// pet's depth of 0.5, behind the body's 1.0). `resolvePetSideX` (pivot.js, design.md §8 —
+// supersedes the deleted `clearBodySilhouetteX`) is the fix; this documents the historical bug
+// (the RAW, uncorrected pet box genuinely does overlap the body for the exact reported pose)
+// and proves the production fix clears it, for both a non-mirrored and a mirrored direction,
+// using pet09's own compiled `base.side` ("left", derived by compile-accessory.cjs from its
+// real down_idle-vs-down_* geometry — design.md §8) rather than a hand-picked side.
 function petRawBoxX(requestedKey) {
   const { placement, displayWidth } = resolveAccessoryFixture(requestedKey, 'pet')
   return { minX: placement.x - displayWidth / 2, maxX: placement.x + displayWidth / 2, halfWidth: displayWidth / 2, centerX: placement.x }
@@ -458,12 +473,27 @@ describe('accessory placement regression (defect 12): the pet clears the body\'s
     expect(boxesOverlap(pet, body)).toBe(true)
   })
 
-  it.each(['down_idle', 'rightdown_idle', 'leftup_idle'])('%s: clearBodySilhouetteX (the production fix) produces a pet box that does NOT overlap the body box', (requestedKey) => {
+  it.each(['down_idle', 'rightdown_idle', 'leftup_idle'])('%s: resolvePetSideX (the production fix, clamped to pet09\'s declared side) produces a pet box that does NOT overlap the body box', (requestedKey) => {
     const pet = petRawBoxX(requestedKey)
     const body = bodyBoxX(requestedKey)
-    const correctedCenterX = clearBodySilhouetteX(pet.centerX, pet.halfWidth, body.minX, body.maxX)
+    const correctedCenterX = resolvePetSideX(pet.centerX, pet.halfWidth, body.minX, body.maxX, petManifest.base.side)
     const correctedBox = { minX: correctedCenterX - pet.halfWidth, maxX: correctedCenterX + pet.halfWidth }
     expect(boxesOverlap(correctedBox, body)).toBe(false)
+  })
+
+  it('pet09\'s compiled manifest declares a canonical side (design.md §8) rather than leaving placement direction-dependent', () => {
+    expect(['left', 'right']).toContain(petManifest.base.side)
+  })
+
+  it.each(['down_idle', 'rightdown_idle', 'leftup_idle', 'up_idle'])('%s: the corrected pet box stays on the declared side in every direction, proving no antisymmetric flip', (requestedKey) => {
+    const pet = petRawBoxX(requestedKey)
+    const body = bodyBoxX(requestedKey)
+    const correctedCenterX = resolvePetSideX(pet.centerX, pet.halfWidth, body.minX, body.maxX, petManifest.base.side)
+    if (petManifest.base.side === 'right') {
+      expect(correctedCenterX - pet.halfWidth).toBeGreaterThanOrEqual(body.maxX)
+    } else {
+      expect(correctedCenterX + pet.halfWidth).toBeLessThanOrEqual(body.minX)
+    }
   })
 })
 
@@ -497,7 +527,7 @@ describe('accessory placement regression (defect 12b): the pet bottom no longer 
 // `compatibleHats`'s semantics, and are judged too large for this fix round; recommended as a
 // fast-follow BEFORE a second character's accessories are ever compiled.
 describe('accessory character-scoping regression (architectural finding): compiled packages retain their source character', () => {
-  it('hat_minnie retains char: "rasta" from its staged meta.json (was silently dropped before this fix)', () => {
+  it('minnieHat retains char: "rasta" from its staged meta.json (was silently dropped before this fix)', () => {
     expect(hatManifest.char).toBe('rasta')
   })
 

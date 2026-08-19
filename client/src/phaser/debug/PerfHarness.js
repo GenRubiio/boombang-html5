@@ -1,5 +1,21 @@
 import gameConfig from "@/config/gameConfig.js";
 import { evaluate, resolveRendererTypeLabel } from "./perfEvaluate.js";
+import AvatarEnum from "@/enums/AvatarEnum.js";
+
+// design.md §15/tasks.md slice 32 (roster-scale regression gate): per-character measurements do
+// not compose — texture memory, page pressure and draw batching are roster-scale properties, and
+// production's own ~22 MB resident figure is measured against several DIFFERENT characters on
+// screen, never N copies of one. Reuses the SAME 4-character representative sample Correction 1
+// (apply-progress.md) already established and validated through the real `PublicScene` — not a
+// new, unvetted list — plus `boomer` (the name-reconciled character) for a fifth, structurally
+// distinct manifest shape.
+const DEFAULT_ROSTER_MIX_AVATAR_IDS = [
+    AvatarEnum.RASTA,
+    AvatarEnum.BRUJITA,
+    AvatarEnum.NINJA,
+    AvatarEnum.WEREWOLF,
+    AvatarEnum.BOOMER,
+];
 
 /**
  * FPS / draw-call measurement harness (design.md §7, LR8). Gated by VITE_PERF_HARNESS=true,
@@ -56,39 +72,75 @@ class PerfHarness {
 
     /**
      * Fabricates `n` synthetic users through the real AddUserController.processUser path so
-     * measurement exercises the production assembly path (design.md §7).
+     * measurement exercises the production assembly path (design.md §7). Delegates to the
+     * shared `spawnAvatarUser` primitive (design.md §10) — the SAME one the Playwright
+     * resolved-state harness's `window.__avatarHarness.spawnAvatar` calls, so the perf and
+     * correctness harnesses cannot drift on what "spawn an avatar" means.
+     *
+     * @param {number} [n=25]
+     * @param {{avatarId?: number}} [opts] `avatarId` defaults to 12 (AvatarEnum.RASTA), the
+     *   proposal's originally hardcoded value, now parametrized per proposal item 6.
      */
-    async spawnGhosts(n = 25) {
+    async spawnGhosts(n = 25, { avatarId = 12 } = {}) {
         const scene = this._findActiveScene();
         if (!scene) {
             console.warn("[PerfHarness] no active gameplay scene found; cannot spawn ghosts");
             return 0;
         }
-        const { default: AddUserController } = await import(
-            "../controllers/scene/AddUserController.js"
-        );
+        const { spawnAvatarUser } = await import("../shared/spawnAvatarUser.js");
         let spawned = 0;
         for (let i = 0; i < n; i++) {
-            const id = `__ghost_${Date.now()}_${i}`;
-            const ghostData = {
-                id,
-                username: `Ghost${i}`,
-                avatar_id: 12, // AvatarEnum.RASTA — a compiled/loaded character in the running scene
-                x: (i % 5) - 2,
-                y: Math.floor(i / 5) - 2,
-                z: 0,
-                shadow_color: null,
-                name_color: null,
-                show_username: true,
-                rings_won: 0,
-                uppercut_selected: null,
-            };
+            const socketId = `__ghost_${Date.now()}_${i}`;
             try {
                 // eslint-disable-next-line no-await-in-loop
-                await AddUserController.processUser(scene, ghostData);
+                await spawnAvatarUser(scene, {
+                    socketId,
+                    avatarId,
+                    x: (i % 5) - 2,
+                    y: Math.floor(i / 5) - 2,
+                    username: `Ghost${i}`,
+                });
                 spawned += 1;
             } catch (err) {
-                console.warn("[PerfHarness] failed to spawn ghost", id, err);
+                console.warn("[PerfHarness] failed to spawn ghost", socketId, err);
+            }
+        }
+        return spawned;
+    }
+
+    /**
+     * design.md §15/tasks.md slice 32 (roster-scale regression gate): spawns one ghost per
+     * DISTINCT `avatarId` in `avatarIds` — several DIFFERENT characters simultaneously, not N
+     * copies of one, alongside `spawnGhosts`'s existing single-character stress test. Reuses the
+     * exact same `spawnAvatarUser` primitive and `despawnGhosts` cleanup (both key off the
+     * `__ghost_` socketId prefix regardless of avatarId, so no separate teardown path is needed).
+     *
+     * @param {number[]} [avatarIds] distinct AvatarEnum values; defaults to a representative
+     *   roster-scale spread (see `DEFAULT_ROSTER_MIX_AVATAR_IDS` above)
+     * @returns {Promise<number>} how many were actually spawned
+     */
+    async spawnRosterMix(avatarIds = DEFAULT_ROSTER_MIX_AVATAR_IDS) {
+        const scene = this._findActiveScene();
+        if (!scene) {
+            console.warn("[PerfHarness] no active gameplay scene found; cannot spawn roster mix");
+            return 0;
+        }
+        const { spawnAvatarUser } = await import("../shared/spawnAvatarUser.js");
+        let spawned = 0;
+        for (let i = 0; i < avatarIds.length; i++) {
+            const socketId = `__ghost_${Date.now()}_${i}`;
+            try {
+                // eslint-disable-next-line no-await-in-loop
+                await spawnAvatarUser(scene, {
+                    socketId,
+                    avatarId: avatarIds[i],
+                    x: (i % 5) - 2,
+                    y: Math.floor(i / 5) - 2,
+                    username: `Ghost${i}`,
+                });
+                spawned += 1;
+            } catch (err) {
+                console.warn("[PerfHarness] failed to spawn roster-mix ghost", socketId, avatarIds[i], err);
             }
         }
         return spawned;
