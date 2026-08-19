@@ -155,7 +155,11 @@ services:
       proxy-network: {}
 
   client:
-    build: ./client
+    build:
+      # context is the repo root, not ./client (design.md §13.1, tasks.md slice 13) — the
+      # client image's Dockerfile now COPYs docker/nginx/*.conf, which lives outside client/.
+      context: .
+      dockerfile: client/Dockerfile
     mem_limit: 500m
     cpus: '0.5'
     volumes:
