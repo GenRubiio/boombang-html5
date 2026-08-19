@@ -1,0 +1,30 @@
+# Repo-root .dockerignore (design.md §13.1, tasks.md slice 13). The client image's build
+# context moved from ./client to the repo root so client/Dockerfile can COPY docker/nginx/*.conf
+# without duplicating it into client/ — this file keeps that wider context from sending
+# everything else (other services, git history, node_modules, untracked raw asset source) to
+# the Docker daemon on every build.
+
+.git
+.github
+.playwright-mcp
+
+# Other services' full trees — the client image never reads them.
+/api
+/server
+/launcher
+/doc
+/agent_tasks
+/backups
+/openspec
+/boombang_api.sql
+
+# client/ itself: keep source, drop what the build never reads and what would otherwise bloat
+# the context (node_modules is reinstalled inside the image; .assets-src is untracked raw
+# authoring source, per client/.gitignore, and never part of a production build; dist/e2e output
+# is regenerated).
+/client/node_modules
+/client/.assets-src
+/client/dist
+/client/e2e/artifacts
+/client/playwright-report
+/client/test-results

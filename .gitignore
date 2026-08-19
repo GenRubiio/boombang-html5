@@ -10,3 +10,7 @@ logs/
 **/auth.json
 **/.env.production
 **/.env.local
+
+# Playwright CLI scratch state (tool artifacts, never source)
+.playwright-cli/
+client/.playwright-cli/
