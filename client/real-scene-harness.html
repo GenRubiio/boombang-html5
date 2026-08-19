@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Avatar Real-Scene Harness (dev only)</title>
+</head>
+
+<body>
+  <!--
+    Dev-only driving surface for the REAL PublicScene class (tasks.md slice 21 task 8) — not
+    harness.html's bespoke AvatarHarnessScene. NOT linked from any production entry point and
+    NOT part of the production build (same mechanism as harness.html: no rollupOptions.input
+    names it). Reachable only via `vite dev`, gated behind VITE_AVATAR_HARNESS_REAL_SCENE=true.
+  -->
+  <div id="harness-root"></div>
+  <script type="module" src="/src/harness/realSceneMain.js"></script>
+</body>
+
+</html>

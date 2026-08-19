@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Avatar Harness (dev only)</title>
+</head>
+
+<body>
+  <!--
+    Dev-only Playwright resolved-state driving surface (design.md §10). NOT linked from any
+    production entry point and NOT part of the production build — see main.js's docblock for
+    why `vite build` never compiles this page. Reachable only via `vite dev`, gated a second
+    time behind VITE_AVATAR_HARNESS=true.
+  -->
+  <div id="harness-root"></div>
+  <script type="module" src="/src/harness/main.js"></script>
+</body>
+
+</html>
